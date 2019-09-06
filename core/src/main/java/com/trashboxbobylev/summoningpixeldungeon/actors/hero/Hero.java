@@ -1406,7 +1406,7 @@ public class Hero extends Char {
 			
 			for (Char ch : Actor.chars()){
 				if (ch instanceof DriedRose.GhostHero){
-					((DriedRose.GhostHero) ch).sayAnhk();
+					((DriedRose.GhostHero) ch).sayAnkh();
 					return;
 				}
 			}
