@@ -177,7 +177,9 @@ public class WndStartGame extends Window {
 				hero = new Image(Assets.ROGUE, 0, 90, 12, 15);
 			} else if (cl == HeroClass.HUNTRESS){
 				hero = new Image(Assets.HUNTRESS, 0, 90, 12, 15);
-			}
+			} else if (cl == HeroClass.CONJURER){
+                hero = new Image(Assets.CONJURER, 0, 90, 12, 15);
+            }
 			add(hero);
 			
 		}
@@ -341,6 +343,11 @@ public class WndStartGame extends Window {
 							heroLoadout.icon(new ItemSprite(ItemSpriteSheet.GLOVES, null));
 							heroMisc.icon(new Image(Assets.TILES_SEWERS, 112, 96, 16, 16 ));
 							break;
+                        case CONJURER:
+                            heroItem.icon(new ItemSprite(ItemSpriteSheet.FROGGIT_STAFF, null));
+                            heroLoadout.icon(new ItemSprite(ItemSpriteSheet.SPELL_HOLDER, null));
+                            heroMisc.icon(new Image(Assets.BUFFS_LARGE, 112, 32, 16, 16 ));
+                            break;
 					}
 					
 					layout();
