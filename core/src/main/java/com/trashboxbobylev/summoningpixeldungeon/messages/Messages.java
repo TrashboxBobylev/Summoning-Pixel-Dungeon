@@ -65,15 +65,15 @@ public class Messages {
 	 */
 
 	private static String[] prop_files = new String[]{
-			"com.trashboxbobylev.shatteredpixeldungeon.messages.actors.actors",
-			"com.trashboxbobylev.shatteredpixeldungeon.messages.items.items",
-			"com.trashboxbobylev.shatteredpixeldungeon.messages.journal.journal",
-			"com.trashboxbobylev.shatteredpixeldungeon.messages.levels.levels",
-			"com.trashboxbobylev.shatteredpixeldungeon.messages.plants.plants",
-			"com.trashboxbobylev.shatteredpixeldungeon.messages.scenes.scenes",
-			"com.trashboxbobylev.shatteredpixeldungeon.messages.ui.ui",
-			"com.trashboxbobylev.shatteredpixeldungeon.messages.windows.windows",
-			"com.trashboxbobylev.shatteredpixeldungeon.messages.misc.misc"
+			"com.trashboxbobylev.summoningpixeldungeon.messages.actors.actors",
+			"com.trashboxbobylev.summoningpixeldungeon.messages.items.items",
+			"com.trashboxbobylev.summoningpixeldungeon.messages.journal.journal",
+			"com.trashboxbobylev.summoningpixeldungeon.messages.levels.levels",
+			"com.trashboxbobylev.summoningpixeldungeon.messages.plants.plants",
+			"com.trashboxbobylev.summoningpixeldungeon.messages.scenes.scenes",
+			"com.trashboxbobylev.summoningpixeldungeon.messages.ui.ui",
+			"com.trashboxbobylev.summoningpixeldungeon.messages.windows.windows",
+			"com.trashboxbobylev.summoningpixeldungeon.messages.misc.misc"
 	};
 
 	static{
@@ -114,7 +114,7 @@ public class Messages {
 	public static String get(Class c, String k, Object...args){
 		String key;
 		if (c != null){
-			key = c.getName().replace("com.trashboxbobylev.shatteredpixeldungeon.", "");
+			key = c.getName().replace("com.trashboxbobylev.summoningpixeldungeon.", "");
 			key += "." + k;
 		} else
 			key = k;

@@ -29,12 +29,13 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.watabou.utils.Random;
 
-public class Minion extends Mob {
+public abstract class Minion extends Mob {
 
     protected int minDamage = 0;
     protected int maxDamage = 0;
     protected int minDR = 0;
     protected int maxDR = 0;
+    public float attunement = 1;
 
     {
         //all minions are allies and kinda intelligent
@@ -42,6 +43,7 @@ public class Minion extends Mob {
         intelligentAlly = true;
 
         WANDERING = new Wandering();
+        state = WANDERING;
 
         //before other mobs
         actPriority = MOB_PRIO + 1;
@@ -128,4 +130,9 @@ public class Minion extends Mob {
 
     }
 
+    @Override
+    public void die(Object cause) {
+        Dungeon.hero.usedAttunement -= attunement;
+        super.die(cause);
+    }
 }

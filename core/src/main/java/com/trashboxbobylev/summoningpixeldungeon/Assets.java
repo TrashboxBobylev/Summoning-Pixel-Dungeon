@@ -50,6 +50,7 @@ public class Assets {
 	public static final String MAGE		= "mage.png";
 	public static final String ROGUE	= "rogue.png";
 	public static final String HUNTRESS	= "huntress.png";
+	public static final String CONJURER = "conjurer.png";
 	public static final String AVATARS	= "avatars.png";
 	public static final String PET		= "pet.png";
 	
@@ -63,6 +64,7 @@ public class Assets {
 	public static final String GNOLL	= "gnoll.png";
 	public static final String CRAB		= "crab.png";
 	public static final String GOO		= "goo.png";
+    public static final String FROGGIT		= "froggit.png";
 	public static final String SWARM	= "swarm.png";
 	public static final String SKELETON	= "skeleton.png";
 	public static final String SHAMAN	= "shaman.png";

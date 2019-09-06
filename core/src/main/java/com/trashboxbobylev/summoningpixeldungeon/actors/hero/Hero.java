@@ -171,7 +171,8 @@ public class Hero extends Char {
 	
 	public int STR;
 	
-	public float awareness;
+	public float attunement;
+	public float usedAttunement;
 	
 	public int lvl = 1;
 	public int exp = 0;
@@ -232,6 +233,7 @@ public class Hero extends Char {
 	private static final String LEVEL		= "lvl";
 	private static final String EXPERIENCE	= "exp";
 	private static final String HTBOOST     = "htboost";
+    private static final String ATTUNEMENT		= "attunement";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -247,6 +249,7 @@ public class Hero extends Char {
 		bundle.put( STRENGTH, STR );
 		
 		bundle.put( LEVEL, lvl );
+		bundle.put(ATTUNEMENT, attunement);
 		bundle.put( EXPERIENCE, exp );
 		
 		bundle.put( HTBOOST, HTBoost );
@@ -268,6 +271,7 @@ public class Hero extends Char {
 		
 		lvl = bundle.getInt( LEVEL );
 		exp = bundle.getInt( EXPERIENCE );
+		attunement = bundle.getFloat(ATTUNEMENT);
 		
 		HTBoost = bundle.getInt(HTBOOST);
 		

@@ -32,6 +32,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.BrokenSeal;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.ClothArmor;
 import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.CloakOfShadows;
+import com.trashboxbobylev.summoningpixeldungeon.items.bags.MagicalHolster;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.PotionBandolier;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.ScrollHolder;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.VelvetPouch;
@@ -52,6 +53,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Dagger;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Gloves;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MagesStaff;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.WornShortsword;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.FroggitStaff;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.ThrowingKnife;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.ThrowingStone;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
@@ -63,7 +65,8 @@ public enum HeroClass {
 	WARRIOR( "warrior", HeroSubClass.BERSERKER, HeroSubClass.GLADIATOR ),
 	MAGE( "mage", HeroSubClass.BATTLEMAGE, HeroSubClass.WARLOCK ),
 	ROGUE( "rogue", HeroSubClass.ASSASSIN, HeroSubClass.FREERUNNER ),
-	HUNTRESS( "huntress", HeroSubClass.SNIPER, HeroSubClass.WARDEN );
+	HUNTRESS( "huntress", HeroSubClass.SNIPER, HeroSubClass.WARDEN ),
+    CONJURER("conjurer", HeroSubClass.SOUL_REAVER, HeroSubClass.OCCULTIST);
 
 	private String title;
 	private HeroSubClass[] subClasses;
@@ -95,6 +98,10 @@ public enum HeroClass {
 			case HUNTRESS:
 				initHuntress( hero );
 				break;
+
+            case CONJURER:
+                initConjurer( hero );
+                break;
 		}
 		
 	}
@@ -196,6 +203,22 @@ public enum HeroClass {
 		new PotionOfMindVision().identify();
 		new ScrollOfLullaby().identify();
 	}
+
+    private static void initConjurer( Hero hero ) {
+
+        (hero.belongings.weapon = new FroggitStaff()).identify();
+
+        Dungeon.quickslot.setSlot(0, hero.belongings.weapon);
+
+        new MagicalHolster().collect();
+        Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
+
+        hero.attunement = 2;
+        /*
+        new PotionOfMindVision().identify();
+        new ScrollOfLullaby().identify();
+        */
+    }
 	
 	public String title() {
 		return Messages.get(HeroClass.class, title);
@@ -215,6 +238,8 @@ public enum HeroClass {
 				return Assets.ROGUE;
 			case HUNTRESS:
 				return Assets.HUNTRESS;
+            case CONJURER:
+                return Assets.CONJURER;
 		}
 	}
 	

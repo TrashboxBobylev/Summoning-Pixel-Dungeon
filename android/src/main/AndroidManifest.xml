@@ -21,10 +21,10 @@
 		android:resizeableActivity="true"
 		android:allowBackup="true"
 		android:fullBackupOnly="true"
-		android:backupAgent="com.trashboxbobylev.net.trashboxbobylev.summoningpixeldungeon.android.AndroidBackupHandler">
+		android:backupAgent="com.trashboxbobylev.summoningpixeldungeon.android.AndroidBackupHandler">
 		<activity
 			android:label="${appName}"
-			android:name="com.trashboxbobylev.net.trashboxbobylev.summoningpixeldungeon.android.AndroidLauncher"
+			android:name="com.trashboxbobylev.summoningpixeldungeon.android.AndroidLauncher"
 			android:screenOrientation="nosensor"
 			android:configChanges="keyboard|keyboardHidden|orientation">
 			<intent-filter >

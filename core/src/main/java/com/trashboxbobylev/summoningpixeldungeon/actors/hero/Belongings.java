@@ -35,6 +35,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.bags.Bag;
 import com.trashboxbobylev.summoningpixeldungeon.items.keys.Key;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -245,6 +246,11 @@ public class Belongings implements Iterable<Item> {
 			charger.gainCharge(charge);
 			count++;
 		}
+
+		if (weapon instanceof Staff){
+		    owner.buff(Staff.Charger.class).gainCharge(charge);
+		    count++;
+        }
 		
 		return count;
 	}
