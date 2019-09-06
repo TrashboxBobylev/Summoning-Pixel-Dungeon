@@ -793,7 +793,7 @@ public class DriedRose extends Artifact {
 			Sample.INSTANCE.play( Assets.SND_GHOST );
 		}
 		
-		public void sayAnhk(){
+		public void sayAnkh(){
 			yell( Messages.get( this, "blessed_ankh_" + Random.IntRange(1, 3) ));
 			Sample.INSTANCE.play( Assets.SND_GHOST );
 		}
