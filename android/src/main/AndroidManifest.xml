@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.shatteredpixel.shatteredpixeldungeon.android"
+	package="com.trashboxbobylev.summoningpixeldungeon.android"
 	android:installLocation="auto">
 	
 	<uses-feature
@@ -21,10 +21,10 @@
 		android:resizeableActivity="true"
 		android:allowBackup="true"
 		android:fullBackupOnly="true"
-		android:backupAgent=".AndroidBackupHandler">
+		android:backupAgent="com.trashboxbobylev.net.trashboxbobylev.summoningpixeldungeon.android.AndroidBackupHandler">
 		<activity
 			android:label="${appName}"
-			android:name=".AndroidLauncher"
+			android:name="com.trashboxbobylev.net.trashboxbobylev.summoningpixeldungeon.android.AndroidLauncher"
 			android:screenOrientation="nosensor"
 			android:configChanges="keyboard|keyboardHidden|orientation">
 			<intent-filter >
