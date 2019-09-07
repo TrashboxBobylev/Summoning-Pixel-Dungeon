@@ -59,6 +59,8 @@ public class ConjurerArmor extends ClassArmor {
         ArrayList<String> actions = super.actions( hero );
         actions.add( AC_IMBUE );
         actions.remove(AC_UNEQUIP);
+        actions.remove(AC_DROP);
+        actions.remove(AC_THROW);
         return actions;
     }
 
