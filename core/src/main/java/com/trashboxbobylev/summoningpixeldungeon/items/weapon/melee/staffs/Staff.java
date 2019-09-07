@@ -215,7 +215,7 @@ public class Staff extends MeleeWeapon {
     }
 
     public int hp(int lvl){
-        return 10*tier + lvl*(tier+1);
+        return 8*tier + lvl*(tier); //reduced from 10 to 8, and scaling from (tier+1) to tier
     }
 
     //but they have additional stat: minion damage
@@ -226,8 +226,8 @@ public class Staff extends MeleeWeapon {
     }
 
     public int minionMax(int lvl) {
-        return  5*(tier+1) +    //base
-                lvl*(tier+1);   //level scaling
+        return  4*(tier+1) +    //reduced from 10 to 8
+                lvl*(tier);   //reduced from (tier+1) to tier
     }
 
     //surprisingly, weightstone also affects minion damage!
