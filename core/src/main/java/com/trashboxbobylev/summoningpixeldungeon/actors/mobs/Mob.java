@@ -43,6 +43,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.SoulMark;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Terror;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Weakness;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Flare;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Surprise;
@@ -236,6 +237,7 @@ public abstract class Mob extends Char {
 		if ( newEnemy ) {
 
 			HashSet<Char> enemies = new HashSet<>();
+            boolean minionsAreHere = false;
 
 			//if the mob is amoked...
 			if ( buff(Amok.class) != null) {
@@ -276,10 +278,17 @@ public abstract class Mob extends Char {
 					if (mob.alignment == Alignment.ALLY && fieldOfView[mob.pos])
 						enemies.add(mob);
 
-				//and look for the hero
-				if (fieldOfView[Dungeon.hero.pos]) {
-					enemies.add(Dungeon.hero);
-				}
+
+				//and look for the hero if there is no minions
+                for (Char minion : enemies){
+                    if (minion instanceof Minion){
+                        minionsAreHere = true;
+                        break;
+                    }
+                    else if (fieldOfView[Dungeon.hero.pos]) {
+                        enemies.add(Dungeon.hero);
+                    }
+                }
 				
 			}
 			
@@ -295,12 +304,12 @@ public abstract class Mob extends Char {
 			if (enemies.isEmpty()){
 				return null;
 			} else {
-				//go after the closest potential enemy, preferring the hero if two are equidistant
+				//go after the closest potential enemy, preferring the hero or minion if two are equidistant
 				Char closest = null;
 				for (Char curr : enemies){
 					if (closest == null
 							|| Dungeon.level.distance(pos, curr.pos) < Dungeon.level.distance(pos, closest.pos)
-							|| Dungeon.level.distance(pos, curr.pos) == Dungeon.level.distance(pos, closest.pos) && curr == Dungeon.hero){
+							|| Dungeon.level.distance(pos, curr.pos) == Dungeon.level.distance(pos, closest.pos) && (curr == Dungeon.hero || (minionsAreHere && curr instanceof Minion))){
 						closest = curr;
 					}
 				}
