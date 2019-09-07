@@ -202,7 +202,7 @@ public class Hero extends Char {
 
 		float adjustHT = heroClass == HeroClass.CONJURER ? 0.8f : 1;
 
-		HT = (int) (20*adjustHT + 5*adjustHT*(lvl-1) + HTBoost);
+		HT = (int) ((20 + 5*(lvl-1))*adjustHT + HTBoost);
 		float multiplier = RingOfMight.HTMultiplier(this);
 		HT = Math.round(multiplier * HT);
 		
