@@ -202,6 +202,7 @@ public enum HeroClass {
     private static void initConjurer( Hero hero ) {
 
         (hero.belongings.weapon = new FroggitStaff()).identify();
+        hero.belongings.weapon.activate(hero);
 
         Dungeon.quickslot.setSlot(0, hero.belongings.weapon);
 
@@ -211,6 +212,7 @@ public enum HeroClass {
         Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
 
         hero.attunement = 2;
+        hero.HP = hero.HT = 15;
         hero.STR = 9;
 
         new PotionOfStrength().identify();

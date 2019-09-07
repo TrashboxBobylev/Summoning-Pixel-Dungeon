@@ -199,8 +199,10 @@ public class Hero extends Char {
 	
 	public void updateHT( boolean boostHP ){
 		int curHT = HT;
-		
-		HT = 20 + 5*(lvl-1) + HTBoost;
+
+		float adjustHT = heroClass == HeroClass.CONJURER ? 0.8f : 1;
+
+		HT = (int) (20*adjustHT + 5*adjustHT*(lvl-1) + HTBoost);
 		float multiplier = RingOfMight.HTMultiplier(this);
 		HT = Math.round(multiplier * HT);
 		
@@ -234,6 +236,7 @@ public class Hero extends Char {
 	private static final String EXPERIENCE	= "exp";
 	private static final String HTBOOST     = "htboost";
     private static final String ATTUNEMENT		= "attunement";
+    private static final String USED_ATTUNEMENT		= "used_attunement";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -250,6 +253,7 @@ public class Hero extends Char {
 		
 		bundle.put( LEVEL, lvl );
 		bundle.put(ATTUNEMENT, attunement);
+		bundle.put(USED_ATTUNEMENT, usedAttunement);
 		bundle.put( EXPERIENCE, exp );
 		
 		bundle.put( HTBOOST, HTBoost );
@@ -272,6 +276,7 @@ public class Hero extends Char {
 		lvl = bundle.getInt( LEVEL );
 		exp = bundle.getInt( EXPERIENCE );
 		attunement = bundle.getFloat(ATTUNEMENT);
+        usedAttunement = bundle.getFloat(USED_ATTUNEMENT);
 		
 		HTBoost = bundle.getInt(HTBOOST);
 		
