@@ -143,6 +143,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Sword;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.WarHammer;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Whip;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.WornShortsword;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.GreyRatStaff;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.HeavyBoomerang;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.Bolas;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.FishingSpear;
@@ -335,9 +336,10 @@ public class Generator {
 					HandAxe.class,
 					Spear.class,
 					Quarterstaff.class,
-					Dirk.class
+					Dirk.class,
+                    GreyRatStaff.class
 			};
-			WEP_T2.probs = new float[]{ 6, 5, 5, 4, 4 };
+			WEP_T2.probs = new float[]{ 5, 5, 5, 4, 4, 4};
 			
 			WEP_T3.classes = new Class<?>[]{
 					Sword.class,
