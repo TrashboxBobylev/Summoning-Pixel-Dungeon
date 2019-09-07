@@ -77,7 +77,7 @@ public class ConjurerArmor extends ClassArmor {
     private final WndBag.Listener itemSelector = new WndBag.Listener() {
         @Override
         public void onSelect( Item item ) {
-            if (item != null) {
+            if (item != null && item.isIdentified()) {
                 ConjurerArmor.upgrade( (Armor)item );
             }
         }
@@ -90,6 +90,7 @@ public class ConjurerArmor extends ClassArmor {
         curUser.belongings.armor = classArmor;
         ((HeroSprite)curUser.sprite).updateArmor();
         classArmor.activate(curUser);
+        armor.detach( curUser.belongings.backpack );
         curUser.sprite.operate( curUser.pos );
         curUser.spend( 2f );
         curUser.busy();
