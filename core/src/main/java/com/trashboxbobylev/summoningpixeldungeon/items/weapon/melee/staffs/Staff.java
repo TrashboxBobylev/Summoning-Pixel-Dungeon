@@ -431,9 +431,9 @@ public class Staff extends MeleeWeapon {
 
     public class Charger extends Buff {
 
-        private static final float BASE_CHARGE_DELAY = 50f;
-        private static final float SCALING_CHARGE_ADDITION = 20f;
-        private static final float NORMAL_SCALE_FACTOR = 0.875f;
+        private static final float BASE_CHARGE_DELAY = 80f;
+        private static final float SCALING_CHARGE_ADDITION = 28f;
+        private static final float NORMAL_SCALE_FACTOR = 0.75f;
 
         private static final float CHARGE_BUFF_BONUS = 0.25f;
 
