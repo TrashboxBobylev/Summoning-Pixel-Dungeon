@@ -27,6 +27,7 @@ package com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public abstract class Minion extends Mob {
@@ -35,6 +36,26 @@ public abstract class Minion extends Mob {
     protected int maxDamage = 0;
     protected int minDR = 0;
     protected int maxDR = 0;
+
+    @Override
+    public void storeInBundle(Bundle bundle) {
+        super.storeInBundle(bundle);
+        bundle.put("minDamage", minDamage);
+        bundle.put("maxDamage", maxDamage);
+        bundle.put("minDR", minDR);
+        bundle.put("maxDR", maxDR);
+    }
+
+    @Override
+    public void restoreFromBundle(Bundle bundle) {
+        super.restoreFromBundle(bundle);
+
+        minDamage = bundle.getInt("minDamage");
+        maxDamage = bundle.getInt("maxDamage");
+        minDR = bundle.getInt("minDR");
+        maxDR = bundle.getInt("maxDR");
+    }
+
     public float attunement = 1;
 
     {

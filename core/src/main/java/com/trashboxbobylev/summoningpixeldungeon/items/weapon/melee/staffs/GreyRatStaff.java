@@ -40,6 +40,6 @@ public class GreyRatStaff extends Staff {
     @Override
     public int max(int lvl) {
         return  13 +    //13 base
-                lvl*(tier);   //scaling lowered
+                lvl*(tier-1);   //scaling lowered
     }
 }

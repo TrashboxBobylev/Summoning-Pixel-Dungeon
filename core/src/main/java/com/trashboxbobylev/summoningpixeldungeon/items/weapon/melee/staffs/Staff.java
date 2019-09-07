@@ -211,7 +211,7 @@ public class Staff extends MeleeWeapon {
 
     @Override
     public int max(int lvl) {
-        return  2*(tier+1) +  (lvl*(tier+1)) / 2;
+        return  2*(tier+1) +  (lvl*(tier+1)) / 3;
     }
 
     public int hp(int lvl){
@@ -533,7 +533,7 @@ public class Staff extends MeleeWeapon {
     public String info() {
         String info = desc();
 
-        if (levelKnown) {
+        if (levelKnown && curChargeKnown) {
             info += "\n\n" + Messages.get(Staff.class, "stats_known", tier, augment.damageFactor(min()), augment.damageFactor(max()), STRReq(), minionMin(level()), minionMax(level()), hp(level()));
             if (STRReq() > Dungeon.hero.STR()) {
                 info += " " + Messages.get(MeleeWeapon.class, "too_heavy");
@@ -541,7 +541,7 @@ public class Staff extends MeleeWeapon {
                 info += " " + Messages.get(Weapon.class, "excess_str", Dungeon.hero.STR() - STRReq());
             }
         } else {
-            info += "\n\n" + Messages.get(Staff.class, "stats_unknown", tier, min(0), max(0), STRReq(0));
+            info += "\n\n" + Messages.get(Staff.class, "stats_unknown", tier, min(0), max(0), STRReq(0), minionMin(0), minionMax(0), hp(0));
             if (STRReq(0) > Dungeon.hero.STR()) {
                 info += " " + Messages.get(MeleeWeapon.class, "probably_too_heavy");
             }
