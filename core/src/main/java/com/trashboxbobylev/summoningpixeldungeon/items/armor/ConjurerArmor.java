@@ -128,8 +128,8 @@ public class ConjurerArmor extends ClassArmor {
 
     @Override
     public int DRMax(int lvl){
-        //only 75% as effective
-        int max = (int) ((armorTier * (2 + lvl) + augment.defenseFactor(lvl))*0.75f);
+        //only 80% as effective
+        int max = (int) ((armorTier * (2 + lvl) + augment.defenseFactor(lvl))*0.8f);
         if (lvl > max){
             return ((lvl - max)+1)/2;
         } else {
