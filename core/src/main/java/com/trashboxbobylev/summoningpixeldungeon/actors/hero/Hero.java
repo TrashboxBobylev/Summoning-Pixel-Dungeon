@@ -1304,6 +1304,7 @@ public class Hero extends Char {
 				updateHT( true );
 				attackSkill++;
 				defenseSkill++;
+				if (lvl % 6 == 0 && Random.Float() < 0.75) attunement++;
 
 			} else {
 				Buff.prolong(this, Bless.class, 30f);
