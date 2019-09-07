@@ -26,6 +26,7 @@ package com.trashboxbobylev.summoningpixeldungeon.items.armor;
 
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Invisibility;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
+import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroClass;
 import com.trashboxbobylev.summoningpixeldungeon.items.BrokenSeal;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
@@ -45,7 +46,7 @@ abstract public class ClassArmor extends Armor {
 		bones = false;
 	}
 
-	private int armorTier;
+	protected int armorTier;
 	
 	public ClassArmor() {
 		super( 6 );
@@ -72,6 +73,9 @@ abstract public class ClassArmor extends Armor {
 		case HUNTRESS:
 			classArmor = new HuntressArmor();
 			break;
+            case CONJURER:
+                classArmor = new ConjurerArmor();
+                break;
 		}
 		
 		classArmor.level(armor.level() - (armor.curseInfusionBonus ? 1 : 0));
@@ -116,7 +120,8 @@ abstract public class ClassArmor extends Armor {
 
 		if (action.equals(AC_SPECIAL)) {
 			
-			if (hero.HP < 3) {
+			if (hero.HP < 3 ||
+                    (hero.heroClass == HeroClass.CONJURER && hero.HP < (hero.HT /2))) {
 				GLog.w( Messages.get(this, "low_hp") );
 			} else if (!isEquipped( hero )) {
 				GLog.w( Messages.get(this, "not_equipped") );

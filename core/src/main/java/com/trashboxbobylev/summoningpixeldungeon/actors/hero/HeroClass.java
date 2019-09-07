@@ -30,6 +30,8 @@ import com.trashboxbobylev.summoningpixeldungeon.Challenges;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.items.BrokenSeal;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
+import com.trashboxbobylev.summoningpixeldungeon.items.armor.Armor;
+import com.trashboxbobylev.summoningpixeldungeon.items.armor.ClassArmor;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.ClothArmor;
 import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.CloakOfShadows;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.MagicalHolster;
@@ -38,15 +40,8 @@ import com.trashboxbobylev.summoningpixeldungeon.items.bags.ScrollHolder;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.VelvetPouch;
 import com.trashboxbobylev.summoningpixeldungeon.items.food.Food;
 import com.trashboxbobylev.summoningpixeldungeon.items.food.SmallRation;
-import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfHealing;
-import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfInvisibility;
-import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfLiquidFlame;
-import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfMindVision;
-import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfIdentify;
-import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfLullaby;
-import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfMagicMapping;
-import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRage;
-import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.trashboxbobylev.summoningpixeldungeon.items.potions.*;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfMagicMissile;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.SpiritBow;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Dagger;
@@ -210,14 +205,17 @@ public enum HeroClass {
 
         Dungeon.quickslot.setSlot(0, hero.belongings.weapon);
 
+        hero.belongings.armor = ClassArmor.upgrade(hero, (Armor)(new ClothArmor().identify()));
+
         new MagicalHolster().collect();
         Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
 
         hero.attunement = 2;
-        /*
-        new PotionOfMindVision().identify();
-        new ScrollOfLullaby().identify();
-        */
+        hero.STR = 9;
+
+        new PotionOfStrength().identify();
+        new ScrollOfMirrorImage().identify();
+
     }
 	
 	public String title() {
@@ -277,6 +275,14 @@ public enum HeroClass {
 						Messages.get(HeroClass.class, "huntress_perk4"),
 						Messages.get(HeroClass.class, "huntress_perk5"),
 				};
+            case CONJURER:
+                return new String[]{
+                        Messages.get(HeroClass.class, "conjurer_perk1"),
+                        Messages.get(HeroClass.class, "conjurer_perk2"),
+                        Messages.get(HeroClass.class, "conjurer_perk3"),
+                        Messages.get(HeroClass.class, "conjurer_perk4"),
+                        Messages.get(HeroClass.class, "conjurer_perk5"),
+                };
 		}
 	}
 	

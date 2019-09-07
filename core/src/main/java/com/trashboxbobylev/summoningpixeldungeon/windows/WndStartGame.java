@@ -68,7 +68,7 @@ public class WndStartGame extends Window {
 		title.y = 2;
 		add(title);
 		
-		float heroBtnSpacing = (WIDTH - 4*HeroBtn.WIDTH)/5f;
+		float heroBtnSpacing = (WIDTH - 5*HeroBtn.WIDTH)/5f;
 		
 		float curX = heroBtnSpacing;
 		for (HeroClass cl : HeroClass.values()){
