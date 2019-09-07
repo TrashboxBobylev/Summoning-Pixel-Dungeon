@@ -99,6 +99,25 @@ public abstract class Minion extends Mob {
         return null;
     }
 
+    //same accuracy and dexterity as player
+    @Override
+    public int defenseSkill(Char enemy) {
+        boolean seen = (enemySeen && enemy.invisible == 0);
+        if (enemy == Dungeon.hero && !Dungeon.hero.canSurpriseAttack()) seen = true;
+        if ( seen
+                && paralysed == 0
+                && !(alignment == Alignment.ALLY && enemy == Dungeon.hero)) {
+            return Dungeon.hero.defenseSkill(enemy);
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public int attackSkill(Char target) {
+        return Dungeon.hero.attackSkill(enemy);
+    }
+
     //ported from DriedRose.java
     //minions will always move towards hero if enemies not here
     private class Wandering extends Mob.Wandering {
