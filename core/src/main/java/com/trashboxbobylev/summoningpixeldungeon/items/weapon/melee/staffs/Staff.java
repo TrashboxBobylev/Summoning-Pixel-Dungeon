@@ -93,7 +93,7 @@ public class Staff extends MeleeWeapon {
 
     @Override
     public void activate(Char ch) {
-        new Attunement().attachTo(ch);
+        Buff.affect(ch, Attunement.class);
         startCharge(ch);
     }
 
