@@ -285,9 +285,10 @@ public abstract class Mob extends Char {
                         minionsAreHere = true;
                         break;
                     }
-                    else if (fieldOfView[Dungeon.hero.pos]) {
-                        enemies.add(Dungeon.hero);
-                    }
+                }
+
+                if (fieldOfView[Dungeon.hero.pos] && !minionsAreHere) {
+                    enemies.add(Dungeon.hero);
                 }
 				
 			}
