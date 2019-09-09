@@ -133,10 +133,10 @@ public class LoveHolder extends Artifact {
 
 	private void prick(Hero hero, int strength){
 	    if (charge >= getChargesFromStrength(strength)) {
+            GameScene.selectCell(zapper);
             hero.sprite.operate(hero.pos);
             GLog.w(Messages.get(this, "onprick"));
             str = strength;
-            GameScene.selectCell(zapper);
         } else {
             GLog.i(Messages.get(LoveHolder.class, "not_enough"));
         }
@@ -277,7 +277,7 @@ public class LoveHolder extends Artifact {
 
 	@Override
 	public String desc() {
-		String desc = Messages.get(this, "desc", totalHealing);
+		String desc = Messages.get(this, "desc", healingTable[level()] - totalHealing);
 
 		if (isEquipped (Dungeon.hero)){
 			desc += "\n\n";
