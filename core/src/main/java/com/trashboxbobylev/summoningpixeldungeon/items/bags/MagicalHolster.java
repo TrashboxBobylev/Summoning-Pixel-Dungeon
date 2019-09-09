@@ -27,6 +27,7 @@ package com.trashboxbobylev.summoningpixeldungeon.items.bags;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.bombs.Bomb;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 
@@ -43,7 +44,7 @@ public class MagicalHolster extends Bag {
 	
 	@Override
 	public boolean grab( Item item ) {
-		return item instanceof Wand || item instanceof MissileWeapon || item instanceof Bomb;
+		return item instanceof Wand || item instanceof MissileWeapon || item instanceof Bomb || item instanceof Staff;
 	}
 	
 	@Override
