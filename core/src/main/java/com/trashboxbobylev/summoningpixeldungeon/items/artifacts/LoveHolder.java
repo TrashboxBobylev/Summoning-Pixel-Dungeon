@@ -301,6 +301,10 @@ public class LoveHolder extends Artifact {
             }
             return chargeCap;
         }
+
+        public float getHealingRatio(){
+            return (float)(charge / chargeCap);
+        }
 	}
 
 }

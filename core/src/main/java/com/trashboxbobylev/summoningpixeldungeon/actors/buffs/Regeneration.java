@@ -27,6 +27,7 @@ package com.trashboxbobylev.summoningpixeldungeon.actors.buffs;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.ChaliceOfBlood;
+import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.LoveHolder;
 
 public class Regeneration extends Buff {
 	
@@ -52,15 +53,23 @@ public class Regeneration extends Buff {
 				}
 			}
 
+            LoveHolder.lul lul = target.buff(LoveHolder.lul.class);
+
 			ChaliceOfBlood.chaliceRegen regenBuff = Dungeon.hero.buff( ChaliceOfBlood.chaliceRegen.class);
+
+			float tick = REGENERATION_DELAY;
 
 			if (regenBuff != null)
 				if (regenBuff.isCursed())
-					spend( REGENERATION_DELAY * 1.5f );
+					tick *= 1.5f;
 				else
-					spend( REGENERATION_DELAY - regenBuff.itemLevel()*0.9f );
-			else
-				spend( REGENERATION_DELAY );
+					tick -= regenBuff.itemLevel()*0.9f;
+
+				if (lul != null){
+				    tick -= lul.getHealingRatio()*2.5f;
+                }
+
+				spend( TICK );
 			
 		} else {
 			
