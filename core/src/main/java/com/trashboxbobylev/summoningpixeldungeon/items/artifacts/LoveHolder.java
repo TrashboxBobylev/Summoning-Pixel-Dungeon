@@ -65,6 +65,7 @@ public class LoveHolder extends Artifact {
 		image = ItemSpriteSheet.ARTIFACT_LOVE1;
 
 		levelCap = 10;
+		defaultAction = AC_PRICK;
 
         charge = 0;
         chargeCap = Math.min(50 + level()*50, 500);
