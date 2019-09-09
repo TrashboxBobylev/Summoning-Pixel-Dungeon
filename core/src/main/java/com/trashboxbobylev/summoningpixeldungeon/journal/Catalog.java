@@ -26,26 +26,8 @@ package com.trashboxbobylev.summoningpixeldungeon.journal;
 
 import com.trashboxbobylev.summoningpixeldungeon.Badges;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
-import com.trashboxbobylev.summoningpixeldungeon.items.armor.ClothArmor;
-import com.trashboxbobylev.summoningpixeldungeon.items.armor.HuntressArmor;
-import com.trashboxbobylev.summoningpixeldungeon.items.armor.LeatherArmor;
-import com.trashboxbobylev.summoningpixeldungeon.items.armor.MageArmor;
-import com.trashboxbobylev.summoningpixeldungeon.items.armor.MailArmor;
-import com.trashboxbobylev.summoningpixeldungeon.items.armor.PlateArmor;
-import com.trashboxbobylev.summoningpixeldungeon.items.armor.RogueArmor;
-import com.trashboxbobylev.summoningpixeldungeon.items.armor.ScaleArmor;
-import com.trashboxbobylev.summoningpixeldungeon.items.armor.WarriorArmor;
-import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.AlchemistsToolkit;
-import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.ChaliceOfBlood;
-import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.CloakOfShadows;
-import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.DriedRose;
-import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.EtherealChains;
-import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.HornOfPlenty;
-import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.MasterThievesArmband;
-import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.SandalsOfNature;
-import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.TalismanOfForesight;
-import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.TimekeepersHourglass;
-import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.UnstableSpellbook;
+import com.trashboxbobylev.summoningpixeldungeon.items.armor.*;
+import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfExperience;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfFrost;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfHaste;
@@ -121,6 +103,8 @@ import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Sword;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.WarHammer;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Whip;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.WornShortsword;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.FroggitStaff;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.GreyRatStaff;
 import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
@@ -159,12 +143,14 @@ public enum Catalog {
 		WEAPONS.seen.put( Gloves.class,                     false);
 		WEAPONS.seen.put( Dagger.class,                     false);
 		WEAPONS.seen.put( MagesStaff.class,                 false);
+		WEAPONS.seen.put(FroggitStaff.class, false);
 		//WEAPONS.seen.put( Boomerang.class,                  false);
 		WEAPONS.seen.put( Shortsword.class,                 false);
 		WEAPONS.seen.put( HandAxe.class,                    false);
 		WEAPONS.seen.put( Spear.class,                      false);
 		WEAPONS.seen.put( Quarterstaff.class,               false);
 		WEAPONS.seen.put( Dirk.class,                       false);
+        WEAPONS.seen.put(GreyRatStaff.class, false);
 		WEAPONS.seen.put( Sword.class,                      false);
 		WEAPONS.seen.put( Mace.class,                       false);
 		WEAPONS.seen.put( Scimitar.class,                   false);
@@ -193,6 +179,7 @@ public enum Catalog {
 		ARMOR.seen.put( MageArmor.class,                    false);
 		ARMOR.seen.put( RogueArmor.class,                   false);
 		ARMOR.seen.put( HuntressArmor.class,                false);
+        ARMOR.seen.put( ConjurerArmor.class,                false);
 	
 		WANDS.seen.put( WandOfMagicMissile.class,           false);
 		WANDS.seen.put( WandOfLightning.class,              false);
@@ -230,6 +217,7 @@ public enum Catalog {
 		//ARTIFACTS.seen.put( LloydsBeacon.class,             false);
 		ARTIFACTS.seen.put( MasterThievesArmband.class,     false);
 		ARTIFACTS.seen.put( SandalsOfNature.class,          false);
+        ARTIFACTS.seen.put( LoveHolder.class,          false);
 		ARTIFACTS.seen.put( TalismanOfForesight.class,      false);
 		ARTIFACTS.seen.put( TimekeepersHourglass.class,     false);
 		ARTIFACTS.seen.put( UnstableSpellbook.class,        false);
