@@ -29,7 +29,12 @@ package com.trashboxbobylev.summoningpixeldungeon.items.artifacts;
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
+import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Invisibility;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
+import com.trashboxbobylev.summoningpixeldungeon.effects.MagicMissile;
+import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.ShadowParticle;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
@@ -39,16 +44,20 @@ import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.plants.Earthroot;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.CellSelector;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
+import com.trashboxbobylev.summoningpixeldungeon.sprites.CharSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 import com.trashboxbobylev.summoningpixeldungeon.ui.QuickSlotButton;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.trashboxbobylev.summoningpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
 
 import java.util.ArrayList;
 
 public class LoveHolder extends Artifact {
+
+    private int str;
 
 	{
 		image = ItemSpriteSheet.ARTIFACT_LOVE1;
@@ -111,13 +120,10 @@ public class LoveHolder extends Artifact {
 	}
 
 	private void prick(Hero hero, int strength){
-
+	    hero.sprite.operate( hero.pos );
+        GLog.w( Messages.get(this, "onprick") );
+	    str = strength;
         GameScene.selectCell( zapper );
-
-		hero.sprite.operate( hero.pos );
-		hero.busy();
-		hero.spend(1f);
-		GLog.w( Messages.get(this, "onprick") );
 	}
 
 	protected CellSelector.Listener zapper = new CellSelector.Listener() {
@@ -140,6 +146,50 @@ public class LoveHolder extends Artifact {
                 else
                     QuickSlotButton.target(Actor.findChar(cell));
 
+                if (charge >= getChargesFromStrength(str)) {
+                    charge -= getChargesFromStrength(str);
+                    curUser.busy();
+                    Invisibility.dispel();
+                    Sample.INSTANCE.play( Assets.SND_ZAP );
+                    MagicMissile.boltFromChar(curUser.sprite.parent,
+                            MagicMissile.MAGIC_MISSILE,
+                            curUser.sprite,
+                            shot.collisionPos,
+                            new Callback() {
+                                @Override
+                                public void call() {
+                                    Char ch = Actor.findChar(shot.collisionPos);
+
+                                    if (ch instanceof Minion){
+                                        Sample.INSTANCE.play(Assets.SND_DRINK);
+
+                                        int healing = getHealingFromStrength(str);
+
+                                        //if we spend more that 1 soul, healing will be percentage
+                                        if (healing > 1){
+                                            healing = ch.HT * healing / 100;
+                                        }
+
+                                        int wastedHealing = (ch.HP + healing) - ch.HT;
+                                        if (wastedHealing > 0){
+                                            healing -= wastedHealing;
+                                            charge += wastedHealing / 2; //some of unnecessary soul will return
+                                        }
+
+                                        ch.HP += healing;
+
+                                        ch.sprite.emitter().burst(Speck.factory(Speck.STEAM), getChargesFromStrength(str)/3);
+
+                                        ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healing);
+
+                                        updateQuickslot();
+                                    }
+                                }
+                            });
+
+                } else {
+                    GLog.i(Messages.get(LoveHolder.class, "not_enough"));
+                }
             }
         }
 
@@ -149,7 +199,19 @@ public class LoveHolder extends Artifact {
         }
     };
 
-	@Override
+    public static int getHealingFromStrength(int str) {
+        switch (str){
+            case 0:
+                return 1;
+            case 1:
+                return 20;
+            case 2:
+                return 100;
+        }
+        return Integer.parseInt(null);
+    }
+
+    @Override
 	public Item upgrade() {
 		if (level() >= 6)
 			image = ItemSpriteSheet.ARTIFACT_LOVE3;
@@ -157,6 +219,18 @@ public class LoveHolder extends Artifact {
 			image = ItemSpriteSheet.ARTIFACT_LOVE2;
 		return super.upgrade();
 	}
+
+	public static int getChargesFromStrength(int str){
+	    switch (str){
+            case 0:
+                return 1;
+            case 1:
+                return 10;
+            case 2:
+                return 50;
+        }
+        return Integer.parseInt(null);
+    }
 
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
@@ -170,12 +244,7 @@ public class LoveHolder extends Artifact {
 	protected ArtifactBuff passiveBuff() {
 		return new lul();
 	}
-	
-	@Override
-	public void charge(Hero target) {
-		target.HP = Math.min( target.HT, target.HP + 1 + Dungeon.depth/5);
-	}
-	
+
 	@Override
 	public String desc() {
 		String desc = super.desc();
@@ -196,7 +265,19 @@ public class LoveHolder extends Artifact {
 	}
 
 	public class lul extends ArtifactBuff {
-
+        public int gainCharge(int amount){
+            if (charge < chargeCap){
+                charge += amount;
+                if (charge >= chargeCap){
+                    int overcharge = chargeCap - charge;
+                    charge = chargeCap;
+                    GLog.p( Messages.get(lul.class, "full_charge") );
+                    return overcharge;
+                }
+                return 0;
+            }
+            return chargeCap;
+        }
 	}
 
 }

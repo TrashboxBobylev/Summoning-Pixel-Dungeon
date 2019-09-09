@@ -34,6 +34,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.armor.Armor;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.ClassArmor;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.ClothArmor;
 import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.CloakOfShadows;
+import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.LoveHolder;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.MagicalHolster;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.PotionBandolier;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.ScrollHolder;
@@ -207,6 +208,10 @@ public enum HeroClass {
         Dungeon.quickslot.setSlot(0, hero.belongings.weapon);
 
         hero.belongings.armor = ClassArmor.upgrade(hero, (Armor)(new ClothArmor().identify()));
+
+        LoveHolder cloak = new LoveHolder();
+        (hero.belongings.misc1 = cloak).identify();
+        hero.belongings.misc1.activate( hero );
 
         new MagicalHolster().collect();
         Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();

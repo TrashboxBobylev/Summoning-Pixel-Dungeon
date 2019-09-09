@@ -170,9 +170,10 @@ public abstract class Minion extends Mob {
 
     }
 
-    @Override
-    public void die(Object cause) {
+
+
+    public void destroy() {
         Dungeon.hero.usedAttunement -= attunement;
-        super.die(cause);
+        super.destroy();
     }
 }

@@ -51,6 +51,7 @@ import com.trashboxbobylev.summoningpixeldungeon.effects.Wound;
 import com.trashboxbobylev.summoningpixeldungeon.items.Generator;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.DriedRose;
+import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.LoveHolder;
 import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.Ring;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfWealth;
@@ -629,6 +630,12 @@ public abstract class Mob extends Char {
 			if (EXP % 2 == 1) EXP += Random.Int(2);
 			EXP /= 2;
 		}
+
+		if (cause instanceof Minion){
+		    LoveHolder.lul buff = Dungeon.hero.buff(LoveHolder.lul.class);
+		    int charge = buff.gainCharge(EXP);
+            if (charge == 0) sprite.showStatus(CharSprite.NEUTRAL, "+%♥", EXP);
+        }
 
 		if (alignment == Alignment.ENEMY){
 			rollToDropLoot();
