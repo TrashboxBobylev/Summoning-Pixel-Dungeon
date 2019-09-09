@@ -73,7 +73,9 @@ public class MagicalHolster extends Bag {
 				((Wand)item).stopCharging();
 			} else if (item instanceof MissileWeapon){
 				((MissileWeapon) item).holster = false;
-			}
+			} else if (item instanceof Staff){
+                ((Staff)item).stopCharging();
+            }
 		}
 	}
 	
