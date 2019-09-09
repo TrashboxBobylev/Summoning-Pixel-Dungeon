@@ -38,6 +38,9 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroClass;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Beam;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
+import com.trashboxbobylev.summoningpixeldungeon.items.armor.ConjurerArmor;
+import com.trashboxbobylev.summoningpixeldungeon.items.bags.Bag;
+import com.trashboxbobylev.summoningpixeldungeon.items.bags.MagicalHolster;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
@@ -97,6 +100,21 @@ public class Staff extends MeleeWeapon {
         startCharge(ch);
     }
 
+    @Override
+    public boolean collect( Bag container ) {
+        if (super.collect( container )) {
+            if (container.owner != null) {
+                if (container instanceof MagicalHolster)
+                    startCharge( container.owner, MagicalHolster.HOLSTER_SCALE_FACTOR);
+                else
+                    startCharge( container.owner );
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public void startCharge(Char owner ) {
         if (charger == null) charger = new Charger();
         charger.attachTo( owner );
@@ -112,7 +130,6 @@ public class Staff extends MeleeWeapon {
         if (super.doUnequip( hero, collect, single )) {
 
             hero.belongings.weapon = null;
-            stopCharging();
             hero.buff(Attunement.class).detach();
             return true;
 
@@ -121,6 +138,11 @@ public class Staff extends MeleeWeapon {
             return false;
 
         }
+    }
+
+    @Override
+    public void onDetach( ) {
+        stopCharging();
     }
 
     public void stopCharging() {
@@ -184,6 +206,7 @@ public class Staff extends MeleeWeapon {
     public Item identify() {
 
         curChargeKnown = true;
+        levelKnown = true;
         super.identify();
 
         updateQuickslot();
@@ -215,7 +238,7 @@ public class Staff extends MeleeWeapon {
     }
 
     public int hp(int lvl){
-        return 8*tier + lvl*(tier); //reduced from 10 to 8, and scaling from (tier+1) to tier
+        return 8*tier + lvl*(tier) - 1; //reduced from 10 to 7, and scaling from (tier+1) to tier
     }
 
     //but they have additional stat: minion damage
@@ -230,7 +253,7 @@ public class Staff extends MeleeWeapon {
                 lvl*(tier);   //reduced from (tier+1) to tier
     }
 
-    //surprisingly, weightstone also affects minion damage!
+    //only for cursed behavour
     public int minionDamageRoll(Char owner) {
         return augment.damageFactor(Random.NormalIntRange(minionMin(level()), minionMax(level())));
     }
@@ -244,9 +267,9 @@ public class Staff extends MeleeWeapon {
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions( hero );
         if (curCharges > 0 && isEquipped(hero)) {
-            actions.add( AC_ZAP );
             actions.add( AC_SUMMON );
         }
+        if (isEquipped(hero)) actions.add( AC_ZAP );
         return actions;
     }
 
@@ -338,7 +361,13 @@ public class Staff extends MeleeWeapon {
         ScrollOfTeleportation.appear(minion, spawnPoints.get(Random.index(spawnPoints)));
         owner.usedAttunement += minion.attunement;
         minion.setDamage(minionMin(level()), minionMax(level()));
-        minion.setMaxHP(hp(level()));
+
+        //if we have upgraded robe, increase hp
+        float robeBonus = 1f;
+        if (curUser.belongings.armor instanceof ConjurerArmor && curUser.belongings.armor.level() > 0){
+            robeBonus = 1f + curUser.belongings.armor.level()*0.1f;
+        }
+        minion.setMaxHP((int) (hp(level()) * robeBonus));
         wandUsed(false);
     }
 
@@ -533,7 +562,7 @@ public class Staff extends MeleeWeapon {
     public String info() {
         String info = desc();
 
-        if (levelKnown && curChargeKnown) {
+        if (isIdentified()) {
             info += "\n\n" + Messages.get(Staff.class, "stats_known", tier, augment.damageFactor(min()), augment.damageFactor(max()), STRReq(), minionMin(level()), minionMax(level()), hp(level()));
             if (STRReq() > Dungeon.hero.STR()) {
                 info += " " + Messages.get(MeleeWeapon.class, "too_heavy");
