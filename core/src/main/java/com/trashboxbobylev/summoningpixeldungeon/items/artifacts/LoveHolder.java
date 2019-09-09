@@ -292,12 +292,15 @@ public class LoveHolder extends Artifact {
         public int gainCharge(int amount){
             if (charge < chargeCap){
                 charge += amount;
+                updateQuickslot();
                 if (charge >= chargeCap){
                     int overcharge = chargeCap - charge;
                     charge = chargeCap;
                     GLog.p( Messages.get(LoveHolder.class, "full_charge") );
+                    updateQuickslot();
                     return overcharge;
                 }
+                updateQuickslot();
                 return 0;
             }
             return chargeCap;

@@ -633,8 +633,8 @@ public abstract class Mob extends Char {
 
 		if (cause instanceof Minion){
 		    LoveHolder.lul buff = Dungeon.hero.buff(LoveHolder.lul.class);
-		    int charge = buff.gainCharge(EXP);
-            if (charge == 0) sprite.showStatus(CharSprite.NEUTRAL, "+%♥", EXP);
+		    int charge = buff.gainCharge(EXP*2);
+            if (charge == 0) sprite.showStatus(CharSprite.NEUTRAL, "+%d♥", EXP*2);
         }
 
 		if (alignment == Alignment.ENEMY){
