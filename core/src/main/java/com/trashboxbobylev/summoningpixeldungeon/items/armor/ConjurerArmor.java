@@ -57,7 +57,7 @@ public class ConjurerArmor extends ClassArmor {
     @Override
     public ArrayList<String> actions(Hero hero ) {
         ArrayList<String> actions = super.actions( hero );
-        actions.add( AC_IMBUE );
+        if (!cursed) actions.add( AC_IMBUE );
         actions.remove(AC_UNEQUIP);
         actions.remove(AC_DROP);
         actions.remove(AC_THROW);
@@ -78,23 +78,43 @@ public class ConjurerArmor extends ClassArmor {
         @Override
         public void onSelect( Item item ) {
             if (item != null && item.isIdentified()) {
-                ConjurerArmor.upgrade( (Armor)item );
+                upgrade( (Armor)item );
             }
         }
     };
 
-    private static void upgrade(Armor armor){
+    private void upgrade(Armor armor){
         GLog.w( Messages.get(ConjurerArmor.class, "upgraded", armor.name()) );
 
-        ClassArmor classArmor = ClassArmor.upgrade( curUser, armor );
-        curUser.belongings.armor = classArmor;
+        //syncs the level of the two items.
+        int targetLevel = Math.max(this.level() - (curseInfusionBonus ? 1 : 0), armor.level());
+
+        //if the robe's level is being overridden by the armor, preserve 1 upgrade
+        if (armor.level() >= this.level() && this.level() > (curseInfusionBonus ? 1 : 0)) targetLevel++;
+
+        level(targetLevel);
+        updateQuickslot();
+        this.armorTier = armor.tier;
+        this.augment = armor.augment;
+        this.inscribe( armor.glyph );
+        this.cursed = armor.cursed;
+        this.curseInfusionBonus = armor.curseInfusionBonus;
+        curUser.belongings.armor = this;
         ((HeroSprite)curUser.sprite).updateArmor();
-        classArmor.activate(curUser);
+        this.activate(curUser);
         armor.detach( curUser.belongings.backpack );
         curUser.sprite.operate( curUser.pos );
         curUser.spend( 2f );
         curUser.busy();
+        GameScene.flash(0xFFFFFF);
         Sample.INSTANCE.play( Assets.SND_EVOKE );
+    }
+
+    private ConjurerArmor upgradeRobe(Hero hero, Armor armor){
+
+
+
+        return this;
     }
 
     @Override
