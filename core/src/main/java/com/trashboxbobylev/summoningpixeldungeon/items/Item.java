@@ -450,6 +450,7 @@ public class Item implements Bundlable {
 	}
 	
 	public static void updateQuickslot() {
+
 			QuickSlotButton.refresh();
 	}
 	

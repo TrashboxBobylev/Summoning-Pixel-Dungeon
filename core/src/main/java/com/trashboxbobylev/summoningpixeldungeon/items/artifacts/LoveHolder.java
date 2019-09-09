@@ -142,7 +142,7 @@ public class LoveHolder extends Artifact {
             GLog.w(Messages.get(this, "onprick"));
             GameScene.selectCell(zapper);
         }
-        ShatteredPixelDungeon.logSomething("it didn't get to here?");
+        curUser.spendAndNext( 1f );
         updateQuickslot();
     }
 
@@ -197,7 +197,7 @@ public class LoveHolder extends Artifact {
 
                                         ch.HP += healing;
 
-                                        ch.sprite.emitter().burst(Speck.factory(Speck.STEAM), (int) (getChargesFromStrength(str)/3f));
+                                        ch.sprite.emitter().burst(Speck.factory(Speck.STEAM), 5);
 
                                         ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healing);
 
@@ -214,7 +214,7 @@ public class LoveHolder extends Artifact {
 
                                         }
 
-                                        curUser.spendAndNext( 1f );
+
                                     } else {
                                         return;
                                     }
