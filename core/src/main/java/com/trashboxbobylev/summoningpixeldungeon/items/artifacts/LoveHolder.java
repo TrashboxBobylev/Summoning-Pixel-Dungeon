@@ -67,7 +67,7 @@ public class LoveHolder extends Artifact {
 		levelCap = 10;
 
         charge = 0;
-        chargeCap = Math.min(level()*50, 500);
+        chargeCap = Math.min(50 + level()*50, 500);
 	}
 
 	public static final String AC_PRICK = "PRICK";
@@ -202,7 +202,7 @@ public class LoveHolder extends Artifact {
                                                 totalHealing += healing;
                                                 if (totalHealing >= healingTable[level()]){
                                                     upgrade();
-                                                    chargeCap = Math.min(level()*20, 200);
+                                                    chargeCap = Math.min(50 + level()*50, 500);
                                                     GLog.h(Messages.get(LoveHolder.class, "upgrade"));
                                                     totalHealing = 0;
                                                 }
@@ -276,7 +276,7 @@ public class LoveHolder extends Artifact {
 
 	@Override
 	public String desc() {
-		String desc = super.desc();
+		String desc = Messages.get(this, "desc", totalHealing);
 
 		if (isEquipped (Dungeon.hero)){
 			desc += "\n\n";
