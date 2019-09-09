@@ -183,15 +183,12 @@ public class LoveHolder extends Artifact {
 
                                         int healing = getHealingFromStrength(str);
 
-                                        ShatteredPixelDungeon.logSomething("Healing is " + healing);
-
                                         //if we spend more that 1 soul, healing will be percentage
                                         if (healing > 1){
                                             healing = ch.HT * healing / 100;
                                         }
 
                                         int wastedHealing = (ch.HP + healing) - ch.HT;
-                                        ShatteredPixelDungeon.logSomething("wasted Healing is " + wastedHealing);
                                         if (wastedHealing > 0){
                                             healing -= wastedHealing;
                                             charge += wastedHealing / 2; //some of unnecessary soul will return
@@ -202,8 +199,6 @@ public class LoveHolder extends Artifact {
                                         ch.sprite.emitter().burst(Speck.factory(Speck.STEAM), (int) (getChargesFromStrength(str)/3f));
 
                                         ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healing);
-
-                                        ShatteredPixelDungeon.logSomething("If I do not see this, something is weird");
 
                                         if (level() < 10){
                                             if (totalHealing < healingTable[level()]){
@@ -219,7 +214,8 @@ public class LoveHolder extends Artifact {
                                         }
 
                                         updateQuickslot();
-                                        ShatteredPixelDungeon.logSomething("Something weird is happening");
+
+                                        curUser.spendAndNext( 1f );
                                     }
                                 }
                             });
