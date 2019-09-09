@@ -302,7 +302,7 @@ public class Staff extends MeleeWeapon {
             return false;
         }
 
-        if ( curCharges >= 1){
+        if ( curCharges >= 0){
             return true;
         } else {
             GLog.w(Messages.get(Wand.class, "fizzles"));

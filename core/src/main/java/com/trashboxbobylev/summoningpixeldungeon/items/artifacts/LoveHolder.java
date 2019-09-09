@@ -132,15 +132,17 @@ public class LoveHolder extends Artifact {
 	}
 
 	private void prick(Hero hero, int strength){
-	    if (charge >= getChargesFromStrength(strength)) {
-            GameScene.selectCell(zapper);
-            hero.sprite.operate(hero.pos);
-            GLog.w(Messages.get(this, "onprick"));
-            str = strength;
-        } else {
+        if (charge < getChargesFromStrength(strength)) {
             GLog.i(Messages.get(LoveHolder.class, "not_enough"));
+        } else {
+            curUser = hero;
+            curItem = this;
+            hero.sprite.operate(hero.pos);
+            str = strength;
+            GLog.w(Messages.get(this, "onprick"));
+            GameScene.selectCell(zapper);
         }
-	}
+    }
 
 	protected CellSelector.Listener zapper = new CellSelector.Listener() {
         @Override
@@ -194,7 +196,7 @@ public class LoveHolder extends Artifact {
 
                                         ch.HP += healing;
 
-                                        ch.sprite.emitter().burst(Speck.factory(Speck.STEAM), getChargesFromStrength(str)/3);
+                                        ch.sprite.emitter().burst(Speck.factory(Speck.STEAM), (int) (getChargesFromStrength(str)/3f));
 
                                         ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healing);
 
@@ -237,7 +239,7 @@ public class LoveHolder extends Artifact {
             case 2:
                 return 100;
         }
-        return Integer.parseInt(null);
+        return 2345678;
     }
 
     @Override
@@ -258,7 +260,7 @@ public class LoveHolder extends Artifact {
             case 2:
                 return 50;
         }
-        return Integer.parseInt(null);
+        return 1245141124;
     }
 
 	@Override
