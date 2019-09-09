@@ -35,13 +35,10 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.effects.MagicMissile;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
-import com.trashboxbobylev.summoningpixeldungeon.effects.particles.ShadowParticle;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfLivingEarth;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
-import com.trashboxbobylev.summoningpixeldungeon.plants.Earthroot;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.CellSelector;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.CharSprite;
@@ -58,6 +55,11 @@ import java.util.ArrayList;
 public class LoveHolder extends Artifact {
 
     private int str;
+    public int totalHealing = 0;
+
+    private int[] healingTable = {
+            10, 25, 50, 75, 100, 125, 150, 175, 200, 210
+    };
 
 	{
 		image = ItemSpriteSheet.ARTIFACT_LOVE1;
@@ -65,18 +67,27 @@ public class LoveHolder extends Artifact {
 		levelCap = 10;
 
         charge = 0;
-        chargeCap = Math.min(level()*20, 200);
+        chargeCap = Math.min(level()*50, 500);
 	}
 
 	public static final String AC_PRICK = "PRICK";
+    public static final String HEALING = "healing";
+
+    @Override
+    public void storeInBundle(Bundle bundle) {
+        super.storeInBundle(bundle);
+        bundle.put(HEALING, totalHealing);
+    }
 
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		if (isEquipped( hero ) && level() < levelCap && !cursed)
+		if (isEquipped( hero ) && !cursed)
 			actions.add(AC_PRICK);
 		return actions;
 	}
+
+
 
 	@Override
 	public void execute(Hero hero, String action ) {
@@ -120,10 +131,14 @@ public class LoveHolder extends Artifact {
 	}
 
 	private void prick(Hero hero, int strength){
-	    hero.sprite.operate( hero.pos );
-        GLog.w( Messages.get(this, "onprick") );
-	    str = strength;
-        GameScene.selectCell( zapper );
+	    if (charge >= getChargesFromStrength(strength)) {
+            hero.sprite.operate(hero.pos);
+            GLog.w(Messages.get(this, "onprick"));
+            str = strength;
+            GameScene.selectCell(zapper);
+        } else {
+            GLog.i(Messages.get(LoveHolder.class, "not_enough"));
+        }
 	}
 
 	protected CellSelector.Listener zapper = new CellSelector.Listener() {
@@ -182,6 +197,19 @@ public class LoveHolder extends Artifact {
 
                                         ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healing);
 
+                                        if (level() < 10){
+                                            if (totalHealing < healingTable[level()]){
+                                                totalHealing += healing;
+                                                if (totalHealing >= healingTable[level()]){
+                                                    upgrade();
+                                                    chargeCap = Math.min(level()*20, 200);
+                                                    GLog.h(Messages.get(LoveHolder.class, "upgrade"));
+                                                    totalHealing = 0;
+                                                }
+                                            }
+
+                                        }
+
                                         updateQuickslot();
                                     }
                                 }
@@ -235,6 +263,7 @@ public class LoveHolder extends Artifact {
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
+        totalHealing = bundle.getInt(HEALING);
 		if (level() >= 7) image = ItemSpriteSheet.ARTIFACT_LOVE3;
 		else if (level() >= 3) image = ItemSpriteSheet.ARTIFACT_LOVE2;
 	}
@@ -253,12 +282,6 @@ public class LoveHolder extends Artifact {
 			desc += "\n\n";
 			if (cursed)
 				desc += Messages.get(this, "desc_cursed");
-			else if (level() == 0)
-				desc += Messages.get(this, "desc_1");
-			else if (level() < levelCap)
-				desc += Messages.get(this, "desc_2");
-			else
-				desc += Messages.get(this, "desc_3");
 		}
 
 		return desc;
@@ -271,7 +294,7 @@ public class LoveHolder extends Artifact {
                 if (charge >= chargeCap){
                     int overcharge = chargeCap - charge;
                     charge = chargeCap;
-                    GLog.p( Messages.get(lul.class, "full_charge") );
+                    GLog.p( Messages.get(LoveHolder.class, "full_charge") );
                     return overcharge;
                 }
                 return 0;
