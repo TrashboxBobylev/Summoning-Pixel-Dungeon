@@ -142,7 +142,6 @@ public class LoveHolder extends Artifact {
             GLog.w(Messages.get(this, "onprick"));
             GameScene.selectCell(zapper);
         }
-        curUser.spendAndNext( 1f );
         updateQuickslot();
     }
 
@@ -213,6 +212,7 @@ public class LoveHolder extends Artifact {
                                             }
 
                                         }
+                                        curUser.spendAndNext( 1f );
 
 
                                     } else {
