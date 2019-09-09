@@ -24,6 +24,7 @@
 
 package com.trashboxbobylev.summoningpixeldungeon;
 
+import com.badlogic.gdx.Gdx;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.PixelScene;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.WelcomeScene;
 import com.watabou.noosa.Game;
@@ -31,6 +32,9 @@ import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PlatformSupport;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 public class ShatteredPixelDungeon extends Game {
 	
@@ -222,4 +226,11 @@ public class ShatteredPixelDungeon extends Game {
 	public static void updateSystemUI() {
 		platform.updateSystemUI();
 	}
+
+    public static void logSomething( Object obj ){
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        pw.flush();
+        Gdx.app.error("GAME", sw.toString() + obj.toString());
+    }
 }
