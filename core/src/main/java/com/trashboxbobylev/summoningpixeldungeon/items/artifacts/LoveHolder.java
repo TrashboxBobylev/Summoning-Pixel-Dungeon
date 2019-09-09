@@ -142,6 +142,7 @@ public class LoveHolder extends Artifact {
             GLog.w(Messages.get(this, "onprick"));
             GameScene.selectCell(zapper);
         }
+        ShatteredPixelDungeon.logSomething("it didn't get to here?");
         updateQuickslot();
     }
 
@@ -169,7 +170,6 @@ public class LoveHolder extends Artifact {
                     charge -= getChargesFromStrength(str);
                     curUser.busy();
                     Invisibility.dispel();
-                    Sample.INSTANCE.play( Assets.SND_ZAP );
                     MagicMissile.boltFromChar(curUser.sprite.parent,
                             MagicMissile.MAGIC_MISSILE,
                             curUser.sprite,
@@ -215,9 +215,12 @@ public class LoveHolder extends Artifact {
                                         }
 
                                         curUser.spendAndNext( 1f );
+                                    } else {
+                                        return;
                                     }
                                 }
                             });
+                            Sample.INSTANCE.play( Assets.SND_ZAP );
 
                 } else {
                     GLog.i(Messages.get(LoveHolder.class, "not_enough"));
