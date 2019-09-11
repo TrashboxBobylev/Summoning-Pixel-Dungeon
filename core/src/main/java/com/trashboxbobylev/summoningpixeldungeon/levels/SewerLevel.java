@@ -29,6 +29,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.npcs.Ghost;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Ripple;
 import com.trashboxbobylev.summoningpixeldungeon.items.DewVial;
+import com.trashboxbobylev.summoningpixeldungeon.items.Generator;
 import com.trashboxbobylev.summoningpixeldungeon.levels.painters.Painter;
 import com.trashboxbobylev.summoningpixeldungeon.levels.painters.SewerPainter;
 import com.trashboxbobylev.summoningpixeldungeon.levels.traps.AlarmTrap;
@@ -113,6 +114,11 @@ public class SewerLevel extends RegularLevel {
 			addItemToSpawn( new DewVial() );
 			Dungeon.LimitedDrops.DEW_VIAL.drop();
 		}
+
+        if (!Dungeon.LimitedDrops.STAFF.dropped() && Dungeon.depth > 1) {
+            addItemToSpawn( Generator.randomStaff() );
+            Dungeon.LimitedDrops.STAFF.drop();
+        }
 
 		Ghost.Quest.spawn( this );
 		

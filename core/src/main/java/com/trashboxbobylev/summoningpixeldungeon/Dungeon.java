@@ -104,6 +104,9 @@ public class Dungeon {
 		//doesn't use Generator, so we have to enforce one armband drop here
 		THIEVES_ARMBAND,
 
+        //guaranted staff
+        STAFF,
+
 		//containers
 		DEW_VIAL,
 		VELVET_POUCH,
