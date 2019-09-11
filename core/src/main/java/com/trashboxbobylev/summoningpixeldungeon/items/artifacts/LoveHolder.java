@@ -130,7 +130,7 @@ public class LoveHolder extends Artifact {
                         protected void onSelect(int index) {
                                 if (index == 0) str++;
                                 else str--;
-                                GLog.w(Messages.get(this, "ontune", str));
+                                GLog.w(Messages.get(LoveHolder.class, "ontune", str));
                                 hero.spendAndNext(Actor.TICK);
                         }
                     }
