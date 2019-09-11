@@ -110,13 +110,6 @@ public class ConjurerArmor extends ClassArmor {
         Sample.INSTANCE.play( Assets.SND_EVOKE );
     }
 
-    private ConjurerArmor upgradeRobe(Hero hero, Armor armor){
-
-
-
-        return this;
-    }
-
     @Override
 	public void doSpecial() {
 		

@@ -632,6 +632,14 @@ public class Generator {
 		}
 	}
 
+    public static final Category[] stfTiers = new Category[]{
+            Category.STF_T1,
+            Category.STF_T2,
+            Category.STF_T3,
+            Category.STF_T4,
+            Category.STF_T5
+    };
+
     public static Staff randomStaff(){
         return randomStaff(Dungeon.depth / 5);
     }
@@ -641,7 +649,7 @@ public class Generator {
         floorSet = (int)GameMath.gate(0, floorSet, floorSetTierProbs.length-1);
 
         try {
-            Category c = wepTiers[Random.chances(floorSetTierProbs[floorSet])];
+            Category c = stfTiers[Random.chances(floorSetTierProbs[floorSet])];
             Staff w = (Staff) c.classes[Random.chances(c.probs)].newInstance();
             w.random();
             return w;
