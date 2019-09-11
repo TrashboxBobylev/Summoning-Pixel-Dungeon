@@ -353,9 +353,11 @@ public class ItemSpriteSheet {
     private static final int STAFFS         =                               xy(1, 13);//15 free slots
     public static final int FROGGIT_STAFF     = STAFFS+0;
     public static final int GREY_RAT_STAFF = STAFFS+1;
+    public static final int GNOLL_HUNTER_STAFF = STAFFS+2;
     static {
         assignItemRect(FROGGIT_STAFF, 16, 16);
         assignItemRect(GREY_RAT_STAFF, 16, 16);
+        assignItemRect(GNOLL_HUNTER_STAFF, 16, 16);
     }
 
 

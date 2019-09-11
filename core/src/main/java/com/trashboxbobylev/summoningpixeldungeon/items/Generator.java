@@ -143,7 +143,10 @@ import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Sword;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.WarHammer;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Whip;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.WornShortsword;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.FroggitStaff;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.GnollHunterStaff;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.GreyRatStaff;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.HeavyBoomerang;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.Bolas;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.FishingSpear;
@@ -198,6 +201,13 @@ public class Generator {
 		MIS_T3  ( 0,    MissileWeapon.class ),
 		MIS_T4  ( 0,    MissileWeapon.class ),
 		MIS_T5  ( 0,    MissileWeapon.class ),
+
+        STAFFS ( 3,    Staff.class ),
+        STF_T1  ( 0,    Staff.class ),
+        STF_T2  ( 0,    Staff.class ),
+        STF_T3  ( 0,    Staff.class ),
+        STF_T4  ( 0,    Staff.class ),
+        STF_T5  ( 0,    Staff.class ),
 		
 		WAND	( 3,    Wand.class ),
 		RING	( 1,    Ring.class ),
@@ -211,7 +221,7 @@ public class Generator {
 		SCROLL	( 20,   Scroll.class ),
 		STONE   ( 2,    Runestone.class),
 		
-		GOLD	( 18,   Gold.class );
+		GOLD	( 14,   Gold.class );
 		
 		public Class<?>[] classes;
 		public float[] probs;
@@ -336,10 +346,9 @@ public class Generator {
 					HandAxe.class,
 					Spear.class,
 					Quarterstaff.class,
-					Dirk.class,
-                    GreyRatStaff.class
+					Dirk.class
 			};
-			WEP_T2.probs = new float[]{ 5, 5, 5, 4, 4, 4};
+			WEP_T2.probs = new float[]{ 5, 5, 5, 4, 4};
 			
 			WEP_T3.classes = new Class<?>[]{
 					Sword.class,
@@ -417,6 +426,33 @@ public class Generator {
 					ForceCube.class
 			};
 			MIS_T5.probs = new float[]{ 6, 5, 4 };
+
+            //see Generator.randomMissile
+            STAFFS.classes = new Class<?>[]{};
+            STAFFS.probs = new float[]{};
+
+            STF_T1.classes = new Class<?>[]{
+                    FroggitStaff.class,
+            };
+            STF_T1.probs = new float[]{ 1 };
+
+            STF_T2.classes = new Class<?>[]{
+                    GreyRatStaff.class,
+                    GnollHunterStaff.class
+            };
+            STF_T2.probs = new float[]{ 5, 5};
+
+            STF_T3.classes = new Class<?>[]{
+            };
+            STF_T3.probs = new float[]{ };
+
+            STF_T4.classes = new Class<?>[]{
+            };
+            STF_T4.probs = new float[]{ };
+
+            STF_T5.classes = new Class<?>[]{
+            };
+            STF_T5.probs = new float[]{  };
 			
 			FOOD.classes = new Class<?>[]{
 					Food.class,
@@ -493,6 +529,8 @@ public class Generator {
 				return randomWeapon();
 			case MISSILE:
 				return randomMissile();
+                case STAFFS:
+                    return randomStaff();
 			case ARTIFACT:
 				Item item = randomArtifact();
 				//if we're out of artifacts, return a ring instead.
@@ -593,6 +631,25 @@ public class Generator {
 			return null;
 		}
 	}
+
+    public static Staff randomStaff(){
+        return randomStaff(Dungeon.depth / 5);
+    }
+
+    public static Staff randomStaff(int floorSet) {
+
+        floorSet = (int)GameMath.gate(0, floorSet, floorSetTierProbs.length-1);
+
+        try {
+            Category c = wepTiers[Random.chances(floorSetTierProbs[floorSet])];
+            Staff w = (Staff) c.classes[Random.chances(c.probs)].newInstance();
+            w.random();
+            return w;
+        } catch (Exception e) {
+            ShatteredPixelDungeon.reportException(e);
+            return null;
+        }
+    }
 
 	//enforces uniqueness of artifacts throughout a run.
 	public static Artifact randomArtifact() {
