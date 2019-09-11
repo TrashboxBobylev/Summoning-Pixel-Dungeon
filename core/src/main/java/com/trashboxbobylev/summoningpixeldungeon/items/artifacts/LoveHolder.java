@@ -31,6 +31,8 @@ import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.ShatteredPixelDungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Barrier;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Invisibility;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
@@ -50,12 +52,14 @@ import com.trashboxbobylev.summoningpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+import com.watabou.utils.PathFinder;
 
 import java.util.ArrayList;
 
 public class LoveHolder extends Artifact {
 
     private int str;
+    private int soultype = -1;
     public int totalHealing = 0;
 
     private int[] healingTable = {
@@ -73,38 +77,61 @@ public class LoveHolder extends Artifact {
 	}
 
 	public static final String AC_PRICK = "PRICK";
+    public static final String AC_TUNE = "TUNE";
+    public static final String AC_SHIELD = "SHIELD";
+    public static final String AC_SPLASH = "SPLASH";
     public static final String HEALING = "healing";
+    public static final String STRENGTH = "str";
 
     @Override
     public void storeInBundle(Bundle bundle) {
         super.storeInBundle(bundle);
         bundle.put(HEALING, totalHealing);
+        bundle.put(STRENGTH, str);
     }
 
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		if (isEquipped( hero ) && !cursed)
-			actions.add(AC_PRICK);
+		if (isEquipped( hero ) && !cursed) {
+            actions.add(AC_PRICK);
+            actions.add(AC_TUNE);
+            if (level() >= 3) actions.add(AC_SHIELD);
+            if (level() >= 6) actions.add(AC_SPLASH);
+        }
 		return actions;
 	}
 
 
 
 	@Override
-	public void execute(Hero hero, String action ) {
+	public void execute(final Hero hero, String action ) {
 		super.execute(hero, action);
 
-		if (action.equals(AC_PRICK)){
+		if (action.equals(AC_PRICK) || action.equals(AC_SHIELD) || action.equals(AC_SPLASH)){
+		    int type = -1;
+		    switch (action){
+                case AC_PRICK:
+                    type = 0; break;
+                case AC_SHIELD:
+                    type = 1; break;
+                case AC_SPLASH:
+                    type = 2; break;
+            }
+		    prick(Dungeon.hero, type);
+		}
+        if (action.equals(AC_TUNE)){
             GameScene.show(
                     new WndOptions(Messages.titleCase(Messages.get(this, "name")),
                             Messages.get(this, "how_many"),
                             Messages.get(this, "bit"),
-                            Messages.get(this, "few"),
-                            Messages.get(this, "lot")) {
+                            Messages.get(this, "few")) {
                         @Override
                         protected void onSelect(int index) {
-                                prick(Dungeon.hero, index);
+                                if (index == 0) str++;
+                                else str--;
+                                GLog.w(Messages.get(this, "ontune", str));
+                                hero.spendAndNext(Actor.TICK);
                         }
                     }
             );
@@ -132,13 +159,13 @@ public class LoveHolder extends Artifact {
 		}
 	}
 
-	private void prick(Hero hero, int strength){
-        if (charge < getChargesFromStrength(strength)) {
+	private void prick(Hero hero, int type){
+        if (charge < str || (type == 2 && (charge < str * 2))) {
             GLog.i(Messages.get(LoveHolder.class, "not_enough"));
         } else {
             curUser = hero;
             curItem = this;
-            str = strength;
+            soultype = type;
             GLog.w(Messages.get(this, "onprick"));
             GameScene.selectCell(zapper);
         }
@@ -165,8 +192,9 @@ public class LoveHolder extends Artifact {
                 else
                     QuickSlotButton.target(Actor.findChar(cell));
 
-                if (charge >= getChargesFromStrength(str)) {
-                    charge -= getChargesFromStrength(str);
+                if (charge >= str) {
+                    charge -= str;
+                    updateQuickslot();
                     curUser.busy();
                     Invisibility.dispel();
                     MagicMissile.boltFromChar(curUser.sprite.parent,
@@ -183,22 +211,62 @@ public class LoveHolder extends Artifact {
 
                                         int healing = getHealingFromStrength(str);
 
-                                        //if we spend more that 1 soul, healing will be percentage
-                                        if (healing > 1){
-                                            healing = ch.HT * healing / 100;
-                                        }
-
                                         int wastedHealing = (ch.HP + healing) - ch.HT;
                                         if (wastedHealing > 0){
                                             healing -= wastedHealing;
                                             charge += wastedHealing / 2; //some of unnecessary soul will return
                                         }
 
-                                        ch.HP += healing;
+                                        if (soultype == 0) {
 
-                                        ch.sprite.emitter().burst(Speck.factory(Speck.STEAM), 5);
+                                            ch.HP += healing;
 
-                                        ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healing);
+                                            ch.sprite.emitter().burst(Speck.factory(Speck.STEAM), 5);
+
+                                            ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healing);
+                                        } else if (soultype == 1){
+                                            healing *= 1.6f;
+                                            Buff.affect(ch, Barrier.class).setShield(healing);
+                                            ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healing);
+                                        } else if (soultype == 2){
+                                            healing *= 2;
+                                            charge -= str;
+                                            //searching for neighbours
+                                            ArrayList<Integer> neighbours = new ArrayList<Integer>();
+
+                                            for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
+                                                int p = ch.pos + PathFinder.NEIGHBOURS8[i];
+                                                if (Actor.findChar( p ) instanceof Minion) {
+                                                    neighbours.add( p );
+                                                }
+                                            }
+
+                                            if (neighbours.size() == 0){
+                                                ch.HP += healing;
+
+                                                ch.sprite.emitter().burst(Speck.factory(Speck.STEAM), 10);
+
+                                                ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healing);
+                                            } else {
+                                                ArrayList<Minion> tempChar = new ArrayList<Minion>();
+                                                for (Integer pos : neighbours){
+                                                    tempChar.add((Minion) Actor.findChar(pos));
+                                                }
+                                                int healingForEveryMinion = healing / tempChar.size();
+                                                ch.HP += healingForEveryMinion;
+
+                                                ch.sprite.emitter().burst(Speck.factory(Speck.STEAM), 10);
+
+                                                ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healingForEveryMinion);
+                                                for (Minion minion : tempChar){
+                                                    minion.HP += healingForEveryMinion;
+
+                                                    minion.sprite.emitter().burst(Speck.factory(Speck.STEAM), 10);
+
+                                                    minion.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healingForEveryMinion);
+                                                }
+                                            }
+                                        }
 
                                         if (level() < 10){
                                             if (totalHealing < healingTable[level()]){
@@ -210,14 +278,9 @@ public class LoveHolder extends Artifact {
                                                     totalHealing = 0;
                                                 }
                                             }
-
                                         }
-                                        curUser.spendAndNext( 1f );
-
-
-                                    } else {
-                                        return;
                                     }
+                                    curUser.spendAndNext( 1f );
                                 }
                             });
                             Sample.INSTANCE.play( Assets.SND_ZAP );
@@ -235,15 +298,10 @@ public class LoveHolder extends Artifact {
     };
 
     public static int getHealingFromStrength(int str) {
-        switch (str){
-            case 0:
-                return 1;
-            case 1:
-                return 20;
-            case 2:
-                return 100;
+        if (str == 1) {
+            return 1;
         }
-        return 2345678;
+        return str * 2;
     }
 
     @Override
@@ -255,22 +313,11 @@ public class LoveHolder extends Artifact {
 		return super.upgrade();
 	}
 
-	public static int getChargesFromStrength(int str){
-	    switch (str){
-            case 0:
-                return 1;
-            case 1:
-                return 10;
-            case 2:
-                return 50;
-        }
-        return 1245141124;
-    }
-
-	@Override
+    @Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
         totalHealing = bundle.getInt(HEALING);
+        str = bundle.getInt(STRENGTH);
 		if (level() >= 7) image = ItemSpriteSheet.ARTIFACT_LOVE3;
 		else if (level() >= 3) image = ItemSpriteSheet.ARTIFACT_LOVE2;
 	}
@@ -283,12 +330,17 @@ public class LoveHolder extends Artifact {
 
 	@Override
 	public String desc() {
-		String desc = Messages.get(this, "desc", healingTable[level()] - totalHealing);
+		String desc = Messages.get(this, "desc", str, healingTable[level()] - totalHealing);
 
 		if (isEquipped (Dungeon.hero)){
 			desc += "\n\n";
 			if (cursed)
 				desc += Messages.get(this, "desc_cursed");
+			else if (level() >=2 && level() < 6){
+                desc += Messages.get(this, "desc_2");
+            } else if (level() >= 6){
+                desc += Messages.get(this, "desc_3");
+            }
 		}
 
 		return desc;

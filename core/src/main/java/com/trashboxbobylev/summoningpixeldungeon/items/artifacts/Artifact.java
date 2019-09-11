@@ -151,8 +151,8 @@ public class Artifact extends KindofMisc {
 		if (cooldown != 0)
 			return Messages.format( "%d", cooldown );
 
-		//display as percent
-		if (chargeCap == 100)
+		//display as percent (ignores LOVE holder)
+		if (chargeCap == 100 && !(this instanceof LoveHolder))
 			return Messages.format( "%d%%", charge );
 
 		//display as #/#
