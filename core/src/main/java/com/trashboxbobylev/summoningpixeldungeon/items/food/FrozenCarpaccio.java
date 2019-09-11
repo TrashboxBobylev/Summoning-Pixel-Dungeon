@@ -46,7 +46,7 @@ public class FrozenCarpaccio extends Food {
 
 	{
 		image = ItemSpriteSheet.CARPACCIO;
-		energy = Hunger.HUNGRY/2f;
+		energy = Hunger.HUNGRY/2f + 100*level();
 	}
 	
 	@Override
@@ -56,7 +56,7 @@ public class FrozenCarpaccio extends Food {
 	}
 	
 	public int price() {
-		return 10 * quantity;
+		return 10 * quantity * (level()+1);
 	}
 
 	public static void effect(Hero hero){
@@ -94,4 +94,10 @@ public class FrozenCarpaccio extends Food {
 		result.quantity = ingredient.quantity();
 		return result;
 	}
+
+	//hahahaha
+    @Override
+    public boolean isUpgradable() {
+        return true;
+    }
 }
