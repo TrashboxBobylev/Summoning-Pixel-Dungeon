@@ -28,6 +28,8 @@ import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Blob;
+import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.HoneyGas;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Healing;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Hunger;
@@ -35,6 +37,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Bee;
 import com.trashboxbobylev.summoningpixeldungeon.items.Honeypot;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfHealing;
+import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 
@@ -50,25 +53,25 @@ public class ElixirOfHoneyedHealing extends Elixir {
 		PotionOfHealing.cure(hero);
 		Buff.affect(hero, Hunger.class).satisfy(Hunger.STARVING/5f);
 	}
-	
-	@Override
-	public void shatter(int cell) {
-		if (Dungeon.level.heroFOV[cell]) {
-			Sample.INSTANCE.play( Assets.SND_SHATTER );
-			splash( cell );
-		}
-		
-		Char ch = Actor.findChar(cell);
-		if (ch != null){
-			Buff.affect( ch, Healing.class ).setHeal((int)(0.8f*ch.HT + 14), 0.25f, 0);
-			PotionOfHealing.cure(ch);
-			if (ch instanceof Bee && ch.alignment != curUser.alignment){
-				ch.alignment = Char.Alignment.ALLY;
-				((Bee)ch).setPotInfo(-1, null);
-				
-			}
-		}
-	}
+
+    @Override
+    public void shatter(int cell) {
+        if (Dungeon.level.heroFOV[cell]) {
+            Sample.INSTANCE.play( Assets.SND_SHATTER );
+            splash( cell );
+        }
+
+        GameScene.add( Blob.seed( cell, 200, HoneyGas.class ) );
+
+        Char ch = Actor.findChar(cell);
+        if (ch != null){
+            PotionOfHealing.cure(ch);
+            if (ch instanceof Bee && ch.alignment != curUser.alignment){
+                ch.alignment = Char.Alignment.ALLY;
+                ((Bee)ch).setPotInfo(-1, null);
+            }
+        }
+    }
 	
 	@Override
 	public int price() {

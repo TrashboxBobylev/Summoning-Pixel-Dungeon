@@ -71,6 +71,8 @@ public class Speck extends Image {
 	public static final int STORM       = 117;
 	public static final int INFERNO     = 118;
 	public static final int BLIZZARD    = 119;
+    public static final int HEALGAS = 120;
+    public static final int HONEY = 121;
 	
 	private static final int SIZE = 7;
 	
@@ -279,6 +281,13 @@ public class Speck extends Image {
 			angle = Random.Float( 360 );
 			lifespan = 1f;
 			break;
+
+        case HONEY:
+            hardlight(0xF1E30F);
+            angularSpeed = 30;
+            angle = Random.Float( 360 );
+            lifespan = Random.Float( 4f, 10f );
+            break;
 			
 		case JET:
 			speed.y = +32;
@@ -343,6 +352,12 @@ public class Speck extends Image {
 			angle = Random.Float( 360 );
 			lifespan = Random.Float( 1f, 3f );
 			break;
+
+        case HEALGAS:
+            angularSpeed = Random.Float( 300, 400 ) * (Random.Int(2) == 0 ? -1 : 1);
+            angle = Random.Float( 360 );
+            lifespan = Random.Float( 1f, 4f );
+            break;
 			
 		case SMOKE:
 			hardlight( 0x000000 );

@@ -24,7 +24,11 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.items.potions;
 
+import com.trashboxbobylev.summoningpixeldungeon.Assets;
+import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Blob;
+import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.HealGas;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Bleeding;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Cripple;
@@ -33,7 +37,9 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Poison;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Weakness;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
+import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
 
 public class PotionOfHealing extends Potion {
 
@@ -59,6 +65,19 @@ public class PotionOfHealing extends Potion {
 		Buff.detach( ch, Bleeding.class );
 		
 	}
+
+    @Override
+    public void shatter( int cell ) {
+
+        if (Dungeon.level.heroFOV[cell]) {
+            setKnown();
+
+            splash( cell );
+            Sample.INSTANCE.play( Assets.SND_SHATTER );
+        }
+
+        GameScene.add( Blob.seed( cell, 500, HealGas.class ) );
+    }
 
 	@Override
 	public int price() {
