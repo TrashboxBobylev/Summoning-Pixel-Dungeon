@@ -37,6 +37,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroClass;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Beam;
+import com.trashboxbobylev.summoningpixeldungeon.effects.SpellSprite;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.ConjurerArmor;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.Bag;
@@ -413,7 +414,12 @@ public class Staff extends MeleeWeapon {
                         Sample.INSTANCE.play( Assets.SND_ZAP );
                         Char ch = Actor.findChar(shot.collisionPos);
                         if (ch != null){
-                            ch.damage(0, this);
+                            if (ch instanceof Minion){
+                                ch.die( curUser );
+                                staff.partialCharge += 0.75f;
+                                SpellSprite.show(curUser, SpellSprite.CHARGE);
+                            }
+                            else ch.damage(0, this);
                         }
                         staff.wandUsed(true);
                     }
@@ -563,7 +569,11 @@ public class Staff extends MeleeWeapon {
         String info = desc();
 
         if (isIdentified()) {
-            info += "\n\n" + Messages.get(Staff.class, "stats_known", tier, augment.damageFactor(min()), augment.damageFactor(max()), STRReq(), minionMin(level()), minionMax(level()), hp(level()));
+            float robeBonus = 1f;
+            if (curUser.belongings.armor instanceof ConjurerArmor && curUser.belongings.armor.level() > 0){
+                robeBonus = 1f + curUser.belongings.armor.level()*0.1f;
+            }
+            info += "\n\n" + Messages.get(Staff.class, "stats_known", tier, augment.damageFactor(min()), augment.damageFactor(max()), STRReq(), minionMin(level()), minionMax(level()), (int)(hp(level()) * robeBonus));
             if (STRReq() > Dungeon.hero.STR()) {
                 info += " " + Messages.get(MeleeWeapon.class, "too_heavy");
             } else if (Dungeon.hero.STR() > STRReq()){
