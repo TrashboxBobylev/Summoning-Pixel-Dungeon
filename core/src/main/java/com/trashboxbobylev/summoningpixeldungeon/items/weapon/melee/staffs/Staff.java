@@ -246,7 +246,12 @@ public class Staff extends MeleeWeapon {
 
     public int minionMax(int lvl) {
         return  4*(tier+1) +    //reduced from 10 to 8
-                lvl*(tier);   //reduced from (tier+1) to tier
+                lvl*(tier+1);
+    }
+
+    @Override
+    public boolean isUpgradable() {
+        return level() < 3;
     }
 
     //only for cursed behavour

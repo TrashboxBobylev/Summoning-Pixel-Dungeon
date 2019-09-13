@@ -24,22 +24,19 @@
  *
  */
 
-package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs;
+package com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions;
 
-import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Froggit;
-import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.GrayRat;
-import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
+import com.trashboxbobylev.summoningpixeldungeon.sprites.FroggitSprite;
+import com.trashboxbobylev.summoningpixeldungeon.sprites.SheepTankSprite;
+import com.watabou.utils.Random;
 
-public class GreyRatStaff extends Staff {
+public class Sheep extends Minion{
     {
-        image = ItemSpriteSheet.GREY_RAT_STAFF;
-        minionType = GrayRat.class;
-        tier = 2;
+        spriteClass = SheepTankSprite.class;
     }
 
     @Override
-    public int minionMax(int lvl) {
-        return  13 +    //13 base
-                lvl*(tier-1);   //scaling lowered
+    public int drRoll() {
+        return Random.NormalIntRange(1, 6);
     }
 }

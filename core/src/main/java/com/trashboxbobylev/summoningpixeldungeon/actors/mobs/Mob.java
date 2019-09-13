@@ -239,6 +239,7 @@ public abstract class Mob extends Char {
 
 			HashSet<Char> enemies = new HashSet<>();
             boolean minionsAreHere = false;
+            Minion priority = null;
 
 			//if the mob is amoked...
 			if ( buff(Amok.class) != null) {
@@ -258,7 +259,13 @@ public abstract class Mob extends Char {
 						if (fieldOfView[Dungeon.hero.pos]) {
 							enemies.add(Dungeon.hero);
 						}
-					}
+					} else {
+					    int hp = 0;
+					    //prioritise minion with highest health
+					    for (Char min : enemies){
+					        if (min instanceof Minion && hp < min.HT) priority = (Minion) min;
+                        }
+                    }
 				}
 				
 			//if the mob is an ally...
@@ -311,7 +318,7 @@ public abstract class Mob extends Char {
 				for (Char curr : enemies){
 					if (closest == null
 							|| Dungeon.level.distance(pos, curr.pos) < Dungeon.level.distance(pos, closest.pos)
-							|| Dungeon.level.distance(pos, curr.pos) == Dungeon.level.distance(pos, closest.pos) && (curr == Dungeon.hero || (minionsAreHere && curr instanceof Minion))){
+							|| Dungeon.level.distance(pos, curr.pos) == Dungeon.level.distance(pos, closest.pos) && (curr == Dungeon.hero || (minionsAreHere && curr instanceof Minion) || (curr.equals(priority)))){
 						closest = curr;
 					}
 				}
@@ -633,7 +640,7 @@ public abstract class Mob extends Char {
 
 		if (cause instanceof Minion){
 		    LoveHolder.lul buff = Dungeon.hero.buff(LoveHolder.lul.class);
-		    int charge = buff.gainCharge(EXP*2);
+		    int charge = buff.gainCharge(EXP);
             if (charge == 0) sprite.showStatus(CharSprite.NEUTRAL, "+%d♥", EXP);
         }
 

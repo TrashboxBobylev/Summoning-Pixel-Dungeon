@@ -26,20 +26,25 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs;
 
-import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Froggit;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.GrayRat;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Skele;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 
-public class GreyRatStaff extends Staff {
+public class SkeletonStaff extends Staff {
     {
-        image = ItemSpriteSheet.GREY_RAT_STAFF;
-        minionType = GrayRat.class;
-        tier = 2;
+        image = ItemSpriteSheet.SKELETON_STAFF;
+        minionType = Skele.class;
+        tier = 3;
     }
 
     @Override
     public int minionMax(int lvl) {
-        return  13 +    //13 base
-                lvl*(tier-1);   //scaling lowered
+        return  7 +    //7, from 16
+                lvl*(tier);   //scaling lowered
+    }
+
+    @Override
+    public int hp(int lvl) {
+        return 8*tier + lvl*(tier+2); //24 hp and +5 for every tier
     }
 }

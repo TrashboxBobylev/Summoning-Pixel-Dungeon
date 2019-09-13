@@ -24,22 +24,32 @@
  *
  */
 
-package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs;
+package com.trashboxbobylev.summoningpixeldungeon.sprites;
 
-import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Froggit;
-import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.GrayRat;
-import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
+import com.trashboxbobylev.summoningpixeldungeon.Assets;
+import com.watabou.noosa.TextureFilm;
+import com.watabou.utils.Random;
 
-public class GreyRatStaff extends Staff {
-    {
-        image = ItemSpriteSheet.GREY_RAT_STAFF;
-        minionType = GrayRat.class;
-        tier = 2;
-    }
+public class SheepTankSprite extends MobSprite {
 
-    @Override
-    public int minionMax(int lvl) {
-        return  13 +    //13 base
-                lvl*(tier-1);   //scaling lowered
-    }
+	public SheepTankSprite() {
+		super();
+		
+		texture( Assets.SHEEP );
+		
+		TextureFilm frames = new TextureFilm( texture, 16, 15 );
+		
+		idle = new Animation( 8, true );
+		idle.frames( frames, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 0 );
+		
+		run = idle.clone();
+
+        attack = new Animation( 10, true );
+        attack.frames( frames, 1, 2, 3);
+		
+		die = new Animation( 20, false );
+		die.frames( frames, 0 );
+		
+		play( idle );
+	}
 }

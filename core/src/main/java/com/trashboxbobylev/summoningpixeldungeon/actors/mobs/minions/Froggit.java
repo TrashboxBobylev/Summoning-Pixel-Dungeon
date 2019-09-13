@@ -39,11 +39,6 @@ public class Froggit extends Minion {
 	}
 	
 	@Override
-	public int attackSkill( Char target ) {
-		return 8;
-	}
-	
-	@Override
 	public int drRoll() {
 		return Random.NormalIntRange(0, 1);
 	}
