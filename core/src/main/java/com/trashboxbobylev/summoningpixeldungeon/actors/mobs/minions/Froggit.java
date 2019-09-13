@@ -36,11 +36,6 @@ public class Froggit extends Minion {
 
 	{
 		spriteClass = FroggitSprite.class;
-		
-		HP = HT = 10;
-		defenseSkill = 2;
-		
-		maxLvl = 5;
 	}
 	
 	@Override
