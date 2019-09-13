@@ -124,6 +124,8 @@ public class Speck extends Image {
 		case SMOKE:
 		case BLIZZARD:
 		case INFERNO:
+        case HEALGAS:
+        case HONEY:
 			frame( film.get( STEAM ) );
 			break;
 		case CALM:
