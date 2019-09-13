@@ -592,6 +592,8 @@ public class Staff extends MeleeWeapon {
         String statsInfo = statsInfo();
         if (!statsInfo.equals("")) info += "\n\n" + statsInfo;
 
+        if (level() >= 3) info += "\n\n" + Messages.get(Staff.class, "upgrade_info");
+
         switch (augment) {
             case SPEED:
                 info += "\n\n" + Messages.get(Weapon.class, "faster");

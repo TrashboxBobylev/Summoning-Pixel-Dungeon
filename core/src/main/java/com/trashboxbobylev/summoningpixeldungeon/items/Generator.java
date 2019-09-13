@@ -143,10 +143,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Sword;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.WarHammer;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Whip;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.WornShortsword;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.FroggitStaff;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.GnollHunterStaff;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.GreyRatStaff;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.Staff;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.HeavyBoomerang;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.Bolas;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.FishingSpear;
@@ -438,13 +435,15 @@ public class Generator {
 
             STF_T2.classes = new Class<?>[]{
                     GreyRatStaff.class,
-                    GnollHunterStaff.class
+                    GnollHunterStaff.class,
+                    SheepStaff.class
             };
-            STF_T2.probs = new float[]{ 5, 5};
+            STF_T2.probs = new float[]{ 6, 4, 5};
 
             STF_T3.classes = new Class<?>[]{
+                    SkeletonStaff.class
             };
-            STF_T3.probs = new float[]{ };
+            STF_T3.probs = new float[]{ 5};
 
             STF_T4.classes = new Class<?>[]{
             };
