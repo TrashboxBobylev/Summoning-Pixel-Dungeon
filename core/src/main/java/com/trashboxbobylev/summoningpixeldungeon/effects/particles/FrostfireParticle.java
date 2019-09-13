@@ -26,7 +26,21 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.effects.particles;
 
+import com.watabou.noosa.particles.Emitter;
+
 public class FrostfireParticle extends FlameParticle {
+
+    public static final Emitter.Factory FACTORY = new Emitter.Factory() {
+        @Override
+        public void emit( Emitter emitter, int index, float x, float y ) {
+            ((FrostfireParticle)emitter.recycle( FrostfireParticle.class )).reset( x, y );
+        }
+        @Override
+        public boolean lightMode() {
+            return true;
+        };
+    };
+
     public FrostfireParticle() {
         super();
 
