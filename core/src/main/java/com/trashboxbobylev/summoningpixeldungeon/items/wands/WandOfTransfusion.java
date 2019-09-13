@@ -133,7 +133,7 @@ public class WandOfTransfusion extends Wand {
 
 		if (!curUser.isAlive()){
 			Dungeon.fail( getClass() );
-			GLog.n( Messages.get(this, "ondeath") );
+			GLog.negative( Messages.get(this, "ondeath") );
 		}
 	}
 
@@ -150,7 +150,7 @@ public class WandOfTransfusion extends Wand {
 		if (Random.Int( level() + 10 ) >= 9){
 			//grants a free use of the staff
 			freeCharge = true;
-			GLog.p( Messages.get(this, "charged") );
+			GLog.positive( Messages.get(this, "charged") );
 			attacker.sprite.emitter().burst(BloodParticle.BURST, 20);
 		}
 	}

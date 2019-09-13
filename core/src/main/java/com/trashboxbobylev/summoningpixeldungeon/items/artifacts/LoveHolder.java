@@ -28,7 +28,6 @@ package com.trashboxbobylev.summoningpixeldungeon.items.artifacts;
 
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
-import com.trashboxbobylev.summoningpixeldungeon.ShatteredPixelDungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Barrier;
@@ -130,7 +129,7 @@ public class LoveHolder extends Artifact {
                         protected void onSelect(int index) {
                                 if (index == 0) str++;
                                 else str--;
-                                GLog.w(Messages.get(LoveHolder.class, "ontune", str));
+                                GLog.warning(Messages.get(LoveHolder.class, "ontune", str));
                                 hero.spendAndNext(Actor.TICK);
                         }
                     }
@@ -166,7 +165,7 @@ public class LoveHolder extends Artifact {
             curUser = hero;
             curItem = this;
             soultype = type;
-            GLog.w(Messages.get(this, "onprick"));
+            GLog.warning(Messages.get(this, "onprick"));
             GameScene.selectCell(zapper);
         }
         updateQuickslot();
@@ -274,7 +273,7 @@ public class LoveHolder extends Artifact {
                                                 if (totalHealing >= healingTable[level()]){
                                                     upgrade();
                                                     chargeCap = Math.min(50 + level()*50, 500);
-                                                    GLog.h(Messages.get(LoveHolder.class, "upgrade"));
+                                                    GLog.highlight(Messages.get(LoveHolder.class, "upgrade"));
                                                     totalHealing = 0;
                                                 }
                                             }
@@ -355,7 +354,7 @@ public class LoveHolder extends Artifact {
                 if (charge >= chargeCap){
                     int overcharge = chargeCap - charge;
                     charge = chargeCap;
-                    GLog.p( Messages.get(LoveHolder.class, "full_charge") );
+                    GLog.positive( Messages.get(LoveHolder.class, "full_charge") );
                     updateQuickslot();
                     return overcharge;
                 }

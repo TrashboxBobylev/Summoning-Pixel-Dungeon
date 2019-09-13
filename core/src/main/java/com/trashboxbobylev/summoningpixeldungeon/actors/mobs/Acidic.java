@@ -47,7 +47,7 @@ public class Acidic extends Scorpio {
 			enemy.damage( dmg, this );
 			if (!enemy.isAlive() && enemy == Dungeon.hero) {
 				Dungeon.fail(getClass());
-				GLog.n(Messages.capitalize(Messages.get(Char.class, "kill", name)));
+				GLog.negative(Messages.capitalize(Messages.get(Char.class, "kill", name)));
 			}
 		}
 		

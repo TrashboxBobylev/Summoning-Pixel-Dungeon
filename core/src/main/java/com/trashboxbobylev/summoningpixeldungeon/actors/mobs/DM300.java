@@ -102,7 +102,7 @@ public class DM300 extends Mob {
 			sprite.emitter().burst( ElmoParticle.FACTORY, 5 );
 			
 			if (Dungeon.level.heroFOV[step] && Dungeon.hero.isAlive()) {
-				GLog.n( Messages.get(this, "repair") );
+				GLog.negative( Messages.get(this, "repair") );
 			}
 		}
 		
@@ -177,7 +177,7 @@ public class DM300 extends Mob {
 			yell(Messages.get(this, "notice"));
 			for (Char ch : Actor.chars()){
 				if (ch instanceof DriedRose.GhostHero){
-					GLog.n("\n");
+					GLog.negative("\n");
 					((DriedRose.GhostHero) ch).sayBoss();
 				}
 			}

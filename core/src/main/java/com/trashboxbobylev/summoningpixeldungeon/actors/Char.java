@@ -29,35 +29,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Blob;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Electricity;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.ToxicGas;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Adrenaline;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.ArcaneArmor;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Bleeding;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Bless;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Burning;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Charm;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Chill;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Corrosion;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Corruption;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Cripple;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Doom;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.EarthImbue;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.FireImbue;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Frost;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.FrostImbue;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Haste;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Hunger;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.MagicalSleep;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Ooze;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Paralysis;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Poison;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Preparation;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.ShieldBuff;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Slow;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Speed;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Stamina;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Terror;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Vertigo;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroSubClass;
 import com.trashboxbobylev.summoningpixeldungeon.items.BrokenSeal;
@@ -286,7 +258,7 @@ public abstract class Char extends Actor {
 					}
 
 					Dungeon.fail( getClass() );
-					GLog.n( Messages.capitalize(Messages.get(Char.class, "kill", name)) );
+					GLog.negative( Messages.capitalize(Messages.get(Char.class, "kill", name)) );
 					
 				} else if (this == Dungeon.hero) {
 					GLog.i( Messages.capitalize(Messages.get(Char.class, "defeat", enemy.name)) );
@@ -457,7 +429,9 @@ public abstract class Char extends Actor {
 			//slowed and chilled do not stack
 		} else if (buff( Chill.class ) != null) {
 			timeScale *= buff( Chill.class ).speedFactor();
-		}
+		} else if (buff(FrostBurn.class) != null){
+            timeScale *= buff( FrostBurn.class ).speedFactor();
+        }
 		if (buff( Speed.class ) != null) {
 			timeScale *= 2.0f;
 		}

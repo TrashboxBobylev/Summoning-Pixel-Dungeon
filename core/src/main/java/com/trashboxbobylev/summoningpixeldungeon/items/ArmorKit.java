@@ -91,7 +91,7 @@ public class ArmorKit extends Item {
 		curUser.spend( TIME_TO_UPGRADE );
 		curUser.busy();
 		
-		GLog.w( Messages.get(this, "upgraded", armor.name()) );
+		GLog.warning( Messages.get(this, "upgraded", armor.name()) );
 		
 		ClassArmor classArmor = ClassArmor.upgrade( curUser, armor );
 		if (curUser.belongings.armor == armor) {

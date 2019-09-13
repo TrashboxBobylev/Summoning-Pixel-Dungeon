@@ -58,12 +58,12 @@ public class WandOfWarding extends Wand {
 		Char ch = Actor.findChar(target);
 		if (ch instanceof Ward){
 			if (!wardAvailable && ((Ward) ch).tier <= 3){
-				GLog.w( Messages.get(this, "no_more_wards"));
+				GLog.warning( Messages.get(this, "no_more_wards"));
 				return false;
 			}
 		} else {
 			if ((currentWardEnergy + 2) > maxWardEnergy){
-				GLog.w( Messages.get(this, "no_more_wards"));
+				GLog.warning( Messages.get(this, "no_more_wards"));
 				return false;
 			}
 		}
@@ -76,7 +76,7 @@ public class WandOfWarding extends Wand {
 		
 		Char ch = Actor.findChar(bolt.collisionPos);
 		if (!curUser.fieldOfView[bolt.collisionPos] || !Dungeon.level.passable[bolt.collisionPos]){
-			GLog.w( Messages.get(this, "bad_location"));
+			GLog.warning( Messages.get(this, "bad_location"));
 			
 		} else if (ch != null){
 			if (ch instanceof Ward){
@@ -87,7 +87,7 @@ public class WandOfWarding extends Wand {
 				}
 				ch.sprite.emitter().burst(MagicMissile.WardParticle.UP, ((Ward) ch).tier);
 			} else {
-				GLog.w( Messages.get(this, "bad_location"));
+				GLog.warning( Messages.get(this, "bad_location"));
 			}
 		} else if (canPlaceWard(bolt.collisionPos)){
 			Ward ward = new Ward();
@@ -97,7 +97,7 @@ public class WandOfWarding extends Wand {
 			Dungeon.level.press(ward.pos, ward);
 			ward.sprite.emitter().burst(MagicMissile.WardParticle.UP, ward.tier);
 		} else {
-			GLog.w( Messages.get(this, "bad_location"));
+			GLog.warning( Messages.get(this, "bad_location"));
 		}
 	}
 

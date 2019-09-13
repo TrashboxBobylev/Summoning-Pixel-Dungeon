@@ -90,7 +90,7 @@ public class EtherealChains extends Artifact {
 				QuickSlotButton.cancel();
 
 			} else if (cursed) {
-				GLog.w( Messages.get(this, "cursed") );
+				GLog.warning( Messages.get(this, "cursed") );
 				QuickSlotButton.cancel();
 
 			} else {
@@ -109,7 +109,7 @@ public class EtherealChains extends Artifact {
 				//chains cannot be used to go where it is impossible to walk to
 				PathFinder.buildDistanceMap(target, BArray.or(Dungeon.level.passable, Dungeon.level.avoid, null));
 				if (PathFinder.distance[curUser.pos] == Integer.MAX_VALUE){
-					GLog.w( Messages.get(EtherealChains.class, "cant_reach") );
+					GLog.warning( Messages.get(EtherealChains.class, "cant_reach") );
 					return;
 				}
 				
@@ -135,7 +135,7 @@ public class EtherealChains extends Artifact {
 	private void chainEnemy( Ballistica chain, final Hero hero, final Char enemy ){
 		
 		if (enemy.properties().contains(Char.Property.IMMOVABLE)) {
-			GLog.w( Messages.get(this, "cant_pull") );
+			GLog.warning( Messages.get(this, "cant_pull") );
 			return;
 		}
 		
@@ -157,7 +157,7 @@ public class EtherealChains extends Artifact {
 		
 		int chargeUse = Dungeon.level.distance(enemy.pos, pulledPos);
 		if (chargeUse > charge) {
-			GLog.w( Messages.get(this, "no_charge") );
+			GLog.warning( Messages.get(this, "no_charge") );
 			return;
 		} else {
 			charge -= chargeUse;
@@ -206,7 +206,7 @@ public class EtherealChains extends Artifact {
 		
 		int chargeUse = Dungeon.level.distance(hero.pos, newHeroPos);
 		if (chargeUse > charge){
-			GLog.w( Messages.get(EtherealChains.class, "no_charge") );
+			GLog.warning( Messages.get(EtherealChains.class, "no_charge") );
 			return;
 		} else {
 			charge -= chargeUse;
@@ -298,7 +298,7 @@ public class EtherealChains extends Artifact {
 
 			if (exp > 100+level()*50 && level() < levelCap){
 				exp -= 100+level()*50;
-				GLog.p( Messages.get(this, "levelup") );
+				GLog.positive( Messages.get(this, "levelup") );
 				upgrade();
 			}
 

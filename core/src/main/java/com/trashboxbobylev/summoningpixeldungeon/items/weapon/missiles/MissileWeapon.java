@@ -244,16 +244,16 @@ abstract public class MissileWeapon extends Weapon {
 			} else {
 				parent.durability -= parent.durabilityPerUse();
 				if (parent.durability > 0 && parent.durability <= parent.durabilityPerUse()){
-					if (level() <= 0)GLog.w(Messages.get(this, "about_to_break"));
-					else             GLog.n(Messages.get(this, "about_to_break"));
+					if (level() <= 0)GLog.warning(Messages.get(this, "about_to_break"));
+					else             GLog.negative(Messages.get(this, "about_to_break"));
 				}
 			}
 			parent = null;
 		} else {
 			durability -= durabilityPerUse();
 			if (durability > 0 && durability <= durabilityPerUse()){
-				if (level() <= 0)GLog.w(Messages.get(this, "about_to_break"));
-				else             GLog.n(Messages.get(this, "about_to_break"));
+				if (level() <= 0)GLog.warning(Messages.get(this, "about_to_break"));
+				else             GLog.negative(Messages.get(this, "about_to_break"));
 			}
 		}
 	}

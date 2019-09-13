@@ -1,25 +1,27 @@
 /*
- * Pixel Dungeon
- * Copyright (C) 2012-2015 Oleg Dolya
  *
- * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ *  * Pixel Dungeon
+ *  * Copyright (C) 2012-2015 Oleg Dolya
+ *  *
+ *  * Shattered Pixel Dungeon
+ *  * Copyright (C) 2014-2019 Evan Debenham
+ *  *
+ *  * Summoning Pixel Dungeon
+ *  * Copyright (C) 2019-2020 TrashboxBobylev
+ *  *
+ *  * This program is free software: you can redistribute it and/or modify
+ *  * it under the terms of the GNU General Public License as published by
+ *  * the Free Software Foundation, either version 3 of the License, or
+ *  * (at your option) any later version.
+ *  *
+ *  * This program is distributed in the hope that it will be useful,
+ *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  * GNU General Public License for more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License
+ *  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
- * Summoning Pixel Dungeon
- * Copyright (C) 2019-2020 TrashboxBobylev
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
 package com.trashboxbobylev.summoningpixeldungeon.actors.buffs;
@@ -28,13 +30,14 @@ import com.trashboxbobylev.summoningpixeldungeon.Badges;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Blob;
-import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Fire;
+import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.FrostFire;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Thief;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.ElmoParticle;
 import com.trashboxbobylev.summoningpixeldungeon.items.Heap;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.food.ChargrilledMeat;
+import com.trashboxbobylev.summoningpixeldungeon.items.food.FrozenCarpaccio;
 import com.trashboxbobylev.summoningpixeldungeon.items.food.MysteryMeat;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.Scroll;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfUpgrade;
@@ -46,9 +49,10 @@ import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class Burning extends Buff implements Hero.Doom {
+public class FrostBurn extends Buff implements Hero.Doom {
 	
 	private static final float DURATION = 8f;
 	
@@ -84,8 +88,7 @@ public class Burning extends Buff implements Hero.Doom {
 		
 		if (target.isAlive() && !target.isImmune(getClass())) {
 			
-			int damage = Random.NormalIntRange( 1, 3 + Dungeon.depth/4 );
-			Buff.detach( target, Chill.class);
+			int damage = Random.NormalIntRange( 1, 2 + Dungeon.depth/4 );
 
 			if (target instanceof Hero) {
 				
@@ -111,7 +114,7 @@ public class Burning extends Buff implements Hero.Doom {
 						Item toBurn = Random.element(burnable).detach(hero.belongings.backpack);
 						GLog.warning( Messages.get(this, "burnsup", Messages.capitalize(toBurn.toString())) );
 						if (toBurn instanceof MysteryMeat){
-							ChargrilledMeat steak = new ChargrilledMeat();
+							FrozenCarpaccio steak = new FrozenCarpaccio();
 							if (!steak.collect( hero.belongings.backpack )) {
 								Dungeon.level.drop( steak, hero.pos ).sprite.drop();
 							}
@@ -144,21 +147,25 @@ public class Burning extends Buff implements Hero.Doom {
 			detach();
 		}
 		
-		if (Dungeon.level.flamable[target.pos] && Blob.volumeAt(target.pos, Fire.class) == 0) {
-			GameScene.add( Blob.seed( target.pos, 4, Fire.class ) );
+		if (Dungeon.level.flamable[target.pos] && Blob.volumeAt(target.pos, FrostFire.class) == 0) {
+			GameScene.add( Blob.seed( target.pos, 4, FrostFire.class ) );
 		}
 		
 		spend( TICK );
 		left -= TICK;
 		
-		if (left <= 0 ||
-			(Dungeon.level.water[target.pos] && !target.flying)) {
+		if (left <= 0) {
 			
 			detach();
 		}
 		
 		return true;
 	}
+
+    //reduces speed by 10% for every turn remaining, capping at 50%
+    public float speedFactor(){
+        return Math.max(0.5f, 1 - left*0.1f);
+    }
 	
 	public void reignite( Char ch ) {
 		reignite( ch, DURATION );
@@ -170,13 +177,20 @@ public class Burning extends Buff implements Hero.Doom {
 	
 	@Override
 	public int icon() {
-		return BuffIndicator.FIRE;
+		return BuffIndicator.FROSTBURN;
 	}
 
 	@Override
 	public void fx(boolean on) {
-		if (on) target.sprite.add(CharSprite.State.BURNING);
-		else target.sprite.remove(CharSprite.State.BURNING);
+		if (on) {
+            target.sprite.add(CharSprite.State.CHILLED);
+		    target.sprite.add(CharSprite.State.BURNING);
+		}
+
+		else {
+		    target.sprite.remove(CharSprite.State.BURNING);
+            target.sprite.remove(CharSprite.State.CHILLED);
+		}
 	}
 
 	@Override
@@ -189,10 +203,10 @@ public class Burning extends Buff implements Hero.Doom {
 		return Messages.get(this, "name");
 	}
 
-	@Override
-	public String desc() {
-		return Messages.get(this, "desc", dispTurns(left));
-	}
+    @Override
+    public String desc() {
+        return Messages.get(this, "desc", dispTurns(left+1f), new DecimalFormat("#.##").format((1f-speedFactor())*100f));
+    }
 
 	@Override
 	public void onDeath() {

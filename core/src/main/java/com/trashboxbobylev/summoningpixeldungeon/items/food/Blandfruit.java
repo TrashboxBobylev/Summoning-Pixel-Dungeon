@@ -89,7 +89,7 @@ public class Blandfruit extends Food {
 
 		if (action.equals( AC_EAT ) && potionAttrib == null) {
 
-			GLog.w( Messages.get(this, "raw"));
+			GLog.warning( Messages.get(this, "raw"));
 			return;
 
 		}

@@ -86,7 +86,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 			ActionIndicator.setAction( this );
 			Badges.validateMasteryCombo( count );
 
-			GLog.p( Messages.get(this, "combo", count) );
+			GLog.positive( Messages.get(this, "combo", count) );
 			
 		}
 
@@ -190,7 +190,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 					|| !Dungeon.level.heroFOV[cell]
 					|| !((Hero)target).canAttack(enemy)
 					|| target.isCharmedBy( enemy )){
-				GLog.w( Messages.get(Combo.class, "bad_target") );
+				GLog.warning( Messages.get(Combo.class, "bad_target") );
 			} else {
 				target.sprite.attack(cell, new Callback() {
 					@Override

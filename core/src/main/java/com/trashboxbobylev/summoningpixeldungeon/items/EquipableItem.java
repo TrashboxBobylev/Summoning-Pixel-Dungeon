@@ -104,7 +104,7 @@ public abstract class EquipableItem extends Item {
 	public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
 
 		if (cursed && hero.buff(MagicImmune.class) == null) {
-			GLog.w(Messages.get(EquipableItem.class, "unequip_cursed"));
+			GLog.warning(Messages.get(EquipableItem.class, "unequip_cursed"));
 			return false;
 		}
 

@@ -118,7 +118,7 @@ public class CursingTrap extends Trap {
 		}
 
 		EquipableItem.equipCursed(hero);
-		GLog.n( Messages.get(CursingTrap.class, "curse") );
+		GLog.negative( Messages.get(CursingTrap.class, "curse") );
 	}
 
 	private static void curse(Item item){

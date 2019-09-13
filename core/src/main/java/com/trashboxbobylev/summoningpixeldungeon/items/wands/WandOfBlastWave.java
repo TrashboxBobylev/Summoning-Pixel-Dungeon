@@ -90,7 +90,7 @@ public class WandOfBlastWave extends DamageWand {
 					throwChar(ch, trajectory, strength);
 				} else if (ch == Dungeon.hero){
 					Dungeon.fail( getClass() );
-					GLog.n( Messages.get( this, "ondeath") );
+					GLog.negative( Messages.get( this, "ondeath") );
 				}
 			}
 		}

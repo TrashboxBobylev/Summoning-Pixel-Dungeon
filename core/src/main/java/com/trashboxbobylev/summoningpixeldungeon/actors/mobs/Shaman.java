@@ -111,7 +111,7 @@ public class Shaman extends Mob implements Callback {
 					
 					if (!enemy.isAlive()) {
 						Dungeon.fail( getClass() );
-						GLog.n( Messages.get(this, "zap_kill") );
+						GLog.negative( Messages.get(this, "zap_kill") );
 					}
 				}
 			} else {

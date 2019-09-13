@@ -145,10 +145,10 @@ public class StoneOfIntuition extends InventoryStone {
 					useAnimation();
 					if (item.getClass() == curGuess){
 						item.identify();
-						GLog.p( Messages.get(WndGuess.class, "correct") );
+						GLog.positive( Messages.get(WndGuess.class, "correct") );
 						curUser.sprite.parent.add( new Identification( curUser.sprite.center().offset( 0, -16 ) ) );
 					} else {
-						GLog.n( Messages.get(WndGuess.class, "incorrect") );
+						GLog.negative( Messages.get(WndGuess.class, "incorrect") );
 					}
 					curGuess = null;
 					hide();

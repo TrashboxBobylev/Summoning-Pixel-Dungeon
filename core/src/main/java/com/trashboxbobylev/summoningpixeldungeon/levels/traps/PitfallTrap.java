@@ -46,7 +46,7 @@ public class PitfallTrap extends Trap {
 	public void activate() {
 		
 		if( Dungeon.bossLevel() || Dungeon.depth > 25){
-			GLog.w(Messages.get(this, "no_pit"));
+			GLog.warning(Messages.get(this, "no_pit"));
 			return;
 		}
 		

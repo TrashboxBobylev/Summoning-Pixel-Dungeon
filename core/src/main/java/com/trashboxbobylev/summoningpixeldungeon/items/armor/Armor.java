@@ -202,7 +202,7 @@ public class Armor extends EquipableItem {
 			cursedKnown = true;
 			if (cursed) {
 				equipCursed( hero );
-				GLog.n( Messages.get(Armor.class, "equip_cursed") );
+				GLog.negative( Messages.get(Armor.class, "equip_cursed") );
 			}
 			
 			((HeroSprite)hero.sprite).updateArmor();
@@ -390,7 +390,7 @@ public class Armor extends EquipableItem {
 			usesLeftToID--;
 			if (usesLeftToID <= 0) {
 				identify();
-				GLog.p( Messages.get(Armor.class, "identify") );
+				GLog.positive( Messages.get(Armor.class, "identify") );
 				Badges.validateItemLevelAquired( this );
 			}
 		}

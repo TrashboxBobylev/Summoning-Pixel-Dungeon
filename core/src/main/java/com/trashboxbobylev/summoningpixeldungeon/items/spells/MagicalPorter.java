@@ -45,7 +45,7 @@ public class MagicalPorter extends InventorySpell {
 	@Override
 	protected void onCast(Hero hero) {
 		if (Dungeon.depth >= 25){
-			GLog.w(Messages.get(this, "nowhere"));
+			GLog.warning(Messages.get(this, "nowhere"));
 		} else {
 			super.onCast(hero);
 		}

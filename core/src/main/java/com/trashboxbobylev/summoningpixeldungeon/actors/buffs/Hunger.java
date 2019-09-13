@@ -88,7 +88,7 @@ public class Hunger extends Buff implements Hero.Doom {
 				boolean statusUpdated = false;
 				if (newLevel >= STARVING) {
 
-					GLog.n( Messages.get(this, "onstarving") );
+					GLog.negative( Messages.get(this, "onstarving") );
 					hero.resting = false;
 					hero.damage( 1, this );
 					statusUpdated = true;
@@ -97,7 +97,7 @@ public class Hunger extends Buff implements Hero.Doom {
 
 				} else if (newLevel >= HUNGRY && level < HUNGRY) {
 
-					GLog.w( Messages.get(this, "onhungry") );
+					GLog.warning( Messages.get(this, "onhungry") );
 					statusUpdated = true;
 
 				}
@@ -125,7 +125,7 @@ public class Hunger extends Buff implements Hero.Doom {
 		Artifact.ArtifactBuff buff = target.buff( HornOfPlenty.hornRecharge.class );
 		if (buff != null && buff.isCursed()){
 			energy *= 0.67f;
-			GLog.n( Messages.get(this, "cursedhorn") );
+			GLog.negative( Messages.get(this, "cursedhorn") );
 		}
 
 		reduceHunger( energy );
@@ -194,6 +194,6 @@ public class Hunger extends Buff implements Hero.Doom {
 		Badges.validateDeathFromHunger();
 
 		Dungeon.fail( getClass() );
-		GLog.n( Messages.get(this, "ondeath") );
+		GLog.negative( Messages.get(this, "ondeath") );
 	}
 }

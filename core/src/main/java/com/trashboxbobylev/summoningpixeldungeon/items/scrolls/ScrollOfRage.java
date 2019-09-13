@@ -64,7 +64,7 @@ public class ScrollOfRage extends Scroll {
 			}
 		}
 
-		GLog.w( Messages.get(this, "roar") );
+		GLog.warning( Messages.get(this, "roar") );
 		setKnown();
 		
 		curUser.sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );

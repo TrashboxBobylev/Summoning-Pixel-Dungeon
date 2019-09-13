@@ -117,14 +117,14 @@ public abstract class Wand extends Item {
 	public boolean tryToZap( Hero owner, int target ){
 
 		if (owner.buff(MagicImmune.class) != null){
-			GLog.w( Messages.get(this, "no_magic") );
+			GLog.warning( Messages.get(this, "no_magic") );
 			return false;
 		}
 
 		if ( curCharges >= (cursed ? 1 : chargesPerCast())){
 			return true;
 		} else {
-			GLog.w(Messages.get(this, "fizzles"));
+			GLog.warning(Messages.get(this, "fizzles"));
 			return false;
 		}
 	}
@@ -315,7 +315,7 @@ public abstract class Wand extends Item {
 			usesLeftToID--;
 			if (usesLeftToID <= 0) {
 				identify();
-				GLog.p( Messages.get(Wand.class, "identify") );
+				GLog.positive( Messages.get(Wand.class, "identify") );
 				Badges.validateItemLevelAquired( this );
 			}
 		}
@@ -450,7 +450,7 @@ public abstract class Wand extends Item {
 					
 					if (curWand.cursed){
 						if (!curWand.cursedKnown){
-							GLog.n(Messages.get(Wand.class, "curse_discover", curWand.name()));
+							GLog.negative(Messages.get(Wand.class, "curse_discover", curWand.name()));
 						}
 						CursedWand.cursedZap(curWand,
 								curUser,

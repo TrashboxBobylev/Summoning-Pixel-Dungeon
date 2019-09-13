@@ -142,7 +142,7 @@ public class Thief extends Mob {
 
 		if (item != null && !item.unique && item.level() < 1 ) {
 
-			GLog.w( Messages.get(Thief.class, "stole", item.name()) );
+			GLog.warning( Messages.get(Thief.class, "stole", item.name()) );
 			if (!item.stackable) {
 				Dungeon.quickslot.convertToPlaceholder(item);
 			}
@@ -219,7 +219,7 @@ public class Thief extends Mob {
 
 					}
 
-					if (item != null) GLog.n( Messages.get(Thief.class, "escapes", item.name()));
+					if (item != null) GLog.negative( Messages.get(Thief.class, "escapes", item.name()));
 					item = null;
 					state = WANDERING;
 				} else {

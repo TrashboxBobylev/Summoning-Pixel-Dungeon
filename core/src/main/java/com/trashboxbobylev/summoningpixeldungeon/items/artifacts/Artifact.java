@@ -64,7 +64,7 @@ public class Artifact extends KindofMisc {
 		if ((hero.belongings.misc1 != null && hero.belongings.misc1.getClass() == this.getClass())
 				|| (hero.belongings.misc2 != null && hero.belongings.misc2.getClass() == this.getClass())){
 
-			GLog.w( Messages.get(Artifact.class, "cannot_wear_two") );
+			GLog.warning( Messages.get(Artifact.class, "cannot_wear_two") );
 			return false;
 
 		} else {

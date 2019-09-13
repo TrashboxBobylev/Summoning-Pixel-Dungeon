@@ -389,13 +389,13 @@ public class TimekeepersHourglass extends Artifact {
 				hourglass.upgrade();
 				Sample.INSTANCE.play( Assets.SND_DEWDROP );
 				if (hourglass.level() == hourglass.levelCap)
-					GLog.p( Messages.get(this, "maxlevel") );
+					GLog.positive( Messages.get(this, "maxlevel") );
 				else
 					GLog.i( Messages.get(this, "levelup") );
 				hero.spendAndNext(TIME_TO_PICK_UP);
 				return true;
 			} else {
-				GLog.w( Messages.get(this, "no_hourglass") );
+				GLog.warning( Messages.get(this, "no_hourglass") );
 				return false;
 			}
 		}

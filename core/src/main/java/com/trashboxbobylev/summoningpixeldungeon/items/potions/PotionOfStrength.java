@@ -42,7 +42,7 @@ public class PotionOfStrength extends Potion {
 		
 		hero.STR++;
 		hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "msg_1") );
-		GLog.p( Messages.get(this, "msg_2") );
+		GLog.positive( Messages.get(this, "msg_2") );
 		
 		Badges.validateStrengthAttained();
 	}

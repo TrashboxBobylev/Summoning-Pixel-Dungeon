@@ -72,7 +72,7 @@ public class ScrollOfTeleportation extends Scroll {
 	public void empoweredRead() {
 		
 		if (Dungeon.bossLevel()){
-			GLog.w( Messages.get(this, "no_tele") );
+			GLog.warning( Messages.get(this, "no_tele") );
 			return;
 		}
 		
@@ -99,7 +99,7 @@ public class ScrollOfTeleportation extends Scroll {
 		if (PathFinder.distance[hero.pos] == Integer.MAX_VALUE
 				|| (!Dungeon.level.passable[pos] && !Dungeon.level.avoid[pos])
 				|| Actor.findChar(pos) != null){
-			GLog.w( Messages.get(ScrollOfTeleportation.class, "cant_reach") );
+			GLog.warning( Messages.get(ScrollOfTeleportation.class, "cant_reach") );
 			return;
 		}
 		
@@ -123,7 +123,7 @@ public class ScrollOfTeleportation extends Scroll {
 		
 		if (pos == -1 || Dungeon.bossLevel()) {
 			
-			GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
+			GLog.warning( Messages.get(ScrollOfTeleportation.class, "no_tele") );
 			
 		} else {
 			

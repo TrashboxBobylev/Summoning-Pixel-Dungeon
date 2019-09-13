@@ -34,7 +34,6 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroClass;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Beam;
-import com.trashboxbobylev.summoningpixeldungeon.effects.SpellSprite;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.ConjurerArmor;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.Bag;
@@ -286,7 +285,7 @@ public class Staff extends MeleeWeapon {
                 summon(hero);
             } catch (Exception e) {
                 ShatteredPixelDungeon.reportException(e);
-                GLog.w( Messages.get(Wand.class, "fizzles") );
+                GLog.warning( Messages.get(Wand.class, "fizzles") );
             }
 
         } else if (action.equals(AC_ZAP)){
@@ -299,14 +298,14 @@ public class Staff extends MeleeWeapon {
     public boolean tryToZap( Hero owner, int target ){
 
         if (owner.buff(MagicImmune.class) != null){
-            GLog.w( Messages.get(Wand.class, "no_magic") );
+            GLog.warning( Messages.get(Wand.class, "no_magic") );
             return false;
         }
 
         if ( curCharges >= 0){
             return true;
         } else {
-            GLog.w(Messages.get(Wand.class, "fizzles"));
+            GLog.warning(Messages.get(Wand.class, "fizzles"));
             return false;
         }
     }
@@ -317,7 +316,7 @@ public class Staff extends MeleeWeapon {
             usesLeftToID--;
             if (usesLeftToID <= 0) {
                 identify();
-                GLog.p( Messages.get(Wand.class, "identify") );
+                GLog.positive( Messages.get(Wand.class, "identify") );
                 Badges.validateItemLevelAquired( this );
             }
         }
@@ -351,7 +350,7 @@ public class Staff extends MeleeWeapon {
         //checking attunement
         if (requiredAttunement() > owner.attunement || (requiredAttunement() + owner.usedAttunement > owner.attunement)){
             owner.sprite.zap(0);
-            GLog.i( Messages.get(Staff.class, "too_low_attunement") );
+            GLog.warning( Messages.get(Staff.class, "too_low_attunement") );
             return;
         }
 
@@ -359,27 +358,33 @@ public class Staff extends MeleeWeapon {
         for (Char ch: Dungeon.level.mobs) {
             if (ch instanceof Minion && isTanky && ((Minion) ch).isTanky){
                 owner.sprite.zap(0);
-                GLog.i( Messages.get(Staff.class, "cant_summon_tank") );
+                GLog.warning( Messages.get(Staff.class, "cant_summon_tank") );
                 return;
             }
         }
 
+        int strength = 1;
+        if (STRReq() > owner.STR())  strength += STRReq(level()) - owner.STR();
+
         //if anything is met, spawn minion
-        Minion minion = minionType.newInstance();
-        GameScene.add(minion);
-        ScrollOfTeleportation.appear(minion, spawnPoints.get(Random.index(spawnPoints)));
-        owner.usedAttunement += minion.attunement;
-        minion.setDamage(minionMin(level()), minionMax(level()));
-        Statistics.summonedMinions++;
-        Badges.validateConjurerUnlock();
+        //if hero do not have enough strength, summoning might fail
+        if (Random.Float() < 1/(float)strength) {
+            Minion minion = minionType.newInstance();
+            GameScene.add(minion);
+            ScrollOfTeleportation.appear(minion, spawnPoints.get(Random.index(spawnPoints)));
+            owner.usedAttunement += minion.attunement;
+            minion.setDamage(minionMin(level()), minionMax(level()));
+            Statistics.summonedMinions++;
+            Badges.validateConjurerUnlock();
 
 
-        //if we have upgraded robe, increase hp
-        float robeBonus = 1f;
-        if (curUser.belongings.armor instanceof ConjurerArmor && curUser.belongings.armor.level() > 0){
-            robeBonus = 1f + curUser.belongings.armor.level()*0.1f;
-        }
-        minion.setMaxHP((int) (hp(level()) * robeBonus));
+            //if we have upgraded robe, increase hp
+            float robeBonus = 1f;
+            if (curUser.belongings.armor instanceof ConjurerArmor && curUser.belongings.armor.level() > 0) {
+                robeBonus = 1f + curUser.belongings.armor.level() * 0.1f;
+            }
+            minion.setMaxHP((int) (hp(level()) * robeBonus));
+        } else GLog.warning( Messages.get(Wand.class, "fizzles") );
         wandUsed(false);
     }
 
@@ -417,7 +422,7 @@ public class Staff extends MeleeWeapon {
                     Invisibility.dispel();
 
                     if (curItem.cursed){
-                        GLog.n(Messages.get(Staff.class, "curse_discover", staff.name()));
+                        GLog.negative(Messages.get(Staff.class, "curse_discover", staff.name()));
                         curUser.damage(staff.minionDamageRoll(curUser), staff);
                     } else {
                         curUser.sprite.parent.add(

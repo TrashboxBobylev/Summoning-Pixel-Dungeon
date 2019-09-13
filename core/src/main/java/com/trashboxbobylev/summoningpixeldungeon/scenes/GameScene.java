@@ -421,7 +421,7 @@ public class GameScene extends PixelScene {
 		if (InterlevelScene.mode != InterlevelScene.Mode.NONE) {
 			if (Dungeon.depth == Statistics.deepestFloor
 					&& (InterlevelScene.mode == InterlevelScene.Mode.DESCEND || InterlevelScene.mode == InterlevelScene.Mode.FALL)) {
-				GLog.h(Messages.get(this, "descend"), Dungeon.depth);
+				GLog.highlight(Messages.get(this, "descend"), Dungeon.depth);
 				Sample.INSTANCE.play(Assets.SND_DESCEND);
 				
 				for (Char ch : Actor.chars()){
@@ -431,29 +431,29 @@ public class GameScene extends PixelScene {
 				}
 				
 			} else if (InterlevelScene.mode == InterlevelScene.Mode.RESET) {
-				GLog.h(Messages.get(this, "warp"));
+				GLog.highlight(Messages.get(this, "warp"));
 			} else {
-				GLog.h(Messages.get(this, "return"), Dungeon.depth);
+				GLog.highlight(Messages.get(this, "return"), Dungeon.depth);
 			}
 
 			switch (Dungeon.level.feeling) {
 				case CHASM:
-					GLog.w(Messages.get(this, "chasm"));
+					GLog.warning(Messages.get(this, "chasm"));
 					break;
 				case WATER:
-					GLog.w(Messages.get(this, "water"));
+					GLog.warning(Messages.get(this, "water"));
 					break;
 				case GRASS:
-					GLog.w(Messages.get(this, "grass"));
+					GLog.warning(Messages.get(this, "grass"));
 					break;
 				case DARK:
-					GLog.w(Messages.get(this, "dark"));
+					GLog.warning(Messages.get(this, "dark"));
 					break;
 				default:
 			}
 			if (Dungeon.level instanceof RegularLevel &&
 					((RegularLevel) Dungeon.level).secretDoors > Random.IntRange(3, 4)) {
-				GLog.w(Messages.get(this, "secrets"));
+				GLog.warning(Messages.get(this, "secrets"));
 			}
 
 			InterlevelScene.mode = InterlevelScene.Mode.NONE;

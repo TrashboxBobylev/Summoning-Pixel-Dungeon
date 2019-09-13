@@ -116,14 +116,14 @@ public class LloydsBeacon extends Artifact {
 			
 			if (Dungeon.bossLevel()) {
 				hero.spend( LloydsBeacon.TIME_TO_USE );
-				GLog.w( Messages.get(this, "preventing") );
+				GLog.warning( Messages.get(this, "preventing") );
 				return;
 			}
 			
 			for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
 				Char ch = Actor.findChar(hero.pos + PathFinder.NEIGHBOURS8[i]);
 				if (ch != null && ch.alignment == Char.Alignment.ENEMY) {
-					GLog.w( Messages.get(this, "creatures") );
+					GLog.warning( Messages.get(this, "creatures") );
 					return;
 				}
 			}
@@ -241,11 +241,11 @@ public class LloydsBeacon extends Artifact {
 
 										if (pos == -1 || Dungeon.bossLevel()) {
 
-											GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
+											GLog.warning( Messages.get(ScrollOfTeleportation.class, "no_tele") );
 
 										} else if (ch.properties().contains(Char.Property.IMMOVABLE)) {
 
-											GLog.w( Messages.get(LloydsBeacon.class, "tele_fail") );
+											GLog.warning( Messages.get(LloydsBeacon.class, "tele_fail") );
 
 										} else  {
 
@@ -296,7 +296,7 @@ public class LloydsBeacon extends Artifact {
 	public Item upgrade() {
 		if (level() == levelCap) return this;
 		chargeCap ++;
-		GLog.p( Messages.get(this, "levelup") );
+		GLog.positive( Messages.get(this, "levelup") );
 		return super.upgrade();
 	}
 

@@ -106,7 +106,7 @@ public class Monk extends Mob {
 					Dungeon.quickslot.convertToPlaceholder(weapon);
 					weapon.updateQuickslot();
 					Dungeon.level.drop(weapon, hero.pos).sprite.drop();
-					GLog.w(Messages.get(this, "disarm", weapon.name()));
+					GLog.warning(Messages.get(this, "disarm", weapon.name()));
 				}
 			}
 		}

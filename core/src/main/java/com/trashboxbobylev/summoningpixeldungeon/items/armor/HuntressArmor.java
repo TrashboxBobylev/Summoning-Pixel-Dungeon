@@ -75,7 +75,7 @@ public class HuntressArmor extends ClassArmor {
 		}
 		
 		if (targets.size() == 0) {
-			GLog.w( Messages.get(this, "no_enemies") );
+			GLog.warning( Messages.get(this, "no_enemies") );
 			return;
 		}
 		

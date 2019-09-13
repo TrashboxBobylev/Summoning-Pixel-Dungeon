@@ -34,7 +34,6 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.ElmoParticle;
-import com.trashboxbobylev.summoningpixeldungeon.items.ArmorKit;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
@@ -84,7 +83,7 @@ public class ConjurerArmor extends ClassArmor {
     };
 
     private void upgrade(Armor armor){
-        GLog.w( Messages.get(ConjurerArmor.class, "upgraded", armor.name()) );
+        GLog.warning( Messages.get(ConjurerArmor.class, "upgraded", armor.name()) );
 
         //syncs the level of the two items.
         int targetLevel = Math.max(this.level() - (curseInfusionBonus ? 1 : 0), armor.level());

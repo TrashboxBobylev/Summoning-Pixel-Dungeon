@@ -824,7 +824,7 @@ public class Badges {
 		if (global.contains( badge )) {
 			
 			if (!badge.meta) {
-				GLog.h( Messages.get(Badges.class, "endorsed", badge.desc()) );
+				GLog.highlight( Messages.get(Badges.class, "endorsed", badge.desc()) );
 			}
 			
 		} else {
@@ -833,9 +833,9 @@ public class Badges {
 			saveNeeded = true;
 			
 			if (badge.meta) {
-				GLog.h( Messages.get(Badges.class, "new_super", badge.desc()) );
+				GLog.highlight( Messages.get(Badges.class, "new_super", badge.desc()) );
 			} else {
-				GLog.h( Messages.get(Badges.class, "new", badge.desc()) );
+				GLog.highlight( Messages.get(Badges.class, "new", badge.desc()) );
 			}
 			PixelScene.showBadge( badge );
 		}

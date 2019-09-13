@@ -85,7 +85,7 @@ public class CapeOfThorns extends Artifact {
 				cooldown--;
 				if (cooldown == 0) {
 					BuffIndicator.refreshHero();
-					GLog.w( Messages.get(this, "inert") );
+					GLog.warning( Messages.get(this, "inert") );
 				}
 				updateQuickslot();
 			}
@@ -99,7 +99,7 @@ public class CapeOfThorns extends Artifact {
 				if (charge >= chargeCap){
 					charge = 0;
 					cooldown = 10+level();
-					GLog.p( Messages.get(this, "radiating") );
+					GLog.positive( Messages.get(this, "radiating") );
 					BuffIndicator.refreshHero();
 				}
 			}
@@ -117,7 +117,7 @@ public class CapeOfThorns extends Artifact {
 				if (exp >= (level()+1)*5 && level() < levelCap){
 					exp -= (level()+1)*5;
 					upgrade();
-					GLog.p( Messages.get(this, "levelup") );
+					GLog.positive( Messages.get(this, "levelup") );
 				}
 
 			}

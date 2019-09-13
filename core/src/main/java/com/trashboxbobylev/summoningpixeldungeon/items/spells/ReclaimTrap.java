@@ -61,7 +61,7 @@ public class ReclaimTrap extends TargetedSpell {
 				storedTrap = t.getClass();
 				
 			} else {
-				GLog.w(Messages.get(this, "no_trap"));
+				GLog.warning(Messages.get(this, "no_trap"));
 			}
 		} else {
 			

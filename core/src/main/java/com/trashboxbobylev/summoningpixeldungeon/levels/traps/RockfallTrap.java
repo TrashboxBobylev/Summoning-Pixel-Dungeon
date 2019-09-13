@@ -105,7 +105,7 @@ public class RockfallTrap extends Trap {
 
 				if (!ch.isAlive() && ch == Dungeon.hero){
 					Dungeon.fail( getClass() );
-					GLog.n( Messages.get(this, "ondeath") );
+					GLog.negative( Messages.get(this, "ondeath") );
 				}
 			}
 		}

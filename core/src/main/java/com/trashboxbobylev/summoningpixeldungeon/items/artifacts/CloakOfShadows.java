@@ -245,7 +245,7 @@ public class CloakOfShadows extends Artifact {
 				if (charge < 0) {
 					charge = 0;
 					detach();
-					GLog.w(Messages.get(this, "no_charge"));
+					GLog.warning(Messages.get(this, "no_charge"));
 					((Hero) target).interrupt();
 				} else {
 					//target hero level is 1 + 2*cloak level
@@ -263,7 +263,7 @@ public class CloakOfShadows extends Artifact {
 					if (exp >= (level() + 1) * 50 && level() < levelCap) {
 						upgrade();
 						exp -= level() * 50;
-						GLog.p(Messages.get(this, "levelup"));
+						GLog.positive(Messages.get(this, "levelup"));
 						
 					}
 					turnsToCost = 5;

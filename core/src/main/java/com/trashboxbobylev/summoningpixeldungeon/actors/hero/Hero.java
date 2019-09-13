@@ -695,7 +695,7 @@ public class Hero extends Char {
 			
 			AlchemistsToolkit.kitEnergy kit = buff(AlchemistsToolkit.kitEnergy.class);
 			if (kit != null && kit.isCursed()){
-				GLog.w( Messages.get(AlchemistsToolkit.class, "cursed"));
+				GLog.warning( Messages.get(AlchemistsToolkit.class, "cursed"));
 				return false;
 			}
 			
@@ -739,7 +739,7 @@ public class Hero extends Char {
 								(item instanceof ScrollOfUpgrade && ((Scroll)item).isKnown()) ||
 								(item instanceof PotionOfStrength && ((Potion)item).isKnown());
 						if (important) {
-							GLog.p( Messages.get(this, "you_now_have", item.name()) );
+							GLog.positive( Messages.get(this, "you_now_have", item.name()) );
 						} else {
 							GLog.i( Messages.get(this, "you_now_have", item.name()) );
 						}
@@ -776,7 +776,7 @@ public class Hero extends Char {
 				if ((heap.type == Type.LOCKED_CHEST && Notes.keyCount(new GoldenKey(Dungeon.depth)) < 1)
 					|| (heap.type == Type.CRYSTAL_CHEST && Notes.keyCount(new CrystalKey(Dungeon.depth)) < 1)){
 
-						GLog.w( Messages.get(this, "locked_chest") );
+						GLog.warning( Messages.get(this, "locked_chest") );
 						ready();
 						return false;
 
@@ -838,7 +838,7 @@ public class Hero extends Char {
 				Sample.INSTANCE.play( Assets.SND_UNLOCK );
 				
 			} else {
-				GLog.w( Messages.get(this, "locked_door") );
+				GLog.warning( Messages.get(this, "locked_door") );
 				ready();
 			}
 
@@ -1027,7 +1027,7 @@ public class Hero extends Char {
 
 		if (this.buff(Drowsy.class) != null){
 			Buff.detach(this, Drowsy.class);
-			GLog.w( Messages.get(this, "pain_resist") );
+			GLog.warning( Messages.get(this, "pain_resist") );
 		}
 
 		CapeOfThorns.Thorns thorns = buff( CapeOfThorns.Thorns.class );
@@ -1310,7 +1310,7 @@ public class Hero extends Char {
 				Buff.prolong(this, Bless.class, 30f);
 				this.exp = 0;
 
-				GLog.p( Messages.get(this, "level_cap"));
+				GLog.positive( Messages.get(this, "level_cap"));
 				Sample.INSTANCE.play( Assets.SND_LEVELUP );
 			}
 			
@@ -1318,7 +1318,7 @@ public class Hero extends Char {
 		
 		if (levelUp) {
 			
-			GLog.p( Messages.get(this, "new_level"), lvl );
+			GLog.positive( Messages.get(this, "new_level"), lvl );
 			sprite.showStatus( CharSprite.POSITIVE, Messages.get(Hero.class, "level_up") );
 			Sample.INSTANCE.play( Assets.SND_LEVELUP );
 			
@@ -1351,7 +1351,7 @@ public class Hero extends Char {
 		if (sprite != null) {
 			String msg = buff.heroMessage();
 			if (msg != null){
-				GLog.w(msg);
+				GLog.warning(msg);
 			}
 
 			if (buff instanceof Paralysis || buff instanceof Vertigo) {
@@ -1411,7 +1411,7 @@ public class Hero extends Char {
 			ankh.detach(belongings.backpack);
 
 			Sample.INSTANCE.play( Assets.SND_TELEPORT );
-			GLog.w( Messages.get(this, "revive") );
+			GLog.warning( Messages.get(this, "revive") );
 			Statistics.ankhsUsed++;
 			
 			for (Char ch : Actor.chars()){
@@ -1694,7 +1694,7 @@ public class Hero extends Char {
 			sprite.operate( pos );
 			if (!Dungeon.level.locked) {
 				if (cursed) {
-					GLog.n(Messages.get(this, "search_distracted"));
+					GLog.negative(Messages.get(this, "search_distracted"));
 					Buff.affect(this, Hunger.class).reduceHunger(TIME_TO_SEARCH - (2 * HUNGER_FOR_SEARCH));
 				} else {
 					Buff.affect(this, Hunger.class).reduceHunger(TIME_TO_SEARCH - HUNGER_FOR_SEARCH);
@@ -1705,7 +1705,7 @@ public class Hero extends Char {
 		}
 		
 		if (smthFound) {
-			GLog.w( Messages.get(this, "noticed_smth") );
+			GLog.warning( Messages.get(this, "noticed_smth") );
 			Sample.INSTANCE.play( Assets.SND_SECRET );
 			interrupt();
 		}

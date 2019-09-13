@@ -110,14 +110,14 @@ public class BeaconOfReturning extends Spell {
 	
 	private void returnBeacon( Hero hero ){
 		if (Dungeon.bossLevel()) {
-			GLog.w( Messages.get(this, "preventing") );
+			GLog.warning( Messages.get(this, "preventing") );
 			return;
 		}
 		
 		for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
 			Char ch = Actor.findChar(hero.pos + PathFinder.NEIGHBOURS8[i]);
 			if (ch != null && ch.alignment == Char.Alignment.ENEMY) {
-				GLog.w( Messages.get(this, "creatures") );
+				GLog.warning( Messages.get(this, "creatures") );
 				return;
 			}
 		}

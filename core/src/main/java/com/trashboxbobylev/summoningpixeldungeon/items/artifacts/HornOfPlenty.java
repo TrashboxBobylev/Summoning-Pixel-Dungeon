@@ -138,7 +138,7 @@ public class HornOfPlenty extends Artifact {
 				charge++;
 				
 				if (charge == chargeCap){
-					GLog.p( Messages.get(HornOfPlenty.class, "full") );
+					GLog.positive( Messages.get(HornOfPlenty.class, "full") );
 					partialCharge = 0;
 				}
 				
@@ -191,9 +191,9 @@ public class HornOfPlenty extends Artifact {
 			storedFoodEnergy -= upgrades * Hunger.HUNGRY;
 			if (level() == 10){
 				storedFoodEnergy = 0;
-				GLog.p( Messages.get(this, "maxlevel") );
+				GLog.positive( Messages.get(this, "maxlevel") );
 			} else {
-				GLog.p( Messages.get(this, "levelup") );
+				GLog.positive( Messages.get(this, "levelup") );
 			}
 		} else {
 			GLog.i( Messages.get(this, "feed") );
@@ -241,7 +241,7 @@ public class HornOfPlenty extends Artifact {
 					else                    image = ItemSpriteSheet.ARTIFACT_HORN1;
 
 					if (charge == chargeCap){
-						GLog.p( Messages.get(HornOfPlenty.class, "full") );
+						GLog.positive( Messages.get(HornOfPlenty.class, "full") );
 						partialCharge = 0;
 					}
 
@@ -258,7 +258,7 @@ public class HornOfPlenty extends Artifact {
 		public void onSelect( Item item ) {
 			if (item != null && item instanceof Food) {
 				if (item instanceof Blandfruit && ((Blandfruit) item).potionAttrib == null){
-					GLog.w( Messages.get(HornOfPlenty.class, "reject") );
+					GLog.warning( Messages.get(HornOfPlenty.class, "reject") );
 				} else {
 					Hero hero = Dungeon.hero;
 					hero.sprite.operate( hero.pos );

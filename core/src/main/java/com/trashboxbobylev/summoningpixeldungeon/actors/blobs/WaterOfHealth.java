@@ -60,7 +60,7 @@ public class WaterOfHealth extends WellWater {
 
 		Dungeon.hero.interrupt();
 	
-		GLog.p( Messages.get(this, "procced") );
+		GLog.positive( Messages.get(this, "procced") );
 		
 		return true;
 	}

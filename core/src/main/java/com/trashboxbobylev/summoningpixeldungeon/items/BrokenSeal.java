@@ -88,11 +88,11 @@ public class BrokenSeal extends Item {
 			if (item != null && item instanceof Armor) {
 				Armor armor = (Armor)item;
 				if (!armor.levelKnown){
-					GLog.w(Messages.get(BrokenSeal.class, "unknown_armor"));
+					GLog.warning(Messages.get(BrokenSeal.class, "unknown_armor"));
 				} else if (armor.cursed || armor.level() < 0){
-					GLog.w(Messages.get(BrokenSeal.class, "degraded_armor"));
+					GLog.warning(Messages.get(BrokenSeal.class, "degraded_armor"));
 				} else {
-					GLog.p(Messages.get(BrokenSeal.class, "affix"));
+					GLog.positive(Messages.get(BrokenSeal.class, "affix"));
 					Dungeon.hero.sprite.operate(Dungeon.hero.pos);
 					Sample.INSTANCE.play(Assets.SND_UNLOCK);
 					armor.affixSeal((BrokenSeal)curItem);

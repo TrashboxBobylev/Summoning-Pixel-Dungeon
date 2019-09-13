@@ -85,16 +85,16 @@ public class Stylus extends Item {
 	private void inscribe( Armor armor ) {
 
 		if (!armor.isIdentified() ){
-			GLog.w( Messages.get(this, "identify"));
+			GLog.warning( Messages.get(this, "identify"));
 			return;
 		} else if (armor.cursed || armor.hasCurseGlyph()){
-			GLog.w( Messages.get(this, "cursed"));
+			GLog.warning( Messages.get(this, "cursed"));
 			return;
 		}
 		
 		detach(curUser.belongings.backpack);
 
-		GLog.w( Messages.get(this, "inscribed"));
+		GLog.warning( Messages.get(this, "inscribed"));
 
 		armor.inscribe();
 		

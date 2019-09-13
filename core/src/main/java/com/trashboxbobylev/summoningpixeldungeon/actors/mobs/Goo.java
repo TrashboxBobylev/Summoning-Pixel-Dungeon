@@ -190,7 +190,7 @@ public class Goo extends Mob {
 
 			if (Dungeon.level.heroFOV[pos]) {
 				sprite.showStatus( CharSprite.NEGATIVE, Messages.get(this, "!!!") );
-				GLog.n( Messages.get(this, "pumpup") );
+				GLog.negative( Messages.get(this, "pumpup") );
 			}
 
 			spend( attackDelay() );
@@ -259,7 +259,7 @@ public class Goo extends Mob {
 			yell(Messages.get(this, "notice"));
 			for (Char ch : Actor.chars()){
 				if (ch instanceof DriedRose.GhostHero){
-					GLog.n("\n");
+					GLog.negative("\n");
 					((DriedRose.GhostHero) ch).sayBoss();
 				}
 			}

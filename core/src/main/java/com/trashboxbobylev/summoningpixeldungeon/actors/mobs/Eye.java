@@ -185,7 +185,7 @@ public class Eye extends Mob {
 
 				if (!ch.isAlive() && ch == Dungeon.hero) {
 					Dungeon.fail( getClass() );
-					GLog.n( Messages.get(this, "deathgaze_kill") );
+					GLog.negative( Messages.get(this, "deathgaze_kill") );
 				}
 			} else {
 				ch.sprite.showStatus( CharSprite.NEUTRAL,  ch.defenseVerb() );

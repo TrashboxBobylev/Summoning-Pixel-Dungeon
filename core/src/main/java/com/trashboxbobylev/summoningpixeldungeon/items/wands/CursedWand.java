@@ -161,7 +161,7 @@ public class CursedWand {
 										}
 									} while (pos == -1);
 									if (pos == -1 || Dungeon.bossLevel()) {
-										GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
+										GLog.warning( Messages.get(ScrollOfTeleportation.class, "no_tele") );
 									} else {
 										ch.pos = pos;
 										if (((Mob) ch).state == ((Mob) ch).HUNTING)((Mob) ch).state = ((Mob) ch).WANDERING;
@@ -247,7 +247,7 @@ public class CursedWand {
 									Sample.INSTANCE.play(Assets.SND_CURSED);
 									if (!user.isAlive() && origin != null) {
 										Dungeon.fail( origin.getClass() );
-										GLog.n(Messages.get(CursedWand.class, "ondeath", origin.name()));
+										GLog.negative(Messages.get(CursedWand.class, "ondeath", origin.name()));
 									}
 									break;
 							}
@@ -365,8 +365,8 @@ public class CursedWand {
 				} while (Random.Int(5) != 0);
 				new Flare(8, 32).color(0xFFFF66, true).show(user.sprite, 2f);
 				Sample.INSTANCE.play(Assets.SND_TELEPORT);
-				GLog.p(Messages.get(CursedWand.class, "grass"));
-				GLog.w(Messages.get(CursedWand.class, "fire"));
+				GLog.positive(Messages.get(CursedWand.class, "grass"));
+				GLog.warning(Messages.get(CursedWand.class, "fire"));
 				afterZap.call();
 				break;
 
@@ -443,9 +443,9 @@ public class CursedWand {
 				if (result.isUpgradable()) result.upgrade();
 				result.cursed = result.cursedKnown = true;
 				if (origin instanceof Wand){
-					GLog.w( Messages.get(CursedWand.class, "transmogrify_wand") );
+					GLog.warning( Messages.get(CursedWand.class, "transmogrify_wand") );
 				} else {
-					GLog.w( Messages.get(CursedWand.class, "transmogrify_other") );
+					GLog.warning( Messages.get(CursedWand.class, "transmogrify_other") );
 				}
 				Dungeon.level.drop(result, user.pos).sprite.drop();
 				afterZap.call();

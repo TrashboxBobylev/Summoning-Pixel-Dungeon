@@ -82,7 +82,7 @@ public class DisintegrationTrap extends Trap {
 				Hero hero = (Hero)target;
 				if (!hero.isAlive()){
 					Dungeon.fail( getClass() );
-					GLog.n( Messages.get(this, "ondeath") );
+					GLog.negative( Messages.get(this, "ondeath") );
 				} else {
 					Item item = hero.belongings.randomUnequipped();
 					Bag bag = hero.belongings.backpack;
@@ -94,12 +94,12 @@ public class DisintegrationTrap extends Trap {
 					if (item == null || item.level() > 0 || item.unique) return;
 					if (!item.stackable){
 						item.detachAll(bag);
-						GLog.w( Messages.get(this, "one", item.name()) );
+						GLog.warning( Messages.get(this, "one", item.name()) );
 					} else {
 						int n = Random.NormalIntRange(1, (item.quantity()+1)/2);
 						for(int i = 1; i <= n; i++)
 							item.detach(bag);
-						GLog.w( Messages.get(this, "some", item.name()) );
+						GLog.warning( Messages.get(this, "some", item.name()) );
 					}
 				}
 			}

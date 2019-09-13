@@ -122,7 +122,7 @@ public class Chasm {
 				Badges.validateDeathFromFalling();
 				
 				Dungeon.fail( Chasm.class );
-				GLog.n( Messages.get(Chasm.class, "ondeath") );
+				GLog.negative( Messages.get(Chasm.class, "ondeath") );
 			}
 		} );
 	}

@@ -74,7 +74,7 @@ public class WarpingTrap extends Trap {
 				
 				if (pos == -1 || Dungeon.bossLevel()) {
 					
-					GLog.w(Messages.get(ScrollOfTeleportation.class, "no_tele"));
+					GLog.warning(Messages.get(ScrollOfTeleportation.class, "no_tele"));
 					
 				} else {
 					

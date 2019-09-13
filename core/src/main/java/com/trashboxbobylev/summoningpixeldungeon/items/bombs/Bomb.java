@@ -128,7 +128,7 @@ public class Bomb extends Item {
 	@Override
 	public boolean doPickUp(Hero hero) {
 		if (fuse != null) {
-			GLog.w( Messages.get(this, "snuff_fuse") );
+			GLog.warning( Messages.get(this, "snuff_fuse") );
 			fuse = null;
 		}
 		return super.doPickUp(hero);

@@ -315,10 +315,10 @@ public class MagesStaff extends MeleeWeapon {
 			if (item != null) {
 
 				if (!item.isIdentified()) {
-					GLog.w(Messages.get(MagesStaff.class, "id_first"));
+					GLog.warning(Messages.get(MagesStaff.class, "id_first"));
 					return;
 				} else if (item.cursed){
-					GLog.w(Messages.get(MagesStaff.class, "cursed"));
+					GLog.warning(Messages.get(MagesStaff.class, "cursed"));
 					return;
 				}
 
@@ -357,7 +357,7 @@ public class MagesStaff extends MeleeWeapon {
 
 			wand.detach(curUser.belongings.backpack);
 
-			GLog.p( Messages.get(MagesStaff.class, "imbue", wand.name()));
+			GLog.positive( Messages.get(MagesStaff.class, "imbue", wand.name()));
 			imbueWand( wand, curUser );
 
 			updateQuickslot();

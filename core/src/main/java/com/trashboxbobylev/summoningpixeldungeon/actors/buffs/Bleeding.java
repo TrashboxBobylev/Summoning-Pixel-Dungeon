@@ -89,7 +89,7 @@ public class Bleeding extends Buff {
 				
 				if (target == Dungeon.hero && !target.isAlive()) {
 					Dungeon.fail( getClass() );
-					GLog.n( Messages.get(this, "ondeath") );
+					GLog.negative( Messages.get(this, "ondeath") );
 				}
 				
 				spend( TICK );

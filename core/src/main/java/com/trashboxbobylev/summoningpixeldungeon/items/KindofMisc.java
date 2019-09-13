@@ -80,7 +80,7 @@ public abstract class KindofMisc extends EquipableItem {
 			cursedKnown = true;
 			if (cursed) {
 				equipCursed( hero );
-				GLog.n( Messages.get(this, "equip_cursed", this) );
+				GLog.negative( Messages.get(this, "equip_cursed", this) );
 			}
 
 			hero.spendAndNext( TIME_TO_EQUIP );

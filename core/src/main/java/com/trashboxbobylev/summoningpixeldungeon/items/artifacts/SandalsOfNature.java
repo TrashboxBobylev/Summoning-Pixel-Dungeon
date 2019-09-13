@@ -176,7 +176,7 @@ public class SandalsOfNature extends Artifact {
 		public void onSelect( Item item ) {
 			if (item != null && item instanceof Plant.Seed) {
 				if (seeds.contains(item.getClass())){
-					GLog.w( Messages.get(SandalsOfNature.class, "already_fed") );
+					GLog.warning( Messages.get(SandalsOfNature.class, "already_fed") );
 				} else {
 					seeds.add(item.getClass());
 
@@ -189,7 +189,7 @@ public class SandalsOfNature extends Artifact {
 						seeds.clear();
 						upgrade();
 						if (level() >= 1 && level() <= 3) {
-							GLog.p( Messages.get(SandalsOfNature.class, "levelup") );
+							GLog.positive( Messages.get(SandalsOfNature.class, "levelup") );
 						}
 
 					} else {

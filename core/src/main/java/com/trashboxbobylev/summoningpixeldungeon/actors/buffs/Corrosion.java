@@ -113,7 +113,7 @@ public class Corrosion extends Buff implements Hero.Doom {
 	@Override
 	public void onDeath() {
 		Dungeon.fail( getClass() );
-		GLog.n(Messages.get(this, "ondeath"));
+		GLog.negative(Messages.get(this, "ondeath"));
 	}
 
 }

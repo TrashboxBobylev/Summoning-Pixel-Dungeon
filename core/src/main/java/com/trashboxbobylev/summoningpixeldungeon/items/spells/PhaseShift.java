@@ -59,11 +59,11 @@ public class PhaseShift extends TargetedSpell {
 			
 			if (pos == -1 || Dungeon.bossLevel()) {
 				
-				GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
+				GLog.warning( Messages.get(ScrollOfTeleportation.class, "no_tele") );
 				
 			} else if (ch.properties().contains(Char.Property.IMMOVABLE)) {
 				
-				GLog.w( Messages.get(this, "tele_fail") );
+				GLog.warning( Messages.get(this, "tele_fail") );
 				
 			} else  {
 				

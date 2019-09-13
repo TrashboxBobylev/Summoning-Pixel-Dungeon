@@ -326,7 +326,7 @@ public class Ghost extends NPC {
 		
 		public static void process() {
 			if (spawned && given && !processed && (depth == Dungeon.depth)) {
-				GLog.n( Messages.get(Ghost.class, "find_me") );
+				GLog.negative( Messages.get(Ghost.class, "find_me") );
 				Sample.INSTANCE.play( Assets.SND_GHOST );
 				processed = true;
 			}

@@ -238,7 +238,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 			if (cell == null) return;
 			final Char enemy = Actor.findChar( cell );
 			if (enemy == null || Dungeon.hero.isCharmedBy(enemy) || enemy instanceof NPC){
-				GLog.w(Messages.get(Preparation.class, "no_target"));
+				GLog.warning(Messages.get(Preparation.class, "no_target"));
 			} else {
 				
 				//just attack them then!
@@ -256,7 +256,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 				passable[cell] = true;
 				PathFinder.buildDistanceMap(Dungeon.hero.pos, passable, lvl.blinkDistance+1);
 				if (PathFinder.distance[cell] == Integer.MAX_VALUE){
-					GLog.w(Messages.get(Preparation.class, "out_of_reach"));
+					GLog.warning(Messages.get(Preparation.class, "out_of_reach"));
 					return;
 				}
 				
@@ -271,7 +271,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 				
 				if (attackPos == -1 ||
 						Dungeon.level.distance(attackPos, Dungeon.hero.pos) > lvl.blinkDistance){
-					GLog.w(Messages.get(Preparation.class, "out_of_reach"));
+					GLog.warning(Messages.get(Preparation.class, "out_of_reach"));
 					return;
 				}
 				

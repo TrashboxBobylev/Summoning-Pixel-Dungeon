@@ -122,9 +122,9 @@ abstract public class ClassArmor extends Armor {
 			
 			if (hero.HP < 3 ||
                     (hero.heroClass == HeroClass.CONJURER && hero.HP < (hero.HT /2))) {
-				GLog.w( Messages.get(this, "low_hp") );
+				GLog.warning( Messages.get(this, "low_hp") );
 			} else if (!isEquipped( hero )) {
-				GLog.w( Messages.get(this, "not_equipped") );
+				GLog.warning( Messages.get(this, "not_equipped") );
 			} else {
 				curUser = hero;
 				Invisibility.dispel();

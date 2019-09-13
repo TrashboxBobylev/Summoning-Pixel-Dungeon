@@ -49,19 +49,19 @@ public class GLog {
 		update.dispatch( text );
 	}
 	
-	public static void p( String text, Object... args ) {
+	public static void positive(String text, Object... args ) {
 		i( POSITIVE + text, args );
 	}
 	
-	public static void n( String text, Object... args ) {
+	public static void negative(String text, Object... args ) {
 		i( NEGATIVE + text, args );
 	}
 	
-	public static void w( String text, Object... args ) {
+	public static void warning(String text, Object... args ) {
 		i( WARNING + text, args );
 	}
 	
-	public static void h( String text, Object... args ) {
+	public static void highlight(String text, Object... args ) {
 		i( HIGHLIGHT + text, args );
 	}
 }

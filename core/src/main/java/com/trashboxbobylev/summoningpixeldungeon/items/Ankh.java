@@ -81,7 +81,7 @@ public class Ankh extends Item {
 			if (vial != null){
 				blessed = true;
 				vial.empty();
-				GLog.p( Messages.get(this, "bless") );
+				GLog.positive( Messages.get(this, "bless") );
 				hero.spend( 1f );
 				hero.busy();
 

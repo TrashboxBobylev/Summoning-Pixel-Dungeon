@@ -253,7 +253,7 @@ public class DriedRose extends Artifact {
 				if (charge >= chargeCap) {
 					charge = chargeCap;
 					partialCharge = 0;
-					GLog.p(Messages.get(DriedRose.class, "charged"));
+					GLog.positive(Messages.get(DriedRose.class, "charged"));
 				}
 			}
 		} else {
@@ -369,7 +369,7 @@ public class DriedRose extends Artifact {
 					partialCharge--;
 					if (charge == chargeCap){
 						partialCharge = 0f;
-						GLog.p( Messages.get(DriedRose.class, "charged") );
+						GLog.positive( Messages.get(DriedRose.class, "charged") );
 					}
 				}
 			} else if (cursed && Random.Int(100) == 0) {
@@ -454,7 +454,7 @@ public class DriedRose extends Artifact {
 			DriedRose rose = hero.belongings.getItem( DriedRose.class );
 
 			if (rose == null){
-				GLog.w( Messages.get(this, "no_rose") );
+				GLog.warning( Messages.get(this, "no_rose") );
 				return false;
 			} if ( rose.level() >= rose.levelCap ){
 				GLog.i( Messages.get(this, "no_room") );
@@ -464,7 +464,7 @@ public class DriedRose extends Artifact {
 
 				rose.upgrade();
 				if (rose.level() == rose.levelCap) {
-					GLog.p( Messages.get(this, "maxlevel") );
+					GLog.positive( Messages.get(this, "maxlevel") );
 				} else
 					GLog.i( Messages.get(this, "levelup") );
 
@@ -904,16 +904,16 @@ public class DriedRose extends Artifact {
 								if (!(item instanceof MeleeWeapon)) {
 									//do nothing, should only happen when window is cancelled
 								} else if (item.unique) {
-									GLog.w( Messages.get(WndGhostHero.class, "cant_unique"));
+									GLog.warning( Messages.get(WndGhostHero.class, "cant_unique"));
 									hide();
 								} else if (!item.isIdentified()) {
-									GLog.w( Messages.get(WndGhostHero.class, "cant_unidentified"));
+									GLog.warning( Messages.get(WndGhostHero.class, "cant_unidentified"));
 									hide();
 								} else if (item.cursed) {
-									GLog.w( Messages.get(WndGhostHero.class, "cant_cursed"));
+									GLog.warning( Messages.get(WndGhostHero.class, "cant_cursed"));
 									hide();
 								} else if (((MeleeWeapon)item).STRReq() > rose.ghostStrength()) {
-									GLog.w( Messages.get(WndGhostHero.class, "cant_strength"));
+									GLog.warning( Messages.get(WndGhostHero.class, "cant_strength"));
 									hide();
 								} else {
 									if (item.isEquipped(Dungeon.hero)){
@@ -954,16 +954,16 @@ public class DriedRose extends Artifact {
 								if (!(item instanceof Armor)) {
 									//do nothing, should only happen when window is cancelled
 								} else if (item.unique || ((Armor) item).checkSeal() != null) {
-									GLog.w( Messages.get(WndGhostHero.class, "cant_unique"));
+									GLog.warning( Messages.get(WndGhostHero.class, "cant_unique"));
 									hide();
 								} else if (!item.isIdentified()) {
-									GLog.w( Messages.get(WndGhostHero.class, "cant_unidentified"));
+									GLog.warning( Messages.get(WndGhostHero.class, "cant_unidentified"));
 									hide();
 								} else if (item.cursed) {
-									GLog.w( Messages.get(WndGhostHero.class, "cant_cursed"));
+									GLog.warning( Messages.get(WndGhostHero.class, "cant_cursed"));
 									hide();
 								} else if (((Armor)item).STRReq() > rose.ghostStrength()) {
-									GLog.w( Messages.get(WndGhostHero.class, "cant_strength"));
+									GLog.warning( Messages.get(WndGhostHero.class, "cant_strength"));
 									hide();
 								} else {
 									if (item.isEquipped(Dungeon.hero)){
