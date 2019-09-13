@@ -354,8 +354,8 @@ public class ItemSpriteSheet {
     public static final int FROGGIT_STAFF     = STAFFS+0;
     public static final int GREY_RAT_STAFF = STAFFS+1;
     public static final int GNOLL_HUNTER_STAFF = STAFFS+2;
-    public static final int WOOLY_STAFF     = STAFFS+4;
-    public static final int SKELETON_STAFF     = STAFFS+5;
+    public static final int WOOLY_STAFF     = STAFFS+3;
+    public static final int SKELETON_STAFF     = STAFFS+4;
     public static final int FROST_ELEMENTAL_STAFF     = STAFFS+11;
     static {
         assignItemRect(FROGGIT_STAFF, 16, 16);
