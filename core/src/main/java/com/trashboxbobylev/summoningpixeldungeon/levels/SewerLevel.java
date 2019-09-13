@@ -116,7 +116,7 @@ public class SewerLevel extends RegularLevel {
 		}
 
         if (!Dungeon.LimitedDrops.STAFF.dropped() && Dungeon.depth > 1) {
-            addItemToSpawn( Generator.randomStaff() );
+            for (int i = 0; i < 15; i++) addItemToSpawn( Generator.randomStaff() );
             Dungeon.LimitedDrops.STAFF.drop();
         }
 
