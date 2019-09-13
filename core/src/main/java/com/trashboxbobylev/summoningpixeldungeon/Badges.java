@@ -125,6 +125,7 @@ public class Badges {
 		UNLOCK_MAGE( 65 ),
 		UNLOCK_ROGUE( 66 ),
 		UNLOCK_HUNTRESS( 67 ),
+        UNLOCK_CONJURER( 68 ),
 		ITEM_LEVEL_1( 48 ),
 		ITEM_LEVEL_2( 49 ),
 		ITEM_LEVEL_3( 50 ),
@@ -705,6 +706,12 @@ public class Badges {
 			displayBadge( Badge.UNLOCK_HUNTRESS );
 		}
 	}
+
+    public static void validateConjurerUnlock(){
+        if (Statistics.summonedMinions >= 2 && !global.contains(Badge.UNLOCK_CONJURER)){
+            displayBadge( Badge.UNLOCK_CONJURER );
+        }
+    }
 	
 	public static void validateMasteryCombo( int n ) {
 		if (!local.contains( Badge.MASTERY_COMBO ) && n == 10) {

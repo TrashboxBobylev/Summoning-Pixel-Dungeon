@@ -26,10 +26,7 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs;
 
-import com.trashboxbobylev.summoningpixeldungeon.Assets;
-import com.trashboxbobylev.summoningpixeldungeon.Badges;
-import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
-import com.trashboxbobylev.summoningpixeldungeon.ShatteredPixelDungeon;
+import com.trashboxbobylev.summoningpixeldungeon.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
@@ -65,6 +62,9 @@ public class Staff extends MeleeWeapon {
 
     //type of minion, since we need to spawn them, not hold
     public Class<? extends Minion> minionType;
+
+    //the property of tank minion, to prevent abuse of high health minions
+    protected boolean isTanky = false;
 
     public static final String AC_SUMMON = "SUMMON";
     public static final String AC_ZAP = "ZAP";
@@ -355,12 +355,24 @@ public class Staff extends MeleeWeapon {
             return;
         }
 
+        //checking existence of tank minions
+        for (Char ch: Dungeon.level.mobs) {
+            if (ch instanceof Minion && isTanky && ((Minion) ch).isTanky){
+                owner.sprite.zap(0);
+                GLog.i( Messages.get(Staff.class, "cant_summon_tank") );
+                return;
+            }
+        }
+
         //if anything is met, spawn minion
         Minion minion = minionType.newInstance();
         GameScene.add(minion);
         ScrollOfTeleportation.appear(minion, spawnPoints.get(Random.index(spawnPoints)));
         owner.usedAttunement += minion.attunement;
         minion.setDamage(minionMin(level()), minionMax(level()));
+        Statistics.summonedMinions++;
+        Badges.validateConjurerUnlock();
+
 
         //if we have upgraded robe, increase hp
         float robeBonus = 1f;

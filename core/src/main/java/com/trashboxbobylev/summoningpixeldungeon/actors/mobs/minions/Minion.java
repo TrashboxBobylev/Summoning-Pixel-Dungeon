@@ -37,6 +37,8 @@ public abstract class Minion extends Mob {
     protected int minDR = 0;
     protected int maxDR = 0;
 
+    public boolean isTanky = false;
+
     @Override
     public void storeInBundle(Bundle bundle) {
         super.storeInBundle(bundle);
