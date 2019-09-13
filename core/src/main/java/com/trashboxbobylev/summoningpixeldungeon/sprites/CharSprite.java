@@ -36,6 +36,7 @@ import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Splash;
 import com.trashboxbobylev.summoningpixeldungeon.effects.TorchHalo;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.FlameParticle;
+import com.trashboxbobylev.summoningpixeldungeon.effects.particles.FrostfireParticle;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.ShadowParticle;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.SnowParticle;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
@@ -82,7 +83,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected float shadowOffset    = 0.25f;
 
 	public enum State {
-		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, HEALING, SHIELDED
+		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, HEALING, SHIELDED, FROSTBURNING
 	}
 	
 	protected Animation idle;
@@ -101,6 +102,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected Emitter marked;
 	protected Emitter levitation;
 	protected Emitter healing;
+	protected Emitter frostburning;
 	
 	protected IceBlock iceBlock;
 	protected DarkBlock darkBlock;
@@ -342,6 +344,13 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 					Sample.INSTANCE.play( Assets.SND_BURNING );
 				}
 				break;
+            case FROSTBURNING:
+                frostburning = emitter();
+                frostburning.pour( FrostfireParticle.FACTORY, 0.06f );
+                if (visible) {
+                    Sample.INSTANCE.play( Assets.SND_BURNING );
+                }
+                break;
 			case LEVITATING:
 				levitation = emitter();
 				levitation.pour( Speck.factory( Speck.JET ), 0.02f );
@@ -395,6 +404,12 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 					burning = null;
 				}
 				break;
+            case FROSTBURNING:
+                if (frostburning != null) {
+                    frostburning.on = false;
+                    frostburning = null;
+                }
+                break;
 			case LEVITATING:
 				if (levitation != null) {
 					levitation.on = false;
@@ -472,6 +487,9 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		if (burning != null) {
 			burning.visible = visible;
 		}
+        if (frostburning != null) {
+            frostburning.visible = visible;
+        }
 		if (levitation != null) {
 			levitation.visible = visible;
 		}

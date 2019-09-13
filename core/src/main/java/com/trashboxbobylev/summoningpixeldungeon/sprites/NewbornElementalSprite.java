@@ -59,13 +59,13 @@ public class NewbornElementalSprite extends MobSprite{
 	@Override
 	public void link( Char ch ) {
 		super.link( ch );
-		add( CharSprite.State.BURNING );
+		add( State.FROSTBURNING );
 	}
 
 	@Override
 	public void die() {
 		super.die();
-		remove( CharSprite.State.BURNING );
+		remove( State.FROSTBURNING );
 	}
 
 	@Override

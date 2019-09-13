@@ -30,7 +30,7 @@ public class FrostfireParticle extends FlameParticle {
     public FrostfireParticle() {
         super();
 
-        color( 0x30c6fe );
+        color( 0x6de8e4 );
         lifespan = 0.6f;
 
         acc.set( 0, -80 );
