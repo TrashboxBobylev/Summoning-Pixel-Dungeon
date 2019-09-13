@@ -218,7 +218,7 @@ public enum HeroClass {
 
         hero.attunement = 2;
         hero.HP = hero.HT = 15;
-        hero.STR = 9;
+        hero.STR = 19;
 
         new PotionOfStrength().identify();
         new ScrollOfMirrorImage().identify();
