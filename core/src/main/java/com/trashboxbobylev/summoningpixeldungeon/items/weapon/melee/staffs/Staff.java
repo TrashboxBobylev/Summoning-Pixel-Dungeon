@@ -578,7 +578,7 @@ public class Staff extends MeleeWeapon {
 
         if (isIdentified()) {
             float robeBonus = 1f;
-            if (curUser.belongings.armor instanceof ConjurerArmor && curUser.belongings.armor.level() > 0){
+            if (Dungeon.hero.belongings.armor instanceof ConjurerArmor && curUser.belongings.armor.level() > 0){
                 robeBonus = 1f + curUser.belongings.armor.level()*0.1f;
             }
             info += "\n\n" + Messages.get(Staff.class, "stats_known", tier, augment.damageFactor(min()), augment.damageFactor(max()), STRReq(), minionMin(level()), minionMax(level()), (int)(hp(level()) * robeBonus));
