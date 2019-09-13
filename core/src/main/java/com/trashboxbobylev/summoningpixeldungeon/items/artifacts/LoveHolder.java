@@ -73,7 +73,7 @@ public class LoveHolder extends Artifact {
 		defaultAction = AC_PRICK;
 
         charge = 0;
-        chargeCap = Math.min(50 + level()*50, 500);
+        chargeCap = Math.min(50 + level()*25, 500);
 	}
 
 	public static final String AC_PRICK = "PRICK";
@@ -310,6 +310,7 @@ public class LoveHolder extends Artifact {
 			image = ItemSpriteSheet.ARTIFACT_LOVE3;
 		else if (level() >= 2)
 			image = ItemSpriteSheet.ARTIFACT_LOVE2;
+        chargeCap = Math.min(chargeCap + 25, 500);
 		return super.upgrade();
 	}
 

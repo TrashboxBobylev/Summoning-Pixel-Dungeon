@@ -416,8 +416,6 @@ public class Staff extends MeleeWeapon {
                         if (ch != null){
                             if (ch instanceof Minion){
                                 ch.die( curUser );
-                                staff.partialCharge += 0.75f;
-                                SpellSprite.show(curUser, SpellSprite.CHARGE);
                             }
                             else ch.damage(0, this);
                         }
