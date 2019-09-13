@@ -158,7 +158,7 @@ public class Mimic extends Mob {
 		//generate an extra reward for killing the mimic
 		Item reward = null;
 		do {
-			switch (Random.Int(5)) {
+			switch (Random.Int(6)) {
 				case 0:
 					reward = new Gold().random();
 					break;
@@ -174,6 +174,8 @@ public class Mimic extends Mob {
 				case 4:
 					reward = Generator.random(Generator.Category.RING);
 					break;
+                case 5:
+                    reward = Generator.randomStaff();
 			}
 		} while (reward == null || Challenges.isItemBlocked(reward));
 		m.items.add(reward);

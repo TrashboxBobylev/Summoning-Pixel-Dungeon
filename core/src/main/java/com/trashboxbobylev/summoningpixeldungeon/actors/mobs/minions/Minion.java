@@ -26,7 +26,11 @@ package com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions;
 
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
+import com.trashboxbobylev.summoningpixeldungeon.items.KindOfWeapon;
+import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfAccuracy;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -36,6 +40,7 @@ public abstract class Minion extends Mob {
     protected int maxDamage = 0;
     protected int minDR = 0;
     protected int maxDR = 0;
+    public int strength = 9;
 
     public boolean isTanky = false;
 
@@ -46,6 +51,7 @@ public abstract class Minion extends Mob {
         bundle.put("maxDamage", maxDamage);
         bundle.put("minDR", minDR);
         bundle.put("maxDR", maxDR);
+        bundle.put("str", strength);
     }
 
     @Override
@@ -56,6 +62,7 @@ public abstract class Minion extends Mob {
         maxDamage = bundle.getInt("maxDamage");
         minDR = bundle.getInt("minDR");
         maxDR = bundle.getInt("maxDR");
+        strength = bundle.getInt("str");
     }
 
     public float attunement = 1;
@@ -74,6 +81,10 @@ public abstract class Minion extends Mob {
 
     public void setMaxHP(int hp){
         HP = HT = hp;
+    }
+
+    public void setStrength(int str){
+        strength = str;
     }
 
     public void setDamage(int min, int max){
@@ -138,7 +149,15 @@ public abstract class Minion extends Mob {
 
     @Override
     public int attackSkill(Char target) {
-        return Dungeon.hero.attackSkill(enemy);
+
+        int encumbrance = 0;
+
+        encumbrance = strength - Dungeon.hero.STR();
+
+        float accuracy = 1;
+        accuracy *= RingOfAccuracy.accuracyMultiplier( this );
+
+        return (int)(Dungeon.hero.getAttackSkill() * accuracy * Math.pow( 1.5, encumbrance ));
     }
 
     //ported from DriedRose.java

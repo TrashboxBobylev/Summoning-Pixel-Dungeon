@@ -441,9 +441,10 @@ public class Generator {
             STF_T2.probs = new float[]{ 5, 5, 5};
 
             STF_T3.classes = new Class<?>[]{
-                    SkeletonStaff.class
+                    SkeletonStaff.class,
+                    MimicStaff.class
             };
-            STF_T3.probs = new float[]{ 5};
+            STF_T3.probs = new float[]{ 5, 5};
 
             STF_T4.classes = new Class<?>[]{
                     FrostElementalStaff.class

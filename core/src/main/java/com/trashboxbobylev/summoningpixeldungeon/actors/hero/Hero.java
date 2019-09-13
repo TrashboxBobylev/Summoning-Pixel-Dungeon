@@ -200,9 +200,10 @@ public class Hero extends Char {
 	public void updateHT( boolean boostHP ){
 		int curHT = HT;
 
-		float adjustHT = heroClass == HeroClass.CONJURER ? 0.8f : 1;
+		float adjustHT = heroClass == HeroClass.CONJURER ? 19 : 20;
+        float adjustScaling = heroClass == HeroClass.CONJURER ? 4 : 5;
 
-		HT = (int) ((20 + 5*(lvl-1))*adjustHT + HTBoost);
+		HT = (int) ((adjustHT + adjustScaling*(lvl-1)) + HTBoost);
 		float multiplier = RingOfMight.HTMultiplier(this);
 		HT = Math.round(multiplier * HT);
 		
@@ -354,6 +355,10 @@ public class Hero extends Char {
 			return (int)(attackSkill * accuracy);
 		}
 	}
+
+	public int getAttackSkill(){
+	    return attackSkill;
+    }
 	
 	@Override
 	public int defenseSkill( Char enemy ) {

@@ -368,7 +368,7 @@ public class Staff extends MeleeWeapon {
 
         //if anything is met, spawn minion
         //if hero do not have enough strength, summoning might fail
-        if (Random.Float() < 1/(float)strength) {
+        if (Random.Float() < 1/(float)(strength*2)) {
             Minion minion = minionType.newInstance();
             GameScene.add(minion);
             ScrollOfTeleportation.appear(minion, spawnPoints.get(Random.index(spawnPoints)));
@@ -376,7 +376,7 @@ public class Staff extends MeleeWeapon {
             minion.setDamage(minionMin(level()), minionMax(level()));
             Statistics.summonedMinions++;
             Badges.validateConjurerUnlock();
-
+            minion.strength = STRReq();
 
             //if we have upgraded robe, increase hp
             float robeBonus = 1f;
