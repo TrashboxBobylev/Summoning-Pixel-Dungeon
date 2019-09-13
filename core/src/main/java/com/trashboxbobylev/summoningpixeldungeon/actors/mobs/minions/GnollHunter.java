@@ -30,7 +30,6 @@ import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.GnollHunterSprite;
-import com.trashboxbobylev.summoningpixeldungeon.sprites.GnollTricksterSprite;
 
 public class GnollHunter extends Minion {
     {
@@ -41,7 +40,17 @@ public class GnollHunter extends Minion {
     @Override
     protected boolean canAttack( Char enemy ) {
         Ballistica attack = new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE);
-        return attack.collisionPos == enemy.pos;
+        return !Dungeon.level.adjacent( pos, enemy.pos ) && attack.collisionPos == enemy.pos;
+    }
+
+    //run away when getting closer
+    @Override
+    protected boolean getCloser( int target ) {
+        if (state == HUNTING) {
+            return enemySeen && getFurther( target );
+        } else {
+            return super.getCloser( target );
+        }
     }
 
 

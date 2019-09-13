@@ -38,12 +38,12 @@ public class GnollHunterStaff extends Staff{
     }
 
     @Override
-    public int max(int lvl) {
+    public int minionMax(int lvl) {
         return  (3*(tier)) +    //6 base, down from 12
                 lvl*tier/2;               //+1.5
     }
 
     public int hp(int lvl){
-        return 6*tier + lvl*(tier) - 1; // from 15 to 12, and scaling unchanged
+        return 4*tier + lvl*(tier) - 1; // from 15 to 8, and scaling unchanged
     }
 }

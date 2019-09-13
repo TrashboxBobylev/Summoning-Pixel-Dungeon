@@ -154,11 +154,6 @@ public class Staff extends MeleeWeapon {
     }
 
     @Override
-    public boolean isIdentified() {
-        return super.isIdentified() && curChargeKnown;
-    }
-
-    @Override
     public String status() {
         if (levelKnown) {
             return (curChargeKnown ? curCharges : "?") + "/" + maxCharges;
@@ -324,7 +319,6 @@ public class Staff extends MeleeWeapon {
 
         if (!isZap) curCharges -= 1;
 
-        if (curUser.heroClass == HeroClass.CONJURER) levelKnown = true;
         updateQuickslot();
 
         curUser.spendAndNext( speedFactor(curUser) );
@@ -465,7 +459,6 @@ public class Staff extends MeleeWeapon {
     public class Charger extends Buff {
 
         private static final float BASE_CHARGE_DELAY = 60f;
-        private static final float SCALING_CHARGE_ADDITION = 28f;
         private static final float NORMAL_SCALE_FACTOR = 0.75f;
 
         private static final float CHARGE_BUFF_BONUS = 0.25f;
@@ -500,15 +493,10 @@ public class Staff extends MeleeWeapon {
         }
 
         private void recharge(){
-            int missingCharges = maxCharges - curCharges;
-            missingCharges = Math.max(0, missingCharges);
-
-            float turnsToCharge = (float) (BASE_CHARGE_DELAY
-                    + (SCALING_CHARGE_ADDITION * Math.pow(scalingFactor, missingCharges)));
 
             LockedFloor lock = target.buff(LockedFloor.class);
             if (lock == null || lock.regenOn())
-                partialCharge += (1f/turnsToCharge) * (Dungeon.hero.heroClass == HeroClass.CONJURER ? 1.25 : 1);
+                partialCharge += (1f/ BASE_CHARGE_DELAY) * (Dungeon.hero.heroClass == HeroClass.CONJURER ? 1.25 : 1);
 
             for (Recharging bonus : target.buffs(Recharging.class)){
                 if (bonus != null && bonus.remainder() > 0f) {
