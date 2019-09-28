@@ -291,7 +291,7 @@ public class Staff extends MeleeWeapon {
 
         super.execute(hero, action);
 
-        if (action.equals(AC_SUMMON)) {
+        if (action.equals(AC_SUMMON) && !(this instanceof StationaryStaff)) {
 
             curUser = hero;
             try {
@@ -396,10 +396,10 @@ public class Staff extends MeleeWeapon {
 
             //if we have upgraded robe, increase hp
             float robeBonus = 1f;
-            if (curUser.belongings.armor instanceof ConjurerArmor && curUser.belongings.armor.level() > 0) {
+            if (curUser.belongings.armor instanceof ConjurerArmor && curUser.belongings.armor.level() > 0 && !(this instanceof ChickenStaff)) {
                 robeBonus = 1f + curUser.belongings.armor.level() * 0.1f;
             }
-            if (!(minion instanceof Chicken)) minion.setMaxHP((int) (hp(level()) * robeBonus));
+            minion.setMaxHP((int) (hp(level()) * robeBonus));
         } else GLog.warning( Messages.get(Wand.class, "fizzles") );
         wandUsed(false);
     }

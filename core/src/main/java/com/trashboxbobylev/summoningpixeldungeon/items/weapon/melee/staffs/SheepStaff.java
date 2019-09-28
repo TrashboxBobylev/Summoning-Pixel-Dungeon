@@ -35,6 +35,7 @@ public class SheepStaff extends Staff {
         image = ItemSpriteSheet.WOOLY_STAFF;
         minionType = Sheep.class;
         tier = 2;
+        isTanky = true;
     }
 
     @Override
