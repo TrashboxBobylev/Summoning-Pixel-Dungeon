@@ -26,10 +26,50 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary;
 
+import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
+import com.trashboxbobylev.summoningpixeldungeon.sprites.CharSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.MagicMissileSprite;
+import com.watabou.utils.Random;
 
-public class MagicMissileMinion extends StationaryMinion{
+public class MagicMissileMinion extends StationaryMinion {
     {
         spriteClass = MagicMissileSprite.class;
+    }
+
+    @Override
+    protected boolean canAttack( Char enemy ) {
+        return new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos;
+    }
+
+
+    public void onZapComplete() {
+        zap();
+        next();
+    }
+
+    @Override
+    protected boolean doAttack(Char enemy) {
+        boolean visible = fieldOfView[pos] || fieldOfView[enemy.pos];
+        if (visible) {
+            sprite.zap( enemy.pos );
+        } else {
+            zap();
+        }
+
+        return !visible;
+    }
+
+    public void zap(){
+        spend( 1f );
+
+        if (hit( this, enemy, false )) {
+            int dmg = Random.NormalIntRange(minDamage, maxDamage);
+            enemy.damage(dmg, this);
+
+            damage(HT / 20, this);
+        } else {
+            enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
+        }
     }
 }

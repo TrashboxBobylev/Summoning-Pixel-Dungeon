@@ -43,49 +43,8 @@ public class StationaryMinion extends Minion {
     {
         properties.add(Property.IMMOVABLE);
 
-        viewDistance = 5;
+        viewDistance = 6;
         state = WANDERING;
-    }
-
-    @Override
-    protected boolean canAttack( Char enemy ) {
-        return new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos;
-    }
-
-    @Override
-    protected boolean doAttack(Char enemy) {
-        boolean visible = fieldOfView[pos] || fieldOfView[enemy.pos];
-        if (visible) {
-            sprite.zap( enemy.pos );
-        } else {
-            zap();
-        }
-
-        return !visible;
-    }
-
-    @Override
-    protected Char chooseEnemy() {
-
-        return super.chooseEnemy();
-    }
-
-    private void zap() {
-        spend( 1f );
-
-        if (hit( this, enemy, true )) {
-            int dmg = Random.NormalIntRange(minDamage, maxDamage);
-            enemy.damage(dmg, this);
-
-            damage(HT / 20, this);
-        } else {
-            enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
-        }
-    }
-
-    public void onZapComplete() {
-        zap();
-        next();
     }
 
     @Override

@@ -458,7 +458,6 @@ public class Staff extends MeleeWeapon {
                     }
                     curItem.cursedKnown = true;
                 }
-
             }
         }
 

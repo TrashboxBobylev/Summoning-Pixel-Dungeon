@@ -69,7 +69,7 @@ public class ConjurerArmor extends ClassArmor {
 
         if (action.equals(AC_IMBUE)){
             curUser = hero;
-            GameScene.selectItem( itemSelector, WndBag.Mode.ARMOR, Messages.get(this, "prompt") );
+            GameScene.selectItem( itemSelector, WndBag.Mode.ARMOR_FOR_IMBUE, Messages.get(this, "prompt") );
         }
     }
 

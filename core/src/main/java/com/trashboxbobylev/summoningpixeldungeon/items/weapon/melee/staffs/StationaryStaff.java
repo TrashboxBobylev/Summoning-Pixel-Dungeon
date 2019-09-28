@@ -85,29 +85,22 @@ public class StationaryStaff extends Staff {
 
             if (target != null) {
 
-                final Staff staff = (Staff)curItem;
+                final StationaryStaff staff = (StationaryStaff)curItem;
 
                 //searching for available space
                 ArrayList<Integer> spawnPoints = new ArrayList<Integer>();
 
                 for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
                     int p = curUser.pos + PathFinder.NEIGHBOURS8[i];
-                    if (Actor.findChar( p ) == null && Dungeon.level.passable[p]) {
+                    if (Actor.findChar( p ) == null && Dungeon.level.passable[p] && p == target) {
                         spawnPoints.add( p );
                     }
                 }
 
                 if (spawnPoints.size() == 0){
                     curUser.sprite.zap(0);
-                    GLog.i( Messages.get(Staff.class, "no_space") );
+                    GLog.i( Messages.get(StationaryStaff.class, "no_space") );
                     return;
-                } else {
-                    for (int pos:
-                         spawnPoints) {
-                        if (pos == target) break;
-                        GLog.i( Messages.get(StationaryStaff.class, "not_nearby") );
-                        return;
-                    }
                 }
 
                 if (target == curUser.pos) {
@@ -129,24 +122,17 @@ public class StationaryStaff extends Staff {
                         curUser.damage(staff.minionDamageRoll(curUser), staff);
                         curUser.spendAndNext(1f);
                     } else {
-                        Sample.INSTANCE.play( Assets.SND_ZAP );
-                        Char ch = Actor.findChar(target);
-                        if (ch != null) {
-                            if (ch instanceof Minion) {
-                                ch.die(curUser);
-                            }
-                        }
                         try {
-                            ((StationaryStaff)staff).summon(curUser, target);
+                            Sample.INSTANCE.play( Assets.SND_ZAP );
+                            staff.summon(curUser, target);
+                            staff.wandUsed(false);
                         } catch (Exception e) {
                             ShatteredPixelDungeon.reportException(e);
                             GLog.warning( Messages.get(Wand.class, "fizzles") );
                         }
-                        staff.wandUsed(false);
                     }
                     curItem.cursedKnown = true;
                 }
-
             }
         }
 
@@ -194,6 +180,5 @@ public class StationaryStaff extends Staff {
             }
             minion.setMaxHP((int) (hp(level()) * robeBonus));
         } else GLog.warning( Messages.get(Wand.class, "fizzles") );
-        wandUsed(false);
     }
 }

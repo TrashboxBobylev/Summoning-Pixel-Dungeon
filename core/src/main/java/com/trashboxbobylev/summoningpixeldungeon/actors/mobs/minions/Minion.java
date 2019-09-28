@@ -28,6 +28,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary.StationaryMinion;
 import com.trashboxbobylev.summoningpixeldungeon.items.KindOfWeapon;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfAccuracy;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.MissileWeapon;
@@ -122,11 +123,12 @@ public abstract class Minion extends Mob {
         Char enemy = super.chooseEnemy();
 
         int targetPos = Dungeon.hero.pos;
+        int distance = this instanceof StationaryMinion ? Integer.MAX_VALUE : 8;
 
         //will never attack something far from their target
         if (enemy != null
                 && Dungeon.level.mobs.contains(enemy)
-                && (Dungeon.level.distance(enemy.pos, targetPos) <= 8)){
+                && (Dungeon.level.distance(enemy.pos, targetPos) <= distance)){
             return enemy;
         }
 
