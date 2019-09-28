@@ -31,5 +31,6 @@ import com.trashboxbobylev.summoningpixeldungeon.sprites.ChickenSprite;
 public class Chicken extends Minion {
     {
         spriteClass = ChickenSprite.class;
+        attunement = 0.5f;
     }
 }

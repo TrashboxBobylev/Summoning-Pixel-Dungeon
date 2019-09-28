@@ -378,6 +378,7 @@ public class Staff extends MeleeWeapon {
 
         int strength = 1;
         if (STRReq() > owner.STR())  strength += STRReq(level()) - owner.STR();
+        if (cursed) strength *= 4;
 
         //if anything is met, spawn minion
         //if hero do not have enough strength, summoning might fail
@@ -385,7 +386,7 @@ public class Staff extends MeleeWeapon {
             Minion minion = minionType.newInstance();
             GameScene.add(minion);
             ScrollOfTeleportation.appear(minion, spawnPoints.get(Random.index(spawnPoints)));
-            owner.usedAttunement += minion.attunement;
+            owner.usedAttunement += requiredAttunement();
             minion.setDamage(
                     minionmin(),
                     minionmax());

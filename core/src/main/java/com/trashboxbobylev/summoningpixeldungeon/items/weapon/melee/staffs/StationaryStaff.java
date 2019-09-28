@@ -131,18 +131,16 @@ public class StationaryStaff extends Staff {
                     } else {
                         Sample.INSTANCE.play( Assets.SND_ZAP );
                         Char ch = Actor.findChar(target);
-                        if (ch != null){
-                            if (ch instanceof Minion){
-                                ch.die( curUser );
+                        if (ch != null) {
+                            if (ch instanceof Minion) {
+                                ch.die(curUser);
                             }
-                            else {
-                                try {
-                                    ((StationaryStaff)staff).summon(curUser, target);
-                                } catch (Exception e) {
-                                    ShatteredPixelDungeon.reportException(e);
-                                    GLog.warning( Messages.get(Wand.class, "fizzles") );
-                                }
-                            }
+                        }
+                        try {
+                            ((StationaryStaff)staff).summon(curUser, target);
+                        } catch (Exception e) {
+                            ShatteredPixelDungeon.reportException(e);
+                            GLog.warning( Messages.get(Wand.class, "fizzles") );
                         }
                         staff.wandUsed(false);
                     }
@@ -180,7 +178,7 @@ public class StationaryStaff extends Staff {
             Minion minion = minionType.newInstance();
             GameScene.add(minion);
             ScrollOfTeleportation.appear(minion, target);
-            owner.usedAttunement += minion.attunement;
+            owner.usedAttunement += requiredAttunement();
             minion.setDamage(
                     Math.round(minionMin(level())* RingOfAttunement.damageMultiplier(owner)),
                     Math.round(minionMax(level()) * RingOfAttunement.damageMultiplier(owner)));
