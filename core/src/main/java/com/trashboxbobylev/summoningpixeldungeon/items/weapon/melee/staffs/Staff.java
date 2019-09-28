@@ -38,6 +38,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.ConjurerArmor;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.Bag;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.MagicalHolster;
+import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfAttunement;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
@@ -348,7 +349,7 @@ public class Staff extends MeleeWeapon {
         }
 
         //checking attunement
-        if (requiredAttunement() > owner.attunement || (requiredAttunement() + owner.usedAttunement > owner.attunement)){
+        if (requiredAttunement() > owner.attunement() || (requiredAttunement() + owner.usedAttunement > owner.attunement())){
             owner.sprite.zap(0);
             GLog.warning( Messages.get(Staff.class, "too_low_attunement") );
             return;
@@ -373,7 +374,9 @@ public class Staff extends MeleeWeapon {
             GameScene.add(minion);
             ScrollOfTeleportation.appear(minion, spawnPoints.get(Random.index(spawnPoints)));
             owner.usedAttunement += minion.attunement;
-            minion.setDamage(minionMin(level()), minionMax(level()));
+            minion.setDamage(
+                    Math.round(minionMin(level())* RingOfAttunement.damageMultiplier(owner)),
+                    Math.round(minionMax(level()) * RingOfAttunement.damageMultiplier(owner)));
             Statistics.summonedMinions++;
             Badges.validateConjurerUnlock();
             minion.strength = STRReq();
@@ -585,7 +588,12 @@ public class Staff extends MeleeWeapon {
                     robeBonus = 1f + curUser.belongings.armor.level() * 0.1f;
                 }
             }
-            info += "\n\n" + Messages.get(Staff.class, "stats_known", tier, augment.damageFactor(min()), augment.damageFactor(max()), STRReq(), minionMin(level()), minionMax(level()), hp(level()) * robeBonus);
+            info += "\n\n" + Messages.get(Staff.class, "stats_known", tier,
+                    augment.damageFactor(min()), augment.damageFactor(max()),
+                    STRReq(),
+                    Math.round(minionMin(level())* RingOfAttunement.damageMultiplier(Dungeon.hero)),
+                    Math.round(minionMax(level()) * RingOfAttunement.damageMultiplier(Dungeon.hero)),
+                    hp(level()) * robeBonus);
             if (STRReq() > Dungeon.hero.STR()) {
                 info += " " + Messages.get(MeleeWeapon.class, "too_heavy");
             } else if (Dungeon.hero.STR() > STRReq()){

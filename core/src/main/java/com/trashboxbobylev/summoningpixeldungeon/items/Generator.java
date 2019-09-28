@@ -73,7 +73,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfFuror;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfHaste;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfMight;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfSharpshooting;
-import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfTenacity;
+import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfAttunement;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfWealth;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.Scroll;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfIdentify;
@@ -471,7 +471,7 @@ public class Generator {
 					RingOfEnergy.class,
 					RingOfMight.class,
 					RingOfSharpshooting.class,
-					RingOfTenacity.class,
+					RingOfAttunement.class,
 					RingOfWealth.class};
 			RING.probs = new float[]{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 			

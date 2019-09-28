@@ -88,13 +88,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfExperienc
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfHealing;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfStrength;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.ElixirOfMight;
-import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfAccuracy;
-import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfEvasion;
-import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfForce;
-import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfFuror;
-import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfHaste;
-import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfMight;
-import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfTenacity;
+import com.trashboxbobylev.summoningpixeldungeon.items.rings.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.Scroll;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfUpgrade;
@@ -175,7 +169,7 @@ public class Hero extends Char {
 	public float usedAttunement;
 
 	public float attunement(){
-	    return attunement;
+	    return attunement + RingOfAttunement.attunementMultiplier(this);
     }
 	
 	public int lvl = 1;
@@ -1044,7 +1038,7 @@ public class Hero extends Char {
 			dmg = thorns.proc(dmg, (src instanceof Char ? (Char)src : null),  this);
 		}
 
-		dmg = (int)Math.ceil(dmg * RingOfTenacity.damageMultiplier( this ));
+		dmg = (int)Math.ceil(dmg * RingOfElements.damageMultiplier( this ));
 
 		//TODO improve this when I have proper damage source logic
 		if (belongings.armor != null && belongings.armor.hasGlyph(AntiMagic.class, this)

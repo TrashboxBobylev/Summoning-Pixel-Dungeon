@@ -43,6 +43,6 @@ public class Attunement extends Buff{
 
     @Override
     public String desc() {
-        return Messages.get(this, "desc", Dungeon.hero.usedAttunement, Dungeon.hero.attunement);
+        return Messages.get(this, "desc", Dungeon.hero.usedAttunement, Dungeon.hero.attunement());
     }
 }

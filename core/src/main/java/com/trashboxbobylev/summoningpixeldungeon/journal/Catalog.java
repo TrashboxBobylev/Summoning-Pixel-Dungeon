@@ -49,7 +49,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfFuror;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfHaste;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfMight;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfSharpshooting;
-import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfTenacity;
+import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfAttunement;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfWealth;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfLullaby;
@@ -204,7 +204,7 @@ public enum Catalog {
 		RINGS.seen.put( RingOfHaste.class,                  false);
 		RINGS.seen.put( RingOfMight.class,                  false);
 		RINGS.seen.put( RingOfSharpshooting.class,          false);
-		RINGS.seen.put( RingOfTenacity.class,               false);
+		RINGS.seen.put( RingOfAttunement.class,               false);
 		RINGS.seen.put( RingOfWealth.class,                 false);
 	
 		ARTIFACTS.seen.put( AlchemistsToolkit.class,        false);

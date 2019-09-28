@@ -29,27 +29,32 @@ import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 
 import java.text.DecimalFormat;
 
-public class RingOfTenacity extends Ring {
+public class RingOfAttunement extends Ring {
 	
 	public String statsInfo() {
 		if (isIdentified()){
-			return Messages.get(this, "stats", new DecimalFormat("#.##").format(100f * (1f - Math.pow(0.85f, soloBonus()))));
+			return Messages.get(this, "stats", new DecimalFormat("#.#").format((0.5f * soloBonus())), new DecimalFormat("#.##").format(100f * (1f - Math.pow(0.85f, soloBonus()))));
 		} else {
-			return Messages.get(this, "typical_stats", new DecimalFormat("#.##").format(15f));
+			return Messages.get(this, "typical_stats", new DecimalFormat("#.#").format(0.5f), new DecimalFormat("#.##").format(15f));
 		}
 	}
 
 	@Override
 	protected RingBuff buff( ) {
-		return new Tenacity();
+		return new Attunement();
 	}
 	
 	public static float damageMultiplier( Char t ){
-		//(HT - HP)/HT = heroes current % missing health.
-		return (float)Math.pow(0.85, getBonus( t, Tenacity.class)*((float)(t.HT - t.HP)/t.HT));
+		return (float)Math.pow(1.06f, getBonus( t, Attunement.class));
 	}
 
-	public class Tenacity extends RingBuff {
+	public static float attunementMultiplier( Char t){
+        return (float)(0.5f * getBonus(t, Attunement.class));
+    }
+
+
+
+	public class Attunement extends RingBuff {
 	}
 }
 
