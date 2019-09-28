@@ -64,6 +64,12 @@ public class StationaryMinion extends Minion {
         return !visible;
     }
 
+    @Override
+    protected Char chooseEnemy() {
+
+        return super.chooseEnemy();
+    }
+
     private void zap() {
         spend( 1f );
 

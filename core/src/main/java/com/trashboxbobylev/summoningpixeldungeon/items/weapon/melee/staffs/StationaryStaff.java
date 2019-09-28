@@ -72,13 +72,8 @@ public class StationaryStaff extends Staff {
         if (action.equals(AC_SUMMON)) {
 
             curUser = hero;
-            try {
-                curItem = this;
-                GameScene.selectCell(placer);
-            } catch (Exception e) {
-                ShatteredPixelDungeon.reportException(e);
-                GLog.warning(Messages.get(Wand.class, "fizzles"));
-            }
+            curItem = this;
+            GameScene.selectCell(placer);
 
         }
     }
