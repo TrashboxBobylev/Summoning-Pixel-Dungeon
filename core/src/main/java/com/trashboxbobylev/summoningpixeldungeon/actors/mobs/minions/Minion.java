@@ -153,10 +153,13 @@ public abstract class Minion extends Mob {
         int encumbrance = strength - Dungeon.hero.STR();
 
         float accuracy = 1;
-        accuracy *= RingOfAccuracy.accuracyMultiplier( this );
+        accuracy *= RingOfAccuracy.accuracyMultiplier( Dungeon.hero );
 
-        return (int)(Dungeon.hero.getAttackSkill() * accuracy /
-                encumbrance > 0 ? Math.pow( 1.5, encumbrance ) : 1);
+        if (encumbrance > 0){
+            accuracy /= Math.pow(1.5, encumbrance);
+        }
+
+        return (int) (Dungeon.hero.getAttackSkill() * accuracy);
     }
 
     //ported from DriedRose.java
