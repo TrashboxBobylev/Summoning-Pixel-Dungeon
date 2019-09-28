@@ -32,7 +32,7 @@ import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 
 public class ChickenStaff extends Staff {
     {
-        image = ItemSpriteSheet.FROST_ELEMENTAL_STAFF;
+        image = ItemSpriteSheet.CHICKEN_STAFF;
         minionType = Chicken.class;
         tier = 3;
     }
