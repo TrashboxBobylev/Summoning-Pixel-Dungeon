@@ -150,13 +150,10 @@ public abstract class Minion extends Mob {
     @Override
     public int attackSkill(Char target) {
 
-        int encumbrance = 0;
-
-        encumbrance = strength - Dungeon.hero.STR();
+        int encumbrance = strength - Dungeon.hero.STR();
 
         float accuracy = 1;
         accuracy *= RingOfAccuracy.accuracyMultiplier( this );
-
 
         return (int)(Dungeon.hero.getAttackSkill() * accuracy /
                 encumbrance > 0 ? Math.pow( 1.5, encumbrance ) : 1);
