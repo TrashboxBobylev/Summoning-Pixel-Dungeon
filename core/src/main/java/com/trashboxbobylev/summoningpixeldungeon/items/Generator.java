@@ -438,7 +438,7 @@ public class Generator {
                     GnollHunterStaff.class,
                     SheepStaff.class
             };
-            STF_T2.probs = new float[]{ 5, 5, 5};
+            STF_T2.probs = new float[]{ 6, 5, 5};
 
             STF_T3.classes = new Class<?>[]{
                     SkeletonStaff.class,
@@ -446,7 +446,7 @@ public class Generator {
                     ChickenStaff.class,
                     MagicMissileStaff.class
             };
-            STF_T3.probs = new float[]{ 5, 5, 5, 5};
+            STF_T3.probs = new float[]{ 6, 4, 5, 5};
 
             STF_T4.classes = new Class<?>[]{
                     FrostElementalStaff.class
