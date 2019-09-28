@@ -36,10 +36,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.MerchantsBeacon;
 import com.trashboxbobylev.summoningpixeldungeon.items.Stylus;
 import com.trashboxbobylev.summoningpixeldungeon.items.Torch;
-import com.trashboxbobylev.summoningpixeldungeon.items.armor.LeatherArmor;
-import com.trashboxbobylev.summoningpixeldungeon.items.armor.MailArmor;
-import com.trashboxbobylev.summoningpixeldungeon.items.armor.PlateArmor;
-import com.trashboxbobylev.summoningpixeldungeon.items.armor.ScaleArmor;
+import com.trashboxbobylev.summoningpixeldungeon.items.armor.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.Bag;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.MagicalHolster;
@@ -49,6 +46,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.bags.VelvetPouch;
 import com.trashboxbobylev.summoningpixeldungeon.items.bombs.Bomb;
 import com.trashboxbobylev.summoningpixeldungeon.items.food.SmallRation;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.Potion;
+import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfExperience;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfHealing;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.Scroll;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfIdentify;
@@ -56,15 +54,11 @@ import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfMagicMapp
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.Runestone;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfAugmentation;
+import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfEnchantment;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.BattleAxe;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Greatsword;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.HandAxe;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Longsword;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Mace;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Shortsword;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Sword;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.WarHammer;
+import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfMagicMissile;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.*;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.Bolas;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.FishingSpear;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.Javelin;
@@ -172,35 +166,18 @@ public class ShopRoom extends SpecialRoom {
 		
 		switch (Dungeon.depth) {
 		case 6:
-			itemsToSpawn.add( (Random.Int( 2 ) == 0 ? new Shortsword().identify() : new HandAxe()).identify() );
-			itemsToSpawn.add( Random.Int( 2 ) == 0 ?
-					new FishingSpear().quantity(2) :
-					new Shuriken().quantity(2));
-			itemsToSpawn.add( new LeatherArmor().identify() );
+			itemsToSpawn.add(new WandOfMagicMissile());
 			break;
 			
 		case 11:
-			itemsToSpawn.add( (Random.Int( 2 ) == 0 ? new Sword().identify() : new Mace()).identify() );
-			itemsToSpawn.add( Random.Int( 2 ) == 0 ?
-					new ThrowingSpear().quantity(2) :
-					new Bolas().quantity(2));
-			itemsToSpawn.add( new MailArmor().identify() );
+			itemsToSpawn.add(new PotionOfExperience());
 			break;
 			
 		case 16:
-			itemsToSpawn.add( (Random.Int( 2 ) == 0 ? new Longsword().identify() : new BattleAxe()).identify() );
-			itemsToSpawn.add( Random.Int( 2 ) == 0 ?
-					new Javelin().quantity(2) :
-					new Tomahawk().quantity(2));
-			itemsToSpawn.add( new ScaleArmor().identify() );
+			itemsToSpawn.add(new StoneOfEnchantment());
 			break;
 			
 		case 21:
-			itemsToSpawn.add( Random.Int( 2 ) == 0 ? new Greatsword().identify() : new WarHammer().identify() );
-			itemsToSpawn.add( Random.Int(2) == 0 ?
-					new Trident().quantity(2) :
-					new ThrowingHammer().quantity(2));
-			itemsToSpawn.add( new PlateArmor().identify() );
 			itemsToSpawn.add( new Torch() );
 			itemsToSpawn.add( new Torch() );
 			itemsToSpawn.add( new Torch() );
@@ -211,9 +188,30 @@ public class ShopRoom extends SpecialRoom {
 
 		itemsToSpawn.add( new MerchantsBeacon() );
 
+        for (int i=0; i < 2; i++) itemsToSpawn.add(Generator.random(Generator.Category.STONE));
+
+		Armor a = Generator.randomArmor();
+		while (a.cursed){
+		    a = Generator.randomArmor();
+		    a.cursedKnown = true;
+        }
+		itemsToSpawn.add(a.identify());
+        MeleeWeapon w = Generator.randomWeapon();
+        while (w.cursed){
+            w = Generator.randomWeapon();
+            w.cursedKnown = true;
+        }
+        itemsToSpawn.add(w.identify());
+        Staff s = Generator.randomStaff();
+        while (s.cursed){
+            s = Generator.randomStaff();
+            s.cursedKnown = true;
+        }
+        itemsToSpawn.add(s.identify());
+        itemsToSpawn.add(Generator.randomMissile());
+        itemsToSpawn.add(Generator.randomMissile());
 
 		itemsToSpawn.add(ChooseBag(Dungeon.hero.belongings));
-
 
 		itemsToSpawn.add( new PotionOfHealing() );
 		for (int i=0; i < 3; i++)
@@ -224,7 +222,7 @@ public class ShopRoom extends SpecialRoom {
 		itemsToSpawn.add( new ScrollOfMagicMapping() );
 		itemsToSpawn.add( Generator.random( Generator.Category.SCROLL ) );
 
-		for (int i=0; i < 2; i++)
+		for (int i=0; i < 4; i++)
 			itemsToSpawn.add( Random.Int(2) == 0 ?
 					Generator.random( Generator.Category.POTION ) :
 					Generator.random( Generator.Category.SCROLL ) );
@@ -272,7 +270,7 @@ public class ShopRoom extends SpecialRoom {
 		}
 
 		Item rare;
-		switch (Random.Int(10)){
+		switch (Random.Int(8)){
 			case 0:
 				rare = Generator.random( Generator.Category.WAND );
 				rare.level( 0 );
