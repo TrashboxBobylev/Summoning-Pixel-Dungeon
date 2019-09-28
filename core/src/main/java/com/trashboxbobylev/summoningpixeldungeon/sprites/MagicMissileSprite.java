@@ -56,7 +56,7 @@ public class MagicMissileSprite extends MobSprite {
 	public void zap( int pos ) {
 		idle();
 		flash();
-		emitter().burst(MagicMissile.WardParticle.UP, 2);
+		emitter().burst(MagicMissile.WhiteParticle.FACTORY, 5);
 		if (Actor.findChar(pos) != null){
             MagicMissile.boltFromChar( parent,
                     MagicMissile.MAGIC_MISSILE,
@@ -82,7 +82,7 @@ public class MagicMissileSprite extends MobSprite {
 		super.die();
 		//cancels die animation and fades out immediately
 		play(idle, true);
-		emitter().burst(MagicMissile.WardParticle.UP, 10);
+		emitter().burst(MagicMissile.WhiteParticle.FACTORY, 20);
 		parent.add( new AlphaTweener( this, 0, 2f ) {
 			@Override
 			protected void onComplete() {
