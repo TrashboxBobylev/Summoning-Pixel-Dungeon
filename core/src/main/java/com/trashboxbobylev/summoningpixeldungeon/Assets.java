@@ -61,6 +61,7 @@ public class Assets {
 	public static final String EFFECTS		= "effects.png";
 	
 	public static final String RAT		= "rat.png";
+    public static final String CHICKEN		= "chicken.png";
 	public static final String GNOLL	= "gnoll.png";
 	public static final String CRAB		= "crab.png";
 	public static final String GOO		= "goo.png";
@@ -104,6 +105,7 @@ public class Assets {
 	public static final String GUARD    = "guard.png";
 	public static final String WARDS    = "wards.png";
 	public static final String GUARDIAN	= "guardian.png";
+    public static final String MAGIC_MISSILE		= "magic_missile.png";
 
 	public static final String ITEMS	        = "items.png";
 	public static final String TERRAIN_FEATURES	= "terrain_features.png";

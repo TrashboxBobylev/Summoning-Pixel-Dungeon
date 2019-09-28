@@ -28,78 +28,27 @@ package com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions;
 
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
+import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.items.Heap;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Lucky;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.MimicSprite;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
 
 public class Mimic extends Minion {
     {
         spriteClass = MimicSprite.class;
-
-        WANDERING = new Wandering();
     }
 
     @Override
-    protected boolean act() {
-        boolean a = super.act();
-
-        //teleport any heap into player
-        Heap heap = Dungeon.level.heaps.get( pos );
-        if (heap != null) {
-            heap.pos = Dungeon.hero.pos;
-            Item item = heap.pickUp();
-            if (item != null) {
-                if (item.collect(Dungeon.hero.belongings.backpack)) {
-                    GameScene.pickUp(item, Dungeon.hero.pos);
-                    Sample.INSTANCE.play(Assets.SND_ITEM);
-                    Dungeon.hero.spendAndNext( 0.25f );
-                } else {
-                    Dungeon.level.drop( item, heap.pos ).sprite.drop();
-                }
-            }
+    public int attackProc(Char enemy, int damage) {
+        if (Random.Int(2) == 0) {
+            Buff.affect(enemy, Lucky.LuckProc.class);
         }
-        return a;
-    }
-
-    private class Wandering extends Mob.Wandering {
-
-        @Override
-        public boolean act(boolean enemyInFOV, boolean justAlerted) {
-            if (enemyInFOV) {
-                enemySeen = true;
-                notice();
-                alerted = true;
-                state = HUNTING;
-                target = enemy.pos;
-            } else {
-                enemySeen = false;
-                int oldPos = pos;
-
-                //check for loot in field in view
-                boolean lootSeen = false;
-                for (int i = 0; i < Dungeon.level.length(); i++) {
-                    if (fieldOfView[i] && i != Dungeon.hero.pos) {
-                        Heap heap = Dungeon.level.heaps.get(i);
-                        if (heap != null) {
-                            target = i;
-                            lootSeen = true;
-                        }
-                    }
-                }
-                if (!lootSeen) target = Dungeon.hero.pos;
-                //always move towards the hero when wandering
-                if (getCloser(target)) {
-                    spend(1 / speed());
-                    return moveSprite(oldPos, pos);
-                } else {
-                    spend(TICK);
-                }
-
-            }
-            return true;
-        }
+        return super.attackProc(enemy, damage);
     }
 }

@@ -32,6 +32,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroClass;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Chicken;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Beam;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
@@ -387,7 +388,7 @@ public class Staff extends MeleeWeapon {
             if (curUser.belongings.armor instanceof ConjurerArmor && curUser.belongings.armor.level() > 0) {
                 robeBonus = 1f + curUser.belongings.armor.level() * 0.1f;
             }
-            minion.setMaxHP((int) (hp(level()) * robeBonus));
+            if (!(minion instanceof Chicken)) minion.setMaxHP((int) (hp(level()) * robeBonus));
         } else GLog.warning( Messages.get(Wand.class, "fizzles") );
         wandUsed(false);
     }
@@ -429,6 +430,7 @@ public class Staff extends MeleeWeapon {
                     if (curItem.cursed){
                         GLog.negative(Messages.get(Staff.class, "curse_discover", staff.name()));
                         curUser.damage(staff.minionDamageRoll(curUser), staff);
+                        curUser.spendAndNext(1f);
                     } else {
                         curUser.sprite.parent.add(
                                 new Beam.LightRay(curUser.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(shot.collisionPos)));
@@ -444,35 +446,6 @@ public class Staff extends MeleeWeapon {
                     }
                     curItem.cursedKnown = true;
                 }
-               /* if (curWand.tryToZap(curUser, target)) {
-
-                    curUser.busy();
-                    Invisibility.dispel();
-
-                    if (curWand.cursed){
-                        if (!curWand.cursedKnown){
-                            GLog.n(Messages.get(Wand.class, "curse_discover", curWand.name()));
-                        }
-                        CursedWand.cursedZap(curWand,
-                                curUser,
-                                new Ballistica(curUser.pos, target, Ballistica.MAGIC_BOLT),
-                                new Callback() {
-                                    @Override
-                                    public void call() {
-                                        curWand.wandUsed();
-                                    }
-                                });
-                    } else {
-                        curWand.fx(shot, new Callback() {
-                            public void call() {
-                                curWand.onZap(shot);
-                                curWand.wandUsed();
-                            }
-                        });
-                    }
-                    curWand.cursedKnown = true;
-
-                }*/
 
             }
         }

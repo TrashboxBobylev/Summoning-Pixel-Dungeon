@@ -357,6 +357,8 @@ public class ItemSpriteSheet {
     public static final int WOOLY_STAFF     = STAFFS+3;
     public static final int SKELETON_STAFF     = STAFFS+4;
     public static final int MIMIC_STAFF     = STAFFS+5;
+    public static final int CHICKEN_STAFF     = STAFFS+6;
+    public static final int MAGIC_MISSILE_STAFF     = STAFFS+7;
     public static final int FROST_ELEMENTAL_STAFF     = STAFFS+11;
     static {
         assignItemRect(FROGGIT_STAFF, 16, 16);
@@ -366,6 +368,8 @@ public class ItemSpriteSheet {
         assignItemRect(SKELETON_STAFF, 15, 15);
         assignItemRect(FROST_ELEMENTAL_STAFF, 15, 15);
         assignItemRect(MIMIC_STAFF, 16, 16);
+        assignItemRect(CHICKEN_STAFF, 16, 16);
+        assignItemRect(MAGIC_MISSILE_STAFF, 16, 16);
     }
 
 

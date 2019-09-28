@@ -43,6 +43,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MagesStaff;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.trashboxbobylev.summoningpixeldungeon.journal.Catalog;
@@ -62,7 +63,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 	}
 	
 	public static boolean canTransmute(Item item){
-		return item instanceof MeleeWeapon ||
+		return (item instanceof MeleeWeapon && !(item instanceof Staff)) ||
 				(item instanceof MissileWeapon && !(item instanceof Dart)) ||
 				(item instanceof Potion && !(item instanceof Elixir || item instanceof Brew || item instanceof AlchemicalCatalyst)) ||
 				item instanceof Scroll ||
@@ -79,7 +80,9 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		Item result;
 		
 		if (item instanceof MagesStaff) {
-			result = changeStaff( (MagesStaff)item );
+            result = changeStaff((MagesStaff) item);
+        } else if (item instanceof Staff) {
+		    result = changeStaff( (Staff)item );
 		} else if (item instanceof MeleeWeapon || item instanceof MissileWeapon) {
 			result = changeWeapon( (Weapon)item );
 		} else if (item instanceof Scroll) {
@@ -141,6 +144,39 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		
 		return staff;
 	}
+
+    private Weapon changeStaff( Staff w ) {
+
+        Staff n;
+        Generator.Category c = Generator.stfTiers[w.tier - 1];
+
+        do {
+            try {
+                n = (Staff) c.classes[Random.chances(c.probs)].newInstance();
+            } catch (Exception e) {
+                ShatteredPixelDungeon.reportException(e);
+                return null;
+            }
+        } while (Challenges.isItemBlocked(n) || n.getClass() == w.getClass());
+
+        int level = w.level();
+        if (w.curseInfusionBonus) level--;
+        if (level > 0) {
+            n.upgrade( level );
+        } else if (level < 0) {
+            n.degrade( -level );
+        }
+
+        n.enchantment = w.enchantment;
+        n.curseInfusionBonus = w.curseInfusionBonus;
+        n.levelKnown = w.levelKnown;
+        n.cursedKnown = w.cursedKnown;
+        n.cursed = w.cursed;
+        n.augment = w.augment;
+
+        return n;
+
+    }
 	
 	private Weapon changeWeapon( Weapon w ) {
 		
