@@ -368,7 +368,7 @@ public class Staff extends MeleeWeapon {
 
         //if anything is met, spawn minion
         //if hero do not have enough strength, summoning might fail
-        if (Random.Float() < 1/(float)(strength*2)) {
+        if (strength == 1 || Random.Float() < 1 / (float) (strength * 2)) {
             Minion minion = minionType.newInstance();
             GameScene.add(minion);
             ScrollOfTeleportation.appear(minion, spawnPoints.get(Random.index(spawnPoints)));
@@ -377,6 +377,7 @@ public class Staff extends MeleeWeapon {
             Statistics.summonedMinions++;
             Badges.validateConjurerUnlock();
             minion.strength = STRReq();
+            this.customizeMinion(minion);
 
             //if we have upgraded robe, increase hp
             float robeBonus = 1f;
@@ -388,6 +389,7 @@ public class Staff extends MeleeWeapon {
         wandUsed(false);
     }
 
+    public void customizeMinion(Minion minion){ }
 
     protected static CellSelector.Listener zapper = new  CellSelector.Listener() {
 
@@ -578,10 +580,12 @@ public class Staff extends MeleeWeapon {
 
         if (isIdentified()) {
             float robeBonus = 1f;
-            if (Dungeon.hero.belongings.armor instanceof ConjurerArmor && curUser.belongings.armor.level() > 0){
-                robeBonus = 1f + curUser.belongings.armor.level()*0.1f;
+            if (Dungeon.hero.belongings.armor instanceof ConjurerArmor) {
+                if (curUser.belongings.armor.level() > 0) {
+                    robeBonus = 1f + curUser.belongings.armor.level() * 0.1f;
+                }
             }
-            info += "\n\n" + Messages.get(Staff.class, "stats_known", tier, augment.damageFactor(min()), augment.damageFactor(max()), STRReq(), minionMin(level()), minionMax(level()), (int)(hp(level()) * robeBonus));
+            info += "\n\n" + Messages.get(Staff.class, "stats_known", tier, augment.damageFactor(min()), augment.damageFactor(max()), STRReq(), minionMin(level()), minionMax(level()), hp(level()) * robeBonus);
             if (STRReq() > Dungeon.hero.STR()) {
                 info += " " + Messages.get(MeleeWeapon.class, "too_heavy");
             } else if (Dungeon.hero.STR() > STRReq()){
