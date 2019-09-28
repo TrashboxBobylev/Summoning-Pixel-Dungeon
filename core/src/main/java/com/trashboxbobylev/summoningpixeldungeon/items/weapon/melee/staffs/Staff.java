@@ -244,7 +244,7 @@ public class Staff extends MeleeWeapon {
 
 
     public int minionmin() {
-        return (int) Math.max(0, minionMin(level())* RingOfAttunement.damageMultiplier(Dungeon.hero));
+        return Math.round(minionMin(level())* RingOfAttunement.damageMultiplier(Dungeon.hero));
     }
 
     public int minionMin(int lvl) {
@@ -253,7 +253,7 @@ public class Staff extends MeleeWeapon {
     }
 
     public int minionmax() {
-        return (int) Math.max(0, minionMax(level())* RingOfAttunement.damageMultiplier(Dungeon.hero));
+        return Math.round(minionMax(level())* RingOfAttunement.damageMultiplier(Dungeon.hero));
     }
 
     public int minionMax(int lvl) {
@@ -573,11 +573,12 @@ public class Staff extends MeleeWeapon {
                 }
             }
             info += "\n\n" + Messages.get(Staff.class, "stats_known", tier,
-                    augment.damageFactor(min()), augment.damageFactor(max()),
+                    augment.damageFactor(min()),
+                    augment.damageFactor(max()),
                     STRReq(),
                     minionmin(),
                     minionmax(),
-                    hp(level()) * robeBonus);
+                    (int)(hp(level()) * robeBonus));
             if (STRReq() > Dungeon.hero.STR()) {
                 info += " " + Messages.get(MeleeWeapon.class, "too_heavy");
             } else if (Dungeon.hero.STR() > STRReq()){
