@@ -260,7 +260,7 @@ public abstract class Mob extends Char {
 							enemies.add(Dungeon.hero);
 						}
 					} else {
-					    int hp = 0;
+					    int hp = -1;
 					    //prioritise minion with highest health
 					    for (Char min : enemies){
 					        if (min instanceof Minion && hp < min.HT) priority = (Minion) min;
@@ -291,6 +291,11 @@ public abstract class Mob extends Char {
                 for (Char minion : enemies){
                     if (minion instanceof Minion){
                         minionsAreHere = true;
+                            int hp = -1;
+                            //prioritise minion with highest health
+                            for (Char min : enemies){
+                                if (min instanceof Minion && hp < min.HT) priority = (Minion) min;
+                            }
                         break;
                     }
                 }
@@ -318,7 +323,7 @@ public abstract class Mob extends Char {
 				for (Char curr : enemies){
 					if (closest == null
 							|| Dungeon.level.distance(pos, curr.pos) < Dungeon.level.distance(pos, closest.pos)
-							|| Dungeon.level.distance(pos, curr.pos) == Dungeon.level.distance(pos, closest.pos) && (curr == Dungeon.hero || (minionsAreHere && curr instanceof Minion) || (curr.equals(priority)))){
+							|| Dungeon.level.distance(pos, curr.pos) == Dungeon.level.distance(pos, closest.pos) && ((curr.equals(priority)) || (minionsAreHere && curr instanceof Minion)) || curr == Dungeon.hero){
 						closest = curr;
 					}
 				}

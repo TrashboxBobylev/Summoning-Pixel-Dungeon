@@ -51,6 +51,6 @@ public class ChickenStaff extends Staff {
 
     @Override
     public int hp(int lvl){
-        return 1 + lvl;
+        return 2 + lvl;
     }
 }
