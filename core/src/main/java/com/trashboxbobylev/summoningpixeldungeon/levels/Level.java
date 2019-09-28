@@ -46,6 +46,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroClass;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroSubClass;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Bestiary;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary.StationaryMinion;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.FlowParticle;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.WindParticle;
 import com.trashboxbobylev.summoningpixeldungeon.items.Generator;
@@ -983,7 +984,7 @@ public abstract class Level implements Bundlable {
 			}
 
 			for (Mob ward : mobs){
-				if (ward instanceof WandOfWarding.Ward){
+				if (ward instanceof WandOfWarding.Ward || ward instanceof StationaryMinion){
 					if (ward.fieldOfView == null || ward.fieldOfView.length != length()){
 						ward.fieldOfView = new boolean[length()];
 						Dungeon.level.updateFieldOfView( ward, ward.fieldOfView );
