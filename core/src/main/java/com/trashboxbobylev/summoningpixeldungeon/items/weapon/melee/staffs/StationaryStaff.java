@@ -53,6 +53,17 @@ import java.util.ArrayList;
 
 public class StationaryStaff extends Staff {
     //because of precise strategy, I need to rewrite some of Staff methods to allow exact placing
+    {
+        defaultAction = AC_SUMMON;
+    }
+
+    @Override
+    public ArrayList<String> actions(Hero hero) {
+        ArrayList<String> actions = super.actions( hero );
+        actions.remove(AC_ZAP);
+        return actions;
+    }
+
     @Override
     public void execute(Hero hero, String action) {
 
@@ -63,16 +74,12 @@ public class StationaryStaff extends Staff {
             curUser = hero;
             try {
                 curItem = this;
-                GameScene.selectCell( placer );
+                GameScene.selectCell(placer);
             } catch (Exception e) {
                 ShatteredPixelDungeon.reportException(e);
-                GLog.warning( Messages.get(Wand.class, "fizzles") );
+                GLog.warning(Messages.get(Wand.class, "fizzles"));
             }
 
-        } else if (action.equals(AC_ZAP)){
-            curUser = hero;
-            curItem = this;
-            GameScene.selectCell( zapper );
         }
     }
 
