@@ -115,8 +115,7 @@ public class ConjurerArmor extends ClassArmor {
 		for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
 			if (Dungeon.level.heroFOV[mob.pos]
 				&& mob.alignment != Char.Alignment.ALLY) {
-				Buff.prolong( mob, Paralysis.class, 7 );
-				Buff.prolong( mob, Charm.class, 8 );
+				Buff.prolong( mob, SoulParalysis.class, 7 );
 			}
 		}
 

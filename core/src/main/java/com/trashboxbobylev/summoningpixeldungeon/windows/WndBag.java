@@ -34,6 +34,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.Gold;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.Recipe;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.Armor;
+import com.trashboxbobylev.summoningpixeldungeon.items.armor.ConjurerArmor;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.Bag;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.MagicalHolster;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.PotionBandolier;
@@ -81,6 +82,7 @@ public class WndBag extends WndTabbed {
 		FOR_SALE,
 		WEAPON,
 		ARMOR,
+        ARMOR_FOR_IMBUE,
 		ENCHANTABLE,
 		WAND,
 		SEED,
@@ -394,6 +396,7 @@ public class WndBag extends WndTabbed {
 						mode == Mode.QUICKSLOT && (item.defaultAction != null) ||
 						mode == Mode.WEAPON && (item instanceof MeleeWeapon) ||
 						mode == Mode.ARMOR && (item instanceof Armor) ||
+                        mode == Mode.ARMOR_FOR_IMBUE && (item instanceof Armor && !(item instanceof ConjurerArmor)) ||
 						mode == Mode.ENCHANTABLE && (item instanceof MeleeWeapon || item instanceof SpiritBow || item instanceof Armor) ||
 						mode == Mode.WAND && (item instanceof Wand) ||
 						mode == Mode.SEED && (item instanceof Seed) ||
