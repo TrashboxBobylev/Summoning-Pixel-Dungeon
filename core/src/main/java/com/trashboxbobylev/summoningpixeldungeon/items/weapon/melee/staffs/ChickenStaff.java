@@ -50,6 +50,11 @@ public class ChickenStaff extends Staff {
     }
 
     @Override
+    public int initialCharges() {
+        return 4;
+    }
+
+    @Override
     public int hp(int lvl){
         return 1 + lvl;
     }
