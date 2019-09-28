@@ -198,7 +198,7 @@ public class Hero extends Char {
 	public void updateHT( boolean boostHP ){
 		int curHT = HT;
 
-		float adjustHT = heroClass == HeroClass.CONJURER ? 18 : 20;
+		float adjustHT = heroClass == HeroClass.CONJURER ? 15 : 20;
         float adjustScaling = heroClass == HeroClass.CONJURER ? 3 : 5;
 
 		HT = (int) ((adjustHT + adjustScaling*(lvl-1)) + HTBoost);
