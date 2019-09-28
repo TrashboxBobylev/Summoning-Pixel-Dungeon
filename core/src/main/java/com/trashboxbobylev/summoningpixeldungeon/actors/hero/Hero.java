@@ -173,6 +173,10 @@ public class Hero extends Char {
 	
 	public float attunement;
 	public float usedAttunement;
+
+	public float attunement(){
+	    return attunement;
+    }
 	
 	public int lvl = 1;
 	public int exp = 0;
