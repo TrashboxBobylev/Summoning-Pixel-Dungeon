@@ -40,6 +40,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.armor.ConjurerArmor;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.Bag;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.MagicalHolster;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfAttunement;
+import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfSharpshooting;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
@@ -240,9 +241,19 @@ public class Staff extends MeleeWeapon {
 
     //but they have additional stat: minion damage
     //as same as melee damage of regular weapons
+
+
+    public int minionmin() {
+        return (int) Math.max(0, minionMin(level())* RingOfAttunement.damageMultiplier(Dungeon.hero));
+    }
+
     public int minionMin(int lvl) {
         return  tier +  //base
                 lvl;    //level scaling
+    }
+
+    public int minionmax() {
+        return (int) Math.max(0, minionMax(level())* RingOfAttunement.damageMultiplier(Dungeon.hero));
     }
 
     public int minionMax(int lvl) {
@@ -376,8 +387,8 @@ public class Staff extends MeleeWeapon {
             ScrollOfTeleportation.appear(minion, spawnPoints.get(Random.index(spawnPoints)));
             owner.usedAttunement += minion.attunement;
             minion.setDamage(
-                    Math.round(minionMin(level())* RingOfAttunement.damageMultiplier(owner)),
-                    Math.round(minionMax(level()) * RingOfAttunement.damageMultiplier(owner)));
+                    minionmin(),
+                    minionmax());
             Statistics.summonedMinions++;
             Badges.validateConjurerUnlock();
             minion.strength = STRReq();
@@ -557,15 +568,15 @@ public class Staff extends MeleeWeapon {
         if (isIdentified()) {
             float robeBonus = 1f;
             if (Dungeon.hero.belongings.armor instanceof ConjurerArmor) {
-                if (curUser.belongings.armor.level() > 0) {
+                if (Dungeon.hero.belongings.armor.level() > 0) {
                     robeBonus = 1f + curUser.belongings.armor.level() * 0.1f;
                 }
             }
             info += "\n\n" + Messages.get(Staff.class, "stats_known", tier,
                     augment.damageFactor(min()), augment.damageFactor(max()),
                     STRReq(),
-                    Math.round(minionMin(level())* RingOfAttunement.damageMultiplier(Dungeon.hero)),
-                    Math.round(minionMax(level()) * RingOfAttunement.damageMultiplier(Dungeon.hero)),
+                    minionmin(),
+                    minionmax(),
                     hp(level()) * robeBonus);
             if (STRReq() > Dungeon.hero.STR()) {
                 info += " " + Messages.get(MeleeWeapon.class, "too_heavy");
