@@ -48,12 +48,13 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 
 public class ScrollOfSoulEnergy extends ExoticScroll {
+
+    {
+        initials = 9;
+    }
+
     @Override
     public void doRead() {
-
-        {
-            initials = 9;
-        }
 
         //destroy all minions on level
         for (Mob m : Dungeon.level.mobs.toArray(new Mob[0])){
