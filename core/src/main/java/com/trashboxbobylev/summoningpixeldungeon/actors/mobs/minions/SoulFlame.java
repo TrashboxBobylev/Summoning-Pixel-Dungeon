@@ -26,10 +26,13 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions;
 
+import com.trashboxbobylev.summoningpixeldungeon.Assets;
+import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.CharSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.SoulFlameSprite;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
 public class SoulFlame extends Minion {
@@ -48,7 +51,7 @@ public class SoulFlame extends Minion {
     }
 
     public static int adjustMaxDamage(int heroLevel){
-        return (int) (heroLevel*1.5f);
+        return heroLevel*2;
     }
 
     public static int adjustHP(int attunement){
@@ -62,14 +65,21 @@ public class SoulFlame extends Minion {
 
     @Override
     protected boolean doAttack(Char enemy) {
-        boolean visible = fieldOfView[pos] || fieldOfView[enemy.pos];
-        if (visible) {
-            sprite.zap( enemy.pos );
-        } else {
-            zap();
-        }
+        if (Dungeon.level.adjacent( pos, enemy.pos )) {
+            Sample.INSTANCE.play( Assets.SND_GHOST );
+            return super.doAttack( enemy );
 
-        return !visible;
+        } else {
+            boolean visible = fieldOfView[pos] || fieldOfView[enemy.pos];
+            if (visible) {
+                sprite.zap(enemy.pos);
+            } else {
+                zap();
+            }
+
+
+            return !visible;
+        }
     }
 
     public void zap(){
