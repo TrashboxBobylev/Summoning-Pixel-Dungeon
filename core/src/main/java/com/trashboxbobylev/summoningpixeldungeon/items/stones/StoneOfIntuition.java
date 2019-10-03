@@ -51,7 +51,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRechargin
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRetribution;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTeleportation;
-import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTerror;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfAttunement;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ExoticScroll;
@@ -112,7 +112,7 @@ public class StoneOfIntuition extends InventoryStone {
 			ScrollOfRecharging.class,
 			ScrollOfRemoveCurse.class,
 			ScrollOfTeleportation.class,
-			ScrollOfTerror.class,
+			ScrollOfAttunement.class,
 			ScrollOfTransmutation.class,
 			ScrollOfUpgrade.class
 	};

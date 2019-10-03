@@ -60,7 +60,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRechargin
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRetribution;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTeleportation;
-import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTerror;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfAttunement;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfBlastWave;
@@ -242,7 +242,7 @@ public enum Catalog {
 		SCROLLS.seen.put( ScrollOfTeleportation.class,      false);
 		SCROLLS.seen.put( ScrollOfRecharging.class,         false);
 		SCROLLS.seen.put( ScrollOfMirrorImage.class,        false);
-		SCROLLS.seen.put( ScrollOfTerror.class,             false);
+		SCROLLS.seen.put( ScrollOfAttunement.class,             false);
 		SCROLLS.seen.put( ScrollOfLullaby.class,            false);
 		SCROLLS.seen.put( ScrollOfRage.class,               false);
 		SCROLLS.seen.put( ScrollOfRetribution.class,        false);

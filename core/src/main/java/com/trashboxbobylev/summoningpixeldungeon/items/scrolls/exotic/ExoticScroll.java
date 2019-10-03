@@ -37,7 +37,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRechargin
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRetribution;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTeleportation;
-import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTerror;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfAttunement;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.Runestone;
@@ -57,8 +57,8 @@ public abstract class ExoticScroll extends Scroll {
 		regToExo.put(ScrollOfUpgrade.class, ScrollOfEnchantment.class);
 		exoToReg.put(ScrollOfEnchantment.class, ScrollOfUpgrade.class);
 		
-		regToExo.put(ScrollOfTerror.class, ScrollOfPetrification.class);
-		exoToReg.put(ScrollOfPetrification.class, ScrollOfTerror.class);
+		regToExo.put(ScrollOfAttunement.class, ScrollOfPetrification.class);
+		exoToReg.put(ScrollOfPetrification.class, ScrollOfAttunement.class);
 		
 		regToExo.put(ScrollOfRemoveCurse.class, ScrollOfAntiMagic.class);
 		exoToReg.put(ScrollOfAntiMagic.class, ScrollOfRemoveCurse.class);
@@ -69,8 +69,8 @@ public abstract class ExoticScroll extends Scroll {
 		regToExo.put(ScrollOfRage.class, ScrollOfConfusion.class);
 		exoToReg.put(ScrollOfConfusion.class, ScrollOfRage.class);
 		
-		regToExo.put(ScrollOfTerror.class, ScrollOfPetrification.class);
-		exoToReg.put(ScrollOfPetrification.class, ScrollOfTerror.class);
+		regToExo.put(ScrollOfAttunement.class, ScrollOfSoulEnergy.class);
+		exoToReg.put(ScrollOfSoulEnergy.class, ScrollOfAttunement.class);
 		
 		regToExo.put(ScrollOfRecharging.class, ScrollOfMysticalEnergy.class);
 		exoToReg.put(ScrollOfMysticalEnergy.class, ScrollOfRecharging.class);

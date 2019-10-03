@@ -35,7 +35,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRechargin
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRetribution;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTeleportation;
-import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTerror;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfAttunement;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.trashboxbobylev.summoningpixeldungeon.levels.Level;
 import com.trashboxbobylev.summoningpixeldungeon.levels.Terrain;
@@ -67,7 +67,7 @@ public class SecretLibraryRoom extends SecretRoom {
 		scrollChances.put( ScrollOfRetribution.class,  4f );
 		scrollChances.put( ScrollOfRage.class,          4f );
 		scrollChances.put( ScrollOfTeleportation.class, 4f );
-		scrollChances.put( ScrollOfTerror.class,        4f );
+		scrollChances.put( ScrollOfAttunement.class,        4f );
 		scrollChances.put( ScrollOfTransmutation.class, 6f );
 	}
 	

@@ -85,7 +85,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRechargin
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRetribution;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTeleportation;
-import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTerror;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfAttunement;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.Runestone;
@@ -289,10 +289,10 @@ public class Generator {
 					ScrollOfMagicMapping.class,
 					ScrollOfRage.class,
 					ScrollOfRetribution.class,
-					ScrollOfTerror.class,
+					ScrollOfAttunement.class,
 					ScrollOfTransmutation.class
 			};
-			SCROLL.probs = new float[]{ 0, 6, 4, 3, 3, 3, 2, 2, 2, 2, 2, 1 };
+			SCROLL.probs = new float[]{ 0, 5, 4, 3, 3, 3, 2, 2, 2, 2, 3, 1 };
 			
 			STONE.classes = new Class<?>[]{
 					StoneOfEnchantment.class,   //1 is guaranteed to drop on floors 6-19

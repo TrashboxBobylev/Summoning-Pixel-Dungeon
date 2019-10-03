@@ -323,6 +323,7 @@ public abstract class Char extends Actor {
 		if ( buff( Stamina.class ) != null) speed *= 1.5f;
 		if ( buff( Adrenaline.class ) != null) speed *= 2f;
 		if ( buff( Haste.class ) != null) speed *= 3f;
+        if ( buff( Empowered.class ) != null) speed *= 1.35f;
 		return speed;
 	}
 	
@@ -365,6 +366,9 @@ public abstract class Char extends Actor {
 		if (this.buff(Doom.class) != null){
 			dmg *= 2;
 		}
+        if (this.buff(Empowered.class) != null){
+            dmg *= 0.65f;
+        }
 		
 		Class<?> srcClass = src.getClass();
 		if (isImmune( srcClass )) {

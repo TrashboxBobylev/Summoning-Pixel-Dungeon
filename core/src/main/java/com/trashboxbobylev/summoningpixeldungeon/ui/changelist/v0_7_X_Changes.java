@@ -37,7 +37,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfWealth;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfMirrorImage;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRetribution;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTeleportation;
-import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTerror;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfAttunement;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfLivingEarth;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfRegrowth;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfTransfusion;
@@ -838,7 +838,7 @@ public class v0_7_X_Changes {
 				"_-_ Images no longer fade after a successful attack, instead they pull enemy aggro\n\n" +
 				"_-_ Images start out invisible, have 1 hp, no blocking power, but do inherit some of the hero's evasion."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SCROLL_NAUDIZ, null), new ScrollOfTerror().trueName(),
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SCROLL_NAUDIZ, null), new ScrollOfAttunement().trueName(),
 				"Terror now has it's duration reduced by 5 whenever damage is taken, rather than being removed entirely. Scroll of terror duration has been increased to 20 from 10.\n\n" +
 				"Charm now has it's duration reduced by 5 whenever damage is taken, rather than not losing any duration. Succubi have been given a life-drain ability in compensation, and various charming effects have had their durations adjusted."));
 		

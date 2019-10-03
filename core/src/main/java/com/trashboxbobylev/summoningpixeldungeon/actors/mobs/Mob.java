@@ -31,17 +31,7 @@ import com.trashboxbobylev.summoningpixeldungeon.ShatteredPixelDungeon;
 import com.trashboxbobylev.summoningpixeldungeon.Statistics;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Adrenaline;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Amok;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Charm;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Corruption;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Hunger;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Preparation;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Sleep;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.SoulMark;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Terror;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Weakness;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Flare;
@@ -488,6 +478,7 @@ public abstract class Mob extends Char {
 	protected float attackDelay() {
 		float delay = 1f;
 		if ( buff(Adrenaline.class) != null) delay /= 1.5f;
+        if ( buff(Empowered.class) != null) delay /= 1.35f;
 		return delay;
 	}
 	

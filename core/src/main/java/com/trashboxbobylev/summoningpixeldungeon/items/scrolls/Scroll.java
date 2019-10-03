@@ -75,7 +75,7 @@ public abstract class Scroll extends Item {
 		ScrollOfTeleportation.class,
 		ScrollOfUpgrade.class,
 		ScrollOfRage.class,
-		ScrollOfTerror.class,
+		ScrollOfAttunement.class,
 		ScrollOfLullaby.class,
 		ScrollOfTransmutation.class,
 		ScrollOfRetribution.class,
@@ -323,8 +323,8 @@ public abstract class Scroll extends Item {
 			stones.put(ScrollOfTeleportation.class, StoneOfBlink.class);
 			amnts.put(ScrollOfTeleportation.class,  2);
 			
-			stones.put(ScrollOfTerror.class,        StoneOfAffection.class);
-			amnts.put(ScrollOfTerror.class,         3);
+			stones.put(ScrollOfAttunement.class,        StoneOfAffection.class);
+			amnts.put(ScrollOfAttunement.class,         3);
 			
 			stones.put(ScrollOfTransmutation.class, StoneOfAugmentation.class);
 			amnts.put(ScrollOfTransmutation.class,  2);

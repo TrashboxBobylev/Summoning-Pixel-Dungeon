@@ -106,6 +106,7 @@ public class Assets {
 	public static final String WARDS    = "wards.png";
 	public static final String GUARDIAN	= "guardian.png";
     public static final String MAGIC_MISSILE		= "magic_missile.png";
+    public static final String SOUL_FLAME	= "soulflame.png";
 
 	public static final String ITEMS	        = "items.png";
 	public static final String TERRAIN_FEATURES	= "terrain_features.png";

@@ -37,7 +37,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRechargin
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRetribution;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTeleportation;
-import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTerror;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfAttunement;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.Runestone;
@@ -65,7 +65,7 @@ public class ArcaneCatalyst extends Spell {
 		scrollChances.put( ScrollOfRetribution.class,   2f );
 		scrollChances.put( ScrollOfRage.class,          2f );
 		scrollChances.put( ScrollOfTeleportation.class, 2f );
-		scrollChances.put( ScrollOfTerror.class,        2f );
+		scrollChances.put( ScrollOfAttunement.class,        2f );
 		scrollChances.put( ScrollOfTransmutation.class, 1f );
 	}
 	

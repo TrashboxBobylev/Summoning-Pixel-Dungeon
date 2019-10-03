@@ -26,10 +26,7 @@ package com.trashboxbobylev.summoningpixeldungeon.items.scrolls;
 
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Blindness;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Invisibility;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Weakness;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.watabou.noosa.audio.Sample;
@@ -57,7 +54,8 @@ public class ScrollOfRetribution extends Scroll {
 				//deals 10%HT, plus 0-90%HP based on scaling
 				mob.damage(Math.round(mob.HT/10f + (mob.HP * power * 0.225f)), this);
 				if (mob.isAlive()) {
-					Buff.prolong(mob, Blindness.class, Math.round(6 + power));
+					Buff.prolong(mob, Blindness.class, Math.round(4 + power));
+					Buff.prolong(mob, Terror.class, Math.round(6 + power)).object = curUser.id();
 				}
 			}
 		}
@@ -96,6 +94,6 @@ public class ScrollOfRetribution extends Scroll {
 	
 	@Override
 	public int price() {
-		return isKnown() ? 40 * quantity : super.price();
+		return isKnown() ? 50 * quantity : super.price();
 	}
 }

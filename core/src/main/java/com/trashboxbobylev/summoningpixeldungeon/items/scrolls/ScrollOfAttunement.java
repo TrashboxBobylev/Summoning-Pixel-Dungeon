@@ -27,17 +27,15 @@ package com.trashboxbobylev.summoningpixeldungeon.items.scrolls;
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Invisibility;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Paralysis;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Terror;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Flare;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
+import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 
-public class ScrollOfTerror extends Scroll {
+public class ScrollOfAttunement extends Scroll {
 
 	{
 		initials = 9;
@@ -46,17 +44,19 @@ public class ScrollOfTerror extends Scroll {
 	@Override
 	public void doRead() {
 		
-		new Flare( 5, 32 ).color( 0xFF0000, true ).show( curUser.sprite, 2f );
+		new Flare( 5, 32 ).color( 0xFFFFFF, true ).show( curUser.sprite, 2f );
 		Sample.INSTANCE.play( Assets.SND_READ );
+        Sample.INSTANCE.play( Assets.SND_LULLABY );
+        GameScene.flash( 0xFFFFFF );
 		Invisibility.dispel();
 		
 		int count = 0;
 		Mob affected = null;
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-			if (mob.alignment != Char.Alignment.ALLY && Dungeon.level.heroFOV[mob.pos]) {
-				Buff.affect( mob, Terror.class, 20f ).object = curUser.id();
+			if (mob.alignment == Char.Alignment.ALLY && Dungeon.level.heroFOV[mob.pos]) {
+				Buff.affect( mob, Empowered.class, 10f );
 
-				if (mob.buff(Terror.class) != null){
+				if (mob.buff(Empowered.class) != null){
 					count++;
 					affected = mob;
 				}
@@ -76,20 +76,6 @@ public class ScrollOfTerror extends Scroll {
 		setKnown();
 
 		readAnimation();
-	}
-	
-	@Override
-	public void empoweredRead() {
-		doRead();
-		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-			if (Dungeon.level.heroFOV[mob.pos]) {
-				Terror t = mob.buff(Terror.class);
-				if (t != null){
-					Buff.prolong(mob, Terror.class, 15f);
-					Buff.affect(mob, Paralysis.class, 5f);
-				}
-			}
-		}
 	}
 	
 	@Override

@@ -43,6 +43,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.food.Food;
 import com.trashboxbobylev.summoningpixeldungeon.items.food.SmallRation;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.*;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfSoulEnergy;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfMagicMissile;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.SpiritBow;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
@@ -215,6 +216,7 @@ public enum HeroClass {
         LoveHolder cloak = new LoveHolder();
         (hero.belongings.misc1 = cloak).identify();
         hero.belongings.misc1.activate( hero );
+        Dungeon.quickslot.setSlot(0, hero.belongings.misc1);
 
         new MagicalHolster().collect();
         Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
@@ -224,7 +226,9 @@ public enum HeroClass {
         hero.STR = 19;
 
         new PotionOfStrength().identify();
-        new ScrollOfMirrorImage().identify();
+        new ScrollOfAttunement().identify();
+        new ScrollOfAttunement().collect();
+        new ScrollOfSoulEnergy().collect();
 
     }
 	
