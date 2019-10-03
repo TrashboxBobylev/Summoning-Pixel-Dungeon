@@ -309,7 +309,6 @@ public class ItemSprite extends MovieClip {
 		}
 
 		if (visible && glowing != null) {
-		    if (!glowing.isRainbow) {
                 if (glowUp && (phase += Game.elapsed) > glowing.period) {
 
                     glowUp = false;
@@ -321,7 +320,6 @@ public class ItemSprite extends MovieClip {
                     phase = 0;
 
                 }
-            }
 			
 			float value = phase / glowing.period * 0.6f;
 		    if (glowing.isRainbow) {
