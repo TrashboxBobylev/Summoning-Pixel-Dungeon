@@ -356,6 +356,7 @@ public class Speck extends Image {
 			break;
 
         case HEALGAS:
+            hardlight( 0xCE4F4F );
             angularSpeed = Random.Float( 300, 400 ) * (Random.Int(2) == 0 ? -1 : 1);
             angle = Random.Float( 360 );
             lifespan = Random.Float( 1f, 4f );

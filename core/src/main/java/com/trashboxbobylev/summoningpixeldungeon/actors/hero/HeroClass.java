@@ -45,6 +45,8 @@ import com.trashboxbobylev.summoningpixeldungeon.items.potions.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfMagicMissile;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.SpiritBow;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Unstable;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Dagger;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Gloves;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MagesStaff;
@@ -133,6 +135,7 @@ public enum HeroClass {
 
 	private static void initWarrior( Hero hero ) {
 		(hero.belongings.weapon = new WornShortsword()).identify();
+        ((Weapon)(hero.belongings.weapon)).enchant(new Unstable());
 		ThrowingStone stones = new ThrowingStone();
 		stones.quantity(3).collect();
 		Dungeon.quickslot.setSlot(0, stones);

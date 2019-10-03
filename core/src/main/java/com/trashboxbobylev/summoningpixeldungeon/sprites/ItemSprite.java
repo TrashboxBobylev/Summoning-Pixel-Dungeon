@@ -24,6 +24,7 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.sprites;
 
+import com.badlogic.gdx.graphics.Color;
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.effects.CellEmitter;
@@ -308,19 +309,28 @@ public class ItemSprite extends MovieClip {
 		}
 
 		if (visible && glowing != null) {
-			if (glowUp && (phase += Game.elapsed) > glowing.period) {
-				
-				glowUp = false;
-				phase = glowing.period;
-				
-			} else if (!glowUp && (phase -= Game.elapsed) < 0) {
-				
-				glowUp = true;
-				phase = 0;
-				
-			}
+		    if (!glowing.isRainbow) {
+                if (glowUp && (phase += Game.elapsed) > glowing.period) {
+
+                    glowUp = false;
+                    phase = glowing.period;
+
+                } else if (!glowUp && (phase -= Game.elapsed) < 0) {
+
+                    glowUp = true;
+                    phase = 0;
+
+                }
+            }
 			
 			float value = phase / glowing.period * 0.6f;
+		    if (glowing.isRainbow) {
+		        value = 0.6f;
+		        glowing.tempColor = glowing.tempColor.fromHsv(Random.Float(360), Random.Float(0.1f, 0.3f), 0.9f);
+		        glowing.red = glowing.tempColor.r;
+		        glowing.blue = glowing.tempColor.b;
+		        glowing.green = glowing.tempColor.g;
+            }
 			
 			rm = gm = bm = 1 - value;
 			ra = glowing.red * value;
@@ -344,6 +354,8 @@ public class ItemSprite extends MovieClip {
 		public float green;
 		public float blue;
 		public float period;
+		public boolean isRainbow = false;
+		public Color tempColor;
 		
 		public Glowing( int color ) {
 			this( color, 1f );
@@ -358,6 +370,14 @@ public class ItemSprite extends MovieClip {
 			blue = (color & 0xFF) / 255f;
 			
 			this.period = period;
+
+			this.isRainbow = false;
 		}
+
+		public Glowing(){
+		    this.color = 0x000000;
+
+		    this.isRainbow = true;
+        }
 	}
 }
