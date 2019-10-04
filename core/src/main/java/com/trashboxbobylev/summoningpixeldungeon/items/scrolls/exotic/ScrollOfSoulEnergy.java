@@ -80,7 +80,7 @@ public class ScrollOfSoulEnergy extends ExoticScroll {
             SoulFlame minion = new SoulFlame();
             GameScene.add(minion);
             ScrollOfTeleportation.appear(minion, respawnPoints.get(Random.index(respawnPoints)));
-            curUser.usedAttunement = curUser.attunement();
+            curUser.usedAttunement = minion.attunement = curUser.attunement();
             minion.setDamage(
                     SoulFlame.adjustMinDamage(curUser.lvl),
                     SoulFlame.adjustMaxDamage(curUser.lvl));
