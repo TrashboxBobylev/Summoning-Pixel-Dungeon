@@ -75,11 +75,6 @@ public class SoulFlame extends Minion {
 
     @Override
     protected boolean doAttack(Char enemy) {
-        if (Dungeon.level.adjacent( pos, enemy.pos )) {
-            Sample.INSTANCE.play( Assets.SND_GHOST );
-            return super.doAttack( enemy );
-
-        } else {
             boolean visible = fieldOfView[pos] || fieldOfView[enemy.pos];
             if (visible) {
                 sprite.zap(enemy.pos);
@@ -89,7 +84,6 @@ public class SoulFlame extends Minion {
 
 
             return !visible;
-        }
     }
 
     public void zap(){
