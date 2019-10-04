@@ -115,6 +115,8 @@ public enum HeroClass {
 		if (Dungeon.isChallenged(Challenges.NO_FOOD)){
 			new SmallRation().collect();
 		}
+
+		hero.attunement = 1;
 		
 		new ScrollOfIdentify().identify();
 
