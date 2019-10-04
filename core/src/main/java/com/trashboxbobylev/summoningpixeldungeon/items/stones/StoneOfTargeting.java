@@ -66,7 +66,8 @@ public class StoneOfTargeting extends Runestone {
 
         for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
             if (Dungeon.level.heroFOV[mob.pos] && (mob instanceof Minion || mob instanceof DriedRose.GhostHero)) {
-                Buff.prolong( mob, Defending.class, Defending.DURATION ).position = cell;
+                int distance = Dungeon.level.distance(mob.pos, cell);
+                Buff.prolong( mob, Defending.class, Defending.DURATION + distance).position = cell;
                 mob.sprite.centerEmitter().start( Speck.factory( Speck.UP ), 0.3f, 5 );
             }
         }
