@@ -51,6 +51,9 @@ public class SoulFlame extends Minion {
     @Override
     protected boolean act() {
         HP--;
+        if (!isAlive()) {
+            die(null);
+        }
         return super.act();
     }
 
@@ -63,7 +66,7 @@ public class SoulFlame extends Minion {
     }
 
     public static int adjustHP(int attunement){
-        int i = attunement * 10;
+        int i = attunement * 20;
         if (Dungeon.hero.heroClass == HeroClass.CONJURER) i /= 1.5f;
         return i;
     }
