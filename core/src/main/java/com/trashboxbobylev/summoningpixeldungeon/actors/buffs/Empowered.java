@@ -34,6 +34,7 @@ public class Empowered extends FlavourBuff {
 	
 	{
 		type = buffType.POSITIVE;
+		announced = true;
 	}
 	
 	public static final float DURATION	= 10f;
