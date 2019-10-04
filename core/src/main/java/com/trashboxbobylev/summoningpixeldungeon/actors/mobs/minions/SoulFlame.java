@@ -54,11 +54,11 @@ public class SoulFlame extends Minion {
         return super.act();
     }
 
-    public static int adjustMinDamage(int heroLevel){
+    public static int adjustMaxDamage(int heroLevel){
         return heroLevel;
     }
 
-    public static int adjustMaxDamage(int heroLevel){
+    public static int adjustMinDamage(int heroLevel){
         return Math.round(heroLevel*0.75f);
     }
 
