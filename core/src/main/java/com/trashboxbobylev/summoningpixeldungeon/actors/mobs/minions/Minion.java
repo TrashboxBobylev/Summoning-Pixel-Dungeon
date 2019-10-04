@@ -31,6 +31,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary.StationaryMinion;
 import com.trashboxbobylev.summoningpixeldungeon.items.KindOfWeapon;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfAccuracy;
+import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfTargeting;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -42,6 +43,7 @@ public abstract class Minion extends Mob {
     protected int minDR = 0;
     protected int maxDR = 0;
     public int strength = 9;
+    public int defendingPos = -1;
 
     public boolean isTanky = false;
 
@@ -122,7 +124,7 @@ public abstract class Minion extends Mob {
     protected Char chooseEnemy() {
         Char enemy = super.chooseEnemy();
 
-        int targetPos = Dungeon.hero.pos;
+        int targetPos = defendingPos != -1 ? defendingPos : Dungeon.hero.pos;
         int distance = this instanceof StationaryMinion ? Integer.MAX_VALUE : 8;
 
         //will never attack something far from their target
@@ -170,19 +172,29 @@ public abstract class Minion extends Mob {
 
         @Override
         public boolean act( boolean enemyInFOV, boolean justAlerted ) {
-            if ( enemyInFOV) {
+            StoneOfTargeting.Defending defending = buff(StoneOfTargeting.Defending.class);
+            if ( enemyInFOV && defending == null ) {
+
                 enemySeen = true;
+
                 notice();
                 alerted = true;
                 state = HUNTING;
                 target = enemy.pos;
+
             } else {
+
                 enemySeen = false;
+                defendingPos = defending.position;
 
                 int oldPos = pos;
-                target = Dungeon.hero.pos;
+                target = defendingPos != -1 ? defendingPos : Dungeon.hero.pos;
                 //always move towards the hero when wandering
                 if (getCloser( target )) {
+                    //moves 2 tiles at a time when returning to the hero
+                    if (defendingPos == -1 && !Dungeon.level.adjacent(target, pos)){
+                        getCloser( target );
+                    }
                     spend( 1 / speed() );
                     return moveSprite( oldPos, pos );
                 } else {

@@ -48,6 +48,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.glyphs.Brimstone;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRetribution;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfPsionicBlast;
+import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfTargeting;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
@@ -534,6 +535,16 @@ public class DriedRose extends Artifact {
 			if (rose == null || !rose.isEquipped(Dungeon.hero)){
 				damage(1, this);
 			}
+
+            StoneOfTargeting.Defending defending = buff(StoneOfTargeting.Defending.class);
+			if (defending != null){
+                if (defending.cooldown() != 0) {
+                    movingToDefendPos = true;
+                    defendingPos = defending.position;
+                } else {
+                    clearDefensingPos();
+                }
+            }
 			
 			if (!isAlive())
 				return true;

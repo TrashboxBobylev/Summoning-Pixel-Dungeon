@@ -35,19 +35,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.Recipe;
 import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.UnstableSpellbook;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfAntiMagic;
-import com.trashboxbobylev.summoningpixeldungeon.items.stones.Runestone;
-import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfAffection;
-import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfAggression;
-import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfAugmentation;
-import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfBlast;
-import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfBlink;
-import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfClairvoyance;
-import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfDeepenedSleep;
-import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfDisarming;
-import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfEnchantment;
-import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfFlock;
-import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfIntuition;
-import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfShock;
+import com.trashboxbobylev.summoningpixeldungeon.items.stones.*;
 import com.trashboxbobylev.summoningpixeldungeon.journal.Catalog;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.HeroSprite;
@@ -323,7 +311,7 @@ public abstract class Scroll extends Item {
 			stones.put(ScrollOfTeleportation.class, StoneOfBlink.class);
 			amnts.put(ScrollOfTeleportation.class,  2);
 			
-			stones.put(ScrollOfAttunement.class,        StoneOfAffection.class);
+			stones.put(ScrollOfAttunement.class,        StoneOfTargeting.class);
 			amnts.put(ScrollOfAttunement.class,         3);
 			
 			stones.put(ScrollOfTransmutation.class, StoneOfAugmentation.class);
