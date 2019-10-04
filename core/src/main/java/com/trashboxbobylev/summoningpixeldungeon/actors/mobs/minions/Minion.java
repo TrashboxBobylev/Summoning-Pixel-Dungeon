@@ -185,7 +185,9 @@ public abstract class Minion extends Mob {
             } else {
 
                 enemySeen = false;
-                defendingPos = defending.position;
+                if (defending != null) {
+                    defendingPos = defending.position;
+                } else defendingPos = -1;
 
                 int oldPos = pos;
                 target = defendingPos != -1 ? defendingPos : Dungeon.hero.pos;
