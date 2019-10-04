@@ -44,6 +44,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.food.SmallRation;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfSoulEnergy;
+import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfTargeting;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfMagicMissile;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.SpiritBow;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
@@ -232,6 +233,7 @@ public enum HeroClass {
         new ScrollOfAttunement().collect();
         new ScrollOfSoulEnergy().collect();
         new PotionOfExperience().quantity(30).collect();
+        new StoneOfTargeting().quantity(30).collect();
 
     }
 	

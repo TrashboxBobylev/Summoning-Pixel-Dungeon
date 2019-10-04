@@ -88,19 +88,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTeleporta
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfAttunement;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfUpgrade;
-import com.trashboxbobylev.summoningpixeldungeon.items.stones.Runestone;
-import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfAffection;
-import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfAggression;
-import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfAugmentation;
-import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfBlast;
-import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfBlink;
-import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfClairvoyance;
-import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfDeepenedSleep;
-import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfDisarming;
-import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfEnchantment;
-import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfFlock;
-import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfIntuition;
-import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfShock;
+import com.trashboxbobylev.summoningpixeldungeon.items.stones.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfBlastWave;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfCorrosion;
@@ -299,7 +287,7 @@ public class Generator {
 					StoneOfAugmentation.class,  //1 is sold in each shop
 					StoneOfIntuition.class,     //1 additional stone is also dropped on floors 1-3
 					StoneOfAggression.class,
-					StoneOfAffection.class,
+					StoneOfTargeting.class,
 					StoneOfBlast.class,
 					StoneOfBlink.class,
 					StoneOfClairvoyance.class,
