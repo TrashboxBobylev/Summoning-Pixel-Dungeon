@@ -87,17 +87,13 @@ public class ScrollOfSoulEnergy extends ExoticScroll {
             Statistics.summonedMinions++;
             Badges.validateConjurerUnlock();
             minion.strength = curUser.STR;
-
-            //if we have upgraded robe, increase hp
-            float robeBonus = 1f;
-            if (curUser.belongings.armor instanceof ConjurerArmor && curUser.belongings.armor.level() > 0) {
-                robeBonus = 1f + curUser.belongings.armor.level() * 0.1f;
-            }
-            minion.setMaxHP((int) (SoulFlame.adjustHP((int) minion.attunement) * robeBonus));
+            minion.setMaxHP(SoulFlame.adjustHP((int) minion.attunement));
         }
 
         Sample.INSTANCE.play( Assets.SND_READ );
         Invisibility.dispel();
+
+        setKnown();
 
         readAnimation();
     }
