@@ -62,7 +62,7 @@ public class SoulFlame extends Minion {
     }
 
     public static int adjustMinDamage(int heroLevel){
-        return Math.round(heroLevel*0.75f);
+        return Math.round(heroLevel*1.25f);
     }
 
     public static int adjustHP(int attunement){
