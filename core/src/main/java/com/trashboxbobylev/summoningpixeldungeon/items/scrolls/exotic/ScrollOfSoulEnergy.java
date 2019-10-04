@@ -104,6 +104,6 @@ public class ScrollOfSoulEnergy extends ExoticScroll {
 
     @Override
     public String desc() {
-        return Messages.get(this, "desc", SoulFlame.adjustMinDamage(Dungeon.hero.lvl), SoulFlame.adjustMinDamage(Dungeon.hero.lvl), SoulFlame.adjustHP((int) Dungeon.hero.attunement()) );
+        return Messages.get(this, "desc", SoulFlame.adjustMinDamage(Dungeon.hero.lvl), SoulFlame.adjustMaxDamage(Dungeon.hero.lvl), SoulFlame.adjustHP((int) Dungeon.hero.attunement()) );
     }
 }
