@@ -40,7 +40,7 @@ import com.watabou.utils.Random;
 public class SoulFlame extends Minion {
     {
         spriteClass = SoulFlameSprite.class;
-        viewDistance = 6;
+        viewDistance = 8;
     }
 
     @Override
@@ -84,7 +84,6 @@ public class SoulFlame extends Minion {
             } else {
                 zap();
             }
-
 
             return !visible;
     }
