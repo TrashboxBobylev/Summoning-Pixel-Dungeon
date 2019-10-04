@@ -229,6 +229,7 @@ public enum HeroClass {
         new ScrollOfAttunement().identify();
         new ScrollOfAttunement().collect();
         new ScrollOfSoulEnergy().collect();
+        new PotionOfExperience().quantity(30).collect();
 
     }
 	

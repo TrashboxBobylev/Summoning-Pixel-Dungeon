@@ -29,7 +29,9 @@ package com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions;
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroClass;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
+import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.CharSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.SoulFlameSprite;
 import com.watabou.noosa.audio.Sample;
@@ -46,16 +48,24 @@ public class SoulFlame extends Minion {
         return new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos;
     }
 
+    @Override
+    protected boolean act() {
+        HP--;
+        return super.act();
+    }
+
     public static int adjustMinDamage(int heroLevel){
         return heroLevel;
     }
 
     public static int adjustMaxDamage(int heroLevel){
-        return heroLevel*2;
+        return Math.round(heroLevel*0.75f);
     }
 
     public static int adjustHP(int attunement){
-        return attunement*10;
+        int i = attunement * 10;
+        if (Dungeon.hero.heroClass == HeroClass.CONJURER) i /= 1.5f;
+        return i;
     }
 
     public void onZapComplete() {
@@ -86,10 +96,15 @@ public class SoulFlame extends Minion {
         spend( 1f );
 
         if (hit( this, enemy, true )) {
-            int dmg = Random.NormalIntRange(minDamage/2, maxDamage/2);
+            int dmg = Random.NormalIntRange(minDamage, maxDamage);
             enemy.damage(dmg, this);
         } else {
             enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
         }
+    }
+
+    @Override
+    public String description() {
+        return Messages.get(this, "desc", minDamage, maxDamage, HP+1);
     }
 }

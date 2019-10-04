@@ -34,6 +34,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.SoulFlame;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Flare;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Surprise;
@@ -239,9 +240,9 @@ public abstract class Mob extends Char {
 							enemies.add(mob);
 				
 				if (enemies.isEmpty()) {
-					//try to find ally mobs to attack second.
+					//try to find ally mobs to attack second, ignoring the soul flame
 					for (Mob mob : Dungeon.level.mobs)
-						if (mob.alignment == Alignment.ALLY && mob != this && fieldOfView[mob.pos])
+						if (mob.alignment == Alignment.ALLY && mob != this && fieldOfView[mob.pos] && !(mob instanceof SoulFlame))
 							enemies.add(mob);
 					
 					if (enemies.isEmpty()) {
@@ -271,9 +272,9 @@ public abstract class Mob extends Char {
 				
 			//if the mob is an enemy...
 			} else if (alignment == Alignment.ENEMY) {
-				//look for ally mobs to attack
+				//look for ally mobs to attack, ignoring the soul flame
 				for (Mob mob : Dungeon.level.mobs)
-					if (mob.alignment == Alignment.ALLY && fieldOfView[mob.pos])
+					if (mob.alignment == Alignment.ALLY && fieldOfView[mob.pos] && !(mob instanceof SoulFlame))
 						enemies.add(mob);
 
 

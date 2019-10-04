@@ -40,6 +40,7 @@ import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.ConjurerArmor;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.ChickenStaff;
+import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
@@ -99,5 +100,10 @@ public class ScrollOfSoulEnergy extends ExoticScroll {
         Invisibility.dispel();
 
         readAnimation();
+    }
+
+    @Override
+    public String desc() {
+        return Messages.get(this, "desc", SoulFlame.adjustMinDamage(Dungeon.hero.lvl), SoulFlame.adjustMinDamage(Dungeon.hero.lvl), SoulFlame.adjustHP((int) Dungeon.hero.attunement()) );
     }
 }
