@@ -36,8 +36,10 @@ import com.trashboxbobylev.summoningpixeldungeon.effects.SpellSprite;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
+import com.trashboxbobylev.summoningpixeldungeon.scenes.InterlevelScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 
 import java.util.ArrayList;
@@ -72,7 +74,7 @@ public class Food extends Item {
 
 		if (action.equals( AC_EAT )) {
 			
-			detach( hero.belongings.backpack );
+			//detach( hero.belongings.backpack );
 			
 			satisfy(hero);
 			GLog.i( message );
@@ -88,6 +90,9 @@ public class Food extends Item {
 			
 			Statistics.foodEaten++;
 			Badges.validateFoodEaten();
+
+            InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
+            Game.switchScene( InterlevelScene.class );
 			
 		}
 	}
