@@ -51,6 +51,6 @@ public class RoboStaff extends Staff {
     }
 
     public int hp(int lvl){
-        return 25*tier + lvl*(tier); // from 32 to 100, and +15
+        return 25*tier + lvl*(tier+11); // from 32 to 100, and +15
     }
 }
