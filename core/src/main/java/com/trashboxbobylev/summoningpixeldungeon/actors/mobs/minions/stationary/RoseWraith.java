@@ -56,12 +56,16 @@ public class RoseWraith extends StationaryMinion {
 
         Timer timer = buff(Timer.class);
         if (timer != null){
-            Buff.affect(this, Timer.class, Random.IntRange(4, 8));
+            Buff.affect(this, Timer.class, Random.IntRange(4, 8)*attackDelay());
             Wraith.summonAt(this);
             this.damage(1, null);
         }
 
-        return visible;
+        if (visible) sprite.attack(enemy.pos);
+
+        spend(attackDelay());
+
+        return !visible;
     }
 
     private static class Timer extends FlavourBuff {

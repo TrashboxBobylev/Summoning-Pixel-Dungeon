@@ -165,7 +165,7 @@ public class Hero extends Char {
 	
 	public int STR;
 	
-	public float attunement;
+	public float attunement = 1;
 	public float usedAttunement;
 
 	public float attunement(){
