@@ -24,24 +24,33 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.actors.mobs;
 
+import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Corruption;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Terror;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary.RoseWraith;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.ShadowParticle;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Grim;
+import com.trashboxbobylev.summoningpixeldungeon.levels.Level;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.WraithSprite;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class Wraith extends Mob {
 
 	private static final float SPAWN_DELAY	= 2f;
 	
 	private int level;
+	private RoseWraith parent = null;
 	
 	{
 		spriteClass = WraithSprite.class;
@@ -62,23 +71,30 @@ public class Wraith extends Mob {
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
 		bundle.put( LEVEL, level );
+		bundle.put( "parent", parent);
 	}
 	
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
 		level = bundle.getInt( LEVEL );
-		adjustStats( level );
+		parent = (RoseWraith) bundle.get("parent");
+		if (parent == null) adjustStats( level );
+		else adjustStatsWhenSummoned(parent);
 	}
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 1 + level/2, 2 + level );
+        int i = Random.NormalIntRange(1 + level / 2, 2 + level);
+        if (parent != null) i = Random.NormalIntRange(parent.minDamage, parent.maxDamage);
+        return i;
 	}
 	
 	@Override
 	public int attackSkill( Char target ) {
-		return 10 + level;
+        int i = 10 + level;
+        if (parent != null) i = parent.attackSkill(target);
+        return i;
 	}
 	
 	public void adjustStats( int level ) {
@@ -86,6 +102,12 @@ public class Wraith extends Mob {
 		defenseSkill = attackSkill( null ) * 5;
 		enemySeen = true;
 	}
+
+    public void adjustStatsWhenSummoned( RoseWraith wraith ) {
+        this.level = Dungeon.depth;
+        defenseSkill = wraith.defenseSkill( null );
+        enemySeen = true;
+    }
 
 	@Override
 	public boolean reset() {
@@ -121,6 +143,33 @@ public class Wraith extends Mob {
 			return null;
 		}
 	}
+
+    public static Wraith summonAt(RoseWraith wraith) {
+
+        ArrayList<Integer> points = Level.getSpawningPoints(wraith.pos);
+
+        if (points.size() > 0) {
+            int position = points.get(Random.index(points));
+
+                Wraith w = new Wraith();
+                w.parent = wraith;
+                w.adjustStatsWhenSummoned(wraith);
+                w.pos = position;
+                w.state = w.HUNTING;
+                GameScene.add(w, SPAWN_DELAY);
+                Buff.affect(w, Corruption.class);
+                w.sprite.alpha(0);
+                w.sprite.parent.add(new AlphaTweener(w.sprite, 1, 0.5f));
+
+                w.sprite.emitter().burst(ShadowParticle.CURSE, 5);
+
+                Sample.INSTANCE.play( Assets.SND_CURSED );
+
+                return w;
+        } else {
+            return null;
+        }
+    }
 	
 	{
 		immunities.add( Grim.class );

@@ -647,6 +647,20 @@ public abstract class Level implements Bundlable {
 			discoverable[i] = d;
 		}
 	}
+
+	public static ArrayList<Integer> getSpawningPoints(int pos) {
+        ArrayList<Integer> respawnPoints = new ArrayList<Integer>();
+
+        for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
+            int p = pos + PathFinder.NEIGHBOURS8[i];
+            if (Actor.findChar(p) == null && Dungeon.level.passable[p]) {
+                respawnPoints.add(p);
+            }
+        }
+
+        return respawnPoints;
+
+    }
 	
 	public static void set( int cell, int terrain ){
 		set( cell, terrain, Dungeon.level );

@@ -26,15 +26,23 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary;
 
+import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.FlavourBuff;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Wraith;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
-import com.trashboxbobylev.summoningpixeldungeon.sprites.CharSprite;
-import com.trashboxbobylev.summoningpixeldungeon.sprites.MagicMissileSprite;
+import com.trashboxbobylev.summoningpixeldungeon.sprites.RoseWraithSprite;
 import com.watabou.utils.Random;
 
-public class MagicMissileMinion extends StationaryMinion {
+public class RoseWraith extends StationaryMinion {
     {
-        spriteClass = MagicMissileSprite.class;
+        spriteClass = RoseWraithSprite.class;
+    }
+
+    @Override
+    public int defenseSkill(Char enemy) {
+        return Math.round(super.defenseSkill(enemy)*2.5f);
     }
 
     @Override
@@ -42,34 +50,23 @@ public class MagicMissileMinion extends StationaryMinion {
         return new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos;
     }
 
-
-    public void onZapComplete() {
-        zap();
-        next();
-    }
-
     @Override
     protected boolean doAttack(Char enemy) {
-        boolean visible = fieldOfView[pos] || fieldOfView[enemy.pos];
-        if (visible) {
-            sprite.zap( enemy.pos );
-        } else {
-            zap();
+        boolean visible = Dungeon.level.heroFOV[pos];
+
+        Timer timer = buff(Timer.class);
+        if (timer != null){
+            Buff.affect(this, Timer.class, Random.IntRange(4, 8));
+            Wraith.summonAt(this);
+            this.damage(1, null);
         }
 
-        return !visible;
+        return visible;
     }
 
-    public void zap(){
-        spend( 1f );
+    private static class Timer extends FlavourBuff {
 
-        if (hit( this, enemy, false )) {
-            int dmg = Random.NormalIntRange(minDamage, maxDamage);
-            enemy.damage(dmg, this);
-
-            damage(3, this);
-        } else {
-            enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
-        }
     }
+
+
 }

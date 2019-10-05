@@ -77,6 +77,7 @@ public class Assets {
 	public static final String BRUTE	= "brute.png";
 	public static final String SPINNER	= "spinner.png";
 	public static final String DM300	= "dm300.png";
+	public static final String ROSE_WRAITH = "rose_wraith.png";
 	public static final String WRAITH	= "wraith.png";
 	public static final String ELEMENTAL= "elemental.png";
 	public static final String MONK		= "monk.png";

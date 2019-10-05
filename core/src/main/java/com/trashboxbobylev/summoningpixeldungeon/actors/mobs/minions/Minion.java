@@ -38,8 +38,8 @@ import com.watabou.utils.Random;
 
 public abstract class Minion extends Mob {
 
-    protected int minDamage = 0;
-    protected int maxDamage = 0;
+    public int minDamage = 0;
+    public int maxDamage = 0;
     protected int minDR = 0;
     protected int maxDR = 0;
     public int strength = 9;
