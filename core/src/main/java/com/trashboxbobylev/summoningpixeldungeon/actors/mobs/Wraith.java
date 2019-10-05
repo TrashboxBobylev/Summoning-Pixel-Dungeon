@@ -50,7 +50,7 @@ public class Wraith extends Mob {
 	private static final float SPAWN_DELAY	= 2f;
 	
 	private int level;
-	private RoseWraith parent = null;
+    public RoseWraith parent = null;
 	
 	{
 		spriteClass = WraithSprite.class;
@@ -105,7 +105,7 @@ public class Wraith extends Mob {
 
     public void adjustStatsWhenSummoned( RoseWraith wraith ) {
         this.level = Dungeon.depth;
-        defenseSkill = wraith.defenseSkill( null );
+        defenseSkill = wraith.attackSkill( wraith.enemy )*5;
         enemySeen = true;
     }
 
@@ -156,7 +156,7 @@ public class Wraith extends Mob {
                 w.adjustStatsWhenSummoned(wraith);
                 w.pos = position;
                 w.state = w.HUNTING;
-                GameScene.add(w, SPAWN_DELAY);
+                GameScene.add(w);
                 Buff.affect(w, Corruption.class);
                 w.sprite.alpha(0);
                 w.sprite.parent.add(new AlphaTweener(w.sprite, 1, 0.5f));

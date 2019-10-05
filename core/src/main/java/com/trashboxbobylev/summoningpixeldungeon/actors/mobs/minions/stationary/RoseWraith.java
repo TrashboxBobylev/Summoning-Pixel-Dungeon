@@ -32,6 +32,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.FlavourBuff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Wraith;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
+import com.trashboxbobylev.summoningpixeldungeon.sprites.CharSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.RoseWraithSprite;
 import com.watabou.utils.Random;
 
@@ -55,20 +56,21 @@ public class RoseWraith extends StationaryMinion {
         boolean visible = Dungeon.level.heroFOV[pos];
 
         Timer timer = buff(Timer.class);
-        if (timer != null){
+        if (timer == null){
             Buff.affect(this, Timer.class, Random.IntRange(4, 8)*attackDelay());
             Wraith.summonAt(this);
-            this.damage(1, null);
+            this.damage(1, this);
+        } else {
+            sprite.showStatus(CharSprite.DEFAULT, String.valueOf(timer.cooldown()+1));
         }
 
-        if (visible) sprite.attack(enemy.pos);
-
         spend(attackDelay());
+        next();
 
         return !visible;
     }
 
-    private static class Timer extends FlavourBuff {
+    public static class Timer extends FlavourBuff {
 
     }
 
