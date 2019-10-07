@@ -47,6 +47,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroSubClass;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Bestiary;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary.StationaryMinion;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.npcs.Sheep;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.FlowParticle;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.WindParticle;
 import com.trashboxbobylev.summoningpixeldungeon.items.Generator;
@@ -103,11 +104,7 @@ public abstract class Level implements Bundlable {
                 } else if (ch instanceof Mob) {
                     Chasm.mobFall( (Mob)ch );
                 }
-                return;
             }
-
-            //characters which are not the hero or a sheep 'soft' press cells
-            pressCell( ch.pos, ch instanceof Hero || ch instanceof Sheep);
         }
     }
 
