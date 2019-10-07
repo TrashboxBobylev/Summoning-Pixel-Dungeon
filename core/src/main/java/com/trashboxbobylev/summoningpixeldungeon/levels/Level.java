@@ -94,7 +94,22 @@ import java.util.HashSet;
 
 public abstract class Level implements Bundlable {
 
-    public abstract void occupyCell(Char ch);
+    public void occupyCell( Char ch ){
+        if (!ch.flying){
+
+            if (pit[ch.pos]){
+                if (ch == Dungeon.hero) {
+                    Chasm.heroFall(ch.pos);
+                } else if (ch instanceof Mob) {
+                    Chasm.mobFall( (Mob)ch );
+                }
+                return;
+            }
+
+            //characters which are not the hero or a sheep 'soft' press cells
+            pressCell( ch.pos, ch instanceof Hero || ch instanceof Sheep);
+        }
+    }
 
     public static enum Feeling {
 		NONE,

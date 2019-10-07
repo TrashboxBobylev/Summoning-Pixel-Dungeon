@@ -78,17 +78,17 @@ public class Bestiary {
 						Shaman.class,
 						Guard.class));
 			case 8:
-				//3x skeleton, 1x thief, 2x shaman, 2x guard
+				//3x skeleton, 1x thief, 2x shaman, 1x guard, 1x necromancer
 				return new ArrayList<>(Arrays.asList(Skeleton.class, Skeleton.class, Skeleton.class,
 						Thief.class,
 						Shaman.class, Shaman.class,
-						Guard.class, Guard.class));
+						Guard.class, Necromancer.class));
 			case 9: case 10:
-				//3x skeleton, 1x thief, 2x shaman, 3x guard
+				//3x skeleton, 1x thief, 2x shaman, 2x guard, 1x necromancer
 				return new ArrayList<>(Arrays.asList(Skeleton.class, Skeleton.class, Skeleton.class,
 						Thief.class,
 						Shaman.class, Shaman.class,
-						Guard.class, Guard.class, Guard.class));
+						Guard.class, Guard.class, Necromancer.class));
 				
 			// Caves
 			case 11:

@@ -28,6 +28,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Adrenaline;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Corruption;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Empowered;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Beam;
 import com.trashboxbobylev.summoningpixeldungeon.effects.CellEmitter;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Pushing;
@@ -49,7 +50,7 @@ public class Necromancer extends Mob {
 	{
 		spriteClass = NecromancerSprite.class;
 		
-		HP = HT = 35;
+		HP = HT = 40;
 		defenseSkill = 11;
 		
 		EXP = 7;
@@ -163,7 +164,7 @@ public class Necromancer extends Mob {
 			
 			sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
 			
-			mySkeleton.HP = Math.min(mySkeleton.HP + 5, mySkeleton.HT);
+			mySkeleton.HP = Math.min(mySkeleton.HP + 8, mySkeleton.HT);
 			mySkeleton.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
 			
 			//otherwise give it adrenaline
@@ -171,8 +172,13 @@ public class Necromancer extends Mob {
 			
 			sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
 			
-			Buff.affect(mySkeleton, Adrenaline.class, 3f);
-		}
+			Buff.affect(mySkeleton, Adrenaline.class, 4f);
+			//otherwise give it empowered
+		} else if (mySkeleton.buff(Empowered.class) == null){
+            sprite.parent.add(new Beam.LightRay(sprite.center(), mySkeleton.sprite.center()));
+
+            Buff.affect(mySkeleton, Empowered.class, 4f);
+        }
 	}
 	
 	private class Hunting extends Mob.Hunting{
