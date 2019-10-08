@@ -46,28 +46,10 @@ public class ChaosSaberSprite extends MobSprite {
         die = new Animation(20, false);
         die.frames(film, 4);
 
-        attack = new Animation(2, false);
+        attack = new Animation(4, false);
         attack.frames(film, 1, 2, 3, 4);
 
         idle();
 
-    }
-
-    private float baseY = Float.NaN;
-
-    @Override
-    public void place(int cell) {
-        super.place(cell);
-        baseY = y;
-    }
-
-    @Override
-    public void update() {
-        super.update();
-        if (!paused && !isMoving){
-            if (Float.isNaN(baseY)) baseY = y;
-            y = baseY + (float) Math.sin(Game.timeTotal)*2;
-            shadowOffset = 0.25f - 0.8f*(float) Math.sin(Game.timeTotal)*2;
-        }
     }
 }
