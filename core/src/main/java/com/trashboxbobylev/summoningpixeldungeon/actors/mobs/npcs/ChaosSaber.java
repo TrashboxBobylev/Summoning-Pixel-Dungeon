@@ -32,7 +32,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Burning;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ChaosSaberSprite;
 import com.watabou.utils.Bundle;
 
-public class ChaosSaber extends NPC{
+public class ChaosSaber extends NPC {
     {
         spriteClass = ChaosSaberSprite.class;
 
@@ -62,8 +62,13 @@ public class ChaosSaber extends NPC{
     }
 
     @Override
+    public void damage(int dmg, Object src) {
+        super.damage(0, new Object());
+    }
+
+    @Override
     public int attackSkill( Char target ) {
-        return target.defenseSkill(this);
+        return Integer.MAX_VALUE;
     }
 
     @Override

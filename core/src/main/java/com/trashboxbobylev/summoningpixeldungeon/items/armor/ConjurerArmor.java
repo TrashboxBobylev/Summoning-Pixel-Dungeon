@@ -32,9 +32,14 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
+import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroClass;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.npcs.ChaosSaber;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.npcs.MirrorImage;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.ElmoParticle;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.trashboxbobylev.summoningpixeldungeon.levels.Level;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.HeroSprite;
@@ -42,6 +47,7 @@ import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.trashboxbobylev.summoningpixeldungeon.windows.WndBag;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -52,6 +58,7 @@ public class ConjurerArmor extends ClassArmor {
 	}
 
     private static final String AC_IMBUE = "IMBUE";
+    private static final String AC_CHAOS = "CHAOS";
 
     @Override
     public ArrayList<String> actions(Hero hero ) {
@@ -60,6 +67,7 @@ public class ConjurerArmor extends ClassArmor {
         actions.remove(AC_UNEQUIP);
         actions.remove(AC_DROP);
         actions.remove(AC_THROW);
+        if (hero.subClass != null) actions.add(AC_CHAOS);
         return actions;
     }
 
@@ -67,9 +75,34 @@ public class ConjurerArmor extends ClassArmor {
     public void execute(Hero hero, String action) {
         super.execute(hero, action);
 
-        if (action.equals(AC_IMBUE)){
+        if (action.equals(AC_IMBUE)) {
             curUser = hero;
-            GameScene.selectItem( itemSelector, WndBag.Mode.ARMOR_FOR_IMBUE, Messages.get(this, "prompt") );
+            GameScene.selectItem(itemSelector, WndBag.Mode.ARMOR_FOR_IMBUE, Messages.get(this, "prompt"));
+        } else if (action.equals(AC_CHAOS)) {
+            if (hero.HP < 3 ||
+                    (hero.heroClass == HeroClass.CONJURER && hero.HP < (hero.HT / 2))) {
+                GLog.warning(Messages.get(this, "low_hp"));
+            } else if (!isEquipped(hero)) {
+                GLog.warning(Messages.get(this, "not_equipped"));
+            } else {
+                curUser = hero;
+                Invisibility.dispel();
+                ArrayList<Integer> spawnPoints = Level.getSpawningPoints(hero.pos);
+                if (spawnPoints.size() > 0){
+                    for (int i = 0; i < 2; i++) {
+                        int index = Random.index( spawnPoints );
+
+                        ChaosSaber mob = new ChaosSaber();
+                        mob.duplicate( hero.HT / 6 );
+                        GameScene.add( mob );
+                        ScrollOfTeleportation.appear( mob, spawnPoints.get( index ) );
+
+                        spawnPoints.remove( index );
+                    }
+                    curUser.HP -= (curUser.HT / 3);
+                    curUser.spendAndNext( Actor.TICK );
+                }
+            }
         }
     }
 
