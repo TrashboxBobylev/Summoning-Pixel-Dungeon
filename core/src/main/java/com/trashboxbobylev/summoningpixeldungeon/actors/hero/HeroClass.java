@@ -30,6 +30,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Challenges;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.items.BrokenSeal;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
+import com.trashboxbobylev.summoningpixeldungeon.items.TomeOfMastery;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.Armor;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.ClassArmor;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.ClothArmor;
@@ -120,6 +121,8 @@ public enum HeroClass {
 		hero.attunement = 1;
 		
 		new ScrollOfIdentify().identify();
+
+		new TomeOfMastery().collect();
 
 	}
 

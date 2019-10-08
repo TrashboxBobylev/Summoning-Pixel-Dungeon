@@ -135,24 +135,9 @@ public class WandOfCorruption extends Wand {
 			float corruptingPower = 2 + level();
 			
 			//base enemy resistance is usually based on their exp, but in special cases it is based on other criteria
-			float enemyResist = 1 + enemy.EXP;
-			if (ch instanceof Mimic || ch instanceof Statue){
-				enemyResist = 1 + Dungeon.depth;
-			} else if (ch instanceof Piranha || ch instanceof Bee) {
-				enemyResist = 1 + Dungeon.depth/2f;
-			} else if (ch instanceof Wraith) {
-				//this is so low because wraiths are always at max hp
-				enemyResist = 0.5f + Dungeon.depth/8f;
-			} else if (ch instanceof Yog.BurningFist || ch instanceof Yog.RottingFist) {
-				enemyResist = 1 + 30;
-			} else if (ch instanceof Yog.Larva || ch instanceof King.Undead){
-				enemyResist = 1 + 5;
-			} else if (ch instanceof Swarm){
-				//child swarms don't give exp, so we force this here.
-				enemyResist = 1 + 3;
-			}
-			
-			//100% health: 3x resist   75%: 2.1x resist   50%: 1.5x resist   25%: 1.1x resist
+            float enemyResist = getEnemyResist(ch, enemy);
+
+            //100% health: 3x resist   75%: 2.1x resist   50%: 1.5x resist   25%: 1.1x resist
 			enemyResist *= 1 + 2*Math.pow(enemy.HP/(float)enemy.HT, 2);
 			
 			//debuffs placed on the enemy reduce their resistance
@@ -168,7 +153,7 @@ public class WandOfCorruption extends Wand {
 			}
 			
 			if (corruptingPower > enemyResist){
-				corruptEnemy( enemy );
+				corruptEnemy(this, enemy );
 			} else {
 				float debuffChance = corruptingPower / enemyResist;
 				if (Random.Float() < debuffChance){
@@ -184,8 +169,28 @@ public class WandOfCorruption extends Wand {
 			Dungeon.level.press(bolt.collisionPos, null, true);
 		}
 	}
-	
-	private void debuffEnemy( Mob enemy, HashMap<Class<? extends Buff>, Float> category ){
+
+    public static float getEnemyResist(Char ch, Mob enemy) {
+        float enemyResist = 1 + enemy.EXP;
+        if (ch instanceof Mimic || ch instanceof Statue){
+            enemyResist = 1 + Dungeon.depth;
+        } else if (ch instanceof Piranha || ch instanceof Bee) {
+            enemyResist = 1 + Dungeon.depth/2f;
+        } else if (ch instanceof Wraith) {
+            //this is so low because wraiths are always at max hp
+            enemyResist = 0.5f + Dungeon.depth/8f;
+        } else if (ch instanceof Yog.BurningFist || ch instanceof Yog.RottingFist) {
+            enemyResist = 1 + 30;
+        } else if (ch instanceof Yog.Larva || ch instanceof King.Undead){
+            enemyResist = 1 + 5;
+        } else if (ch instanceof Swarm){
+            //child swarms don't give exp, so we force this here.
+            enemyResist = 1 + 3;
+        }
+        return enemyResist;
+    }
+
+    private void debuffEnemy( Mob enemy, HashMap<Class<? extends Buff>, Float> category ){
 		
 		//do not consider buffs which are already assigned, or that the enemy is immune to.
 		HashMap<Class<? extends Buff>, Float> debuffs = new HashMap<>(category);
@@ -208,14 +213,14 @@ public class WandOfCorruption extends Wand {
 		} else {
 			//if no debuff can be applied (all are present), then go up one tier
 			if (category == MINOR_DEBUFFS)          debuffEnemy( enemy, MAJOR_DEBUFFS);
-			else if (category == MAJOR_DEBUFFS)     corruptEnemy( enemy );
+			else if (category == MAJOR_DEBUFFS)     corruptEnemy(this, enemy );
 		}
 	}
 	
-	private void corruptEnemy( Mob enemy ){
+	public static void corruptEnemy(WandOfCorruption wandOfCorruption, Mob enemy){
 		//cannot re-corrupt or doom an enemy, so give them a major debuff instead
 		if(enemy.buff(Corruption.class) != null || enemy.buff(Doom.class) != null){
-			GLog.warning( Messages.get(this, "already_corrupted") );
+			GLog.warning( Messages.get(wandOfCorruption, "already_corrupted") );
 			return;
 		}
 		

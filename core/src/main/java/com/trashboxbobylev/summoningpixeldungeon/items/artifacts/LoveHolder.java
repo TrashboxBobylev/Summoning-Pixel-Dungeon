@@ -57,7 +57,7 @@ import java.util.ArrayList;
 
 public class LoveHolder extends Artifact {
 
-    private int str;
+    public int str;
     private int soultype = -1;
     public int totalHealing = 0;
 
@@ -272,7 +272,7 @@ public class LoveHolder extends Artifact {
                                                 totalHealing += healing;
                                                 if (totalHealing >= healingTable[level()]){
                                                     upgrade();
-                                                    chargeCap = Math.min(50 + level()*50, 500);
+                                                    chargeCap = Math.min(50 + level()*25, 500);
                                                     GLog.highlight(Messages.get(LoveHolder.class, "upgrade"));
                                                     totalHealing = 0;
                                                 }

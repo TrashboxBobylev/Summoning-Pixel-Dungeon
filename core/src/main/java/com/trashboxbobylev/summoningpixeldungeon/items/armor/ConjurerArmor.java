@@ -33,20 +33,30 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroClass;
+import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroSubClass;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.npcs.ChaosSaber;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.npcs.MirrorImage;
+import com.trashboxbobylev.summoningpixeldungeon.effects.MagicMissile;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.ElmoParticle;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
+import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.Artifact;
+import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.LoveHolder;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
+import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfCorruption;
 import com.trashboxbobylev.summoningpixeldungeon.levels.Level;
+import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
+import com.trashboxbobylev.summoningpixeldungeon.scenes.CellSelector;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.HeroSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
+import com.trashboxbobylev.summoningpixeldungeon.ui.QuickSlotButton;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.trashboxbobylev.summoningpixeldungeon.windows.WndBag;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -59,6 +69,7 @@ public class ConjurerArmor extends ClassArmor {
 
     private static final String AC_IMBUE = "IMBUE";
     private static final String AC_CHAOS = "CHAOS";
+    private static final String AC_OFFENSE = "OFFENSE";
 
     @Override
     public ArrayList<String> actions(Hero hero ) {
@@ -67,7 +78,10 @@ public class ConjurerArmor extends ClassArmor {
         actions.remove(AC_UNEQUIP);
         actions.remove(AC_DROP);
         actions.remove(AC_THROW);
-        if (hero.subClass != null) actions.add(AC_CHAOS);
+        if (hero.subClass != null) {
+            actions.add(AC_CHAOS);
+            actions.add(AC_OFFENSE);
+        }
         return actions;
     }
 
@@ -178,6 +192,94 @@ public class ConjurerArmor extends ClassArmor {
             return ((lvl - max)+1)/2;
         } else {
             return max;
+        }
+    }
+
+    //offensive option
+    protected CellSelector.Listener zapper = new CellSelector.Listener() {
+        @Override
+        public void onSelect(Integer target) {
+            if (target != null){
+                final Ballistica shot = new Ballistica( curUser.pos, target, Ballistica.MAGIC_BOLT);
+                int cell = shot.collisionPos;
+
+                if (target == curUser.pos || cell == curUser.pos) {
+                    GLog.i( Messages.get(Wand.class, "self_target") );
+                    return;
+                }
+
+                curUser.sprite.zap(cell);
+
+                //attempts to target the cell aimed at if something is there, otherwise targets the collision pos.
+                if (Actor.findChar(target) != null)
+                    QuickSlotButton.target(Actor.findChar(target));
+                else
+                    QuickSlotButton.target(Actor.findChar(cell));
+
+                LoveHolder artifact = null;
+                if (curUser.belongings.misc1 instanceof LoveHolder) artifact = (LoveHolder) curUser.belongings.misc1;
+                else if (curUser.belongings.misc2 instanceof LoveHolder) artifact = (LoveHolder) curUser.belongings.misc2;
+
+                if (artifact == null){
+                    GLog.i( Messages.get(Artifact.class, "need_to_equip") );
+                    return;
+                } else {
+                    final int str = artifact.str;
+                    if (artifact.charge >= str){
+                        if (curUser.subClass == HeroSubClass.SOUL_REAVER) artifact.charge -= str;
+                        updateQuickslot();
+                        curUser.busy();
+                        Invisibility.dispel();
+                        MagicMissile.boltFromChar(curUser.sprite.parent,
+                                MagicMissile.BEACON,
+                                curUser.sprite,
+                                shot.collisionPos,
+                                new Callback() {
+                                    @Override
+                                    public void call() {
+                                        Char ch = Actor.findChar(shot.collisionPos);
+
+                                        if (ch != null){
+                                            switch (curUser.subClass){
+                                                case SOUL_REAVER:
+                                                    doAsSoulReaver(ch, str, curUser);
+                                                case OCCULTIST:
+                                                    doAsOccultist(ch, str, curUser);
+                                            }
+                                        }
+                                    }
+                                });
+                    } else {
+                        GLog.i(Messages.get(LoveHolder.class, "not_enough"));
+                    }
+                }
+            }
+        }
+
+        @Override
+        public String prompt() {
+            return Messages.get(Wand.class, "prompt");
+        }
+    };
+
+    private void doAsSoulReaver(Char target, int strength, Hero owner){
+        //every charge adds +10% damage, initial is 0-hero level
+        int damageRoll = Random.NormalIntRange(0, (int) (owner.lvl*Math.pow(1.1f, strength)));
+        target.damage(damageRoll, this);
+
+        target.sprite.burst(0xFFFFFFFF, strength*2);
+    }
+
+    private void doAsOccultist(Char target, int strength, Hero owner){
+        //every charge consumes 1 hate and adds corruption power
+        float corruptingPower = strength*2;
+        float enemyResist = WandOfCorruption.getEnemyResist(target, (Mob)target);
+
+        //100% health: 3x resist   75%: 2.1x resist   50%: 1.5x resist   25%: 1.1x resist
+        enemyResist *= 1 + 2*Math.pow(target.HP/(float)target.HT, 2);
+
+        if (corruptingPower > enemyResist){
+            WandOfCorruption.corruptEnemy(new WandOfCorruption(), (Mob) target);
         }
     }
 

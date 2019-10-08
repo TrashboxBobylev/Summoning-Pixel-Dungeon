@@ -48,7 +48,7 @@ public class Artifact extends KindofMisc {
 	protected int levelCap = 0;
 
 	//the current artifact charge
-	protected int charge = 0;
+    public int charge = 0;
 	//the build towards next charge, usually rolls over at 1.
 	//better to keep charge as an int and use a separate float than casting.
 	protected float partialCharge = 0;
