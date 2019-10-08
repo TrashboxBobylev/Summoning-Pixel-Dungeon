@@ -72,6 +72,7 @@ public class LoveHolder extends Artifact {
 		defaultAction = AC_PRICK;
 
         charge = 0;
+        str = 1;
         chargeCap = Math.min(50 + level()*25, 500);
 	}
 
