@@ -64,7 +64,7 @@ public class ChaosSaberSprite extends MobSprite {
     @Override
     public void update() {
         super.update();
-        if (!paused){
+        if (!paused && !isMoving){
             if (Float.isNaN(baseY)) baseY = y;
             y = baseY + (float) Math.sin(Game.timeTotal)*2;
             shadowOffset = 0.25f - 0.8f*(float) Math.sin(Game.timeTotal)*2;
