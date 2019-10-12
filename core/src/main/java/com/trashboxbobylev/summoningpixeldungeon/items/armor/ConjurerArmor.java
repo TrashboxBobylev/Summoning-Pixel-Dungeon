@@ -292,11 +292,12 @@ public class ConjurerArmor extends ClassArmor {
             if (hateHolder.power <= 0f){
                 hateHolder.detach();
             }
-            target.sprite.showStatus(CharSprite.DEFAULT, "-%s HATE", strength);
+            if (strength > 0) owner.sprite.showStatus(CharSprite.DEFAULT, "-%s HATE", strength);
             BuffIndicator.refreshHero();
 
             if (corruptingPower > enemyResist) {
                 WandOfCorruption.corruptEnemy(new WandOfCorruption(), (Mob) target);
+                Sample.INSTANCE.play(Assets.SND_CURSED);
                 //recover some hate
                 hateHolder.gainHate((corruptingPower - enemyResist)*0.5f);
                 BuffIndicator.refreshHero();

@@ -43,7 +43,7 @@ import com.watabou.utils.GameMath;
 public class HateOccult extends Buff implements Hero.Doom{
 
     {
-        actPriority = MOB_PRIO;
+        actPriority = VFX_PRIO;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class HateOccult extends Buff implements Hero.Doom{
         power -= lostPower;
         target.damage(Math.round(lostPower*1.5f), this);
         target.sprite.emitter().burst(ShadowParticle.UP, 8);
-        target.sprite.showStatus(CharSprite.DEFAULT, "-%s HATE", lostPower);
+        if (lostPower > 0) target.sprite.showStatus(CharSprite.DEFAULT, "-%s HATE", lostPower);
 
         Sample.INSTANCE.play(Assets.SND_HIT);
 
