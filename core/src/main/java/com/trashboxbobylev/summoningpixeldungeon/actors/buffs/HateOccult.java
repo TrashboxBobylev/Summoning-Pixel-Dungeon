@@ -73,7 +73,7 @@ public class HateOccult extends Buff implements Hero.Doom{
             detach();
         }
         BuffIndicator.refreshHero();
-        spend(TICK*2);
+        spend(TICK*4);
         return true;
     }
 
