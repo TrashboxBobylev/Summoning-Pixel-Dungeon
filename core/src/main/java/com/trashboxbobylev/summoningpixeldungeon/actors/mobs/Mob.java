@@ -184,8 +184,10 @@ public abstract class Mob extends Char {
 		boolean enemyInFOV = enemy != null && enemy.isAlive() && fieldOfView[enemy.pos] && enemy.invisible <= 0;
 
         if (this instanceof Wraith) {
-            if (((Wraith) this).parent != null || Dungeon.level.distance(((Wraith) this).parent.pos, pos) >= 8) {
-                die(Doom.class);
+            if (((Wraith) this).parent != null) {
+                if (Dungeon.level.distance(((Wraith) this).parent.pos, pos) >= 8) {
+                    die(Doom.class);
+                }
             }
         }
 
