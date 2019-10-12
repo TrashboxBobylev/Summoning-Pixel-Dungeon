@@ -163,7 +163,7 @@ public class GooMinion extends Minion {
 
             pumpedUp++;
 
-            ((GooSprite)sprite).pumpUp();
+            ((GooMinionSprite)sprite).pumpUp();
 
             for (int i=0; i < PathFinder.NEIGHBOURS9.length; i++) {
                 int j = pos + PathFinder.NEIGHBOURS9[i];
