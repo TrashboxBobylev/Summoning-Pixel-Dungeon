@@ -99,4 +99,9 @@ public class HateOccult extends Buff implements Hero.Doom{
     public String desc() {
         return Messages.get(this, "desc", power);
     }
+
+    @Override
+    public String toString() {
+        return Messages.get(this, "name");
+    }
 }
