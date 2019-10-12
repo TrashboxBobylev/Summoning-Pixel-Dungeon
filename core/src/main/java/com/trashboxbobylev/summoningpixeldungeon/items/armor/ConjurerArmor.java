@@ -78,7 +78,7 @@ public class ConjurerArmor extends ClassArmor {
         actions.remove(AC_UNEQUIP);
         actions.remove(AC_DROP);
         actions.remove(AC_THROW);
-        if (hero.subClass != null) {
+        if (hero.subClass != HeroSubClass.NONE) {
             actions.add(AC_CHAOS);
             actions.add(AC_OFFENSE);
         }
