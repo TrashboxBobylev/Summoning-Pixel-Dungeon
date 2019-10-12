@@ -50,6 +50,7 @@ import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.CellSelector;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
+import com.trashboxbobylev.summoningpixeldungeon.sprites.CharSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.HeroSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 import com.trashboxbobylev.summoningpixeldungeon.ui.BuffIndicator;
@@ -252,6 +253,7 @@ public class ConjurerArmor extends ClassArmor {
                                                     doAsOccultist(ch, str, curUser);
                                             }
                                         }
+                                        curUser.spendAndNext(Actor.TICK);
                                     }
                                 });
                     } else {
@@ -290,6 +292,7 @@ public class ConjurerArmor extends ClassArmor {
             if (hateHolder.power <= 0f){
                 hateHolder.detach();
             }
+            target.sprite.showStatus(CharSprite.DEFAULT, "-%s HATE", strength);
             BuffIndicator.refreshHero();
 
             if (corruptingPower > enemyResist) {

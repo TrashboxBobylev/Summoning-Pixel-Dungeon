@@ -41,6 +41,11 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
 
 public class HateOccult extends Buff implements Hero.Doom{
+
+    {
+        actPriority = MOB_PRIO;
+    }
+
     @Override
     public int icon() {
         return BuffIndicator.HATE;
