@@ -84,7 +84,6 @@ public class HateOccult extends Buff implements Hero.Doom{
 
     public void gainHate(float n){
         power += n;
-        power = GameMath.gate(1f, power, 200f);
         BuffIndicator.refreshHero();
     }
 
