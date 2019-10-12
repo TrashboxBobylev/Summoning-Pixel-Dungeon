@@ -40,11 +40,7 @@ public abstract class Actor implements Bundlable {
 	
 	public static final float TICK	= 1f;
 
-    public float getTime() {
-        return time;
-    }
-
-    private float time;
+	private float time;
 
 	private int id = 0;
 
