@@ -68,6 +68,7 @@ public class ConjurerArmor extends ClassArmor {
 	
 	{
 		image = ItemSpriteSheet.ARMOR_CONJURER;
+		defaultAction = AC_OFFENSE;
 	}
 
     private static final String AC_IMBUE = "IMBUE";

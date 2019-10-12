@@ -42,6 +42,8 @@ public class FrostElemental extends Minion {
         attunement = 1.5f;
         properties.add(Property.FIERY);
         properties.add(Property.INORGANIC);
+        baseMinDR = 2;
+        baseMaxDR = 7;
     }
 
     @Override

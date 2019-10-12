@@ -42,6 +42,8 @@ import com.watabou.utils.Random;
 public class Mimic extends Minion {
     {
         spriteClass = MimicSprite.class;
+        baseMinDR = 1;
+        baseMaxDR = 3;
     }
 
     @Override

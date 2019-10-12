@@ -40,8 +40,12 @@ public abstract class Minion extends Mob {
 
     public int minDamage = 0;
     public int maxDamage = 0;
+
     protected int minDR = 0;
     protected int maxDR = 0;
+    public int baseMinDR = 0;
+    public int baseMaxDR = 0;
+
     public int strength = 9;
     public int defendingPos = -1;
 
@@ -117,7 +121,7 @@ public abstract class Minion extends Mob {
 
     @Override
     public int drRoll() {
-        return Random.NormalIntRange(minDR, maxDR);
+        return Random.NormalIntRange(minDR + baseMinDR, maxDR + baseMaxDR);
     }
 
     @Override

@@ -34,6 +34,7 @@ import com.trashboxbobylev.summoningpixeldungeon.sprites.GnollHunterSprite;
 public class GnollHunter extends Minion {
     {
         spriteClass = GnollHunterSprite.class;
+        baseMaxDR = 1;
     }
 
     //he is ranged minion

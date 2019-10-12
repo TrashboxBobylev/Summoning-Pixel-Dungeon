@@ -53,6 +53,9 @@ public class Wizard extends Minion implements Callback {
 		spriteClass = WizardSprite.class;
 
 		properties.add(Property.UNDEAD);
+
+		baseMaxDR = 7;
+		baseMinDR = 3;
 	}
 	
 	@Override
@@ -96,7 +99,7 @@ public class Wizard extends Minion implements Callback {
 		spend( TIME_TO_ZAP );
 		
 		if (hit( this, enemy, true )) {
-			if (Random.Int( 2 ) == 0) {
+			if (Random.Int( 1 ) == 0) {
 			    Class<? extends FlavourBuff> buff = (Class<? extends FlavourBuff>) Random.chances(DEBUFFS);
 				Buff.prolong( enemy, buff, 6 );
 			}

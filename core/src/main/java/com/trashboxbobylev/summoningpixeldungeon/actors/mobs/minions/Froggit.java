@@ -36,10 +36,8 @@ public class Froggit extends Minion {
 
 	{
 		spriteClass = FroggitSprite.class;
+		baseMaxDR = 1;
 	}
 	
-	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 1);
-	}
+
 }

@@ -33,6 +33,8 @@ public class Robo extends Minion{
         spriteClass = DM150Sprite.class;
         isTanky = true;
         attunement = 1.5f;
+        baseMinDR = 8;
+        baseMaxDR = 15;
     }
 
     @Override
@@ -41,9 +43,8 @@ public class Robo extends Minion{
     }
 
     @Override
-    public float speed() {
-        float speed = super.speed();
-        if (enemySeen) speed *= 0.05f;
-        return speed;
+    protected boolean getCloser(int target) {
+        if (!enemySeen) return super.getCloser(target);
+        else return false;
     }
 }

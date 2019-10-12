@@ -42,6 +42,8 @@ public class Skele extends Minion {
     {
         spriteClass = SkeletonSprite.class;
 
+        baseMaxDR = 4;
+
         properties.add(Property.UNDEAD);
         properties.add(Property.INORGANIC);
     }

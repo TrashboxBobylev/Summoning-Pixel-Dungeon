@@ -34,10 +34,7 @@ public class Sheep extends Minion{
     {
         spriteClass = SheepTankSprite.class;
         isTanky = true;
-    }
-
-    @Override
-    public int drRoll() {
-        return Random.NormalIntRange(1, 6);
+        baseMinDR = 1;
+        baseMaxDR = 6;
     }
 }

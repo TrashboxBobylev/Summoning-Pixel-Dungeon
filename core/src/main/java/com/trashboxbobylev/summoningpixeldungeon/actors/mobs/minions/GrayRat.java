@@ -36,6 +36,7 @@ import com.watabou.utils.Random;
 public class GrayRat extends Minion {
     {
         spriteClass = GrayRatSprite.class;
+        baseMaxDR = 2;
     }
 
     //his fur are invulnerable to common hazards
@@ -50,8 +51,5 @@ public class GrayRat extends Minion {
         immunities.add( ToxicGas.class );
     }
 
-    @Override
-    public int drRoll() {
-        return Random.NormalIntRange(0, 2);
-    }
+
 }
