@@ -130,7 +130,7 @@ public class GooMinion extends Minion {
     @Override
     protected boolean doAttack( Char enemy ) {
         if (pumpedUp == 1) {
-            ((GooSprite)sprite).pumpUp();
+            ((GooMinionSprite)sprite).pumpUp();
             PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.solid, null ), 2 );
             for (int i = 0; i < PathFinder.distance.length; i++) {
                 if (PathFinder.distance[i] < Integer.MAX_VALUE)
@@ -147,7 +147,7 @@ public class GooMinion extends Minion {
 
             if (visible) {
                 if (pumpedUp >= 2) {
-                    ((GooSprite) sprite).pumpAttack();
+                    ((GooMinionSprite) sprite).pumpAttack();
                 }
                 else
                     sprite.attack( enemy.pos );
@@ -202,7 +202,7 @@ public class GooMinion extends Minion {
         super.damage(dmg, src);
         if ((HP*2 <= HT) && !bleeding){
             sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "enraged"));
-            ((GooSprite)sprite).spray(true);
+            ((GooMinionSprite)sprite).spray(true);
             yell(Messages.get(this, "gluuurp"));
         }
     }
