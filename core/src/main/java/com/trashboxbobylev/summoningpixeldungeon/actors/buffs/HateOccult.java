@@ -67,7 +67,7 @@ public class HateOccult extends Buff implements Hero.Doom{
 
         float lostPower = GameMath.gate(1f, power/5f, 100f);
         power -= lostPower;
-        target.damage(Math.round(lostPower*2), this);
+        target.damage(Math.round(lostPower*1.5f), this);
         target.sprite.emitter().burst(ShadowParticle.UP, 8);
         target.sprite.showStatus(CharSprite.DEFAULT, "-%s HATE", lostPower);
 
