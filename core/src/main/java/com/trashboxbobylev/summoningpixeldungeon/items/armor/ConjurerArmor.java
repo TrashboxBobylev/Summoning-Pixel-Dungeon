@@ -121,8 +121,12 @@ public class ConjurerArmor extends ClassArmor {
                 }
             }
         } else if (action.equals(AC_OFFENSE)){
-            curUser = hero;
-            GameScene.selectCell(zapper);
+            if (hero.subClass != HeroSubClass.NONE) {
+                curUser = hero;
+                GameScene.selectCell(zapper);
+            } else {
+                Messages.get(this, "no_mastery");
+            }
         }
     }
 
