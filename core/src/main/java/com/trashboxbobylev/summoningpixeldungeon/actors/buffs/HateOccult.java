@@ -52,7 +52,7 @@ public class HateOccult extends Buff implements Hero.Doom{
     }
 
     public float power = 0;
-    public boolean justAdded = false;
+    public boolean justAdded = true;
 
     @Override
     public void storeInBundle(Bundle bundle) {
@@ -81,7 +81,7 @@ public class HateOccult extends Buff implements Hero.Doom{
             target.sprite.emitter().burst(ShadowParticle.UP, 8);
             if (lostPower > 0) target.sprite.showStatus(CharSprite.DEFAULT, "-%s HATE", lostPower);
 
-            Sample.INSTANCE.play(Assets.SND_DEGRADE);
+            Sample.INSTANCE.play(Assets.SND_TOMB);
 
             if (power <= 0){
                 detach();
