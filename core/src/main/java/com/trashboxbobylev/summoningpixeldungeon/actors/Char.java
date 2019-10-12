@@ -34,6 +34,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroSubClass;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.items.BrokenSeal;
+import com.trashboxbobylev.summoningpixeldungeon.items.armor.ConjurerArmor;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.glyphs.Brimstone;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.glyphs.Potential;
@@ -241,7 +242,11 @@ public abstract class Char extends Actor {
 
             if (effectiveDamage > enemy.HP) {
                 if (this instanceof Hero && ((Hero) this).subClass == HeroSubClass.OCCULTIST) {
-                    Buff.affect(this, HateOccult.class).gainHate((enemy.HP - effectiveDamage) * 0.75f);
+                    if (buff(HateOccult.class) != null) {
+                        Buff.affect(this, HateOccult.class).gainHate((enemy.HP - effectiveDamage) * 0.75f);
+                    } else {
+                        ((ConjurerArmor)((Hero) this).belongings.armor).doAsOccultist(enemy, 0, (Hero) this);
+                    }
                 } else if (this instanceof Minion && Dungeon.hero.subClass == HeroSubClass.OCCULTIST){
                     Buff.affect(this, HateOccult.class).gainHate((enemy.HP - effectiveDamage) * 0.2f);
                 }

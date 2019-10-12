@@ -52,6 +52,7 @@ import com.trashboxbobylev.summoningpixeldungeon.scenes.CellSelector;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.HeroSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
+import com.trashboxbobylev.summoningpixeldungeon.ui.BuffIndicator;
 import com.trashboxbobylev.summoningpixeldungeon.ui.QuickSlotButton;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.trashboxbobylev.summoningpixeldungeon.windows.WndBag;
@@ -263,7 +264,7 @@ public class ConjurerArmor extends ClassArmor {
         }
     };
 
-    private void doAsSoulReaver(Char target, int strength, Hero owner){
+    public void doAsSoulReaver(Char target, int strength, Hero owner){
         //every charge adds +10% damage, initial is 0-hero level
         int damageRoll = Random.NormalIntRange(0, (int) (owner.lvl*Math.pow(1.1f, strength)));
         target.damage(damageRoll, this);
@@ -271,17 +272,22 @@ public class ConjurerArmor extends ClassArmor {
         target.sprite.burst(0xFFFFFFFF, strength*2);
     }
 
-    private void doAsOccultist(Char target, int strength, Hero owner){
+    public void doAsOccultist(Char target, int strength, Hero owner){
         HateOccult hateHolder = owner.buff(HateOccult.class);
         if (hateHolder != null) {
             //every charge consumes 2 hate and adds corruption power
             float corruptingPower = GameMath.gate(hateHolder.power, strength * 2f, 20f);
+            if (strength == 0) corruptingPower = hateHolder.power;
             float enemyResist = WandOfCorruption.getEnemyResist(target, (Mob) target);
 
             //100% health: 3x resist   75%: 2.1x resist   50%: 1.5x resist   25%: 1.1x resist
             enemyResist *= 1 + 2 * Math.pow(target.HP / (float) target.HT, 2);
 
             hateHolder.power -= strength*2f;
+            if (hateHolder.power <= 0f){
+                hateHolder.detach();
+            }
+            BuffIndicator.refreshHero();
 
             if (corruptingPower > enemyResist) {
                 WandOfCorruption.corruptEnemy(new WandOfCorruption(), (Mob) target);
