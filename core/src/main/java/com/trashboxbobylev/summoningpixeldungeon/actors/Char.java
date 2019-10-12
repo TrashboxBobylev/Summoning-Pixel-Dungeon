@@ -242,7 +242,7 @@ public abstract class Char extends Actor {
 
             if (effectiveDamage > enemy.HP) {
                 if (this instanceof Hero && ((Hero) this).subClass == HeroSubClass.OCCULTIST) {
-                    if (buff(HateOccult.class) != null) {
+                    if (buff(HateOccult.class) == null) {
                         Buff.affect(this, HateOccult.class).gainHate((enemy.HP - effectiveDamage) * 0.75f);
                     } else {
                         ((ConjurerArmor)((Hero) this).belongings.armor).doAsOccultist(enemy, 0, (Hero) this);
