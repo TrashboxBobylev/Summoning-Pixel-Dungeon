@@ -32,6 +32,7 @@ import com.trashboxbobylev.summoningpixeldungeon.effects.SpellSprite;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.ShadowParticle;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
+import com.trashboxbobylev.summoningpixeldungeon.sprites.CharSprite;
 import com.trashboxbobylev.summoningpixeldungeon.ui.BuffIndicator;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.watabou.noosa.Image;
@@ -68,6 +69,8 @@ public class HateOccult extends Buff implements Hero.Doom{
         power -= lostPower;
         target.damage(Math.round(lostPower*3), this);
         target.sprite.emitter().burst(ShadowParticle.UP, 8);
+        target.sprite.showStatus(CharSprite.DEFAULT, "-%s HATE", lostPower);
+
         Sample.INSTANCE.play(Assets.SND_HIT);
 
         if (power <= 0){
