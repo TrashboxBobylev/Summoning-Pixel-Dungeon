@@ -166,7 +166,6 @@ public class LoveHolder extends Artifact {
             curUser = hero;
             curItem = this;
             soultype = type;
-            GLog.warning(Messages.get(this, "onprick"));
             GameScene.selectCell(zapper);
         }
         updateQuickslot();
