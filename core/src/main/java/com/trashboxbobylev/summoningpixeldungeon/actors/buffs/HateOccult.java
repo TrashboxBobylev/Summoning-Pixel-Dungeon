@@ -76,7 +76,7 @@ public class HateOccult extends Buff implements Hero.Doom{
         target.sprite.emitter().burst(ShadowParticle.UP, 8);
         if (lostPower > 0) target.sprite.showStatus(CharSprite.DEFAULT, "-%s HATE", lostPower);
 
-        Sample.INSTANCE.play(Assets.SND_HIT);
+        Sample.INSTANCE.play(Assets.SND_DEGRADE);
 
         if (power <= 0){
             detach();

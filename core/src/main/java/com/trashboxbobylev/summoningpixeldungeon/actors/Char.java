@@ -243,7 +243,7 @@ public abstract class Char extends Actor {
             if (this instanceof Hero && ((Hero) this).subClass == HeroSubClass.OCCULTIST){
                 if (this.buff(HateOccult.class) != null){
                     ((ConjurerArmor)((Hero) this).belongings.armor).doAsOccultist(enemy, 0, (Hero) this);
-                    return true;
+                    if (enemy.buff(Corruption.class) != null) return true;
                 }
             }
 
@@ -255,7 +255,7 @@ public abstract class Char extends Actor {
                     hateGain = (enemy.HP - effectiveDamage) * 0.2f;
                 }
                 Buff.affect(Dungeon.hero, HateOccult.class).gainHate(hateGain);
-                Dungeon.hero.sprite.showStatus(CharSprite.DEFAULT, "+%s HATE", hateGain);
+                if (hateGain > 0) Dungeon.hero.sprite.showStatus(CharSprite.DEFAULT, "+%s HATE", hateGain);
             }
 
 			enemy.damage( effectiveDamage, this );
