@@ -57,6 +57,7 @@ import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.trashboxbobylev.summoningpixeldungeon.windows.WndBag;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -94,7 +95,7 @@ public class ConjurerArmor extends ClassArmor {
             GameScene.selectItem(itemSelector, WndBag.Mode.ARMOR_FOR_IMBUE, Messages.get(this, "prompt"));
         } else if (action.equals(AC_CHAOS)) {
             if (hero.HP < 3 ||
-                    (hero.heroClass == HeroClass.CONJURER && hero.HP < (hero.HT / 2))) {
+                    (hero.heroClass == HeroClass.CONJURER && hero.HP < (hero.HT / 3))) {
                 GLog.warning(Messages.get(this, "low_hp"));
             } else if (!isEquipped(hero)) {
                 GLog.warning(Messages.get(this, "not_equipped"));
@@ -271,15 +272,22 @@ public class ConjurerArmor extends ClassArmor {
     }
 
     private void doAsOccultist(Char target, int strength, Hero owner){
-        //every charge consumes 1 hate and adds corruption power
-        float corruptingPower = strength*2;
-        float enemyResist = WandOfCorruption.getEnemyResist(target, (Mob)target);
+        HateOccult hateHolder = owner.buff(HateOccult.class);
+        if (hateHolder != null) {
+            //every charge consumes 2 hate and adds corruption power
+            float corruptingPower = GameMath.gate(hateHolder.power, strength * 2f, 20f);
+            float enemyResist = WandOfCorruption.getEnemyResist(target, (Mob) target);
 
-        //100% health: 3x resist   75%: 2.1x resist   50%: 1.5x resist   25%: 1.1x resist
-        enemyResist *= 1 + 2*Math.pow(target.HP/(float)target.HT, 2);
+            //100% health: 3x resist   75%: 2.1x resist   50%: 1.5x resist   25%: 1.1x resist
+            enemyResist *= 1 + 2 * Math.pow(target.HP / (float) target.HT, 2);
 
-        if (corruptingPower > enemyResist){
-            WandOfCorruption.corruptEnemy(new WandOfCorruption(), (Mob) target);
+            hateHolder.power -= strength*2f;
+
+            if (corruptingPower > enemyResist) {
+                WandOfCorruption.corruptEnemy(new WandOfCorruption(), (Mob) target);
+                //recover some hate
+                hateHolder.gainHate((corruptingPower - enemyResist)*0.5f);
+            }
         }
     }
 

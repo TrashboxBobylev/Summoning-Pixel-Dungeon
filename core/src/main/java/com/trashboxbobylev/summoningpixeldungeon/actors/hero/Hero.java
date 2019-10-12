@@ -988,7 +988,6 @@ public class Hero extends Char {
 			break;
 		default:
 		}
-
 		
 		return damage;
 	}

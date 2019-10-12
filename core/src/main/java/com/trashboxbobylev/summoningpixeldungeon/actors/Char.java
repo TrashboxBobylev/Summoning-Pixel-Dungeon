@@ -32,6 +32,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.ToxicGas;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroSubClass;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.items.BrokenSeal;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.glyphs.Brimstone;
@@ -238,6 +239,13 @@ public abstract class Char extends Actor {
 			if (shake > 1f)
 				Camera.main.shake( GameMath.gate( 1, shake, 5), 0.3f );
 
+            if (effectiveDamage > enemy.HP) {
+                if (this instanceof Hero && ((Hero) this).subClass == HeroSubClass.OCCULTIST) {
+                    Buff.affect(this, HateOccult.class).gainHate((enemy.HP - effectiveDamage) * 0.75f);
+                } else if (this instanceof Minion && Dungeon.hero.subClass == HeroSubClass.OCCULTIST){
+                    Buff.affect(this, HateOccult.class).gainHate((enemy.HP - effectiveDamage) * 0.2f);
+                }
+            }
 			enemy.damage( effectiveDamage, this );
 
 			if (buff(FireImbue.class) != null)
@@ -246,6 +254,7 @@ public abstract class Char extends Actor {
 				buff(EarthImbue.class).proc(enemy);
 			if (buff(FrostImbue.class) != null)
 				buff(FrostImbue.class).proc(enemy);
+
 
 			enemy.sprite.bloodBurstA( sprite.center(), effectiveDamage );
 			enemy.sprite.flash();
