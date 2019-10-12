@@ -34,6 +34,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Barrier;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Invisibility;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
+import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroSubClass;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.effects.MagicMissile;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
@@ -51,6 +52,7 @@ import com.trashboxbobylev.summoningpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 
 import java.util.ArrayList;
@@ -80,6 +82,8 @@ public class LoveHolder extends Artifact {
     public static final String AC_TUNE = "TUNE";
     public static final String AC_SHIELD = "SHIELD";
     public static final String AC_SPLASH = "SPLASH";
+    public static final String AC_DEFENSE = "DEFENSE";
+    public static final String AC_OFFENSE = "OFFENSE";
     public static final String HEALING = "healing";
     public static final String STRENGTH = "str";
 
@@ -98,6 +102,10 @@ public class LoveHolder extends Artifact {
             actions.add(AC_TUNE);
             if (level() >= 3) actions.add(AC_SHIELD);
             if (level() >= 6) actions.add(AC_SPLASH);
+            if (hero.subClass == HeroSubClass.SOUL_REAVER){
+                actions.add(AC_OFFENSE);
+                actions.add(AC_DEFENSE);
+            }
         }
 		return actions;
 	}
@@ -108,7 +116,7 @@ public class LoveHolder extends Artifact {
 	public void execute(final Hero hero, String action ) {
 		super.execute(hero, action);
 
-		if (action.equals(AC_PRICK) || action.equals(AC_SHIELD) || action.equals(AC_SPLASH)){
+		if (action.equals(AC_PRICK) || action.equals(AC_SHIELD) || action.equals(AC_SPLASH) || action.equals(AC_OFFENSE) || action.equals(AC_DEFENSE)){
 		    int type = -1;
 		    switch (action){
                 case AC_PRICK:
@@ -117,6 +125,10 @@ public class LoveHolder extends Artifact {
                     type = 1; break;
                 case AC_SPLASH:
                     type = 2; break;
+                case AC_OFFENSE:
+                    type = 3; break;
+                case AC_DEFENSE:
+                    type = 4; break;
             }
 		    prick(Dungeon.hero, type);
 		}
@@ -265,9 +277,23 @@ public class LoveHolder extends Artifact {
                                                     minion.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healingForEveryMinion);
                                                 }
                                             }
+                                        } else if (soultype == 3){
+                                            ((Minion) ch).adjustDamage(str, str*2);
+                                            ((Minion) ch).setMaxHP(Math.min(1, ch.HT - str*2));
+                                            ((Minion) ch).adjustDR(-str, -str*2);
+                                            ch.sprite.showStatus(CharSprite.NEGATIVE, "-%dHP", str*2);
+                                            ch.sprite.showStatus(CharSprite.POSITIVE, "+%1$d/+%2$dDMG", str, str*2);
+                                            ch.sprite.showStatus(CharSprite.NEGATIVE, "-%1$d/-%2$dDR", str, str*2);
+                                        } else if (soultype == 4){
+                                            ((Minion) ch).adjustDamage(-str, -str*2);
+                                            ((Minion) ch).setMaxHP(Math.min(1, ch.HT + str*3));
+                                            ((Minion) ch).adjustDR(str, str*2);
+                                            ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", str*3);
+                                            ch.sprite.showStatus(CharSprite.NEGATIVE, "-%1$d/-%2$dDMG", str, str*2);
+                                            ch.sprite.showStatus(CharSprite.POSITIVE, "+%1$d/+%2$dDR", str, str*2);
                                         }
 
-                                        if (level() < 10){
+                                        if (level() < 10 && soultype < 3){
                                             if (totalHealing < healingTable[level()]){
                                                 totalHealing += healing;
                                                 if (totalHealing >= healingTable[level()]){
