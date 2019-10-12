@@ -254,8 +254,10 @@ public abstract class Char extends Actor {
                 } else if (this instanceof Minion && Dungeon.hero.subClass == HeroSubClass.OCCULTIST) {
                     hateGain = (enemy.HP - effectiveDamage) * 0.2f;
                 }
-                Buff.affect(Dungeon.hero, HateOccult.class).gainHate(hateGain);
-                if (hateGain > 0) Dungeon.hero.sprite.showStatus(CharSprite.DEFAULT, "+%s HATE", hateGain);
+                if (hateGain > 0) {
+                    Dungeon.hero.sprite.showStatus(CharSprite.DEFAULT, "+%s HATE", hateGain);
+                    Buff.affect(Dungeon.hero, HateOccult.class).gainHate(hateGain);
+                }
             }
 
 			enemy.damage( effectiveDamage, this );
