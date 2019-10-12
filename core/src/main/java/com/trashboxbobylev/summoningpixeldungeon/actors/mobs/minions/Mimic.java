@@ -46,7 +46,7 @@ public class Mimic extends Minion {
 
     @Override
     public int attackProc(Char enemy, int damage) {
-        if (Random.Int(2) == 0) {
+        if (Random.Int(40) >= 36) {
             Buff.affect(enemy, Lucky.LuckProc.class);
         }
         return super.attackProc(enemy, damage);
