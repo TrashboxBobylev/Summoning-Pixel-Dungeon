@@ -42,10 +42,6 @@ import com.watabou.utils.GameMath;
 
 public class HateOccult extends Buff implements Hero.Doom{
 
-    {
-        actPriority = VFX_PRIO;
-    }
-
     @Override
     public int icon() {
         return BuffIndicator.HATE;
@@ -69,21 +65,26 @@ public class HateOccult extends Buff implements Hero.Doom{
     public boolean act() {
         //every 2 turns 20% of hate go away and damage the hero
         //the max speed is 10 hate/period and min speed is 1 hate/period
+        if (getTime() > 1) {
+            float lostPower = GameMath.gate(1f, power / 5f, 100f);
+            power -= lostPower;
+            target.damage(Math.round(lostPower * 1.5f), this);
+            target.sprite.emitter().burst(ShadowParticle.UP, 8);
+            if (lostPower > 0) target.sprite.showStatus(CharSprite.DEFAULT, "-%s HATE", lostPower);
 
-        float lostPower = GameMath.gate(1f, power/5f, 100f);
-        power -= lostPower;
-        target.damage(Math.round(lostPower*1.5f), this);
-        target.sprite.emitter().burst(ShadowParticle.UP, 8);
-        if (lostPower > 0) target.sprite.showStatus(CharSprite.DEFAULT, "-%s HATE", lostPower);
+            Sample.INSTANCE.play(Assets.SND_TOMB);
 
-        Sample.INSTANCE.play(Assets.SND_DEGRADE);
-
-        if (power <= 0){
-            detach();
+            if (power <= 0) {
+                detach();
+            }
+            BuffIndicator.refreshHero();
+            spend(TICK * 2);
+            return true;
         }
-        BuffIndicator.refreshHero();
-        spend(TICK*2);
-        return true;
+        else {
+            spend(TICK);
+            return true;
+        }
     }
 
     @Override

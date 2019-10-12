@@ -34,28 +34,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Statistics;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Alchemy;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.AdrenalineSurge;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Amok;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Awareness;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Barkskin;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Berserk;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Bless;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Burning;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Combo;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Drowsy;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.FlavourBuff;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Foresight;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Fury;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Hunger;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Invisibility;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.MindVision;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Momentum;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Paralysis;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Regeneration;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.SnipersMark;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Vertigo;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Weakness;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.effects.CellEmitter;
 import com.trashboxbobylev.summoningpixeldungeon.effects.CheckedCell;
@@ -1022,7 +1001,7 @@ public class Hero extends Char {
 		if (buff(TimekeepersHourglass.timeStasis.class) != null)
 			return;
 
-		if (!(src instanceof Hunger || src instanceof Viscosity.DeferedDamage) && damageInterrupt) {
+		if (!(src instanceof Hunger || src instanceof Viscosity.DeferedDamage || src instanceof HateOccult) && damageInterrupt) {
 			interrupt();
 			resting = false;
 		}
