@@ -230,7 +230,7 @@ public class ConjurerArmor extends ClassArmor {
                     return;
                 } else {
                     final int str = artifact.str;
-                    if (artifact.charge >= str){
+                    if (artifact.charge >= str || curUser.subClass == HeroSubClass.OCCULTIST){
                         if (curUser.subClass == HeroSubClass.SOUL_REAVER) artifact.charge -= str;
                         updateQuickslot();
                         curUser.busy();
