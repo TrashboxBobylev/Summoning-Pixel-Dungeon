@@ -30,7 +30,7 @@ import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 
 public class GooStaff extends Staff {
     {
-        image = ItemSpriteSheet.FROST_ELEMENTAL_STAFF;
+        image = ItemSpriteSheet.GOO_STAFF;
         minionType = GooMinion.class;
         tier = 5;
     }
