@@ -64,7 +64,7 @@ public class HateOccult extends Buff implements Hero.Doom{
         //the max speed is 10 hate/period and min speed is 1 hate/period
 
         float lostPower = GameMath.gate(1f, power/5f, 10f);
-        //power -= lostPower;
+        power -= lostPower;
         target.damage(Math.round(lostPower*3), this);
         SpellSprite.show(target, SpellSprite.BERSERK);
         Sample.INSTANCE.play(Assets.SND_HIT);
@@ -73,7 +73,7 @@ public class HateOccult extends Buff implements Hero.Doom{
             detach();
         }
         BuffIndicator.refreshHero();
-        spend(TICK*4);
+        spend(TICK*2);
         return true;
     }
 
