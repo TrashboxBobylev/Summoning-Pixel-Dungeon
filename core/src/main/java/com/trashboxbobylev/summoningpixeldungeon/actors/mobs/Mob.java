@@ -33,6 +33,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
+import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroSubClass;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.SoulFlame;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Flare;
@@ -645,8 +646,10 @@ public abstract class Mob extends Char {
 
 		if (cause instanceof Minion){
 		    LoveHolder.lul buff = Dungeon.hero.buff(LoveHolder.lul.class);
-		    int charge = buff.gainCharge(EXP);
-            if (charge == 0) sprite.showStatus(CharSprite.NEUTRAL, "+%d♥", EXP);
+		    int gain = EXP;
+		    if (Dungeon.hero.subClass == HeroSubClass.SOUL_REAVER) gain *= 2;
+		    int charge = buff.gainCharge(gain);
+            if (charge == 0) sprite.showStatus(CharSprite.NEUTRAL, "+%d♥", gain);
         }
 
 		if (alignment == Alignment.ENEMY){
