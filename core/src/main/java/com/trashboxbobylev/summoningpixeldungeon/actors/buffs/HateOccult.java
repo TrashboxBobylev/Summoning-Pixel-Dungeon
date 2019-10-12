@@ -58,12 +58,14 @@ public class HateOccult extends Buff implements Hero.Doom{
     public void storeInBundle(Bundle bundle) {
         super.storeInBundle(bundle);
         bundle.put("power", power);
+        bundle.put("justAdded", justAdded);
     }
 
     @Override
     public void restoreFromBundle(Bundle bundle) {
         super.restoreFromBundle(bundle);
         power = bundle.getFloat("power");
+        justAdded = bundle.getBoolean("justAdded");
     }
 
     @Override
@@ -72,7 +74,7 @@ public class HateOccult extends Buff implements Hero.Doom{
         //the max speed is 10 hate/period and min speed is 1 hate/period
         if (justAdded){
             justAdded = false;
-            spend(TICK*2);
+            spend(TICK*3);
             return true;
         } else {
             float lostPower = GameMath.gate(1f, power/5f, 100f);
