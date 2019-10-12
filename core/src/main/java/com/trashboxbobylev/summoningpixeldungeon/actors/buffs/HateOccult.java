@@ -29,6 +29,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Badges;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.effects.SpellSprite;
+import com.trashboxbobylev.summoningpixeldungeon.effects.particles.ShadowParticle;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.ui.BuffIndicator;
@@ -63,10 +64,10 @@ public class HateOccult extends Buff implements Hero.Doom{
         //every 2 turns 20% of hate go away and damage the hero
         //the max speed is 10 hate/period and min speed is 1 hate/period
 
-        float lostPower = GameMath.gate(1f, power/5f, 10f);
+        float lostPower = GameMath.gate(1f, power/5f, 100f);
         power -= lostPower;
         target.damage(Math.round(lostPower*3), this);
-        SpellSprite.show(target, SpellSprite.BERSERK);
+        target.sprite.emitter().burst(ShadowParticle.UP, 8);
         Sample.INSTANCE.play(Assets.SND_HIT);
 
         if (power <= 0){

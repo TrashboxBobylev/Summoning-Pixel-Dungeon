@@ -119,6 +119,9 @@ public class ConjurerArmor extends ClassArmor {
                     curUser.spendAndNext( Actor.TICK );
                 }
             }
+        } else if (action.equals(AC_OFFENSE)){
+            curUser = hero;
+            GameScene.selectCell(zapper);
         }
     }
 
@@ -293,6 +296,7 @@ public class ConjurerArmor extends ClassArmor {
                 WandOfCorruption.corruptEnemy(new WandOfCorruption(), (Mob) target);
                 //recover some hate
                 hateHolder.gainHate((corruptingPower - enemyResist)*0.5f);
+                BuffIndicator.refreshHero();
             }
         }
     }
