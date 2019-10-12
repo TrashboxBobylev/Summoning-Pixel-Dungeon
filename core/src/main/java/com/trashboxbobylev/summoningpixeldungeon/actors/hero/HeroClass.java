@@ -50,10 +50,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfMagicMissile;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.SpiritBow;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Unstable;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Dagger;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Gloves;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MagesStaff;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.WornShortsword;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.FroggitStaff;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.ThrowingKnife;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.ThrowingStone;
@@ -123,6 +120,8 @@ public enum HeroClass {
 		new ScrollOfIdentify().identify();
 
 		new TomeOfMastery().collect();
+
+		new Glaive().identify().collect();
 
 	}
 
