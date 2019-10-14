@@ -99,7 +99,7 @@ public class GooMinion extends Minion {
         if (Dungeon.level.water[pos] && HP < HT) {
             sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
             if (HP*2 == HT) {
-                ((GooSprite)sprite).spray(false);
+                ((GooMinionSprite)sprite).spray(false);
             }
             HP++;
         }
