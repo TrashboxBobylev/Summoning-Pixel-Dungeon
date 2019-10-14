@@ -160,6 +160,7 @@ import com.trashboxbobylev.summoningpixeldungeon.plants.Starflower;
 import com.trashboxbobylev.summoningpixeldungeon.plants.Stormvine;
 import com.trashboxbobylev.summoningpixeldungeon.plants.Sungrass;
 import com.trashboxbobylev.summoningpixeldungeon.plants.Swiftthistle;
+import com.trashboxbobylev.summoningpixeldungeon.sprites.BlasterSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Random;
@@ -445,9 +446,10 @@ public class Generator {
             STF_T4.probs = new float[]{ 5, 4, 4, 3  };
 
             STF_T5.classes = new Class<?>[]{
-                    GooStaff.class
+                    GooStaff.class,
+                    BlasterStaff.class
             };
-            STF_T5.probs = new float[]{ 5 };
+            STF_T5.probs = new float[]{ 5, 4 };
 			
 			FOOD.classes = new Class<?>[]{
 					Food.class,

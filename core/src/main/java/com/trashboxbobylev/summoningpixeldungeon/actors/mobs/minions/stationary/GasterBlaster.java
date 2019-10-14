@@ -87,6 +87,7 @@ public class GasterBlaster extends StationaryMinion {
                 ch.sprite.showStatus(CharSprite.NEUTRAL, ch.defenseVerb());
             }
         }
+        damage(8, this);
         return true;
     }
 }
