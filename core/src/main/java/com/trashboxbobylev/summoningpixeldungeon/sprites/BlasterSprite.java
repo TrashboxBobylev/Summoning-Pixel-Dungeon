@@ -26,6 +26,8 @@ package com.trashboxbobylev.summoningpixeldungeon.sprites;
 
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
+import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary.GasterBlaster;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Beam;
 import com.trashboxbobylev.summoningpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.TextureFilm;
@@ -66,6 +68,8 @@ public class BlasterSprite extends MobSprite {
         if (anim == attack){
             if (Dungeon.level.heroFOV[ch.pos] || Dungeon.level.heroFOV[attackPos]){
                 parent.add(new Beam.LightRay(center(), DungeonTilemap.raisedTileCenterToWorld(attackPos)));
+                ((GasterBlaster)ch).attock(attackPos);
+                ch.next();
             }
         }
     }

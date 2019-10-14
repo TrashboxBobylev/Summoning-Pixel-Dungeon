@@ -43,9 +43,7 @@ public class GasterBlaster extends StationaryMinion {
     @Override
     protected boolean canAttack( Char enemy ) {
         Ballistica ballistica = new Ballistica(pos, enemy.pos, Ballistica.STOP_TERRAIN);
-        for (int c : ballistica.subPath(1, viewDistance)) {
-            if (c == enemy.pos) return true;
-        }
+        if (ballistica.subPath(1, ballistica.dist).contains(enemy.pos)) return true;
         return false;
     }
 
@@ -59,29 +57,29 @@ public class GasterBlaster extends StationaryMinion {
         spend(attackDelay());
         boolean rayVisible = false;
         Ballistica ballistica = new Ballistica(pos, enemy.pos, Ballistica.STOP_TERRAIN);
-        for (int c : ballistica.subPath(1, viewDistance)) {
+        for (int c : ballistica.subPath(1, Integer.MAX_VALUE)) {
             if (Dungeon.level.heroFOV[c]) rayVisible = true;
         }
 
         if (rayVisible){
             sprite.attack(ballistica.collisionPos);
         } else {
-            attack(enemy);
+            attock(enemy.pos);
         }
         return !rayVisible;
     }
 
-    @Override
-    public boolean attack(Char enemy) {
-        Ballistica ballistica = new Ballistica(pos, enemy.pos, Ballistica.STOP_TERRAIN);
-        for (int c : ballistica.subPath(1, viewDistance)) {
+
+    public boolean attock(int posision) {
+        Ballistica ballistica = new Ballistica(pos, posision, Ballistica.STOP_TERRAIN);
+        for (int c : ballistica.subPath(1, ballistica.dist)) {
             Char ch = Actor.findChar(c);
             if (ch == null) continue;
             if (hit(this, ch, true)){
                 ch.damage(damageRoll(), this);
-                if (fieldOfView[pos] || fieldOfView[enemy.pos]){
+                if (fieldOfView[pos] || fieldOfView[posision]){
                     ch.sprite.flash();
-                    CellEmitter.center(c).burst(MagicMissile.WhiteParticle.FACTORY, Random.NormalIntRange(3, 8));
+                    CellEmitter.center(ch.pos).burst(MagicMissile.WhiteParticle.FACTORY, Random.NormalIntRange(3, 8));
                 }
             } else {
                 ch.sprite.showStatus(CharSprite.NEUTRAL, ch.defenseVerb());
