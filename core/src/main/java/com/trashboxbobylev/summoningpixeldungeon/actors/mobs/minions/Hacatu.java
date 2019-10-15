@@ -90,6 +90,7 @@ public class Hacatu extends Minion implements Callback {
 			}
 			
 			spend( TIME_TO_ZAP );
+			next();
 			
 			if (hit( this, enemy, true )) {
 
