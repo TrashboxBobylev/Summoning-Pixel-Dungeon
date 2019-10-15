@@ -131,6 +131,7 @@ public class ImpQueen extends Minion {
             Sample.INSTANCE.play(Assets.SND_CHARMS);
 
             Imp imp = new Imp();
+            imp.callToQueen(pos);
             GameScene.add(imp);
             ScrollOfTeleportation.appear(imp, impPosition);
             CellEmitter.center( impPosition ).burst( MagicMissile.WardParticle.UP, Random.IntRange( 8, 15 ) );
