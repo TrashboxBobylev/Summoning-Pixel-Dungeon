@@ -28,6 +28,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfTargeting;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ImpMinionSprite;
+import com.watabou.utils.Bundle;
 
 public class Imp extends Minion {
     {
@@ -38,6 +39,18 @@ public class Imp extends Minion {
     }
 
     int queenPos = -1;
+
+    @Override
+    public void storeInBundle(Bundle bundle) {
+        super.storeInBundle(bundle);
+        bundle.put("queenpos", queenPos);
+    }
+
+    @Override
+    public void restoreFromBundle(Bundle bundle) {
+        super.restoreFromBundle(bundle);
+        queenPos = bundle.getInt("queenpos");
+    }
 
     public void callToQueen(int posisiion){
         queenPos = posisiion;

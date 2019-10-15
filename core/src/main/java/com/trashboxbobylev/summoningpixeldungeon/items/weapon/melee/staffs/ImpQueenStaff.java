@@ -33,11 +33,12 @@ public class ImpQueenStaff extends Staff {
         image = ItemSpriteSheet.IMP_STAFF;
         minionType = ImpQueen.class;
         tier = 5;
+        isTanky = true;
     }
 
     @Override
     public int minionMax(int lvl) {
-        return  4*(tier+1) +    //24
+        return  4*(tier) +    //20
                 lvl*(tier+1);   //+6 scaling
     }
 
@@ -49,6 +50,6 @@ public class ImpQueenStaff extends Staff {
 
     @Override
     public int hp(int lvl){
-        return 12*tier + lvl*(tier+5); //60
+        return 18*tier + lvl*(tier+5); //90
     }
 }

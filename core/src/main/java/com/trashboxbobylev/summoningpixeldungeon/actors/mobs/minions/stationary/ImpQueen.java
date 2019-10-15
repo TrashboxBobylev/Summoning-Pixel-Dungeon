@@ -33,6 +33,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.FlavourBuff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Weakness;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Warlock;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Imp;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
@@ -53,6 +54,7 @@ public class ImpQueen extends Minion {
     {
         spriteClass = ImpQueenSprite.class;
         attunement = 3f;
+        isTanky = true;
     }
 
     @Override
@@ -63,7 +65,27 @@ public class ImpQueen extends Minion {
         else return super.canAttack(enemy);
     }
 
-    protected boolean doAttack( Char enemy ) {
+    @Override
+    protected boolean act() {
+        for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+            if (fieldOfView[mob.pos] && mob instanceof Imp) {
+                    ((Imp) mob).callToQueen(pos);
+                }
+            }
+        return super.act();
+    }
+
+    @Override
+    public void die(Object cause) {
+        for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+            if (mob instanceof Imp) {
+                mob.die(null);
+            }
+        }
+        super.die(cause);
+    }
+
+    protected boolean doAttack(Char enemy ) {
 
         if (buff(MorphTimer.class) == null) {
 
@@ -86,6 +108,7 @@ public class ImpQueen extends Minion {
         spend( TICK );
 
         if (hit( this, enemy, true )) {
+            Buff.append(this, MorphTimer.class, 30f);
             int impPosition = enemy.pos;
             enemy.HP = 0;
             Actor.remove( enemy );
