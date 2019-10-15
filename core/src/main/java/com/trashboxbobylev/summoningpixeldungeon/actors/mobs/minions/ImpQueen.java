@@ -92,7 +92,7 @@ public class ImpQueen extends Minion {
 
     protected boolean doAttack(Char enemy ) {
 
-        if (buff(MorphTimer.class) == null) {
+        if (buff(MorphTimer.class) != null) {
 
             return super.doAttack( enemy );
 
