@@ -50,6 +50,8 @@ import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
+import java.text.DecimalFormat;
+
 public class ImpQueen extends Minion {
     {
         spriteClass = ImpQueenSprite.class;
@@ -74,6 +76,7 @@ public class ImpQueen extends Minion {
                 }
             }
         }
+        if (buff(MorphTimer.class) != null) sprite.showStatus(CharSprite.NEUTRAL, new DecimalFormat("#").format(buff(MorphTimer.class).cooldown()+1));
         return super.act();
     }
 
