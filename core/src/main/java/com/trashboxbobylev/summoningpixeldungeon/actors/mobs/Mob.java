@@ -643,9 +643,8 @@ public abstract class Mob extends Char {
 			if (EXP % 2 == 1) EXP += Random.Int(2);
 			EXP /= 2;
 		}
-
-		if (cause instanceof Minion){
-		    LoveHolder.lul buff = Dungeon.hero.buff(LoveHolder.lul.class);
+        LoveHolder.lul buff = Dungeon.hero.buff(LoveHolder.lul.class);
+		if (cause instanceof Minion && buff != null){
 		    int gain = EXP;
 		    if (Dungeon.hero.subClass == HeroSubClass.SOUL_REAVER) gain *= 2;
 		    int charge = buff.gainCharge(gain);
