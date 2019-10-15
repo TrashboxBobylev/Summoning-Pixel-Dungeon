@@ -24,8 +24,7 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs;
 
-import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.GooMinion;
-import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary.ImpQueen;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.ImpQueen;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 
 public class ImpQueenStaff extends Staff {

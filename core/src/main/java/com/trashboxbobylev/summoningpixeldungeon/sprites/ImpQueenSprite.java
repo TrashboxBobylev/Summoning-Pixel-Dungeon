@@ -25,8 +25,7 @@
 package com.trashboxbobylev.summoningpixeldungeon.sprites;
 
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
-import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Warlock;
-import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary.ImpQueen;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.ImpQueen;
 import com.trashboxbobylev.summoningpixeldungeon.effects.CellEmitter;
 import com.trashboxbobylev.summoningpixeldungeon.effects.MagicMissile;
 import com.watabou.noosa.TextureFilm;
