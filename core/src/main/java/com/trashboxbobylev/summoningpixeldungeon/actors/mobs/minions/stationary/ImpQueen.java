@@ -52,6 +52,7 @@ import com.watabou.utils.Random;
 public class ImpQueen extends Minion {
     {
         spriteClass = ImpQueenSprite.class;
+        attunement = 3f;
     }
 
     @Override
