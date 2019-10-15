@@ -451,7 +451,7 @@ public class Generator {
                     ImpQueenStaff.class,
                     HacatuStaff.class
             };
-            STF_T5.probs = new float[]{ 5, 4, 4 };
+            STF_T5.probs = new float[]{ 5, 4, 4, 4 };
 			
 			FOOD.classes = new Class<?>[]{
 					Food.class,
