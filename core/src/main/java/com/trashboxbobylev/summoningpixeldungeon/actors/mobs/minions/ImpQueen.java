@@ -68,10 +68,12 @@ public class ImpQueen extends Minion {
     @Override
     protected boolean act() {
         for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-            if (fieldOfView[mob.pos] && mob instanceof Imp) {
+            if (fieldOfView != null) {
+                if (fieldOfView[mob.pos] && mob instanceof Imp) {
                     ((Imp) mob).callToQueen(pos);
                 }
             }
+        }
         return super.act();
     }
 
