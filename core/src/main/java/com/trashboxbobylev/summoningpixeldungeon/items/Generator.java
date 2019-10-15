@@ -448,7 +448,8 @@ public class Generator {
             STF_T5.classes = new Class<?>[]{
                     GooStaff.class,
                     BlasterStaff.class,
-                    ImpQueenStaff.class
+                    ImpQueenStaff.class,
+                    HacatuStaff.class
             };
             STF_T5.probs = new float[]{ 5, 4, 4 };
 			
