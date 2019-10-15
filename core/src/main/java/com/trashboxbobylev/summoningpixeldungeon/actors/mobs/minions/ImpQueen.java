@@ -61,7 +61,7 @@ public class ImpQueen extends Minion {
 
     @Override
     protected boolean canAttack(Char enemy) {
-        if (buff(MorphTimer.class) != null){
+        if (buff(MorphTimer.class) == null){
             return new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos;
         }
         else return super.canAttack(enemy);
@@ -118,6 +118,7 @@ public class ImpQueen extends Minion {
             Buff.append(this, MorphTimer.class, 30f);
             int impPosition = enemy.pos;
             enemy.HP = 0;
+            enemy.sprite.die();
             Actor.remove( enemy );
             Dungeon.level.mobs.remove( this );
             if (Dungeon.hero.isAlive()) {
