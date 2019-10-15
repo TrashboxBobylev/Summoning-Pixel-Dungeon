@@ -112,7 +112,9 @@ public class ImpQueen extends Minion {
     private void zap() {
         spend( TICK );
 
-        if (hit( this, enemy, true )) {
+        if (hit( this, enemy, true ) &&
+                (!enemy.properties().contains(Char.Property.BOSS)
+                && !enemy.properties().contains(Char.Property.MINIBOSS))) {
             Buff.append(this, MorphTimer.class, 30f);
             int impPosition = enemy.pos;
             enemy.HP = 0;
