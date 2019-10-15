@@ -27,11 +27,14 @@ package com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.effects.CellEmitter;
 import com.trashboxbobylev.summoningpixeldungeon.effects.MagicMissile;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
+import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.BlasterSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.CharSprite;
+import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.watabou.utils.Random;
 
 public class GasterBlaster extends StationaryMinion {
@@ -70,13 +73,19 @@ public class GasterBlaster extends StationaryMinion {
     }
 
 
-    public boolean attock(int posision) {
+    public void attock(int posision) {
         Ballistica ballistica = new Ballistica(pos, posision, Ballistica.STOP_TERRAIN);
         for (int c : ballistica.subPath(1, ballistica.dist)) {
             Char ch = Actor.findChar(c);
             if (ch == null) continue;
             if (hit(this, ch, true)){
                 ch.damage(damageRoll(), this);
+
+                if (!ch.isAlive() && ch instanceof Hero){
+                    Dungeon.fail(this.getClass());
+                    GLog.negative( Messages.capitalize(Messages.get(Char.class, "kill", name)) );
+                }
+
                 if (fieldOfView[pos] || fieldOfView[posision]){
                     ch.sprite.flash();
                     CellEmitter.center(ch.pos).burst(MagicMissile.WhiteParticle.FACTORY, Random.NormalIntRange(3, 8));
@@ -86,6 +95,5 @@ public class GasterBlaster extends StationaryMinion {
             }
         }
         damage(8, this);
-        return true;
     }
 }
