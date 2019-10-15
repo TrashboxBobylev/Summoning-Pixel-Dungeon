@@ -42,6 +42,11 @@ public class HacatuStaff extends Staff{
                 lvl*tier;               //+5
     }
 
+    @Override
+    public float requiredAttunement() {
+        return 2f;
+    }
+
     public int hp(int lvl){
         return 4*tier + lvl*(tier) - 1; //20
     }

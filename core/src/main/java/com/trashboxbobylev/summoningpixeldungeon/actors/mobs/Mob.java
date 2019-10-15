@@ -291,10 +291,9 @@ public abstract class Mob extends Char {
                 for (Char minion : enemies){
                     if (minion instanceof Minion){
                         minionsAreHere = true;
-                            int hp = -1;
-                            //prioritise minion with highest health
+                            //prioritise tank
                             for (Char min : enemies){
-                                if (min instanceof Minion && hp < min.HT) priority = (Minion) min;
+                                if (min instanceof Minion && ((Minion) min).isTanky) return min;
                             }
                         break;
                     }
@@ -323,7 +322,7 @@ public abstract class Mob extends Char {
 				for (Char curr : enemies){
 					if (closest == null
 							|| Dungeon.level.distance(pos, curr.pos) < Dungeon.level.distance(pos, closest.pos)
-							|| Dungeon.level.distance(pos, curr.pos) == Dungeon.level.distance(pos, closest.pos) && ((curr.equals(priority)) || (minionsAreHere && curr instanceof Minion)) || curr == Dungeon.hero){
+							|| Dungeon.level.distance(pos, curr.pos) == Dungeon.level.distance(pos, closest.pos) && ((minionsAreHere && curr instanceof Minion)) || curr == Dungeon.hero){
 						closest = curr;
 					}
 				}
