@@ -46,18 +46,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.ElixirOfT
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.exotic.ExoticPotion;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.Scroll;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ExoticScroll;
-import com.trashboxbobylev.summoningpixeldungeon.items.spells.Alchemize;
-import com.trashboxbobylev.summoningpixeldungeon.items.spells.AquaBlast;
-import com.trashboxbobylev.summoningpixeldungeon.items.spells.ArcaneCatalyst;
-import com.trashboxbobylev.summoningpixeldungeon.items.spells.BeaconOfReturning;
-import com.trashboxbobylev.summoningpixeldungeon.items.spells.CurseInfusion;
-import com.trashboxbobylev.summoningpixeldungeon.items.spells.FeatherFall;
-import com.trashboxbobylev.summoningpixeldungeon.items.spells.MagicalInfusion;
-import com.trashboxbobylev.summoningpixeldungeon.items.spells.MagicalPorter;
-import com.trashboxbobylev.summoningpixeldungeon.items.spells.PhaseShift;
-import com.trashboxbobylev.summoningpixeldungeon.items.spells.ReclaimTrap;
-import com.trashboxbobylev.summoningpixeldungeon.items.spells.Recycle;
-import com.trashboxbobylev.summoningpixeldungeon.items.spells.WildEnergy;
+import com.trashboxbobylev.summoningpixeldungeon.items.spells.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.darts.Dart;
 
@@ -206,6 +195,7 @@ public abstract class Recipe {
 		new ReclaimTrap.Recipe(),
 		new Recycle.Recipe(),
 		new WildEnergy.Recipe(),
+        new Enrage.Recipe(),
 		new StewedMeat.twoMeat()
 	};
 	

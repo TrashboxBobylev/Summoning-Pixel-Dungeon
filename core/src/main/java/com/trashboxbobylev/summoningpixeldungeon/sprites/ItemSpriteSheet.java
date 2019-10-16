@@ -610,6 +610,7 @@ public class ItemSpriteSheet {
 	public static final int ELIXIR_TOXIC    = ELIXIRS+4;
 	public static final int ELIXIR_ICY      = ELIXIRS+5;
 	public static final int ELIXIR_ARCANE   = ELIXIRS+6;
+	public static final int ELIXIR_ATTUNEMENT = ELIXIRS+7;
 	static{
 		for (int i = BREWS; i < BREWS+16; i++)
 			assignItemRect(i, 12, 14);
@@ -626,6 +627,7 @@ public class ItemSpriteSheet {
 	public static final int AQUA_BLAST      = SPELLS+5;
 	public static final int FEATHER_FALL    = SPELLS+6;
 	public static final int RECLAIM_TRAP    = SPELLS+7;
+    public static final int ENRAGE    = SPELLS+8;
 	
 	public static final int CURSE_INFUSE    = SPELLS+9;
 	public static final int MAGIC_INFUSE    = SPELLS+10;
@@ -640,6 +642,7 @@ public class ItemSpriteSheet {
 		assignItemRect(AQUA_BLAST,      11, 11);
 		assignItemRect(FEATHER_FALL,    11, 11);
 		assignItemRect(RECLAIM_TRAP,    11, 11);
+        assignItemRect(ENRAGE,    11, 11);
 		
 		assignItemRect(CURSE_INFUSE,    10, 15);
 		assignItemRect(MAGIC_INFUSE,    10, 15);

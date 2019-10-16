@@ -52,18 +52,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.ElixirOfT
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.exotic.ExoticPotion;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.Scroll;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ExoticScroll;
-import com.trashboxbobylev.summoningpixeldungeon.items.spells.Alchemize;
-import com.trashboxbobylev.summoningpixeldungeon.items.spells.AquaBlast;
-import com.trashboxbobylev.summoningpixeldungeon.items.spells.ArcaneCatalyst;
-import com.trashboxbobylev.summoningpixeldungeon.items.spells.BeaconOfReturning;
-import com.trashboxbobylev.summoningpixeldungeon.items.spells.CurseInfusion;
-import com.trashboxbobylev.summoningpixeldungeon.items.spells.FeatherFall;
-import com.trashboxbobylev.summoningpixeldungeon.items.spells.MagicalInfusion;
-import com.trashboxbobylev.summoningpixeldungeon.items.spells.MagicalPorter;
-import com.trashboxbobylev.summoningpixeldungeon.items.spells.PhaseShift;
-import com.trashboxbobylev.summoningpixeldungeon.items.spells.ReclaimTrap;
-import com.trashboxbobylev.summoningpixeldungeon.items.spells.Recycle;
-import com.trashboxbobylev.summoningpixeldungeon.items.spells.WildEnergy;
+import com.trashboxbobylev.summoningpixeldungeon.items.spells.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.Runestone;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.plants.Plant;
@@ -366,6 +355,7 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe(new AquaBlast.Recipe()));
 				result.add(new QuickRecipe(new FeatherFall.Recipe()));
 				result.add(new QuickRecipe(new ReclaimTrap.Recipe()));
+                result.add(new QuickRecipe(new Enrage.Recipe()));
 				result.add(null);
 				result.add(null);
 				result.add(new QuickRecipe(new CurseInfusion.Recipe()));
