@@ -45,7 +45,7 @@ public class ImpQueenSprite extends MobSprite {
 		idle = new Animation( 2, true );
 		idle.frames( frames, 6, 6, 6, 7, 6, 6, 7, 7 );
 		
-		run = new Animation( 15, true );
+		run = new Animation( 4, true );
 		run.frames( frames, 7, 8 );
 		
 		attack = new Animation( 12, false );
