@@ -34,8 +34,13 @@ import com.trashboxbobylev.summoningpixeldungeon.items.quest.MetalShard;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRage;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
+import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Enrage extends TargetedSpell {
+
+    {
+        image = ItemSpriteSheet.ENRAGE;
+    }
 
     @Override
     protected void affectTarget(Ballistica bolt, Hero hero) {
