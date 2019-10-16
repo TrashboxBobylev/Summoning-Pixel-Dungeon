@@ -103,7 +103,7 @@ public class Hacatu extends Minion implements Callback {
                 int max = maxDamage;
 
                 for (Char ch : affected){
-                    ch.damage(Math.round(damageRoll() * multipler), new LightningBolt());
+                    ch.damage(Math.round(damageRoll() * multipler), this);
 
                     if (ch == Dungeon.hero) Camera.main.shake( 2, 0.3f );
                     ch.sprite.centerEmitter().burst( SparkParticle.FACTORY, 3 );
