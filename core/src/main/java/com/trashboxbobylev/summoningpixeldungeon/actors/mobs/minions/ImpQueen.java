@@ -115,12 +115,12 @@ public class ImpQueen extends Minion {
         if (hit( this, enemy, true ) &&
                 (!enemy.properties().contains(Char.Property.BOSS)
                 && !enemy.properties().contains(Char.Property.MINIBOSS))) {
-            Buff.append(this, MorphTimer.class, 30f);
+            Buff.append(this, MorphTimer.class, 50f);
             int impPosition = enemy.pos;
             enemy.HP = 0;
             enemy.sprite.die();
             Actor.remove( enemy );
-            Dungeon.level.mobs.remove( this );
+            Dungeon.level.mobs.remove( enemy );
             if (Dungeon.hero.isAlive()) {
 
                 if (enemy.alignment == Alignment.ENEMY) {
