@@ -42,13 +42,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.potions.brews.BlizzardBre
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.brews.CausticBrew;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.brews.InfernalBrew;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.brews.ShockingBrew;
-import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.ElixirOfAquaticRejuvenation;
-import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.ElixirOfArcaneArmor;
-import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.ElixirOfDragonsBlood;
-import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.ElixirOfHoneyedHealing;
-import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.ElixirOfIcyTouch;
-import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.ElixirOfMight;
-import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.ElixirOfToxicEssence;
+import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.exotic.ExoticPotion;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.Scroll;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ExoticScroll;
@@ -339,6 +333,7 @@ public class QuickRecipe extends Component {
 				result.add(null);
 				result.add(new QuickRecipe(new ElixirOfHoneyedHealing.Recipe()));
 				result.add(new QuickRecipe(new ElixirOfMight.Recipe()));
+                result.add(new QuickRecipe(new ElixirOfAttunement.Recipe()));
 				result.add(new QuickRecipe(new ElixirOfAquaticRejuvenation.Recipe()));
 				result.add(new QuickRecipe(new ElixirOfDragonsBlood.Recipe()));
 				result.add(new QuickRecipe(new ElixirOfIcyTouch.Recipe()));

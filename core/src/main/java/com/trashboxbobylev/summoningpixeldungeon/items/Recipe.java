@@ -36,13 +36,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.potions.brews.BlizzardBre
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.brews.CausticBrew;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.brews.InfernalBrew;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.brews.ShockingBrew;
-import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.ElixirOfAquaticRejuvenation;
-import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.ElixirOfArcaneArmor;
-import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.ElixirOfDragonsBlood;
-import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.ElixirOfHoneyedHealing;
-import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.ElixirOfIcyTouch;
-import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.ElixirOfMight;
-import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.ElixirOfToxicEssence;
+import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.exotic.ExoticPotion;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.Scroll;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ExoticScroll;
@@ -178,6 +172,7 @@ public abstract class Recipe {
 		new ElixirOfDragonsBlood.Recipe(),
 		new ElixirOfIcyTouch.Recipe(),
 		new ElixirOfMight.Recipe(),
+        new ElixirOfAttunement.Recipe(),
 		new ElixirOfHoneyedHealing.Recipe(),
 		new ElixirOfToxicEssence.Recipe(),
 		new BlizzardBrew.Recipe(),
