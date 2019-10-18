@@ -124,8 +124,10 @@ public class SummPDChanges {
                         "When PoH cloud heal anything, EoHH are more concentrated and heal only allies."));
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SWORD, new ItemSprite.Glowing()), "Unstable enchantment",
                 "Now have rainbow shining as glowing effect."));
-        changes.addButton( new ChangeButton(new Image(Assets.NECRO, 0, 0, 16, 16), "Necromancer",
-                "Added the necromancer from Shattered 0.7.5. Their stats are buffed compared to Shattered's."));
+        changes.addButton( new ChangeButton(new Image(Assets.NECRO, 0, 0, 16, 16), "Shattered 0.7.5",
+                "_-_ Added the necromancer from Shattered 0.7.5. Their stats are buffed compared to Shattered's.\n\n"+
+                                        "_-_ Added new Tengu from Shattered 0.7.5, unchanged.\n\n"+
+                                        "_-_ New camera also added."));
     }
 
 	
