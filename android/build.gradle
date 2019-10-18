@@ -43,10 +43,6 @@ android {
     }
 
     buildTypes {
-        debug {
-            applicationIdSuffix ".indev"
-            versionNameSuffix '-INDEV'
-        }
         release {
 
             //These lines enable R8, which is a code shrinker/optimizer/obfuscator.
