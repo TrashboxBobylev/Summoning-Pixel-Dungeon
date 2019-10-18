@@ -82,6 +82,7 @@ import com.trashboxbobylev.summoningpixeldungeon.journal.Notes;
 import com.trashboxbobylev.summoningpixeldungeon.levels.Level;
 import com.trashboxbobylev.summoningpixeldungeon.levels.Terrain;
 import com.trashboxbobylev.summoningpixeldungeon.levels.features.Chasm;
+import com.trashboxbobylev.summoningpixeldungeon.levels.traps.Trap;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.plants.Earthroot;
 import com.trashboxbobylev.summoningpixeldungeon.plants.Swiftthistle;
@@ -1626,6 +1627,11 @@ public class Hero extends Char {
 					}
 					
 					if (Dungeon.level.secret[p]){
+
+                        Trap trap = Dungeon.level.traps.get( p );
+                        if (trap != null && !trap.canBeSearched){
+                            continue;
+                        }
 						
 						float chance;
 						//intentional searches always succeed

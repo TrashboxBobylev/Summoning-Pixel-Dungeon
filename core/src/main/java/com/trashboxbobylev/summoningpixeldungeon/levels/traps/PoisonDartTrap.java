@@ -43,13 +43,12 @@ public class PoisonDartTrap extends Trap {
 	{
 		color = GREEN;
 		shape = CROSSHAIR;
-	}
-	
-	@Override
-	public Trap hide() {
-		//this one can't be hidden
-		return reveal();
-	}
+        canBeHidden = false;
+    }
+
+    protected int poisonAmount(){
+        return 8 + Math.round(2*Dungeon.depth / 3f);
+    }
 	
 	@Override
 	public void activate() {
