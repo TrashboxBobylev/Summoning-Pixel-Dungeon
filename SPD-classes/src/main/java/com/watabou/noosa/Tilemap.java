@@ -248,17 +248,24 @@ public class Tilemap extends Visual {
 		if (length <= 0)
 			return;*/
 
-		NoosaScript script = NoosaScriptNoLighting.get();
+        NoosaScript script = script();
 
-		texture.bind();
+        texture.bind();
 
-		script.uModel.valueM4( matrix );
+        script.uModel.valueM4( matrix );
+        script.lighting(
+                rm, gm, bm, am,
+                ra, ga, ba, aa );
 
-		script.camera( camera );
+        script.camera( camera );
 
-		script.drawQuadSet( buffer, size, 0 );
+        script.drawQuadSet( buffer, size, 0 );
 
-	}
+    }
+
+    protected NoosaScript script(){
+        return NoosaScriptNoLighting.get();
+    }
 
 	@Override
 	public void destroy() {
