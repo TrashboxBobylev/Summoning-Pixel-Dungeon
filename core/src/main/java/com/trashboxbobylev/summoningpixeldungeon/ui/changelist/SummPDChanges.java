@@ -27,7 +27,9 @@ package com.trashboxbobylev.summoningpixeldungeon.ui.changelist;
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroClass;
 import com.trashboxbobylev.summoningpixeldungeon.items.Ankh;
+import com.trashboxbobylev.summoningpixeldungeon.items.armor.ConjurerArmor;
 import com.trashboxbobylev.summoningpixeldungeon.items.food.Blandfruit;
+import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfHealing;
 import com.trashboxbobylev.summoningpixeldungeon.items.spells.ArcaneCatalyst;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.ChangesScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.HeroSprite;
@@ -49,6 +51,7 @@ public class SummPDChanges {
 		add_Beta_Changes(changeInfos);
 		add_General_Changes(changeInfos);
 		add_Items_Changes(changeInfos);
+		add_Minor_Changes(changeInfos);
 	}
 
     public static void add_Beta_Changes( ArrayList<ChangeInfo> changeInfos ){
@@ -96,6 +99,33 @@ public class SummPDChanges {
                         "_-_ Added the Scroll of Attunement, that increases speed and damage reduction for all minions in sight.\n\n" +
                         "_-_ Replaced the Stone of Affection with Stone of Targeting, that can be used to setup positions for minions.\n\n"+
                         "_-_ Added the Scroll of Soul Energy, that summons powerful invincible minion at cost of all attunement."));
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_LOVE1, null), "New artifact!",
+                "Added the new artifact: LOVE Holder.\n\n" +
+                        "_-_ It's unique artifact for Conjurer: you can't get it by other means.\n\n" +
+                        "_-_ LOVE Holder allows hero to collect a soul energy, that can be used for healing minions.\n\n"+
+                        "_-_ As you heal a minions, artifact will grow in power and obtain the new abilities."));
+        changes.addButton( new ChangeButton(new ConjurerArmor(),
+                "The new armor item, exclusive for Conjurer.\n\n" +
+                        "_-_ It's can't be unequipped by any means, but you can merge any identified armor with Robe to upgrade the robe.\n\n"+
+                        "_-_ Deltarune Robe have several skills, two of them are available after getting the subclass.\n\n"+
+                        "_-_ First skill is paralysing all enemies in sight for short time, second summons chaos saber, third cast soul spell, which effect depends on choosed subclass.\n\n"+
+                        "_-_ With every upgrade it will increase newly summoned minions hp by 10% per level."));
+
+    }
+
+    public static void add_Minor_Changes(ArrayList<ChangeInfo> changeInfos){
+        ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "Other", false, 0x651f66);
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.GOLD, null), "Gold balance changes",
+                "_-_ Because of summon weapons, gold appear a slighty rarer, but in more quantity.\n\n"+
+                                        "_-_ The shops have been extended to hold more valuable items.\n\n"+
+                                        "_-_ You can farm gold in Prison by killing the thieves."));
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.POTION_CRIMSON, null), "Healing item changes",
+                "Potion of Healing and Elixir of Honeyed Healing now create the clouds of healing gases on shattering.\n\n" +
+                        "When PoH cloud heal anything, EoHH are more concentrated and heal only allies."));
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SWORD, new ItemSprite.Glowing()), "Unstable enchantment",
+                "Now have rainbow shining as glowing effect."));
+        changes.addButton( new ChangeButton(new Image(Assets.NECRO, 0, 0, 16, 16), "Necromancer",
+                "Added the necromancer from Shattered 0.7.5. Their stats are buffed compared to Shattered's."));
     }
 
 	
