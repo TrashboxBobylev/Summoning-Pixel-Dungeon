@@ -74,7 +74,7 @@ public class Food extends Item {
 
 		if (action.equals( AC_EAT )) {
 			
-			//detach( hero.belongings.backpack );
+			detach( hero.belongings.backpack );
 			
 			satisfy(hero);
 			GLog.i( message );
@@ -90,9 +90,6 @@ public class Food extends Item {
 			
 			Statistics.foodEaten++;
 			Badges.validateFoodEaten();
-
-            InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
-            Game.switchScene( InterlevelScene.class );
 			
 		}
 	}

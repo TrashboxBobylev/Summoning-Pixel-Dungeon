@@ -121,10 +121,6 @@ public enum HeroClass {
 		
 		new ScrollOfIdentify().identify();
 
-		new TomeOfMastery().collect();
-
-		new Glaive().identify().collect();
-
 	}
 
 	public Badges.Badge masteryBadge() {
@@ -230,14 +226,9 @@ public enum HeroClass {
 
         hero.attunement = 2;
         hero.HP = hero.HT = 15;
-        hero.STR = 19;
 
         new PotionOfStrength().identify();
         new ScrollOfAttunement().identify();
-        new ElixirOfAttunement().collect();
-        new Enrage().collect();
-        new PotionOfExperience().quantity(30).collect();
-        new StoneOfTargeting().quantity(30).collect();
 
     }
 	

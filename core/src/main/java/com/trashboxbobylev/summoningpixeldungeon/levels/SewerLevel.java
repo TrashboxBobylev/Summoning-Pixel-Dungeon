@@ -115,11 +115,6 @@ public class SewerLevel extends RegularLevel {
 			Dungeon.LimitedDrops.DEW_VIAL.drop();
 		}
 
-        if (!Dungeon.LimitedDrops.STAFF.dropped() && Dungeon.depth > 1) {
-            for (int i = 0; i < 40; i++) addItemToSpawn( Generator.randomStaff().identify() );
-            Dungeon.LimitedDrops.STAFF.drop();
-        }
-
 		Ghost.Quest.spawn( this );
 		
 		super.createItems();
