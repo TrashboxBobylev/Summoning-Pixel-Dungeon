@@ -46,20 +46,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.Scroll;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.SpiritBow;
 import com.trashboxbobylev.summoningpixeldungeon.journal.Notes;
-import com.trashboxbobylev.summoningpixeldungeon.levels.CavesBossLevel;
-import com.trashboxbobylev.summoningpixeldungeon.levels.CavesLevel;
-import com.trashboxbobylev.summoningpixeldungeon.levels.CityBossLevel;
-import com.trashboxbobylev.summoningpixeldungeon.levels.CityLevel;
-import com.trashboxbobylev.summoningpixeldungeon.levels.DeadEndLevel;
-import com.trashboxbobylev.summoningpixeldungeon.levels.HallsBossLevel;
-import com.trashboxbobylev.summoningpixeldungeon.levels.HallsLevel;
-import com.trashboxbobylev.summoningpixeldungeon.levels.LastLevel;
-import com.trashboxbobylev.summoningpixeldungeon.levels.LastShopLevel;
-import com.trashboxbobylev.summoningpixeldungeon.levels.Level;
-import com.trashboxbobylev.summoningpixeldungeon.levels.OldPrisonBossLevel;
-import com.trashboxbobylev.summoningpixeldungeon.levels.PrisonLevel;
-import com.trashboxbobylev.summoningpixeldungeon.levels.SewerBossLevel;
-import com.trashboxbobylev.summoningpixeldungeon.levels.SewerLevel;
+import com.trashboxbobylev.summoningpixeldungeon.levels.*;
 import com.trashboxbobylev.summoningpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.trashboxbobylev.summoningpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.ShadowCaster;
@@ -259,7 +246,7 @@ public class Dungeon {
 			level = new PrisonLevel();
 			break;
 		case 10:
-			level = new OldPrisonBossLevel();
+			level = new NewPrisonBossLevel();
 			break;
 		case 11:
 		case 12:
