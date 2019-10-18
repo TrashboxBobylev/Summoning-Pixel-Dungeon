@@ -75,8 +75,6 @@ public class Lightning extends Group {
 		this.callback = callback;
 		
 		life = DURATION;
-		
-		Sample.INSTANCE.play( Assets.SND_LIGHTNING );
 	}
 	
 	private static final double A = 180 / Math.PI;

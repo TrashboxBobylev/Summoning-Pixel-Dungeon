@@ -26,6 +26,7 @@ package com.trashboxbobylev.summoningpixeldungeon.levels.features;
 
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.ShatteredPixelDungeon;
+import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
@@ -47,9 +48,11 @@ public class HighGrass {
 	//yes this is a bit ugly, oh well.
 	private static boolean freezeTrample = false;
 
-	public static void trample( Level level, int pos, Char ch ) {
-		
-		if (freezeTrample) return;
+    public static void trample( Level level, int pos ) {
+
+        if (freezeTrample) return;
+
+        Char ch = Actor.findChar(pos);
 		
 		if (level.map[pos] == Terrain.FURROWED_GRASS){
 			if (ch instanceof Hero && ((Hero) ch).heroClass == HeroClass.HUNTRESS){

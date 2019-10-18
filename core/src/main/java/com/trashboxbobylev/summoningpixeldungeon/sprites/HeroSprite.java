@@ -95,21 +95,21 @@ public class HeroSprite extends CharSprite {
 		else
 			die();
 	}
-	
-	@Override
-	public void place( int p ) {
-		super.place( p );
-		Camera.main.target = this;
-	}
 
-	@Override
-	public void move( int from, int to ) {
-		super.move( from, to );
-		if (ch.flying) {
-			play( fly );
-		}
-		Camera.main.target = this;
-	}
+    @Override
+    public void place( int p ) {
+        super.place( p );
+        Camera.main.panTo(center(), 5f);
+    }
+
+    @Override
+    public void move( int from, int to ) {
+        super.move( from, to );
+        if (ch.flying) {
+            play( fly );
+        }
+        Camera.main.panFollow(this, 15f);
+    }
 
 	@Override
 	public void jump( int from, int to, Callback callback ) {

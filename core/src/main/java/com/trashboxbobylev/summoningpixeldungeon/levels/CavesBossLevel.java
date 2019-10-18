@@ -212,13 +212,13 @@ public class CavesBossLevel extends Level {
 		} while (!passable[cell] || Actor.findChar(cell) != null);
 		return cell;
 	}
-	
+
 	@Override
-	public void press( int cell, Char hero ) {
+	public void occupyCell( Char ch ) {
+
+		super.occupyCell( ch );
 		
-		super.press( cell, hero );
-		
-		if (!enteredArena && outsideEntraceRoom( cell ) && hero == Dungeon.hero) {
+		if (!enteredArena && outsideEntraceRoom( ch.pos ) && ch == Dungeon.hero) {
 			
 			enteredArena = true;
 			seal();

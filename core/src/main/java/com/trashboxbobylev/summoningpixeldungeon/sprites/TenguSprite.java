@@ -51,7 +51,7 @@ public class TenguSprite extends MobSprite {
 		attack = new Animation( 15, false );
 		attack.frames( frames, 6, 7, 7, 0 );
 		
-		cast = attack.clone();
+		zap = attack.clone();
 		
 		die = new Animation( 8, false );
 		die.frames( frames, 8, 9, 10, 10, 10, 10, 10, 10 );
@@ -93,7 +93,7 @@ public class TenguSprite extends MobSprite {
 					}
 				} );
 			
-			play( cast );
+			play( zap );
 			turnTo( ch.pos , cell );
 			
 		} else {

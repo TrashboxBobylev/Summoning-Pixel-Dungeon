@@ -58,21 +58,21 @@ public class NecromancerSprite extends MobSprite {
 	public void charge(){
 		play(charging);
 	}
-	
-	@Override
-	public void onComplete(Animation anim) {
-		super.onComplete(anim);
-		if (anim == zap){
-			if (ch instanceof Necromancer){
-				if (((Necromancer) ch).summoning){
-					charge();
-				} else {
-					((Necromancer)ch).onZapComplete();
-					idle();
-				}
-			} else {
-				idle();
-			}
-		}
-	}
+
+    @Override
+    public void onComplete(Animation anim) {
+        super.onComplete(anim);
+        if (anim == zap){
+            if (ch instanceof Necromancer){
+                if (((Necromancer) ch).summoning){
+                    charge();
+                } else {
+                    ((Necromancer)ch).onZapComplete();
+                    idle();
+                }
+            } else {
+                idle();
+            }
+        }
+    }
 }

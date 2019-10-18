@@ -276,7 +276,7 @@ public class Bomb extends Item {
 			}
 
 			//look for our bomb, remove it from its heap, and blow it up.
-			for (Heap heap : Dungeon.level.heaps.values()) {
+			for (Heap heap : Dungeon.level.heaps.valueList()) {
 				if (heap.items.contains(bomb)) {
 
 					//FIXME this is a bit hacky, might want to generalize the functionality

@@ -24,6 +24,7 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.items.bombs;
 
+import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
@@ -36,6 +37,7 @@ import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 import com.trashboxbobylev.summoningpixeldungeon.tiles.DungeonTilemap;
 import com.trashboxbobylev.summoningpixeldungeon.utils.BArray;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
@@ -81,6 +83,7 @@ public class ShockBomb extends Bomb {
 
 		CellEmitter.center(cell).burst(SparkParticle.FACTORY, 20);
 		Dungeon.hero.sprite.parent.addToFront(new Lightning(arcs, null));
+        Sample.INSTANCE.play( Assets.SND_LIGHTNING );
 	}
 	
 	@Override

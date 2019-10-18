@@ -24,6 +24,7 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments;
 
+import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
@@ -32,6 +33,7 @@ import com.trashboxbobylev.summoningpixeldungeon.effects.particles.SparkParticle
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSprite;
 import com.trashboxbobylev.summoningpixeldungeon.utils.BArray;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
@@ -61,6 +63,7 @@ public class Shocking extends Weapon.Enchantment {
 			}
 
 			attacker.sprite.parent.addToFront( new Lightning( arcs, null ) );
+            Sample.INSTANCE.play( Assets.SND_LIGHTNING );
 			
 		}
 

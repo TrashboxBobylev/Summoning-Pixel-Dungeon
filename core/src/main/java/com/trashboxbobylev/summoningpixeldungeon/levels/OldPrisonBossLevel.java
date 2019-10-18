@@ -32,7 +32,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Blob;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
-import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Tengu;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.OldTengu;
 import com.trashboxbobylev.summoningpixeldungeon.items.Heap;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.keys.IronKey;
@@ -58,7 +58,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-public class PrisonBossLevel extends Level {
+public class OldPrisonBossLevel extends Level {
 
 	{
 		color1 = 0x6a723d;
@@ -77,7 +77,7 @@ public class PrisonBossLevel extends Level {
 	private static final int ARENA_DOOR = 5+25*32;
 	
 	private State state;
-	private Tengu tengu;
+	private OldTengu tengu;
 	
 	public State state(){
 		return state;
@@ -115,11 +115,11 @@ public class PrisonBossLevel extends Level {
 
 		//in some states tengu won't be in the world, in others he will be.
 		if (state == State.START || state == State.MAZE) {
-			tengu = (Tengu)bundle.get( TENGU );
+			tengu = (OldTengu)bundle.get( TENGU );
 		} else {
 			for (Mob mob : mobs){
-				if (mob instanceof Tengu) {
-					tengu = (Tengu) mob;
+				if (mob instanceof OldTengu) {
+					tengu = (OldTengu) mob;
 					break;
 				}
 			}
@@ -151,7 +151,7 @@ public class PrisonBossLevel extends Level {
 	
 	@Override
 	protected void createMobs() {
-		tengu = new Tengu(); //We want to keep track of tengu independently of other mobs, he's not always in the level.
+		tengu = new OldTengu(); //We want to keep track of tengu independently of other mobs, he's not always in the level.
 	}
 	
 	public Actor respawner() {
@@ -616,7 +616,7 @@ public class PrisonBossLevel extends Level {
 	public static class exitVisual extends CustomTilemap {
 		
 		{
-			texture = Assets.PRISON_EXIT;
+			texture = Assets.PRISON_EXIT_OLD;
 			
 			tileW = 12;
 			tileH = 14;
@@ -659,7 +659,7 @@ public class PrisonBossLevel extends Level {
 	public static class exitVisualWalls extends CustomTilemap {
 		
 		{
-			texture = Assets.PRISON_EXIT;
+			texture = Assets.PRISON_EXIT_OLD;
 			
 			tileW = 12;
 			tileH = 14;

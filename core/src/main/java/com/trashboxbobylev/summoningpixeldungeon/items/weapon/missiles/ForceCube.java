@@ -50,15 +50,15 @@ public class ForceCube extends MissileWeapon {
 	
 	@Override
 	protected void onThrow(int cell) {
-		Dungeon.level.press(cell, null, true);
-		
-		ArrayList<Char> targets = new ArrayList<>();
-		if (Actor.findChar(cell) != null) targets.add(Actor.findChar(cell));
-		
-		for (int i : PathFinder.NEIGHBOURS8){
-			Dungeon.level.press(cell + i, null, true);
-			if (Actor.findChar(cell + i) != null) targets.add(Actor.findChar(cell + i));
-		}
+        Dungeon.level.pressCell(cell);
+
+        ArrayList<Char> targets = new ArrayList<>();
+        if (Actor.findChar(cell) != null) targets.add(Actor.findChar(cell));
+
+        for (int i : PathFinder.NEIGHBOURS8){
+            Dungeon.level.pressCell(cell);
+            if (Actor.findChar(cell + i) != null) targets.add(Actor.findChar(cell + i));
+        }
 		
 		for (Char target : targets){
 			curUser.shoot(target, this);

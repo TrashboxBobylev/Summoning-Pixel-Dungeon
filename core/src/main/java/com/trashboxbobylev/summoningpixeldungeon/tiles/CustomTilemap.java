@@ -40,7 +40,7 @@ public abstract class CustomTilemap implements Bundlable {
 	public int tileW = 1, tileH = 1; //width and height in tiles
 	
 	protected Object texture;
-	private Tilemap vis = null;
+	protected Tilemap vis = null;
 
 	public void pos(int pos) {
 		pos( pos%Dungeon.level.width(), pos/Dungeon.level.width() );

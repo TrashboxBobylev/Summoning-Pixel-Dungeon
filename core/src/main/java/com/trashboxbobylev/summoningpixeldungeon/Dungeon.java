@@ -56,7 +56,7 @@ import com.trashboxbobylev.summoningpixeldungeon.levels.HallsLevel;
 import com.trashboxbobylev.summoningpixeldungeon.levels.LastLevel;
 import com.trashboxbobylev.summoningpixeldungeon.levels.LastShopLevel;
 import com.trashboxbobylev.summoningpixeldungeon.levels.Level;
-import com.trashboxbobylev.summoningpixeldungeon.levels.PrisonBossLevel;
+import com.trashboxbobylev.summoningpixeldungeon.levels.OldPrisonBossLevel;
 import com.trashboxbobylev.summoningpixeldungeon.levels.PrisonLevel;
 import com.trashboxbobylev.summoningpixeldungeon.levels.SewerBossLevel;
 import com.trashboxbobylev.summoningpixeldungeon.levels.SewerLevel;
@@ -259,7 +259,7 @@ public class Dungeon {
 			level = new PrisonLevel();
 			break;
 		case 10:
-			level = new PrisonBossLevel();
+			level = new OldPrisonBossLevel();
 			break;
 		case 11:
 		case 12:
@@ -778,7 +778,7 @@ public class Dungeon {
 		}
 		
 		if (hero.buff(Awareness.class) != null){
-			for (Heap h : level.heaps.values()){
+			for (Heap h : level.heaps.valueList()){
 				BArray.or( level.visited, level.heroFOV, h.pos - 1 - level.width(), 3, level.visited );
 				BArray.or( level.visited, level.heroFOV, h.pos - 1, 3, level.visited );
 				BArray.or( level.visited, level.heroFOV, h.pos - 1 + level.width(), 3, level.visited );

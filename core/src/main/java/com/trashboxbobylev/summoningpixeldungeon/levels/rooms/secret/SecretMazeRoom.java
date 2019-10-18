@@ -67,6 +67,7 @@ public class SecretMazeRoom extends SecretRoom {
 		Painter.fill(level, this, 1, Terrain.EMPTY);
 		
 		//true = space, false = wall
+        Maze.allowDiagonals = false;
 		boolean[][] maze = Maze.generate(this);
 		boolean[] passable = new boolean[width()*height()];
 		

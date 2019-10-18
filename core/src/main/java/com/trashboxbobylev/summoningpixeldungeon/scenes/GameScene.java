@@ -232,7 +232,7 @@ public class GameScene extends PixelScene {
 		heaps = new Group();
 		add( heaps );
 		
-		for ( Heap heap : Dungeon.level.heaps.values() ) {
+		for ( Heap heap : Dungeon.level.heaps.valueList() ) {
 			addHeapSprite( heap );
 		}
 		
@@ -416,7 +416,17 @@ public class GameScene extends PixelScene {
 
 		Dungeon.hero.next();
 
-		Camera.main.target = hero;
+        switch (InterlevelScene.mode){
+            case FALL: case DESCEND: case CONTINUE:
+                Camera.main.snapTo(hero.center().x, hero.center().y - DungeonTilemap.SIZE * (defaultZoom/Camera.main.zoom));
+                break;
+            case ASCEND:
+                Camera.main.snapTo(hero.center().x, hero.center().y + DungeonTilemap.SIZE * (defaultZoom/Camera.main.zoom));
+                break;
+            default:
+                Camera.main.snapTo(hero.center().x, hero.center().y);
+        }
+        Camera.main.panTo(hero.center(), 2.5f);
 
 		if (InterlevelScene.mode != InterlevelScene.Mode.NONE) {
 			if (Dungeon.depth == Statistics.deepestFloor

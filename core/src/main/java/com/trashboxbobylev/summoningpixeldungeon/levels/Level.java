@@ -95,17 +95,14 @@ import java.util.HashSet;
 
 public abstract class Level implements Bundlable {
 
-    public void occupyCell( Char ch ){
-        if (!ch.flying){
-
-            if (pit[ch.pos]){
-                if (ch == Dungeon.hero) {
-                    Chasm.heroFall(ch.pos);
-                } else if (ch instanceof Mob) {
-                    Chasm.mobFall( (Mob)ch );
-                }
-            }
+    public void press(Integer collisionPos, Object o, boolean b) {
+        if (o == null && b == true){
+            pressCell(collisionPos);
         }
+    }
+
+    public void press(int pos, Char sheep) {
+        occupyCell(sheep);
     }
 
     public static enum Feeling {
@@ -744,7 +741,7 @@ public abstract class Level implements Bundlable {
 		}
 		
 		if (Dungeon.level != null) {
-			press( cell, null, true );
+			pressCell( cell );
 		}
 		
 		return heap;
@@ -816,361 +813,368 @@ public abstract class Level implements Bundlable {
 				|| heaps.get(result) != null);
 		return result;
 	}
-	
-	//characters which are not the hero 'soft' press cells by default
-	public void press( int cell, Char ch){
-		press( cell, ch, ch == Dungeon.hero);
-	}
-	
-	//a 'soft' press ignores hidden traps
-	//a 'hard' press triggers all things
-	//generally a 'hard' press should be forced is something is moving forcefully (e.g. thrown)
-	public void press( int cell, Char ch, boolean hard ) {
 
-		if (ch != null && pit[cell] && !ch.flying) {
-			if (ch == Dungeon.hero) {
-				Chasm.heroFall(cell);
-			} else if (ch instanceof Mob) {
-				Chasm.mobFall( (Mob)ch );
-			}
-			return;
-		}
-		
-		Trap trap = null;
-		
-		switch (map[cell]) {
-		
-		case Terrain.SECRET_TRAP:
-			if (hard) {
-				trap = traps.get( cell );
-				GLog.i(Messages.get(Level.class, "hidden_trap", trap.name));
-			}
-			break;
-			
-		case Terrain.TRAP:
-			trap = traps.get( cell );
-			break;
-			
-		case Terrain.HIGH_GRASS:
-		case Terrain.FURROWED_GRASS:
-			HighGrass.trample( this, cell, ch );
-			break;
-			
-		case Terrain.WELL:
-			WellWater.affectCell( cell );
-			break;
-			
-		case Terrain.DOOR:
-			Door.enter( cell );
-			break;
-		}
+    public void occupyCell( Char ch ){
+        if (!ch.flying){
 
-		if (trap != null) {
-			
-			TimekeepersHourglass.timeFreeze timeFreeze =
-					Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
-			
-			Swiftthistle.TimeBubble bubble =
-					Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
-			
-			if (bubble != null){
-				
-				Sample.INSTANCE.play(Assets.SND_TRAP);
-				
-				discover(cell);
-				
-				bubble.setDelayedPress(cell);
-				
-			} else if (timeFreeze != null){
-				
-				Sample.INSTANCE.play(Assets.SND_TRAP);
-				
-				discover(cell);
-				
-				timeFreeze.setDelayedPress(cell);
-				
-			} else {
+            if (pit[ch.pos]){
+                if (ch == Dungeon.hero) {
+                    Chasm.heroFall(ch.pos);
+                } else if (ch instanceof Mob) {
+                    Chasm.mobFall( (Mob)ch );
+                }
+                return;
+            }
 
-				if (ch == Dungeon.hero) {
-					Dungeon.hero.interrupt();
-				}
+            //characters which are not the hero or a sheep 'soft' press cells
+            pressCell( ch.pos, ch instanceof Hero || ch instanceof Sheep);
+        }
+    }
 
-				trap.trigger();
+    //public method for forcing the hard press of a cell. e.g. when an item lands on it
+    public void pressCell( int cell ){
+        pressCell( cell, true );
+    }
 
-			}
-		}
-		
-		Plant plant = plants.get( cell );
-		if (plant != null) {
-			plant.trigger();
-		}
-	}
-	
-	public void updateFieldOfView( Char c, boolean[] fieldOfView ) {
+    //a 'soft' press ignores hidden traps
+    //a 'hard' press triggers all things
+    private void pressCell( int cell, boolean hard ) {
 
-		int cx = c.pos % width();
-		int cy = c.pos / width();
-		
-		boolean sighted = c.buff( Blindness.class ) == null && c.buff( Shadows.class ) == null
-						&& c.buff( TimekeepersHourglass.timeStasis.class ) == null && c.isAlive();
-		if (sighted) {
-			boolean[] blocking;
-			
-			if (c instanceof Hero && ((Hero) c).subClass == HeroSubClass.WARDEN) {
-				blocking = Dungeon.level.losBlocking.clone();
-				for (int i = 0; i < blocking.length; i++){
-					if (blocking[i] && (Dungeon.level.map[i] == Terrain.HIGH_GRASS || Dungeon.level.map[i] == Terrain.FURROWED_GRASS)){
-						blocking[i] = false;
-					}
-				}
-			} else {
-				blocking = Dungeon.level.losBlocking;
-			}
-			
-			int viewDist = c.viewDistance;
-			if (c instanceof Hero && ((Hero) c).subClass == HeroSubClass.SNIPER) viewDist *= 1.5f;
-			
-			ShadowCaster.castShadow( cx, cy, fieldOfView, blocking, viewDist );
-		} else {
-			BArray.setFalse(fieldOfView);
-		}
-		
-		int sense = 1;
-		//Currently only the hero can get mind vision
-		if (c.isAlive() && c == Dungeon.hero) {
-			for (Buff b : c.buffs( MindVision.class )) {
-				sense = Math.max( ((MindVision)b).distance, sense );
-			}
-			if (c.buff(MagicalSight.class) != null){
-				sense = 8;
-			}
-			if (((Hero)c).subClass == HeroSubClass.SNIPER){
-				sense *= 1.5f;
-			}
-		}
-		
-		//uses rounding
-		if (!sighted || sense > 1) {
-			
-			int[][] rounding = ShadowCaster.rounding;
-			
-			int left, right;
-			int pos;
-			for (int y = Math.max(0, cy - sense); y <= Math.min(height()-1, cy + sense); y++) {
-				if (rounding[sense][Math.abs(cy - y)] < Math.abs(cy - y)) {
-					left = cx - rounding[sense][Math.abs(cy - y)];
-				} else {
-					left = sense;
-					while (rounding[sense][left] < rounding[sense][Math.abs(cy - y)]){
-						left--;
-					}
-					left = cx - left;
-				}
-				right = Math.min(width()-1, cx + cx - left);
-				left = Math.max(0, left);
-				pos = left + y * width();
-				System.arraycopy(discoverable, pos, fieldOfView, pos, right - left + 1);
-			}
-		}
+        Trap trap = null;
 
-		//Currently only the hero can get mind vision or awareness
-		if (c.isAlive() && c == Dungeon.hero) {
-			Dungeon.hero.mindVisionEnemies.clear();
-			if (c.buff( MindVision.class ) != null) {
-				for (Mob mob : mobs) {
-					int p = mob.pos;
+        switch (map[cell]) {
 
-					if (!fieldOfView[p]){
-						Dungeon.hero.mindVisionEnemies.add(mob);
-					}
+            case Terrain.SECRET_TRAP:
+                if (hard) {
+                    trap = traps.get( cell );
+                    GLog.i(Messages.get(Level.class, "hidden_trap", trap.name));
+                }
+                break;
 
-				}
-			} else if (((Hero)c).heroClass == HeroClass.HUNTRESS) {
-				for (Mob mob : mobs) {
-					int p = mob.pos;
-					if (distance( c.pos, p) == 2) {
+            case Terrain.TRAP:
+                trap = traps.get( cell );
+                break;
 
-						if (!fieldOfView[p]){
-							Dungeon.hero.mindVisionEnemies.add(mob);
-						}
-					}
-				}
-			}
-			
-			for (Mob m : Dungeon.hero.mindVisionEnemies) {
-				for (int i : PathFinder.NEIGHBOURS9) {
-					fieldOfView[m.pos + i] = true;
-				}
-			}
-			
-			if (c.buff( Awareness.class ) != null) {
-				for (Heap heap : heaps.values()) {
-					int p = heap.pos;
-					for (int i : PathFinder.NEIGHBOURS9)
-						fieldOfView[p+i] = true;
-				}
-			}
+            case Terrain.HIGH_GRASS:
+            case Terrain.FURROWED_GRASS:
+                HighGrass.trample( this, cell);
+                break;
 
-			for (Mob ward : mobs){
-				if (ward instanceof WandOfWarding.Ward || ward instanceof StationaryMinion){
-					if (ward.fieldOfView == null || ward.fieldOfView.length != length()){
-						ward.fieldOfView = new boolean[length()];
-						Dungeon.level.updateFieldOfView( ward, ward.fieldOfView );
-					}
-					for (Mob m : mobs){
-						if (ward.fieldOfView[m.pos] && !fieldOfView[m.pos] &&
-								!Dungeon.hero.mindVisionEnemies.contains(m)){
-							Dungeon.hero.mindVisionEnemies.add(m);
-						}
-					}
-					BArray.or(fieldOfView, ward.fieldOfView, fieldOfView);
-				}
-			}
-		}
+            case Terrain.WELL:
+                WellWater.affectCell( cell );
+                break;
 
-		if (c == Dungeon.hero) {
-			for (Heap heap : heaps.values())
-				if (!heap.seen && fieldOfView[heap.pos])
-					heap.seen = true;
-		}
+            case Terrain.DOOR:
+                Door.enter( cell );
+                break;
+        }
 
-	}
-	
-	public int distance( int a, int b ) {
-		int ax = a % width();
-		int ay = a / width();
-		int bx = b % width();
-		int by = b / width();
-		return Math.max( Math.abs( ax - bx ), Math.abs( ay - by ) );
-	}
-	
-	public boolean adjacent( int a, int b ) {
-		return distance( a, b ) == 1;
-	}
-	
-	//uses pythagorean theorum for true distance, as if there was no movement grid
-	public float trueDistance(int a, int b){
-		int ax = a % width();
-		int ay = a / width();
-		int bx = b % width();
-		int by = b / width();
-		return (float)Math.sqrt(Math.pow(Math.abs( ax - bx ), 2) + Math.pow(Math.abs( ay - by ), 2));
-	}
+        if (trap != null) {
 
-	//returns true if the input is a valid tile within the level
-	public boolean insideMap( int tile ){
-				//top and bottom row and beyond
-		return !((tile < width || tile >= length - width) ||
-				//left and right column
-				(tile % width == 0 || tile % width == width-1));
-	}
+            TimekeepersHourglass.timeFreeze timeFreeze =
+                    Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
 
-	public Point cellToPoint( int cell ){
-		return new Point(cell % width(), cell / width());
-	}
+            Swiftthistle.TimeBubble bubble =
+                    Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
 
-	public int pointToCell( Point p ){
-		return p.x + p.y*width();
-	}
-	
-	public String tileName( int tile ) {
-		
-		switch (tile) {
-			case Terrain.CHASM:
-				return Messages.get(Level.class, "chasm_name");
-			case Terrain.EMPTY:
-			case Terrain.EMPTY_SP:
-			case Terrain.EMPTY_DECO:
-			case Terrain.SECRET_TRAP:
-				return Messages.get(Level.class, "floor_name");
-			case Terrain.GRASS:
-				return Messages.get(Level.class, "grass_name");
-			case Terrain.WATER:
-				return Messages.get(Level.class, "water_name");
-			case Terrain.WALL:
-			case Terrain.WALL_DECO:
-			case Terrain.SECRET_DOOR:
-				return Messages.get(Level.class, "wall_name");
-			case Terrain.DOOR:
-				return Messages.get(Level.class, "closed_door_name");
-			case Terrain.OPEN_DOOR:
-				return Messages.get(Level.class, "open_door_name");
-			case Terrain.ENTRANCE:
-				return Messages.get(Level.class, "entrace_name");
-			case Terrain.EXIT:
-				return Messages.get(Level.class, "exit_name");
-			case Terrain.EMBERS:
-				return Messages.get(Level.class, "embers_name");
-			case Terrain.FURROWED_GRASS:
-				return Messages.get(Level.class, "furrowed_grass_name");
-			case Terrain.LOCKED_DOOR:
-				return Messages.get(Level.class, "locked_door_name");
-			case Terrain.PEDESTAL:
-				return Messages.get(Level.class, "pedestal_name");
-			case Terrain.BARRICADE:
-				return Messages.get(Level.class, "barricade_name");
-			case Terrain.HIGH_GRASS:
-				return Messages.get(Level.class, "high_grass_name");
-			case Terrain.LOCKED_EXIT:
-				return Messages.get(Level.class, "locked_exit_name");
-			case Terrain.UNLOCKED_EXIT:
-				return Messages.get(Level.class, "unlocked_exit_name");
-			case Terrain.SIGN:
-				return Messages.get(Level.class, "sign_name");
-			case Terrain.WELL:
-				return Messages.get(Level.class, "well_name");
-			case Terrain.EMPTY_WELL:
-				return Messages.get(Level.class, "empty_well_name");
-			case Terrain.STATUE:
-			case Terrain.STATUE_SP:
-				return Messages.get(Level.class, "statue_name");
-			case Terrain.INACTIVE_TRAP:
-				return Messages.get(Level.class, "inactive_trap_name");
-			case Terrain.BOOKSHELF:
-				return Messages.get(Level.class, "bookshelf_name");
-			case Terrain.ALCHEMY:
-				return Messages.get(Level.class, "alchemy_name");
-			default:
-				return Messages.get(Level.class, "default_name");
-		}
-	}
-	
-	public String tileDesc( int tile ) {
-		
-		switch (tile) {
-			case Terrain.CHASM:
-				return Messages.get(Level.class, "chasm_desc");
-			case Terrain.WATER:
-				return Messages.get(Level.class, "water_desc");
-			case Terrain.ENTRANCE:
-				return Messages.get(Level.class, "entrance_desc");
-			case Terrain.EXIT:
-			case Terrain.UNLOCKED_EXIT:
-				return Messages.get(Level.class, "exit_desc");
-			case Terrain.EMBERS:
-				return Messages.get(Level.class, "embers_desc");
-			case Terrain.HIGH_GRASS:
-			case Terrain.FURROWED_GRASS:
-				return Messages.get(Level.class, "high_grass_desc");
-			case Terrain.LOCKED_DOOR:
-				return Messages.get(Level.class, "locked_door_desc");
-			case Terrain.LOCKED_EXIT:
-				return Messages.get(Level.class, "locked_exit_desc");
-			case Terrain.BARRICADE:
-				return Messages.get(Level.class, "barricade_desc");
-			case Terrain.SIGN:
-				return Messages.get(Level.class, "sign_desc");
-			case Terrain.INACTIVE_TRAP:
-				return Messages.get(Level.class, "inactive_trap_desc");
-			case Terrain.STATUE:
-			case Terrain.STATUE_SP:
-				return Messages.get(Level.class, "statue_desc");
-			case Terrain.ALCHEMY:
-				return Messages.get(Level.class, "alchemy_desc");
-			case Terrain.EMPTY_WELL:
-				return Messages.get(Level.class, "empty_well_desc");
-			default:
-				return "";
-		}
-	}
+            if (bubble != null){
+
+                Sample.INSTANCE.play(Assets.SND_TRAP);
+
+                discover(cell);
+
+                bubble.setDelayedPress(cell);
+
+            } else if (timeFreeze != null){
+
+                Sample.INSTANCE.play(Assets.SND_TRAP);
+
+                discover(cell);
+
+                timeFreeze.setDelayedPress(cell);
+
+            } else {
+
+                if (Dungeon.hero.pos == cell) {
+                    Dungeon.hero.interrupt();
+                }
+
+                trap.trigger();
+
+            }
+        }
+
+        Plant plant = plants.get( cell );
+        if (plant != null) {
+            plant.trigger();
+        }
+    }
+
+    public void updateFieldOfView( Char c, boolean[] fieldOfView ) {
+
+        int cx = c.pos % width();
+        int cy = c.pos / width();
+
+        boolean sighted = c.buff( Blindness.class ) == null && c.buff( Shadows.class ) == null
+                && c.buff( TimekeepersHourglass.timeStasis.class ) == null && c.isAlive();
+        if (sighted) {
+            boolean[] blocking;
+
+            if (c instanceof Hero && ((Hero) c).subClass == HeroSubClass.WARDEN) {
+                blocking = Dungeon.level.losBlocking.clone();
+                for (int i = 0; i < blocking.length; i++){
+                    if (blocking[i] && (Dungeon.level.map[i] == Terrain.HIGH_GRASS || Dungeon.level.map[i] == Terrain.FURROWED_GRASS)){
+                        blocking[i] = false;
+                    }
+                }
+            } else {
+                blocking = Dungeon.level.losBlocking;
+            }
+
+            int viewDist = c.viewDistance;
+            if (c instanceof Hero && ((Hero) c).subClass == HeroSubClass.SNIPER) viewDist *= 1.5f;
+
+            ShadowCaster.castShadow( cx, cy, fieldOfView, blocking, viewDist );
+        } else {
+            BArray.setFalse(fieldOfView);
+        }
+
+        int sense = 1;
+        //Currently only the hero can get mind vision
+        if (c.isAlive() && c == Dungeon.hero) {
+            for (Buff b : c.buffs( MindVision.class )) {
+                sense = Math.max( ((MindVision)b).distance, sense );
+            }
+            if (c.buff(MagicalSight.class) != null){
+                sense = 8;
+            }
+            if (((Hero)c).subClass == HeroSubClass.SNIPER){
+                sense *= 1.5f;
+            }
+        }
+
+        //uses rounding
+        if (!sighted || sense > 1) {
+
+            int[][] rounding = ShadowCaster.rounding;
+
+            int left, right;
+            int pos;
+            for (int y = Math.max(0, cy - sense); y <= Math.min(height()-1, cy + sense); y++) {
+                if (rounding[sense][Math.abs(cy - y)] < Math.abs(cy - y)) {
+                    left = cx - rounding[sense][Math.abs(cy - y)];
+                } else {
+                    left = sense;
+                    while (rounding[sense][left] < rounding[sense][Math.abs(cy - y)]){
+                        left--;
+                    }
+                    left = cx - left;
+                }
+                right = Math.min(width()-1, cx + cx - left);
+                left = Math.max(0, left);
+                pos = left + y * width();
+                System.arraycopy(discoverable, pos, fieldOfView, pos, right - left + 1);
+            }
+        }
+
+        //Currently only the hero can get mind vision or awareness
+        if (c.isAlive() && c == Dungeon.hero) {
+            Dungeon.hero.mindVisionEnemies.clear();
+            if (c.buff( MindVision.class ) != null) {
+                for (Mob mob : mobs) {
+                    int p = mob.pos;
+
+                    if (!fieldOfView[p]){
+                        Dungeon.hero.mindVisionEnemies.add(mob);
+                    }
+
+                }
+            } else if (((Hero)c).heroClass == HeroClass.HUNTRESS) {
+                for (Mob mob : mobs) {
+                    int p = mob.pos;
+                    if (distance( c.pos, p) == 2) {
+
+                        if (!fieldOfView[p]){
+                            Dungeon.hero.mindVisionEnemies.add(mob);
+                        }
+                    }
+                }
+            }
+
+            for (Mob m : Dungeon.hero.mindVisionEnemies) {
+                for (int i : PathFinder.NEIGHBOURS9) {
+                    fieldOfView[m.pos + i] = true;
+                }
+            }
+
+            if (c.buff( Awareness.class ) != null) {
+                for (Heap heap : heaps.values()) {
+                    int p = heap.pos;
+                    for (int i : PathFinder.NEIGHBOURS9)
+                        fieldOfView[p+i] = true;
+                }
+            }
+
+            for (Mob ward : mobs){
+                if (ward instanceof WandOfWarding.Ward){
+                    if (ward.fieldOfView == null || ward.fieldOfView.length != length()){
+                        ward.fieldOfView = new boolean[length()];
+                        Dungeon.level.updateFieldOfView( ward, ward.fieldOfView );
+                    }
+                    for (Mob m : mobs){
+                        if (ward.fieldOfView[m.pos] && !fieldOfView[m.pos] &&
+                                !Dungeon.hero.mindVisionEnemies.contains(m)){
+                            Dungeon.hero.mindVisionEnemies.add(m);
+                        }
+                    }
+                    BArray.or(fieldOfView, ward.fieldOfView, fieldOfView);
+                }
+            }
+        }
+
+        if (c == Dungeon.hero) {
+            for (Heap heap : heaps.values())
+                if (!heap.seen && fieldOfView[heap.pos])
+                    heap.seen = true;
+        }
+
+    }
+
+    public int distance( int a, int b ) {
+        int ax = a % width();
+        int ay = a / width();
+        int bx = b % width();
+        int by = b / width();
+        return Math.max( Math.abs( ax - bx ), Math.abs( ay - by ) );
+    }
+
+    public boolean adjacent( int a, int b ) {
+        return distance( a, b ) == 1;
+    }
+
+    //uses pythagorean theorum for true distance, as if there was no movement grid
+    public float trueDistance(int a, int b){
+        int ax = a % width();
+        int ay = a / width();
+        int bx = b % width();
+        int by = b / width();
+        return (float)Math.sqrt(Math.pow(Math.abs( ax - bx ), 2) + Math.pow(Math.abs( ay - by ), 2));
+    }
+
+    //returns true if the input is a valid tile within the level
+    public boolean insideMap( int tile ){
+        //top and bottom row and beyond
+        return !((tile < width || tile >= length - width) ||
+                //left and right column
+                (tile % width == 0 || tile % width == width-1));
+    }
+
+    public Point cellToPoint( int cell ){
+        return new Point(cell % width(), cell / width());
+    }
+
+    public int pointToCell( Point p ){
+        return p.x + p.y*width();
+    }
+
+    public String tileName( int tile ) {
+
+        switch (tile) {
+            case Terrain.CHASM:
+                return Messages.get(Level.class, "chasm_name");
+            case Terrain.EMPTY:
+            case Terrain.EMPTY_SP:
+            case Terrain.EMPTY_DECO:
+            case Terrain.SECRET_TRAP:
+                return Messages.get(Level.class, "floor_name");
+            case Terrain.GRASS:
+                return Messages.get(Level.class, "grass_name");
+            case Terrain.WATER:
+                return Messages.get(Level.class, "water_name");
+            case Terrain.WALL:
+            case Terrain.WALL_DECO:
+            case Terrain.SECRET_DOOR:
+                return Messages.get(Level.class, "wall_name");
+            case Terrain.DOOR:
+                return Messages.get(Level.class, "closed_door_name");
+            case Terrain.OPEN_DOOR:
+                return Messages.get(Level.class, "open_door_name");
+            case Terrain.ENTRANCE:
+                return Messages.get(Level.class, "entrace_name");
+            case Terrain.EXIT:
+                return Messages.get(Level.class, "exit_name");
+            case Terrain.EMBERS:
+                return Messages.get(Level.class, "embers_name");
+            case Terrain.FURROWED_GRASS:
+                return Messages.get(Level.class, "furrowed_grass_name");
+            case Terrain.LOCKED_DOOR:
+                return Messages.get(Level.class, "locked_door_name");
+            case Terrain.PEDESTAL:
+                return Messages.get(Level.class, "pedestal_name");
+            case Terrain.BARRICADE:
+                return Messages.get(Level.class, "barricade_name");
+            case Terrain.HIGH_GRASS:
+                return Messages.get(Level.class, "high_grass_name");
+            case Terrain.LOCKED_EXIT:
+                return Messages.get(Level.class, "locked_exit_name");
+            case Terrain.UNLOCKED_EXIT:
+                return Messages.get(Level.class, "unlocked_exit_name");
+            case Terrain.SIGN:
+                return Messages.get(Level.class, "sign_name");
+            case Terrain.WELL:
+                return Messages.get(Level.class, "well_name");
+            case Terrain.EMPTY_WELL:
+                return Messages.get(Level.class, "empty_well_name");
+            case Terrain.STATUE:
+            case Terrain.STATUE_SP:
+                return Messages.get(Level.class, "statue_name");
+            case Terrain.INACTIVE_TRAP:
+                return Messages.get(Level.class, "inactive_trap_name");
+            case Terrain.BOOKSHELF:
+                return Messages.get(Level.class, "bookshelf_name");
+            case Terrain.ALCHEMY:
+                return Messages.get(Level.class, "alchemy_name");
+            default:
+                return Messages.get(Level.class, "default_name");
+        }
+    }
+
+    public String tileDesc( int tile ) {
+
+        switch (tile) {
+            case Terrain.CHASM:
+                return Messages.get(Level.class, "chasm_desc");
+            case Terrain.WATER:
+                return Messages.get(Level.class, "water_desc");
+            case Terrain.ENTRANCE:
+                return Messages.get(Level.class, "entrance_desc");
+            case Terrain.EXIT:
+            case Terrain.UNLOCKED_EXIT:
+                return Messages.get(Level.class, "exit_desc");
+            case Terrain.EMBERS:
+                return Messages.get(Level.class, "embers_desc");
+            case Terrain.HIGH_GRASS:
+            case Terrain.FURROWED_GRASS:
+                return Messages.get(Level.class, "high_grass_desc");
+            case Terrain.LOCKED_DOOR:
+                return Messages.get(Level.class, "locked_door_desc");
+            case Terrain.LOCKED_EXIT:
+                return Messages.get(Level.class, "locked_exit_desc");
+            case Terrain.BARRICADE:
+                return Messages.get(Level.class, "barricade_desc");
+            case Terrain.SIGN:
+                return Messages.get(Level.class, "sign_desc");
+            case Terrain.INACTIVE_TRAP:
+                return Messages.get(Level.class, "inactive_trap_desc");
+            case Terrain.STATUE:
+            case Terrain.STATUE_SP:
+                return Messages.get(Level.class, "statue_desc");
+            case Terrain.ALCHEMY:
+                return Messages.get(Level.class, "alchemy_desc");
+            case Terrain.EMPTY_WELL:
+                return Messages.get(Level.class, "empty_well_desc");
+            default:
+                return "";
+        }
+    }
 }

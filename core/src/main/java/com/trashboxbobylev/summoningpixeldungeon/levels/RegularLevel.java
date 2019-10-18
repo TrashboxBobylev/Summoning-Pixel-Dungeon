@@ -197,30 +197,33 @@ public abstract class RegularLevel extends Level {
 		Random.shuffle(stdRooms);
 		Iterator<Room> stdRoomIter = stdRooms.iterator();
 
-		while (mobsToSpawn > 0) {
-			if (!stdRoomIter.hasNext())
-				stdRoomIter = stdRooms.iterator();
-			Room roomToSpawn = stdRoomIter.next();
+        while (mobsToSpawn > 0) {
+            Mob mob = createMob();
+            Room roomToSpawn;
 
-			Mob mob = createMob();
-			mob.pos = pointToCell(roomToSpawn.random());
+            if (!stdRoomIter.hasNext()) {
+                stdRoomIter = stdRooms.iterator();
+            }
+            roomToSpawn = stdRoomIter.next();
 
-			if (findMob(mob.pos) == null && passable[mob.pos] && mob.pos != exit) {
-				mobsToSpawn--;
-				mobs.add(mob);
+            do {
+                mob.pos = pointToCell(roomToSpawn.random());
+            } while (findMob(mob.pos) != null || !passable[mob.pos] || mob.pos == exit);
 
-				//TODO: perhaps externalize this logic into a method. Do I want to make mobs more likely to clump deeper down?
-				if (mobsToSpawn > 0 && Random.Int(4) == 0){
-					mob = createMob();
-					mob.pos = pointToCell(roomToSpawn.random());
+            mobsToSpawn--;
+            mobs.add(mob);
 
-					if (findMob(mob.pos)  == null && passable[mob.pos] && mob.pos != exit) {
-						mobsToSpawn--;
-						mobs.add(mob);
-					}
-				}
-			}
-		}
+            if (mobsToSpawn > 0 && Random.Int(4) == 0){
+                mob = createMob();
+
+                do {
+                    mob.pos = pointToCell(roomToSpawn.random());
+                } while (findMob(mob.pos) != null || !passable[mob.pos] || mob.pos == exit);
+
+                mobsToSpawn--;
+                mobs.add(mob);
+            }
+        }
 
 		for (Mob m : mobs){
 			if (map[m.pos] == Terrain.HIGH_GRASS || map[m.pos] == Terrain.FURROWED_GRASS) {

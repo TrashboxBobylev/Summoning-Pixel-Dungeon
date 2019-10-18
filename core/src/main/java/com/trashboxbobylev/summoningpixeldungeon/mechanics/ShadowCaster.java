@@ -51,6 +51,10 @@ public final class ShadowCaster {
 	
 	public static void castShadow( int x, int y, boolean[] fieldOfView, boolean[] blocking, int distance ) {
 
+        if (distance >= MAX_DISTANCE){
+            distance = MAX_DISTANCE;
+        }
+
 		BArray.setFalse(fieldOfView);
 
 		//set source cell to true

@@ -208,12 +208,12 @@ public class Heap implements Bundlable {
 			items.remove( item );
 			
 		}
-		
-		if ((item instanceof Dewdrop || item instanceof DriedRose.Petal) && type != Type.FOR_SALE) {
-			items.add( item );
-		} else {
-			items.addFirst( item );
-		}
+
+        if (item.dropsDownHeap && type != Type.FOR_SALE) {
+            items.add( item );
+        } else {
+            items.addFirst( item );
+        }
 		
 		if (sprite != null) {
 			if (type == Type.HEAP || type == Type.FOR_SALE)
@@ -231,6 +231,16 @@ public class Heap implements Bundlable {
 			items.add( index, b );
 		}
 	}
+
+    public void remove( Item a ){
+        items.remove(a);
+        if (items.isEmpty()){
+            destroy();
+        } else {
+            sprite.view( image(), glowing() );
+            sprite.place( pos );
+        }
+    }
 	
 	public void burn() {
 

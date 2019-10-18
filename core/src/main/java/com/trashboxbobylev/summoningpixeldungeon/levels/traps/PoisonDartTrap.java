@@ -49,21 +49,29 @@ public class PoisonDartTrap extends Trap {
     protected int poisonAmount(){
         return 8 + Math.round(2*Dungeon.depth / 3f);
     }
-	
-	@Override
-	public void activate() {
-		Char target = Actor.findChar(pos);
-		
-		//find the closest char that can be aimed at
-		if (target == null){
-			for (Char ch : Actor.chars()){
-				Ballistica bolt = new Ballistica(pos, ch.pos, Ballistica.PROJECTILE);
-				if (bolt.collisionPos == ch.pos &&
-						(target == null || Dungeon.level.trueDistance(pos, ch.pos) < Dungeon.level.trueDistance(pos, target.pos))){
-					target = ch;
-				}
-			}
-		}
+
+    protected boolean canTarget( Char ch ){
+        return true;
+    }
+
+    @Override
+    public void activate() {
+        Char target = Actor.findChar(pos);
+
+        if (target != null && !canTarget(target)){
+            target = null;
+        }
+
+        //find the closest char that can be aimed at
+        if (target == null){
+            for (Char ch : Actor.chars()){
+                Ballistica bolt = new Ballistica(pos, ch.pos, Ballistica.PROJECTILE);
+                if (canTarget(ch) && bolt.collisionPos == ch.pos &&
+                        (target == null || Dungeon.level.trueDistance(pos, ch.pos) < Dungeon.level.trueDistance(pos, target.pos))){
+                    target = ch;
+                }
+            }
+        }
 		if (target != null) {
 			final Char finalTarget = target;
 			final PoisonDartTrap trap = this;

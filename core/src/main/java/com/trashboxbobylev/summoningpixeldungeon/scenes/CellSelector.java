@@ -68,7 +68,7 @@ public class CellSelector extends PointerArea {
 				}
 			}
 
-			for (Heap heap : Dungeon.level.heaps.values()){
+			for (Heap heap : Dungeon.level.heaps.valueList()){
 				if (heap.sprite != null && heap.sprite.overlapsPoint( p.x, p.y)){
 					select( heap.pos );
 					return;
@@ -160,35 +160,33 @@ public class CellSelector extends PointerArea {
 	
 	private boolean dragging = false;
 	private PointF lastPos = new PointF();
-	
-	@Override
-	protected void onDrag( PointerEvent event ) {
-		 
-		camera.target = null;
 
-		if (pinching) {
+    @Override
+    protected void onDrag( PointerEvent event ) {
 
-			float curSpan = PointF.distance( curEvent.current, another.current );
-			float zoom = (startZoom * curSpan / startSpan);
-			camera.zoom( GameMath.gate(
-				PixelScene.minZoom,
-					zoom - (zoom % 0.1f),
-				PixelScene.maxZoom ) );
+        if (pinching) {
 
-		} else {
-		
-			if (!dragging && PointF.distance( event.current, event.start ) > dragThreshold) {
-				
-				dragging = true;
-				lastPos.set( event.current );
-				
-			} else if (dragging) {
-				camera.scroll.offset( PointF.diff( lastPos, event.current ).invScale( camera.zoom ) );
-				lastPos.set( event.current );
-			}
-		}
-		
-	}
+            float curSpan = PointF.distance( curEvent.current, another.current );
+            float zoom = (startZoom * curSpan / startSpan);
+            camera.zoom( GameMath.gate(
+                    PixelScene.minZoom,
+                    zoom - (zoom % 0.1f),
+                    PixelScene.maxZoom ) );
+
+        } else {
+
+            if (!dragging && PointF.distance( event.current, event.start ) > dragThreshold) {
+
+                dragging = true;
+                lastPos.set( event.current );
+
+            } else if (dragging) {
+                camera.shift( PointF.diff( lastPos, event.current ).invScale( camera.zoom ) );
+                lastPos.set( event.current );
+            }
+        }
+
+    }
 	
 	public void cancel() {
 		

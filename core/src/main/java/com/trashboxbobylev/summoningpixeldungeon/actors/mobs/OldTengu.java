@@ -38,7 +38,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.DriedRose;
 import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.LloydsBeacon;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.trashboxbobylev.summoningpixeldungeon.levels.Level;
-import com.trashboxbobylev.summoningpixeldungeon.levels.PrisonBossLevel;
+import com.trashboxbobylev.summoningpixeldungeon.levels.OldPrisonBossLevel;
 import com.trashboxbobylev.summoningpixeldungeon.levels.Terrain;
 import com.trashboxbobylev.summoningpixeldungeon.levels.traps.GrippingTrap;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
@@ -51,7 +51,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-public class Tengu extends Mob {
+public class OldTengu extends Mob {
 	
 	{
 		spriteClass = TenguSprite.class;
@@ -92,10 +92,10 @@ public class Tengu extends Mob {
 	@Override
 	public void damage(int dmg, Object src) {
 		
-		PrisonBossLevel.State state = ((PrisonBossLevel)Dungeon.level).state();
+		OldPrisonBossLevel.State state = ((OldPrisonBossLevel)Dungeon.level).state();
 		
 		int hpBracket;
-		if (state == PrisonBossLevel.State.FIGHT_START){
+		if (state == OldPrisonBossLevel.State.FIGHT_START){
 			hpBracket = 12;
 		} else {
 			hpBracket = 20;
@@ -107,12 +107,12 @@ public class Tengu extends Mob {
 
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
 		if (lock != null) {
-			int multiple = state == PrisonBossLevel.State.FIGHT_START ? 1 : 4;
+			int multiple = state == OldPrisonBossLevel.State.FIGHT_START ? 1 : 4;
 			lock.addTime(dmg*multiple);
 		}
 
 		//phase 2 of the fight is over
-		if (HP == 0 && state == PrisonBossLevel.State.FIGHT_ARENA) {
+		if (HP == 0 && state == OldPrisonBossLevel.State.FIGHT_ARENA) {
 			//let full attack action complete first
 			Actor.add(new Actor() {
 				
@@ -123,7 +123,7 @@ public class Tengu extends Mob {
 				@Override
 				protected boolean act() {
 					Actor.remove(this);
-					((PrisonBossLevel)Dungeon.level).progress();
+					((OldPrisonBossLevel)Dungeon.level).progress();
 					return true;
 				}
 			});
@@ -131,10 +131,10 @@ public class Tengu extends Mob {
 		}
 		
 		//phase 1 of the fight is over
-		if (state == PrisonBossLevel.State.FIGHT_START && HP <= HT/2){
+		if (state == OldPrisonBossLevel.State.FIGHT_START && HP <= HT/2){
 			HP = (HT/2)-1;
 			yell(Messages.get(this, "interesting"));
-			((PrisonBossLevel)Dungeon.level).progress();
+			((OldPrisonBossLevel)Dungeon.level).progress();
 			BossHealthBar.bleed(true);
 
 		//if tengu has lost a certain amount of hp, jump
@@ -196,7 +196,7 @@ public class Tengu extends Mob {
 
 		int newPos;
 		//if we're in phase 1, want to warp around within the room
-		if (((PrisonBossLevel)Dungeon.level).state() == PrisonBossLevel.State.FIGHT_START) {
+		if (((OldPrisonBossLevel)Dungeon.level).state() == OldPrisonBossLevel.State.FIGHT_START) {
 			
 			//place new traps
 			int tries;

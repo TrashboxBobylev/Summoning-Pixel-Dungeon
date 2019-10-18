@@ -94,7 +94,7 @@ public class SummoningTrap extends Trap {
 				t.activate();
 			}
 			ScrollOfTeleportation.appear(mob, mob.pos);
-			Dungeon.level.press(mob.pos, mob, true);
+            Dungeon.level.occupyCell(mob);
 		}
 
 	}

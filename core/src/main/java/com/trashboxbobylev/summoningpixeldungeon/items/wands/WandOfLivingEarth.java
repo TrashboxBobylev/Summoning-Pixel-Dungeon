@@ -124,24 +124,24 @@ public class WandOfLivingEarth extends DamageWand {
 					}
 				}
 
-				if (closest == -1){
-					curUser.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + level()/2);
-					return; //do not spawn guardian or detach buff
-				} else {
-					guardian.pos = closest;
-					GameScene.add(guardian, 1);
-					Dungeon.level.press(guardian.pos, guardian);
-				}
+                if (closest == -1){
+                    curUser.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + level()/2);
+                    return; //do not spawn guardian or detach buff
+                } else {
+                    guardian.pos = closest;
+                    GameScene.add(guardian, 1);
+                    Dungeon.level.occupyCell(guardian);
+                }
 
-				if (ch.alignment == Char.Alignment.ENEMY || ch.buff(Amok.class) != null) {
-					guardian.aggro(ch);
-				}
+                if (ch.alignment == Char.Alignment.ENEMY || ch.buff(Amok.class) != null) {
+                    guardian.aggro(ch);
+                }
 
-			} else {
-				guardian.pos = bolt.collisionPos;
-				GameScene.add(guardian, 1);
-				Dungeon.level.press(guardian.pos, guardian);
-			}
+            } else {
+                guardian.pos = bolt.collisionPos;
+                GameScene.add(guardian, 1);
+                Dungeon.level.occupyCell(guardian);
+            }
 
 			guardian.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + level()/2);
 			buff.detach();
