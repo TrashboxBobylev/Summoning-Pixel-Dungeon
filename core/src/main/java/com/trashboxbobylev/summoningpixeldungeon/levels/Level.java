@@ -413,9 +413,9 @@ public abstract class Level implements Bundlable {
 		bundle.put( ENTRANCE, entrance );
 		bundle.put( EXIT, exit );
 		bundle.put( LOCKED, locked );
-		bundle.put( HEAPS, heaps.toList() );
-		bundle.put( PLANTS, plants.toList() );
-		bundle.put( TRAPS, traps.toList() );
+		bundle.put( HEAPS, heaps.valueList() );
+		bundle.put( PLANTS, plants.valueList() );
+		bundle.put( TRAPS, traps.valueList() );
 		bundle.put( CUSTOM_TILES, customTiles );
 		bundle.put( CUSTOM_WALLS, customWalls );
 		bundle.put( MOBS, mobs );
