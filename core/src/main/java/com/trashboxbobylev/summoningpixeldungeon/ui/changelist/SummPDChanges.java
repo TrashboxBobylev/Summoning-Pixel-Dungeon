@@ -85,7 +85,8 @@ public class SummPDChanges {
                         "_-_ In some cases staff's descriptions were crashing the game\n"+
                         "_-_ Sewers had test tier drop rate list\n\n"+
                         "Changed:\n" +
-                        "_-_ New sprites for Conjurer's avatar and froggit"));
+                        "_-_ New sprites for Conjurer's avatar and froggit\n"+
+                        "_-_ Staff's default action were changed to SUMMON"));
     }
 
     public static void add_General_Changes(ArrayList<ChangeInfo> changeInfos ){
