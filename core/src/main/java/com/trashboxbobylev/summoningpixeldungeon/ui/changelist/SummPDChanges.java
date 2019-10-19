@@ -31,6 +31,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.armor.ConjurerArmor;
 import com.trashboxbobylev.summoningpixeldungeon.items.food.Blandfruit;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfHealing;
 import com.trashboxbobylev.summoningpixeldungeon.items.spells.ArcaneCatalyst;
+import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.ChangesScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.HeroSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSprite;
@@ -64,6 +65,16 @@ public class SummPDChanges {
                         "_-_ 42 days after beginning of development\n" +
                         "\n" +
                         "This is pre-release version of Summoning PD. I except to test them for 5-8 days, if nothing major will happen, that version will be released as final."));
+
+        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-2",
+                "Fixed:\n" +
+                        "_-_ Traps was not correctly revealed, non-hidden traps was crashing the game.\n" +
+                        "_-_ LOVE Holder was able to have negative strength.\n" +
+                        "_-_ Conjurer's icon was bit out of center\n"+
+                        "_-_ Changes buttons was not enough long.\n"+
+                        "_-_ Ring of Attunement was displaying incorrect numbers.\n\n"+
+                        "Changed:\n" +
+                        "_-_ Buffed melee damage for staffs, but lowered recharge rate by 50%."));
     }
 
     public static void add_General_Changes(ArrayList<ChangeInfo> changeInfos ){
