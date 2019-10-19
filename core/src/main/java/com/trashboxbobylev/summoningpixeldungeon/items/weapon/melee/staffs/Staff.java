@@ -569,7 +569,7 @@ public class Staff extends MeleeWeapon {
             float robeBonus = 1f;
             if (Dungeon.hero.belongings.armor instanceof ConjurerArmor) {
                 if (Dungeon.hero.belongings.armor.level() > 0) {
-                    robeBonus = 1f + curUser.belongings.armor.level() * 0.1f;
+                    robeBonus = 1f + Dungeon.hero.belongings.armor.level() * 0.1f;
                 }
             }
             info += "\n\n" + Messages.get(Staff.class, "stats_known", tier,
