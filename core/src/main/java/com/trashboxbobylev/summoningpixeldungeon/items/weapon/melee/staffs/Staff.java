@@ -232,7 +232,7 @@ public class Staff extends MeleeWeapon {
 
     @Override
     public int max(int lvl) {
-        return  2*(tier+1) +  (lvl*(tier+1)) / 3;
+        return  3*(tier+1) +  (lvl*(tier+1)) / 2;
     }
 
     public int hp(int lvl){
@@ -469,7 +469,7 @@ public class Staff extends MeleeWeapon {
 
     public class Charger extends Buff {
 
-        private static final float BASE_CHARGE_DELAY = 60f;
+        private static final float BASE_CHARGE_DELAY = 120f;
         private static final float NORMAL_SCALE_FACTOR = 0.75f;
 
         private static final float CHARGE_BUFF_BONUS = 0.25f;
