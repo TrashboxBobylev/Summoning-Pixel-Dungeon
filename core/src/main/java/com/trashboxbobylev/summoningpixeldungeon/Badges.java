@@ -217,7 +217,7 @@ public class Badges {
 		String names[] = new String[badges.size()];
 		
 		for (Badge badge:badges) {
-			names[count++] = badge.toString();
+			if (badge != null) names[count++] = badge.toString();
 		}
 		bundle.put( BADGES, names );
 	}
