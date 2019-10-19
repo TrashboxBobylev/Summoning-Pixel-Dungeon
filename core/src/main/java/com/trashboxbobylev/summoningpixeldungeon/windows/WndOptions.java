@@ -58,17 +58,19 @@ public class WndOptions extends Window {
 		
 		for (int i=0; i < options.length; i++) {
 			final int index = i;
-			RedButton btn = new RedButton( options[i] ) {
-				@Override
-				protected void onClick() {
-					hide();
-					onSelect( index );
-				}
-			};
-			btn.setRect( MARGIN, pos, width - MARGIN * 2, BUTTON_HEIGHT );
-			add( btn );
-			
-			pos += BUTTON_HEIGHT + MARGIN;
+			if (!options[i].isEmpty()) {
+                RedButton btn = new RedButton(options[i]) {
+                    @Override
+                    protected void onClick() {
+                        hide();
+                        onSelect(index);
+                    }
+                };
+                btn.setRect(MARGIN, pos, width - MARGIN * 2, BUTTON_HEIGHT);
+                add(btn);
+
+                pos += BUTTON_HEIGHT + MARGIN;
+            }
 		}
 		
 		resize( width, (int)pos );

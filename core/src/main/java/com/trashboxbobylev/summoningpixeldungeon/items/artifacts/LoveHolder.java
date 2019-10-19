@@ -137,7 +137,7 @@ public class LoveHolder extends Artifact {
                     new WndOptions(Messages.titleCase(Messages.get(this, "name")),
                             Messages.get(this, "how_many"),
                             Messages.get(this, "bit"),
-                            Messages.get(this, "few")) {
+                            str > 0 ? Messages.get(this, "few") : "") {
                         @Override
                         protected void onSelect(int index) {
                                 if (index == 0) str++;
@@ -362,7 +362,7 @@ public class LoveHolder extends Artifact {
 			desc += "\n\n";
 			if (cursed)
 				desc += Messages.get(this, "desc_cursed");
-			else if (level() >=2 && level() < 6){
+			else if (level() >= 3 && level() < 6){
                 desc += Messages.get(this, "desc_2");
             } else if (level() >= 6){
                 desc += Messages.get(this, "desc_3");
