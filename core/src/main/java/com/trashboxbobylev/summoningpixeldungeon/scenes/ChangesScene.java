@@ -153,7 +153,7 @@ public class ChangesScene extends PixelScene {
             }
         };
 		if (changesSelected == 0) btnSummPD.textColor(Window.TITLE_COLOR);
-		btnSummPD.setRect(list.left()-3, list.bottom()+5, 80, 14);
+		btnSummPD.setRect(list.left()-3, list.bottom()+5, 68, 14);
 		add(btnSummPD);
 		
 		RedButton btn0_6 = new RedButton("Shattered PD"){
@@ -167,7 +167,7 @@ public class ChangesScene extends PixelScene {
 			}
 		};
 		if (changesSelected == 1) btn0_6.textColor(Window.TITLE_COLOR);
-		btn0_6.setRect(btnSummPD.right() + 2, btnSummPD.top(), 80, 14);
+		btn0_6.setRect(btnSummPD.right() + 2, btnSummPD.top(), 68, 14);
 		add(btn0_6);
 
 		Archs archs = new Archs();
