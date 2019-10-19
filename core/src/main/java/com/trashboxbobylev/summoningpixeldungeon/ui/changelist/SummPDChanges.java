@@ -75,6 +75,16 @@ public class SummPDChanges {
                         "_-_ Ring of Attunement was displaying incorrect numbers.\n\n"+
                         "Changed:\n" +
                         "_-_ Buffed melee damage for staffs, but lowered recharge rate by 50%."));
+
+        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-3",
+                "Fixed:\n" +
+                        "_-_ Rendering of cleared Tengu floor was wrong\n" +
+                        "_-_ Conjurer was starting with 10 strength\n" +
+                        "_-_ Sometimes the new badges were crashing the game\n"+
+                        "_-_ Gaster Blaster had 1 attunement requirement, but consumed the 2 attunement on summoning\n"+
+                        "_-_ Sewers had test tier drop rate list\n\n"+
+                        "Changed:\n" +
+                        "_-_ New sprites for Conjurer's avatar and froggit"));
     }
 
     public static void add_General_Changes(ArrayList<ChangeInfo> changeInfos ){
