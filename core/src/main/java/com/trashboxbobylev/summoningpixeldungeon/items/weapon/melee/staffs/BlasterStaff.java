@@ -38,6 +38,11 @@ public class BlasterStaff extends StationaryStaff {
     }
 
     @Override
+    public float requiredAttunement() {
+        return 2f;
+    }
+
+    @Override
     public int hp(int lvl) {
         return 20*tier + lvl*(tier+10); //100 hp and +15 for every tier
     }
