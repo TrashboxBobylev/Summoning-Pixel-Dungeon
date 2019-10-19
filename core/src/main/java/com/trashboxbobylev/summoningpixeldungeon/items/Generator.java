@@ -493,8 +493,7 @@ public class Generator {
 	}
 
 	private static final float[][] floorSetTierProbs = new float[][] {
-			//{0, 70, 20,  8,  2},
-            {0, 25, 25, 25, 25},
+			{0, 70, 20,  8,  2},
 			{0, 25, 50, 20,  5},
 			{0, 10, 40, 40, 10},
 			{0,  5, 20, 50, 25},
