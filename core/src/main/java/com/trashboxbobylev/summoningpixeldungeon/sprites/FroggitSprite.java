@@ -42,7 +42,7 @@ public class FroggitSprite extends MobSprite {
 
 		texture( Assets.FROGGIT );
 
-		TextureFilm frames = new TextureFilm( texture, 20, 16 );
+		TextureFilm frames = new TextureFilm( texture, 16, 16 );
 
 		idle = new Animation( 10, true );
 		idle.frames( frames, 2, 1, 0 );
