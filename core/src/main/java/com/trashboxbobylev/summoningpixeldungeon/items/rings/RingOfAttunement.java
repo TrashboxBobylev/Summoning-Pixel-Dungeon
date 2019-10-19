@@ -33,9 +33,9 @@ public class RingOfAttunement extends Ring {
 	
 	public String statsInfo() {
 		if (isIdentified()){
-			return Messages.get(this, "stats", new DecimalFormat("#.#").format((0.5f * soloBonus())), new DecimalFormat("#.##").format(100f * (1f - Math.pow(0.85f, soloBonus()))));
+			return Messages.get(this, "stats", new DecimalFormat("#.#").format((0.5f * soloBonus())), new DecimalFormat("#.##").format(100f * (Math.pow(1.06f, soloBonus()) - 1)));
 		} else {
-			return Messages.get(this, "typical_stats", new DecimalFormat("#.#").format(0.5f), new DecimalFormat("#.##").format(15f));
+			return Messages.get(this, "typical_stats", new DecimalFormat("#.#").format(0.5f), new DecimalFormat("#.##").format(6f));
 		}
 	}
 
