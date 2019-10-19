@@ -118,6 +118,7 @@ public enum HeroClass {
 		}
 
 		hero.attunement = 1;
+		hero.STR = 9;
 		
 		new ScrollOfIdentify().identify();
 
