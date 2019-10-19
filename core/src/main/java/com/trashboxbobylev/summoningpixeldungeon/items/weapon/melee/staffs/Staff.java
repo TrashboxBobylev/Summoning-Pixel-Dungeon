@@ -213,7 +213,7 @@ public class Staff extends MeleeWeapon {
     }
 
     {
-        defaultAction = AC_ZAP;
+        defaultAction = AC_SUMMON;
         usesTargeting = true;
     }
 

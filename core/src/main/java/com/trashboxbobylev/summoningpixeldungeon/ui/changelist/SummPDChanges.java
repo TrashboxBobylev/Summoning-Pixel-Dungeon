@@ -82,6 +82,7 @@ public class SummPDChanges {
                         "_-_ Conjurer was starting with 10 strength\n" +
                         "_-_ Sometimes the new badges were crashing the game\n"+
                         "_-_ Gaster Blaster had 1 attunement requirement, but consumed the 2 attunement on summoning\n"+
+                        "_-_ In some cases staff's descriptions were crashing the game\n"+
                         "_-_ Sewers had test tier drop rate list\n\n"+
                         "Changed:\n" +
                         "_-_ New sprites for Conjurer's avatar and froggit"));
