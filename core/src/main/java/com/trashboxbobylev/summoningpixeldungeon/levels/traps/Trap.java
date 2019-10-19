@@ -72,7 +72,13 @@ public abstract class Trap implements Bundlable {
 		return this;
 	}
 
-	public Trap reveal() {
+    public Trap reveal() {
+        visible = true;
+        GameScene.updateMap(pos);
+        return this;
+    }
+
+    public Trap hide() {
         if (canBeHidden) {
             visible = false;
             GameScene.updateMap(pos);
@@ -80,13 +86,7 @@ public abstract class Trap implements Bundlable {
         } else {
             return reveal();
         }
-	}
-
-	public Trap hide() {
-		visible = false;
-		GameScene.updateMap(pos);
-		return this;
-	}
+    }
 
 	public void trigger() {
 		if (active) {
