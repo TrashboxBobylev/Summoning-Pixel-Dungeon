@@ -72,6 +72,7 @@ public class Contain extends TargetedSpell {
             Mob mb = containedMob;
             ShatteredPixelDungeon.logSomething(mb.time);
             ShatteredPixelDungeon.logSomething(hero.time);
+            mb.time = hero.time;
             containedMob = null;
             mb.pos = bolt.collisionPos;
             GameScene.add(mb);
