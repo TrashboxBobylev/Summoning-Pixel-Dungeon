@@ -502,6 +502,7 @@ public class Speck extends Image {
             case HEALGAS:
             case HONEY:
             case PERFUME:
+            case HASTE:
 				am = (float)Math.sqrt( (p < 0.5f ? p : 1 - p) * 0.5f );
 				scale.set( 1 + p );
 				break;
