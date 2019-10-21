@@ -65,6 +65,7 @@ public class Contain extends TargetedSpell {
             containedMob = mob;
             for (int i= 0; i < 5; i++) Sample.INSTANCE.play(Assets.SND_HIT);
             updateQuickslot();
+            curUser.spendAndNext(Actor.TICK);
         } else if (containedMob != null && Dungeon.level.passable[bolt.collisionPos]){
             GameScene.add(containedMob);
             containedMob.pos = bolt.collisionPos;
