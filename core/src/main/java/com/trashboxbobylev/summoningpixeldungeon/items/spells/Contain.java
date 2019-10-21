@@ -74,14 +74,10 @@ public class Contain extends TargetedSpell {
             containedMob = null;
             mb.pos = bolt.collisionPos;
             Actor.add(mb);
-            GameScene.add(mb);
+            GameScene.add(mb, 0f);
             ScrollOfTeleportation.appear(mb, bolt.collisionPos);
             Dungeon.level.occupyCell(mb);
-            for (Mob mab : Dungeon.level.mobs) {
-                if (Dungeon.level.distance(mb.pos, mab.pos) <= 8) {
-                    mb.aggro( mab );
-                }
-            }
+            mb.state = mb.WANDERING;
             for (int i= 0; i < 5; i++) Sample.INSTANCE.play(Assets.SND_MIMIC);
         } else {
             GLog.i(Messages.get(CursedWand.class, "nothing"));
