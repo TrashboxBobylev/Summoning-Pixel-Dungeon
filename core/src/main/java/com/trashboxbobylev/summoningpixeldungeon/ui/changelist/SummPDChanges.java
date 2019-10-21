@@ -93,11 +93,10 @@ public class SummPDChanges {
                         "_-_ Soul Reaver's abilities were reducing minion's life to 1\n" +
                         "_-_ Chicken staff was displaying the bonus HP from robe\n"+
                         "_-_ Froggit were having the wrong frame animations\n"+
-                        "_-_ In some cases staff's descriptions were crashing the game\n"+
-                        "_-_ Sewers had test tier drop rate list\n\n"+
+                        "_-_ Love Holder doesn't crash on reading +10's description\n"+
+                        "_-_ Minions was not able to wake up after magical sleep\n\n"+
                         "Changed:\n" +
-                        "_-_ New sprites for Conjurer's avatar and froggit\n"+
-                        "_-_ Staff's default action were changed to SUMMON"));
+                        "_-_ Minions now have the stats description"));
     }
 
     public static void add_General_Changes(ArrayList<ChangeInfo> changeInfos ){
