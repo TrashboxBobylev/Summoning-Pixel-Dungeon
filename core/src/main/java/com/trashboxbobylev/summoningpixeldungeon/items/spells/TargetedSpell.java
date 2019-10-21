@@ -29,6 +29,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Invisibility;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.effects.MagicMissile;
+import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.CellSelector;
@@ -91,7 +92,7 @@ public abstract class TargetedSpell extends Spell {
 					public void call() {
 						curSpell.affectTarget(shot, curUser);
 						curSpell.detach( curUser.belongings.backpack );
-						curSpell.updateQuickslot();
+						updateQuickslot();
 						curUser.spendAndNext( 1f );
 					}
 				});

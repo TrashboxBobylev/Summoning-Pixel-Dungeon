@@ -97,7 +97,7 @@ public abstract class Mob extends Char {
 	public int EXP = 1;
 	public int maxLvl = Hero.MAX_LEVEL;
 	
-	protected Char enemy;
+	public Char enemy;
 	protected boolean enemySeen;
 	protected boolean alerted = false;
 

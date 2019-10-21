@@ -184,7 +184,7 @@ public abstract class Recipe {
 		new CurseInfusion.Recipe(),
 		new FeatherFall.Recipe(),
 		new MagicalInfusion.Recipe(),
-		new MagicalPorter.Recipe(),
+		new Contain.Recipe(),
 		new PhaseShift.Recipe(),
 		new ReclaimTrap.Recipe(),
 		new Recycle.Recipe(),
