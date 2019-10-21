@@ -57,9 +57,9 @@ public class Contain extends TargetedSpell {
     protected void affectTarget(Ballistica bolt, Hero hero) {
         Mob mob = (Mob) Actor.findChar(bolt.collisionPos);
         if (mob != null && containedMob == null){
-            this.collect();
             Dungeon.level.mobs.remove(mob);
             mob.sprite.killAndErase();
+            Actor.remove(mob);
             mob.state = mob.HUNTING;
             mob.enemy = null;
             containedMob = mob;
@@ -71,6 +71,7 @@ public class Contain extends TargetedSpell {
             containedMob.pos = bolt.collisionPos;
             Dungeon.level.occupyCell(containedMob);
             Buff.affect(containedMob, Amok.class, 15);
+            Actor.add(containedMob);
             containedMob = null;
             for (int i= 0; i < 5; i++) Sample.INSTANCE.play(Assets.SND_MIMIC);
         } else {
@@ -122,7 +123,7 @@ public class Contain extends TargetedSpell {
             cost = 8;
 
             output = Contain.class;
-            outQuantity = 1;
+            outQuantity = 2;
         }
 
     }
