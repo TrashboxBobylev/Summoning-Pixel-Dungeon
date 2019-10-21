@@ -60,7 +60,7 @@ public class AdrenalineGas extends Blob {
 	public void use( BlobEmitter emitter ) {
 		super.use( emitter );
 
-		emitter.pour( Speck.factory( Speck.HASTE, true ), 0.4f );
+		emitter.pour( Speck.factory( Speck.HASTE, true ), 0.2f );
 	}
 
 	@Override
