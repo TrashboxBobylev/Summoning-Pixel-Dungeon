@@ -26,6 +26,7 @@ package com.trashboxbobylev.summoningpixeldungeon.items.spells;
 
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
+import com.trashboxbobylev.summoningpixeldungeon.ShatteredPixelDungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Amok;
@@ -69,13 +70,14 @@ public class Contain extends TargetedSpell {
             curUser.spendAndNext(Actor.TICK);
         } else if (containedMob != null && Dungeon.level.passable[bolt.collisionPos]){
             Mob mb = containedMob;
+            ShatteredPixelDungeon.logSomething(mb.time);
+            ShatteredPixelDungeon.logSomething(hero.time);
             containedMob = null;
             mb.pos = bolt.collisionPos;
             GameScene.add(mb);
             ScrollOfTeleportation.appear(mb, bolt.collisionPos);
             Dungeon.level.occupyCell(mb);
             mb.state = mb.WANDERING;
-            mb.next();
             Actor.fixTime();
             Buff.affect(mb, Amok.class, 15f);
             for (int i= 0; i < 5; i++) Sample.INSTANCE.play(Assets.SND_MIMIC);
