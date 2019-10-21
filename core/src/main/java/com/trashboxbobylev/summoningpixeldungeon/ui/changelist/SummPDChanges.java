@@ -87,6 +87,17 @@ public class SummPDChanges {
                         "Changed:\n" +
                         "_-_ New sprites for Conjurer's avatar and froggit\n"+
                         "_-_ Staff's default action were changed to SUMMON"));
+        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-4",
+                "Fixed:\n" +
+                        "_-_ Player was able to use staffs with negative charges\n" +
+                        "_-_ Conjurer was starting with 10 strength\n" +
+                        "_-_ Sometimes the new badges were crashing the game\n"+
+                        "_-_ Gaster Blaster had 1 attunement requirement, but consumed the 2 attunement on summoning\n"+
+                        "_-_ In some cases staff's descriptions were crashing the game\n"+
+                        "_-_ Sewers had test tier drop rate list\n\n"+
+                        "Changed:\n" +
+                        "_-_ New sprites for Conjurer's avatar and froggit\n"+
+                        "_-_ Staff's default action were changed to SUMMON"));
     }
 
     public static void add_General_Changes(ArrayList<ChangeInfo> changeInfos ){
@@ -133,6 +144,14 @@ public class SummPDChanges {
                         "_-_ Deltarune Robe have several skills, two of them are available after getting the subclass.\n\n"+
                         "_-_ First skill is paralysing all enemies in sight for short time, second summons chaos saber, third cast soul spell, which effect depends on choosed subclass.\n\n"+
                         "_-_ With every upgrade it will increase newly summoned minions hp by 10% per level."));
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ENRAGE, null), "New spells!",
+                "_-_ Magical Porter was removed. It's almost useless.\n\n" +
+                        "_-_ Added the Enrage spell, that amoks and enrages the target for some time.\n\n" +
+                        "_-_ Added the Containing spell, that allows you to capture monsters and use them as temporary allies."));
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.BREW_PERFUME, null), "New brews!",
+                "_-_ Added the Elixir of Attunement, that permamently increases user's attunement.\n\n" +
+                        "_-_ Added the Elixir of Rage, that creates a adrenaline shortliving gas.\n\n" +
+                        "_-_ Added the Vial of Perfume, that releases a charming and attracting cloud of perfume."));
 
     }
 
