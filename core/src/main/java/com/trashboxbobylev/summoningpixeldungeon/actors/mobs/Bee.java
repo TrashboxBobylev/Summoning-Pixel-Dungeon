@@ -127,7 +127,7 @@ public class Bee extends Mob {
 	}
 
 	@Override
-	protected Char chooseEnemy() {
+    public Char chooseEnemy() {
 		//if the pot is no longer present, default to regular AI behaviour
 		if (alignment == Alignment.ALLY || (potHolder == -1 && potPos == -1)){
 			return super.chooseEnemy();

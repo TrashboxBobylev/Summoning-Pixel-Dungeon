@@ -559,7 +559,7 @@ public class DriedRose extends Artifact {
 		}
 		
 		@Override
-		protected Char chooseEnemy() {
+        public Char chooseEnemy() {
 			Char enemy = super.chooseEnemy();
 			
 			int targetPos = defendingPos != -1 ? defendingPos : Dungeon.hero.pos;

@@ -49,7 +49,7 @@ public class RatKing extends NPC {
 	}
 	
 	@Override
-	protected Char chooseEnemy() {
+    public Char chooseEnemy() {
 		return null;
 	}
 	

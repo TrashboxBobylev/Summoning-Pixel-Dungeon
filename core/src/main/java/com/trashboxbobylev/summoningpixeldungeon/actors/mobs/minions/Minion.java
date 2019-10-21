@@ -126,7 +126,7 @@ public abstract class Minion extends Mob {
     }
 
     @Override
-    protected Char chooseEnemy() {
+    public Char chooseEnemy() {
         Char enemy = super.chooseEnemy();
 
         int targetPos = defendingPos != -1 ? defendingPos : Dungeon.hero.pos;
