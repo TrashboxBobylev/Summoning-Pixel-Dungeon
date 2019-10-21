@@ -60,7 +60,6 @@ public class PerfumeGas extends Blob {
 		super.use( emitter );
 
 		emitter.pour( Speck.factory( Speck.PERFUME, true ), 0.5f );
-        emitter.pour( Speck.factory( Speck.HEART, true ), 0.8f );
 	}
 
 	@Override
