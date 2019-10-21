@@ -233,10 +233,6 @@ public enum HeroClass {
 
         new PotionOfStrength().identify();
         new ScrollOfAttunement().identify();
-        new TomeOfMastery().collect();
-        new RagingBrew().collect();
-        new PerfumeBrew().collect();
-        new Contain().quantity(2).collect();
 
     }
 	
