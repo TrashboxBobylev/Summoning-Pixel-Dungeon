@@ -97,7 +97,7 @@ public class Contain extends TargetedSpell {
     @Override
     public void restoreFromBundle( Bundle bundle ) {
         super.restoreFromBundle(bundle);
-        Bundlable mobBundle = (Bundlable) bundle.getBundle(MOB);
+        Bundlable mobBundle = bundle.get(MOB);
         if (mobBundle != null){
             containedMob = (Mob) mobBundle;
         }
