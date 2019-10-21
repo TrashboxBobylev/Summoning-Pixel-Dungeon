@@ -62,8 +62,6 @@ public class Contain extends TargetedSpell {
             Dungeon.level.mobs.remove(mob);
             mob.sprite.killAndErase();
             Actor.remove(mob);
-            mob.state = mob.WANDERING;
-            mob.enemy = null;
             containedMob = mob;
             TargetHealthIndicator.instance.target(null);
             for (int i= 0; i < 5; i++) Sample.INSTANCE.play(Assets.SND_HIT);
@@ -73,11 +71,11 @@ public class Contain extends TargetedSpell {
             Mob mb = containedMob;
             containedMob = null;
             mb.pos = bolt.collisionPos;
-            Actor.add(mb);
             GameScene.add(mb, 0f);
             ScrollOfTeleportation.appear(mb, bolt.collisionPos);
             Dungeon.level.occupyCell(mb);
             mb.state = mb.WANDERING;
+            Buff.affect(mb, Amok.class, 15f);
             for (int i= 0; i < 5; i++) Sample.INSTANCE.play(Assets.SND_MIMIC);
         } else {
             GLog.i(Messages.get(CursedWand.class, "nothing"));
