@@ -64,7 +64,7 @@ public class PerfumeBrew extends Brew {
 			inputs =  new Class[]{ScrollOfAffection.class, AlchemicalCatalyst.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 5;
+			cost = 15;
 			
 			output = PerfumeBrew.class;
 			outQuantity = 1;
