@@ -64,7 +64,7 @@ public class LoveHolder extends Artifact {
     public int totalHealing = 0;
 
     private int[] healingTable = {
-            10, 25, 50, 75, 100, 125, 150, 175, 200, 210
+            10, 25, 50, 75, 100, 125, 150, 175, 200, 225, Integer.MAX_VALUE
     };
 
 	{
