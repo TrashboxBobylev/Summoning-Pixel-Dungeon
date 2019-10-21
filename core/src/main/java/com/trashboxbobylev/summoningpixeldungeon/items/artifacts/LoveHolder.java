@@ -279,14 +279,14 @@ public class LoveHolder extends Artifact {
                                             }
                                         } else if (soultype == 3){
                                             ((Minion) ch).adjustDamage(str, str*2);
-                                            ((Minion) ch).setMaxHP(Math.min(1, ch.HT - str*2));
+                                            ((Minion) ch).setMaxHP(Math.max(1, ch.HT - str*2));
                                             ((Minion) ch).adjustDR(-str, -str*2);
                                             ch.sprite.showStatus(CharSprite.NEGATIVE, "-%dHP", str*2);
                                             ch.sprite.showStatus(CharSprite.POSITIVE, "+%1$d/+%2$dDMG", str, str*2);
                                             ch.sprite.showStatus(CharSprite.NEGATIVE, "-%1$d/-%2$dDR", str, str*2);
                                         } else if (soultype == 4){
                                             ((Minion) ch).adjustDamage(-str, -str*2);
-                                            ((Minion) ch).setMaxHP(Math.min(1, ch.HT + str*3));
+                                            ((Minion) ch).setMaxHP(Math.max(1, ch.HT + str*3));
                                             ((Minion) ch).adjustDR(str, str*2);
                                             ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", str*3);
                                             ch.sprite.showStatus(CharSprite.NEGATIVE, "-%1$d/-%2$dDMG", str, str*2);
