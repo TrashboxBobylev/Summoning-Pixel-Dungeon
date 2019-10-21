@@ -45,16 +45,16 @@ public class FroggitSprite extends MobSprite {
 		TextureFilm frames = new TextureFilm( texture, 16, 16 );
 
 		idle = new Animation( 10, true );
-		idle.frames( frames, 2, 1, 0 );
+		idle.frames( frames, 0, 1, 0 );
 
 		run = new Animation( 15, true );
-		run.frames( frames, 3, 4, 0 );
+		run.frames( frames, 2, 3, 4 );
 
 		attack = new Animation( 10, false );
-		attack.frames( frames, 8, 9, 10 );
+		attack.frames( frames, 5, 6, 7, 8 );
 
 		die = new Animation( 10, false );
-		die.frames( frames, 5, 6, 7 );
+		die.frames( frames, 9, 10, 11 );
 
 		play(idle);
 	}
