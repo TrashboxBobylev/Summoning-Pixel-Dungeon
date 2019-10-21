@@ -1039,7 +1039,7 @@ public class GameScene extends PixelScene {
 	public static void examineObject(Object o){
 		if (o == Dungeon.hero){
 			GameScene.show( new WndHero() );
-		} else if ( o instanceof Mob ){
+		} else if ( o instanceof Mob && ((Mob) o).sprite.parent != null){
 			GameScene.show(new WndInfoMob((Mob) o));
 		} else if ( o instanceof Heap ){
 			Heap heap = (Heap)o;

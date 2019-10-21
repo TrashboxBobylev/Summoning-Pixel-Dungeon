@@ -33,6 +33,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Amok;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
+import com.trashboxbobylev.summoningpixeldungeon.effects.EmoIcon;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfMirrorImage;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfPassage;
@@ -62,7 +63,7 @@ public class Contain extends TargetedSpell {
         if (mob != null && containedMob == null){
             Dungeon.level.mobs.remove(mob);
             mob.sprite.killAndErase();
-            Actor.remove(mob);
+            mob.state = mob.PASSIVE;
             containedMob = mob;
             TargetHealthIndicator.instance.target(null);
             for (int i= 0; i < 5; i++) Sample.INSTANCE.play(Assets.SND_HIT);
@@ -70,9 +71,6 @@ public class Contain extends TargetedSpell {
             curUser.spendAndNext(Actor.TICK);
         } else if (containedMob != null && Dungeon.level.passable[bolt.collisionPos]){
             Mob mb = containedMob;
-            ShatteredPixelDungeon.logSomething(mb.time);
-            ShatteredPixelDungeon.logSomething(hero.time);
-            mb.time = hero.time;
             containedMob = null;
             mb.pos = bolt.collisionPos;
             GameScene.add(mb);
