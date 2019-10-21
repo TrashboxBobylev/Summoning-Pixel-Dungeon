@@ -69,13 +69,14 @@ public class Contain extends TargetedSpell {
             updateQuickslot();
             curUser.spendAndNext(Actor.TICK);
         } else if (containedMob != null && Dungeon.level.passable[bolt.collisionPos]){
-            containedMob.pos = bolt.collisionPos;
-            GameScene.add(containedMob);
-            ScrollOfTeleportation.appear(containedMob, bolt.collisionPos);
-            Dungeon.level.occupyCell(containedMob);
-            Buff.affect(containedMob, Amok.class, 15);
-            Actor.add(containedMob);
+            Mob mb = containedMob;
             containedMob = null;
+            mb.pos = bolt.collisionPos;
+            Actor.add(mb);
+            GameScene.add(mb);
+            ScrollOfTeleportation.appear(mb, bolt.collisionPos);
+            Dungeon.level.occupyCell(mb);
+            Buff.affect(mb, Amok.class, 15);
             for (int i= 0; i < 5; i++) Sample.INSTANCE.play(Assets.SND_MIMIC);
         } else {
             GLog.i(Messages.get(CursedWand.class, "nothing"));
