@@ -76,8 +76,11 @@ public class Contain extends TargetedSpell {
             GameScene.add(mb);
             ScrollOfTeleportation.appear(mb, bolt.collisionPos);
             Dungeon.level.occupyCell(mb);
-            Buff.affect(mb, Amok.class, 15);
-            mb.chooseEnemy();
+            for (Mob mab : Dungeon.level.mobs) {
+                if (Dungeon.level.distance(mb.pos, mab.pos) <= 8) {
+                    mb.aggro( mab );
+                }
+            }
             for (int i= 0; i < 5; i++) Sample.INSTANCE.play(Assets.SND_MIMIC);
         } else {
             GLog.i(Messages.get(CursedWand.class, "nothing"));
