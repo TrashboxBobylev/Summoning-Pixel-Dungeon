@@ -227,6 +227,7 @@ public class LoveHolder extends Artifact {
                                             healing -= wastedHealing;
                                             charge += wastedHealing / 2; //some of unnecessary soul will return
                                         }
+                                        updateQuickslot();
 
                                         if (soultype == 0) {
 
@@ -236,7 +237,7 @@ public class LoveHolder extends Artifact {
 
                                             ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healing);
                                         } else if (soultype == 1){
-                                            healing *= 1.6f;
+                                            healing = Math.round(1.6f * (healing + wastedHealing));
                                             Buff.affect(ch, Barrier.class).setShield(healing);
                                             ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healing);
                                         } else if (soultype == 2){
