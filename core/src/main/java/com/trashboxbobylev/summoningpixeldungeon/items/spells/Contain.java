@@ -71,11 +71,12 @@ public class Contain extends TargetedSpell {
             Mob mb = containedMob;
             containedMob = null;
             mb.pos = bolt.collisionPos;
-            GameScene.add(mb, 0f);
+            GameScene.add(mb);
             ScrollOfTeleportation.appear(mb, bolt.collisionPos);
             Dungeon.level.occupyCell(mb);
             mb.state = mb.WANDERING;
             mb.next();
+            Actor.fixTime();
             Buff.affect(mb, Amok.class, 15f);
             for (int i= 0; i < 5; i++) Sample.INSTANCE.play(Assets.SND_MIMIC);
         } else {
