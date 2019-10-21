@@ -65,6 +65,7 @@ public class Contain extends TargetedSpell {
             mob.state = mob.WANDERING;
             mob.enemy = null;
             containedMob = mob;
+            TargetHealthIndicator.instance.target(null);
             for (int i= 0; i < 5; i++) Sample.INSTANCE.play(Assets.SND_HIT);
             updateQuickslot();
             curUser.spendAndNext(Actor.TICK);
