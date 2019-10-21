@@ -33,6 +33,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfMirrorImage;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfPassage;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.CursedWand;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
@@ -61,15 +62,16 @@ public class Contain extends TargetedSpell {
             Dungeon.level.mobs.remove(mob);
             mob.sprite.killAndErase();
             Actor.remove(mob);
-            mob.state = mob.HUNTING;
+            mob.state = mob.WANDERING;
             mob.enemy = null;
             containedMob = mob;
             for (int i= 0; i < 5; i++) Sample.INSTANCE.play(Assets.SND_HIT);
             updateQuickslot();
             curUser.spendAndNext(Actor.TICK);
         } else if (containedMob != null && Dungeon.level.passable[bolt.collisionPos]){
-            GameScene.add(containedMob);
             containedMob.pos = bolt.collisionPos;
+            GameScene.add(containedMob);
+            ScrollOfTeleportation.appear(containedMob, bolt.collisionPos);
             Dungeon.level.occupyCell(containedMob);
             Buff.affect(containedMob, Amok.class, 15);
             Actor.add(containedMob);
