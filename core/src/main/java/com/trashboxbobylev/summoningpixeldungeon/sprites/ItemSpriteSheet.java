@@ -606,6 +606,8 @@ public class ItemSpriteSheet {
 	public static final int BREW_BLIZZARD   = BREWS+1;
 	public static final int BREW_SHOCKING   = BREWS+2;
 	public static final int BREW_CAUSTIC    = BREWS+3;
+	public static final int BREW_PERFUME = BREWS+4;
+	public static final int BREW_HASTE = BREWS+5;
 	
 	private static final int ELIXIRS        =                               xy(9, 25);  //8 slots
 	public static final int ELIXIR_HONEY    = ELIXIRS+0;
@@ -619,6 +621,7 @@ public class ItemSpriteSheet {
 	static{
 		for (int i = BREWS; i < BREWS+16; i++)
 			assignItemRect(i, 12, 14);
+		assignItemRect(BREW_PERFUME, 12, 16);
 	}
 	
 	                                                                                    //16 free slots

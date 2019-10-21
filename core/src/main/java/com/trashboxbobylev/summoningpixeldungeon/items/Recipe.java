@@ -32,10 +32,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.food.MeatPie;
 import com.trashboxbobylev.summoningpixeldungeon.items.food.StewedMeat;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.AlchemicalCatalyst;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.Potion;
-import com.trashboxbobylev.summoningpixeldungeon.items.potions.brews.BlizzardBrew;
-import com.trashboxbobylev.summoningpixeldungeon.items.potions.brews.CausticBrew;
-import com.trashboxbobylev.summoningpixeldungeon.items.potions.brews.InfernalBrew;
-import com.trashboxbobylev.summoningpixeldungeon.items.potions.brews.ShockingBrew;
+import com.trashboxbobylev.summoningpixeldungeon.items.potions.brews.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.exotic.ExoticPotion;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.Scroll;
@@ -179,6 +176,8 @@ public abstract class Recipe {
 		new InfernalBrew.Recipe(),
 		new ShockingBrew.Recipe(),
 		new CausticBrew.Recipe(),
+        new PerfumeBrew.Recipe(),
+        new RagingBrew.Recipe(),
 		new Alchemize.Recipe(),
 		new AquaBlast.Recipe(),
 		new BeaconOfReturning.Recipe(),

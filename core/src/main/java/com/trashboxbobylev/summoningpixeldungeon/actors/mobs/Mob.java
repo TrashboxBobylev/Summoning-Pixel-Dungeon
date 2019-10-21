@@ -31,6 +31,7 @@ import com.trashboxbobylev.summoningpixeldungeon.ShatteredPixelDungeon;
 import com.trashboxbobylev.summoningpixeldungeon.Statistics;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.PerfumeGas;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroSubClass;
@@ -822,7 +823,23 @@ public abstract class Mob extends Char {
 					spend( 1 / speed() );
 					return moveSprite( oldPos, pos );
 				} else {
-					target = Dungeon.level.randomDestination();
+                    PerfumeGas perfume = (PerfumeGas) Dungeon.level.blobs.get(PerfumeGas.class);
+                    if (perfume != null){
+                        for (int i = perfume.area.left; i < perfume.area.right; i++){
+                            for (int j = perfume.area.top; j < perfume.area.bottom; j++){
+                                int cell = i + j*Dungeon.level.width();
+                                Char ch;
+                                if (perfume.cur[cell] > 0 && (ch = Actor.findChar( cell )) != null &&
+                                        (Dungeon.level.distance(cell, ch.pos) <= 5)) {
+                                    if (!ch.isImmune(Charm.class)) {
+                                        do {
+                                            target = Dungeon.level.randomDestination();
+                                        } while (!Dungeon.level.passable[target] && perfume.cur[target] < 0);
+                                    }
+                                }
+                            }
+                        }
+                    } else target = Dungeon.level.randomDestination();
 					spend( TICK );
 				}
 
