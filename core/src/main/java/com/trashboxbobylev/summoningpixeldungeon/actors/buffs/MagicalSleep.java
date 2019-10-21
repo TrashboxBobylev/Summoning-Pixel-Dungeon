@@ -84,6 +84,7 @@ public class MagicalSleep extends Buff {
 			target.paralysed--;
 		if (target instanceof Hero)
 			((Hero) target).resting = false;
+		if (target instanceof Mob) ((Mob) target).state = ((Mob) target).WANDERING;
 		super.detach();
 	}
 

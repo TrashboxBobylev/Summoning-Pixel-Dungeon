@@ -90,9 +90,9 @@ public class SummPDChanges {
         changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-4",
                 "Fixed:\n" +
                         "_-_ Player was able to use staffs with negative charges\n" +
-                        "_-_ Conjurer was starting with 10 strength\n" +
-                        "_-_ Sometimes the new badges were crashing the game\n"+
-                        "_-_ Gaster Blaster had 1 attunement requirement, but consumed the 2 attunement on summoning\n"+
+                        "_-_ Soul Reaver's abilities were reducing minion's life to 1\n" +
+                        "_-_ Chicken staff was displaying the bonus HP from robe\n"+
+                        "_-_ Froggit were having the wrong frame animations\n"+
                         "_-_ In some cases staff's descriptions were crashing the game\n"+
                         "_-_ Sewers had test tier drop rate list\n\n"+
                         "Changed:\n" +
