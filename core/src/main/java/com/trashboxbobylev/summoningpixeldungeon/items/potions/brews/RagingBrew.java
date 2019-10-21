@@ -39,7 +39,7 @@ import com.watabou.noosa.audio.Sample;
 public class RagingBrew extends Brew {
 	
 	{
-		image = ItemSpriteSheet.BREW_INFERNAL;
+		image = ItemSpriteSheet.BREW_HASTE;
 	}
 	
 	@Override

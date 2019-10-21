@@ -43,6 +43,8 @@ import com.trashboxbobylev.summoningpixeldungeon.items.bags.VelvetPouch;
 import com.trashboxbobylev.summoningpixeldungeon.items.food.Food;
 import com.trashboxbobylev.summoningpixeldungeon.items.food.SmallRation;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.*;
+import com.trashboxbobylev.summoningpixeldungeon.items.potions.brews.PerfumeBrew;
+import com.trashboxbobylev.summoningpixeldungeon.items.potions.brews.RagingBrew;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.ElixirOfAttunement;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfSoulEnergy;
@@ -231,6 +233,8 @@ public enum HeroClass {
         new PotionOfStrength().identify();
         new ScrollOfAttunement().identify();
         new TomeOfMastery().collect();
+        new RagingBrew().collect();
+        new PerfumeBrew().collect();
 
     }
 	
