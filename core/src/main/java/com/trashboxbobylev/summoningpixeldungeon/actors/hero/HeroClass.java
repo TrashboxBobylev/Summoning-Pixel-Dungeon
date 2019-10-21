@@ -48,6 +48,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.potions.brews.RagingBrew;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.ElixirOfAttunement;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfSoulEnergy;
+import com.trashboxbobylev.summoningpixeldungeon.items.spells.Contain;
 import com.trashboxbobylev.summoningpixeldungeon.items.spells.Enrage;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfTargeting;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfMagicMissile;
@@ -235,6 +236,7 @@ public enum HeroClass {
         new TomeOfMastery().collect();
         new RagingBrew().collect();
         new PerfumeBrew().collect();
+        new Contain().collect();
 
     }
 	
