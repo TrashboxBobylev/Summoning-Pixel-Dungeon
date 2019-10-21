@@ -75,6 +75,7 @@ public class Contain extends TargetedSpell {
             ScrollOfTeleportation.appear(mb, bolt.collisionPos);
             Dungeon.level.occupyCell(mb);
             mb.state = mb.WANDERING;
+            mb.next();
             Buff.affect(mb, Amok.class, 15f);
             for (int i= 0; i < 5; i++) Sample.INSTANCE.play(Assets.SND_MIMIC);
         } else {
