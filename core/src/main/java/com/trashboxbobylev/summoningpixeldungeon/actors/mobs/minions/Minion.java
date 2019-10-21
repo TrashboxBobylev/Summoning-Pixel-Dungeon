@@ -33,6 +33,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.KindOfWeapon;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfAccuracy;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfTargeting;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.MissileWeapon;
+import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -213,7 +214,11 @@ public abstract class Minion extends Mob {
 
     }
 
-
+    @Override
+    public String description() {
+        String d = super.description();
+        return d + "\n\n" + Messages.get(Minion.class, "stats", minDamage, maxDamage, HP, HT, minDR, maxDR);
+    }
 
     public void destroy() {
         Dungeon.hero.usedAttunement -= attunement;
