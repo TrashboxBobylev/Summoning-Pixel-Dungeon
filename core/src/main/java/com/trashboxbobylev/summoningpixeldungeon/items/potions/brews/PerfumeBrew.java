@@ -49,7 +49,7 @@ public class PerfumeBrew extends Brew {
 			Sample.INSTANCE.play( Assets.SND_SHATTER );
 		}
 		
-		GameScene.add( Blob.seed( cell, 1000, PerfumeGas.class ) );
+		GameScene.add( Blob.seed( cell, 750, PerfumeGas.class ) );
 	}
 	
 	@Override
