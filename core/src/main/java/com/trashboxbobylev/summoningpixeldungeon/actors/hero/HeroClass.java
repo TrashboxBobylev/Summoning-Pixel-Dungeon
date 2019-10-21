@@ -236,7 +236,7 @@ public enum HeroClass {
         new TomeOfMastery().collect();
         new RagingBrew().collect();
         new PerfumeBrew().collect();
-        new Contain().collect();
+        new Contain().quantity(2).collect();
 
     }
 	

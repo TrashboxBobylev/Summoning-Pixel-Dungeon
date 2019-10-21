@@ -40,6 +40,7 @@ import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
+import com.trashboxbobylev.summoningpixeldungeon.ui.TargetHealthIndicator;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
