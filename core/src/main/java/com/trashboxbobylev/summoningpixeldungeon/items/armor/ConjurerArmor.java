@@ -276,7 +276,7 @@ public class ConjurerArmor extends ClassArmor {
 
     public void doAsSoulReaver(Char target, int strength, Hero owner){
         //every charge adds +10% damage, initial is 0-hero level
-        int damageRoll = Random.NormalIntRange(0, (int) (owner.lvl*Math.pow(1.1f, strength)));
+        int damageRoll = Random.NormalIntRange(0, (int) (owner.lvl*Math.pow(1.25f, strength)));
         target.damage(damageRoll, this);
 
         target.sprite.burst(0xFFFFFFFF, strength*2);

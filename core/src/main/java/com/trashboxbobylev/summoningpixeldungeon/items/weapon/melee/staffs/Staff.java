@@ -295,7 +295,8 @@ public class Staff extends MeleeWeapon {
 
             curUser = hero;
             try {
-                summon(hero);
+                if (curCharges > 0) summon(hero);
+                else GLog.warning( Messages.get(Wand.class, "fizzles") );
             } catch (Exception e) {
                 ShatteredPixelDungeon.reportException(e);
                 GLog.warning( Messages.get(Wand.class, "fizzles") );
@@ -568,7 +569,7 @@ public class Staff extends MeleeWeapon {
         if (isIdentified()) {
             float robeBonus = 1f;
             if (Dungeon.hero.belongings.armor instanceof ConjurerArmor) {
-                if (Dungeon.hero.belongings.armor.level() > 0) {
+                if (Dungeon.hero.belongings.armor.level() > 0 && !(this instanceof ChickenStaff)) {
                     robeBonus = 1f + Dungeon.hero.belongings.armor.level() * 0.1f;
                 }
             }
