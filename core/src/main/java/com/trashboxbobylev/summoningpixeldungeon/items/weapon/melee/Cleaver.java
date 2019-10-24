@@ -38,14 +38,14 @@ public class Cleaver extends MeleeWeapon {
 		image = ItemSpriteSheet.CLEAVER;
 
 		tier = 2;
-		ACC = 0.69f; //0.69x accuracy
+		ACC = 0.4f; //0.4x accuracy
 		//also cannot surprise attack, see Hero.canSurpriseAttack
 	}
 
 	@Override
 	public int max(int lvl) {
-		return  Math.round(8*(tier+1)) +        //24 base, up from 15
-				lvl*Math.round((tier+2));  //+4 per level, up from +3
+		return  Math.round(9*(tier+1)) +        //27 base, up from 15
+				lvl*Math.round((tier+3));  //+5 per level, up from +3
 	}
 
     @Override
@@ -54,7 +54,7 @@ public class Cleaver extends MeleeWeapon {
             int dmg = super.damageRoll(owner);
             Hero hero = (Hero)owner;
             Char enemy = hero.enemy();
-            float maxChance = 0.3f + .03f*Math.max(0, level());
+            float maxChance = 0.6f + .06f*Math.max(0, level());
             float chanceMulti = (float)Math.pow( ((enemy.HT - enemy.HP + dmg) / (float)enemy.HT), 2);
             float chance = maxChance * chanceMulti;
             if (enemy instanceof Mob && Random.Float() < chance && !enemy.isImmune(Grim.class)) {
