@@ -38,7 +38,7 @@ public class Cleaver extends MeleeWeapon {
 		image = ItemSpriteSheet.CLEAVER;
 
 		tier = 2;
-		ACC = 0.4f; //0.4x accuracy
+		ACC = 0.33f; //0.3x accuracy
 		//also cannot surprise attack, see Hero.canSurpriseAttack
 	}
 
