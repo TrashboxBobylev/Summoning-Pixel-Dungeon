@@ -838,7 +838,12 @@ public abstract class Mob extends Char {
                             target = Dungeon.level.randomDestination();
                         } while (!Dungeon.level.passable[target] && perfume.cur[target] < 0);
                         Buff.affect(ch, PerfumeGas.Affection.class, Dungeon.level.distance(pos, target)*0.75f);
-                    } else target = Dungeon.level.randomDestination();
+                    } else {
+                        target = Dungeon.level.randomDestination();
+                        if (buff(PerfumeGas.Affection.class) != null){
+                            buff(PerfumeGas.Affection.class).detach();
+                        }
+                    }
 					spend( TICK );
 				}
 
