@@ -233,6 +233,8 @@ public enum HeroClass {
 
         new PotionOfStrength().identify();
         new ScrollOfAttunement().identify();
+        new PerfumeBrew().collect();
+        new Cleaver().identify().collect();
 
     }
 	
