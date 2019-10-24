@@ -28,6 +28,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.CorrosiveGas;
+import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.PerfumeGas;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.ToxicGas;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Burning;
@@ -53,6 +54,7 @@ public class MirrorImage extends NPC {
 		
 		//before other mobs
 		actPriority = MOB_PRIO + 1;
+		immunities.add(PerfumeGas.Affection.class);
 	}
 	
 	private Hero hero;

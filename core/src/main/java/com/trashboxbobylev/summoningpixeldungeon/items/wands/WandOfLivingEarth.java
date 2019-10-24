@@ -29,6 +29,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Challenges;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.PerfumeGas;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Amok;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
@@ -294,6 +295,7 @@ public class WandOfLivingEarth extends DamageWand {
 			actPriority = MOB_PRIO + 1;
 
 			HP = HT = 0;
+			immunities.add(PerfumeGas.Affection.class);
 		}
 
 		private int wandLevel = -1;

@@ -26,6 +26,7 @@ package com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions;
 
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.PerfumeGas;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary.StationaryMinion;
@@ -85,6 +86,8 @@ public abstract class Minion extends Mob {
 
         //before other mobs
         actPriority = MOB_PRIO + 1;
+
+        immunities.add(PerfumeGas.Affection.class);
     }
 
     public void setMaxHP(int hp){

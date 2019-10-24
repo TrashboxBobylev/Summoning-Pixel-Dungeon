@@ -26,6 +26,7 @@ package com.trashboxbobylev.summoningpixeldungeon.actors.mobs;
 
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.PerfumeGas;
 import com.trashboxbobylev.summoningpixeldungeon.items.Generator;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon.Enchantment;
@@ -46,6 +47,8 @@ public class Statue extends Mob {
 		state = PASSIVE;
 		
 		properties.add(Property.INORGANIC);
+
+		immunities.add(PerfumeGas.Affection.class);
 	}
 	
 	protected Weapon weapon;

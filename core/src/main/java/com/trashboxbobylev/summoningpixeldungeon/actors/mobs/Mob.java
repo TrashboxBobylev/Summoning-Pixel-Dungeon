@@ -602,6 +602,10 @@ public abstract class Mob extends Char {
 		if (state != HUNTING) {
 			alerted = true;
 		}
+		if (buff(PerfumeGas.Affection.class) != null && src instanceof Char){
+		    buff(PerfumeGas.Affection.class).detach();
+		    Buff.affect(this, PerfumeGas.Aggression.class, 8f);
+        }
 		
 		super.damage( dmg, src );
 	}
@@ -797,7 +801,7 @@ public abstract class Mob extends Char {
 
 		@Override
 		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
-			if (enemyInFOV && (justAlerted || Random.Float( distance( enemy ) / 2f + enemy.stealth() ) < 1)) {
+			if (enemyInFOV && (justAlerted || Random.Float( distance( enemy ) / 2f + enemy.stealth() ) < 1) && buff(PerfumeGas.Affection.class) == null) {
 
 				enemySeen = true;
 
@@ -824,21 +828,12 @@ public abstract class Mob extends Char {
 					return moveSprite( oldPos, pos );
 				} else {
                     PerfumeGas perfume = (PerfumeGas) Dungeon.level.blobs.get(PerfumeGas.class);
-                    if (perfume != null){
-                        for (int i = perfume.area.left; i < perfume.area.right; i++){
-                            for (int j = perfume.area.top; j < perfume.area.bottom; j++){
-                                int cell = i + j*Dungeon.level.width();
-                                Char ch;
-                                if (perfume.cur[cell] > 0 && (ch = Actor.findChar( cell )) != null &&
-                                        (Dungeon.level.distance(cell, ch.pos) <= 5)) {
-                                    if (!ch.isImmune(Charm.class)) {
-                                        do {
-                                            target = Dungeon.level.randomDestination();
-                                        } while (!Dungeon.level.passable[target] && perfume.cur[target] < 0);
-                                    }
-                                }
-                            }
-                        }
+                    if (perfume != null && !isImmune(PerfumeGas.Affection.class) && buff(PerfumeGas.Aggression.class) == null){
+                        Char ch = Actor.findChar(pos);
+                        do {
+                            target = Dungeon.level.randomDestination();
+                        } while (!Dungeon.level.passable[target] && perfume.cur[target] < 0);
+                        Buff.affect(ch, PerfumeGas.Affection.class, 2f);
                     } else target = Dungeon.level.randomDestination();
 					spend( TICK );
 				}
@@ -855,6 +850,10 @@ public abstract class Mob extends Char {
 		@Override
 		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
 			enemySeen = enemyInFOV;
+			if (buff(PerfumeGas.Affection.class) != null){
+			    state = WANDERING;
+			    return true;
+            }
 			if (enemyInFOV && !isCharmedBy( enemy ) && canAttack( enemy )) {
 
 				return doAttack( enemy );

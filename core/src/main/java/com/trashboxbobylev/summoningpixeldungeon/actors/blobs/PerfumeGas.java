@@ -29,10 +29,13 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Charm;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.FlavourBuff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Vertigo;
 import com.trashboxbobylev.summoningpixeldungeon.effects.BlobEmitter;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
+import com.trashboxbobylev.summoningpixeldungeon.ui.BuffIndicator;
+import com.watabou.noosa.Image;
 
 public class PerfumeGas extends Blob {
 
@@ -48,7 +51,7 @@ public class PerfumeGas extends Blob {
 				cell = i + j*Dungeon.level.width();
 				if (cur[cell] > 0 && (ch = Actor.findChar( cell )) != null) {
 					if (!ch.isImmune(this.getClass())) {
-						Buff.prolong(ch, Charm.class, 2).object = Dungeon.hero.id();
+						Buff.prolong(ch, Affection.class, 2);
 					}
 				}
 			}
@@ -66,4 +69,65 @@ public class PerfumeGas extends Blob {
 	public String tileDesc() {
 		return Messages.get(this, "desc");
 	}
+
+	public static class Affection extends FlavourBuff {
+
+        {
+            type = buffType.NEGATIVE;
+            announced = true;
+        }
+
+        @Override
+        public int icon() {
+            return BuffIndicator.HEART;
+        }
+
+        @Override
+        public void tintIcon(Image icon) {
+            if (cooldown() < 2f) greyIcon(icon, 2f, cooldown());
+        }
+
+        @Override
+        public String toString() {
+            return Messages.get(this, "name");
+        }
+
+        @Override
+        public String desc() {
+            return Messages.get(this, "desc", dispTurns());
+        }
+    }
+
+    public static class Aggression extends FlavourBuff{
+
+        {
+            type = buffType.NEGATIVE;
+            announced = true;
+        }
+
+        @Override
+        public int icon() {
+            return BuffIndicator.RAGE;
+        }
+
+        @Override
+        public void tintIcon(Image icon) {
+            icon.tint(1, 0, 0, 0.5f);
+            if (cooldown() < 1f) greyIcon(icon, 5f, cooldown());
+        }
+
+        @Override
+        public String toString() {
+            return Messages.get(this, "name");
+        }
+
+        @Override
+        public String desc() {
+            return Messages.get(this, "desc", dispTurns());
+        }
+
+        {
+            immunities.add(Affection.class);
+        }
+    }
 }

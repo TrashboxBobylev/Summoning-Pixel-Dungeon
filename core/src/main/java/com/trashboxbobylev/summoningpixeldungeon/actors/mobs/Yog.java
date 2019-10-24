@@ -29,6 +29,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Blob;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Fire;
+import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.PerfumeGas;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.ToxicGas;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Amok;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
@@ -395,6 +396,7 @@ public class Yog extends Mob {
 			state = HUNTING;
 
 			properties.add(Property.DEMONIC);
+			immunities.add(PerfumeGas.Affection.class);
 		}
 		
 		@Override

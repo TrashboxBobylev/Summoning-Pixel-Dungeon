@@ -32,6 +32,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Blob;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Electricity;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Fire;
+import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.PerfumeGas;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Blindness;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Burning;
@@ -299,6 +300,7 @@ public class NewTengu extends Mob {
 
     {
         immunities.add( Blindness.class );
+        immunities.add(PerfumeGas.Affection.class);
     }
 
     private static final String LAST_ABILITY     = "last_ability";

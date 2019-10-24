@@ -32,6 +32,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.PerfumeGas;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.AlchemicalCatalyst;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfFrost;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfAffection;
+import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfTargeting;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
@@ -55,16 +56,16 @@ public class PerfumeBrew extends Brew {
 	@Override
 	public int price() {
 		//prices of ingredients
-		return quantity * (60 + 40);
+		return quantity * (60 + 40 + 10);
 	}
 	
 	public static class Recipe extends com.trashboxbobylev.summoningpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{
-			inputs =  new Class[]{ScrollOfAffection.class, AlchemicalCatalyst.class};
-			inQuantity = new int[]{1, 1};
+			inputs =  new Class[]{ScrollOfAffection.class, StoneOfTargeting.class, AlchemicalCatalyst.class};
+			inQuantity = new int[]{1, 1, 1};
 			
-			cost = 15;
+			cost = 16;
 			
 			output = PerfumeBrew.class;
 			outQuantity = 1;

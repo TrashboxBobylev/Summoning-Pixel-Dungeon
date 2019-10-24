@@ -27,6 +27,7 @@ package com.trashboxbobylev.summoningpixeldungeon.actors.mobs.npcs;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.CorrosiveGas;
+import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.PerfumeGas;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.ToxicGas;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Burning;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ChaosSaberSprite;
@@ -90,5 +91,6 @@ public class ChaosSaber extends NPC {
         immunities.add( ToxicGas.class );
         immunities.add( CorrosiveGas.class );
         immunities.add( Burning.class );
+        immunities.add(PerfumeGas.Affection.class);
     }
 }

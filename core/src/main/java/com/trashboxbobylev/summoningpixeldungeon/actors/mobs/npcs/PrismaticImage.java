@@ -28,6 +28,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.CorrosiveGas;
+import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.PerfumeGas;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.ToxicGas;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Burning;
@@ -37,6 +38,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.effects.CellEmitter;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
+import com.trashboxbobylev.summoningpixeldungeon.items.armor.glyphs.Affection;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.glyphs.Brimstone;
 import com.trashboxbobylev.summoningpixeldungeon.levels.features.Chasm;
@@ -62,6 +64,8 @@ public class PrismaticImage extends NPC {
 		
 		//before other mobs
 		actPriority = MOB_PRIO + 1;
+
+		immunities.add(PerfumeGas.Affection.class);
 	}
 	
 	private Hero hero;
