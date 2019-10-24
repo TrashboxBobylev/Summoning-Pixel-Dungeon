@@ -227,7 +227,7 @@ public abstract class Char extends Actor {
 			if (visibleFight) {
 				Sample.INSTANCE.play( Assets.SND_HIT, 1, 1, Random.Float( 0.8f, 1.25f ) );
 				if (this instanceof Hero &&
-                    ((Hero) this).belongings.weapon instanceof Cleaver && dmg > enemy.HT) Wound.hit(enemy);
+                    ((Hero) this).belongings.weapon instanceof Cleaver && enemy.oneShottedByCleaver) Wound.hit(enemy);
 			}
 
 			// If the enemy is already dead, interrupt the attack.
@@ -370,6 +370,8 @@ public abstract class Char extends Actor {
 		needsShieldUpdate = false;
 		return cachedShield;
 	}
+
+	public boolean oneShottedByCleaver;
 	
 	public void damage( int dmg, Object src ) {
 		
