@@ -97,6 +97,16 @@ public class SummPDChanges {
                         "_-_ Minions was not able to wake up after magical sleep\n\n"+
                         "Changed:\n" +
                         "_-_ Minions now have the stats description"));
+        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-5",
+                "Fixed:\n" +
+                        "_-_ Player was able to use staffs with negative charges\n" +
+                        "_-_ Soul Reaver's abilities were reducing minion's life to 1\n" +
+                        "_-_ Chicken staff was displaying the bonus HP from robe\n"+
+                        "_-_ Froggit were having the wrong frame animations\n"+
+                        "_-_ Love Holder doesn't crash on reading +10's description\n"+
+                        "_-_ Minions was not able to wake up after magical sleep\n\n"+
+                        "Changed:\n" +
+                        "_-_ Minions now have the stats description"));
     }
 
     public static void add_General_Changes(ArrayList<ChangeInfo> changeInfos ){
