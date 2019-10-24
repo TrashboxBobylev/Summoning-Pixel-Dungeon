@@ -24,6 +24,7 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee;
 
+import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
@@ -38,7 +39,8 @@ public class Cleaver extends MeleeWeapon {
 		image = ItemSpriteSheet.CLEAVER;
 
 		tier = 2;
-		ACC = 0.33f; //0.3x accuracy
+		ACC = 0.2f; //0.2x accuracy
+        DLY = 2f; //0.5x speed
 		//also cannot surprise attack, see Hero.canSurpriseAttack
 	}
 
@@ -54,9 +56,10 @@ public class Cleaver extends MeleeWeapon {
             int dmg = super.damageRoll(owner);
             Hero hero = (Hero)owner;
             Char enemy = hero.enemy();
-            float chance = 0.25f + .05f*Math.max(0, level());
-            if (enemy instanceof Mob && Random.Float() < chance && !enemy.isImmune(Grim.class)) {
+            float chance = 0.2f + .06f*Math.max(0, level());
+            if (enemy instanceof Mob && Random.Float() < chance && !(enemy.isImmune(Grim.class) || enemy.resist(Grim.class) <= 0.5f)) {
                 //deals 67% toward max to max on surprise, instead of min to max.
+                hero.spendAndNext(Actor.TICK*2);
                 return enemy.HT * 2 + dmg;
             }
         }
