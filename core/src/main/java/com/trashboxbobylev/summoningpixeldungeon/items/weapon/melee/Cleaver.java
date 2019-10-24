@@ -65,7 +65,7 @@ public class Cleaver extends MeleeWeapon {
                 //deals 67% toward max to max on surprise, instead of min to max.
                 hero.spendAndNext(Actor.TICK*2);
                 enemy.oneShottedByCleaver = true;
-                return enemy.HT * 3 + dmg;
+                return enemy.HT * 10 + dmg;
             }
         }
         return super.damageRoll(owner);
