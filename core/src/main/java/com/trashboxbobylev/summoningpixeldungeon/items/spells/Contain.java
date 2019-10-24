@@ -72,10 +72,10 @@ public class Contain extends TargetedSpell {
                 TargetHealthIndicator.instance.target(null);
                 for (int i = 0; i < 5; i++) Sample.INSTANCE.play(Assets.SND_HIT);
                 updateQuickslot();
-                curUser.spendAndNext(Actor.TICK);
             } else {
                 mob.damage(Math.round(mob.HP * 0.5f), hero);
             }
+            curUser.spendAndNext(Actor.TICK);
         } else if (containedMob != null && Dungeon.level.passable[bolt.collisionPos]){
             Mob mb = containedMob;
             containedMob = null;
@@ -85,7 +85,7 @@ public class Contain extends TargetedSpell {
             Dungeon.level.occupyCell(mb);
             mb.state = mb.WANDERING;
             Actor.fixTime();
-            Buff.affect(mb, Amok.class, 15f);
+            Buff.affect(mb, Amok.class, 6f);
             for (int i= 0; i < 5; i++) Sample.INSTANCE.play(Assets.SND_MIMIC);
         } else {
             GLog.i(Messages.get(CursedWand.class, "nothing"));
@@ -130,13 +130,13 @@ public class Contain extends TargetedSpell {
     public static class Recipe extends com.trashboxbobylev.summoningpixeldungeon.items.Recipe.SimpleRecipe {
 
         {
-            inputs =  new Class[]{ScrollOfMirrorImage.class, ArcaneCatalyst.class};
-            inQuantity = new int[]{1, 1};
+            inputs =  new Class[]{ScrollOfMirrorImage.class, ScrollOfTeleportation.class, ArcaneCatalyst.class};
+            inQuantity = new int[]{1, 1, 1};
 
-            cost = 8;
+            cost = 10;
 
             output = Contain.class;
-            outQuantity = 2;
+            outQuantity = 3;
         }
 
     }
