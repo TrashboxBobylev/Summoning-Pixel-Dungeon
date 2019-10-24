@@ -318,7 +318,7 @@ public class Hero extends Char {
 		KindOfWeapon wep = belongings.weapon;
 		
 		float accuracy = 1;
-		accuracy *= RingOfAccuracy.accuracyMultiplier( this );
+		if (!(belongings.weapon instanceof Cleaver)) accuracy *= RingOfAccuracy.accuracyMultiplier( this );
 		
 		if (wep instanceof MissileWeapon){
 			if (Dungeon.level.adjacent( pos, target.pos )) {

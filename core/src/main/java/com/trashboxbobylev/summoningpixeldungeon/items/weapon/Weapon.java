@@ -54,6 +54,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Proje
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Shocking;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Unstable;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Vampiric;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Cleaver;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSprite;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
@@ -195,7 +196,7 @@ abstract public class Weapon extends KindOfWeapon {
 
 		float DLY = augment.delayFactor(this.DLY);
 
-		DLY *= RingOfFuror.attackDelayMultiplier(owner);
+		if (!(this instanceof Cleaver)) DLY *= RingOfFuror.attackDelayMultiplier(owner);
 
 		return (encumbrance > 0 ? (float)(DLY * Math.pow( 1.2, encumbrance )) : DLY);
 	}

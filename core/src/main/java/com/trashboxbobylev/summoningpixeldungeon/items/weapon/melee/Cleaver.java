@@ -28,6 +28,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Wound;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Grim;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 
@@ -50,14 +51,15 @@ public class Cleaver extends MeleeWeapon {
     @Override
     public int damageRoll(Char owner) {
         if (owner instanceof Hero) {
+            int dmg = super.damageRoll(owner);
             Hero hero = (Hero)owner;
             Char enemy = hero.enemy();
-            float maxChance = 0.35f + .04f*Math.max(0, level());
-            float chanceMulti = (float)Math.pow( ((enemy.HT - enemy.HP) / (float)enemy.HT), 2);
+            float maxChance = 0.3f + .03f*Math.max(0, level());
+            float chanceMulti = (float)Math.pow( ((enemy.HT - enemy.HP + dmg) / (float)enemy.HT), 2);
             float chance = maxChance * chanceMulti;
-            if (enemy instanceof Mob && Random.Float() < chance) {
+            if (enemy instanceof Mob && Random.Float() < chance && !enemy.isImmune(Grim.class)) {
                 //deals 67% toward max to max on surprise, instead of min to max.
-                return enemy.HT * 2;
+                return enemy.HT * 2 + dmg;
             }
         }
         return super.damageRoll(owner);
