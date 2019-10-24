@@ -39,15 +39,14 @@ public class Cleaver extends MeleeWeapon {
 		image = ItemSpriteSheet.CLEAVER;
 
 		tier = 2;
-		ACC = 0.4f; //0.2x accuracy
-        DLY = 2f; //0.5x speed
+		ACC = 0.5f; //0.2x accuracy
 		//also cannot surprise attack, see Hero.canSurpriseAttack
 	}
 
 	@Override
 	public int max(int lvl) {
-		return  Math.round(9*(tier+1)) +        //27 base, up from 15
-				lvl*Math.round((tier+3));  //+5 per level, up from +3
+		return  Math.round(5*(tier)) +        //10 base, up from 15
+				lvl;  //+1 per level, up from +3
 	}
 
     @Override
@@ -61,7 +60,7 @@ public class Cleaver extends MeleeWeapon {
                 //deals 67% toward max to max on surprise, instead of min to max.
                 hero.spendAndNext(Actor.TICK*2);
                 enemy.oneShottedByCleaver = true;
-                return enemy.HT * 2 + dmg;
+                return enemy.HT * 3 + dmg;
             }
         }
         return super.damageRoll(owner);
