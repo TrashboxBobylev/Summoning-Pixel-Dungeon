@@ -54,9 +54,7 @@ public class Cleaver extends MeleeWeapon {
             int dmg = super.damageRoll(owner);
             Hero hero = (Hero)owner;
             Char enemy = hero.enemy();
-            float maxChance = 0.6f + .06f*Math.max(0, level());
-            float chanceMulti = (float)Math.pow( ((enemy.HT - enemy.HP + dmg) / (float)enemy.HT), 2);
-            float chance = maxChance * chanceMulti;
+            float chance = 0.25f + .05f*Math.max(0, level());
             if (enemy instanceof Mob && Random.Float() < chance && !enemy.isImmune(Grim.class)) {
                 //deals 67% toward max to max on surprise, instead of min to max.
                 return enemy.HT * 2 + dmg;
