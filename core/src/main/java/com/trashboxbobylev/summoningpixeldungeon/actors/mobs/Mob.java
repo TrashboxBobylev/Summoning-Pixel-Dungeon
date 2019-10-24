@@ -786,7 +786,11 @@ public abstract class Mob extends Char {
 
 			} else {
 
-				enemySeen = false;
+                PerfumeGas perfume = (PerfumeGas) Dungeon.level.blobs.get(PerfumeGas.class);
+                if (perfume != null && !isImmune(PerfumeGas.Affection.class) && buff(PerfumeGas.Aggression.class) == null){
+                    state = WANDERING;
+                    spend(TIME_TO_WAKE_UP);
+                }
 
 				spend( TICK );
 
@@ -833,7 +837,7 @@ public abstract class Mob extends Char {
                         do {
                             target = Dungeon.level.randomDestination();
                         } while (!Dungeon.level.passable[target] && perfume.cur[target] < 0);
-                        Buff.affect(ch, PerfumeGas.Affection.class, 2f);
+                        Buff.affect(ch, PerfumeGas.Affection.class, 8f);
                     } else target = Dungeon.level.randomDestination();
 					spend( TICK );
 				}
