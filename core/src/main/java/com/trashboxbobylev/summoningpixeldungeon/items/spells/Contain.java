@@ -38,6 +38,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfMirrorIma
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfPassage;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.CursedWand;
+import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfCorruption;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
@@ -61,14 +62,20 @@ public class Contain extends TargetedSpell {
     protected void affectTarget(Ballistica bolt, Hero hero) {
         Mob mob = (Mob) Actor.findChar(bolt.collisionPos);
         if (mob != null && containedMob == null){
-            Dungeon.level.mobs.remove(mob);
-            mob.sprite.killAndErase();
-            mob.state = mob.PASSIVE;
-            containedMob = mob;
-            TargetHealthIndicator.instance.target(null);
-            for (int i= 0; i < 5; i++) Sample.INSTANCE.play(Assets.SND_HIT);
-            updateQuickslot();
-            curUser.spendAndNext(Actor.TICK);
+            float resist = WandOfCorruption.getEnemyResist(mob, mob);
+            resist *= 1 + 2*Math.pow(mob.HP/(float)mob.HT, 2);
+            if (resist < 5) {
+                Dungeon.level.mobs.remove(mob);
+                mob.sprite.killAndErase();
+                mob.state = mob.PASSIVE;
+                containedMob = mob;
+                TargetHealthIndicator.instance.target(null);
+                for (int i = 0; i < 5; i++) Sample.INSTANCE.play(Assets.SND_HIT);
+                updateQuickslot();
+                curUser.spendAndNext(Actor.TICK);
+            } else {
+                mob.damage(Math.round(mob.HP * 0.5f), hero);
+            }
         } else if (containedMob != null && Dungeon.level.passable[bolt.collisionPos]){
             Mob mb = containedMob;
             containedMob = null;
