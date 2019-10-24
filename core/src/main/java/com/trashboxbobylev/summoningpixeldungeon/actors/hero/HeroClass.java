@@ -121,7 +121,6 @@ public enum HeroClass {
 		}
 
 		hero.attunement = 1;
-		hero.STR = 9;
 		
 		new ScrollOfIdentify().identify();
 
@@ -229,6 +228,7 @@ public enum HeroClass {
         Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
 
         hero.attunement = 2;
+        hero.STR = 9;
         hero.HP = hero.HT = 15;
 
         new PotionOfStrength().identify();
