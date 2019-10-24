@@ -47,8 +47,8 @@ public class Grim extends Weapon.Enchantment {
 
 		//scales from 0 - 50% based on how low hp the enemy is, plus 5% per level
 		float maxChance = 0.5f + .05f*level;
-		float chanceMulti = (float)Math.pow( ((defender.HT - enemyHealth) / (float)defender.HT), 2);
-		float chance = maxChance * chanceMulti;
+        float chanceMulti = (float)Math.pow( ((defender.HT - enemyHealth) / (float)defender.HT), 2);
+        float chance = maxChance * chanceMulti;
 		
 		if (Random.Float() < chance) {
 			

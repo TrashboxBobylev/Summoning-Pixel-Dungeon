@@ -103,34 +103,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfPrismaticLigh
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfRegrowth;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfTransfusion;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfWarding;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.AssassinsBlade;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.BattleAxe;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Crossbow;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Dagger;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Dirk;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Flail;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Gauntlet;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Glaive;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Gloves;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Greataxe;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Greatshield;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Greatsword;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.HandAxe;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Longsword;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Mace;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MagesStaff;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MeleeWeapon;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Quarterstaff;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.RoundShield;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.RunicBlade;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Sai;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Scimitar;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Shortsword;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Spear;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Sword;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.WarHammer;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Whip;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.WornShortsword;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.HeavyBoomerang;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.Bolas;
@@ -332,9 +305,10 @@ public class Generator {
 					HandAxe.class,
 					Spear.class,
 					Quarterstaff.class,
-					Dirk.class
+					Dirk.class,
+                    Cleaver.class
 			};
-			WEP_T2.probs = new float[]{ 5, 5, 5, 4, 4};
+			WEP_T2.probs = new float[]{ 5, 5, 5, 4, 4, 4};
 			
 			WEP_T3.classes = new Class<?>[]{
 					Sword.class,

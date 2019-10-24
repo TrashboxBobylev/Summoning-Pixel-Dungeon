@@ -33,6 +33,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroSubClass;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
+import com.trashboxbobylev.summoningpixeldungeon.effects.Wound;
 import com.trashboxbobylev.summoningpixeldungeon.items.BrokenSeal;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.ConjurerArmor;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.glyphs.AntiMagic;
@@ -47,6 +48,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfLightning;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Blazing;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Grim;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Shocking;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Cleaver;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.darts.ShockingDart;
 import com.trashboxbobylev.summoningpixeldungeon.levels.Terrain;
@@ -224,6 +226,8 @@ public abstract class Char extends Actor {
 			
 			if (visibleFight) {
 				Sample.INSTANCE.play( Assets.SND_HIT, 1, 1, Random.Float( 0.8f, 1.25f ) );
+				if (this instanceof Hero &&
+                    ((Hero) this).belongings.weapon instanceof Cleaver && dmg > enemy.HT) Wound.hit(enemy);
 			}
 
 			// If the enemy is already dead, interrupt the attack.
