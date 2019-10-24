@@ -99,14 +99,15 @@ public class SummPDChanges {
                         "_-_ Minions now have the stats description"));
         changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-5",
                 "Fixed:\n" +
-                        "_-_ Player was able to use staffs with negative charges\n" +
-                        "_-_ Soul Reaver's abilities were reducing minion's life to 1\n" +
-                        "_-_ Chicken staff was displaying the bonus HP from robe\n"+
-                        "_-_ Froggit were having the wrong frame animations\n"+
-                        "_-_ Love Holder doesn't crash on reading +10's description\n"+
-                        "_-_ Minions was not able to wake up after magical sleep\n\n"+
+                        "_-_ Froggit was using the death animation for attacking and vice versa\n" +
+                        "_-_ Heroes were not able to open heaps standing on them\n" +
+                        "_-_ All heroes was having 9 strength\n\n"+
                         "Changed:\n" +
-                        "_-_ Minions now have the stats description"));
+                        "_-_ Changes slighty the weight of items, staffs should appear more often.\n\n"+
+                        "_-_ Reworked the Vial of Perfume: now attracts enemies from whole depth, but attacking them dispells the perfume affection.\n"+
+                        "_-_ Changed the Containing: chance to collect the mob depends on their HP and EXP, if not successful, the enemy will get damage, equal to 50% current HP.\n"+
+                        "_-_ Rebalanced most broken or underused staffs.\n"+
+                        "_-_ Removed the unstable from Worn Shortsword."));
     }
 
     public static void add_General_Changes(ArrayList<ChangeInfo> changeInfos ){
@@ -161,6 +162,8 @@ public class SummPDChanges {
                 "_-_ Added the Elixir of Attunement, that permamently increases user's attunement.\n\n" +
                         "_-_ Added the Elixir of Rage, that creates a adrenaline shortliving gas.\n\n" +
                         "_-_ Added the Vial of Perfume, that releases a charming and attracting cloud of perfume."));
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.CLEAVER, null), "New weapons!",
+                "_-_ Added the cleaver, that have low damage and accuracy, but can overkill the enemy with small chance."));
 
     }
 
