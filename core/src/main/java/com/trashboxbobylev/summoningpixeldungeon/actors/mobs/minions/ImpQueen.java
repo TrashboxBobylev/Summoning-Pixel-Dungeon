@@ -115,7 +115,7 @@ public class ImpQueen extends Minion {
         if (hit( this, enemy, true ) &&
                 (!enemy.properties().contains(Char.Property.BOSS)
                 && !enemy.properties().contains(Char.Property.MINIBOSS))) {
-            Buff.append(this, MorphTimer.class, 50f);
+            Buff.append(this, MorphTimer.class, 100f);
             int impPosition = enemy.pos;
             enemy.HP = 0;
             enemy.sprite.die();
@@ -138,9 +138,9 @@ public class ImpQueen extends Minion {
             CellEmitter.center( impPosition ).burst( MagicMissile.WardParticle.UP, Random.IntRange( 8, 15 ) );
             imp.setDamage(
                     minDamage,
-                    maxDamage*2);
+                    Math.round(maxDamage*2.2f));
             imp.strength = strength;
-            imp.setMaxHP(HT / 3);
+            imp.setMaxHP(HT / 6);
         } else {
             enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
         }
