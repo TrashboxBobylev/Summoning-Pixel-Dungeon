@@ -39,8 +39,8 @@ public class WizardStaff extends Staff{
 
     @Override
     public int minionMax(int lvl) {
-        return  (3*(tier)) +    //12
-                lvl*tier;               //+4
+        return (int) ((2.5f*(tier)) +    //10
+                        lvl*(tier-1));               //+3
     }
 
     public int hp(int lvl){
