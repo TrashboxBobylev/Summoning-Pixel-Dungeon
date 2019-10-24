@@ -76,6 +76,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfWarding;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.SpiritBow;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Blocking;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Cleaver;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Flail;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.trashboxbobylev.summoningpixeldungeon.journal.Notes;
@@ -426,7 +427,7 @@ public class Hero extends Char {
 	public boolean canSurpriseAttack(){
 		if (belongings.weapon == null || !(belongings.weapon instanceof Weapon))    return true;
 		if (STR() < ((Weapon)belongings.weapon).STRReq())                           return false;
-		if (belongings.weapon instanceof Flail)                                     return false;
+		if (belongings.weapon instanceof Flail || belongings.weapon instanceof Cleaver)                                     return false;
 
 		return true;
 	}
@@ -1564,7 +1565,7 @@ public class Hero extends Char {
 
             Heap heap = Dungeon.level.heaps.get( ((HeroAction.OpenChest)curAction).dst );
 
-            if (Dungeon.level.adjacent(pos, heap.pos)){
+            if (Dungeon.level.adjacent(pos, heap.pos) || pos == heap.pos){
                 boolean hasKey = true;
                 if (heap.type == Type.SKELETON || heap.type == Type.REMAINS) {
                     Sample.INSTANCE.play( Assets.SND_BONES );
