@@ -51,6 +51,6 @@ public class FrostElementalStaff extends Staff {
 
     @Override
     public int hp(int lvl){
-        return 8*tier + lvl*(tier); //32, from 31
+        return 9*tier + lvl*(tier); //36, from 31
     }
 }
