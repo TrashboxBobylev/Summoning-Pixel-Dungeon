@@ -50,11 +50,11 @@ public class FroggitSprite extends MobSprite {
 		run = new Animation( 15, true );
 		run.frames( frames, 2, 3, 4 );
 
-		attack = new Animation( 10, false );
-		attack.frames( frames, 5, 6, 7, 8 );
-
 		die = new Animation( 10, false );
-		die.frames( frames, 9, 10, 11 );
+		die.frames( frames, 5, 6, 7, 8 );
+
+		attack = new Animation( 10, false );
+		attack.frames( frames, 9, 10, 11 );
 
 		play(idle);
 	}
