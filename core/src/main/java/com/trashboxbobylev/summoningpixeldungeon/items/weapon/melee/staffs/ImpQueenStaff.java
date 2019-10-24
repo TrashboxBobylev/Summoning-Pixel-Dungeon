@@ -37,8 +37,8 @@ public class ImpQueenStaff extends Staff {
 
     @Override
     public int minionMax(int lvl) {
-        return  4*(tier) +    //20
-                lvl*(tier+1);   //+6 scaling
+        return  3*(tier+1) +    //18
+                lvl*(tier);   //+5 scaling
     }
 
     //very heavy minion
@@ -49,6 +49,6 @@ public class ImpQueenStaff extends Staff {
 
     @Override
     public int hp(int lvl){
-        return 18*tier + lvl*(tier+5); //90
+        return 14*tier + lvl*(tier+3); //90, +8
     }
 }
