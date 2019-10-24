@@ -172,32 +172,32 @@ import java.util.LinkedHashMap;
 public class Generator {
 
 	public enum Category {
-		WEAPON	( 6,    MeleeWeapon.class),
+		WEAPON	( 7,    MeleeWeapon.class),
 		WEP_T1	( 0,    MeleeWeapon.class),
 		WEP_T2	( 0,    MeleeWeapon.class),
 		WEP_T3	( 0,    MeleeWeapon.class),
 		WEP_T4	( 0,    MeleeWeapon.class),
 		WEP_T5	( 0,    MeleeWeapon.class),
 		
-		ARMOR	( 4,    Armor.class ),
+		ARMOR	( 5,    Armor.class ),
 		
-		MISSILE ( 3,    MissileWeapon.class ),
+		MISSILE ( 5,    MissileWeapon.class ),
 		MIS_T1  ( 0,    MissileWeapon.class ),
 		MIS_T2  ( 0,    MissileWeapon.class ),
 		MIS_T3  ( 0,    MissileWeapon.class ),
 		MIS_T4  ( 0,    MissileWeapon.class ),
 		MIS_T5  ( 0,    MissileWeapon.class ),
 
-        STAFFS ( 3,    Staff.class ),
+        STAFFS ( 4,    Staff.class ),
         STF_T1  ( 0,    Staff.class ),
         STF_T2  ( 0,    Staff.class ),
         STF_T3  ( 0,    Staff.class ),
         STF_T4  ( 0,    Staff.class ),
         STF_T5  ( 0,    Staff.class ),
 		
-		WAND	( 3,    Wand.class ),
-		RING	( 1,    Ring.class ),
-		ARTIFACT( 1,    Artifact.class),
+		WAND	( 4,    Wand.class ),
+		RING	( 2,    Ring.class ),
+		ARTIFACT( 2,    Artifact.class),
 		
 		FOOD	( 0,    Food.class ),
 		
@@ -205,9 +205,9 @@ public class Generator {
 		SEED	( 0,    Plant.Seed.class ), //dropped by grass
 		
 		SCROLL	( 20,   Scroll.class ),
-		STONE   ( 2,    Runestone.class),
+		STONE   ( 3,    Runestone.class),
 		
-		GOLD	( 14,   Gold.class );
+		GOLD	( 12,   Gold.class );
 		
 		public Class<?>[] classes;
 		public float[] probs;
