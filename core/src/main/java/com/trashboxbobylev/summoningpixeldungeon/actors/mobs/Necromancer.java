@@ -175,12 +175,8 @@ public class Necromancer extends Mob {
 			sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
 			
 			Buff.affect(mySkeleton, Adrenaline.class, 4f);
-			//otherwise give it empowered
-		} else if (mySkeleton.buff(Empowered.class) == null){
-            sprite.parent.add(new Beam.LightRay(sprite.center(), mySkeleton.sprite.center()));
-
             Buff.affect(mySkeleton, Empowered.class, 4f);
-        }
+		}
 	}
 	
 	private class Hunting extends Mob.Hunting{
