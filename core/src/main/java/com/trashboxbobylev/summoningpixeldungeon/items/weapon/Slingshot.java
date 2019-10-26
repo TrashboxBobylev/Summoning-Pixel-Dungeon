@@ -132,7 +132,7 @@ public class Slingshot extends Weapon {
                     curUser.sprite.zap(target);
                     final float delay = speedFactor( curUser );
                     final int cell = target;
-                    if (enemy != null) {
+                    if (enemy != null && enemy != Dungeon.hero) {
                         ((MissileSprite) curUser.sprite.parent.recycle(MissileSprite.class)).
                                 reset(curUser.sprite,
                                         enemy.sprite,
