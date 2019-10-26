@@ -31,6 +31,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Splash;
+import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.CellSelector;
@@ -114,20 +115,41 @@ public class Slingshot extends Weapon {
 
     private CellSelector.Listener shooter = new CellSelector.Listener() {
         @Override
-        public void onSelect( Integer target ) {
+        public void onSelect(final Integer target ) {
             if (target != null && charge > 0) {
-                Stone stone = new Stone();
-                Char enemy = Actor.findChar( target );
-                if (enemy == null || enemy == curUser) {
+                final Stone stone = new Stone();
+                final Char enemy = Actor.findChar( target );
+                charge -= 1;
+                final float delay = castDelay(curUser, target);
+                if (enemy != null) { ((MissileSprite) curUser.sprite.parent.recycle(MissileSprite.class)).
+                            reset(curUser.sprite,
+                                    enemy.sprite,
+                                    stone,
+                                    new Callback() {
+                                        @Override
+                                        public void call() {
+                                            if (!curUser.shoot( enemy, stone )) {
+                                                stone.rangedMiss( target );
+                                            } else {
+
+                                                stone.rangedHit( enemy, target );
+
+                                            }
+                                            curUser.spendAndNext(delay);
+                                        }
+                            });
                 } else {
-                    charge -= 1;
-                    if (!curUser.shoot( enemy, stone )) {
-                        stone.rangedMiss( target );
-                    } else {
-
-                        stone.rangedHit( enemy, target );
-
-                    }
+                    ((MissileSprite) curUser.sprite.parent.recycle(MissileSprite.class)).
+                            reset(curUser.sprite,
+                                    target,
+                                    stone,
+                                    new Callback() {
+                                        @Override
+                                        public void call() {
+                                            curUser.spendAndNext(delay);
+                                            stone.onThrow(target);
+                                        }
+                                    });
                 }
             } else if (charge == 0){
                 Messages.get(Slingshot.class, "no_charge");
@@ -176,10 +198,10 @@ public class Slingshot extends Weapon {
         return info;
     }
 
-    public void collectStone() {
+    public void collectStone(int quantity) {
 
         GLog.i( Messages.get(this, "collected") );
-        charge += 1;
+        charge += quantity;
         if (charge >= MAX_VOLUME) {
             charge = MAX_VOLUME;
         }
@@ -262,7 +284,7 @@ public class Slingshot extends Weapon {
 
             if (slingshot != null && !slingshot.isFull()){
 
-                slingshot.collectStone();
+                slingshot.collectStone(quantity);
 
             } else {
 
