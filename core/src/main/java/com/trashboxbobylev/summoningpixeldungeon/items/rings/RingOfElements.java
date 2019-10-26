@@ -27,19 +27,13 @@ package com.trashboxbobylev.summoningpixeldungeon.items.rings;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Electricity;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.ToxicGas;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Burning;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Charm;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Chill;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Corrosion;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Frost;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Ooze;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Paralysis;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Poison;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Weakness;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Eye;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Shaman;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Warlock;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Yog;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Hacatu;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Wizard;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfBlastWave;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfDisintegration;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfFireblast;
@@ -84,6 +78,8 @@ public class RingOfElements extends Ring {
 		RESISTS.add( Poison.class );
 		RESISTS.add( Corrosion.class );
 		RESISTS.add( Weakness.class );
+		RESISTS.add(FrostBurn.class);
+
 		
 		RESISTS.add( DisintegrationTrap.class );
 		RESISTS.add( GrimTrap.class );
@@ -103,7 +99,9 @@ public class RingOfElements extends Ring {
 		RESISTS.add( Electricity.class );
 		
 		RESISTS.add( Shaman.LightningBolt.class );
+        RESISTS.add( Hacatu.LightningBolt.class );
 		RESISTS.add( Warlock.DarkBolt.class );
+        RESISTS.add( Wizard.DarkBolt.class );
 		RESISTS.add( Eye.DeathGaze.class );
 		RESISTS.add( Yog.BurningFist.DarkBolt.class );
 	}

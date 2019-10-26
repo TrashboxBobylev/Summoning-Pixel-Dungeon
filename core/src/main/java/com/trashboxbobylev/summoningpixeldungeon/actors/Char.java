@@ -409,7 +409,9 @@ public abstract class Char extends Actor {
 		if (isImmune( srcClass )) {
 			dmg = 0;
 		} else if (isResist( srcClass)){
-			dmg = (int) Math.round( Math.sqrt(dmg) * RingOfElements.resist(this, srcClass));
+		    if (this instanceof Hero) dmg = 1;
+		    else dmg = (int) Math.round( Math.sqrt(dmg));
+			dmg *= RingOfElements.resist(this, srcClass);
 		}
 		
 		//TODO improve this when I have proper damage source logic
