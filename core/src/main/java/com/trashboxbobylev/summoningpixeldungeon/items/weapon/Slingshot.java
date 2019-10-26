@@ -49,7 +49,7 @@ import java.util.ArrayList;
 
 public class Slingshot extends Weapon {
 
-    private static final int MAX_VOLUME = 3;
+    private static final int MAX_VOLUME = 1;
     private static final String AC_SHOOT = "SHOOT";
     public int charge;
 
@@ -66,12 +66,12 @@ public class Slingshot extends Weapon {
 
     @Override
     public int min(int lvl) {
-        return (STRReq() - 10);
+        return (STRReq() - 10) + 1;
     }
 
     @Override
     public int max(int lvl) {
-        return 4 + (STRReq() - 10)*2;
+        return 6 + (STRReq() - 10)*2;
     }
 
     @Override
@@ -118,43 +118,48 @@ public class Slingshot extends Weapon {
     private CellSelector.Listener shooter = new CellSelector.Listener() {
         @Override
         public void onSelect(final Integer target ) {
-            if (target != null && charge > 0) {
-                final Stone stone = new Stone();
-                final Char enemy = Actor.findChar( target );
-                charge -= 1;
-                final float delay = castDelay(curUser, target);
-                if (enemy != null) { ((MissileSprite) curUser.sprite.parent.recycle(MissileSprite.class)).
-                            reset(curUser.sprite,
-                                    enemy.sprite,
-                                    stone,
-                                    new Callback() {
-                                        @Override
-                                        public void call() {
-                                            if (!curUser.shoot( enemy, stone )) {
-                                                stone.rangedMiss( target );
-                                            } else {
+            if (target != null) {
+                if (charge > 0) {
+                    final Stone stone = new Stone();
+                    final Char enemy = Actor.findChar(target);
+                    charge -= 1;
+                    updateQuickslot();
+                    curUser.sprite.zap(target);
+                    final float delay = castDelay(curUser, target);
+                    if (enemy != null) {
+                        ((MissileSprite) curUser.sprite.parent.recycle(MissileSprite.class)).
+                                reset(curUser.sprite,
+                                        enemy.sprite,
+                                        stone,
+                                        new Callback() {
+                                            @Override
+                                            public void call() {
+                                                if (!curUser.shoot(enemy, stone)) {
+                                                    stone.rangedMiss(target);
+                                                } else {
 
-                                                stone.rangedHit( enemy, target );
+                                                    stone.rangedHit(enemy, target);
 
+                                                }
+                                                curUser.spendAndNext(delay);
                                             }
-                                            curUser.spendAndNext(delay);
-                                        }
-                            });
-                } else {
-                    ((MissileSprite) curUser.sprite.parent.recycle(MissileSprite.class)).
-                            reset(curUser.sprite,
-                                    target,
-                                    stone,
-                                    new Callback() {
-                                        @Override
-                                        public void call() {
-                                            curUser.spendAndNext(delay);
-                                            stone.onThrow(target);
-                                        }
-                                    });
+                                        });
+                    } else {
+                        ((MissileSprite) curUser.sprite.parent.recycle(MissileSprite.class)).
+                                reset(curUser.sprite,
+                                        target,
+                                        stone,
+                                        new Callback() {
+                                            @Override
+                                            public void call() {
+                                                curUser.spendAndNext(delay);
+                                                stone.onThrow(target);
+                                            }
+                                        });
+                    }
+                } else if (charge == 0) {
+                    Messages.get(Slingshot.class, "no_charge");
                 }
-            } else if (charge == 0){
-                Messages.get(Slingshot.class, "no_charge");
             }
         }
         @Override
@@ -201,8 +206,6 @@ public class Slingshot extends Weapon {
     }
 
     public void collectStone(int quantity) {
-
-        GLog.i( Messages.get(this, "collected") );
         charge += quantity;
         if (charge >= MAX_VOLUME) {
             charge = MAX_VOLUME;

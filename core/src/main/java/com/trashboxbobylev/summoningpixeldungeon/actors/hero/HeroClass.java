@@ -147,7 +147,7 @@ public enum HeroClass {
 	private static void initWarrior( Hero hero ) {
 		(hero.belongings.weapon = new WornShortsword()).identify();
 		Slingshot stones = new Slingshot();
-		stones.charge = 3;
+		stones.charge = 1;
 		stones.collect();
 		Dungeon.quickslot.setSlot(0, stones);
 
