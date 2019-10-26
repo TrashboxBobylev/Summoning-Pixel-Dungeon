@@ -34,6 +34,7 @@ import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Splash;
 import com.trashboxbobylev.summoningpixeldungeon.items.Heap;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
+import com.trashboxbobylev.summoningpixeldungeon.items.bags.Bag;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
@@ -78,6 +79,28 @@ public class Slingshot extends Weapon {
     }
 
     @Override
+    public boolean collect(Bag container) {
+        boolean needStone = true;
+        //don't need the stone, if charge is full
+        if (charge == 0) {
+            //searching for stone in heaps
+            for (Heap h : Dungeon.level.heaps.valueList()) {
+                for (Item i : h.items) {
+                    if (i instanceof Stone) needStone = false;
+                }
+            }
+            //searching for stone in chasms
+            for (ArrayList<Item> i : Dungeon.droppedItems.valueList()) {
+                for (Item item : i) {
+                    if (item instanceof Stone) needStone = false;
+                }
+            }
+            if (needStone) charge = 1;
+        }
+        return super.collect(container);
+    }
+
+    @Override
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
         actions.remove(AC_EQUIP);
@@ -116,22 +139,6 @@ public class Slingshot extends Weapon {
     public void restoreFromBundle( Bundle bundle ) {
         super.restoreFromBundle( bundle );
         charge	= bundle.getInt( VOLUME );
-        boolean needStone = true;
-        //don't need the stone, if charge is full
-        if (charge == 1) return;
-        //searching for stone in heaps
-        for (Heap h : Dungeon.level.heaps.valueList()){
-            for (Item i : h.items){
-                if (i instanceof Stone) needStone = false;
-            }
-        }
-        //searching for stone in chasms
-        for (ArrayList<Item> i : Dungeon.droppedItems.valueList()){
-            for (Item item : i){
-                if (item instanceof Stone) needStone = false;
-            }
-        }
-        if (needStone) charge = 1;
     }
 
     private CellSelector.Listener shooter = new CellSelector.Listener() {
