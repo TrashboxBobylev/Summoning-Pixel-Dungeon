@@ -24,9 +24,11 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments;
 
+import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Chill;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Splash;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSprite;
@@ -60,8 +62,31 @@ public class Chilling extends Weapon.Enchantment {
 
 		return damage;
 	}
-	
-	@Override
+
+    @Override
+    public int proc(Minion attacker, Char defender, int damage) {
+	    Weapon wp = new Weapon() {
+            @Override
+            public int STRReq(int lvl) {
+                return 8;
+            }
+
+            @Override
+            public int min(int lvl) {
+                return 0;
+            }
+
+            @Override
+            public int max(int lvl) {
+                return 0;
+            }
+        };
+	    wp.enchant(attacker.enchantment);
+	    wp.level(attacker.lvl+2);
+        return proc(wp, Dungeon.hero, defender, damage);
+    }
+
+    @Override
 	public Glowing glowing() {
 		return TEAL;
 	}

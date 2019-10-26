@@ -27,6 +27,7 @@ package com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.FlavourBuff;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSprite;
@@ -48,6 +49,16 @@ public class Blocking extends Weapon.Enchantment {
 		
 		return damage;
 	}
+
+    @Override
+    public int proc(Minion minion, Char defender, int damage) {
+
+        int level = Math.max( 0, minion.lvl );
+
+        Buff.prolong(minion, BlockBuff.class, 2 + level).setBlocking(level + 3);
+
+        return damage;
+    }
 	
 	@Override
 	public ItemSprite.Glowing glowing() {

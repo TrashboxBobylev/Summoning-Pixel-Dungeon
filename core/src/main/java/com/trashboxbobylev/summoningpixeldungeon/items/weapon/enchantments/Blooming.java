@@ -26,6 +26,7 @@ package com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments;
 
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.effects.CellEmitter;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.LeafParticle;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
@@ -74,6 +75,39 @@ public class Blooming extends Weapon.Enchantment {
 		
 		return damage;
 	}
+
+    @Override
+    public int proc(Minion minion, Char defender, int damage) {
+
+        // lvl 0 - 33%
+        // lvl 1 - 50%
+        // lvl 2 - 60%
+        int level = Math.max( 0, minion.lvl );
+
+        if (Random.Int( level + 5 ) >= 2) {
+
+            boolean secondPlant = level > Random.Int(10);
+            if (plantGrass(defender.pos)){
+                if (secondPlant) secondPlant = false;
+                else return damage;
+            }
+
+            ArrayList<Integer> positions = new ArrayList<>();
+            for (int i : PathFinder.NEIGHBOURS8){
+                positions.add(i);
+            }
+            Random.shuffle( positions );
+            for (int i : positions){
+                if (plantGrass(defender.pos + i)){
+                    if (secondPlant) secondPlant = false;
+                    else return damage;
+                }
+            }
+
+        }
+
+        return damage;
+    }
 	
 	private boolean plantGrass(int cell){
 		int c = Dungeon.level.map[cell];

@@ -280,7 +280,7 @@ public class Hero extends Char {
 	}
 
 	public String givenName(){
-		return name.equals(Messages.get(this, "name")) ? className() : name;
+		return getName().equals(Messages.get(this, "name")) ? className() : getName();
 	}
 	
 	public void live() {

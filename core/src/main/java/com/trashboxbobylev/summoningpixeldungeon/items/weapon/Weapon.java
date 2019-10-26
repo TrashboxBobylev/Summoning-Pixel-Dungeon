@@ -333,7 +333,27 @@ abstract public class Weapon extends KindOfWeapon {
 			
 		public abstract int proc( Weapon weapon, Char attacker, Char defender, int damage );
 
-        public abstract int proc(Minion attacker, Char defender, int damage );
+        public int proc(Minion attacker, Char defender, int damage) {
+            Weapon wp = new Weapon() {
+                @Override
+                public int STRReq(int lvl) {
+                    return 8;
+                }
+
+                @Override
+                public int min(int lvl) {
+                    return 0;
+                }
+
+                @Override
+                public int max(int lvl) {
+                    return 0;
+                }
+            };
+            wp.enchant(attacker.enchantment);
+            wp.level(attacker.lvl+2);
+            return proc(wp, attacker, defender, damage);
+        }
 
 		public String name() {
 			if (!curse())

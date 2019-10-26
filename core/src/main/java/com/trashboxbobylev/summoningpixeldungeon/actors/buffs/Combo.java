@@ -289,7 +289,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 			enemy.sprite.flash();
 
 			if (!enemy.isAlive()){
-				GLog.i( Messages.capitalize(Messages.get(Char.class, "defeat", enemy.name)) );
+				GLog.i( Messages.capitalize(Messages.get(Char.class, "defeat", enemy.getName())) );
 			}
 
 			Hero hero = (Hero)target;

@@ -26,18 +26,14 @@ package com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions;
 
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
-import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.SparkParticle;
-import com.trashboxbobylev.summoningpixeldungeon.items.Generator;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.CharSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.HacatuSprite;
-import com.trashboxbobylev.summoningpixeldungeon.sprites.ShamanSprite;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.watabou.noosa.Camera;
 import com.watabou.utils.Callback;
-import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -112,7 +108,7 @@ public class Hacatu extends Minion implements Callback {
 
                 if (!Dungeon.hero.isAlive()) {
                     Dungeon.fail( getClass() );
-                    GLog.negative(Messages.get(Char.class, "kill", name));
+                    GLog.negative(Messages.get(Char.class, "kill", getName()));
                 }
 			} else {
 				enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );

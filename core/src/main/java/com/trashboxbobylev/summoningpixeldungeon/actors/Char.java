@@ -88,8 +88,12 @@ public abstract class Char extends Actor {
 	public boolean rooted		= false;
 	public boolean flying		= false;
 	public int invisible		= 0;
-	
-	//these are relative to the hero
+
+    public String getName() {
+        return name;
+    }
+
+    //these are relative to the hero
 	public enum Alignment{
 		ENEMY,
 		NEUTRAL,
@@ -286,10 +290,10 @@ public abstract class Char extends Actor {
 					}
 
 					Dungeon.fail( getClass() );
-					GLog.negative( Messages.capitalize(Messages.get(Char.class, "kill", name)) );
+					GLog.negative( Messages.capitalize(Messages.get(Char.class, "kill", getName())) );
 					
 				} else if (this == Dungeon.hero) {
-					GLog.i( Messages.capitalize(Messages.get(Char.class, "defeat", enemy.name)) );
+					GLog.i( Messages.capitalize(Messages.get(Char.class, "defeat", enemy.getName())) );
 				}
 			}
 			

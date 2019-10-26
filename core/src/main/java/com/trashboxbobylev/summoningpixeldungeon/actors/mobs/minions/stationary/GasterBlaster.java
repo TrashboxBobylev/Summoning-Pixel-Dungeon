@@ -83,7 +83,7 @@ public class GasterBlaster extends StationaryMinion {
 
                 if (!ch.isAlive() && ch instanceof Hero){
                     Dungeon.fail(this.getClass());
-                    GLog.negative( Messages.capitalize(Messages.get(Char.class, "kill", name)) );
+                    GLog.negative( Messages.capitalize(Messages.get(Char.class, "kill", getName())) );
                 }
 
                 if (fieldOfView[pos] || fieldOfView[posision]){

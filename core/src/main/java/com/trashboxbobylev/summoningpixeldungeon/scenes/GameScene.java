@@ -997,7 +997,7 @@ public class GameScene extends PixelScene {
 				Mob mob = (Mob) Actor.findChar(cell);
 				if (mob != null) {
 					objects.add(mob);
-					names.add(Messages.titleCase( mob.name ));
+					names.add(Messages.titleCase(mob.getName()));
 				}
 			}
 		}

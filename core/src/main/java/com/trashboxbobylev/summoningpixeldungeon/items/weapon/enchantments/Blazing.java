@@ -28,6 +28,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Burning;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.FlameParticle;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSprite;
@@ -62,6 +63,31 @@ public class Blazing extends Weapon.Enchantment {
 		return damage;
 
 	}
+
+    @Override
+    public int proc(Minion minion, Char defender, int damage ) {
+        // lvl 0 - 33%
+        // lvl 1 - 50%
+        // lvl 2 - 60%
+        int level = Math.max( 0, minion.lvl+2 );
+
+        if (Random.Int( level + 3 ) >= 2) {
+
+            if (defender.buff(Burning.class) != null){
+                Buff.affect(defender, Burning.class).reignite(defender, 8f);
+                int burnDamage = Random.NormalIntRange( 1, 3 + Dungeon.depth/4 );
+                defender.damage( Math.round(burnDamage * 0.67f), this );
+            } else {
+                Buff.affect(defender, Burning.class).reignite(defender, 8f);
+            }
+
+            defender.sprite.emitter().burst( FlameParticle.FACTORY, level + 1 );
+
+        }
+
+        return damage;
+
+    }
 	
 	@Override
 	public Glowing glowing() {

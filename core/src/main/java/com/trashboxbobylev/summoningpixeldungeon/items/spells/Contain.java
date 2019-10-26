@@ -26,17 +26,13 @@ package com.trashboxbobylev.summoningpixeldungeon.items.spells;
 
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
-import com.trashboxbobylev.summoningpixeldungeon.ShatteredPixelDungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
-import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Amok;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
-import com.trashboxbobylev.summoningpixeldungeon.effects.EmoIcon;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfMirrorImage;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTeleportation;
-import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfPassage;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.CursedWand;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfCorruption;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
@@ -122,7 +118,7 @@ public class Contain extends TargetedSpell {
     public String desc() {
         String desc = super.desc();
         if (containedMob != null){
-            desc += "\n\n" + Messages.get(this, "desc_mob", containedMob.name);
+            desc += "\n\n" + Messages.get(this, "desc_mob", containedMob.getName());
         }
         return desc;
     }

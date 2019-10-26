@@ -98,6 +98,11 @@ public abstract class Minion extends Mob {
         immunities.add(PerfumeGas.Affection.class);
     }
 
+    @Override
+    public String getName() {
+        return enchantment != null ? enchantment.name( super.getName() ) : super.getName();
+    }
+
     public void setMaxHP(int hp){
         HP = HT = hp;
     }
@@ -189,6 +194,8 @@ public abstract class Minion extends Mob {
         }
         return super.attackProc(enemy, damage);
     }
+
+
 
     //ported from DriedRose.java
     //minions will always move towards hero if enemies not here
