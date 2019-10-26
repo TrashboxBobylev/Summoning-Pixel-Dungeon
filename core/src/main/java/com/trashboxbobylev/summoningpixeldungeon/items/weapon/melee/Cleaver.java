@@ -27,7 +27,9 @@ package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Eye;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Warlock;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Wound;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Grim;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
@@ -39,33 +41,40 @@ public class Cleaver extends MeleeWeapon {
 		image = ItemSpriteSheet.CLEAVER;
 
 		tier = 2;
-		ACC = 0.66f; //0.5x accuracy
+		ACC = 0.66f; //0.66x accuracy
 		//also cannot surprise attack, see Hero.canSurpriseAttack
 	}
 
     @Override
     public int min(int lvl) {
-        return tier -1 + lvl / 2;
+        return tier - 1 + lvl / 2;
     }
 
     @Override
 	public int max(int lvl) {
 		return  Math.round(5*(tier)) +        //10 base, up from 15
-				lvl;  //+1 per level, up from +3
+				lvl*3;
 	}
 
     @Override
     public int damageRoll(Char owner) {
         if (owner instanceof Hero) {
+            int level = Math.max( 0, level() );
             int dmg = super.damageRoll(owner);
             Hero hero = (Hero)owner;
             Char enemy = hero.enemy();
-            float chance = 0.2f + .04f*Math.max(0, level());
-            if (enemy instanceof Mob && Random.Float() < chance && !(enemy.isImmune(Grim.class) || enemy.resist(Grim.class) <= 0.5f)) {
-                //deals 67% toward max to max on surprise, instead of min to max.
+            int enemyHealth = enemy.HP - dmg;
+            if (enemyHealth <= 0) return dmg; //no point in proccing if they're already dead.
+
+            //scales from 0 - 40% based on how low hp the enemy is, plus 5% per level
+            float maxChance = 0.4f + .05f*level;
+            float chanceMulti = (float)Math.pow( ((enemy.HT - enemyHealth) / (float)enemy.HT), 2);
+            float chance = maxChance * chanceMulti;
+            if (enemy instanceof Mob && Random.Float() < chance && !(enemy.isImmune(Grim.class))) {
                 hero.spendAndNext(Actor.TICK*2);
                 enemy.oneShottedByCleaver = true;
-                return enemy.HT * 10 + dmg;
+                if (!enemy.isResist(Grim.class) || (enemy instanceof Warlock && chance > 0.5f) || (enemy instanceof Eye && chance > 0.75f)) return enemy.HT + dmg;
+                else return Math.round(dmg*2.5f);
             }
         }
         return super.damageRoll(owner);
