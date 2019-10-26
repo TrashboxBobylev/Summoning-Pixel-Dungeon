@@ -55,6 +55,8 @@ public class Slingshot extends Weapon {
 
     {
         image = ItemSpriteSheet.SLINGSHOT;
+        defaultAction = AC_SHOOT;
+        usesTargeting = true;
     }
 
     @Override
