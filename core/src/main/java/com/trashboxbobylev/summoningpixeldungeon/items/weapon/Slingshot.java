@@ -24,6 +24,7 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.items.weapon;
 
+import com.badlogic.gdx.utils.IntMap;
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
@@ -31,6 +32,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Splash;
+import com.trashboxbobylev.summoningpixeldungeon.items.Heap;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
@@ -114,6 +116,22 @@ public class Slingshot extends Weapon {
     public void restoreFromBundle( Bundle bundle ) {
         super.restoreFromBundle( bundle );
         charge	= bundle.getInt( VOLUME );
+        boolean needStone = true;
+        //don't need the stone, if charge is full
+        if (charge == 1) return;
+        //searching for stone in heaps
+        for (Heap h : Dungeon.level.heaps.valueList()){
+            for (Item i : h.items){
+                if (i instanceof Stone) needStone = false;
+            }
+        }
+        //searching for stone in chasms
+        for (ArrayList<Item> i : Dungeon.droppedItems.valueList()){
+            for (Item item : i){
+                if (item instanceof Stone) needStone = false;
+            }
+        }
+        if (needStone) charge = 1;
     }
 
     private CellSelector.Listener shooter = new CellSelector.Listener() {
