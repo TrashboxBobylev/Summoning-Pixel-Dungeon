@@ -47,6 +47,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.potions.brews.PerfumeBrew
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.brews.RagingBrew;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.ElixirOfAttunement;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.*;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfEnchantment;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfSoulEnergy;
 import com.trashboxbobylev.summoningpixeldungeon.items.spells.Contain;
 import com.trashboxbobylev.summoningpixeldungeon.items.spells.Enrage;
@@ -232,7 +233,7 @@ public enum HeroClass {
 
         new PotionOfStrength().identify();
         new ScrollOfAttunement().identify();
-        new PerfumeBrew().collect();
+        new ScrollOfEnchantment().identify().collect();
         new Cleaver().identify().collect();
 
     }
