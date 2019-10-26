@@ -27,6 +27,7 @@ package com.trashboxbobylev.summoningpixeldungeon.items.weapon;
 import com.badlogic.gdx.utils.IntMap;
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
+import com.trashboxbobylev.summoningpixeldungeon.ShatteredPixelDungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
@@ -64,8 +65,13 @@ public class Slingshot extends Weapon {
     }
 
     @Override
-    public int STRReq(int lvl) {
+    public int STRReq() {
         return Dungeon.hero.STR();
+    }
+
+    @Override
+    public int STRReq(int lvl) {
+        return STRReq();
     }
 
     @Override
@@ -121,7 +127,9 @@ public class Slingshot extends Weapon {
 
     @Override
     public int level() {
-        return STRReq(0) - 10 + (curseInfusionBonus ? 1 : 0);
+        int i = Dungeon.hero.STR() - 10;
+        ShatteredPixelDungeon.logSomething(i);
+        return i;
     }
 
     private CellSelector.Listener shooter = new CellSelector.Listener() {
