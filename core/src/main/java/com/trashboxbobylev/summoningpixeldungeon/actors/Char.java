@@ -408,8 +408,8 @@ public abstract class Char extends Actor {
 		Class<?> srcClass = src.getClass();
 		if (isImmune( srcClass )) {
 			dmg = 0;
-		} else {
-			dmg = Math.round( dmg * resist( srcClass ));
+		} else if (isResist( srcClass)){
+			dmg = (int) Math.round( Math.sqrt(dmg) * RingOfElements.resist(this, srcClass));
 		}
 		
 		//TODO improve this when I have proper damage source logic
@@ -614,7 +614,6 @@ public abstract class Char extends Actor {
 	protected final HashSet<Class> resistances = new HashSet<>();
 	
 	//returns percent effectiveness after resistances
-	//TODO currently resistances reduce effectiveness by a static 50%, and do not stack.
 	public float resist( Class effect ){
 		HashSet<Class> resists = new HashSet<>(resistances);
 		for (Property p : properties()){
@@ -627,7 +626,7 @@ public abstract class Char extends Actor {
 		float result = 1f;
 		for (Class c : resists){
 			if (c.isAssignableFrom(effect)){
-				result *= 0.5f;
+				result = 0.5f;
 			}
 		}
 		return result * RingOfElements.resist(this, effect);
@@ -651,6 +650,23 @@ public abstract class Char extends Actor {
 		}
 		return false;
 	}
+
+    public boolean isResist(Class effect ){
+        HashSet<Class> immunes = new HashSet<>(immunities);
+        for (Property p : properties()){
+            immunes.addAll(p.immunities());
+        }
+        for (Buff b : buffs()){
+            immunes.addAll(b.immunities());
+        }
+
+        for (Class c : immunes){
+            if (c.isAssignableFrom(effect)){
+                return true;
+            }
+        }
+        return false;
+    }
 
 	protected HashSet<Property> properties = new HashSet<>();
 
