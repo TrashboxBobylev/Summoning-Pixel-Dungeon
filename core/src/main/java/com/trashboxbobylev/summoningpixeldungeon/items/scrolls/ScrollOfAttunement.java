@@ -53,14 +53,17 @@ public class ScrollOfAttunement extends Scroll {
 		int count = 0;
 		Mob affected = null;
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-			if (mob.alignment == Char.Alignment.ALLY && Dungeon.level.heroFOV[mob.pos]) {
-				Buff.affect( mob, Empowered.class, Empowered.DURATION );
+            if (Dungeon.level.heroFOV[mob.pos])
+                if (mob.alignment == Char.Alignment.ALLY) {
+                    Buff.affect(mob, Empowered.class, Empowered.DURATION);
 
-				if (mob.buff(Empowered.class) != null){
-					count++;
-					affected = mob;
-				}
-			}
+                    if (mob.buff(Empowered.class) != null) {
+                        count++;
+                        affected = mob;
+                    }
+                } else if (mob.alignment == Char.Alignment.ENEMY){
+                    Buff.affect(mob, Weakness.class, Weakness.DURATION / 4);
+                }
 		}
 		
 		switch (count) {
