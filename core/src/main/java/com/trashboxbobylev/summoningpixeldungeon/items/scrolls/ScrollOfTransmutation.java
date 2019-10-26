@@ -63,7 +63,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 	}
 	
 	public static boolean canTransmute(Item item){
-		return (item instanceof MeleeWeapon && !(item instanceof Staff)) ||
+		return (item instanceof MeleeWeapon) ||
 				(item instanceof MissileWeapon && !(item instanceof Dart)) ||
 				(item instanceof Potion && !(item instanceof Elixir || item instanceof Brew || item instanceof AlchemicalCatalyst)) ||
 				item instanceof Scroll ||
