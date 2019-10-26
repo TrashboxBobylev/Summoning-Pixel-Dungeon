@@ -52,6 +52,7 @@ public class SummPDChanges {
 		add_Beta_Changes(changeInfos);
 		add_General_Changes(changeInfos);
 		add_Items_Changes(changeInfos);
+		add_Mobs_Changes(changeInfos);
 		add_Minor_Changes(changeInfos);
 	}
 
@@ -97,17 +98,21 @@ public class SummPDChanges {
                         "_-_ Minions was not able to wake up after magical sleep\n\n"+
                         "Changed:\n" +
                         "_-_ Minions now have the stats description"));
-        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-5",
+        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-6",
                 "Fixed:\n" +
-                        "_-_ Froggit was using the death animation for attacking and vice versa\n" +
-                        "_-_ Heroes were not able to open heaps standing on them\n" +
-                        "_-_ All heroes was having 9 strength\n\n"+
+                        "_-_ Staffs were not transmutable\n" +
+                        "_-_ Message from stone of aggression was !!!NO TEXT FOUND!!!\n" +
+                        "_-_ Conjurer's amor had a wrong prompt on imbuing\n\n"+
                         "Changed:\n" +
-                        "_-_ Changes slighty the weight of items, staffs should appear more often.\n\n"+
-                        "_-_ Reworked the Vial of Perfume: now attracts enemies from whole depth, but attacking them dispells the perfume affection.\n"+
-                        "_-_ Changed the Containing: chance to collect the mob depends on their HP and EXP, if not successful, the enemy will get damage, equal to 50% current HP.\n"+
-                        "_-_ Rebalanced most broken or underused staffs.\n"+
-                        "_-_ Removed the unstable from Worn Shortsword."));
+                        "_-_ Staffs now decrease strength requirement with every upgrade.\n"+
+                        "_-_ Chaos Saber now collect a lot of soul, if hero is Soul Reaver.\n"+
+                        "_-_ Necromancer now affect their skeleton with Empowered.\n"+
+                        "_-_ Reworked the resistance for monsters: damage now get sqrted rather that halfed.\n"+
+                        "_-_ Buffed the Ring of Attunement.\n"+
+                        "_-_ Scroll of Attunement now weakens the enemies.\n"+
+                        "_-_ Minion show their base DR alongside with additional DR in description.\n"+
+                        "_-_ Necromancers now drop the random staff with 1/8 chance.\n"+
+                        "_-_ Removed nerfs from Cleaver, but adjusted the chance to behead."));
     }
 
     public static void add_General_Changes(ArrayList<ChangeInfo> changeInfos ){
@@ -120,15 +125,11 @@ public class SummPDChanges {
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.GREY_RAT_STAFF, null), "Summon Weapons!",
                 "The new type of weapons have been added into dungeon.\n\n" +
                         "_-_ Summon weapons can be used to summon the unique allies, which type depends on type's staff.\n\n" +
-                        "_-_ As all weapons, summon weapons are splitted into 5 tiers, with more unique and powerful minions as you progress.\n\n" +
+                        "_-_ As all weapons, summon weapons are splitted into 5 tiers, with more unique and powerful minions, that can carry enchantment and level of weapon, as you progress.\n" +
                         "_-_ Summon weapons can summon unlimited smount of creatures, but you can control only few."));
 
-        changes.addButton( new ChangeButton(new Image(Assets.BUFFS_LARGE, 112, 32, 16, 16), "Attunement",
-                "_Attunement_ - the new hero stat which defines max amount of creatures, that you can control at once.\n\n"+
-                                        "_-_ Any minion require some amount of attunement (very likely, 1) to be summoned.\n\n"+
-                                        "_-_ More powerful minions require 2 or 3 attunement.\n\n"+
-                                        "_-_ Conjurer have 2 max attunement on start and increases his attunement by 1 every 6 levels.\n\n"+
-                                        "_-_ Other classes can increase their attunement with elixir of attunement."));
+        changes.addButton( new ChangeButton(new Image(Assets.BUFFS_LARGE, 64, 16, 16, 16), "Resistance",
+                "If monsters are resisting the effect, effect's damage now square-rooted rather that halfing."));
 
     }
 
@@ -140,7 +141,7 @@ public class SummPDChanges {
                         "_-_ Added the Ring of Attunement, that increases max attunement and minion's damage."));
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SCROLL_BERKANAN, null), "Scroll changes",
                 "_-_ Scroll of Terror was removed. It's was useful, but somewhat rare to be decent item.\n\n" +
-                        "_-_ Added the Scroll of Attunement, that increases speed and damage reduction for all minions in sight.\n\n" +
+                        "_-_ Added the Scroll of Attunement, that increases speed and damage reduction for all minions in sight, and inflict Weakness to enemies.\n\n" +
                         "_-_ Replaced the Stone of Affection with Stone of Targeting, that can be used to setup positions for minions.\n\n"+
                         "_-_ Added the Scroll of Soul Energy, that summons powerful invincible minion at cost of all attunement."));
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_LOVE1, null), "New artifact!",
@@ -167,6 +168,23 @@ public class SummPDChanges {
 
     }
 
+    public static void add_Mobs_Changes(ArrayList<ChangeInfo> changeInfos) {
+        ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "Mobs", false, 0xffc511);
+        changes.addButton( new ChangeButton(new Image(Assets.SNAKE, 0, 0, 12, 12), "New monster in Caves",
+                "The Caves now have new inhabitant: Rattle Snakes!\n\n"+
+                        "_-_ They shoot the deadly darts on range, but are weak in melee.\n"+
+                        "_-_ They have resistant to most of controllable magical attacks.\n" +
+                        "_-_ Shakes have very high evasion, but low HP.\n"+
+                        "_-_ They drop a darts for crossbows."));
+        changes.addButton( new ChangeButton(new Image(Assets.NECRO, 0, 0, 16, 16), "Necromancer",
+                "Added the necromancer from Shattered 0.7.5. Their stats are buffed compared to Shattered's.\n\n"+
+                        "_-_ They have more HP now.\n\n"+
+                        "_-_ They buff their skeleton both with Adrenaline and Empowered buffs.\n"+
+                        "_-_ Drop: random staff with 12.5% chance."));
+        changes.addButton( new ChangeButton(new Image(Assets.TENGU, 0, 0, 14, 16), "New Tengu",
+                "Added Tengu fight from Shattered 0.7.5. Nothing are changed."));
+    }
+
     public static void add_Minor_Changes(ArrayList<ChangeInfo> changeInfos){
         ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "Other", false, 0x651f66);
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.GOLD, null), "Gold balance changes",
@@ -179,9 +197,7 @@ public class SummPDChanges {
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SWORD, new ItemSprite.Glowing()), "Unstable enchantment",
                 "Now have rainbow shining as glowing effect."));
         changes.addButton( new ChangeButton(new Image(Assets.NECRO, 0, 0, 16, 16), "Shattered 0.7.5",
-                "_-_ Added the necromancer from Shattered 0.7.5. Their stats are buffed compared to Shattered's.\n\n"+
-                                        "_-_ Added new Tengu from Shattered 0.7.5, unchanged.\n\n"+
-                                        "_-_ New camera also added."));
+                                        "Added the new camera panning from new Shattered."));
     }
 
 	
