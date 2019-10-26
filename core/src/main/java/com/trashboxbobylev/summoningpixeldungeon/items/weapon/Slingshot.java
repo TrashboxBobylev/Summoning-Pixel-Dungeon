@@ -80,6 +80,11 @@ public class Slingshot extends Weapon {
     }
 
     @Override
+    public String status() {
+        return Messages.format( "%d/%d", charge, MAX_VOLUME );
+    }
+
+    @Override
     public void execute(Hero hero, String action) {
 
         super.execute(hero, action);
