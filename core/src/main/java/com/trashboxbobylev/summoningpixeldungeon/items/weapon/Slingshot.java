@@ -33,6 +33,7 @@ import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Splash;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.MissileWeapon;
+import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.CellSelector;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
@@ -117,15 +118,17 @@ public class Slingshot extends Weapon {
 
     private CellSelector.Listener shooter = new CellSelector.Listener() {
         @Override
-        public void onSelect(final Integer target ) {
+        public void onSelect(Integer target ) {
             if (target != null) {
                 if (charge > 0) {
                     final Stone stone = new Stone();
+                    target = new Ballistica( curUser.pos, target, Ballistica.PROJECTILE ).collisionPos;
                     final Char enemy = Actor.findChar(target);
                     charge -= 1;
                     updateQuickslot();
                     curUser.sprite.zap(target);
                     final float delay = speedFactor( curUser );
+                    final int cell = target;
                     if (enemy != null) {
                         ((MissileSprite) curUser.sprite.parent.recycle(MissileSprite.class)).
                                 reset(curUser.sprite,
@@ -135,10 +138,10 @@ public class Slingshot extends Weapon {
                                             @Override
                                             public void call() {
                                                 if (!curUser.shoot(enemy, stone)) {
-                                                    stone.rangedMiss(target);
+                                                    stone.rangedMiss(cell);
                                                 } else {
 
-                                                    stone.rangedHit(enemy, target);
+                                                    stone.rangedHit(enemy, cell);
 
                                                 }
                                                 curUser.spendAndNext(delay);
@@ -153,7 +156,7 @@ public class Slingshot extends Weapon {
                                             @Override
                                             public void call() {
                                                 curUser.spendAndNext(delay);
-                                                stone.onThrow(target);
+                                                stone.onThrow(cell);
                                             }
                                         });
                     }
