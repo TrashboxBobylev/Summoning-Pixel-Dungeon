@@ -30,7 +30,12 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.CorrosiveGas;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.PerfumeGas;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.ToxicGas;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Burning;
+import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroSubClass;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
+import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.LoveHolder;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ChaosSaberSprite;
+import com.trashboxbobylev.summoningpixeldungeon.sprites.CharSprite;
 import com.watabou.utils.Bundle;
 
 public class ChaosSaber extends NPC {
@@ -83,6 +88,14 @@ public class ChaosSaber extends NPC {
 
         destroy();
         sprite.die();
+
+        LoveHolder.lul buff = Dungeon.hero.buff(LoveHolder.lul.class);
+        if (buff != null && Dungeon.hero.subClass == HeroSubClass.SOUL_REAVER){
+            int gain = ((Mob)enemy).EXP;
+            gain *= 2;
+            int charge = buff.gainCharge(gain);
+            if (charge == 0) enemy.sprite.showStatus(CharSprite.NEUTRAL, "+%d♥", gain);
+        }
 
         return damage;
     }
