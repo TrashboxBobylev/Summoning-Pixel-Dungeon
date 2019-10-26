@@ -243,7 +243,7 @@ public abstract class Minion extends Mob {
     @Override
     public String description() {
         String d = super.description();
-        return d + "\n\n" + Messages.get(Minion.class, "stats", minDamage, maxDamage, HP, HT, minDR, maxDR);
+        return d + "\n\n" + Messages.get(Minion.class, "stats", minDamage, maxDamage, HP, HT, minDR + baseMinDR, maxDR + baseMaxDR);
     }
 
     public void destroy() {
