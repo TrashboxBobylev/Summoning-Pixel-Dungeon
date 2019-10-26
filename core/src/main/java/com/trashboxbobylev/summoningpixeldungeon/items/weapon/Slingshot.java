@@ -62,6 +62,7 @@ public class Slingshot extends Weapon {
         image = ItemSpriteSheet.SLINGSHOT;
         defaultAction = AC_SHOOT;
         usesTargeting = true;
+        levelKnown = true;
     }
 
     @Override
@@ -76,12 +77,12 @@ public class Slingshot extends Weapon {
 
     @Override
     public int min(int lvl) {
-        return (STRReq() - 10) + 1 + (curseInfusionBonus ? 1 : 0);
+        return (STRReq() - 10) + 3 + (curseInfusionBonus ? 1 : 0);
     }
 
     @Override
     public int max(int lvl) {
-        return 6 + (STRReq() - 10)*2 + (curseInfusionBonus ? 2 : 0);
+        return 5 + (STRReq() - 10)*2 + (curseInfusionBonus ? 2 : 0);
     }
 
     @Override
@@ -117,12 +118,17 @@ public class Slingshot extends Weapon {
     public void storeInBundle( Bundle bundle ) {
         super.storeInBundle( bundle );
         bundle.put( VOLUME, charge );
+        levelKnown = true;
+        cursedKnown = true;
     }
 
     @Override
     public void restoreFromBundle( Bundle bundle ) {
         super.restoreFromBundle( bundle );
         charge	= bundle.getInt( VOLUME );
+        levelKnown = true;
+        cursedKnown = true;
+        level(1);
     }
 
     @Override
@@ -246,6 +252,8 @@ public class Slingshot extends Weapon {
     public boolean isIdentified() {
         return true;
     }
+
+
 
     public class Stone extends MissileWeapon {
         {

@@ -148,7 +148,7 @@ public enum HeroClass {
 		(hero.belongings.weapon = new WornShortsword()).identify();
 		Slingshot stones = new Slingshot();
 		stones.charge = 1;
-		stones.collect();
+		stones.identify().collect();
 		Dungeon.quickslot.setSlot(0, stones);
 
 		if (hero.belongings.armor != null){
