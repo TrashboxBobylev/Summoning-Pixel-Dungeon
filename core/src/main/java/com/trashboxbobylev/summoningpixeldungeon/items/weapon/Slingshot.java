@@ -79,28 +79,6 @@ public class Slingshot extends Weapon {
     }
 
     @Override
-    public boolean collect(Bag container) {
-        boolean needStone = true;
-        //don't need the stone, if charge is full
-        if (charge == 0) {
-            //searching for stone in heaps
-            for (Heap h : Dungeon.level.heaps.valueList()) {
-                for (Item i : h.items) {
-                    if (i instanceof Stone) needStone = false;
-                }
-            }
-            //searching for stone in chasms
-            for (ArrayList<Item> i : Dungeon.droppedItems.valueList()) {
-                for (Item item : i) {
-                    if (item instanceof Stone) needStone = false;
-                }
-            }
-            if (needStone) charge = 1;
-        }
-        return super.collect(container);
-    }
-
-    @Override
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
         actions.remove(AC_EQUIP);
