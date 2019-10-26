@@ -28,6 +28,8 @@ import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Badges;
 import com.trashboxbobylev.summoningpixeldungeon.Challenges;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Invisibility;
 import com.trashboxbobylev.summoningpixeldungeon.items.BrokenSeal;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.TomeOfMastery;
@@ -233,8 +235,6 @@ public enum HeroClass {
 
         new PotionOfStrength().identify();
         new ScrollOfAttunement().identify();
-        new ScrollOfEnchantment().identify().collect();
-        new Cleaver().identify().collect();
 
     }
 	
