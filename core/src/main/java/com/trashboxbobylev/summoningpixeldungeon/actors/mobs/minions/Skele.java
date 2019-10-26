@@ -59,7 +59,7 @@ public class Skele extends Minion {
             Char ch = findChar( pos + PathFinder.NEIGHBOURS8[i] );
             //do not hurt allies or hero
             if (ch != null && ch.isAlive() && ch.alignment == Alignment.ENEMY && ch != Dungeon.hero) {
-                int damage = Random.NormalIntRange(minDamage*4, maxDamage*4);
+                int damage = Random.NormalIntRange(minDamage*(3+lvl), maxDamage*(3+lvl));
                 damage = Math.max( 0,  damage - (ch.drRoll() + ch.drRoll()) );
                 ch.damage( damage, this );
             }

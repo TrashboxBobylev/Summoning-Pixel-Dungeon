@@ -46,7 +46,7 @@ public class Hacatu extends Minion implements Callback {
 		attunement = 2f;
 		
 		properties.add(Property.ELECTRIC);
-		baseMaxDR = 15;
+		baseMaxDR = 10;
 		baseMinDR = 1;
 		baseSpeed = 1.6f;
 	}

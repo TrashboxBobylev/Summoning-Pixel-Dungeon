@@ -115,7 +115,7 @@ public class ImpQueen extends Minion {
         if (hit( this, enemy, true ) &&
                 (!enemy.properties().contains(Char.Property.BOSS)
                 && !enemy.properties().contains(Char.Property.MINIBOSS))) {
-            Buff.append(this, MorphTimer.class, 100f);
+            Buff.append(this, MorphTimer.class, 200f - 30f*lvl);
             int impPosition = enemy.pos;
             enemy.HP = 0;
             enemy.sprite.die();
@@ -140,7 +140,7 @@ public class ImpQueen extends Minion {
                     minDamage,
                     Math.round(maxDamage*2.2f));
             imp.strength = strength;
-            imp.setMaxHP(HT / 6);
+            imp.setMaxHP(HT / 6 + lvl*2);
         } else {
             enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
         }
