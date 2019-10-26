@@ -226,8 +226,8 @@ public class Staff extends MeleeWeapon {
 
     public int STRReq(int lvl){
         lvl = Math.max(0, lvl);
-        //strength req decreases at +1,+3,+6,+10,etc.
-        return (7 + tier * 2) - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
+        //strength req decreases with every level
+        return (7 + tier * 2) - lvl;
     }
 
     @Override
