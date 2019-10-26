@@ -121,7 +121,7 @@ public class Slingshot extends Weapon {
 
     @Override
     public int level() {
-        return STRReq() - 10 + (curseInfusionBonus ? 1 : 0);
+        return STRReq(0) - 10 + (curseInfusionBonus ? 1 : 0);
     }
 
     private CellSelector.Listener shooter = new CellSelector.Listener() {
