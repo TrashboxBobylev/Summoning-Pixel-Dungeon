@@ -50,7 +50,7 @@ public class HeavyBoomerang extends MissileWeapon {
 	}
 	
 	@Override
-	protected void rangedHit(Char enemy, int cell) {
+	public void rangedHit(Char enemy, int cell) {
 		decrementDurability(enemy);
 		if (durability > 0){
 			Buff.append(Dungeon.hero, CircleBack.class).setup(this, cell, Dungeon.hero.pos, Dungeon.depth);
@@ -58,7 +58,7 @@ public class HeavyBoomerang extends MissileWeapon {
 	}
 	
 	@Override
-	protected void rangedMiss(int cell) {
+	public void rangedMiss(int cell) {
 		parent = null;
 		Buff.append(Dungeon.hero, CircleBack.class).setup(this, cell, Dungeon.hero.pos, Dungeon.depth);
 	}

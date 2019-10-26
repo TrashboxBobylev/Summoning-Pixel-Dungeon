@@ -46,6 +46,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfPs
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfAggression;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfFireblast;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfLightning;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Slingshot;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Blazing;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Grim;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Shocking;
@@ -214,7 +215,9 @@ public abstract class Char extends Actor {
 						&& h.subClass == HeroSubClass.SNIPER
 						&& !Dungeon.level.adjacent(h.pos, enemy.pos)){
 					dr = 0;
-				}
+				} else if (h.belongings.weapon instanceof Slingshot){
+				    dr *= 0.75f;
+                }
 			}
 			
 			int dmg;

@@ -279,7 +279,7 @@ public class Staff extends MeleeWeapon {
     @Override
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions( hero );
-        if (curCharges > 0 && isEquipped(hero)) {
+        if (curCharges > 0) {
             actions.add( AC_SUMMON );
         }
         if (isEquipped(hero)) actions.add( AC_ZAP );
@@ -380,6 +380,7 @@ public class Staff extends MeleeWeapon {
         int strength = 1;
         if (STRReq() > owner.STR())  strength += STRReq(level()) - owner.STR();
         if (cursed) strength *= 4;
+        if (strength > 1) cursedKnown = true;
 
         //if anything is met, spawn minion
         //if hero do not have enough strength, summoning might fail

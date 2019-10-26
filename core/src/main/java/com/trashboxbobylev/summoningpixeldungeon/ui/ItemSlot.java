@@ -34,6 +34,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.potions.Potion;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.exotic.ExoticPotion;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.Scroll;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ExoticScroll;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Slingshot;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
@@ -209,7 +210,7 @@ public class ItemSlot extends Button {
 			if (item.levelKnown || (isWeapon && !(item instanceof MeleeWeapon))) {
 
 				int str = isArmor ? ((Armor)item).STRReq() : ((Weapon)item).STRReq();
-				topRight.text( Messages.format( TXT_STRENGTH, str ) );
+				if (!(item instanceof Slingshot.Stone)) topRight.text( Messages.format( TXT_STRENGTH, str ) );
 				if (str > Dungeon.hero.STR()) {
 					topRight.hardlight( DEGRADED );
 				} else {

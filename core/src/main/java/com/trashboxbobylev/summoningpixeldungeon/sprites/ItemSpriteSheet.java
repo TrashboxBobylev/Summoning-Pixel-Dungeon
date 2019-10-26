@@ -29,7 +29,8 @@ import com.watabou.noosa.TextureFilm;
 
 public class ItemSpriteSheet {
 
-	private static final int WIDTH = 16;
+
+    private static final int WIDTH = 16;
 
 	public static TextureFilm film = new TextureFilm( Assets.ITEMS, 16, 16 );
 
@@ -192,12 +193,13 @@ public class ItemSpriteSheet {
 	public static final int WORN_SHORTSWORD = WEP_TIER1+0;
 	public static final int CUDGEL          = WEP_TIER1+1;
 	public static final int GLOVES          = WEP_TIER1+2;
-	public static final int RAPIER          = WEP_TIER1+3;
+	public static final int SLINGSHOT          = WEP_TIER1+3;
 	public static final int DAGGER          = WEP_TIER1+4;
 	public static final int MAGES_STAFF     = WEP_TIER1+5;
 	static{
 		assignItemRect(WORN_SHORTSWORD, 13, 13);
 		assignItemRect(GLOVES,          12, 16);
+        assignItemRect(SLINGSHOT,          13, 14);
 		assignItemRect(DAGGER,          12, 13);
 		assignItemRect(MAGES_STAFF,     15, 16);
 	}

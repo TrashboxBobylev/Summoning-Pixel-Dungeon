@@ -201,7 +201,7 @@ abstract public class MissileWeapon extends Weapon {
 		return speedFactor( user );
 	}
 	
-	protected void rangedHit( Char enemy, int cell ){
+	public void rangedHit( Char enemy, int cell ){
 		decrementDurability(enemy);
 		if (durability > 0){
 			//attempt to stick the missile weapon to the enemy, just drop it if we can't.
@@ -216,7 +216,7 @@ abstract public class MissileWeapon extends Weapon {
 		}
 	}
 	
-	protected void rangedMiss( int cell ) {
+	public void rangedMiss( int cell ) {
 		parent = null;
 		super.onThrow(cell);
 	}

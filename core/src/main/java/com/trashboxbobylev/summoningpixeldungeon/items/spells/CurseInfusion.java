@@ -32,6 +32,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.armor.Armor;
 import com.trashboxbobylev.summoningpixeldungeon.items.quest.MetalShard;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Slingshot;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.SpiritBow;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MagesStaff;
@@ -54,7 +55,7 @@ public class CurseInfusion extends InventorySpell {
 		Sample.INSTANCE.play(Assets.SND_CURSED);
 		
 		item.cursed = true;
-		if (item instanceof MeleeWeapon || item instanceof SpiritBow) {
+		if (item instanceof MeleeWeapon || item instanceof SpiritBow || item instanceof Slingshot) {
 			Weapon w = (Weapon) item;
 			if (w.enchantment != null) {
 				w.enchant(Weapon.Enchantment.randomCurse(w.enchantment.getClass()));
