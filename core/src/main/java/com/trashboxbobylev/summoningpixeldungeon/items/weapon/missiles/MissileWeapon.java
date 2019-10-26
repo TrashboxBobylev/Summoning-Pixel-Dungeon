@@ -163,7 +163,7 @@ abstract public class MissileWeapon extends Weapon {
 	}
 
 	@Override
-	protected void onThrow( int cell ) {
+    public void onThrow(int cell) {
 		Char enemy = Actor.findChar( cell );
 		if (enemy == null || enemy == curUser) {
 				parent = null;

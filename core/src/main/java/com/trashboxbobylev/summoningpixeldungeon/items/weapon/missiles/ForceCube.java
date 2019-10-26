@@ -49,7 +49,7 @@ public class ForceCube extends MissileWeapon {
 	}
 	
 	@Override
-	protected void onThrow(int cell) {
+    public void onThrow(int cell) {
         Dungeon.level.pressCell(cell);
 
         ArrayList<Char> targets = new ArrayList<>();

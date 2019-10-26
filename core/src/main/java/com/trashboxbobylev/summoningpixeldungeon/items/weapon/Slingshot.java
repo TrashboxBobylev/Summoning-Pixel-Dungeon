@@ -61,7 +61,7 @@ public class Slingshot extends Weapon {
 
     @Override
     public int STRReq(int lvl) {
-        return Dungeon.hero.STR;
+        return Dungeon.hero.STR();
     }
 
     @Override
@@ -269,18 +269,6 @@ public class Slingshot extends Weapon {
             return Slingshot.this.STRReq(lvl);
         }
 
-        @Override
-        protected void onThrow( int cell ) {
-            Char enemy = Actor.findChar( cell );
-            if (enemy == null || enemy == curUser) {
-                parent = null;
-                Splash.at( cell, 0xCC99FFFF, 1 );
-            } else {
-                if (!curUser.shoot( enemy, this )) {
-                    Splash.at(cell, 0xCC99FFFF, 1);
-                }
-            }
-        }
 
         @Override
         public boolean doPickUp( Hero hero ) {
