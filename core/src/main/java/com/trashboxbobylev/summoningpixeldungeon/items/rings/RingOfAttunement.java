@@ -33,9 +33,9 @@ public class RingOfAttunement extends Ring {
 	
 	public String statsInfo() {
 		if (isIdentified()){
-			return Messages.get(this, "stats", new DecimalFormat("#.#").format((0.5f * soloBonus())), new DecimalFormat("#.##").format(100f * (Math.pow(1.06f, soloBonus()) - 1)));
+			return Messages.get(this, "stats", new DecimalFormat("#.#").format((0.5f * soloBonus())), new DecimalFormat("#.##").format(100f * (Math.pow(1.08f, soloBonus()) - 1)));
 		} else {
-			return Messages.get(this, "typical_stats", new DecimalFormat("#.#").format(0.5f), new DecimalFormat("#.##").format(6f));
+			return Messages.get(this, "typical_stats", new DecimalFormat("#.#").format(0.5f), new DecimalFormat("#.##").format(8f));
 		}
 	}
 
@@ -45,7 +45,7 @@ public class RingOfAttunement extends Ring {
 	}
 	
 	public static float damageMultiplier( Char t ){
-		return (float)Math.pow(1.06f, getBonus( t, Attunement.class));
+		return (float)Math.pow(1.08f, getBonus( t, Attunement.class));
 	}
 
 	public static float attunementMultiplier( Char t){
