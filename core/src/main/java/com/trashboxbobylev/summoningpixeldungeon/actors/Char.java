@@ -216,7 +216,7 @@ public abstract class Char extends Actor {
 						&& !Dungeon.level.adjacent(h.pos, enemy.pos)){
 					dr = 0;
 				} else if (h.belongings.weapon instanceof Slingshot){
-				    dr *= 0.75f;
+				    dr = Math.max(0, dr - 4);
                 }
 			}
 			

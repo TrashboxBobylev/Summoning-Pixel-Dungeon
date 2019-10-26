@@ -70,12 +70,12 @@ public class Slingshot extends Weapon {
 
     @Override
     public int min(int lvl) {
-        return (STRReq() - 10) + 1;
+        return (STRReq() - 10) + 1 + (curseInfusionBonus ? 1 : 0);
     }
 
     @Override
     public int max(int lvl) {
-        return 6 + (STRReq() - 10)*2;
+        return 6 + (STRReq() - 10)*2 + (curseInfusionBonus ? 2 : 0);
     }
 
     @Override
@@ -117,6 +117,11 @@ public class Slingshot extends Weapon {
     public void restoreFromBundle( Bundle bundle ) {
         super.restoreFromBundle( bundle );
         charge	= bundle.getInt( VOLUME );
+    }
+
+    @Override
+    public int level() {
+        return STRReq() - 10 + (curseInfusionBonus ? 1 : 0);
     }
 
     private CellSelector.Listener shooter = new CellSelector.Listener() {
