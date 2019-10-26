@@ -37,7 +37,8 @@ public class Kunai extends MissileWeapon {
 		image = ItemSpriteSheet.KUNAI;
 		
 		tier = 3;
-		baseUses = 5;
+		baseUses = 3;
+		sneaky = true;
 	}
 	
 	private Char enemy;

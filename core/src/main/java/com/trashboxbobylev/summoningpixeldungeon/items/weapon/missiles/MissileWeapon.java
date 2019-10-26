@@ -31,6 +31,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.PinCushion;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroClass;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.Bag;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.MagicalHolster;
@@ -57,6 +58,7 @@ abstract public class MissileWeapon extends Weapon {
 	}
 	
 	protected boolean sticky = true;
+    protected boolean sneaky = false;
 	
 	protected static final float MAX_DURABILITY = 100;
 	protected float durability = MAX_DURABILITY;
@@ -200,7 +202,7 @@ abstract public class MissileWeapon extends Weapon {
 	}
 	
 	protected void rangedHit( Char enemy, int cell ){
-		decrementDurability();
+		decrementDurability(enemy);
 		if (durability > 0){
 			//attempt to stick the missile weapon to the enemy, just drop it if we can't.
 			if (enemy != null && enemy.isAlive() && sticky) {
@@ -234,9 +236,10 @@ abstract public class MissileWeapon extends Weapon {
 		return (MAX_DURABILITY/usages) + 0.001f;
 	}
 	
-	protected void decrementDurability(){
+	protected void decrementDurability(Char enemy){
 		//if this weapon was thrown from a source stack, degrade that stack.
 		//unless a weapon is about to break, then break the one being thrown
+        if (enemy != null && ((Mob)enemy).surprisedBy(Dungeon.hero) && sneaky) return;
 		if (parent != null){
 			if (parent.durability <= parent.durabilityPerUse()){
 				durability = 0;
