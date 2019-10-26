@@ -393,6 +393,30 @@ public class Dungeon {
 				level.drop(refund, hero.pos);
 			}
 		}
+
+        Slingshot sh = hero.belongings.getItem(Slingshot.class);
+        if (sh != null && sh.charge == 0){
+            boolean needStone = true;
+            //searching for stone in heaps
+            for (Heap h : Dungeon.level.heaps.valueList()) {
+                for (Item i : h.items) {
+                    if (i instanceof Slingshot.Stone) {
+                        needStone = false;
+                        break;
+                    }
+                }
+            }
+            //searching for stone in chasms
+            for (ArrayList<Item> i : Dungeon.droppedItems.valueList()) {
+                for (Item item : i) {
+                    if (item instanceof Slingshot.Stone) {
+                        needStone = false;
+                        break;
+                    }
+                }
+            }
+            if (needStone) sh.charge = 1;
+        }
 		
 		observe();
 		try {
@@ -662,29 +686,7 @@ public class Dungeon {
 				portedItems.put( i, items );
 			}
 		}
-        Slingshot sh = hero.belongings.getItem(Slingshot.class);
-		if (sh != null && sh.charge == 0){
-		        boolean needStone = true;
-                //searching for stone in heaps
-                for (Heap h : Dungeon.level.heaps.valueList()) {
-                    for (Item i : h.items) {
-                        if (i instanceof Slingshot.Stone) {
-                            needStone = false;
-                            break;
-                        }
-                    }
-                }
-                //searching for stone in chasms
-                for (ArrayList<Item> i : Dungeon.droppedItems.valueList()) {
-                    for (Item item : i) {
-                        if (item instanceof Slingshot.Stone) {
-                            needStone = false;
-                            break;
-                        }
-                    }
-                }
-                if (needStone) sh.charge = 1;
-        }
+
 	}
 	
 	public static Level loadLevel( int save ) throws IOException {
