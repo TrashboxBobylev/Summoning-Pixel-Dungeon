@@ -125,7 +125,7 @@ public class Slingshot extends Weapon {
                     charge -= 1;
                     updateQuickslot();
                     curUser.sprite.zap(target);
-                    final float delay = castDelay(curUser, target);
+                    final float delay = speedFactor( curUser );
                     if (enemy != null) {
                         ((MissileSprite) curUser.sprite.parent.recycle(MissileSprite.class)).
                                 reset(curUser.sprite,
