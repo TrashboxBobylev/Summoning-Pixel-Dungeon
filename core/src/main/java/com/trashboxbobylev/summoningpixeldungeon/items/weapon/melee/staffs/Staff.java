@@ -395,6 +395,8 @@ public class Staff extends MeleeWeapon {
             Badges.validateConjurerUnlock();
             minion.strength = STRReq();
             this.customizeMinion(minion);
+            minion.enchantment = enchantment;
+            minion.lvl = level();
 
             //if we have upgraded robe, increase hp
             float robeBonus = 1f;

@@ -27,12 +27,14 @@ package com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.PerfumeGas;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.MagicImmune;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary.StationaryMinion;
 import com.trashboxbobylev.summoningpixeldungeon.items.KindOfWeapon;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfAccuracy;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfTargeting;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
@@ -52,6 +54,8 @@ public abstract class Minion extends Mob {
     public int defendingPos = -1;
 
     public boolean isTanky = false;
+    public Weapon.Enchantment enchantment;
+    public int lvl;
 
     @Override
     public void storeInBundle(Bundle bundle) {
@@ -61,6 +65,8 @@ public abstract class Minion extends Mob {
         bundle.put("minDR", minDR);
         bundle.put("maxDR", maxDR);
         bundle.put("str", strength);
+        bundle.put("enchantment", enchantment);
+        bundle.put("level", lvl);
     }
 
     @Override
@@ -72,6 +78,8 @@ public abstract class Minion extends Mob {
         minDR = bundle.getInt("minDR");
         maxDR = bundle.getInt("maxDR");
         strength = bundle.getInt("str");
+        lvl = bundle.getInt("lvl");
+        enchantment = (Weapon.Enchantment) bundle.get("enchantment");
     }
 
     public float attunement = 1;
@@ -172,6 +180,14 @@ public abstract class Minion extends Mob {
         }
 
         return (int) (Dungeon.hero.getAttackSkill() * accuracy);
+    }
+
+    @Override
+    public int attackProc(Char enemy, int damage) {
+        if (enchantment != null && buff(MagicImmune.class) == null) {
+            damage = enchantment.proc(  this, enemy, damage );
+        }
+        return super.attackProc(enemy, damage);
     }
 
     //ported from DriedRose.java
