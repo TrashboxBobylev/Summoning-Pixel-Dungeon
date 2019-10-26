@@ -652,7 +652,7 @@ public abstract class Char extends Actor {
 	}
 
     public boolean isResist(Class effect ){
-        HashSet<Class> immunes = new HashSet<>(immunities);
+        HashSet<Class> immunes = new HashSet<>(resistances);
         for (Property p : properties()){
             immunes.addAll(p.immunities());
         }

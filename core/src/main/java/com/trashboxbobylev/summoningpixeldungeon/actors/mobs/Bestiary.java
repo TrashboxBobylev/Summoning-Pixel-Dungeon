@@ -97,25 +97,25 @@ public class Bestiary {
 						Bat.class, Bat.class, Bat.class, Bat.class, Bat.class,
 						Brute.class));
 			case 12:
-				//5x bat, 5x brute, 1x spinner
+				//5x bat, 4x brute, 1x spinner
 				return new ArrayList<>(Arrays.asList(
 						Bat.class, Bat.class, Bat.class, Bat.class, Bat.class,
-						Brute.class, Brute.class, Brute.class, Brute.class, Brute.class,
+						Brute.class, Brute.class, Brute.class, Brute.class, Brute.class, Snake.class,
 						Spinner.class));
 			case 13:
-				//1x bat, 3x brute, 1x shaman, 1x spinner
+				//1x bat, 3x brute, 2x snake, 1x spinner
 				return new ArrayList<>(Arrays.asList(
 						Bat.class,
-						Brute.class, Brute.class, Brute.class,
-						Shaman.class,
+						Brute.class, Brute.class, Snake.class,
+						Snake.class,
 						Spinner.class));
 			case 14: case 15:
-				//1x bat, 3x brute, 1x shaman, 4x spinner
+				//1x bat, 3x brute, 3x snake, 2x spinner
 				return new ArrayList<>(Arrays.asList(
 						Bat.class,
 						Brute.class, Brute.class, Brute.class,
-						Shaman.class,
-						Spinner.class, Spinner.class, Spinner.class, Spinner.class));
+						Snake.class,
+						Snake.class, Snake.class, Spinner.class, Spinner.class));
 				
 			// City
 			case 16:
