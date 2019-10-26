@@ -33,9 +33,12 @@ import com.trashboxbobylev.summoningpixeldungeon.effects.Beam;
 import com.trashboxbobylev.summoningpixeldungeon.effects.CellEmitter;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Pushing;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
+import com.trashboxbobylev.summoningpixeldungeon.items.Generator;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfHealing;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.NecromancerSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.SkeletonSprite;
@@ -55,9 +58,9 @@ public class Necromancer extends Mob {
 		
 		EXP = 7;
 		maxLvl = 14;
-		
-		loot = new PotionOfHealing();
-		lootChance = 0.2f; //see createloot
+
+        loot = Generator.Category.STAFFS;
+        lootChance = 0.125f;
 		
 		properties.add(Property.UNDEAD);
 		
@@ -88,18 +91,17 @@ public class Necromancer extends Mob {
 	public int drRoll() {
 		return Random.NormalIntRange(0, 5);
 	}
-	
-	@Override
-	public void rollToDropLoot() {
-		lootChance *= ((6f - Dungeon.LimitedDrops.GUARD_HP.count) / 6f);
-		super.rollToDropLoot();
-	}
-	
-	@Override
-	protected Item createLoot(){
-		Dungeon.LimitedDrops.GUARD_HP.count++;
-		return super.createLoot();
-	}
+
+    @Override
+    protected Item createLoot() {
+        Staff loot;
+        do {
+            loot = Generator.randomStaff();
+            //50% chance of re-rolling tier 4 or 5 melee weapons
+        } while (loot.tier >= 4 && Random.Int(2) == 0);
+        loot.level(0);
+        return loot;
+    }
 	
 	@Override
 	public void die(Object cause) {
