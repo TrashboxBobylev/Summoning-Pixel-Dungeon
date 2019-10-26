@@ -127,14 +127,17 @@ public class SummPDChanges {
                         "_-_ Summon weapons can be used to summon the unique allies, which type depends on type's staff.\n\n" +
                         "_-_ As all weapons, summon weapons are splitted into 5 tiers, with more unique and powerful minions, that can carry enchantment and level of weapon, as you progress.\n" +
                         "_-_ Summon weapons can summon unlimited smount of creatures, but you can control only few."));
-
-        changes.addButton( new ChangeButton(new Image(Assets.BUFFS_LARGE, 64, 16, 16, 16), "Resistance",
-                "If monsters are resisting the effect, effect's damage now square-rooted rather that halfing."));
+        changes.addButton( new ChangeButton(new Image(Assets.BUFFS_LARGE, 112, 32, 16, 16), "Attunement",
+                "_Attunement_ - the new hero stat which defines max amount of creatures, that you can control at once.\n\n"+
+                        "_-_ Any minion require some amount of attunement (very likely, 1) to be summoned.\n\n"+
+                        "_-_ More powerful minions require 2 or 3 attunement.\n\n"+
+                        "_-_ Conjurer have 2 max attunement on start and increases his attunement by 1 every 6 levels.\n\n"+
+                        "_-_ Other classes can increase their attunement with elixir of attunement."));
 
     }
 
     public static void add_Items_Changes(ArrayList<ChangeInfo> changeInfos){
-        ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "General", false, 0x5ba5ff);
+        ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "Items", false, 0x5ba5ff);
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_AGATE, null), "Ring changes",
                         "_-_ Ring of Tenacity was removed. Their effect are too unnoticable and hard to benefit from them.\n\n" +
                         "_-_ Ring of Elements and Ring of Tenacity were merged into Ring of Resistance, providing the static damage reduction from most sources.\n\n" +
@@ -196,8 +199,10 @@ public class SummPDChanges {
                         "When PoH cloud heal anything, EoHH are more concentrated and heal only allies."));
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SWORD, new ItemSprite.Glowing()), "Unstable enchantment",
                 "Now have rainbow shining as glowing effect."));
-        changes.addButton( new ChangeButton(new Image(Assets.NECRO, 0, 0, 16, 16), "Shattered 0.7.5",
+        changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Shattered 0.7.5",
                                         "Added the new camera panning from new Shattered."));
+        changes.addButton( new ChangeButton(new Image(Assets.BUFFS_LARGE, 64, 16, 16, 16), "Resistance",
+                "If monsters are resisting the effect, effect's damage now square-rooted rather that halfing."));
     }
 
 	
