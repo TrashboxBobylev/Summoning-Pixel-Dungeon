@@ -46,6 +46,7 @@ import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.MissileSprite;
 import com.trashboxbobylev.summoningpixeldungeon.ui.QuickSlotButton;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 
 import java.util.ArrayList;
@@ -87,9 +88,21 @@ public class RunicBlade extends MeleeWeapon {
         }
     }
 
-	public boolean charged;
+	public boolean charged = true;
 
-	//Essentially it's a tier 4 weapon, with tier 3 base max damage, and tier 5 scaling.
+    @Override
+    public void storeInBundle(Bundle bundle) {
+        super.storeInBundle(bundle);
+        bundle.put("charge", charged);
+    }
+
+    @Override
+    public void restoreFromBundle(Bundle bundle) {
+        super.restoreFromBundle(bundle);
+        charged = bundle.getBoolean("charge");
+    }
+
+    //Essentially it's a tier 4 weapon, with tier 3 base max damage, and tier 5 scaling.
 	//equal to tier 4 in damage at +5
 
 	@Override
@@ -104,6 +117,11 @@ public class RunicBlade extends MeleeWeapon {
 
         if (owner.buff(MagicImmune.class) != null){
             GLog.warning( Messages.get(this, "no_magic") );
+            return false;
+        }
+
+        if (!isEquipped(owner)){
+            GLog.warning( Messages.get(this, "no_equip") );
             return false;
         }
 
