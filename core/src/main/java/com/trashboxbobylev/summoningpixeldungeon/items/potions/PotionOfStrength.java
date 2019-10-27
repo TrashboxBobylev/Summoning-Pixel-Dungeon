@@ -41,6 +41,7 @@ public class PotionOfStrength extends Potion {
 		setKnown();
 		
 		hero.STR++;
+		updateQuickslot();
 		hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "msg_1") );
 		GLog.positive( Messages.get(this, "msg_2") );
 		

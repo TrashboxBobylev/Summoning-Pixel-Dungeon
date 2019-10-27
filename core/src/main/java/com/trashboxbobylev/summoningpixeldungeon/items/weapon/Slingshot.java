@@ -77,12 +77,12 @@ public class Slingshot extends Weapon {
 
     @Override
     public int min(int lvl) {
-        return (STRReq() - 10) + 3 + (curseInfusionBonus ? 1 : 0);
+        return (STRReq() - 10)*3 + 3 + (curseInfusionBonus ? 1 : 0);
     }
 
     @Override
     public int max(int lvl) {
-        return 5 + (STRReq() - 10)*2 + (curseInfusionBonus ? 2 : 0);
+        return 5 + (STRReq() - 10)*3 + (curseInfusionBonus ? 2 : 0);
     }
 
     @Override
@@ -198,8 +198,7 @@ public class Slingshot extends Weapon {
         String info = desc();
 
         info += "\n\n" + Messages.get( Slingshot.class, "stats",
-                Math.round(augment.damageFactor(min())),
-                Math.round(augment.damageFactor(max())),
+                Math.round(augment.damageFactor((STRReq() - 10)*3 + 3 + (curseInfusionBonus ? 1 : 0))),
                 STRReq());
 
         switch (augment) {

@@ -98,6 +98,18 @@ public class SummPDChanges {
                         "_-_ Minions was not able to wake up after magical sleep\n\n"+
                         "Changed:\n" +
                         "_-_ Minions now have the stats description"));
+        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-5",
+                "Fixed:\n" +
+                        "_-_ Froggit was using the death animation for attacking and vice versa\n" +
+                        "_-_ Heroes were not able to open heaps standing on them\n" +
+                        "_-_ All heroes was having 9 strength\n\n"+
+                        "Changed:\n" +
+                "_-_ Changes slighty the weight of items, staffs should appear more often.\n\n"+
+                "_-_ Reworked the Vial of Perfume: now attracts enemies from whole depth, but attacking them dispells the perfume affection.\n"+
+                "_-_ Changed the Containing: chance to collect the mob depends on their HP and EXP, if not successful, the enemy will get damage, equal to 50% current HP.\n"+
+                "_-_ Rebalanced most broken or underused staffs.\n"+
+                "_-_ Removed the unstable from Worn Shortsword."));
+
         changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-6",
                 "Fixed:\n" +
                         "_-_ Staffs were not transmutable\n" +
@@ -113,6 +125,11 @@ public class SummPDChanges {
                         "_-_ Minion show their base DR alongside with additional DR in description.\n"+
                         "_-_ Necromancers now drop the random staff with 1/8 chance.\n"+
                         "_-_ Removed nerfs from Cleaver, but adjusted the chance to behead."));
+
+        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-7",
+                "Changed:\n"+
+                                        "_-_ Throwing knifes and kunai doesn't consume a durability with right uses\n"+
+                                        "_-_ Added the Slingshot."));
     }
 
     public static void add_General_Changes(ArrayList<ChangeInfo> changeInfos ){
@@ -168,6 +185,8 @@ public class SummPDChanges {
                         "_-_ Added the Vial of Perfume, that releases a charming and attracting cloud of perfume."));
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.CLEAVER, null), "New weapons!",
                 "_-_ Added the cleaver, that have low damage and accuracy, but can overkill the enemy with small chance."));
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SLINGSHOT, null), "New missile weapon!",
+                "_-_ Warrior now have the slingshot, that can shoot one stone at time, and upgrades with gaining strength."));
 
     }
 
@@ -199,6 +218,8 @@ public class SummPDChanges {
                         "When PoH cloud heal anything, EoHH are more concentrated and heal only allies."));
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SWORD, new ItemSprite.Glowing()), "Unstable enchantment",
                 "Now have rainbow shining as glowing effect."));
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.KUNAI, null), "Sneaky weapon changes",
+                "Throwing sneaky weapons now doesn't consume a durability, while used with sneak attack"));
         changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Shattered 0.7.5",
                                         "Added the new camera panning from new Shattered."));
         changes.addButton( new ChangeButton(new Image(Assets.BUFFS_LARGE, 64, 16, 16, 16), "Resistance",

@@ -215,8 +215,8 @@ public abstract class Char extends Actor {
 						&& h.subClass == HeroSubClass.SNIPER
 						&& !Dungeon.level.adjacent(h.pos, enemy.pos)){
 					dr = 0;
-				} else if (h.belongings.weapon instanceof Slingshot){
-				    dr = Math.max(0, dr - 4);
+				} else if (h.belongings.weapon instanceof Slingshot.Stone){
+				    dr = Random.IntRange(0, dr);
                 }
 			}
 			

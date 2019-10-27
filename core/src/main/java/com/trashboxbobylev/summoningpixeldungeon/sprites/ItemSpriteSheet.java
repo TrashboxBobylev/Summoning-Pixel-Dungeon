@@ -85,6 +85,7 @@ public class ItemSpriteSheet {
 
 	public static final int GUIDE_PAGE      = UNCOLLECTIBLE+6;
 	public static final int ALCH_PAGE       = UNCOLLECTIBLE+7;
+	public static final int RUNIC_SHOT = UNCOLLECTIBLE+8;
     public static final int TENGU_BOMB      = UNCOLLECTIBLE+9;
     public static final int TENGU_SHOCKER   = UNCOLLECTIBLE+10;
     static{
@@ -96,6 +97,7 @@ public class ItemSpriteSheet {
 
         assignItemRect(GUIDE_PAGE,  10, 11);
         assignItemRect(ALCH_PAGE,   10, 11);
+        assignItemRect(RUNIC_SHOT, 14, 14);
 
         assignItemRect(TENGU_BOMB,      10, 10);
         assignItemRect(TENGU_SHOCKER,   10, 10);
@@ -377,7 +379,7 @@ public class ItemSpriteSheet {
     public static final int IMP_STAFF = STAFFS+14;
     public static final int HACATU_STAFF = STAFFS+15;
     static {
-        assignItemRect(FROGGIT_STAFF, 16, 16);
+        assignItemRect(FROGGIT_STAFF, 14, 14);
         assignItemRect(GREY_RAT_STAFF, 16, 16);
         assignItemRect(GNOLL_HUNTER_STAFF, 16, 16);
         assignItemRect(WOOLY_STAFF, 16, 16);

@@ -189,6 +189,7 @@ public class Hero extends Char {
 		if (buff(ElixirOfMight.HTBoost.class) != null){
 			HT += buff(ElixirOfMight.HTBoost.class).boost();
 		}
+		Item.updateQuickslot();
 		
 		if (boostHP){
 			HP += Math.max(HT - curHT, 0);
