@@ -15,7 +15,7 @@ allprojects {
         appPackageName = 'com.trashboxbobylev.shatteredpixeldungeon'
 
         appVersionCode = 371
-        appVersionName = '1.0.0-BETA-8'
+        appVersionName = '1.0.0-BETA-7'
 
         appAndroidCompileSDK = 28
         appAndroidMinSDK = 9

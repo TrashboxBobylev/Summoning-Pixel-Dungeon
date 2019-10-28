@@ -129,7 +129,14 @@ public class SummPDChanges {
         changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-7",
                 "Changed:\n"+
                                         "_-_ Throwing knifes and kunai doesn't consume a durability with right uses\n"+
-                                        "_-_ Added the Slingshot."));
+                                        "_-_ Added the slingshot with removal of throwing stones as standalone weapon\n"+
+                                        "_-_ Fixed weird non-opaque spots in graphics\n"+
+                                        "_-_ Reworked the runic blade\n"+
+                                        "_-_ Changed the visuals of fireball and main menu buttons\n"+
+                                        "_-_ Buffed the rattle snake's evasion and damage\n"+
+                                        "_-_ Massively adjusted charge rate of most staves; froggit staff will stay with old stats, most of staves recharges in 400 turns, tank staves recharge even longer\n" +
+                                        "_-_ Brand new icon for the mod!"
+        ));
     }
 
     public static void add_General_Changes(ArrayList<ChangeInfo> changeInfos ){
@@ -137,7 +144,7 @@ public class SummPDChanges {
         changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.CONJURER, 6), "New Class!",
                 "Asriel Dreemur joins the dungeon crawling!\n\n" +
                         "The Conjurer - new class, that are focused on new type of weapons - summon weapons. Thanks to his great soul power, here are able to control more allies and support them by his unique equipment.\n\n"+
-                        "Unfortunately, Conjurer's body is composed from attunement, so he have lowered physical stats compared to other classes."));
+                        "Unfortunately, Conjurer's body is composed from dust, so he have lowered physical stats compared to other classes."));
 
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.GREY_RAT_STAFF, null), "Summon Weapons!",
                 "The new type of weapons have been added into dungeon.\n\n" +
@@ -187,6 +194,11 @@ public class SummPDChanges {
                 "_-_ Added the cleaver, that have low damage and accuracy, but can overkill the enemy with small chance."));
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SLINGSHOT, null), "New missile weapon!",
                 "_-_ Warrior now have the slingshot, that can shoot one stone at time, and upgrades with gaining strength."));
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RUNIC_BLADE, null), "Runic Blade rework",
+                "Runic Blade were reworked from 't5, but t4' to totally new weapon!\n" +
+                        "_-_ Damage were reduced from 4-20 (+1/+6) to 4-16 (+1/+4)\n" +
+                        "_-_ Weapon now can shoot magical copies into enemies, that ignore armor and have very high accuracy\n" +
+                        "_-_ After shooting, runic blade need to recharge for some time, that time equals 40 usings of weapon, ignoring the RoF"));
 
     }
 
