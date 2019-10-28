@@ -24,15 +24,16 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee;
 
+import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.FlavourBuff;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Invisibility;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.MagicImmune;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
+import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroSubClass;
+import com.trashboxbobylev.summoningpixeldungeon.effects.MagicMissile;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Splash;
+import com.trashboxbobylev.summoningpixeldungeon.effects.particles.RunicParticle;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.Runestone;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.CursedWand;
@@ -42,10 +43,13 @@ import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.CellSelector;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
+import com.trashboxbobylev.summoningpixeldungeon.sprites.CharSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.MissileSprite;
 import com.trashboxbobylev.summoningpixeldungeon.ui.QuickSlotButton;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 
@@ -108,8 +112,9 @@ public class RunicBlade extends MeleeWeapon {
 	@Override
 	public int max(int lvl) {
         int i = 4 * (tier) +                    //16 base, down from 25
-                Math.round(lvl * (tier + 1)); //+6 per level, up from +5
-        if (!charged) i = super.max(lvl);
+                Math.round(lvl * (tier)); //+6 per level, up from +5
+        if (!charged) i = 5 * (tier) +
+                Math.round(lvl * (tier + 1));
         return i;
 	}
 
@@ -187,6 +192,7 @@ public class RunicBlade extends MeleeWeapon {
                             GLog.negative(Messages.get(Wand.class, "curse_discover", curBlade.name()));
                         }
                     } else {
+                        Sample.INSTANCE.play(Assets.SND_ZAP);
                         ((MissileSprite) curUser.sprite.parent.recycle(MissileSprite.class)).
                                 reset(curUser.sprite,
                                         target,
@@ -195,16 +201,24 @@ public class RunicBlade extends MeleeWeapon {
                                             @Override
                                             public void call() {
                                                 Char enemy = Actor.findChar( cell );
-                                                if (enemy != null && enemy != curUser){
-                                                    int dmg = curBlade.damageRoll(curUser);
-                                                    enemy.damage(dmg, curBlade);
-                                                    curBlade.proc(curUser, enemy, dmg);
+                                                if (enemy != null && enemy != curUser) {
+                                                    if (Char.hit(curUser, enemy, true)) {
+                                                        int dmg = curBlade.damageRoll(curUser);
+                                                        enemy.damage(dmg, curBlade);
+                                                        if (curUser.subClass == HeroSubClass.GLADIATOR) Buff.affect( curUser, Combo.class ).hit( enemy );
+                                                        curBlade.proc(curUser, enemy, dmg);
+                                                        Sample.INSTANCE.play(Assets.SND_HIT);
+                                                    } else {
+                                                        enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
+                                                        Combo combo = curUser.buff(Combo.class);
+                                                        if (combo != null) combo.miss( enemy );
+                                                    }
                                                 } else {
                                                     Dungeon.level.pressCell(cell);
                                                 }
                                                 Splash.at(cell, 0x38c3c3, 15);
                                                 curBlade.charged = false;
-                                                Buff.affect(curUser, RunicCooldown.class, 3);
+                                                Buff.affect(curUser, RunicCooldown.class, 40*curBlade.speedFactor(curUser));
                                                 curUser.spendAndNext(curBlade.speedFactor(curUser));
                                             }
                                         });
@@ -222,10 +236,29 @@ public class RunicBlade extends MeleeWeapon {
         }
     };
 
-	public class RunicCooldown extends FlavourBuff {
+    @Override
+    public Emitter emitter() {
+        if (!charged) return null;
+        Emitter emitter = new Emitter();
+        emitter.pos(12.5f, 3);
+        emitter.fillTarget = false;
+        emitter.pour(RunicParticle.UP, 0.1f);
+        return emitter;
+    }
+
+    public void recharge(){
+        charged = true;
+    }
+
+	public static class RunicCooldown extends FlavourBuff {
+
         @Override
         public void detach() {
-            charged = true;
+            if (Dungeon.hero.belongings.getItem(RunicBlade.class) != null){
+                Dungeon.hero.belongings.getItem(RunicBlade.class).recharge();
+            }
+            Dungeon.hero.sprite.emitter().burst(RunicParticle.UP, 10);
+            Sample.INSTANCE.play(Assets.SND_LEVELUP);
             super.detach();
         }
     }
