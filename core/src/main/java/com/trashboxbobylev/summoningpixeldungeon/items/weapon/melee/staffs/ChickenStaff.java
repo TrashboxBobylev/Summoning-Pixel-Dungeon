@@ -35,6 +35,7 @@ public class ChickenStaff extends Staff {
         image = ItemSpriteSheet.CHICKEN_STAFF;
         minionType = Chicken.class;
         tier = 3;
+        chargeTurns = 90;
     }
 
     @Override

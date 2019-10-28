@@ -36,6 +36,7 @@ public class SheepStaff extends Staff {
         minionType = Sheep.class;
         tier = 2;
         isTanky = true;
+        chargeTurns = 500;
     }
 
     @Override

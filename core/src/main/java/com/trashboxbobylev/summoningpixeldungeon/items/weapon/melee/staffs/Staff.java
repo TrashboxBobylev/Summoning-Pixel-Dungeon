@@ -94,7 +94,7 @@ public class Staff extends MeleeWeapon {
     public static final String CURSE_INFUSION_BONUS = "curse_infusion_bonus";
 
     public int initialCharges(){
-        return 2;
+        return 1;
     }
 
     @Override
@@ -326,13 +326,9 @@ public class Staff extends MeleeWeapon {
 
     protected void wandUsed(boolean isZap) {
         if (!isIdentified() && availableUsesToID >= 1) {
-            availableUsesToID--;
-            usesLeftToID--;
-            if (usesLeftToID <= 0) {
+
                 identify();
-                GLog.positive( Messages.get(Wand.class, "identify") );
                 Badges.validateItemLevelAquired( this );
-            }
         }
 
         if (!isZap) curCharges -= 1;
@@ -471,9 +467,11 @@ public class Staff extends MeleeWeapon {
         }
     };
 
+    public static int chargeTurns = 400;
+
     public class Charger extends Buff {
 
-        private static final float BASE_CHARGE_DELAY = 120f;
+        private final float BASE_CHARGE_DELAY = chargeTurns;
         private static final float NORMAL_SCALE_FACTOR = 0.75f;
 
         private static final float CHARGE_BUFF_BONUS = 0.25f;

@@ -55,6 +55,7 @@ public class StationaryStaff extends Staff {
     //because of precise strategy, I need to rewrite some of Staff methods to allow exact placing
     {
         defaultAction = AC_SUMMON;
+        chargeTurns = 550;
     }
 
     @Override

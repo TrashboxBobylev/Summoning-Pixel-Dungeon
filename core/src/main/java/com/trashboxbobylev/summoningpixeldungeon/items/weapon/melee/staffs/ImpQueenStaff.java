@@ -33,6 +33,7 @@ public class ImpQueenStaff extends Staff {
         minionType = ImpQueen.class;
         tier = 5;
         isTanky = true;
+        chargeTurns = 750;
     }
 
     @Override
