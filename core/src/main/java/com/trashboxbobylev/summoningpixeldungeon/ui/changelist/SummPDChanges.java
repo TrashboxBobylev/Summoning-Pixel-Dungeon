@@ -137,6 +137,11 @@ public class SummPDChanges {
                                         "_-_ Massively adjusted charge rate of most staves; froggit staff will stay with old stats, most of staves recharges in 400 turns, tank staves recharge even longer\n" +
                                         "_-_ Brand new icon for the mod!"
         ));
+        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-7.1",
+                "Fixed:\n" +
+                        "_-_ Runic Blade's emitter were placed in wrong place and didn't updated\n\n" +
+                        "Changed:\n" +
+                        "_-_ New menu button appearance"));
     }
 
     public static void add_General_Changes(ArrayList<ChangeInfo> changeInfos ){
