@@ -364,7 +364,7 @@ public class MagesStaff extends MeleeWeapon {
 		}
 	};
 
-	private final Emitter.Factory StaffParticleFactory = new Emitter.Factory() {
+    public final Emitter.Factory StaffParticleFactory = new Emitter.Factory() {
 		@Override
 		//reimplementing this is needed as instance creation of new staff particles must be within this class.
 		public void emit( Emitter emitter, int index, float x, float y ) {

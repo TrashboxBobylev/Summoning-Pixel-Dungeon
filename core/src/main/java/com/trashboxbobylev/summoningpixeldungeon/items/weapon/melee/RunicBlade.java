@@ -32,12 +32,12 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroSubClass;
 import com.trashboxbobylev.summoningpixeldungeon.effects.MagicMissile;
+import com.trashboxbobylev.summoningpixeldungeon.effects.SpellSprite;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Splash;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.RunicParticle;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.Runestone;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.CursedWand;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
+import com.trashboxbobylev.summoningpixeldungeon.items.wands.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
@@ -50,8 +50,11 @@ import com.trashboxbobylev.summoningpixeldungeon.ui.QuickSlotButton;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
+import com.watabou.noosa.particles.PixelParticle;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+import com.watabou.utils.PointF;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -218,6 +221,7 @@ public class RunicBlade extends MeleeWeapon {
                                                 }
                                                 Splash.at(cell, 0x38c3c3, 15);
                                                 curBlade.charged = false;
+                                                updateQuickslot();
                                                 Buff.affect(curUser, RunicCooldown.class, 40*curBlade.speedFactor(curUser));
                                                 curUser.spendAndNext(curBlade.speedFactor(curUser));
                                             }
@@ -242,8 +246,82 @@ public class RunicBlade extends MeleeWeapon {
         Emitter emitter = new Emitter();
         emitter.pos(12.5f, 3);
         emitter.fillTarget = false;
-        emitter.pour(RunicParticle.UP, 0.1f);
+        emitter.pour(StaffParticleFactory, 0.1f);
         return emitter;
+    }
+
+    public final Emitter.Factory StaffParticleFactory = new Emitter.Factory() {
+        @Override
+        //reimplementing this is needed as instance creation of new staff particles must be within this class.
+        public void emit( Emitter emitter, int index, float x, float y ) {
+            StaffParticle c = (StaffParticle)emitter.getFirstAvailable(StaffParticle.class);
+            if (c == null) {
+                c = new StaffParticle();
+                emitter.add(c);
+            }
+            c.reset(x, y);
+        }
+
+        @Override
+        //some particles need light mode, others don't
+        public boolean lightMode() {
+            return true;
+        }
+    };
+
+    //determines particle effects to use based on wand the staff owns.
+    public class StaffParticle extends PixelParticle {
+
+        private float minSize;
+        private float maxSize;
+        public float sizeJitter = 0;
+
+        public StaffParticle(){
+            super();
+        }
+
+        public void reset( float x, float y ) {
+            revive();
+
+            speed.set(0);
+
+            this.x = x;
+            this.y = y;
+
+            color( 0x38c3c3 );
+            am = 0.85f;
+            setLifespan(3f);
+            speed.polar(Random.Float(PointF.PI2), 0.3f);
+            setSize( 1f, 2f);
+            radiateXY(2.5f);
+
+        }
+
+        public void setSize( float minSize, float maxSize ){
+            this.minSize = minSize;
+            this.maxSize = maxSize;
+        }
+
+        public void setLifespan( float life ){
+            lifespan = left = life;
+        }
+
+        public void shuffleXY(float amt){
+            x += Random.Float(-amt, amt);
+            y += Random.Float(-amt, amt);
+        }
+
+        public void radiateXY(float amt){
+            float hypot = (float)Math.hypot(speed.x, speed.y);
+            this.x += speed.x/hypot*amt;
+            this.y += speed.y/hypot*amt;
+        }
+
+        @Override
+        public void update() {
+            super.update();
+            size(minSize + (left / lifespan)*(maxSize-minSize) + Random.Float(sizeJitter));
+        }
     }
 
     public void recharge(){
@@ -257,7 +335,7 @@ public class RunicBlade extends MeleeWeapon {
             if (Dungeon.hero.belongings.getItem(RunicBlade.class) != null){
                 Dungeon.hero.belongings.getItem(RunicBlade.class).recharge();
             }
-            Dungeon.hero.sprite.emitter().burst(RunicParticle.UP, 10);
+            SpellSprite.show(Dungeon.hero, SpellSprite.CHARGE);
             Sample.INSTANCE.play(Assets.SND_LEVELUP);
             super.detach();
         }
