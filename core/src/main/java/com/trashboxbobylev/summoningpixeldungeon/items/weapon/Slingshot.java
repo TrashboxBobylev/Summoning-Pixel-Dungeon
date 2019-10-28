@@ -133,9 +133,14 @@ public class Slingshot extends Weapon {
 
     @Override
     public int level() {
-        int i = Dungeon.hero.STR() - 10;
+        int i = (Dungeon.hero != null ) ? Dungeon.hero.STR() - 10 : 0;
         ShatteredPixelDungeon.logSomething(i);
         return i;
+    }
+
+    @Override
+    public int damageRoll(Char owner) {
+        return augment.damageFactor(super.damageRoll(owner));
     }
 
     private CellSelector.Listener shooter = new CellSelector.Listener() {
