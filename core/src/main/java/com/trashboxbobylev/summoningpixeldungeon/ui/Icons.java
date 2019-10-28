@@ -168,7 +168,7 @@ public enum Icons {
 			icon.frame( icon.texture.uvRect( 64, 48, 80, 64 ) );
 			break;
             case CONJURER:
-                icon.frame( icon.texture.uvRect( 80, 48, 94, 64 ) );
+                icon.frame( icon.texture.uvRect( 80, 48, 96, 64 ) );
                 break;
 		
 		case ENTER:
