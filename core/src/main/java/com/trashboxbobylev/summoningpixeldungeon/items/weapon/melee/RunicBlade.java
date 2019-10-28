@@ -222,6 +222,13 @@ public class RunicBlade extends MeleeWeapon {
                                                 Splash.at(cell, 0x38c3c3, 15);
                                                 curBlade.charged = false;
                                                 updateQuickslot();
+                                                int slot = Dungeon.quickslot.getSlot(curBlade);
+                                                if (slot != -1){
+                                                    Dungeon.quickslot.clearSlot(slot);
+                                                    updateQuickslot();
+                                                    Dungeon.quickslot.setSlot( slot, curBlade );
+                                                    updateQuickslot();
+                                                }
                                                 Buff.affect(curUser, RunicCooldown.class, 40*curBlade.speedFactor(curUser));
                                                 curUser.spendAndNext(curBlade.speedFactor(curUser));
                                             }
@@ -244,7 +251,7 @@ public class RunicBlade extends MeleeWeapon {
     public Emitter emitter() {
         if (!charged) return null;
         Emitter emitter = new Emitter();
-        emitter.pos(12.5f, 3);
+        emitter.pos(12f, 1f);
         emitter.fillTarget = false;
         emitter.pour(StaffParticleFactory, 0.1f);
         return emitter;
@@ -332,8 +339,16 @@ public class RunicBlade extends MeleeWeapon {
 
         @Override
         public void detach() {
-            if (Dungeon.hero.belongings.getItem(RunicBlade.class) != null){
-                Dungeon.hero.belongings.getItem(RunicBlade.class).recharge();
+            RunicBlade runicBlade = Dungeon.hero.belongings.getItem(RunicBlade.class);
+            if (runicBlade != null){
+                runicBlade.recharge();
+                int slot = Dungeon.quickslot.getSlot(runicBlade);
+                if (slot != -1){
+                    Dungeon.quickslot.clearSlot(slot);
+                    updateQuickslot();
+                    Dungeon.quickslot.setSlot( slot, runicBlade );
+                    updateQuickslot();
+                }
             }
             SpellSprite.show(Dungeon.hero, SpellSprite.CHARGE);
             Sample.INSTANCE.play(Assets.SND_LEVELUP);

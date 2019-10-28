@@ -4,7 +4,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.android.tools.build:gradle:3.5.1'
     }
 }
 
@@ -14,8 +14,8 @@ allprojects {
         appName = 'Summoning Pixel Dungeon'
         appPackageName = 'com.trashboxbobylev.shatteredpixeldungeon'
 
-        appVersionCode = 371
-        appVersionName = '1.0.0-BETA-7'
+        appVersionCode = 372
+        appVersionName = '1.0.0-BETA-7.1'
 
         appAndroidCompileSDK = 28
         appAndroidMinSDK = 9
