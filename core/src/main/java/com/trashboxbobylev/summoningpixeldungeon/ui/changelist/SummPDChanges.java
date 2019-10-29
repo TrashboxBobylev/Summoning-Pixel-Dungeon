@@ -209,7 +209,7 @@ public class SummPDChanges {
                 "Runic Blade were reworked from 't5, but t4' to totally new weapon!\n" +
                         "_-_ Damage were reduced from 4-20 (+1/+6) to 4-16 (+1/+4)\n" +
                         "_-_ Weapon now can shoot magical copies into enemies, that ignore armor and have very high accuracy\n" +
-                        "_-_ After shooting, runic blade need to recharge for some time, that time equals 40 usings of weapon, ignoring the RoF"));
+                        "_-_ After shooting, runic blade need to recharge for some time, that time equals 40 usings of weapon"));
 
     }
 
