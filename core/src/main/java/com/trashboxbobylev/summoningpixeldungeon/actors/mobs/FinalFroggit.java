@@ -102,9 +102,6 @@ public class FinalFroggit extends Mob implements Callback {
 		spend( TIME_TO_ZAP );
 		
 		if (hit( this, enemy, true )) {
-			if (Random.Float() < 0.75f) {
-				Buff.prolong( enemy, Eradication.class, Eradication.DURATION ).combo++;
-			}
 
 			Eradication eradication = enemy.buff(Eradication.class);
 			float multiplier = 1f;
@@ -113,6 +110,10 @@ public class FinalFroggit extends Mob implements Callback {
             }
 			
 			int dmg = Math.round(Random.Int( 6, 8 ) * multiplier);
+
+            if (Random.Float() < 0.75f) {
+                Buff.prolong( enemy, Eradication.class, Eradication.DURATION ).combo++;
+            }
 
 			enemy.damage( dmg, new Bolt() );
 			
@@ -144,7 +145,7 @@ public class FinalFroggit extends Mob implements Callback {
 
     public class Eradication extends FlavourBuff {
 
-        public static final float DURATION = 2f;
+        public static final float DURATION = 4f;
 
         {
             type = buffType.NEGATIVE;

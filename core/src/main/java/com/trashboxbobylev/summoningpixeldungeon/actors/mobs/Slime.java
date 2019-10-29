@@ -59,7 +59,10 @@ public class Slime extends Mob {
 		maxLvl = 25;
 
 		loot = new GooBlob();
-		lootChance = 0.2f;
+		lootChance = 0.1f;
+		properties.add(Property.ACIDIC);
+		properties.add(Property.DEMONIC);
+		properties.add(Property.INORGANIC);
 	}
 	
 	private static final float SPLIT_DELAY	= 1f;

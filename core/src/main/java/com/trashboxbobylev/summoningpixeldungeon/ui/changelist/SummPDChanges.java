@@ -143,6 +143,11 @@ public class SummPDChanges {
                         "_-_ On shooting, Runic Blade was able to target something different from target\n\n" +
                         "Changed:\n" +
                         "_-_ New menu button appearance"));
+        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "RC-1",
+                        "Changed:\n" +
+                        "_-_ Mod's icon are more contrast now\n" +
+                                "_-_ Added Slimes and Final Froggits into Demon Halls\n\n" +
+                                "We are almost finished. If nothing major will happen with new mobs, I will publish the release."));
     }
 
     public static void add_General_Changes(ArrayList<ChangeInfo> changeInfos ){
@@ -223,6 +228,18 @@ public class SummPDChanges {
                         "_-_ Drop: random staff with 12.5% chance."));
         changes.addButton( new ChangeButton(new Image(Assets.TENGU, 0, 0, 14, 16), "New Tengu",
                 "Added Tengu fight from Shattered 0.7.5. Nothing are changed."));
+        changes.addButton( new ChangeButton(new Image(Assets.SLIME, 0, 0, 14, 12), "New monster in Demon Halls",
+                "The Demon Halls now have new inhabitant: Dark Matter Slimes!\n\n"+
+                        "_-_ Their stats are pretty low for stage, but...\n"+
+                        "_-_ Slimes can split! While splitting, dark matter slimes fully heal, but lose 25% of max HP.\n" +
+                        "_-_ Damage wands are 2.5x more effective against slimes.\n"+
+                        "_-_ They rarely drop a goo blobs."));
+        changes.addButton( new ChangeButton(new Image(Assets.FINAL_FROGGIT, 0, 0, 16, 16), "Final Froggits",
+                "Prepare for exit stairs defenders in Demon Halls - Final Froggits!\n\n"+
+                        "_-_ They shoot a eradication bolts, that have small damage.\n"+
+                        "_-_ But that bolts with high chance can inflict Eradication debuff.\n" +
+                        "_-_ Eradication debuff exponentially increases Final Froggit's damage, so do not stay for too long around them.\n"+
+                        "_-_ They drop random items."));
     }
 
     public static void add_Minor_Changes(ArrayList<ChangeInfo> changeInfos){
