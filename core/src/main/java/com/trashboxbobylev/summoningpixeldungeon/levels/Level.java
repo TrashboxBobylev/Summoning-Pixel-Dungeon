@@ -45,6 +45,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroClass;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroSubClass;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Bestiary;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.FinalFroggit;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary.StationaryMinion;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.npcs.Sheep;
@@ -599,6 +600,13 @@ public abstract class Level implements Bundlable {
 
 		return null;
 	}
+
+	public boolean checkForFroggits(){
+	    for (Mob mob : mobs){
+	        if (mob instanceof FinalFroggit) return false;
+        }
+	    return true;
+    }
 
 	public void buildFlagMaps() {
 		

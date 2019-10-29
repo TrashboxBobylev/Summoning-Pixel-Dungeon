@@ -1228,8 +1228,10 @@ public class Hero extends Char {
 
         } else if ((cell == Dungeon.level.exit || Dungeon.level.map[cell] == Terrain.EXIT || Dungeon.level.map[cell] == Terrain.UNLOCKED_EXIT)
                 && Dungeon.depth < 26) {
+		    if (!((Dungeon.depth < 25 && Dungeon.depth > 21) && Dungeon.level.checkForFroggits())) {
 
-            curAction = new HeroAction.Descend( cell );
+                curAction = new HeroAction.Descend(cell);
+            }
 
         } else if (cell == Dungeon.level.entrance || Dungeon.level.map[cell] == Terrain.ENTRANCE) {
 			

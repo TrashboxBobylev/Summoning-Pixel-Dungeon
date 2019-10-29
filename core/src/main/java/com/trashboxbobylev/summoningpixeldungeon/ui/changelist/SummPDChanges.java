@@ -149,6 +149,13 @@ public class SummPDChanges {
                                 "_-_ Adjusted Soul Reaver's offensive ability: now it consumes 2x more soul\n" +
                                 "_-_ Added Slimes and Final Froggits into Demon Halls\n\n" +
                                 "We are almost finished. If nothing major will happen with new mobs, I will publish the release."));
+        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "RC-2",
+                "Changed:\n" +
+                        "_-_ Shops have been reworked again\n" +
+                        "_-_ You need to kill Final Froggits to proceed to next floor\n" +
+                        "_-_ Slimes now occupy cell rather that levitating\n" +
+                        "_-_ Added Gold Token, just for selling\n\n"+
+                        "We are almost finished. If nothing major will happen with shop, I will publish the release."));
     }
 
     public static void add_General_Changes(ArrayList<ChangeInfo> changeInfos ){
