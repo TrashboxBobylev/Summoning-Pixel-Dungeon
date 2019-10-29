@@ -237,7 +237,7 @@ public class ConjurerArmor extends ClassArmor {
                 } else {
                     final int str = artifact.str;
                     if (artifact.charge >= str || curUser.subClass == HeroSubClass.OCCULTIST){
-                        if (curUser.subClass == HeroSubClass.SOUL_REAVER) artifact.charge -= str;
+                        if (curUser.subClass == HeroSubClass.SOUL_REAVER) artifact.charge -= str*2;
                         updateQuickslot();
                         curUser.busy();
                         Invisibility.dispel();
