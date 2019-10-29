@@ -64,6 +64,7 @@ public class ExitRoom extends StandardRoom {
                 do {
                     npc.pos = level.pointToCell(random());
                 } while (level.heaps.get(npc.pos) != null && level.findMob(npc.pos) != null || !level.passable[npc.pos] || npc.pos == level.exit);
+                npc.state = npc.SLEEPING;
                 level.mobs.add(npc);
             }
         }
