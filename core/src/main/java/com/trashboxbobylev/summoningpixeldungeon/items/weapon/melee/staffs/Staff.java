@@ -236,7 +236,7 @@ public class Staff extends MeleeWeapon {
     }
 
     public int hp(int lvl){
-        return 8*tier + lvl*(tier) - 1; //reduced from 10 to 7, and scaling from (tier+1) to tier
+        return 8*tier + lvl*(tier); //reduced from 10 to 7, and scaling from (tier+1) to tier
     }
 
     //but they have additional stat: minion damage

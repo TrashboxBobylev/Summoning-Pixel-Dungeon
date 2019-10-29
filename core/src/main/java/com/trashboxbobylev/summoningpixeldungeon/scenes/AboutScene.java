@@ -41,20 +41,25 @@ import com.watabou.utils.DeviceCompat;
 
 public class AboutScene extends PixelScene {
 
-	private static final String TTL_SHPX = "Shattered Pixel Dungeon";
+	private static final String TTL_SHPX = "Summoning Pixel Dungeon";
 
 	private static final String TXT_SHPX =
-			"Design, Code, & Graphics: Evan";
+			"Design, Code, & Graphics: TrashboxBobylev\n" +
+            "Some graphics: Krauzxe#1119\n" +
+            "Conjurer's sprites: MarshalldotEXE#9805, 0micronrg9#9946\n" +
+            "Testing: the team of beta testers\n" +
+            "Reading: Inevielle and MarshalldotEXE\n"+
+            "Icon: 0micronrg9\n"+
+            "Supporting: PD community";
 
-	private static final String LNK_SHPX = "ShatteredPixel.com";
+	private static final String LNK_SHPX = "trashboxbobylev.itch.io";
 
-	private static final String TTL_WATA = "Pixel Dungeon";
+	private static final String TTL_WATA = "Shattered Pixel Dungeon";
 
 	private static final String TXT_WATA =
-			"Code & Graphics: Watabou\n" +
-			"Music: Cube_Code";
+			"Design, Code, & Graphics: Evan";
 	
-	private static final String LNK_WATA = "pixeldungeon.watabou.ru";
+	private static final String LNK_WATA = "ShatteredPixel.com";
 	
 	@Override
 	public void create() {
@@ -64,7 +69,7 @@ public class AboutScene extends PixelScene {
 		final float colTop = (Camera.main.height / 2) - (SPDSettings.landscape() ? 30 : 90);
 		final float wataOffset = SPDSettings.landscape() ? colWidth : 0;
 
-		Image shpx = Icons.SHPX.get();
+		Image shpx = Icons.TRASHBOXBOBYLEV.get();
 		shpx.x = (colWidth - shpx.width()) / 2;
 		shpx.y = colTop;
 		align(shpx);
@@ -103,7 +108,7 @@ public class AboutScene extends PixelScene {
 		};
 		add( shpxhotArea );
 
-		Image wata = Icons.WATA.get();
+		Image wata = Icons.SHPX.get();
 		wata.x = wataOffset + (colWidth - wata.width()) / 2;
 		wata.y = SPDSettings.landscape() ?
 						colTop:

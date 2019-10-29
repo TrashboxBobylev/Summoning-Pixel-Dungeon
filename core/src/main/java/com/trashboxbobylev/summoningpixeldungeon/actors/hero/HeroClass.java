@@ -219,7 +219,7 @@ public enum HeroClass {
         (hero.belongings.weapon = new FroggitStaff()).identify();
         hero.belongings.weapon.activate(hero);
 
-        Dungeon.quickslot.setSlot(0, hero.belongings.weapon);
+        Dungeon.quickslot.setSlot(1, hero.belongings.weapon);
 
         hero.belongings.armor = ClassArmor.upgrade(hero, (Armor)(new ClothArmor().identify()));
 

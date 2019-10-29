@@ -180,7 +180,7 @@ public class TitleScene extends PixelScene {
 				ShatteredPixelDungeon.switchNoFade( AboutScene.class );
 			}
 		};
-		btnAbout.icon(Icons.get(Icons.SHPX));
+		btnAbout.icon(Icons.get(Icons.TRASHBOXBOBYLEV));
 		add(btnAbout);
 		
 		final int BTN_HEIGHT = 21;

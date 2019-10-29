@@ -75,6 +75,7 @@ public enum Icons {
 	//misc icons
 	LIBGDX,
 	WATA,
+    TRASHBOXBOBYLEV,
 	WARNING;
 
 	public Image get() {
@@ -196,6 +197,8 @@ public enum Icons {
 		case WATA:
 			icon.frame( icon.texture.uvRect( 17, 81, 34, 93 ) );
 			break;
+            case TRASHBOXBOBYLEV:
+                icon.frame( icon.texture.uvRect( 49, 81, 79, 102 ) );
 		case WARNING:
 			icon.frame( icon.texture.uvRect( 34, 81, 48, 95 ) );
 			break;
