@@ -198,7 +198,7 @@ public class RunicBlade extends MeleeWeapon {
                         Sample.INSTANCE.play(Assets.SND_ZAP);
                         ((MissileSprite) curUser.sprite.parent.recycle(MissileSprite.class)).
                                 reset(curUser.sprite,
-                                        target,
+                                        cell,
                                         new RunicMissile(),
                                         new Callback() {
                                             @Override

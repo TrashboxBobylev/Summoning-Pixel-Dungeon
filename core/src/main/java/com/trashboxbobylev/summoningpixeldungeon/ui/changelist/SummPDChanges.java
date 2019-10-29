@@ -139,7 +139,8 @@ public class SummPDChanges {
         ));
         changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-7.1",
                 "Fixed:\n" +
-                        "_-_ Runic Blade's emitter were placed in wrong place and didn't updated\n\n" +
+                        "_-_ Runic Blade's emitter were placed in wrong place and didn't updated\n" +
+                        "_-_ On shooting, Runic Blade was able to target something different from target\n\n" +
                         "Changed:\n" +
                         "_-_ New menu button appearance"));
     }
