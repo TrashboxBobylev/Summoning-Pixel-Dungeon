@@ -29,6 +29,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Badges;
 import com.trashboxbobylev.summoningpixeldungeon.Statistics;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Hunger;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Invisibility;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Recharging;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
@@ -75,7 +76,7 @@ public class Food extends Item {
 
 		if (action.equals( AC_EAT )) {
 			
-			detach( hero.belongings.backpack );
+			//detach( hero.belongings.backpack );
 			
 			satisfy(hero);
 			GLog.i( message );
@@ -91,6 +92,10 @@ public class Food extends Item {
 			
 			Statistics.foodEaten++;
 			Badges.validateFoodEaten();
+			Buff.prolong(hero, Invisibility.class, 100f);
+
+			InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
+			Game.switchScene(InterlevelScene.class);
 			
 		}
 	}
