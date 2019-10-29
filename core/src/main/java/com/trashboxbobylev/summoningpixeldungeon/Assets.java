@@ -66,6 +66,7 @@ public class Assets {
 	public static final String CRAB		= "crab.png";
 	public static final String GOO		= "goo.png";
     public static final String FROGGIT		= "froggit.png";
+    public static final String FINAL_FROGGIT		= "final_froggit.png";
 	public static final String SWARM	= "swarm.png";
 	public static final String SKELETON	= "skeleton.png";
 	public static final String SHAMAN	= "shaman.png";
@@ -203,4 +204,5 @@ public class Assets {
 	public static final String SND_DEGRADE  = "snd_degrade.mp3";
 	public static final String SND_MIMIC    = "snd_mimic.mp3";
     public static final String SNAKE = "snake.png";
+    public static final String SLIME = "slime.png";
 }

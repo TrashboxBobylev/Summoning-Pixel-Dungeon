@@ -65,6 +65,7 @@ public class MagicMissile extends Emitter {
 	public static final int RAINBOW         = 8;
 	public static final int EARTH           = 9;
 	public static final int WARD            = 10;
+	public static final int FROGGIT = 11;
 
 	public static final int FIRE_CONE       = 100;
 	public static final int FOLIAGE_CONE    = 101;
@@ -150,6 +151,10 @@ public class MagicMissile extends Emitter {
 				size( 4 );
 				pour( WardParticle.FACTORY, 0.01f );
 				break;
+            case FROGGIT:
+                size( 5 );
+                pour( WhiteParticle.FACTORY, 0.005f );
+                break;
 
 			case FIRE_CONE:
 				size( 10 );

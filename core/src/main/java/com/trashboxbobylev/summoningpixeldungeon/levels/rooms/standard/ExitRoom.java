@@ -24,11 +24,15 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.levels.rooms.standard;
 
+import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.FinalFroggit;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.trashboxbobylev.summoningpixeldungeon.levels.Level;
 import com.trashboxbobylev.summoningpixeldungeon.levels.Terrain;
 import com.trashboxbobylev.summoningpixeldungeon.levels.painters.Painter;
 import com.trashboxbobylev.summoningpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.Point;
+import com.watabou.utils.Random;
 
 public class ExitRoom extends StandardRoom {
 	
@@ -53,6 +57,16 @@ public class ExitRoom extends StandardRoom {
 		
 		level.exit = level.pointToCell(random( 2 ));
 		Painter.set( level, level.exit, Terrain.EXIT );
+
+        if (Dungeon.depth > 21) {
+            for (int i = 0; i < Random.NormalIntRange(1, 5); i++) {
+                FinalFroggit npc = new FinalFroggit();
+                do {
+                    npc.pos = level.pointToCell(random());
+                } while (level.heaps.get(npc.pos) != null && level.findMob(npc.pos) != null || !level.passable[npc.pos] || npc.pos == level.exit);
+                level.mobs.add(npc);
+            }
+        }
 	}
 	
 	@Override
