@@ -154,6 +154,8 @@ public class SummPDChanges {
                         "_-_ Shops have been reworked again\n" +
                         "_-_ You need to kill Final Froggits to proceed to next floor\n" +
                         "_-_ Slimes now occupy cell rather that levitating\n" +
+                        "_-_ Changed the about scene\n" +
+                        "_-_ Froggit staff are included into quickslots\n" +
                         "_-_ Added Gold Token, just for selling\n\n"+
                         "We are almost finished. If nothing major will happen with shop, I will publish the release."));
     }

@@ -50,7 +50,7 @@ public class AboutScene extends PixelScene {
             "Testing: the team of beta testers\n" +
             "Reading: Inevielle and MarshalldotEXE\n"+
             "Icon: 0micronrg9\n"+
-            "Supporting: PD community";
+            "Supporting: smujamesb#5300, Gamma Lolman#3370 and PD community";
 
 	private static final String LNK_SHPX = "trashboxbobylev.itch.io";
 
