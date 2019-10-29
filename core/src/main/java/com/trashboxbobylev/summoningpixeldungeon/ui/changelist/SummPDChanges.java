@@ -146,6 +146,7 @@ public class SummPDChanges {
         changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "RC-1",
                         "Changed:\n" +
                         "_-_ Mod's icon are more contrast now\n" +
+                                "_-_ Adjusted Soul Reaver's offensive ability: now it consumes 2x more soul\n" +
                                 "_-_ Added Slimes and Final Froggits into Demon Halls\n\n" +
                                 "We are almost finished. If nothing major will happen with new mobs, I will publish the release."));
     }
@@ -155,7 +156,10 @@ public class SummPDChanges {
         changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.CONJURER, 6), "New Class!",
                 "Asriel Dreemur joins the dungeon crawling!\n\n" +
                         "The Conjurer - new class, that are focused on new type of weapons - summon weapons. Thanks to his great soul power, here are able to control more allies and support them by his unique equipment.\n\n"+
-                        "Unfortunately, Conjurer's body is composed from dust, so he have lowered physical stats compared to other classes."));
+                        "Unfortunately, Conjurer's body is composed from dust, so he have lowered physical stats compared to other classes.\n\n" +
+                        "Conjurer have two subclasses:\n" +
+                        "_-_ Soul Reaver gain 2x more soul and can tune minion stats. His offensive ability consumes soul for damaging enemies.\n" +
+                        "_-_ Occultist collects HATE on killing enemies and spend them on next attack to corrupt the enemy. His offensive ability uses precise amount of HATE to corrupt enemies."));
 
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.GREY_RAT_STAFF, null), "Summon Weapons!",
                 "The new type of weapons have been added into dungeon.\n\n" +
