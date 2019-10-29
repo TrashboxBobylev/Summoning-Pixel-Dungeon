@@ -66,7 +66,7 @@ public class AboutScene extends PixelScene {
 		super.create();
 
 		final float colWidth = Camera.main.width / (SPDSettings.landscape() ? 2 : 1);
-		final float colTop = (Camera.main.height / 2) - (SPDSettings.landscape() ? 30 : 90);
+		final float colTop = (Camera.main.height / (SPDSettings.landscape() ? 3 : 2)) - (SPDSettings.landscape() ? 30 : 100);
 		final float wataOffset = SPDSettings.landscape() ? colWidth : 0;
 
 		Image shpx = Icons.TRASHBOXBOBYLEV.get();
@@ -75,7 +75,7 @@ public class AboutScene extends PixelScene {
 		align(shpx);
 		add( shpx );
 
-		new Flare( 7, 64 ).color( 0x225511, true ).show( shpx, 0 ).angularSpeed = +20;
+		new Flare( 7, 64 ).color( 0x35bcee, true ).show( shpx, 0 ).angularSpeed = +20;
 
 		RenderedText shpxtitle = renderText( TTL_SHPX, 8 );
 		shpxtitle.hardlight( Window.SHPX_COLOR );
@@ -86,7 +86,7 @@ public class AboutScene extends PixelScene {
 		align(shpxtitle);
 
 		RenderedTextMultiline shpxtext = renderMultiline( TXT_SHPX, 8 );
-		shpxtext.maxWidth((int)Math.min(colWidth, 120));
+		shpxtext.maxWidth((int)Math.min(colWidth, 150));
 		add( shpxtext );
 
 		shpxtext.setPos((colWidth - shpxtext.width()) / 2, shpxtitle.y + shpxtitle.height() + 12);
@@ -116,7 +116,7 @@ public class AboutScene extends PixelScene {
 		align(wata);
 		add( wata );
 
-		new Flare( 7, 64 ).color( 0x112233, true ).show( wata, 0 ).angularSpeed = +20;
+		new Flare( 7, 64 ).color( 0x3aee35, true ).show( wata, 0 ).angularSpeed = +20;
 
 		RenderedText wataTitle = renderText( TTL_WATA, 8 );
 		wataTitle.hardlight(Window.TITLE_COLOR);
