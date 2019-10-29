@@ -116,6 +116,7 @@ public class Slime extends Mob {
 			if (candidates.size() > 0) {
 				
 				Slime clone = split();
+                HP = HT;
 				HT *= 0.75f;
 				clone.HP = HT;
 				clone.pos = Random.element( candidates );

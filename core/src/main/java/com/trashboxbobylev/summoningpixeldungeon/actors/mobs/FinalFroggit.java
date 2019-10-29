@@ -106,14 +106,13 @@ public class FinalFroggit extends Mob implements Callback {
 			Eradication eradication = enemy.buff(Eradication.class);
 			float multiplier = 1f;
 			if (eradication != null){
-			    multiplier = (float) (1f + Math.pow(0.2f, eradication.combo));
+			    multiplier = (float) (Math.pow(1.2f, eradication.combo));
             }
 			
-			int dmg = Math.round(Random.Int( 6, 8 ) * multiplier);
+			int dmg = Math.round(Random.Int( 3, 9 ) * multiplier);
 
-            if (Random.Float() < 0.75f) {
-                Buff.prolong( enemy, Eradication.class, Eradication.DURATION ).combo++;
-            }
+
+			Buff.prolong( enemy, Eradication.class, Eradication.DURATION ).combo++;
 
 			enemy.damage( dmg, new Bolt() );
 			
@@ -143,7 +142,7 @@ public class FinalFroggit extends Mob implements Callback {
 		immunities.add(Vertigo.class);
 	}
 
-    public class Eradication extends FlavourBuff {
+    public static class Eradication extends FlavourBuff {
 
         public static final float DURATION = 4f;
 
@@ -183,7 +182,7 @@ public class FinalFroggit extends Mob implements Callback {
 
         @Override
         public String desc() {
-            return Messages.get(this, "desc", dispTurns(), (float)Math.pow(0.2f, combo));
+            return Messages.get(this, "desc", dispTurns(), (float)Math.pow(1.2f, combo));
         }
     }
 }

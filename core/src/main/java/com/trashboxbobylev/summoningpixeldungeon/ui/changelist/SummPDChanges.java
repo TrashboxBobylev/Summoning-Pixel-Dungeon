@@ -237,7 +237,7 @@ public class SummPDChanges {
         changes.addButton( new ChangeButton(new Image(Assets.FINAL_FROGGIT, 0, 0, 16, 16), "Final Froggits",
                 "Prepare for exit stairs defenders in Demon Halls - Final Froggits!\n\n"+
                         "_-_ They shoot a eradication bolts, that have small damage.\n"+
-                        "_-_ But that bolts with high chance can inflict Eradication debuff.\n" +
+                        "_-_ But that bolts inflict Eradication debuff.\n" +
                         "_-_ Eradication debuff exponentially increases Final Froggit's damage, so do not stay for too long around them.\n"+
                         "_-_ They drop random items."));
     }

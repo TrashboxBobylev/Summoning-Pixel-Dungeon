@@ -59,11 +59,11 @@ public class ExitRoom extends StandardRoom {
 		Painter.set( level, level.exit, Terrain.EXIT );
 
         if (Dungeon.depth > 21) {
-            for (int i = 0; i < Random.NormalIntRange(1, 5); i++) {
+            for (int i = 0; i < Random.IntRange(1, 5); i++) {
                 FinalFroggit npc = new FinalFroggit();
                 do {
                     npc.pos = level.pointToCell(random());
-                } while (level.heaps.get(npc.pos) != null && level.findMob(npc.pos) != null || !level.passable[npc.pos] || npc.pos == level.exit);
+                } while (level.map[npc.pos] != Terrain.EMPTY || level.findMob(npc.pos) != null || npc.pos == level.exit);
                 npc.state = npc.SLEEPING;
                 level.mobs.add(npc);
             }
