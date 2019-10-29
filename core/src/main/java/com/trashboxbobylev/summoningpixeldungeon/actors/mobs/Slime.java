@@ -121,6 +121,7 @@ public class Slime extends Mob {
 				clone.HP = HT;
 				clone.pos = Random.element( candidates );
 				clone.state = clone.HUNTING;
+				Dungeon.level.pressCell(clone.pos);
 				
 				if (Dungeon.level.map[clone.pos] == Terrain.DOOR) {
 					Door.enter( clone.pos );
