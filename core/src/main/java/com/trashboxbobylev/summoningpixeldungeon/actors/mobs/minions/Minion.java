@@ -132,8 +132,8 @@ public abstract class Minion extends Mob {
     }
 
     public void adjustDR(int min, int max){
-        minDR += min;
-        maxDR += max;
+        minDR += Math.max(-2, min);
+        maxDR += Math.max(-4, max);
     }
 
     @Override
