@@ -52,11 +52,15 @@ import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.Scroll;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfDivination;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfEnchantment;
+import com.trashboxbobylev.summoningpixeldungeon.items.spells.BeaconOfReturning;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.Runestone;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfAugmentation;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfEnchantment;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfMagicMissile;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.Bolas;
@@ -166,20 +170,35 @@ public class ShopRoom extends SpecialRoom {
 		
 		switch (Dungeon.depth) {
 		case 6:
-			itemsToSpawn.add(new WandOfMagicMissile());
+            Item i = Generator.random(Generator.Category.WAND);
+            if (i != null) i.upgrade(1);
+			itemsToSpawn.add(i);
 			break;
 			
 		case 11:
 			itemsToSpawn.add(new PotionOfExperience());
+			itemsToSpawn.add(new ScrollOfDivination());
+            i = Generator.random(Generator.Category.RING);
+            if (i != null) i.upgrade(1);
+            itemsToSpawn.add(i);
 			break;
 			
 		case 16:
 			itemsToSpawn.add(new StoneOfEnchantment());
+			itemsToSpawn.add(Generator.random(Generator.Category.EXOTIC_POTION));
+			itemsToSpawn.add(Generator.random(Generator.Category.EXOTIC_SCROLL));
+            i = Generator.randomMissile();
+            if (i != null) i.upgrade(1);
+            itemsToSpawn.add(i);
 			break;
 			
 		case 21:
-			itemsToSpawn.add( new Torch() );
-			itemsToSpawn.add( new Torch() );
+		    itemsToSpawn.add(new ScrollOfEnchantment());
+			itemsToSpawn.add( new BeaconOfReturning());
+            itemsToSpawn.add(Generator.random(Generator.Category.EXOTIC_POTION));
+            itemsToSpawn.add(Generator.random(Generator.Category.EXOTIC_POTION));
+            itemsToSpawn.add(Generator.random(Generator.Category.EXOTIC_SCROLL));
+            itemsToSpawn.add(Generator.random(Generator.Category.EXOTIC_SCROLL));
 			itemsToSpawn.add( new Torch() );
 			break;
 		}
@@ -190,18 +209,8 @@ public class ShopRoom extends SpecialRoom {
 
         for (int i=0; i < 2; i++) itemsToSpawn.add(Generator.random(Generator.Category.STONE));
 
-		Armor a = Generator.randomArmor();
-		while (a.cursed){
-		    a = Generator.randomArmor();
-		    a.cursedKnown = true;
-        }
-		itemsToSpawn.add(a.identify());
-        MeleeWeapon w = Generator.randomWeapon();
-        while (w.cursed){
-            w = Generator.randomWeapon();
-            w.cursedKnown = true;
-        }
-        itemsToSpawn.add(w.identify());
+		itemsToSpawn.add(ChooseArmor(Dungeon.hero.belongings.armor));
+        itemsToSpawn.add(ChooseWeapon((Weapon) Dungeon.hero.belongings.weapon));
         Staff s = Generator.randomStaff();
         while (s.cursed){
             s = Generator.randomStaff();
@@ -296,6 +305,52 @@ public class ShopRoom extends SpecialRoom {
 		Random.shuffle(itemsToSpawn);
 		return itemsToSpawn;
 	}
+
+	protected static Armor ChooseArmor(Armor armor){
+	    //shop's armor will be better, that player's one
+
+        //we do not bother, if hero's armor is too powerful
+        if (armor.level() > 2) return null;
+        //do not bother, if player have augmented their armor
+        if (armor.augment != Armor.Augment.NONE) return null;
+
+        boolean enchant = false;
+        //if player's armor is not enchanted, with 75% shop's armor will be enchanted
+        if (!armor.hasGoodGlyph() && Random.Int(4 ) < 4) enchant = true;
+
+        int armorDefenseMax = armor.DRMax();
+
+        //roll armor, until we get the needed
+        Armor neededArmor;
+        do {
+            neededArmor = Generator.randomArmor();
+            neededArmor.identify();
+        } while (neededArmor.cursed && neededArmor.DRMax() < armorDefenseMax && (enchant && neededArmor.glyph == null));
+        return neededArmor;
+    }
+
+    protected static Weapon ChooseWeapon(Weapon weapon){
+        //shop's weapon will be better, that player's one
+
+        //we do not bother, if hero's weapon is too powerful
+        if (weapon.level() > 2) return null;
+        //do not bother, if player have augmented their weapon
+        if (weapon.augment != Weapon.Augment.NONE) return null;
+
+        boolean enchant = false;
+        //if player's armor is not enchanted, with 75% shop's weapon will be enchanted
+        if (!weapon.hasGoodEnchant() && Random.Int(4 ) < 4) enchant = true;
+
+        int weaponDmgMax = weapon.max();
+
+        //roll weapon, until we get the needed
+        Weapon weapon1;
+        do {
+            weapon1 = Generator.randomWeapon();
+            weapon1.identify();
+        } while (weapon1.cursed && weapon1.max() < weaponDmgMax && (enchant && weapon1.enchantment == null));
+        return weapon1;
+    }
 
 	protected static Bag ChooseBag(Belongings pack){
 	

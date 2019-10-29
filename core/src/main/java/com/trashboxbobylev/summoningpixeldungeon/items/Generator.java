@@ -63,6 +63,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfParalytic
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfPurity;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfStrength;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfToxicGas;
+import com.trashboxbobylev.summoningpixeldungeon.items.potions.exotic.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.Ring;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfAccuracy;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfElements;
@@ -88,6 +89,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTeleporta
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfAttunement;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfBlastWave;
@@ -175,9 +177,11 @@ public class Generator {
 		FOOD	( 0,    Food.class ),
 		
 		POTION	( 20,   Potion.class ),
+        EXOTIC_POTION	( 0,   ExoticPotion.class ),
 		SEED	( 0,    Plant.Seed.class ), //dropped by grass
 		
 		SCROLL	( 20,   Scroll.class ),
+        EXOTIC_SCROLL	( 0,   ExoticScroll.class ),
 		STONE   ( 3,    Runestone.class),
 		
 		GOLD	( 12,   Gold.class );
@@ -223,7 +227,21 @@ public class Generator {
 					PotionOfParalyticGas.class,
 					PotionOfPurity.class,
 					PotionOfExperience.class};
+            EXOTIC_POTION.classes = new Class<?>[]{
+                    PotionOfAdrenalineSurge.class, //2 drop every chapter, see Dungeon.posNeeded()
+                    PotionOfShielding.class,
+                    PotionOfMagicalSight.class,
+                    PotionOfSnapFreeze.class,
+                    PotionOfDragonsBreath.class,
+                    PotionOfCorrosiveGas.class,
+                    PotionOfStamina.class,
+                    PotionOfShroudingFog.class,
+                    PotionOfStormClouds.class,
+                    PotionOfEarthenArmor.class,
+                    PotionOfCleansing.class,
+                    PotionOfHolyFuror.class};
 			POTION.probs = new float[]{ 0, 6, 4, 3, 3, 3, 2, 2, 2, 2, 2, 1 };
+			EXOTIC_POTION.probs = POTION.probs;
 			
 			SEED.classes = new Class<?>[]{
 					Rotberry.Seed.class, //quest item
@@ -254,7 +272,22 @@ public class Generator {
 					ScrollOfAttunement.class,
 					ScrollOfTransmutation.class
 			};
+            EXOTIC_SCROLL.classes = new Class<?>[]{
+                    ScrollOfEnchantment.class, //3 drop every chapter, see Dungeon.souNeeded()
+                    ScrollOfDivination.class,
+                    ScrollOfAntiMagic.class,
+                    ScrollOfPrismaticImage.class,
+                    ScrollOfMysticalEnergy.class,
+                    ScrollOfPassage.class,
+                    ScrollOfAffection.class,
+                    ScrollOfForesight.class,
+                    ScrollOfConfusion.class,
+                    ScrollOfPsionicBlast.class,
+                    ScrollOfSoulEnergy.class,
+                    ScrollOfPolymorph.class
+            };
 			SCROLL.probs = new float[]{ 0, 5, 4, 3, 3, 3, 2, 2, 2, 2, 3, 1 };
+			EXOTIC_SCROLL.probs = SCROLL.probs;
 			
 			STONE.classes = new Class<?>[]{
 					StoneOfEnchantment.class,   //1 is guaranteed to drop on floors 6-19

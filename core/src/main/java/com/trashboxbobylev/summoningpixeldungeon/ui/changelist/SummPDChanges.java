@@ -249,9 +249,11 @@ public class SummPDChanges {
     public static void add_Minor_Changes(ArrayList<ChangeInfo> changeInfos){
         ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "Other", false, 0x651f66);
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.GOLD, null), "Gold balance changes",
-                "_-_ Because of summon weapons, gold appear a slighty rarer, but in more quantity.\n\n"+
-                                        "_-_ The shops have been extended to hold more valuable items.\n\n"+
-                                        "_-_ You can farm gold in Prison by killing the thieves."));
+                "_-_ Gold appear a slighty rarer, but in a lot more quantity.\n\n"+
+                                        "_-_ The shops have been extended to hold more valuable items, like upgraded items or exotic consumables.\n" +
+                                        "_-_ If you do not have good equipment, shops will help by providing a better weapon and armor.\n"+
+                                        "_-_ You can farm gold in Prison by killing the thieves.\n" +
+                                        "_-_ You can farm gold in City by collecting the tokens."));
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.POTION_CRIMSON, null), "Healing item changes",
                 "Potion of Healing and Elixir of Honeyed Healing now create the clouds of healing gases on shattering.\n\n" +
                         "When PoH cloud heal anything, EoHH are more concentrated and heal only allies."));

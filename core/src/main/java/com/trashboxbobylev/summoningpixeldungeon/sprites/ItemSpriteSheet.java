@@ -99,8 +99,8 @@ public class ItemSpriteSheet {
         assignItemRect(ALCH_PAGE,   10, 11);
         assignItemRect(RUNIC_SHOT, 14, 14);
 
-        assignItemRect(TENGU_BOMB,      10, 10);
-        assignItemRect(TENGU_SHOCKER,   10, 10);
+        assignItemRect(TENGU_BOMB,      13, 12);
+        assignItemRect(TENGU_SHOCKER,   13, 12);
     }
 
 	private static final int CONTAINERS     =                               xy(1, 3);   //16 slots
@@ -702,6 +702,7 @@ public class ItemSpriteSheet {
 	public static final int TOKEN   = QUEST+6;
 	public static final int BLOB    = QUEST+7;
 	public static final int SHARD   = QUEST+8;
+	public static final int GOLD_TOKEN = QUEST+9;
 	static{
 		assignItemRect(SKULL,   16, 11);
 		assignItemRect(DUST,    12, 11);
@@ -712,6 +713,7 @@ public class ItemSpriteSheet {
 		assignItemRect(TOKEN,   12, 12);
 		assignItemRect(BLOB,    10,  9);
 		assignItemRect(SHARD,    8, 10);
+		assignItemRect(GOLD_TOKEN, 12, 11);
 	}
 
 	private static final int BAGS       =                                   xy(1, 31);  //16 slots

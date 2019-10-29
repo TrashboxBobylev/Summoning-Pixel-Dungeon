@@ -46,6 +46,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.DriedRose;
 import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.LoveHolder;
 import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.trashboxbobylev.summoningpixeldungeon.items.quest.GoldToken;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.Ring;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfWealth;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfAggression;
@@ -678,6 +679,12 @@ public abstract class Mob extends Char {
 				Dungeon.level.drop(loot, pos).sprite.drop();
 			}
 		}
+
+		if (this instanceof Monk || this instanceof Warlock){
+		    if (Random.Float() < 0.5f * RingOfWealth.dropChanceMultiplier( Dungeon.hero )){
+		        Dungeon.level.drop(new GoldToken(), pos).sprite.drop();
+            }
+        }
 		
 		//ring of wealth logic
 		if (Ring.getBonus(Dungeon.hero, RingOfWealth.Wealth.class) > 0) {
