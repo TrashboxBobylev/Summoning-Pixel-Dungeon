@@ -115,6 +115,7 @@ public enum Document {
 		ADVENTURERS_GUIDE.pages.put("Dieing", 			DeviceCompat.isDebug());
 		ADVENTURERS_GUIDE.pages.put("Looting", 		    DeviceCompat.isDebug());
 		ADVENTURERS_GUIDE.pages.put("Magic", 			DeviceCompat.isDebug());
+        ADVENTURERS_GUIDE.pages.put("Summoning", 			DeviceCompat.isDebug());
 		
 		//sewers
 		ALCHEMY_GUIDE.pages.put("Potions",              DeviceCompat.isDebug());
