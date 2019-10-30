@@ -62,10 +62,10 @@ public class MagicalSleep extends Buff {
 
 	@Override
 	public boolean act(){
-		if (target instanceof Mob && ((Mob) target).state != ((Mob) target).SLEEPING){
-			detach();
-			return true;
-		}
+        if (target instanceof Mob && ((Mob) target).state != ((Mob) target).SLEEPING){
+            detach();
+            return true;
+        }
 		if (target.alignment == Char.Alignment.ALLY) {
 			target.HP = Math.min(target.HP+1, target.HT);
 			if (target instanceof  Hero) ((Hero) target).resting = true;
@@ -84,7 +84,7 @@ public class MagicalSleep extends Buff {
 			target.paralysed--;
 		if (target instanceof Hero)
 			((Hero) target).resting = false;
-		if (target instanceof Mob) ((Mob) target).state = ((Mob) target).WANDERING;
+		//if (target instanceof Mob) ((Mob) target).state = ((Mob) target).WANDERING;
 		super.detach();
 	}
 
