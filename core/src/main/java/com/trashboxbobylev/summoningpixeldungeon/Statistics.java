@@ -46,6 +46,7 @@ public class Statistics {
 	public static int summonedMinions;
 	
 	public static float duration;
+	public static int score;
 	
 	public static boolean qualifiedForNoKilling = false;
 	public static boolean completedWithNoKilling = false;
@@ -71,6 +72,8 @@ public class Statistics {
 		qualifiedForNoKilling = false;
 		
 		amuletObtained = false;
+
+		score = 0;
 		
 	}
 	
@@ -104,6 +107,7 @@ public class Statistics {
 		bundle.put( THROWN,		thrownAssists );
 		
 		bundle.put( DURATION,	duration );
+		bundle.put("score", score);
 		
 		bundle.put( AMULET,		amuletObtained );
 	}
@@ -122,6 +126,7 @@ public class Statistics {
 		thrownAssists   = bundle.getInt( THROWN );
 		
 		duration		= bundle.getFloat( DURATION );
+		score = bundle.getInt("score");
 		
 		amuletObtained	= bundle.getBoolean( AMULET );
 	}

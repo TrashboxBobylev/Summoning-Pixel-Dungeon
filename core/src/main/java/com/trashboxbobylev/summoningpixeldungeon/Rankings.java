@@ -77,7 +77,7 @@ public enum Rankings {
 		rec.armorTier	= Dungeon.hero.tier();
 		rec.herolevel	= Dungeon.hero.lvl;
 		rec.depth		= Dungeon.depth;
-		rec.score	= score( win );
+		rec.score	= Statistics.score = score( win );
 		
 		INSTANCE.saveGameData(rec);
 
@@ -139,7 +139,7 @@ public enum Rankings {
     }
 
     private static int noClassUniqueItemCheck(boolean win){
-	    if (Dungeon.hero.heroClass == HeroClass.CONJURER && win && Statistics.summonedMinions == 0) return 2000000;
+	    if (Dungeon.hero.heroClass == HeroClass.CONJURER && win && Statistics.summonedMinions == 0) return 2500000;
 	    boolean noUniqueItem = true;
         for (Item item : Dungeon.hero.belongings){
             if (win && (
@@ -151,7 +151,7 @@ public enum Rankings {
                 break;
             }
         }
-        if (noUniqueItem) return 2000000;
+        if (noUniqueItem) return 2500000;
 	    return 0;
     }
 
