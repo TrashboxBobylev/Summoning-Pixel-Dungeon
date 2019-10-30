@@ -158,6 +158,15 @@ public class SummPDChanges {
                         "_-_ Froggit staff are included into quickslots\n" +
                         "_-_ Added Gold Token, just for selling\n\n"+
                         "We are almost finished. If nothing major will happen with shop, I will publish the release."));
+        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "RC-3",
+                "Fixed:\n" +
+                        "_-_ Shops were selling the cursed items and unidentified wands and rings\n" +
+                        "_-_ You weren't able to descend, if you killed all final froggits\n" +
+                        "_-_ Minions are weren't able to awake (not sure about this one)\n" +
+                        "Changed:\n" +
+                        "_-_ Rankings score now have completely new formula\n" +
+                        "_-_ Added the article about allies into Adventurer Guide\n"+
+                        "We are almost finished. If nothing major will happen with this damn sleepy minions, I will publish the release."));
     }
 
     public static void add_General_Changes(ArrayList<ChangeInfo> changeInfos ){
@@ -274,6 +283,8 @@ public class SummPDChanges {
                                         "Added the new camera panning from new Shattered."));
         changes.addButton( new ChangeButton(new Image(Assets.BUFFS_LARGE, 64, 16, 16, 16), "Resistance",
                 "If monsters are resisting the effect, effect's damage now square-rooted rather that halfing."));
+        changes.addButton( new ChangeButton(Icons.get(Icons.RANKINGS), "Rankings",
+                "Completely changed the way, how game places run in rankings scene.\n\nMore info is on ranking scene."));
     }
 
 	
