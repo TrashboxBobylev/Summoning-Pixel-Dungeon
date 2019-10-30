@@ -37,6 +37,7 @@ import com.trashboxbobylev.summoningpixeldungeon.ui.ExitButton;
 import com.trashboxbobylev.summoningpixeldungeon.ui.Icons;
 import com.trashboxbobylev.summoningpixeldungeon.ui.RenderedTextMultiline;
 import com.trashboxbobylev.summoningpixeldungeon.ui.Window;
+import com.trashboxbobylev.summoningpixeldungeon.ui.changelist.ChangeButton;
 import com.trashboxbobylev.summoningpixeldungeon.windows.WndError;
 import com.trashboxbobylev.summoningpixeldungeon.windows.WndRanking;
 import com.watabou.noosa.BitmapText;
@@ -80,6 +81,7 @@ public class RankingsScene extends PixelScene {
 		title.hardlight(Window.TITLE_COLOR);
 		title.x = (w - title.width()) / 2f;
 		title.y = (20 - title.baseLine()) / 2f;
+
 		align(title);
 		add(title);
 		
@@ -133,8 +135,12 @@ public class RankingsScene extends PixelScene {
 				align(won);
 
 			}
-			
-		} else {
+
+            ChangeButton btnInfo = new ChangeButton(Icons.get(Icons.INFO), Messages.get(RankingsScene.class, "score"), Messages.get(RankingsScene.class, "score_info"));
+            btnInfo.setPos( btnInfo.width(), 0 );
+            add( btnInfo );
+
+        } else {
 
 			RenderedText noRec = PixelScene.renderText(Messages.get(this, "no_games"), 8);
 			noRec.hardlight( 0xCCCCCC );
@@ -148,6 +154,7 @@ public class RankingsScene extends PixelScene {
 		ExitButton btnExit = new ExitButton();
 		btnExit.setPos( Camera.main.width - btnExit.width(), 0 );
 		add( btnExit );
+
 
 		fadeIn();
 	}

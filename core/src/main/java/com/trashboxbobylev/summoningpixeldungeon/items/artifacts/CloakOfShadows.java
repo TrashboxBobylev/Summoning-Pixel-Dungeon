@@ -26,6 +26,7 @@ package com.trashboxbobylev.summoningpixeldungeon.items.artifacts;
 
 
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
+import com.trashboxbobylev.summoningpixeldungeon.Statistics;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.LockedFloor;
@@ -87,6 +88,7 @@ public class CloakOfShadows extends Artifact {
 				else if (charge <= 0)  GLog.i( Messages.get(this, "no_charge") );
 				else {
 					stealthed = true;
+                    Statistics.cloakUsing++;
 					hero.spend( 1f );
 					hero.busy();
 					Sample.INSTANCE.play(Assets.SND_MELD);

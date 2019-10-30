@@ -50,6 +50,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.quest.GoldToken;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.Ring;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfWealth;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfAggression;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.SpiritBow;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Lucky;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.trashboxbobylev.summoningpixeldungeon.levels.Level;
@@ -541,7 +542,7 @@ public abstract class Mob extends Char {
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
 		
-		if (enemy instanceof Hero && ((Hero) enemy).belongings.weapon instanceof MissileWeapon){
+		if (enemy instanceof Hero && (((Hero) enemy).belongings.weapon instanceof MissileWeapon || ((Hero) enemy).belongings.weapon instanceof SpiritBow.SpiritArrow)){
 			hitWithRanged = true;
 		}
 		

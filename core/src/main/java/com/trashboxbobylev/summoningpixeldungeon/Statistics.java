@@ -40,6 +40,9 @@ public class Statistics {
 	public static int upgradesUsed;
 	public static int sneakAttacks;
 	public static int thrownAssists;
+	public static int cloakUsing;
+	public static int wandUses;
+	public static boolean clothArmorForWarrior = true;
 	public static int summonedMinions;
 	
 	public static float duration;

@@ -27,6 +27,7 @@ package com.trashboxbobylev.summoningpixeldungeon.items.armor;
 import com.trashboxbobylev.summoningpixeldungeon.Badges;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.ShatteredPixelDungeon;
+import com.trashboxbobylev.summoningpixeldungeon.Statistics;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
@@ -187,6 +188,7 @@ public class Armor extends EquipableItem {
 				Dungeon.level.drop(seal, hero.pos);
 			}
 			seal = null;
+			Statistics.clothArmorForWarrior = false;
 		}
 	}
 
@@ -251,6 +253,7 @@ public class Armor extends EquipableItem {
 
 			hero.belongings.armor = null;
 			((HeroSprite)hero.sprite).updateArmor();
+            Statistics.clothArmorForWarrior = false;
 
 			BrokenSeal.WarriorShield sealBuff = hero.buff(BrokenSeal.WarriorShield.class);
 			if (sealBuff != null) sealBuff.setArmor(null);

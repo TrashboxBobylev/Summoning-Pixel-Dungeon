@@ -30,10 +30,15 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroClass;
 import com.trashboxbobylev.summoningpixeldungeon.items.Generator;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
+import com.trashboxbobylev.summoningpixeldungeon.items.armor.Armor;
+import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.CloakOfShadows;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.Bag;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.Potion;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.Ring;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.Scroll;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.SpiritBow;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MagesStaff;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.trashboxbobylev.summoningpixeldungeon.journal.Notes;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.ui.QuickSlotButton;
@@ -106,8 +111,63 @@ public enum Rankings {
 		save();
 	}
 
+	private static int pacifistCheck(boolean win){
+	    if (Statistics.enemiesSlain <= 7 && win) return 2500000;
+	    return Statistics.enemiesSlain * 25;
+    }
+
+    private static int noSoUCheck(boolean win){
+	    if (Statistics.upgradesUsed == 0 && win) return 2500000;
+	    return 0;
+    }
+
+    private static int noAnkhCheck(boolean win){
+	    if (Statistics.ankhsUsed == 0 && win) return 500;
+	    return 0;
+    }
+
+    private static int memeUpgCheck(boolean win){
+	    for (Item item : Dungeon.hero.belongings){
+	        if (item.level() > 15 && win) return 50000*(item.level() - 15);
+        }
+	    return 0;
+    }
+
+    private static int noMoneyCheck(boolean win){
+	    if (Statistics.goldCollected == 0 && win) return 2500000;
+	    return 0;
+    }
+
+    private static int noClassUniqueItemCheck(boolean win){
+	    if (Dungeon.hero.heroClass == HeroClass.CONJURER && win && Statistics.summonedMinions == 0) return 2000000;
+	    boolean noUniqueItem = true;
+        for (Item item : Dungeon.hero.belongings){
+            if (win && (
+                (Statistics.wandUses > 0 && Dungeon.hero.heroClass == HeroClass.MAGE) ||
+                (Statistics.thrownAssists > 0 && Dungeon.hero.heroClass == HeroClass.HUNTRESS) ||
+                (Statistics.clothArmorForWarrior && Dungeon.hero.heroClass == HeroClass.WARRIOR) ||
+                (Statistics.cloakUsing > 0 && Dungeon.hero.heroClass == HeroClass.ROGUE))){
+                noUniqueItem = false;
+                break;
+            }
+        }
+        if (noUniqueItem) return 2000000;
+	    return 0;
+    }
+
 	private int score( boolean win ) {
-		return (Statistics.goldCollected + Dungeon.hero.lvl * (win ? 26 : Dungeon.depth ) * 100) * (win ? 2 : 1);
+		return (
+                Statistics.goldCollected +
+                Statistics.deepestFloor * Dungeon.hero.lvl * 100 +
+                pacifistCheck(win) +
+                noSoUCheck(win) +
+                noAnkhCheck(win) +
+                memeUpgCheck(win) +
+                noMoneyCheck(win) +
+                noClassUniqueItemCheck(win) +
+                Statistics.foodEaten * 500 +
+                Statistics.potionsCooked * 500) *
+                (win ? ((Dungeon.challenges + 1) * 100) : 0);
 	}
 
 	public static final String HERO = "hero";

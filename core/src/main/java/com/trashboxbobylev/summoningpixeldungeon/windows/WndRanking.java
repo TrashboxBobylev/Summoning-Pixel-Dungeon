@@ -209,6 +209,7 @@ public class WndRanking extends WndTabbed {
 			
 			pos = statSlot( this, Messages.get(this, "food"), Integer.toString( Statistics.foodEaten ), pos );
 			pos = statSlot( this, Messages.get(this, "alchemy"), Integer.toString( Statistics.potionsCooked ), pos );
+            pos = statSlot( this, Messages.get(this, "wand"), Integer.toString( Statistics.wandUses ), pos );
 			pos = statSlot( this, Messages.get(this, "ankhs"), Integer.toString( Statistics.ankhsUsed ), pos );
 		}
 		

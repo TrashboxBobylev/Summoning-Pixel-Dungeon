@@ -27,6 +27,7 @@ package com.trashboxbobylev.summoningpixeldungeon.items.wands;
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Badges;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
+import com.trashboxbobylev.summoningpixeldungeon.Statistics;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
@@ -310,6 +311,7 @@ public abstract class Wand extends Item {
 	}
 
 	protected void wandUsed() {
+        Statistics.wandUses++;
 		if (!isIdentified() && availableUsesToID >= 1) {
 			availableUsesToID--;
 			usesLeftToID--;
