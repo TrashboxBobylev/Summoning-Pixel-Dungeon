@@ -24,6 +24,7 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.levels.rooms.special;
 
+import com.trashboxbobylev.summoningpixeldungeon.Challenges;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Belongings;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
@@ -171,7 +172,7 @@ public class ShopRoom extends SpecialRoom {
 		switch (Dungeon.depth) {
 		case 6:
             Item i = Generator.random(Generator.Category.WAND);
-            if (i != null) i.upgrade(1);
+            if (i != null && !i.cursed) i.upgrade(1).identify();
 			itemsToSpawn.add(i);
 			break;
 			
@@ -179,7 +180,7 @@ public class ShopRoom extends SpecialRoom {
 			itemsToSpawn.add(new PotionOfExperience());
 			itemsToSpawn.add(new ScrollOfDivination());
             i = Generator.random(Generator.Category.RING);
-            if (i != null) i.upgrade(1);
+            if (i != null && !i.cursed) i.upgrade(1);
             itemsToSpawn.add(i);
 			break;
 			
@@ -188,7 +189,7 @@ public class ShopRoom extends SpecialRoom {
 			itemsToSpawn.add(Generator.random(Generator.Category.EXOTIC_POTION));
 			itemsToSpawn.add(Generator.random(Generator.Category.EXOTIC_SCROLL));
             i = Generator.randomMissile();
-            if (i != null) i.upgrade(1);
+            if (i != null) i.upgrade(1).identify().quantity(1);
             itemsToSpawn.add(i);
 			break;
 			
@@ -214,9 +215,9 @@ public class ShopRoom extends SpecialRoom {
         Staff s = Generator.randomStaff();
         while (s.cursed){
             s = Generator.randomStaff();
-            s.cursedKnown = true;
+            s.identify();
         }
-        itemsToSpawn.add(s.identify());
+        itemsToSpawn.add(s);
         itemsToSpawn.add(Generator.randomMissile());
         itemsToSpawn.add(Generator.randomMissile());
 
@@ -309,6 +310,8 @@ public class ShopRoom extends SpecialRoom {
 	protected static Armor ChooseArmor(Armor armor){
 	    //shop's armor will be better, that player's one
 
+        //on faith is my armor, no armor
+        if (Challenges.isItemBlocked(new Armor(2))) return null;
         //we do not bother, if hero's armor is too powerful
         if (armor.level() > 2) return null;
         //do not bother, if player have augmented their armor
@@ -325,7 +328,8 @@ public class ShopRoom extends SpecialRoom {
         do {
             neededArmor = Generator.randomArmor();
             neededArmor.identify();
-        } while (neededArmor.cursed && neededArmor.DRMax() < armorDefenseMax && (enchant && neededArmor.glyph == null));
+        } while (neededArmor.cursed && neededArmor.DRMax() <= armorDefenseMax && (enchant && !neededArmor.hasGoodGlyph())
+        && (Random.Int(2) == 1 && neededArmor.tier > 3));
         return neededArmor;
     }
 
@@ -344,11 +348,12 @@ public class ShopRoom extends SpecialRoom {
         int weaponDmgMax = weapon.max();
 
         //roll weapon, until we get the needed
-        Weapon weapon1;
+        MeleeWeapon weapon1;
         do {
             weapon1 = Generator.randomWeapon();
             weapon1.identify();
-        } while (weapon1.cursed && weapon1.max() < weaponDmgMax && (enchant && weapon1.enchantment == null));
+        } while (weapon1.cursed && weapon1.max() <= weaponDmgMax && (enchant && !weapon1.hasGoodEnchant())
+        && (Random.Int(2) == 1 && weapon1.tier > 3));
         return weapon1;
     }
 
