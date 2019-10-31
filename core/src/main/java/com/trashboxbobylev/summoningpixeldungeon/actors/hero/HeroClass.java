@@ -336,6 +336,8 @@ public enum HeroClass {
 				return Messages.get(HeroClass.class, "rogue_unlock");
 			case HUNTRESS:
 				return Messages.get(HeroClass.class, "huntress_unlock");
+            case CONJURER:
+                return Messages.get(HeroClass.class, "conjurer_unlock");
 		}
 	}
 
