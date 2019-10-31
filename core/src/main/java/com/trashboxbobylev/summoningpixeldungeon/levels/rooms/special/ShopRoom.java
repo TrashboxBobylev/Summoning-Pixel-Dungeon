@@ -328,7 +328,7 @@ public class ShopRoom extends SpecialRoom {
         do {
             neededArmor = Generator.randomArmor();
             neededArmor.identify();
-        } while (neededArmor.cursed && neededArmor.DRMax() <= armorDefenseMax && (enchant && !neededArmor.hasGoodGlyph())
+        } while (neededArmor.cursed && neededArmor.DRMax() <= armorDefenseMax && (enchant && !neededArmor.hasGoodGlyph() && neededArmor.hasCurseGlyph())
         && (Random.Int(2) == 1 && neededArmor.tier > 3));
         return neededArmor;
     }
@@ -352,7 +352,7 @@ public class ShopRoom extends SpecialRoom {
         do {
             weapon1 = Generator.randomWeapon();
             weapon1.identify();
-        } while (weapon1.cursed && weapon1.max() <= weaponDmgMax && (enchant && !weapon1.hasGoodEnchant())
+        } while (weapon1.cursed && weapon1.max() <= weaponDmgMax && (enchant && !weapon1.hasGoodEnchant() && weapon1.hasCurseEnchant())
         && (Random.Int(2) == 1 && weapon1.tier > 3));
         return weapon1;
     }
