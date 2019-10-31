@@ -129,7 +129,7 @@ public class Messages {
 			if (c != null && c.getSuperclass() != null){
 				return get(c.getSuperclass(), k, args);
 			} else {
-				return "!!!NO TEXT FOUND!!!";
+				return "This text is missing, ask Bobby for fix. Name: "+key;
 			}
 		}
 	}
