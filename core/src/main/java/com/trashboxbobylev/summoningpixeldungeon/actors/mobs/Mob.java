@@ -780,8 +780,8 @@ public abstract class Mob extends Char {
 				enemySeen = true;
 
 				notice();
-				state = HUNTING;
-				target = enemy.pos;
+				state = alignment == Alignment.ALLY ? WANDERING : HUNTING;
+				target = alignment == Alignment.ALLY ? Dungeon.hero.pos : enemy.pos;
 
 				if (Dungeon.isChallenged( Challenges.SWARM_INTELLIGENCE )) {
 					for (Mob mob : Dungeon.level.mobs) {
