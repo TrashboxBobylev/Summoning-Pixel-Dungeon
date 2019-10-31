@@ -107,7 +107,7 @@ public class Statistics {
 		bundle.put( THROWN,		thrownAssists );
 		
 		bundle.put( DURATION,	duration );
-		bundle.put("score", score);
+		bundle.put("strange_number", score);
 		
 		bundle.put( AMULET,		amuletObtained );
 	}
@@ -126,7 +126,7 @@ public class Statistics {
 		thrownAssists   = bundle.getInt( THROWN );
 		
 		duration		= bundle.getFloat( DURATION );
-		score = bundle.getInt("score");
+		score = bundle.getInt("strange_number");
 		
 		amuletObtained	= bundle.getBoolean( AMULET );
 	}

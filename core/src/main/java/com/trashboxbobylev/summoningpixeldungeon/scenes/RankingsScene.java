@@ -28,16 +28,14 @@ import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Rankings;
 import com.trashboxbobylev.summoningpixeldungeon.ShatteredPixelDungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroClass;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Flare;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
-import com.trashboxbobylev.summoningpixeldungeon.ui.Archs;
-import com.trashboxbobylev.summoningpixeldungeon.ui.ExitButton;
-import com.trashboxbobylev.summoningpixeldungeon.ui.Icons;
-import com.trashboxbobylev.summoningpixeldungeon.ui.RenderedTextMultiline;
-import com.trashboxbobylev.summoningpixeldungeon.ui.Window;
+import com.trashboxbobylev.summoningpixeldungeon.ui.*;
 import com.trashboxbobylev.summoningpixeldungeon.ui.changelist.ChangeButton;
+import com.trashboxbobylev.summoningpixeldungeon.ui.changelist.ChangesWindow;
 import com.trashboxbobylev.summoningpixeldungeon.windows.WndError;
 import com.trashboxbobylev.summoningpixeldungeon.windows.WndRanking;
 import com.watabou.noosa.BitmapText;
@@ -136,8 +134,15 @@ public class RankingsScene extends PixelScene {
 
 			}
 
-            ChangeButton btnInfo = new ChangeButton(Icons.get(Icons.INFO), Messages.get(RankingsScene.class, "score"), Messages.get(RankingsScene.class, "score_info"));
-            btnInfo.setPos( btnInfo.width(), 0 );
+
+            RedButton btnInfo = new RedButton( "?" ) {
+                @Override
+                protected void onClick() {
+                    ShatteredPixelDungeon.scene().add(new ChangesWindow(Icons.INFO.get(), Messages.get(RankingsScene.class, "score"), Messages.get(RankingsScene.class, "score_info")));
+                }
+            };
+            btnInfo.enable( true );
+            btnInfo.setRect( 10, 5, 20, 15 );
             add( btnInfo );
 
         } else {

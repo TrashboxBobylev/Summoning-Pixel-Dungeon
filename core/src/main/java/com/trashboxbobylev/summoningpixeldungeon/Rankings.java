@@ -113,7 +113,7 @@ public enum Rankings {
 
 	private static int pacifistCheck(boolean win){
 	    if (Statistics.enemiesSlain <= 7 && win) return 2500000;
-	    return Statistics.enemiesSlain * 25;
+	    return Statistics.enemiesSlain * 50;
     }
 
     private static int noSoUCheck(boolean win){
@@ -140,34 +140,43 @@ public enum Rankings {
 
     private static int noClassUniqueItemCheck(boolean win){
 	    if (Dungeon.hero.heroClass == HeroClass.CONJURER && win && Statistics.summonedMinions == 0) return 2500000;
-	    boolean noUniqueItem = true;
-        for (Item item : Dungeon.hero.belongings){
+	    boolean noUniqueItem = false;
             if (win && (
                 (Statistics.wandUses > 0 && Dungeon.hero.heroClass == HeroClass.MAGE) ||
                 (Statistics.thrownAssists > 0 && Dungeon.hero.heroClass == HeroClass.HUNTRESS) ||
                 (Statistics.clothArmorForWarrior && Dungeon.hero.heroClass == HeroClass.WARRIOR) ||
                 (Statistics.cloakUsing > 0 && Dungeon.hero.heroClass == HeroClass.ROGUE))){
-                noUniqueItem = false;
-                break;
+                noUniqueItem = true;
             }
-        }
         if (noUniqueItem) return 2500000;
 	    return 0;
     }
 
+    private static float chalCheckSoJuhWillBeHappy(boolean win){
+	    float juh = 1f;
+	    if (Dungeon.isChallenged(Challenges.NO_HERBALISM)) juh *= 1.1f;
+	    if (Dungeon.isChallenged(Challenges.DARKNESS)) juh *= 1.3f;
+	    if (Dungeon.isChallenged(Challenges.NO_FOOD)) juh *= 1.3f;
+	    if (Dungeon.isChallenged(Challenges.NO_ARMOR)) juh *= 1.4f;
+	    if (Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) juh *= 1.45f;
+	    if (Dungeon.isChallenged(Challenges.NO_SCROLLS)) juh *= 1.6f;
+	    if (Dungeon.isChallenged(Challenges.NO_HEALING)) juh *= 1.8f;
+	    return juh;
+    }
+
 	private int score( boolean win ) {
-		return (
-                Statistics.goldCollected +
-                Statistics.deepestFloor * Dungeon.hero.lvl * 100 +
-                pacifistCheck(win) +
-                noSoUCheck(win) +
-                noAnkhCheck(win) +
-                memeUpgCheck(win) +
-                noMoneyCheck(win) +
-                noClassUniqueItemCheck(win) +
-                Statistics.foodEaten * 500 +
-                Statistics.potionsCooked * 500) *
-                (win ? ((Dungeon.challenges + 1) * 100) : 0);
+		return Math.round((
+                        Statistics.goldCollected +
+                        Statistics.deepestFloor * Dungeon.hero.lvl * 100 +
+                        pacifistCheck(win) +
+                        noSoUCheck(win) +
+                        noAnkhCheck(win) +
+                        memeUpgCheck(win) +
+                        noMoneyCheck(win) +
+                        noClassUniqueItemCheck(win) +
+                        Statistics.foodEaten * 500 +
+                        Statistics.potionsCooked * 500) *
+                        (win ? 2 : 1) * chalCheckSoJuhWillBeHappy(win));
 	}
 
 	public static final String HERO = "hero";
