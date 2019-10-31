@@ -49,128 +49,132 @@ public class SummPDChanges {
 		ChangeInfo changes = new ChangeInfo( "Summoning PD", true, "");
 		changes.hardlight( Window.TITLE_COLOR);
 		changeInfos.add(changes);
-		add_Beta_Changes(changeInfos);
 		add_General_Changes(changeInfos);
 		add_Items_Changes(changeInfos);
 		add_Mobs_Changes(changeInfos);
 		add_Minor_Changes(changeInfos);
 	}
 
-    public static void add_Beta_Changes( ArrayList<ChangeInfo> changeInfos ){
-        ChangeInfo changes = new ChangeInfo("Beta Information", false, "");
-        changes.hardlight(Window.TITLE_COLOR);
-        changeInfos.add(changes);
-
-        changes.addButton( new ChangeButton(Icons.get(Icons.CONJURER), "Closed Beta",
-                "_-_ Closed beta started October 18th, 2019\n" +
-                        "_-_ 42 days after beginning of development\n" +
-                        "\n" +
-                        "This is pre-release version of Summoning PD. I except to test them for 5-8 days, if nothing major will happen, that version will be released as final."));
-
-        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-2",
-                "Fixed:\n" +
-                        "_-_ Traps was not correctly revealed, non-hidden traps was crashing the game.\n" +
-                        "_-_ LOVE Holder was able to have negative strength.\n" +
-                        "_-_ Conjurer's icon was bit out of center\n"+
-                        "_-_ Changes buttons was not enough long.\n"+
-                        "_-_ Ring of Attunement was displaying incorrect numbers.\n\n"+
-                        "Changed:\n" +
-                        "_-_ Buffed melee damage for staffs, but lowered recharge rate by 50%."));
-
-        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-3",
-                "Fixed:\n" +
-                        "_-_ Rendering of cleared Tengu floor was wrong\n" +
-                        "_-_ Conjurer was starting with 10 strength\n" +
-                        "_-_ Sometimes the new badges were crashing the game\n"+
-                        "_-_ Gaster Blaster had 1 attunement requirement, but consumed the 2 attunement on summoning\n"+
-                        "_-_ In some cases staff's descriptions were crashing the game\n"+
-                        "_-_ Sewers had test tier drop rate list\n\n"+
-                        "Changed:\n" +
-                        "_-_ New sprites for Conjurer's avatar and froggit\n"+
-                        "_-_ Staff's default action were changed to SUMMON"));
-        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-4",
-                "Fixed:\n" +
-                        "_-_ Player was able to use staffs with negative charges\n" +
-                        "_-_ Soul Reaver's abilities were reducing minion's life to 1\n" +
-                        "_-_ Chicken staff was displaying the bonus HP from robe\n"+
-                        "_-_ Froggit were having the wrong frame animations\n"+
-                        "_-_ Love Holder doesn't crash on reading +10's description\n"+
-                        "_-_ Minions was not able to wake up after magical sleep\n\n"+
-                        "Changed:\n" +
-                        "_-_ Minions now have the stats description"));
-        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-5",
-                "Fixed:\n" +
-                        "_-_ Froggit was using the death animation for attacking and vice versa\n" +
-                        "_-_ Heroes were not able to open heaps standing on them\n" +
-                        "_-_ All heroes was having 9 strength\n\n"+
-                        "Changed:\n" +
-                "_-_ Changes slighty the weight of items, staffs should appear more often.\n\n"+
-                "_-_ Reworked the Vial of Perfume: now attracts enemies from whole depth, but attacking them dispells the perfume affection.\n"+
-                "_-_ Changed the Containing: chance to collect the mob depends on their HP and EXP, if not successful, the enemy will get damage, equal to 50% current HP.\n"+
-                "_-_ Rebalanced most broken or underused staffs.\n"+
-                "_-_ Removed the unstable from Worn Shortsword."));
-
-        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-6",
-                "Fixed:\n" +
-                        "_-_ Staffs were not transmutable\n" +
-                        "_-_ Message from stone of aggression was !!!NO TEXT FOUND!!!\n" +
-                        "_-_ Conjurer's amor had a wrong prompt on imbuing\n\n"+
-                        "Changed:\n" +
-                        "_-_ Staffs now decrease strength requirement with every upgrade.\n"+
-                        "_-_ Chaos Saber now collect a lot of soul, if hero is Soul Reaver.\n"+
-                        "_-_ Necromancer now affect their skeleton with Empowered.\n"+
-                        "_-_ Reworked the resistance for monsters: damage now get sqrted rather that halfed.\n"+
-                        "_-_ Buffed the Ring of Attunement.\n"+
-                        "_-_ Scroll of Attunement now weakens the enemies.\n"+
-                        "_-_ Minion show their base DR alongside with additional DR in description.\n"+
-                        "_-_ Necromancers now drop the random staff with 1/8 chance.\n"+
-                        "_-_ Removed nerfs from Cleaver, but adjusted the chance to behead."));
-
-        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-7",
-                "Changed:\n"+
-                                        "_-_ Throwing knifes and kunai doesn't consume a durability with right uses\n"+
-                                        "_-_ Added the slingshot with removal of throwing stones as standalone weapon\n"+
-                                        "_-_ Fixed weird non-opaque spots in graphics\n"+
-                                        "_-_ Reworked the runic blade\n"+
-                                        "_-_ Changed the visuals of fireball and main menu buttons\n"+
-                                        "_-_ Buffed the rattle snake's evasion and damage\n"+
-                                        "_-_ Massively adjusted charge rate of most staves; froggit staff will stay with old stats, most of staves recharges in 400 turns, tank staves recharge even longer\n" +
-                                        "_-_ Brand new icon for the mod!"
-        ));
-        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-7.1",
-                "Fixed:\n" +
-                        "_-_ Runic Blade's emitter were placed in wrong place and didn't updated\n" +
-                        "_-_ On shooting, Runic Blade was able to target something different from target\n\n" +
-                        "Changed:\n" +
-                        "_-_ New menu button appearance"));
-        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "RC-1",
-                        "Changed:\n" +
-                        "_-_ Mod's icon are more contrast now\n" +
-                                "_-_ Adjusted Soul Reaver's offensive ability: now it consumes 2x more soul\n" +
-                                "_-_ Added Slimes and Final Froggits into Demon Halls\n\n" +
-                                "We are almost finished. If nothing major will happen with new mobs, I will publish the release."));
-        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "RC-2",
-                "Changed:\n" +
-                        "_-_ Shops have been reworked again\n" +
-                        "_-_ You need to kill Final Froggits to proceed to next floor\n" +
-                        "_-_ Slimes now occupy cell rather that levitating\n" +
-                        "_-_ Changed the about scene\n" +
-                        "_-_ Froggit staff are included into quickslots\n" +
-                        "_-_ Added Gold Token, just for selling\n\n"+
-                        "We are almost finished. If nothing major will happen with shop, I will publish the release."));
-        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "RC-3",
-                "Fixed:\n" +
-                        "_-_ Shops were selling the cursed items and unidentified wands and rings\n" +
-                        "_-_ You weren't able to descend, if you killed all final froggits\n" +
-                        "_-_ Minions are weren't able to awake (not sure about this one)\n" +
-                        "Changed:\n" +
-                        "_-_ Rankings score now have completely new formula\n" +
-                        "_-_ Added the article about allies into Adventurer Guide\n"+
-                        "We are almost finished. If nothing major will happen with this damn sleepy minions, I will publish the release."));
-    }
+//    public static void add_Beta_Changes( ArrayList<ChangeInfo> changeInfos ){
+//        ChangeInfo changes = new ChangeInfo("Beta Information", false, "");
+//        changes.hardlight(Window.TITLE_COLOR);
+//        changeInfos.add(changes);
+//
+//        changes.addButton( new ChangeButton(Icons.get(Icons.CONJURER), "Closed Beta",
+//                "_-_ Closed beta started October 18th, 2019\n" +
+//                        "_-_ 42 days after beginning of development\n" +
+//                        "\n" +
+//                        "This is pre-release version of Summoning PD. I except to test them for 5-8 days, if nothing major will happen, that version will be released as final."));
+//
+//        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-2",
+//                "Fixed:\n" +
+//                        "_-_ Traps was not correctly revealed, non-hidden traps was crashing the game.\n" +
+//                        "_-_ LOVE Holder was able to have negative strength.\n" +
+//                        "_-_ Conjurer's icon was bit out of center\n"+
+//                        "_-_ Changes buttons was not enough long.\n"+
+//                        "_-_ Ring of Attunement was displaying incorrect numbers.\n\n"+
+//                        "Changed:\n" +
+//                        "_-_ Buffed melee damage for staffs, but lowered recharge rate by 50%."));
+//
+//        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-3",
+//                "Fixed:\n" +
+//                        "_-_ Rendering of cleared Tengu floor was wrong\n" +
+//                        "_-_ Conjurer was starting with 10 strength\n" +
+//                        "_-_ Sometimes the new badges were crashing the game\n"+
+//                        "_-_ Gaster Blaster had 1 attunement requirement, but consumed the 2 attunement on summoning\n"+
+//                        "_-_ In some cases staff's descriptions were crashing the game\n"+
+//                        "_-_ Sewers had test tier drop rate list\n\n"+
+//                        "Changed:\n" +
+//                        "_-_ New sprites for Conjurer's avatar and froggit\n"+
+//                        "_-_ Staff's default action were changed to SUMMON"));
+//        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-4",
+//                "Fixed:\n" +
+//                        "_-_ Player was able to use staffs with negative charges\n" +
+//                        "_-_ Soul Reaver's abilities were reducing minion's life to 1\n" +
+//                        "_-_ Chicken staff was displaying the bonus HP from robe\n"+
+//                        "_-_ Froggit were having the wrong frame animations\n"+
+//                        "_-_ Love Holder doesn't crash on reading +10's description\n"+
+//                        "_-_ Minions was not able to wake up after magical sleep\n\n"+
+//                        "Changed:\n" +
+//                        "_-_ Minions now have the stats description"));
+//        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-5",
+//                "Fixed:\n" +
+//                        "_-_ Froggit was using the death animation for attacking and vice versa\n" +
+//                        "_-_ Heroes were not able to open heaps standing on them\n" +
+//                        "_-_ All heroes was having 9 strength\n\n"+
+//                        "Changed:\n" +
+//                "_-_ Changes slighty the weight of items, staffs should appear more often.\n\n"+
+//                "_-_ Reworked the Vial of Perfume: now attracts enemies from whole depth, but attacking them dispells the perfume affection.\n"+
+//                "_-_ Changed the Containing: chance to collect the mob depends on their HP and EXP, if not successful, the enemy will get damage, equal to 50% current HP.\n"+
+//                "_-_ Rebalanced most broken or underused staffs.\n"+
+//                "_-_ Removed the unstable from Worn Shortsword."));
+//
+//        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-6",
+//                "Fixed:\n" +
+//                        "_-_ Staffs were not transmutable\n" +
+//                        "_-_ Message from stone of aggression was !!!NO TEXT FOUND!!!\n" +
+//                        "_-_ Conjurer's amor had a wrong prompt on imbuing\n\n"+
+//                        "Changed:\n" +
+//                        "_-_ Staffs now decrease strength requirement with every upgrade.\n"+
+//                        "_-_ Chaos Saber now collect a lot of soul, if hero is Soul Reaver.\n"+
+//                        "_-_ Necromancer now affect their skeleton with Empowered.\n"+
+//                        "_-_ Reworked the resistance for monsters: damage now get sqrted rather that halfed.\n"+
+//                        "_-_ Buffed the Ring of Attunement.\n"+
+//                        "_-_ Scroll of Attunement now weakens the enemies.\n"+
+//                        "_-_ Minion show their base DR alongside with additional DR in description.\n"+
+//                        "_-_ Necromancers now drop the random staff with 1/8 chance.\n"+
+//                        "_-_ Removed nerfs from Cleaver, but adjusted the chance to behead."));
+//
+//        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-7",
+//                "Changed:\n"+
+//                                        "_-_ Throwing knifes and kunai doesn't consume a durability with right uses\n"+
+//                                        "_-_ Added the slingshot with removal of throwing stones as standalone weapon\n"+
+//                                        "_-_ Fixed weird non-opaque spots in graphics\n"+
+//                                        "_-_ Reworked the runic blade\n"+
+//                                        "_-_ Changed the visuals of fireball and main menu buttons\n"+
+//                                        "_-_ Buffed the rattle snake's evasion and damage\n"+
+//                                        "_-_ Massively adjusted charge rate of most staves; froggit staff will stay with old stats, most of staves recharges in 400 turns, tank staves recharge even longer\n" +
+//                                        "_-_ Brand new icon for the mod!"
+//        ));
+//        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-7.1",
+//                "Fixed:\n" +
+//                        "_-_ Runic Blade's emitter were placed in wrong place and didn't updated\n" +
+//                        "_-_ On shooting, Runic Blade was able to target something different from target\n\n" +
+//                        "Changed:\n" +
+//                        "_-_ New menu button appearance"));
+//        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "RC-1",
+//                        "Changed:\n" +
+//                        "_-_ Mod's icon are more contrast now\n" +
+//                                "_-_ Adjusted Soul Reaver's offensive ability: now it consumes 2x more soul\n" +
+//                                "_-_ Added Slimes and Final Froggits into Demon Halls\n\n" +
+//                                "We are almost finished. If nothing major will happen with new mobs, I will publish the release."));
+//        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "RC-2",
+//                "Changed:\n" +
+//                        "_-_ Shops have been reworked again\n" +
+//                        "_-_ You need to kill Final Froggits to proceed to next floor\n" +
+//                        "_-_ Slimes now occupy cell rather that levitating\n" +
+//                        "_-_ Changed the about scene\n" +
+//                        "_-_ Froggit staff are included into quickslots\n" +
+//                        "_-_ Added Gold Token, just for selling\n\n"+
+//                        "We are almost finished. If nothing major will happen with shop, I will publish the release."));
+//        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "RC-3",
+//                "Fixed:\n" +
+//                        "_-_ Shops were selling the cursed items and unidentified wands and rings\n" +
+//                        "_-_ You weren't able to descend, if you killed all final froggits\n" +
+//                        "_-_ Minions are weren't able to awake (not sure about this one)\n" +
+//                        "Changed:\n" +
+//                        "_-_ Rankings score now have completely new formula\n" +
+//                        "_-_ Added the article about allies into Adventurer Guide\n"+
+//                        "We are almost finished. If nothing major will happen with this damn sleepy minions, I will publish the release."));
+//    }
 
     public static void add_General_Changes(ArrayList<ChangeInfo> changeInfos ){
-	    ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "General", false, Window.SHPX_COLOR);
+	    ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
+        changes.addButton( new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
+                "_-_ Released October 31nd, 2019\n" +
+                        "_-_ 55 days after beginning of development\n" +
+                        "_-_ 105 days after Shattered 0.7.4"));
+        changes = ChangesScene.createChangeInfo(changeInfos, "General", false, Window.SHPX_COLOR);
         changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.CONJURER, 6), "New Class!",
                 "Asriel Dreemur joins the dungeon crawling!\n\n" +
                         "The Conjurer - new class, that are focused on new type of weapons - summon weapons. Thanks to his great soul power, here are able to control more allies and support them by his unique equipment.\n\n"+
