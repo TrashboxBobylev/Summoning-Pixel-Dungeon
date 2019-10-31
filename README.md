@@ -1,39 +1,30 @@
-# Shattered Pixel Dungeon
+#Summoning Pixel Dungeon
 
-A Roguelike RPG, with randomly generated levels, items, enemies, and traps!
-Based on the source code of Pixel Dungeon, by Watabou.
+A Roguelike RPG, with randomly generated levels, items, enemies, and minions!
+Based on the source code of Shattered Pixel Dungeon, by 00-Evan.
 
 Look below for compilation instructions.
 
-Shattered Pixel Dungeon on Google Play:
-https://play.google.com/store/apps/details?id=com.trashboxbobylev.shatteredpixeldungeon
-
-On Amazon:
-https://www.amazon.com/Shattered-Pixel-Dungeon/dp/B00OH2C21M
-
-On F-Droid (Which compiles directly from this source code):
-https://f-droid.org/repository/browse/?fdid=com.trashboxbobylev.shatteredpixeldungeon
-
 Official website and blog:
-http://www.shatteredpixel.com
+http://trashboxbobylev.itch.io
 
-Source code of original Pixel Dungeon (adapted to use newer build tools):
-https://github.com/00-Evan/pixel-dungeon-gradle
+Source code of original Shattered Pixel Dungeon (adapted to use newer build tools):
+https://github.com/00-Evan/shattered-pixel-dungeon
 
-# Compiling Shattered Pixel Dungeon
+# Compiling Summoning Pixel Dungeon
 
 **Note that Shattered Pixel Dungeon is currently in the process of being converted to use the multiplatform game library LibGDX. The codebase is fully functional, but still contains some code which depends on Android, and so cannot be built for other platforms yet.**
 
-To compile Shattered Pixel Dungeon you will need:
-- A computer which meets the [system requirements for Android Studio](https://developer.android.com/studio#Requirements)
+To compile Summoning Pixel Dungeon you will need:
+- A computer which meets the [system requirements for Android Studio](https://developer.android.com/studio#Requirements) (IntellJ IDEA is also acceptable)
 - (optional) a GitHub account to fork this repository, if you wish to use version control
-- (optional) an android phone to test your build of Shattered Pixel Dungeon
+- (optional) an android phone to test your build of Summoning Pixel Dungeon
 
 #### 1. Installing programs
 
 Download and install the latest version of [Android Studio](https://developer.android.com/studio). This is the development environment which android apps use, it includes all the tools needed to get started with building android apps.
 
-It is optional, but strongly recommended, to use version control to manage your copy of the Shattered Pixel Dungeon codebase. Version control is software which helps you manage changes to code. To use version control you will need to download and install [Git](https://git-scm.com/downloads). You are welcome to use a separate graphical git client or git CLI if you prefer, but this guide will use Android Studio's built-in git tools.
+It is optional, but strongly recommended, to use version control to manage your copy of the Summoning Pixel Dungeon codebase. Version control is software which helps you manage changes to code. To use version control you will need to download and install [Git](https://git-scm.com/downloads). You are welcome to use a separate graphical git client or git CLI if you prefer, but this guide will use Android Studio's built-in git tools.
 
 #### 2. Setting up your copy of the code
 
@@ -69,14 +60,14 @@ This guide includes a [section on physical android devices...](https://developer
 
 An APK (Android PacKage) is a file used to distribute Android applications. The Android studio website has [a guide which covers building your app into an APK.](https://developer.android.com/studio/run#reference) Note that the option you will likely want to use is 'Generate Signed Bundle / APK'.
 
-Note that APKs must be signed with a signing key. If you are making a small personal modification to Shattered Pixel Dungeon then your signing key is not important, but if you intend to distribute your modification to other people and want them to be able to receive updates, then your signing key is critical. The Android studio website has [a guide on signing keys.](https://developer.android.com/studio/publish/app-signing.html#opt-out)
+Note that APKs must be signed with a signing key. If you are making a small personal modification to Summoning Pixel Dungeon then your signing key is not important, but if you intend to distribute your modification to other people and want them to be able to receive updates, then your signing key is critical. The Android studio website has [a guide on signing keys.](https://developer.android.com/studio/publish/app-signing.html#opt-out)
 
-Additionally, note that by default Shattered Pixel Dungeon uses R8 on release builds. R8 is a code optimizer which decreases the size of the APK and improves performance, but also makes error reports more difficult to read. You can disable R8 by setting minifyEnabled to false in 'android/build.grade'. If you wish to keep R8 enabled, you can learn more about it [here.](https://developer.android.com/studio/build/shrink-code)
+Additionally, note that by default Summoning Pixel Dungeon uses R8 on release builds. R8 is a code optimizer which decreases the size of the APK and improves performance, but also makes error reports more difficult to read. You can disable R8 by setting minifyEnabled to false in 'android/build.grade'. If you wish to keep R8 enabled, you can learn more about it [here.](https://developer.android.com/studio/build/shrink-code)
 
 #### 6. Distributing Your APK
 
 The Android Studio website includes [a guide for ways to distribute your app.](https://developer.android.com/studio/publish)
 
-Note that by distributing your modification of Shattered Pixel Dungeon, you are bound by the terms of the GPLv3 license, which requires that you make any modifications you have made open-source. If you followed this guide and are using version control, that is already set up for you as your forked repository is publicly hosted on GitHub.
+Note that by distributing your modification of Summoning Pixel Dungeon, you are bound by the terms of the GPLv3 license, which requires that you make any modifications you have made open-source. If you followed this guide and are using version control, that is already set up for you as your forked repository is publicly hosted on GitHub.
 
-If you intend to make your version of the game available on Google Play **PLEASE CONTACT ME AT THE FOLLOWING EMAIL ADDRESS:** Evan@ShatteredPixel.com . There are various aspects of Google's Developer Policies that go beyond the scope of a simple 'how to compile' guide. If you do not take necessary precautions before attempting to publish on Google Play, your version of the game will almost certainly be taken down for impersonating Shattered Pixel Dungeon or Pixel Dungeon.
+If you intend to make your version of the game available on Google Play **PLEASE CONTACT EVAN DEBENHAM AT THE FOLLOWING EMAIL ADDRESS:** Evan@ShatteredPixel.com . There are various aspects of Google's Developer Policies that go beyond the scope of a simple 'how to compile' guide. If you do not take necessary precautions before attempting to publish on Google Play, your version of the game will almost certainly be taken down for impersonating Shattered Pixel Dungeon or Pixel Dungeon.
