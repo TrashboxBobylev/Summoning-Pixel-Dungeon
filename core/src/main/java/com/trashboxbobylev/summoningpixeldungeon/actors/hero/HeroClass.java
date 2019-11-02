@@ -55,6 +55,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.spells.Contain;
 import com.trashboxbobylev.summoningpixeldungeon.items.spells.Enrage;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfTargeting;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfMagicMissile;
+import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfStench;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Slingshot;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.SpiritBow;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
@@ -169,6 +170,8 @@ public enum HeroClass {
 
 		(hero.belongings.weapon = staff).identify();
 		hero.belongings.weapon.activate(hero);
+
+		new WandOfStench().identify().collect();
 
 		Dungeon.quickslot.setSlot(0, staff);
 
