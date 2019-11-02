@@ -189,7 +189,7 @@ public class ShopRoom extends SpecialRoom {
 			itemsToSpawn.add(Generator.random(Generator.Category.EXOTIC_POTION));
 			itemsToSpawn.add(Generator.random(Generator.Category.EXOTIC_SCROLL));
             i = Generator.randomMissile();
-            if (i != null) i.upgrade(1).identify().quantity(1);
+            if (i != null) i.upgrade(1).quantity(1).identify();
             itemsToSpawn.add(i);
 			break;
 			
@@ -329,7 +329,8 @@ public class ShopRoom extends SpecialRoom {
             neededArmor = Generator.randomArmor();
             neededArmor.identify();
         } while (neededArmor.cursed && neededArmor.DRMax() <= armorDefenseMax && (enchant && !neededArmor.hasGoodGlyph() && neededArmor.hasCurseGlyph())
-        && (Random.Int(2) == 1 && neededArmor.tier > 3));
+        &&  (neededArmor.STRReq() > neededArmor.STRReq() + 1));
+        neededArmor.upgrade();
         return neededArmor;
     }
 
@@ -353,7 +354,8 @@ public class ShopRoom extends SpecialRoom {
             weapon1 = Generator.randomWeapon();
             weapon1.identify();
         } while (weapon1.cursed && weapon1.max() <= weaponDmgMax && (enchant && !weapon1.hasGoodEnchant() && weapon1.hasCurseEnchant())
-        && (Random.Int(2) == 1 && weapon1.tier > 3));
+         && (weapon1.STRReq() > weapon.STRReq() + 1));
+        weapon1.upgrade();
         return weapon1;
     }
 
