@@ -59,6 +59,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.spells.BeaconOfReturning;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.Runestone;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfAugmentation;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfEnchantment;
+import com.trashboxbobylev.summoningpixeldungeon.items.wands.DamageWand;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfMagicMissile;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
@@ -171,16 +172,21 @@ public class ShopRoom extends SpecialRoom {
 		
 		switch (Dungeon.depth) {
 		case 6:
-            Item i = Generator.random(Generator.Category.WAND);
-            if (i != null && !i.cursed) i.upgrade(1).identify();
+            Item i;
+            do {
+                i = Generator.random(Generator.Category.WAND);
+            }  while (i.cursed && !(i instanceof DamageWand));
+            i.upgrade(1).identify();
 			itemsToSpawn.add(i);
 			break;
 			
 		case 11:
 			itemsToSpawn.add(new PotionOfExperience());
 			itemsToSpawn.add(new ScrollOfDivination());
-            i = Generator.random(Generator.Category.RING);
-            if (i != null && !i.cursed) i.upgrade(1);
+            do {
+                i = Generator.random(Generator.Category.RING);
+            }  while (i.cursed);
+            i.upgrade(1).identify();
             itemsToSpawn.add(i);
 			break;
 			
@@ -200,6 +206,7 @@ public class ShopRoom extends SpecialRoom {
             itemsToSpawn.add(Generator.random(Generator.Category.EXOTIC_POTION));
             itemsToSpawn.add(Generator.random(Generator.Category.EXOTIC_SCROLL));
             itemsToSpawn.add(Generator.random(Generator.Category.EXOTIC_SCROLL));
+
 			itemsToSpawn.add( new Torch() );
 			break;
 		}
