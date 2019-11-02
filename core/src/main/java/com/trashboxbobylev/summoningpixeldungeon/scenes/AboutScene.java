@@ -52,7 +52,7 @@ public class AboutScene extends PixelScene {
             "Icon: 0micronrg9\n"+
             "Supporting: smujamesb#5300, Gamma Lolman#3370 and PD community";
 
-	private static final String LNK_SHPX = "trashboxbobylev.itch.io";
+	private static final String LNK_SHPX = "trashboxbobylev.itch.io/summoning-pixel-dungeon";
 
 	private static final String TTL_WATA = "Shattered Pixel Dungeon";
 
@@ -92,7 +92,7 @@ public class AboutScene extends PixelScene {
 		shpxtext.setPos((colWidth - shpxtext.width()) / 2, shpxtitle.y + shpxtitle.height() + 12);
 		align(shpxtext);
 
-		RenderedTextMultiline shpxlink = renderMultiline( LNK_SHPX, 8 );
+		RenderedTextMultiline shpxlink = renderMultiline( LNK_SHPX, 6 );
 		shpxlink.maxWidth(shpxtext.maxWidth());
 		shpxlink.hardlight( Window.SHPX_COLOR );
 		add( shpxlink );
