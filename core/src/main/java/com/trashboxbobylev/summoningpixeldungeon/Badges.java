@@ -288,19 +288,19 @@ public class Badges {
 	public static void validateGoldCollected() {
 		Badge badge = null;
 		
-		if (!local.contains( Badge.GOLD_COLLECTED_1 ) && Statistics.goldCollected >= 100) {
+		if (!local.contains( Badge.GOLD_COLLECTED_1 ) && Statistics.goldCollected >= 3000) {
 			badge = Badge.GOLD_COLLECTED_1;
 			local.add( badge );
 		}
-		if (!local.contains( Badge.GOLD_COLLECTED_2 ) && Statistics.goldCollected >= 500) {
+		if (!local.contains( Badge.GOLD_COLLECTED_2 ) && Statistics.goldCollected >= 8000) {
 			badge = Badge.GOLD_COLLECTED_2;
 			local.add( badge );
 		}
-		if (!local.contains( Badge.GOLD_COLLECTED_3 ) && Statistics.goldCollected >= 2500) {
+		if (!local.contains( Badge.GOLD_COLLECTED_3 ) && Statistics.goldCollected >= 20000) {
 			badge = Badge.GOLD_COLLECTED_3;
 			local.add( badge );
 		}
-		if (!local.contains( Badge.GOLD_COLLECTED_4 ) && Statistics.goldCollected >= 7500) {
+		if (!local.contains( Badge.GOLD_COLLECTED_4 ) && Statistics.goldCollected >= 40000) {
 			badge = Badge.GOLD_COLLECTED_4;
 			local.add( badge );
 		}
