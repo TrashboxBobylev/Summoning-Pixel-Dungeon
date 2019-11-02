@@ -130,7 +130,7 @@ public class Thief extends Mob {
 	@Override
 	public int defenseProc(Char enemy, int damage) {
 		if (state == FLEEING) {
-			Dungeon.level.drop( new Gold(Random.NormalIntRange(damage, damage*3)), pos ).sprite.drop();
+			Dungeon.level.drop( new Gold(Random.NormalIntRange(damage*5, damage*15)), pos ).sprite.drop();
 		}
 
 		return super.defenseProc(enemy, damage);
