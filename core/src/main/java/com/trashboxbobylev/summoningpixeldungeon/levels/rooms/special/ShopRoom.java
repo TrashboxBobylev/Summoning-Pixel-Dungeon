@@ -50,6 +50,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.food.SmallRation;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.Potion;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfExperience;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfHealing;
+import com.trashboxbobylev.summoningpixeldungeon.items.quest.CleanWater;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.Scroll;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfMagicMapping;
@@ -198,6 +199,7 @@ public class ShopRoom extends SpecialRoom {
             i = Generator.randomMissile();
             if (i != null) i.upgrade(1).quantity(1).identify();
             itemsToSpawn.add(i);
+            itemsToSpawn.add(new CleanWater());
 			break;
 			
 		case 21:
@@ -215,8 +217,12 @@ public class ShopRoom extends SpecialRoom {
                 itemsToSpawn.add(i);
             }
 			itemsToSpawn.add( new Torch() );
+            itemsToSpawn.add(new CleanWater());
 			break;
 		}
+
+		itemsToSpawn.add(new CleanWater());
+		if (Dungeon.isChallenged(Challenges.NO_HEALING)) itemsToSpawn.add(new CleanWater());
 		
 		itemsToSpawn.add( TippedDart.randomTipped(2) );
 

@@ -590,6 +590,11 @@ public class ItemSpriteSheet {
 			assignItemRect(i, 12, 13);
 	}
 
+	public static final int CLEAN_WATER = xy(1, 26);
+	static {
+        assignItemRect(CLEAN_WATER, 12, 15);
+    }
+
 	private static final int SEEDS              =                           xy(1, 24);  //16 slots
 	public static final int SEED_ROTBERRY       = SEEDS+0;
 	public static final int SEED_FIREBLOOM      = SEEDS+1;
