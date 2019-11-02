@@ -57,7 +57,7 @@ public class WandOfStench extends Wand {
         if (ch != null) {
 
             processSoulMark(ch, chargesPerCast());
-            StenchHolder buff = Buff.affect(ch, StenchHolder.class, level()*2);
+            StenchHolder buff = Buff.affect(ch, StenchHolder.class, level()*4);
             buff.minDamage = level();
             buff.maxDamage = 3 + level()*2;
 
@@ -93,7 +93,7 @@ public class WandOfStench extends Wand {
     public void staffFx(MagesStaff.StaffParticle particle) {
         particle.color( ColorMath.random( 0x0bb34d, 0x1d4636) );
         particle.am = 0.75f;
-        particle.setLifespan( 2f );
+        particle.setLifespan( 1.2f );
         particle.acc.set(0, 30);
         particle.setSize( 0.5f, 3f );
         particle.shuffleXY( 1f );
