@@ -31,7 +31,9 @@ import com.trashboxbobylev.summoningpixeldungeon.ShatteredPixelDungeon;
 import com.trashboxbobylev.summoningpixeldungeon.Statistics;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Blob;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.PerfumeGas;
+import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.WandOfStenchGas;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroSubClass;
@@ -57,6 +59,7 @@ import com.trashboxbobylev.summoningpixeldungeon.levels.Level;
 import com.trashboxbobylev.summoningpixeldungeon.levels.features.Chasm;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.plants.Swiftthistle;
+import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.CharSprite;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
@@ -193,6 +196,10 @@ public abstract class Mob extends Char {
                     die(Doom.class);
                 }
             }
+        }
+
+        if (buff(StenchHolder.class) != null){
+            GameScene.add(Blob.seed(pos, 50, WandOfStenchGas.class));
         }
 
 		return state.act( enemyInFOV, justAlerted );

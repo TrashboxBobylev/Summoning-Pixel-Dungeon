@@ -91,20 +91,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTransmuta
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.*;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfBlastWave;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfCorrosion;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfCorruption;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfDisintegration;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfFireblast;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfFrost;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfLightning;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfLivingEarth;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfMagicMissile;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfPrismaticLight;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfRegrowth;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfTransfusion;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfWarding;
+import com.trashboxbobylev.summoningpixeldungeon.items.wands.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.HeavyBoomerang;
@@ -318,8 +305,9 @@ public class Generator {
 					WandOfWarding.class,
 					WandOfTransfusion.class,
 					WandOfCorruption.class,
-					WandOfRegrowth.class };
-			WAND.probs = new float[]{ 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3 };
+					WandOfRegrowth.class,
+                    WandOfStench.class};
+			WAND.probs = new float[]{ 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
 			
 			//see generator.randomWeapon
 			WEAPON.classes = new Class<?>[]{};

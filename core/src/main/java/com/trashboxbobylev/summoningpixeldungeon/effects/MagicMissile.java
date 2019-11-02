@@ -25,11 +25,7 @@
 package com.trashboxbobylev.summoningpixeldungeon.effects;
 
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
-import com.trashboxbobylev.summoningpixeldungeon.effects.particles.CorrosionParticle;
-import com.trashboxbobylev.summoningpixeldungeon.effects.particles.FlameParticle;
-import com.trashboxbobylev.summoningpixeldungeon.effects.particles.LeafParticle;
-import com.trashboxbobylev.summoningpixeldungeon.effects.particles.RainbowParticle;
-import com.trashboxbobylev.summoningpixeldungeon.effects.particles.ShadowParticle;
+import com.trashboxbobylev.summoningpixeldungeon.effects.particles.*;
 import com.trashboxbobylev.summoningpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -66,6 +62,7 @@ public class MagicMissile extends Emitter {
 	public static final int EARTH           = 9;
 	public static final int WARD            = 10;
 	public static final int FROGGIT = 11;
+	public static final int STENCH = 12;
 
 	public static final int FIRE_CONE       = 100;
 	public static final int FOLIAGE_CONE    = 101;
@@ -154,6 +151,10 @@ public class MagicMissile extends Emitter {
             case FROGGIT:
                 size( 5 );
                 pour( WhiteParticle.FACTORY, 0.005f );
+                break;
+            case STENCH:
+                size( 8 );
+                pour(StenchParticle.FACTORY, 0.01f );
                 break;
 
 			case FIRE_CONE:
@@ -333,6 +334,8 @@ public class MagicMissile extends Emitter {
 			acc.set( 0, 0 );
 		}
 	}
+
+
 	
 	public static class WhiteParticle extends PixelParticle {
 		
