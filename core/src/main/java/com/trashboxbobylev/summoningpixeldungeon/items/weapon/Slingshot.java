@@ -63,6 +63,7 @@ public class Slingshot extends Weapon {
         defaultAction = AC_SHOOT;
         usesTargeting = true;
         levelKnown = true;
+        Stone.slingshot = this;
     }
 
     @Override
@@ -91,6 +92,24 @@ public class Slingshot extends Weapon {
         actions.remove(AC_EQUIP);
         actions.add(AC_SHOOT);
         return actions;
+    }
+
+    @Override
+    protected void onThrow(int cell) {
+        Stone.slingshot = null;
+        super.onThrow(cell);
+    }
+
+    @Override
+    public boolean doPickUp(Hero hero) {
+        Stone.slingshot = this;
+        return super.doPickUp(hero);
+    }
+
+    @Override
+    public void doDrop(Hero hero) {
+        Stone.slingshot = null;
+        super.doDrop(hero);
     }
 
     @Override
@@ -129,6 +148,7 @@ public class Slingshot extends Weapon {
         levelKnown = true;
         cursedKnown = true;
         level(1);
+        Stone.slingshot = this;
     }
 
     @Override
@@ -150,7 +170,6 @@ public class Slingshot extends Weapon {
                 if (charge > 0) {
                     final Stone stone = new Stone();
                     target = new Ballistica( curUser.pos, target, Ballistica.PROJECTILE ).collisionPos;
-                    final Char enemy = Actor.findChar(target);
                     charge -= 1;
                     updateQuickslot();
                     curUser.sprite.zap(target);
@@ -239,7 +258,7 @@ public class Slingshot extends Weapon {
 
 
 
-    public class Stone extends MissileWeapon {
+    public static class Stone extends MissileWeapon {
         {
             image = ItemSpriteSheet.THROWING_STONE;
             sticky = false;
@@ -256,36 +275,39 @@ public class Slingshot extends Weapon {
             return desc();
         }
 
+        private static Slingshot slingshot;
+
         @Override
         public int damageRoll(Char owner) {
-            return Slingshot.this.damageRoll(owner);
+            if (slingshot != null) return slingshot.damageRoll( owner);
+            else return 0;
         }
 
         @Override
         public boolean hasEnchant(Class<? extends Enchantment> type, Char owner) {
-            return Slingshot.this.hasEnchant(type, owner);
+            if (slingshot != null) return slingshot.hasEnchant(type, owner);
+            else return false;
         }
 
         @Override
         public int proc(Char attacker, Char defender, int damage) {
-            return Slingshot.this.proc(attacker, defender, damage);
+            return slingshot.proc(attacker, defender, damage);
         }
 
         @Override
         public float speedFactor(Char user) {
-            return Slingshot.this.speedFactor(user);
+            return slingshot.speedFactor(user);
         }
 
         @Override
         public int STRReq(int lvl) {
-            return Slingshot.this.STRReq(lvl);
+            return slingshot.STRReq(lvl);
         }
 
 
         @Override
         public boolean doPickUp( Hero hero ) {
-
-            Slingshot slingshot = hero.belongings.getItem( Slingshot.class );
+            slingshot = hero.belongings.getItem(Slingshot.class);
 
             if (slingshot != null && !slingshot.isFull()){
 
