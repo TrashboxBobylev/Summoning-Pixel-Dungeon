@@ -57,6 +57,8 @@ public class SummPDChanges {
 		add_Mobs_Changes(changeInfos);
 		add_Minor_Changes(changeInfos);
         changes = new ChangeInfo( "1.0.1", true, "");
+        changes.hardlight( Window.TITLE_COLOR);
+        changeInfos.add(changes);
         add_1_0_1_Changes(changeInfos);
 	}
 
