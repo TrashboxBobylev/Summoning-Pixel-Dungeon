@@ -141,7 +141,7 @@ public class WandOfBlastWave extends DamageWand {
 					ch.damage(Random.NormalIntRange((finalDist + 1) / 2, finalDist), this);
 					Paralysis.prolong(ch, Paralysis.class, Random.NormalIntRange((finalDist + 1) / 2, finalDist));
 				}
-				Dungeon.level.press(ch.pos, ch, true);
+				Dungeon.level.occupyCell(ch);
 				if (ch == Dungeon.hero){
 					//FIXME currently no logic here if the throw effect kills the hero
 					Dungeon.observe();
