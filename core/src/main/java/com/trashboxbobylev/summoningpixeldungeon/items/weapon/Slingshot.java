@@ -156,37 +156,17 @@ public class Slingshot extends Weapon {
                     curUser.sprite.zap(target);
                     final float delay = speedFactor( curUser );
                     final int cell = target;
-                    if (enemy != null && enemy != Dungeon.hero) {
-                        ((MissileSprite) curUser.sprite.parent.recycle(MissileSprite.class)).
-                                reset(curUser.sprite,
-                                        enemy.sprite,
-                                        stone,
-                                        new Callback() {
-                                            @Override
-                                            public void call() {
-                                                if (!curUser.shoot(enemy, stone)) {
-                                                    stone.rangedMiss(cell);
-                                                } else {
-
-                                                    stone.rangedHit(enemy, cell);
-
-                                                }
-                                                curUser.spendAndNext(delay);
-                                            }
-                                        });
-                    } else {
-                        ((MissileSprite) curUser.sprite.parent.recycle(MissileSprite.class)).
-                                reset(curUser.sprite,
-                                        target,
-                                        stone,
-                                        new Callback() {
-                                            @Override
-                                            public void call() {
-                                                curUser.spendAndNext(delay);
-                                                stone.onThrow(cell);
-                                            }
-                                        });
-                    }
+                    ((MissileSprite) curUser.sprite.parent.recycle(MissileSprite.class)).
+                            reset(curUser.sprite,
+                                    target,
+                                    stone,
+                                    new Callback() {
+                                        @Override
+                                        public void call() {
+                                            curUser.spendAndNext(delay);
+                                            stone.onThrow(cell);
+                                        }
+                            });
                 } else if (charge == 0) {
                     Messages.get(Slingshot.class, "no_charge");
                 }
