@@ -38,6 +38,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.MerchantsBeacon;
 import com.trashboxbobylev.summoningpixeldungeon.items.Stylus;
 import com.trashboxbobylev.summoningpixeldungeon.items.Torch;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.*;
+import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.Artifact;
 import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.Bag;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.MagicalHolster;
@@ -206,7 +207,13 @@ public class ShopRoom extends SpecialRoom {
             itemsToSpawn.add(Generator.random(Generator.Category.EXOTIC_POTION));
             itemsToSpawn.add(Generator.random(Generator.Category.EXOTIC_SCROLL));
             itemsToSpawn.add(Generator.random(Generator.Category.EXOTIC_SCROLL));
-
+            i = Generator.randomArtifact();
+            if (i != null) {
+                ((Artifact)i).transferUpgrade(10);
+                i.cursed = false;
+                i.identify();
+                itemsToSpawn.add(i);
+            }
 			itemsToSpawn.add( new Torch() );
 			break;
 		}
