@@ -171,9 +171,6 @@ public enum HeroClass {
 		(hero.belongings.weapon = staff).identify();
 		hero.belongings.weapon.activate(hero);
 
-		new WandOfStench().identify().collect();
-		new MagesStaff().identify().collect();
-
 		Dungeon.quickslot.setSlot(0, staff);
 
 		new ScrollHolder().collect();
