@@ -202,6 +202,8 @@ public static void add_1_0_1_Changes(ArrayList<ChangeInfo> changeInfos ) {
     changes.addButton( new ChangeButton(new Image(Assets.CONJURER, 0, 89, 16, 16), "Conjurer",
             "_-_ New avatar sprite for conjurer\n" +
                     "_-_ Energy storm now takes 25% current HP and 12.5% max HP"));
+    changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(ChangesScene.class, "language"),
+            "Improved the English translation"));
 	}
 
     public static void add_General_Changes(ArrayList<ChangeInfo> changeInfos ){
