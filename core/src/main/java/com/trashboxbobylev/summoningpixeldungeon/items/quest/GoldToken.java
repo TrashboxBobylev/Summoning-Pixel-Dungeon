@@ -33,7 +33,7 @@ public class GoldToken extends Item {
 		image = ItemSpriteSheet.GOLD_TOKEN;
 		
 		stackable = true;
-		unique = true;
+		unique = false;
 	}
 	
 	@Override
