@@ -39,8 +39,8 @@ public class Gnoll extends Mob {
 		
 		EXP = 2;
 		maxLvl = 8;
-		
-		loot = Gold.class;
+
+        loot = new Gold().goldFromEnemy();
 		lootChance = 0.5f;
 	}
 	

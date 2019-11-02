@@ -45,7 +45,7 @@ public class Brute extends Mob {
 		EXP = 8;
 		maxLvl = 16;
 		
-		loot = Gold.class;
+		loot = new Gold().goldFromEnemy();
 		lootChance = 0.5f;
 	}
 	
