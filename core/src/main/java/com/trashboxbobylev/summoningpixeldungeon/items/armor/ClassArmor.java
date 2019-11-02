@@ -121,7 +121,7 @@ abstract public class ClassArmor extends Armor {
 		if (action.equals(AC_SPECIAL)) {
 			
 			if (hero.HP < 3 ||
-                    (hero.heroClass == HeroClass.CONJURER && hero.HP <= (hero.HT /2))) {
+                    (hero.heroClass == HeroClass.CONJURER && hero.HP <= 5)) {
 				GLog.warning( Messages.get(this, "low_hp") );
 			} else if (!isEquipped( hero )) {
 				GLog.warning( Messages.get(this, "not_equipped") );
