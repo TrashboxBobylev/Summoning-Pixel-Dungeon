@@ -42,7 +42,7 @@ public class Statistics {
 	public static int thrownAssists;
 	public static int cloakUsing;
 	public static int wandUses;
-	public static boolean clothArmorForWarrior = true;
+	public static boolean clothArmorForWarrior;
 	public static int summonedMinions;
 	
 	public static float duration;
@@ -66,6 +66,10 @@ public class Statistics {
 		upgradesUsed    = 0;
 		sneakAttacks    = 0;
 		thrownAssists   = 0;
+		wandUses = 0;
+		cloakUsing = 0;
+		summonedMinions = 0;
+        clothArmorForWarrior = true;
 		
 		duration	= 0;
 		
@@ -105,6 +109,10 @@ public class Statistics {
 		bundle.put( UPGRADES,   upgradesUsed );
 		bundle.put( SNEAKS,		sneakAttacks );
 		bundle.put( THROWN,		thrownAssists );
+        bundle.put( "wand_uses",		wandUses );
+        bundle.put( "cloak",		cloakUsing );
+        bundle.put("minions", summonedMinions);
+        bundle.put("warrior_is_ech", clothArmorForWarrior);
 		
 		bundle.put( DURATION,	duration );
 		bundle.put("strange_number", score);
@@ -124,6 +132,10 @@ public class Statistics {
 		upgradesUsed    = bundle.getInt( UPGRADES );
 		sneakAttacks    = bundle.getInt( SNEAKS );
 		thrownAssists   = bundle.getInt( THROWN );
+        wandUses   = bundle.getInt( "wand_uses" );
+        cloakUsing = bundle.getInt("cloak");
+        summonedMinions = bundle.getInt("minions");
+        clothArmorForWarrior = bundle.getBoolean("warrior_is_ech");
 		
 		duration		= bundle.getFloat( DURATION );
 		score = bundle.getInt("strange_number");
