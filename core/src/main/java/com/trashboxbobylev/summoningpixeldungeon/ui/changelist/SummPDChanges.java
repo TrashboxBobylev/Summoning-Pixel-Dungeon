@@ -27,10 +27,13 @@ package com.trashboxbobylev.summoningpixeldungeon.ui.changelist;
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroClass;
 import com.trashboxbobylev.summoningpixeldungeon.items.Ankh;
+import com.trashboxbobylev.summoningpixeldungeon.items.Gold;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.ConjurerArmor;
 import com.trashboxbobylev.summoningpixeldungeon.items.food.Blandfruit;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfHealing;
+import com.trashboxbobylev.summoningpixeldungeon.items.quest.CleanWater;
 import com.trashboxbobylev.summoningpixeldungeon.items.spells.ArcaneCatalyst;
+import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfStench;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.ChangesScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.HeroSprite;
@@ -46,13 +49,15 @@ public class SummPDChanges {
 	
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
 		
-		ChangeInfo changes = new ChangeInfo( "Summoning PD", true, "");
+		ChangeInfo changes = new ChangeInfo( "1.0.0", true, "");
 		changes.hardlight( Window.TITLE_COLOR);
 		changeInfos.add(changes);
 		add_General_Changes(changeInfos);
 		add_Items_Changes(changeInfos);
 		add_Mobs_Changes(changeInfos);
 		add_Minor_Changes(changeInfos);
+        changes = new ChangeInfo( "1.0.1", true, "");
+        add_1_0_1_Changes(changeInfos);
 	}
 
 //    public static void add_Beta_Changes( ArrayList<ChangeInfo> changeInfos ){
@@ -167,6 +172,37 @@ public class SummPDChanges {
 //                        "_-_ Added the article about allies into Adventurer Guide\n"+
 //                        "We are almost finished. If nothing major will happen with this damn sleepy minions, I will publish the release."));
 //    }
+public static void add_1_0_1_Changes(ArrayList<ChangeInfo> changeInfos ) {
+    ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
+    changes.addButton( new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
+            "_-_ Released November 2nd, 2019\n" +
+                    "_-_ 2 days after 1.0.0"));
+    changes = ChangesScene.createChangeInfo(changeInfos, "Changes", false, Window.SHPX_COLOR);
+    changes.addButton( new ChangeButton(new Gold(),
+            "_-_ Adjusted gold drops from enemies and floor\n" +
+                    "_-_ Increased cost of most items\n" +
+                    "_-_ Gold Token is sellable now"));
+    changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+               "_-_ Slingshot's stone didn't saved properly\n" +
+                       "_-_ Blasted enemies were able to levitate\n" +
+                       "_-_ New statistics number weren't saved properly\n" +
+                       "_-_ Sneaky missiles didn't get consumed even if player can't surprise attack\n" +
+                       "_-_ Badges about completing the game didn't accounted for Conjurer"));
+    changes.addButton( new ChangeButton(new Image(Assets.GHOST, 0, 0, 14, 15), "Sad Ghost quest",
+            "_-_ Now shows rewards names\n" +
+                    "_-_ Now can give a staff\n"));
+    changes.addButton( new ChangeButton(new Image(Assets.KEEPER, 0, 0, 14, 14), "Shops",
+            "_-_ Adjusted shop's equipment choice to account hero's strength\n" +
+                    "_-_ Guaranted wand and ring are always uncursed and upgraded; wand is also always have damage stat, so you can have weapon for Dark Matter Slimes\n" +
+                    "_-_ You can find +10 artifact in imp shop"));
+    changes.addButton( new ChangeButton(new CleanWater(),
+            "Added a mineral water. It heals full HP, but is pretty expensive. Can be found only in shops. Very useful for Pharmacophobia challenge."));
+    changes.addButton( new ChangeButton(new WandOfStench(),
+            "Added a Wand of Stench. It's imbue the target's with toxic energy, allowing them to release damaging gas. Essentially it's more tricky, but more effective variant of Wand of Corrosion."));
+    changes.addButton( new ChangeButton(new Image(Assets.CONJURER, 0, 89, 16, 16), "Conjurer",
+            "_-_ New avatar sprite for conjurer\n" +
+                    "_-_ Energy storm now takes 25% current HP and 12.5% max HP"));
+	}
 
     public static void add_General_Changes(ArrayList<ChangeInfo> changeInfos ){
 	    ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
