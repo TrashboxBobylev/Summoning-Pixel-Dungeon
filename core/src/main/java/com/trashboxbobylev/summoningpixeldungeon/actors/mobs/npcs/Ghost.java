@@ -46,6 +46,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.armor.ScaleArmor;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Shortsword;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.trashboxbobylev.summoningpixeldungeon.journal.Notes;
 import com.trashboxbobylev.summoningpixeldungeon.levels.SewerLevel;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
@@ -197,12 +198,14 @@ public class Ghost extends NPC {
 		
 		public static Weapon weapon;
 		public static Armor armor;
+		public static Staff staff;
 		
 		public static void reset() {
 			spawned = false;
 			
 			weapon = null;
 			armor = null;
+			staff = null;
 		}
 		
 		private static final String NODE		= "sadGhost";
@@ -214,6 +217,7 @@ public class Ghost extends NPC {
 		private static final String DEPTH		= "depth";
 		private static final String WEAPON		= "weapon";
 		private static final String ARMOR		= "armor";
+        private static final String STAFF		= "staff";
 		
 		public static void storeInBundle( Bundle bundle ) {
 			
@@ -231,6 +235,7 @@ public class Ghost extends NPC {
 				
 				node.put( WEAPON, weapon );
 				node.put( ARMOR, armor );
+				node.put(STAFF, staff);
 			}
 			
 			bundle.put( NODE, node );
@@ -250,6 +255,7 @@ public class Ghost extends NPC {
 				
 				weapon	= (Weapon)node.get( WEAPON );
 				armor	= (Armor)node.get( ARMOR );
+				staff = (Staff)node.get(STAFF);
 			} else {
 				reset();
 			}
@@ -299,6 +305,14 @@ public class Ghost extends NPC {
 					ShatteredPixelDungeon.reportException(e);
 					weapon = new Shortsword();
 				}
+                try {
+                    do {
+                        staff = (Staff) Generator.stfTiers[wepTier - 1].classes[Random.chances(Generator.stfTiers[wepTier - 1].probs)].newInstance();
+                    } while (!staff.cursed);
+                } catch (Exception e){
+                    ShatteredPixelDungeon.reportException(e);
+                    weapon = new Shortsword();
+                }
 
 				//50%:+0, 30%:+1, 15%:+2, 5%:+3
 				float itemLevelRoll = Random.Float();
@@ -314,11 +328,13 @@ public class Ghost extends NPC {
 				}
 				weapon.upgrade(itemLevel);
 				armor.upgrade(itemLevel);
+				staff.upgrade(itemLevel);
 
 				//10% to be enchanted
 				if (Random.Int(10) == 0){
 					weapon.enchant();
 					armor.inscribe();
+					staff.enchant();
 				}
 
 			}
@@ -335,6 +351,7 @@ public class Ghost extends NPC {
 		public static void complete() {
 			weapon = null;
 			armor = null;
+			staff = null;
 			
 			Notes.remove( Notes.Landmark.GHOST );
 		}
@@ -344,7 +361,7 @@ public class Ghost extends NPC {
 		}
 		
 		public static boolean completed(){
-			return processed() && weapon == null && armor == null;
+			return processed() && weapon == null && armor == null && staff == null;
 		}
 	}
 }
