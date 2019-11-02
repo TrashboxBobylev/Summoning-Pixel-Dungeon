@@ -263,6 +263,7 @@ public class Slingshot extends Weapon {
         {
             image = ItemSpriteSheet.THROWING_STONE;
             sticky = false;
+            unique = true;
         }
 
         @Override
