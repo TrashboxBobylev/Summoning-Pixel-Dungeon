@@ -69,7 +69,7 @@ public class Rotberry extends Plant {
 		
 		@Override
 		public int price() {
-			return 30 * quantity;
+			return 45 * quantity;
 		}
 	}
 }

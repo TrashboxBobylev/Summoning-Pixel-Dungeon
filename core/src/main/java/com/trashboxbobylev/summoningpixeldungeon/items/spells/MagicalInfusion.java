@@ -65,7 +65,7 @@ public class MagicalInfusion extends InventorySpell {
 	@Override
 	public int price() {
 		//prices of ingredients, divided by output quantity
-		return Math.round(quantity * ((50 + 40) / 1f));
+		return com.trashboxbobylev.summoningpixeldungeon.items.Recipe.calculatePrice(new Recipe()) * quantity;
 	}
 	
 	public static class Recipe extends com.trashboxbobylev.summoningpixeldungeon.items.Recipe.SimpleRecipe {

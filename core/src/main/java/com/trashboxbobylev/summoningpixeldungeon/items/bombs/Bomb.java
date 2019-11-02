@@ -226,7 +226,7 @@ public class Bomb extends Item {
 
 	@Override
 	public int price() {
-		return 20 * quantity;
+		return 35 * quantity;
 	}
 	
 	@Override

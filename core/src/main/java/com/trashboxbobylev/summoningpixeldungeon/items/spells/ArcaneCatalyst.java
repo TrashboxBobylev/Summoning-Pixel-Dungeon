@@ -87,7 +87,7 @@ public class ArcaneCatalyst extends Spell {
 	
 	@Override
 	public int price() {
-		return 40 * quantity;
+		return 58 * quantity;
 	}
 	
 	public static class Recipe extends com.trashboxbobylev.summoningpixeldungeon.items.Recipe {

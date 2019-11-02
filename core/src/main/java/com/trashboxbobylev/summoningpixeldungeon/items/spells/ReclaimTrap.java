@@ -126,7 +126,7 @@ public class ReclaimTrap extends TargetedSpell {
 	@Override
 	public int price() {
 		//prices of ingredients, divided by output quantity
-		return Math.round(quantity * ((40 + 100) / 3f));
+		return com.trashboxbobylev.summoningpixeldungeon.items.Recipe.calculatePrice(new Recipe()) * quantity;
 	}
 	
 	private static final String STORED_TRAP = "stored_trap";

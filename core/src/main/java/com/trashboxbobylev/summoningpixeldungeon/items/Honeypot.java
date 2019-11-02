@@ -148,7 +148,7 @@ public class Honeypot extends Item {
 	
 	@Override
 	public int price() {
-		return 30 * quantity;
+		return 45 * quantity;
 	}
 
 	//The bee's broken 'home', all this item does is let its bee know where it is, and who owns it (if anyone).

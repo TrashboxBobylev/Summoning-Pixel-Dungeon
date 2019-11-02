@@ -119,10 +119,10 @@ public abstract class ExoticScroll extends Scroll {
 	}
 	
 	@Override
-	//20 gold more than its none-exotic equivalent
+	//36 gold more than its none-exotic equivalent
 	public int price() {
 		try {
-			return (exoToReg.get(getClass()).newInstance().price() + 20) * quantity;
+			return (exoToReg.get(getClass()).newInstance().price() + 36) * quantity;
 		} catch (Exception e){
 			ShatteredPixelDungeon.reportException(e);
 			return 0;

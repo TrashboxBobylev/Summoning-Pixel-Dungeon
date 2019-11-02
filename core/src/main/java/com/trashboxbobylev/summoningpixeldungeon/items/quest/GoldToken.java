@@ -48,6 +48,6 @@ public class GoldToken extends Item {
 
     @Override
     public int price() {
-        return 100*quantity;
+        return 250*quantity;
     }
 }

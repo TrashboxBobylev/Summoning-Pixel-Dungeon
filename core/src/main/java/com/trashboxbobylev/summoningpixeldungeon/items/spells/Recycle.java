@@ -29,6 +29,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.ShatteredPixelDungeon;
 import com.trashboxbobylev.summoningpixeldungeon.items.Generator;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
+import com.trashboxbobylev.summoningpixeldungeon.items.Recipe;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.Potion;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.brews.Brew;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.Elixir;
@@ -99,7 +100,7 @@ public class Recycle extends InventorySpell {
 	@Override
 	public int price() {
 		//prices of ingredients, divided by output quantity
-		return Math.round(quantity * ((50 + 40) / 8f));
+		return com.trashboxbobylev.summoningpixeldungeon.items.Recipe.calculatePrice(new Recipe()) * quantity;
 	}
 	
 	public static class Recipe extends com.trashboxbobylev.summoningpixeldungeon.items.Recipe.SimpleRecipe {

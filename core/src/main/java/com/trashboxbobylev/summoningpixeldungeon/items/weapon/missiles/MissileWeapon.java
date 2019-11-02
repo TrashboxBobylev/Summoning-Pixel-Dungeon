@@ -371,7 +371,7 @@ abstract public class MissileWeapon extends Weapon {
 	
 	@Override
 	public int price() {
-		return 6 * tier * quantity * (level() + 1);
+		return 7 * tier * quantity * (level() + 1);
 	}
 	
 	private static final String DURABILITY = "durability";

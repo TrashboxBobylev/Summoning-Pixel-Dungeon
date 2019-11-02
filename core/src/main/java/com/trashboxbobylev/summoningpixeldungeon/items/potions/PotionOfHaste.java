@@ -46,6 +46,6 @@ public class PotionOfHaste extends Potion {
 	
 	@Override
 	public int price() {
-		return isKnown() ? 40 * quantity : super.price();
+		return isKnown() ? 50 * quantity : super.price();
 	}
 }

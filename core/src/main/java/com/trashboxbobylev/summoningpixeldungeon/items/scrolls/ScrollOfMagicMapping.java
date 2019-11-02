@@ -101,7 +101,7 @@ public class ScrollOfMagicMapping extends Scroll {
 	
 	@Override
 	public int price() {
-		return isKnown() ? 40 * quantity : super.price();
+		return isKnown() ? 60 * quantity : super.price();
 	}
 	
 	public static void discover( int cell ) {

@@ -192,6 +192,20 @@ public abstract class Recipe {
         new Enrage.Recipe(),
 		new StewedMeat.twoMeat()
 	};
+
+	//calculates price of item based on their simple recipe
+	public static int calculatePrice(SimpleRecipe recipe){
+	    int summarCost = 0;
+	    for (int i = 0; i < recipe.inputs.length; i++){
+            try {
+                summarCost += recipe.inputs[i].newInstance().quantity(recipe.inQuantity[i]).price();
+            }  catch (Throwable e) {
+                ShatteredPixelDungeon.reportException(e);
+                return 0;
+            }
+        }
+	    return summarCost / recipe.outQuantity;
+    }
 	
 	private static Recipe[] threeIngredientRecipes = new Recipe[]{
 		new Potion.SeedToPotion(),

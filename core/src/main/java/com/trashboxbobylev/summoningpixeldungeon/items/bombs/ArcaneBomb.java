@@ -95,6 +95,6 @@ public class ArcaneBomb extends Bomb {
 	@Override
 	public int price() {
 		//prices of ingredients
-		return quantity * (20 + 50);
+		return quantity * (35 + 50);
 	}
 }

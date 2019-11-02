@@ -88,6 +88,11 @@ public class Contain extends TargetedSpell {
         }
     }
 
+    @Override
+    public int price() {
+        return com.trashboxbobylev.summoningpixeldungeon.items.Recipe.calculatePrice(new Recipe()) * quantity;
+    }
+
     private static final ItemSprite.Glowing RED = new ItemSprite.Glowing( 0xff002a, 0.5f );
 
     @Override
