@@ -57,7 +57,7 @@ public class WandOfStench extends Wand {
         if (ch != null) {
 
             processSoulMark(ch, chargesPerCast());
-            StenchHolder buff = Buff.affect(ch, StenchHolder.class, level()*4);
+            StenchHolder buff = Buff.affect(ch, StenchHolder.class, 4 + level()/2);
             buff.minDamage = level();
             buff.maxDamage = 3 + level()*2;
 
