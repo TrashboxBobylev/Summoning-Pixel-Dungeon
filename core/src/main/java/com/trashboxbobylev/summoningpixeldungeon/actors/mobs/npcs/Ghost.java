@@ -46,6 +46,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.armor.ScaleArmor;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Shortsword;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.GreyRatStaff;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.trashboxbobylev.summoningpixeldungeon.journal.Notes;
 import com.trashboxbobylev.summoningpixeldungeon.levels.SewerLevel;
@@ -308,10 +309,10 @@ public class Ghost extends NPC {
                 try {
                     do {
                         staff = (Staff) Generator.stfTiers[wepTier - 1].classes[Random.chances(Generator.stfTiers[wepTier - 1].probs)].newInstance();
-                    } while (!staff.cursed);
+                    } while (staff.cursed);
                 } catch (Exception e){
                     ShatteredPixelDungeon.reportException(e);
-                    weapon = new Shortsword();
+                    weapon = new GreyRatStaff();
                 }
 
 				//50%:+0, 30%:+1, 15%:+2, 5%:+3

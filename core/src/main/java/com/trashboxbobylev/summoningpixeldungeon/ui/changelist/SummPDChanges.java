@@ -36,6 +36,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.spells.ArcaneCatalyst;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfStench;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.ChangesScene;
+import com.trashboxbobylev.summoningpixeldungeon.sprites.CharSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.HeroSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
@@ -56,9 +57,6 @@ public class SummPDChanges {
 		add_Items_Changes(changeInfos);
 		add_Mobs_Changes(changeInfos);
 		add_Minor_Changes(changeInfos);
-        changes = new ChangeInfo( "1.0.1", true, "");
-        changes.hardlight( Window.TITLE_COLOR);
-        changeInfos.add(changes);
         add_1_0_1_Changes(changeInfos);
 	}
 
@@ -175,7 +173,10 @@ public class SummPDChanges {
 //                        "We are almost finished. If nothing major will happen with this damn sleepy minions, I will publish the release."));
 //    }
 public static void add_1_0_1_Changes(ArrayList<ChangeInfo> changeInfos ) {
-    ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
+    ChangeInfo changes = new ChangeInfo( "1.0.1", true, "");
+    changes.hardlight( Window.TITLE_COLOR);
+    changeInfos.add(changes);
+    changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
     changes.addButton( new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
             "_-_ Released November 2nd, 2019\n" +
                     "_-_ 2 days after 1.0.0"));
@@ -201,11 +202,14 @@ public static void add_1_0_1_Changes(ArrayList<ChangeInfo> changeInfos ) {
             "Added a mineral water. It heals full HP, but is pretty expensive. Can be found only in shops. Very useful for Pharmacophobia challenge."));
     changes.addButton( new ChangeButton(new WandOfStench(),
             "Added a Wand of Stench. It's imbue the target's with toxic energy, allowing them to release damaging gas. Essentially it's more tricky, but more effective variant of Wand of Corrosion."));
-    changes.addButton( new ChangeButton(new Image(Assets.CONJURER, 0, 89, 16, 16), "Conjurer",
+    changes.addButton( new ChangeButton(new Image(Assets.CONJURER, 0, 90, 12, 15), "Conjurer",
             "_-_ New avatar sprite for conjurer\n" +
                     "_-_ Energy storm now takes 25% current HP and 12.5% max HP"));
     changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(ChangesScene.class, "language"),
             "Improved the English translation"));
+    changes = ChangesScene.createChangeInfo(changeInfos, "1.0.1a", false, CharSprite.DEFAULT);
+    changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+            "Fixed infinity loop in Sad Ghost' quest, which prevented you from descending to new sewers depths"));
 	}
 
     public static void add_General_Changes(ArrayList<ChangeInfo> changeInfos ){

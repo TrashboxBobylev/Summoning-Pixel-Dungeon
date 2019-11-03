@@ -40,7 +40,7 @@ import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 
 public class WndSadGhost extends Window {
 
-	private static final int WIDTH		= 120;
+	private static final int WIDTH		= 145;
 	private static final int BTN_HEIGHT	= 20;
 	private static final float GAP		= 2;
 	
@@ -76,7 +76,7 @@ public class WndSadGhost extends Window {
 		message.setPos(0, titlebar.bottom() + GAP);
 		add( message );
 		
-		RedButton btnWeapon = new RedButton( Ghost.Quest.weapon.name() ) {
+		RedButton btnWeapon = new RedButton( Ghost.Quest.weapon.name() + " +" + Ghost.Quest.weapon.level() ) {
 			@Override
 			protected void onClick() {
 				selectReward( ghost, Ghost.Quest.weapon );
@@ -84,20 +84,28 @@ public class WndSadGhost extends Window {
 		};
 		btnWeapon.setRect( 0, message.top() + message.height() + GAP, WIDTH, BTN_HEIGHT );
 		add( btnWeapon );
+        RedButton btnStaff = new RedButton( Ghost.Quest.staff.name() + " +" + Ghost.Quest.staff.level() ) {
+            @Override
+            protected void onClick() {
+                selectReward( ghost, Ghost.Quest.staff );
+            }
+        };
+        btnStaff.setRect( 0, btnWeapon.bottom() + GAP, WIDTH, BTN_HEIGHT );
+        add( btnStaff );
 
 		if (!Dungeon.isChallenged( Challenges.NO_ARMOR )) {
-			RedButton btnArmor = new RedButton( Ghost.Quest.armor.name() ) {
+			RedButton btnArmor = new RedButton( Ghost.Quest.armor.name() + " +" + Ghost.Quest.weapon.level() ) {
 				@Override
 				protected void onClick() {
 					selectReward(ghost, Ghost.Quest.armor);
 				}
 			};
-			btnArmor.setRect(0, btnWeapon.bottom() + GAP, WIDTH, BTN_HEIGHT);
+			btnArmor.setRect(0, btnStaff.bottom() + GAP, WIDTH, BTN_HEIGHT);
 			add(btnArmor);
 
 			resize(WIDTH, (int) btnArmor.bottom());
 		} else {
-			resize(WIDTH, (int) btnWeapon.bottom());
+			resize(WIDTH, (int) btnStaff.bottom());
 		}
 	}
 	
