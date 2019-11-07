@@ -125,7 +125,7 @@ public enum HeroClass {
 			new SmallRation().collect();
 		}
 
-		hero.attunement = 1;
+		hero.attunement = 0;
 		
 		new ScrollOfIdentify().identify();
 
@@ -235,7 +235,7 @@ public enum HeroClass {
         new MagicalHolster().collect();
         Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
 
-        hero.attunement = 2;
+        hero.attunement = 1;
         hero.STR = 9;
         hero.HP = hero.HT = 15;
 

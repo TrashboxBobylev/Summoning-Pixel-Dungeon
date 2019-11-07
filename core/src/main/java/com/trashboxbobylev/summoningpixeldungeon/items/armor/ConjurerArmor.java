@@ -152,8 +152,7 @@ public class ConjurerArmor extends ClassArmor {
         level(targetLevel);
         updateQuickslot();
         this.armorTier = armor.tier;
-        this.augment = armor.augment;
-        this.inscribe( armor.glyph );
+        if (this.glyph == null) this.inscribe( armor.glyph );
         this.cursed = armor.cursed;
         this.curseInfusionBonus = armor.curseInfusionBonus;
         curUser.belongings.armor = this;
@@ -165,6 +164,11 @@ public class ConjurerArmor extends ClassArmor {
         curUser.busy();
         GameScene.flash(0xFFFFFF);
         Sample.INSTANCE.play( Assets.SND_EVOKE );
+    }
+
+    @Override
+    public int level() {
+        return (int) (super.level() + Dungeon.hero.attunement());
     }
 
     @Override
@@ -186,6 +190,11 @@ public class ConjurerArmor extends ClassArmor {
 		curUser.sprite.centerEmitter().start( ElmoParticle.FACTORY, 0.15f, 4 );
 		Sample.INSTANCE.play( Assets.SND_LULLABY );
 	}
+
+    @Override
+    public boolean isUpgradable() {
+        return false;
+    }
 
     @Override
     public int STRReq(int lvl) {

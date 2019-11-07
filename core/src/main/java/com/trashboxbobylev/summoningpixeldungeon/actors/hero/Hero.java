@@ -1291,7 +1291,14 @@ public class Hero extends Char {
 				updateHT( true );
 				attackSkill++;
 				defenseSkill++;
-				if (lvl % 6 == 0 && heroClass == HeroClass.CONJURER) attunement++;
+                if (heroClass == HeroClass.CONJURER) {
+                    if (lvl % 6 == 0) {
+                        attunement++;
+                    }
+                } else if (lvl == 10){
+                    attunement++;
+                }
+				Item.updateQuickslot();
 
 			} else {
 				Buff.prolong(this, Bless.class, 30f);
