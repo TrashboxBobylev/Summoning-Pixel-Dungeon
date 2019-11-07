@@ -99,7 +99,6 @@ public class Staff extends MeleeWeapon {
 
     @Override
     public void activate(Char ch) {
-        Buff.affect(ch, Attunement.class);
         startCharge(ch);
     }
 
@@ -133,7 +132,6 @@ public class Staff extends MeleeWeapon {
         if (super.doUnequip( hero, collect, single )) {
 
             hero.belongings.weapon = null;
-            hero.buff(Attunement.class).detach();
             return true;
 
         } else {
