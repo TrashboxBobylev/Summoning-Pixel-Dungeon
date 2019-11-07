@@ -128,20 +128,6 @@ public class Staff extends MeleeWeapon {
     }
 
     @Override
-    public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
-        if (super.doUnequip( hero, collect, single )) {
-
-            hero.belongings.weapon = null;
-            return true;
-
-        } else {
-
-            return false;
-
-        }
-    }
-
-    @Override
     public void onDetach( ) {
         stopCharging();
     }
@@ -156,7 +142,7 @@ public class Staff extends MeleeWeapon {
     @Override
     public String status() {
         if (levelKnown) {
-            if (curCharges == 0) return Messages.format( "%d%%", (int)(partialCharge / chargeTurns * 100));
+            if (curCharges == 0) return Messages.format( "%d%%", (int)(partialCharge * 100));
             else return "100%";
         } else {
             return null;
