@@ -49,6 +49,7 @@ import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.CellSelector;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
+import com.trashboxbobylev.summoningpixeldungeon.ui.BuffIndicator;
 import com.trashboxbobylev.summoningpixeldungeon.ui.QuickSlotButton;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -500,7 +501,15 @@ public abstract class Wand extends Item {
 			
 			return true;
 		}
-		
+        @Override
+        public int icon() {
+            return BuffIndicator.RAGE;
+        }
+
+        @Override
+        public String toString() {
+            return "lel";
+        }
 		@Override
 		public boolean act() {
 			if (curCharges < maxCharges)

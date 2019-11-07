@@ -37,7 +37,6 @@ import com.trashboxbobylev.summoningpixeldungeon.effects.Beam;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.ConjurerArmor;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.Bag;
-import com.trashboxbobylev.summoningpixeldungeon.items.bags.MagicalHolster;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfAttunement;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
@@ -48,6 +47,7 @@ import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.CellSelector;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.tiles.DungeonTilemap;
+import com.trashboxbobylev.summoningpixeldungeon.ui.BuffIndicator;
 import com.trashboxbobylev.summoningpixeldungeon.ui.QuickSlotButton;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -57,28 +57,27 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-public class Staff extends MeleeWeapon {
-    //Staffs is kind of melee weapons, that can summon minions and hold the attunement
+public class Staff extends Weapon {
+    //Staffs is kind of weapons, that can summon minions and hold the attunement
 
     //type of minion, since we need to spawn them, not hold
     public Class<? extends Minion> minionType;
 
     //the property of tank minion, to prevent abuse of high health minions
     protected boolean isTanky = false;
+    public int tier;
 
     public static final String AC_SUMMON = "SUMMON";
     public static final String AC_ZAP = "ZAP";
 
-    //as wands, staff have charge, but recover them much slower
-    public int maxCharges = 1;
-    public int curCharges = maxCharges;
+    public int curCharges = 1;
     public float partialCharge = 0f;
 
     private static final int USES_TO_ID = 10;
     private int usesLeftToID = USES_TO_ID;
     private float availableUsesToID = USES_TO_ID/2f;
 
-    protected Charger charger;
+    public Charger charger;
 
     private boolean curChargeKnown = false;
 
@@ -91,15 +90,11 @@ public class Staff extends MeleeWeapon {
     public static final String AVAILABLE_USES  = "available_uses";
     public static final String CURSE_INFUSION_BONUS = "curse_infusion_bonus";
 
-    public int initialCharges(){
-        return 1;
-    }
-
     @Override
     public boolean collect( Bag container ) {
         if (super.collect( container )) {
             if (container.owner != null) {
-                startCharge( container.owner );
+                charge( container.owner );
             }
             return true;
         } else {
@@ -107,14 +102,9 @@ public class Staff extends MeleeWeapon {
         }
     }
 
-    public void startCharge(Char owner ) {
+    public void charge(Char owner ) {
         if (charger == null) charger = new Charger();
         charger.attachTo( owner );
-    }
-
-    public void startCharge( Char owner, float chargeScaleFactor ){
-        startCharge( owner );
-        charger.setScaleFactor( chargeScaleFactor );
     }
 
     @Override
@@ -154,7 +144,7 @@ public class Staff extends MeleeWeapon {
         super.upgrade();
 
         updateLevel();
-        curCharges = Math.min( curCharges + 1, maxCharges );
+        curCharges = Math.min( curCharges + 1, 1);
         updateQuickslot();
 
         return this;
@@ -171,8 +161,7 @@ public class Staff extends MeleeWeapon {
     }
 
     public void updateLevel() {
-        maxCharges = Math.min( initialCharges() + level() / 3, 5 );
-        curCharges = Math.min( curCharges, maxCharges );
+        curCharges = Math.min( curCharges, 1);
     }
 
     @Override
@@ -443,15 +432,11 @@ public class Staff extends MeleeWeapon {
         }
     };
 
-    public static int chargeTurns = 400;
+    public int chargeTurns = 400;
 
     public class Charger extends Buff {
 
-        private static final float NORMAL_SCALE_FACTOR = 0.75f;
-
         private static final float CHARGE_BUFF_BONUS = 0.25f;
-
-        float scalingFactor = NORMAL_SCALE_FACTOR;
 
         @Override
         public boolean attachTo( Char target ) {
@@ -461,16 +446,26 @@ public class Staff extends MeleeWeapon {
         }
 
         @Override
+        public int icon() {
+            return BuffIndicator.RECHARGING;
+        }
+
+        @Override
+        public String toString() {
+            return "lel";
+        }
+
+        @Override
         public boolean act() {
-            if (curCharges < maxCharges)
+            if (curCharges < 1)
                 recharge();
 
-            while (partialCharge >= 1 && curCharges < maxCharges) {
+            while (partialCharge >= 1 && curCharges < 1) {
                 partialCharge--;
                 curCharges++;
             }
 
-            if (curCharges == maxCharges){
+            if (curCharges == 1){
                 partialCharge = 0;
             }
 
@@ -484,6 +479,7 @@ public class Staff extends MeleeWeapon {
             LockedFloor lock = target.buff(LockedFloor.class);
             if (lock == null || lock.regenOn())
                 partialCharge += (1f / chargeTurns) * (Dungeon.hero.heroClass == HeroClass.CONJURER ? 1.25 : 1);
+            GLog.i(Float.toString(partialCharge));
             updateQuickslot();
 
             for (Recharging bonus : target.buffs(Recharging.class)){
@@ -503,19 +499,18 @@ public class Staff extends MeleeWeapon {
                 curCharges++;
                 partialCharge--;
             }
-            curCharges = Math.min(curCharges, maxCharges);
+            curCharges = Math.min(curCharges, 1);
             updateQuickslot();
         }
 
         private void setScaleFactor(float value){
-            this.scalingFactor = value;
         }
     }
 
     @Override
     public void storeInBundle(Bundle bundle) {
         super.storeInBundle(bundle);
-        bundle.put(MAX_CHARGES, maxCharges);
+        bundle.put(MAX_CHARGES, 1);
         bundle.put(CUR_CHARGES, curCharges);
         bundle.put(PARTIAL_CHARGE, partialCharge);
         bundle.put(CUR_CHARGE_KNOWN, curChargeKnown);
@@ -532,7 +527,6 @@ public class Staff extends MeleeWeapon {
         availableUsesToID = bundle.getInt( AVAILABLE_USES );
 
         curCharges = bundle.getInt( CUR_CHARGES );
-        maxCharges = bundle.getInt(MAX_CHARGES);
         curChargeKnown = bundle.getBoolean( CUR_CHARGE_KNOWN );
         partialCharge = bundle.getFloat( PARTIAL_CHARGE );
         curseInfusionBonus = bundle.getBoolean(CURSE_INFUSION_BONUS);
@@ -568,7 +562,7 @@ public class Staff extends MeleeWeapon {
             }
         }
 
-        String statsInfo = statsInfo();
+        String statsInfo = Messages.get(this, "stats_desc");
         if (!statsInfo.equals("")) info += "\n\n" + statsInfo;
 
         if (level() >= 3) info += "\n\n" + Messages.get(Staff.class, "upgrade_info");

@@ -221,7 +221,8 @@ public enum HeroClass {
 
         FroggitStaff staff = new FroggitStaff();
         staff.identify().collect();
-        staff.activate(hero);
+        WandOfStench stench = new WandOfStench();
+        stench.collect();
 
         Dungeon.quickslot.setSlot(1, staff);
 
@@ -233,6 +234,8 @@ public enum HeroClass {
         Dungeon.quickslot.setSlot(0, hero.belongings.misc1);
 
         new MagicalHolster().collect();
+
+
         Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
 
         hero.attunement = 1;

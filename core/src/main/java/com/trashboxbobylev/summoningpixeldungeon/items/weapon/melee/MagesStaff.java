@@ -109,7 +109,7 @@ public class MagesStaff extends MeleeWeapon {
 
 	@Override
 	public void activate( Char ch ) {
-		if(wand != null) wand.charge( ch, STAFF_SCALE_FACTOR );
+		if (wand != null) wand.charge( ch, STAFF_SCALE_FACTOR );
 	}
 
 	@Override

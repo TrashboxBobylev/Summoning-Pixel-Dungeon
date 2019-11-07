@@ -27,7 +27,6 @@
 package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs;
 
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Chicken;
-import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.FrostElemental;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 
 public class ChickenStaff extends Staff {
@@ -48,11 +47,6 @@ public class ChickenStaff extends Staff {
     @Override
     public float requiredAttunement() {
         return 0.5f;
-    }
-
-    @Override
-    public int initialCharges() {
-        return 4;
     }
 
     @Override

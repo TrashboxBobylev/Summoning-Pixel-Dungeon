@@ -247,9 +247,9 @@ public class Belongings implements Iterable<Item> {
 			count++;
 		}
 
-		if (weapon instanceof Staff){
-		    owner.buff(Staff.Charger.class).gainCharge(charge);
-		    count++;
+        for (Staff.Charger charger : owner.buffs(Staff.Charger.class)){
+            charger.gainCharge(charge);
+            count++;
         }
 		
 		return count;

@@ -37,8 +37,4 @@ public class FroggitStaff extends Staff {
         chargeTurns = 120;
     }
 
-    @Override
-    public int initialCharges() {
-        return 2;
-    }
 }
