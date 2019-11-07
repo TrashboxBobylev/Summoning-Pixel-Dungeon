@@ -32,7 +32,6 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroClass;
-import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Chicken;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Beam;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
@@ -40,7 +39,6 @@ import com.trashboxbobylev.summoningpixeldungeon.items.armor.ConjurerArmor;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.Bag;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.MagicalHolster;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfAttunement;
-import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfSharpshooting;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
@@ -98,18 +96,10 @@ public class Staff extends MeleeWeapon {
     }
 
     @Override
-    public void activate(Char ch) {
-        startCharge(ch);
-    }
-
-    @Override
     public boolean collect( Bag container ) {
         if (super.collect( container )) {
             if (container.owner != null) {
-                if (container instanceof MagicalHolster)
-                    startCharge( container.owner, MagicalHolster.HOLSTER_SCALE_FACTOR);
-                else
-                    startCharge( container.owner );
+                startCharge( container.owner );
             }
             return true;
         } else {
@@ -457,7 +447,6 @@ public class Staff extends MeleeWeapon {
 
     public class Charger extends Buff {
 
-        private final float BASE_CHARGE_DELAY = chargeTurns;
         private static final float NORMAL_SCALE_FACTOR = 0.75f;
 
         private static final float CHARGE_BUFF_BONUS = 0.25f;
@@ -479,7 +468,6 @@ public class Staff extends MeleeWeapon {
             while (partialCharge >= 1 && curCharges < maxCharges) {
                 partialCharge--;
                 curCharges++;
-                updateQuickslot();
             }
 
             if (curCharges == maxCharges){
@@ -495,7 +483,8 @@ public class Staff extends MeleeWeapon {
 
             LockedFloor lock = target.buff(LockedFloor.class);
             if (lock == null || lock.regenOn())
-                partialCharge += (1f/ BASE_CHARGE_DELAY) * (Dungeon.hero.heroClass == HeroClass.CONJURER ? 1.25 : 1);
+                partialCharge += (1f / chargeTurns) * (Dungeon.hero.heroClass == HeroClass.CONJURER ? 1.25 : 1);
+            updateQuickslot();
 
             for (Recharging bonus : target.buffs(Recharging.class)){
                 if (bonus != null && bonus.remainder() > 0f) {
