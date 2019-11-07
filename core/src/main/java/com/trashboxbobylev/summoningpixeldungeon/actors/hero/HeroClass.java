@@ -217,10 +217,13 @@ public enum HeroClass {
 
     private static void initConjurer( Hero hero ) {
 
-        (hero.belongings.weapon = new FroggitStaff()).identify();
-        hero.belongings.weapon.activate(hero);
+        (hero.belongings.weapon = new Knife()).identify();
 
-        Dungeon.quickslot.setSlot(1, hero.belongings.weapon);
+        FroggitStaff staff = new FroggitStaff();
+        staff.identify().collect();
+        staff.activate(hero);
+
+        Dungeon.quickslot.setSlot(1, staff);
 
         hero.belongings.armor = ClassArmor.upgrade(hero, (Armor)(new ClothArmor().identify()));
 

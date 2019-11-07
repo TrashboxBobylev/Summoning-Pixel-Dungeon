@@ -54,6 +54,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfWealth;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfAggression;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.SpiritBow;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Lucky;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Knife;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.trashboxbobylev.summoningpixeldungeon.levels.Level;
 import com.trashboxbobylev.summoningpixeldungeon.levels.features.Chasm;
@@ -657,7 +658,7 @@ public abstract class Mob extends Char {
 			EXP /= 2;
 		}
         LoveHolder.lul buff = Dungeon.hero.buff(LoveHolder.lul.class);
-		if (cause instanceof Minion && buff != null){
+		if ((cause instanceof Minion || buff(Knife.SoulGain.class) != null) && buff != null){
 		    int gain = EXP;
 		    if (Dungeon.hero.subClass == HeroSubClass.SOUL_REAVER) gain *= 2;
 		    int charge = buff.gainCharge(gain);
