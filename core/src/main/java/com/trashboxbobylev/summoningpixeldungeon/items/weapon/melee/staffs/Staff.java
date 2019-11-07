@@ -72,7 +72,7 @@ public class Staff extends MeleeWeapon {
     public static final String AC_ZAP = "ZAP";
 
     //as wands, staff have charge, but recover them much slower
-    public int maxCharges = initialCharges();
+    public int maxCharges = 1;
     public int curCharges = maxCharges;
     public float partialCharge = 0f;
 
@@ -156,7 +156,7 @@ public class Staff extends MeleeWeapon {
     @Override
     public String status() {
         if (levelKnown) {
-            return (curChargeKnown ? curCharges : "?") + "/" + maxCharges;
+            return Messages.format( "%d%%", partialCharge / chargeTurns );
         } else {
             return null;
         }
@@ -234,7 +234,7 @@ public class Staff extends MeleeWeapon {
     }
 
     public int hp(int lvl){
-        return 8*tier + lvl*(tier); //reduced from 10 to 7, and scaling from (tier+1) to tier
+        return 14*tier + lvl*(tier+1); //16 and +2 per upgrade
     }
 
     //but they have additional stat: minion damage
