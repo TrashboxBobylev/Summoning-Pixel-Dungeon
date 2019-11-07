@@ -282,7 +282,8 @@ public class Staff extends MeleeWeapon {
         if (curCharges > 0) {
             actions.add( AC_SUMMON );
         }
-        if (isEquipped(hero)) actions.add( AC_ZAP );
+        actions.add( AC_ZAP );
+        actions.remove( AC_EQUIP);
         return actions;
     }
 
