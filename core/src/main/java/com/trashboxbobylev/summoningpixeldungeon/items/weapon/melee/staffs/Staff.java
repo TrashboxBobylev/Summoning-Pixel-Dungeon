@@ -156,7 +156,8 @@ public class Staff extends MeleeWeapon {
     @Override
     public String status() {
         if (levelKnown) {
-            return Messages.format( "%d%%", partialCharge / chargeTurns );
+            if (curCharges == 0) return Messages.format( "%d%%", (int)(partialCharge / chargeTurns * 100));
+            else return "100%";
         } else {
             return null;
         }
