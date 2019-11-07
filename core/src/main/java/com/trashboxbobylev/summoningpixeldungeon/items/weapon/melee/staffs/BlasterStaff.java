@@ -44,16 +44,16 @@ public class BlasterStaff extends StationaryStaff {
 
     @Override
     public int hp(int lvl) {
-        return 20*tier + lvl*(tier+10); //100 hp and +15 for every tier
+        return 30*tier + lvl*(tier+10); //150 hp and +15 for every tier
     }
 
     @Override
     public int minionMin(int lvl) {
-        return tier+5 + lvl*2; //10, +2
+        return tier+10 + lvl*3; //15, +3
     }
 
     @Override
     public int minionMax(int lvl) {
-        return 6*(tier+1) + lvl*(tier+2); //36, +7
+        return 8*(tier+1) + lvl*(tier+8); //48, +13
     }
 }

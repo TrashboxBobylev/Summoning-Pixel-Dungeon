@@ -40,7 +40,7 @@ public class ChickenStaff extends Staff {
 
     @Override
     public int minionMax(int lvl) {
-        return  4*(tier+1) +    //16 base
+        return  5*(tier+1) +    //20 base
                 lvl*(tier+1);   //+4 scaling
     }
 
@@ -57,6 +57,6 @@ public class ChickenStaff extends Staff {
 
     @Override
     public int hp(int lvl){
-        return 1 + lvl;
+        return 2 + lvl;
     }
 }

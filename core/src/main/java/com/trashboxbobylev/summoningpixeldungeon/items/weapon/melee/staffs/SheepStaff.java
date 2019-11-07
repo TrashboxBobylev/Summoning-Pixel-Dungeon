@@ -51,6 +51,6 @@ public class SheepStaff extends Staff {
 
     @Override
     public int hp(int lvl) {
-        return 20*tier + lvl*(tier+5); //40 hp and +7 for every tier
+        return 30*tier + lvl*(tier+8); //60 hp and +10 for every tier
     }
 }

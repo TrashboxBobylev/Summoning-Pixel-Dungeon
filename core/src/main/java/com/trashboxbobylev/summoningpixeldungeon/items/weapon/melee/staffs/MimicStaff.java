@@ -39,12 +39,12 @@ public class MimicStaff extends Staff {
 
     @Override
     public int minionMax(int lvl) {
-        return  14 +    //14, from 16
+        return  17 +    //17, from 16
                 lvl*(tier+1);   //scaling unchanged
     }
 
     @Override
     public int hp(int lvl) {
-        return 8*tier + lvl*(tier); //24 hp and +3 for every tier
+        return 16*tier + lvl*(tier+1); //48 hp and +4 for every tier
     }
 }

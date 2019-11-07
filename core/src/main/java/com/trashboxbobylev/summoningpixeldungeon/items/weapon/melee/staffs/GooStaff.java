@@ -37,7 +37,7 @@ public class GooStaff extends Staff {
 
     @Override
     public int minionMax(int lvl) {
-        return  6*(tier+1) +    //36 base, from 24
+        return  7*(tier+1) +    //42 base, from 24
                 lvl*(tier+1);   //+6 scaling
     }
 
@@ -49,6 +49,6 @@ public class GooStaff extends Staff {
 
     @Override
     public int hp(int lvl){
-        return 6*tier + lvl*(tier); //36
+        return 19*tier + lvl*(tier); //95
     }
 }

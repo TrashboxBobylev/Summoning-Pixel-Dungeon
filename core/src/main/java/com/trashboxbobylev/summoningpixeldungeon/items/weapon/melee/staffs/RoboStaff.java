@@ -41,7 +41,7 @@ public class RoboStaff extends Staff {
 
     @Override
     public int minionMax(int lvl) {
-        return  4*(tier+2) +    //24 base
+        return  5*(tier+2) +    //30 base
                 lvl*(tier-1);   //+3 scaling
     }
 
@@ -52,6 +52,6 @@ public class RoboStaff extends Staff {
     }
 
     public int hp(int lvl){
-        return 30*tier + lvl*(tier+10); // from 32 to 120, and +14
+        return 42*tier + lvl*(tier+10); // from 32 to 168, and +14
     }
 }

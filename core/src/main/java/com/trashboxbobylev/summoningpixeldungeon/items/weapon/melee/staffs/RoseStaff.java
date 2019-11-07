@@ -39,6 +39,6 @@ public class RoseStaff extends StationaryStaff {
 
     @Override
     public int hp(int lvl) {
-        return 5*tier + lvl*2; //20 hp and +2 for every tier
+        return 7*tier + lvl*2; //28 hp and +2 for every tier
     }
 }

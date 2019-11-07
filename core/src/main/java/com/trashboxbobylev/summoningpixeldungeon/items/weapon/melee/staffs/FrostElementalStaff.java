@@ -39,8 +39,8 @@ public class FrostElementalStaff extends Staff {
 
     @Override
     public int minionMax(int lvl) {
-        return  6*(tier+1) +    //30 base, from 20
-                lvl*(tier+1);   //+5 scaling
+        return  10*(tier+1) +    //50 base, from 20
+                lvl*(tier+4);   //+8 scaling
     }
 
     //heavy minion
@@ -51,6 +51,6 @@ public class FrostElementalStaff extends Staff {
 
     @Override
     public int hp(int lvl){
-        return 9*tier + lvl*(tier); //36, from 31
+        return 18*tier + lvl*(tier); //72, from 31
     }
 }

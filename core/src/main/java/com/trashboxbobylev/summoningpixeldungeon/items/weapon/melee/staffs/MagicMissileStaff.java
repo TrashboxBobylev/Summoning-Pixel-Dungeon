@@ -39,6 +39,6 @@ public class MagicMissileStaff extends StationaryStaff {
 
     @Override
     public int hp(int lvl) {
-        return 20*tier + lvl*(tier+9); //60 hp and +12 for every tier
+        return 24*tier + lvl*(tier+9); //72 hp and +12 for every tier
     }
 }
