@@ -75,6 +75,7 @@ public class Speck extends Image {
     public static final int HONEY = 121;
     public static final int PERFUME = 122;
     public static final int HASTE = 123;
+    public static final int STENCH_WAND = 124;
 	
 	private static final int SIZE = 7;
 	
@@ -120,6 +121,7 @@ public class Speck extends Image {
 		case CORROSION:
 		case PARALYSIS:
 		case STENCH:
+        case STENCH_WAND:
 		case CONFUSION:
 		case STORM:
 		case DUST:
@@ -343,6 +345,12 @@ public class Speck extends Image {
 			angle = Random.Float( 360 );
 			lifespan = Random.Float( 1f, 3f );
 			break;
+        case STENCH_WAND:
+                hardlight( 0x2e6c54 );
+                angularSpeed = -25;
+                angle = Random.Float( 360 );
+                lifespan = Random.Float( 1f, 4f );
+                break;
 
 		case CONFUSION:
 			hardlight( Random.Int( 0x1000000 ) | 0x000080 );
@@ -510,6 +518,7 @@ public class Speck extends Image {
 			case CORROSION:
 				hardlight( ColorMath.interpolate( 0xAAAAAA, 0xFF8800 , p ));
 			case STENCH:
+            case STENCH_WAND:
 			case SMOKE:
 				am = (float)Math.sqrt( (p < 0.5f ? p : 1 - p) );
 				scale.set( 1 + p );

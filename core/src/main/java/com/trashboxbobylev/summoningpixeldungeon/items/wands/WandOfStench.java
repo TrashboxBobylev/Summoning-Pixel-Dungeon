@@ -32,6 +32,8 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.BlobImmunity;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Ooze;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.StenchHolder;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.npcs.Stenchy;
 import com.trashboxbobylev.summoningpixeldungeon.effects.CellEmitter;
 import com.trashboxbobylev.summoningpixeldungeon.effects.MagicMissile;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.CorrosionParticle;
@@ -39,6 +41,7 @@ import com.trashboxbobylev.summoningpixeldungeon.effects.particles.StenchParticl
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.curses.Stench;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MagesStaff;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
+import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
@@ -54,9 +57,12 @@ public class WandOfStench extends Wand {
     @Override
     protected void onZap(Ballistica attack) {
         Char ch = Actor.findChar( attack.collisionPos );
-        if (ch != null) {
+        if (ch == null) {
 
             processSoulMark(ch, chargesPerCast());
+            ch = new Stenchy();
+            ch.pos = attack.collisionPos;
+            GameScene.add((Mob) ch, 1f);
             StenchHolder buff = Buff.affect(ch, StenchHolder.class, 4 + level()/2);
             buff.minDamage = level();
             buff.maxDamage = 3 + level()*2;
