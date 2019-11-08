@@ -219,6 +219,8 @@ public enum HeroClass {
 
         (hero.belongings.weapon = new Knife()).identify();
 
+        new MagicalHolster().collect();
+
         FroggitStaff staff = new FroggitStaff();
         staff.identify().collect();
         WandOfStench stench = new WandOfStench();
@@ -232,9 +234,6 @@ public enum HeroClass {
         (hero.belongings.misc1 = cloak).identify();
         hero.belongings.misc1.activate( hero );
         Dungeon.quickslot.setSlot(0, hero.belongings.misc1);
-
-        new MagicalHolster().collect();
-
 
         Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
 
