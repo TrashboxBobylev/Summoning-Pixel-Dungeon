@@ -501,15 +501,6 @@ public abstract class Wand extends Item {
 			
 			return true;
 		}
-        @Override
-        public int icon() {
-            return BuffIndicator.RAGE;
-        }
-
-        @Override
-        public String toString() {
-            return "lel";
-        }
 		@Override
 		public boolean act() {
 			if (curCharges < maxCharges)

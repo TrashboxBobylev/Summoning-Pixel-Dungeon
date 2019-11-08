@@ -446,16 +446,6 @@ public class Staff extends Weapon {
         }
 
         @Override
-        public int icon() {
-            return BuffIndicator.RECHARGING;
-        }
-
-        @Override
-        public String toString() {
-            return "lel";
-        }
-
-        @Override
         public boolean act() {
             if (curCharges < 1)
                 recharge();
@@ -478,8 +468,7 @@ public class Staff extends Weapon {
 
             LockedFloor lock = target.buff(LockedFloor.class);
             if (lock == null || lock.regenOn())
-                partialCharge += (1f / chargeTurns) * (Dungeon.hero.heroClass == HeroClass.CONJURER ? 1.25 : 1);
-            GLog.i(Float.toString(partialCharge));
+                partialCharge += (1f / chargeTurns) * (Dungeon.hero.heroClass == HeroClass.CONJURER ? 1 : 0.8);
             updateQuickslot();
 
             for (Recharging bonus : target.buffs(Recharging.class)){
@@ -493,17 +482,14 @@ public class Staff extends Weapon {
             return Staff.this;
         }
 
-        public void gainCharge(float charge){
+        public void gainCharge(float charge) {
             partialCharge += charge;
-            while (partialCharge >= 1f){
+            while (partialCharge >= 1f) {
                 curCharges++;
                 partialCharge--;
             }
             curCharges = Math.min(curCharges, 1);
             updateQuickslot();
-        }
-
-        private void setScaleFactor(float value){
         }
     }
 
