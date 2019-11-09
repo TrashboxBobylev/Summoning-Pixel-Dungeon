@@ -170,6 +170,8 @@ public enum HeroClass {
 
 		(hero.belongings.weapon = staff).identify();
 		hero.belongings.weapon.activate(hero);
+        WandOfStench stench = new WandOfStench();
+        stench.identify().collect();
 
 		Dungeon.quickslot.setSlot(0, staff);
 
@@ -223,8 +225,6 @@ public enum HeroClass {
 
         FroggitStaff staff = new FroggitStaff();
         staff.identify().collect();
-        WandOfStench stench = new WandOfStench();
-        stench.collect();
 
         Dungeon.quickslot.setSlot(1, staff);
 

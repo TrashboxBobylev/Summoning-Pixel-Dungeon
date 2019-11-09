@@ -70,11 +70,16 @@ public class Stenchy extends NPC {
             brightness(0.25f);
             hardlight(0x1d4636);
         }
+
+        @Override
+        public int blood() {
+            return 0x8b009548;
+        }
     }
 
     @Override
     public void damage(int dmg, Object src) {
-        super.damage(0, new Object());
+
     }
 
     @Override
@@ -111,7 +116,7 @@ public class Stenchy extends NPC {
         destroy();
         sprite.die();
         CellEmitter.get(pos).start( Speck.factory(Speck.STENCH_WAND), 0.02f, 20 );
-        GameScene.add(Blob.seed(pos, 100, WandOfStenchGas.class));
+        GameScene.add(Blob.seed(pos, 50, WandOfStenchGas.class));
         Sample.INSTANCE.play( Assets.SND_BLAST );
 
         return damage;

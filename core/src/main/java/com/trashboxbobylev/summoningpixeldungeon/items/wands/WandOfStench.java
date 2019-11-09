@@ -63,11 +63,11 @@ public class WandOfStench extends Wand {
         if (ch == null) {
             ch = new Stenchy();
             ch.pos = attack.collisionPos;
-            GameScene.add((Mob) ch, 1f);
-            GameScene.add(Blob.seed(ch.pos, 50, WandOfStenchGas.class));
+            GameScene.add((Mob) ch);
+            GameScene.add(Blob.seed(ch.pos, 30 + level()*5, WandOfStenchGas.class));
             StenchHolder buff = Buff.affect(ch, StenchHolder.class, 4 + level()/2);
-            buff.minDamage = level()/2+3;
-            buff.maxDamage = 6 + level();
+            buff.minDamage = 3 + level();
+            buff.maxDamage = 3 + level();
 
             ch.sprite.burst(0xFF1d4636, level() / 2 + 2);
 
@@ -99,11 +99,11 @@ public class WandOfStench extends Wand {
 
     @Override
     public void staffFx(MagesStaff.StaffParticle particle) {
-        particle.color( ColorMath.random( 0x0bb34d, 0x1d4636) );
+        particle.color( ColorMath.random( 0x04733a, 0x009548) );
         particle.am = 0.75f;
-        particle.setLifespan( 0.8f );
-        particle.acc.set(0, -15);
-        particle.setSize( 0.5f, 3f );
+        particle.setLifespan( 1.25f );
+        particle.acc.set(0, -30);
+        particle.setSize( 0.5f, 5f );
         particle.shuffleXY( 1f );
     }
 }
