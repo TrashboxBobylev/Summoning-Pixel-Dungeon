@@ -28,6 +28,8 @@ import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Blob;
+import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.WandOfStenchGas;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.BlobImmunity;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Ooze;
@@ -52,20 +54,20 @@ public class WandOfStench extends Wand {
 
     {
         image = ItemSpriteSheet.WAND_STENCH;
+        collisionProperties = Ballistica.STOP_TARGET | Ballistica.STOP_TERRAIN;
     }
 
     @Override
     protected void onZap(Ballistica attack) {
         Char ch = Actor.findChar( attack.collisionPos );
         if (ch == null) {
-
-            processSoulMark(ch, chargesPerCast());
             ch = new Stenchy();
             ch.pos = attack.collisionPos;
             GameScene.add((Mob) ch, 1f);
+            GameScene.add(Blob.seed(ch.pos, 50, WandOfStenchGas.class));
             StenchHolder buff = Buff.affect(ch, StenchHolder.class, 4 + level()/2);
-            buff.minDamage = level();
-            buff.maxDamage = 3 + level()*2;
+            buff.minDamage = level()/2+3;
+            buff.maxDamage = 6 + level();
 
             ch.sprite.burst(0xFF1d4636, level() / 2 + 2);
 

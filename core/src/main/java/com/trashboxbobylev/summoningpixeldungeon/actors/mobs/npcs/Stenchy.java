@@ -93,7 +93,7 @@ public class Stenchy extends NPC {
         public boolean act(boolean enemyInFOV, boolean justAlerted) {
             if (buff(StenchHolder.class) == null){
                 destroy();
-                CellEmitter.get(pos).start( Speck.factory(Speck.STENCH), 0.02f, 20 );
+                CellEmitter.get(pos).start( Speck.factory(Speck.STENCH_WAND), 0.02f, 20 );
                 sprite.die();
                 Sample.INSTANCE.play( Assets.SND_BLAST );
                 return true;
@@ -110,7 +110,7 @@ public class Stenchy extends NPC {
 
         destroy();
         sprite.die();
-        CellEmitter.get(pos).start( Speck.factory(Speck.STENCH), 0.02f, 20 );
+        CellEmitter.get(pos).start( Speck.factory(Speck.STENCH_WAND), 0.02f, 20 );
         GameScene.add(Blob.seed(pos, 100, WandOfStenchGas.class));
         Sample.INSTANCE.play( Assets.SND_BLAST );
 
