@@ -99,8 +99,8 @@ public class WandOfStench extends Wand {
     public void staffFx(MagesStaff.StaffParticle particle) {
         particle.color( ColorMath.random( 0x0bb34d, 0x1d4636) );
         particle.am = 0.75f;
-        particle.setLifespan( 1.2f );
-        particle.acc.set(0, 30);
+        particle.setLifespan( 0.8f );
+        particle.acc.set(0, -15);
         particle.setSize( 0.5f, 3f );
         particle.shuffleXY( 1f );
     }
