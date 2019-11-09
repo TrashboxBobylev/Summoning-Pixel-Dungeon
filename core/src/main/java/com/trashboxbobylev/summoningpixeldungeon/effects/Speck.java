@@ -346,7 +346,7 @@ public class Speck extends Image {
 			lifespan = Random.Float( 1f, 3f );
 			break;
         case STENCH_WAND:
-                hardlight( 0x2e6c54 );
+            hardlight( 0xAAAAAA );
                 angularSpeed = -25;
                 angle = Random.Float( 360 );
                 lifespan = Random.Float( 1f, 4f );
@@ -423,8 +423,9 @@ public class Speck extends Image {
 		} else {
 			
 			float p = 1 - left / lifespan;	// 0 -> 1
-			
-			switch (type) {
+
+            double sqrt = Math.sqrt((p < 0.5f ? p : 1 - p));
+            switch (type) {
 				
 			case STAR:
 			case FORGE:
@@ -518,11 +519,15 @@ public class Speck extends Image {
 			case CORROSION:
 				hardlight( ColorMath.interpolate( 0xAAAAAA, 0xFF8800 , p ));
 			case STENCH:
-            case STENCH_WAND:
 			case SMOKE:
-				am = (float)Math.sqrt( (p < 0.5f ? p : 1 - p) );
+				am = (float) sqrt;
 				scale.set( 1 + p );
 				break;
+            case STENCH_WAND:
+                hardlight( ColorMath.interpolate( 0x4b4b4b, 0x00a952 , p ));
+                am = (float) sqrt;
+                scale.set( 1 + p );
+                break;
 				
 			case JET:
 				am = (p < 0.5f ? p : 1 - p) * 2;
