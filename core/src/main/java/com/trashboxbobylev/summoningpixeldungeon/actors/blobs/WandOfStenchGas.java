@@ -71,7 +71,7 @@ public class WandOfStenchGas extends Blob implements Hero.Doom {
 	}
 	
 	@Override
-	public void use( BlobEmitter emitter ) {
+	public void use( BlobEmitter emitter) {
 		super.use( emitter );
 
 		emitter.pour( Speck.factory( Speck.STENCH_WAND ), 0.4f );

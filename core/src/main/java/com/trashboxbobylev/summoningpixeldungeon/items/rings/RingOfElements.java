@@ -27,6 +27,7 @@ package com.trashboxbobylev.summoningpixeldungeon.items.rings;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Electricity;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.ToxicGas;
+import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.WandOfStenchGas;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Eye;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Shaman;
@@ -96,6 +97,7 @@ public class RingOfElements extends Ring {
 		RESISTS.add( WandOfWarding.Ward.class );
 		
 		RESISTS.add( ToxicGas.class );
+		RESISTS.add (WandOfStenchGas.class);
 		RESISTS.add( Electricity.class );
 		
 		RESISTS.add( Shaman.LightningBolt.class );

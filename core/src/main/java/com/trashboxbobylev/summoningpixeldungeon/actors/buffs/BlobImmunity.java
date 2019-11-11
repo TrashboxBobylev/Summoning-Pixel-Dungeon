@@ -24,20 +24,7 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.actors.buffs;
 
-import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Blizzard;
-import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.ConfusionGas;
-import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.CorrosiveGas;
-import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Electricity;
-import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Fire;
-import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Freezing;
-import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Inferno;
-import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.ParalyticGas;
-import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Regrowth;
-import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.SmokeScreen;
-import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.StenchGas;
-import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.StormCloud;
-import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.ToxicGas;
-import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Web;
+import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.*;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
@@ -78,6 +65,7 @@ public class BlobImmunity extends FlavourBuff {
 		immunities.add( Regrowth.class );
 		immunities.add( SmokeScreen.class );
 		immunities.add( StenchGas.class );
+		immunities.add( WandOfStenchGas.class);
 		immunities.add( StormCloud.class );
 		immunities.add( ToxicGas.class );
 		immunities.add( Web.class );
