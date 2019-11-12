@@ -64,19 +64,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTeleporta
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfAttunement;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfUpgrade;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfBlastWave;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfCorrosion;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfCorruption;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfDisintegration;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfFireblast;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfFrost;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfLightning;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfLivingEarth;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfMagicMissile;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfPrismaticLight;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfRegrowth;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfTransfusion;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfWarding;
+import com.trashboxbobylev.summoningpixeldungeon.items.wands.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.*;
 import com.watabou.utils.Bundle;
@@ -117,6 +105,7 @@ public enum Catalog {
 		WEAPONS.seen.put( Gloves.class,                     false);
 		WEAPONS.seen.put( Dagger.class,                     false);
 		WEAPONS.seen.put( MagesStaff.class,                 false);
+        WEAPONS.seen.put( Knife.class,                 false);
 		WEAPONS.seen.put(FroggitStaff.class, false);
 		//WEAPONS.seen.put( Boomerang.class,                  false);
 		WEAPONS.seen.put( Shortsword.class,                 false);
@@ -175,6 +164,7 @@ public enum Catalog {
 		WANDS.seen.put( WandOfDisintegration.class,         false);
 		WANDS.seen.put( WandOfFireblast.class,              false);
 		WANDS.seen.put( WandOfCorrosion.class,              false);
+        WANDS.seen.put( WandOfStench.class,              false);
 		WANDS.seen.put( WandOfBlastWave.class,              false);
 		WANDS.seen.put( WandOfLivingEarth.class,            false);
 		WANDS.seen.put( WandOfFrost.class,                  false);
