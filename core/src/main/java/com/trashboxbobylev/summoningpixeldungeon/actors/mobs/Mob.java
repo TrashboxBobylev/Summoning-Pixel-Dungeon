@@ -104,7 +104,7 @@ public abstract class Mob extends Char {
 	public int maxLvl = Hero.MAX_LEVEL;
 	
 	public Char enemy;
-	protected boolean enemySeen;
+	public boolean enemySeen;
 	protected boolean alerted = false;
 
 	protected static final float TIME_TO_WAKE_UP = 1f;
