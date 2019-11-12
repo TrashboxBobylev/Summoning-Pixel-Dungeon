@@ -180,10 +180,10 @@ public class ItemSpriteSheet {
 		assignItemRect(FROST_BOMB,      13, 12);
 		assignItemRect(REGROWTH_BOMB,   13, 12);
 		assignItemRect(FLASHBANG,       13, 12);
-		assignItemRect(SHOCK_BOMB,      10, 13);
-		assignItemRect(HOLY_BOMB,       10, 13);
+		assignItemRect(SHOCK_BOMB,      9, 15);
+		assignItemRect(HOLY_BOMB,       10, 14);
 		assignItemRect(WOOLY_BOMB,      10, 13);
-		assignItemRect(NOISEMAKER,      10, 13);
+		assignItemRect(NOISEMAKER,      9, 15);
 		assignItemRect(ARCANE_BOMB,     10, 13);
 		assignItemRect(SHRAPNEL_BOMB,   10, 13);
 	}
