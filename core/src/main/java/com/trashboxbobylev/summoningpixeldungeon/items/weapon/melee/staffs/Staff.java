@@ -85,7 +85,6 @@ public class Staff extends Weapon {
     public static final String MAX_CHARGES = "max_charges";
     public static final String CUR_CHARGES = "cur_changes";
     public static final String PARTIAL_CHARGE = "partial_change";
-    public static final String CUR_CHARGE_KNOWN = "cur_change_known";
     public static final String USES_LEFT_TO_DO = "uses_left_to_do";
     public static final String AVAILABLE_USES  = "available_uses";
     public static final String CURSE_INFUSION_BONUS = "curse_infusion_bonus";
@@ -166,8 +165,6 @@ public class Staff extends Weapon {
 
     @Override
     public Item identify() {
-
-        curChargeKnown = true;
         levelKnown = true;
         super.identify();
 
@@ -499,7 +496,6 @@ public class Staff extends Weapon {
         bundle.put(MAX_CHARGES, 1);
         bundle.put(CUR_CHARGES, curCharges);
         bundle.put(PARTIAL_CHARGE, partialCharge);
-        bundle.put(CUR_CHARGE_KNOWN, curChargeKnown);
         bundle.put( USES_LEFT_TO_DO, usesLeftToID );
         bundle.put( AVAILABLE_USES, availableUsesToID );
         bundle.put(CURSE_INFUSION_BONUS, curseInfusionBonus );
@@ -513,7 +509,6 @@ public class Staff extends Weapon {
         availableUsesToID = bundle.getInt( AVAILABLE_USES );
 
         curCharges = bundle.getInt( CUR_CHARGES );
-        curChargeKnown = bundle.getBoolean( CUR_CHARGE_KNOWN );
         partialCharge = bundle.getFloat( PARTIAL_CHARGE );
         curseInfusionBonus = bundle.getBoolean(CURSE_INFUSION_BONUS);
     }
