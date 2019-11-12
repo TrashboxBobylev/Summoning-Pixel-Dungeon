@@ -32,6 +32,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Bat;
 import com.trashboxbobylev.summoningpixeldungeon.effects.CellEmitter;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.trashboxbobylev.summoningpixeldungeon.levels.Level;
 import com.trashboxbobylev.summoningpixeldungeon.levels.Terrain;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
@@ -46,7 +47,7 @@ import com.watabou.utils.PathFinder;
 
 import java.util.ArrayList;
 
-public class Pickaxe extends Weapon {
+public class Pickaxe extends MeleeWeapon {
 	
 	public static final String AC_MINE	= "MINE";
 	
@@ -59,6 +60,7 @@ public class Pickaxe extends Weapon {
 		
 		unique = true;
 		bones = false;
+		tier = 3;
 		
 		defaultAction = AC_MINE;
 
@@ -68,17 +70,12 @@ public class Pickaxe extends Weapon {
 
 	@Override
 	public int min(int lvl) {
-		return 2;   //tier 2
+		return tier-1 + lvl;   //tier 2
 	}
 
 	@Override
 	public int max(int lvl) {
-		return 15;  //tier 2
-	}
-
-	@Override
-	public int STRReq(int lvl) {
-		return 14;  //tier 3
+		return tier*5 + lvl*tier;  //tier 2
 	}
 
 	@Override
@@ -140,11 +137,6 @@ public class Pickaxe extends Weapon {
 	}
 	
 	@Override
-	public boolean isUpgradable() {
-		return false;
-	}
-	
-	@Override
 	public boolean isIdentified() {
 		return true;
 	}
@@ -176,7 +168,7 @@ public class Pickaxe extends Weapon {
 	
 	@Override
 	public Glowing glowing() {
-		return bloodStained ? BLOODY : null;
+		return bloodStained ? BLOODY : super.glowing();
 	}
 
 }
