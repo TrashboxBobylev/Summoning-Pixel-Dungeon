@@ -25,9 +25,12 @@
 package com.trashboxbobylev.summoningpixeldungeon.items.potions;
 
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
+import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Invisibility;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -42,6 +45,11 @@ public class PotionOfInvisibility extends Potion {
 	public void apply( Hero hero ) {
 		setKnown();
 		Buff.affect( hero, Invisibility.class, Invisibility.DURATION );
+        for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+            if (mob instanceof Minion && hero.fieldOfView[mob.pos]){
+                Buff.affect(mob, Invisibility.class, Invisibility.DURATION);
+            }
+        }
 		GLog.i( Messages.get(this, "invisible") );
 		Sample.INSTANCE.play( Assets.SND_MELD );
 	}

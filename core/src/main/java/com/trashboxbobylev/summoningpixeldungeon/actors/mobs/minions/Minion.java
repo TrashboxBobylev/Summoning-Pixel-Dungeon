@@ -151,7 +151,8 @@ public abstract class Minion extends Mob {
         //will never attack something far from their target
         if (enemy != null
                 && Dungeon.level.mobs.contains(enemy)
-                && (Dungeon.level.distance(enemy.pos, targetPos) <= distance)){
+                && (Dungeon.level.distance(enemy.pos, targetPos) <= distance)
+                && (invisible < 0)){
             return enemy;
         }
 

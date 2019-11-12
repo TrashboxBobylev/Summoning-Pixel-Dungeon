@@ -28,6 +28,8 @@ import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroSubClass;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.CloakOfShadows;
 import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
@@ -100,6 +102,12 @@ public class Invisibility extends FlavourBuff {
 		if (cloakBuff != null) {
 			cloakBuff.dispel();
 		}
+        for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+            buff = mob.buff( Invisibility.class );
+            if (mob instanceof Minion && buff != null){
+                buff.detach();
+            }
+        }
 		
 		//these aren't forms of invisibilty, but do dispel at the same time as it.
 		TimekeepersHourglass.timeFreeze timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.timeFreeze.class );
