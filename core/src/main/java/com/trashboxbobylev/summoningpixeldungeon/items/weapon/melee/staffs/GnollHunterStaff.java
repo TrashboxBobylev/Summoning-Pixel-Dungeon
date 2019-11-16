@@ -34,16 +34,16 @@ public class GnollHunterStaff extends Staff{
     {
         image = ItemSpriteSheet.GNOLL_HUNTER_STAFF;
         minionType = GnollHunter.class;
-        tier = 2;
+        tier = 3;
     }
 
     @Override
     public int minionMax(int lvl) {
-        return  (5*(tier)) +    //10 base, down from 12
-                lvl*(tier+1);               //+3
+        return  (5*(tier)) +    //15
+                lvl*(tier+1);               //+4
     }
 
     public int hp(int lvl){
-        return 10*tier + lvl*(tier); // 10, +2
+        return 4*tier + lvl*(tier-1); // 12, +2
     }
 }
