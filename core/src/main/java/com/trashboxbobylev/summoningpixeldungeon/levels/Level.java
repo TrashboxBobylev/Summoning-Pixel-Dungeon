@@ -1024,7 +1024,7 @@ public abstract class Level implements Bundlable {
             }
 
             for (Mob ward : mobs){
-                if (ward instanceof WandOfWarding.Ward){
+                if (ward instanceof WandOfWarding.Ward || ward instanceof StationaryMinion){
                     if (ward.fieldOfView == null || ward.fieldOfView.length != length()){
                         ward.fieldOfView = new boolean[length()];
                         Dungeon.level.updateFieldOfView( ward, ward.fieldOfView );
