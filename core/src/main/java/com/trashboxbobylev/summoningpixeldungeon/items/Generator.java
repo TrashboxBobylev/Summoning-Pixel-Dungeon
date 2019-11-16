@@ -26,6 +26,7 @@ package com.trashboxbobylev.summoningpixeldungeon.items;
 
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.ShatteredPixelDungeon;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Slime;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.Armor;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.ClothArmor;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.LeatherArmor;
@@ -419,18 +420,18 @@ public class Generator {
 
             STF_T2.classes = new Class<?>[]{
                     GreyRatStaff.class,
-                    GnollHunterStaff.class,
+                    Slime.class,
                     SheepStaff.class
             };
             STF_T2.probs = new float[]{ 6, 5, 5};
 
             STF_T3.classes = new Class<?>[]{
                     SkeletonStaff.class,
-                    MimicStaff.class,
+                    GnollHunterStaff.class,
                     ChickenStaff.class,
                     MagicMissileStaff.class
             };
-            STF_T3.probs = new float[]{ 6, 4, 5, 5};
+            STF_T3.probs = new float[]{ 6, 5, 5, 5};
 
             STF_T4.classes = new Class<?>[]{
                     FrostElementalStaff.class,

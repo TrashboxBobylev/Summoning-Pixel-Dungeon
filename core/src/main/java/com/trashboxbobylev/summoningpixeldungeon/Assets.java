@@ -205,4 +205,5 @@ public class Assets {
 	public static final String SND_MIMIC    = "snd_mimic.mp3";
     public static final String SNAKE = "snake.png";
     public static final String SLIME = "slime.png";
+    public static final String SLIME_MINION = "slime_minion.png";
 }
