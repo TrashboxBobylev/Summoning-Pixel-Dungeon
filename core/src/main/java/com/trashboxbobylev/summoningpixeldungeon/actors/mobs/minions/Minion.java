@@ -152,7 +152,7 @@ public abstract class Minion extends Mob {
         if (enemy != null
                 && Dungeon.level.mobs.contains(enemy)
                 && (Dungeon.level.distance(enemy.pos, targetPos) <= distance)
-                && (invisible < 0)){
+                && (invisible == 0)){
             return enemy;
         }
 
