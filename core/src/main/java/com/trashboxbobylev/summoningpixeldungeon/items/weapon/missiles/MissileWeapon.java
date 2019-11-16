@@ -239,7 +239,7 @@ abstract public class MissileWeapon extends Weapon {
 	protected void decrementDurability(Char enemy){
 		//if this weapon was thrown from a source stack, degrade that stack.
 		//unless a weapon is about to break, then break the one being thrown
-        if (enemy != null && ((Mob)enemy).enemySeen) return;
+        if (enemy != null && !((Mob)enemy).enemySeen) return;
 		if (parent != null){
 			if (parent.durability <= parent.durabilityPerUse()){
 				durability = 0;
