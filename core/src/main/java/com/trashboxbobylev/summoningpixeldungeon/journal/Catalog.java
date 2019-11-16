@@ -115,7 +115,7 @@ public enum Catalog {
 		WEAPONS.seen.put( Dirk.class,                       false);
         WEAPONS.seen.put(Cleaver.class, false);
         WEAPONS.seen.put(GreyRatStaff.class, false);
-        WEAPONS.seen.put(GnollHunterStaff.class, false);
+        WEAPONS.seen.put(SlimeStaff.class, false);
         WEAPONS.seen.put(SheepStaff.class, false);
 		WEAPONS.seen.put( Sword.class,                      false);
 		WEAPONS.seen.put( Mace.class,                       false);
@@ -124,7 +124,8 @@ public enum Catalog {
 		WEAPONS.seen.put( Sai.class,                        false);
 		WEAPONS.seen.put( Whip.class,                       false);
         WEAPONS.seen.put(SkeletonStaff.class, false);
-        WEAPONS.seen.put(MimicStaff.class, false);
+        WEAPONS.seen.put(GnollHunterStaff.class, false);
+        //WEAPONS.seen.put(MimicStaff.class, false);
         WEAPONS.seen.put(ChickenStaff.class, false);
         WEAPONS.seen.put(MagicMissileStaff.class, false);
 		WEAPONS.seen.put( Longsword.class,                  false);
