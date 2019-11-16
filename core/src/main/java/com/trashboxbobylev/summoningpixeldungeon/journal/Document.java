@@ -132,6 +132,8 @@ public enum Document {
 		ALCHEMY_GUIDE.pages.put("Catalysts",            DeviceCompat.isDebug());
 		ALCHEMY_GUIDE.pages.put("Brews_Elixirs",        DeviceCompat.isDebug());
 		ALCHEMY_GUIDE.pages.put("Spells",               DeviceCompat.isDebug());
+		//metropolis
+        ALCHEMY_GUIDE.pages.put("Power_Ups", DeviceCompat.isDebug());
 	}
 	
 	private static final String DOCUMENTS = "documents";

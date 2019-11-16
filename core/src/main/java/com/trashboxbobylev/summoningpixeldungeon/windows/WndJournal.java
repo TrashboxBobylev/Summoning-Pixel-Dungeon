@@ -300,7 +300,7 @@ public class WndJournal extends WndTabbed {
 		private RedButton[] pageButtons;
 		private static final int NUM_BUTTONS = 9;
 		
-		private static final int[] spriteIndexes = {10, 12, 7, 8, 9, 11, 13, 14, 15};
+		private static final int[] spriteIndexes = {10, 12, 7, 8, 9, 11, 13, 14, 15, 27};
 		
 		private static int currentPageIdx   = -1;
 		
