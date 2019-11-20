@@ -420,7 +420,7 @@ public class Generator {
 
             STF_T2.classes = new Class<?>[]{
                     GreyRatStaff.class,
-                    Slime.class,
+                    SlimeStaff.class,
                     SheepStaff.class
             };
             STF_T2.probs = new float[]{ 6, 5, 5};
