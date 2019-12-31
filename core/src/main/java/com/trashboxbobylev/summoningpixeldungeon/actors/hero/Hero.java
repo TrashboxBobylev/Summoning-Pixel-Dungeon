@@ -35,6 +35,9 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Alchemy;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.FierySlash;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.SoulWeakness;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.SpikyShield;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.effects.CellEmitter;
 import com.trashboxbobylev.summoningpixeldungeon.effects.CheckedCell;
@@ -75,6 +78,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfLivingEarth;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfWarding;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.SpiritBow;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Blazing;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Blocking;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Cleaver;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Flail;
@@ -400,6 +404,8 @@ public class Hero extends Char {
 		
 		Berserk berserk = buff(Berserk.class);
 		if (berserk != null) dmg = berserk.damageFactor(dmg);
+
+		if (buff(SoulWeakness.class) != null) dmg /= 4;
 		
 		return buff( Fury.class ) != null ? (int)(dmg * 1.5f) : dmg;
 	}
@@ -444,6 +450,8 @@ public class Hero extends Char {
 		}
 
 		KindOfWeapon wep = Dungeon.hero.belongings.weapon;
+
+		if (buff(SoulWeakness.class) != null) return false;
 
 		if (wep != null){
 			return wep.canReach(this, enemy.pos);
@@ -946,7 +954,10 @@ public class Hero extends Char {
 	public int attackProc( final Char enemy, int damage ) {
 		KindOfWeapon wep = belongings.weapon;
 
-		if (wep != null) damage = wep.proc( this, enemy, damage );
+		if (wep != null) {
+		    damage = wep.proc( this, enemy, damage );
+		    if (buff(FierySlash.class) != null) new Blazing().proc((Weapon) wep,this, enemy, damage);
+        }
 		
 		switch (subClass) {
 		case SNIPER:
@@ -985,6 +996,11 @@ public class Hero extends Char {
 		if (belongings.armor != null) {
 			damage = belongings.armor.proc( enemy, this, damage );
 		}
+
+		if (buff(SpikyShield.class) != null){
+		    damage *= 0.6f;
+            Buff.affect( enemy, Bleeding.class).set( damage / 2 );
+        }
 		
 		Earthroot.Armor armor = buff( Earthroot.Armor.class );
 		if (armor != null) {

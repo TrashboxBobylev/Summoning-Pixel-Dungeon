@@ -26,11 +26,20 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions;
 
+import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.SupportPower;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ChickenSprite;
 
 public class Chicken extends Minion {
     {
         spriteClass = ChickenSprite.class;
         attunement = 0.5f;
+    }
+
+    @Override
+    public int defenseSkill(Char enemy) {
+        int i = super.defenseSkill(enemy);
+        if (buff(SupportPower.class) != null) i *= 1.6f;
+        return i;
     }
 }

@@ -27,11 +27,17 @@ package com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.PerfumeGas;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.ArcaneArmor;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.MagicImmune;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Roots;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary.StationaryMinion;
+import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
 import com.trashboxbobylev.summoningpixeldungeon.items.KindOfWeapon;
+import com.trashboxbobylev.summoningpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfAccuracy;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfTargeting;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
@@ -41,6 +47,12 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public abstract class Minion extends Mob {
+
+    public enum  MinionClass{
+        DEFENSE, MELEE, MAGIC, RANGE, SUPPORT
+    }
+
+    public MinionClass minionClass;
 
     public int minDamage = 0;
     public int maxDamage = 0;
@@ -123,12 +135,23 @@ public abstract class Minion extends Mob {
 
     @Override
     public int damageRoll() {
-        return Random.NormalIntRange(minDamage, maxDamage);
+        int i = Random.NormalIntRange(minDamage, maxDamage);
+        if (buff(AdditionalDamage.class) != null) i += minDamage*2;
+        return i;
     }
 
     public void setDR(int min, int max){
         minDR = min;
         maxDR = max;
+    }
+
+    @Override
+    public void damage(int dmg, Object src) {
+        if (AntiMagic.RESISTS.contains(src.getClass()) && buff(MagicalResistance.class) != null){
+            dmg -= Random.NormalIntRange(0, 7);
+            if (dmg < 0) dmg = 0;
+        }
+        super.damage(dmg, src);
     }
 
     public void adjustDR(int min, int max){
@@ -138,7 +161,9 @@ public abstract class Minion extends Mob {
 
     @Override
     public int drRoll() {
-        return Random.NormalIntRange(minDR + baseMinDR, maxDR + baseMaxDR);
+        int i = Random.NormalIntRange(minDR + baseMinDR, maxDR + baseMaxDR);
+        if (buff(AdditionalDefense.class) != null) i += Random.NormalIntRange(1, 5);
+        return i;
     }
 
     @Override
@@ -163,13 +188,26 @@ public abstract class Minion extends Mob {
     @Override
     public int defenseSkill(Char enemy) {
         boolean seen = (enemySeen && enemy.invisible == 0);
+
         if (enemy == Dungeon.hero && !Dungeon.hero.canSurpriseAttack()) seen = true;
         if ( seen
                 && paralysed == 0
                 && !(alignment == Alignment.ALLY && enemy == Dungeon.hero)) {
-            return Dungeon.hero.defenseSkill(enemy);
+            int i = Dungeon.hero.defenseSkill(enemy);
+            if (buff(AdditionalEvasion.class) != null) i *= 1.3f;
+            return i;
         } else {
             return 0;
+        }
+    }
+
+    @Override
+    public void add(Buff buff) {
+        super.add(buff);
+        if (buff instanceof TankHeal && minionClass == MinionClass.DEFENSE){
+            HP = HT;
+            sprite.emitter().start( Speck.factory( Speck.HEALING ), 0.4f, 4 );
+            buff.detach();
         }
     }
 
@@ -193,6 +231,7 @@ public abstract class Minion extends Mob {
         if (enchantment != null && buff(MagicImmune.class) == null) {
             damage = enchantment.proc(  this, enemy, damage );
         }
+        if (buff(RootingOnShots.class) != null && Random.Float() < 0.5) Buff.prolong(enemy, Roots.class, 5f);
         return super.attackProc(enemy, damage);
     }
 

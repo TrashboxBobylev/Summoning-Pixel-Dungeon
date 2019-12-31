@@ -78,20 +78,20 @@ public class WandOfBlastWave extends DamageWand {
 
 		//throws other chars around the center.
 		for (int i  : PathFinder.NEIGHBOURS8){
-			Char ch = Actor.findChar(bolt.collisionPos + i);
+                    Char ch = Actor.findChar(bolt.collisionPos + i);
 
-			if (ch != null){
-				processSoulMark(ch, chargesPerCast());
-				ch.damage(Math.round(damage * 0.667f), this);
+                    if (ch != null){
+                        processSoulMark(ch, chargesPerCast());
+                        ch.damage(Math.round(damage * 0.667f), this);
 
-				if (ch.isAlive()) {
-					Ballistica trajectory = new Ballistica(ch.pos, ch.pos + i, Ballistica.MAGIC_BOLT);
-					int strength = 1 + Math.round(level() / 2f);
-					throwChar(ch, trajectory, strength);
-				} else if (ch == Dungeon.hero){
-					Dungeon.fail( getClass() );
-					GLog.negative( Messages.get( this, "ondeath") );
-				}
+                        if (ch.isAlive()) {
+                            Ballistica trajectory = new Ballistica(ch.pos, ch.pos + i, Ballistica.MAGIC_BOLT);
+                            int strength = 1 + Math.round(level() / 2f);
+                            throwChar(ch, trajectory, strength);
+                        } else if (ch == Dungeon.hero){
+                            Dungeon.fail( getClass() );
+                            GLog.negative( Messages.get( this, "ondeath") );
+                        }
 			}
 		}
 

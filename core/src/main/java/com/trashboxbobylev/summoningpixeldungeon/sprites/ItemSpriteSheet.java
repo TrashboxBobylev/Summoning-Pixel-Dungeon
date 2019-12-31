@@ -726,6 +726,17 @@ public class ItemSpriteSheet {
 		assignItemRect(SHARD,    8, 10);
 		assignItemRect(GOLD_TOKEN, 12, 11);
 	}
+	private static final int POWERS =                                   xy(1, 30);
+	public static final int WARRIOR_POWER = POWERS+0;
+    public static final int ROGUE_POWER = POWERS+1;
+    public static final int MAGIC_POWER = POWERS+2;
+    public static final int RANGE_POWER = POWERS+3;
+    public static final int CONJURER_POWER = POWERS+4;
+    static {
+        for (int i = 0; i < 5; i++){
+            assignItemRect(POWERS+i, 14, 14);
+        }
+    }
 
 	private static final int BAGS       =                                   xy(1, 31);  //16 slots
 	public static final int VIAL        = BAGS+0;

@@ -29,6 +29,8 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.PinCushion;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.SoulWeakness;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.SpeedyShots;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroClass;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
@@ -165,7 +167,7 @@ abstract public class MissileWeapon extends Weapon {
 	@Override
     public void onThrow(int cell) {
 		Char enemy = Actor.findChar( cell );
-		if (enemy == null || enemy == curUser) {
+		if (enemy == null || enemy == curUser || curUser.buff(SoulWeakness.class) != null) {
 				parent = null;
 				super.onThrow( cell );
 		} else {
@@ -198,7 +200,9 @@ abstract public class MissileWeapon extends Weapon {
 	
 	@Override
 	public float castDelay(Char user, int dst) {
-		return speedFactor( user );
+        float v = speedFactor(user);
+        if (user.buff(SpeedyShots.class) != null) v *= 2.0f /3;
+        return v;
 	}
 	
 	public void rangedHit( Char enemy, int cell ){

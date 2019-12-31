@@ -27,6 +27,7 @@ package com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.MagicPower;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.effects.CellEmitter;
 import com.trashboxbobylev.summoningpixeldungeon.effects.MagicMissile;
@@ -52,7 +53,9 @@ public class GasterBlaster extends StationaryMinion {
 
     @Override
     protected float attackDelay() {
-        return super.attackDelay()*2f;
+        float v = super.attackDelay() * 2f;
+        if (buff(MagicPower.class) != null) v *= 1.75;
+        return v;
     }
 
     @Override
@@ -79,7 +82,9 @@ public class GasterBlaster extends StationaryMinion {
             Char ch = Actor.findChar(c);
             if (ch == null) continue;
             if (hit(this, ch, true)){
-                ch.damage(damageRoll(), this);
+                int damage = damageRoll();
+                if (buff(MagicPower.class) != null) damage *= Random.NormalFloat(1.5f, 3.4f);
+                ch.damage(damage, this);
 
                 if (!ch.isAlive() && ch instanceof Hero){
                     Dungeon.fail(this.getClass());

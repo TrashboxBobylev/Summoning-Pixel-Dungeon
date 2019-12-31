@@ -33,6 +33,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.FlavourBuff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Weakness;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.MagicPower;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Warlock;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Imp;
@@ -73,10 +74,12 @@ public class ImpQueen extends Minion {
             if (fieldOfView != null) {
                 if (fieldOfView[mob.pos] && mob instanceof Imp) {
                     ((Imp) mob).callToQueen(pos);
+                    if (buff(MagicPower.class) != null && mob.HP < mob.HT) mob.HP++;
                 }
             }
         }
         if (buff(MorphTimer.class) != null) sprite.showStatus(CharSprite.NEUTRAL, new DecimalFormat("#").format(buff(MorphTimer.class).cooldown()+1));
+        if (buff(MagicPower.class) != null && HP + 2 + lvl < HT) HP += 2 + lvl;
         return super.act();
     }
 
@@ -115,7 +118,9 @@ public class ImpQueen extends Minion {
         if (hit( this, enemy, true ) &&
                 (!enemy.properties().contains(Char.Property.BOSS)
                 && !enemy.properties().contains(Char.Property.MINIBOSS))) {
-            Buff.append(this, MorphTimer.class, 200f - 30f*lvl);
+            float duration = 200f - 30f * lvl;
+            if (buff(MagicPower.class) != null) duration += 100f;
+            Buff.append(this, MorphTimer.class, duration);
             int impPosition = enemy.pos;
             enemy.HP = 0;
             enemy.sprite.die();

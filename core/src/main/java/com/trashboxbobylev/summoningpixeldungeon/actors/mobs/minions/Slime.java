@@ -29,6 +29,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.FrostBurn;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Paralysis;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.SupportPower;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.SlimeMinionSprite;
 import com.watabou.utils.Random;
 
@@ -49,6 +50,7 @@ public class Slime extends Minion {
         damage = super.attackProc( enemy, damage );
         if (Random.Int( 1 + lvl ) == 0) {
             Buff.affect( enemy, Paralysis.class, lvl*2 );
+            if (buff(SupportPower.class) != null) Buff.prolong(enemy, Paralysis.class, lvl*5);
             damage /= 2;
         }
         return damage;

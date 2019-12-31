@@ -29,6 +29,7 @@ package com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.SupportPower;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.items.Generator;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
@@ -101,10 +102,11 @@ public class Wizard extends Minion implements Callback {
 		if (hit( this, enemy, true )) {
 			if (Random.Int( 1 ) == 0) {
 			    Class<? extends FlavourBuff> buff = (Class<? extends FlavourBuff>) Random.chances(DEBUFFS);
-				Buff.prolong( enemy, buff, 6 );
+				Buff.prolong( enemy, buff, 4 );
+				if (buff(SupportPower.class) != null) Buff.prolong(enemy, buff, 4);
 			}
 			
-			int dmg = Random.Int( minDamage/2, maxDamage/2 );
+			int dmg = Random.Int( -1, -1 );
 			enemy.damage( dmg, new DarkBolt() );
 		} else {
 			enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );

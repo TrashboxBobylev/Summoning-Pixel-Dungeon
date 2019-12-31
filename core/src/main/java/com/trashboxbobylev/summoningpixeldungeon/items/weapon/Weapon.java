@@ -29,6 +29,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.ShatteredPixelDungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.MagicImmune;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.GuaranteedEnchant;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
@@ -352,6 +353,7 @@ abstract public class Weapon extends KindOfWeapon {
             };
             wp.enchant(attacker.enchantment);
             wp.level(attacker.lvl+2);
+            if (attacker.buff(GuaranteedEnchant.class) != null) wp.level(12);
             return proc(wp, attacker, defender, damage);
         }
 

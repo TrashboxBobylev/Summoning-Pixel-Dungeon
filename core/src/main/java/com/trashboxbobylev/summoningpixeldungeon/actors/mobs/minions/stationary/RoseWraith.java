@@ -30,6 +30,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.FlavourBuff;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.MagicPower;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Wraith;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.CharSprite;
@@ -43,7 +44,9 @@ public class RoseWraith extends StationaryMinion {
 
     @Override
     public int defenseSkill(Char enemy) {
-        return Math.round(super.defenseSkill(enemy)*2.5f);
+        int round = Math.round(super.attackSkill(enemy) * 1.8f);
+        if (buff(MagicPower.class) != null) round = Math.round(super.attackSkill(enemy) * 1f);
+        return round;
     }
 
     @Override
@@ -57,7 +60,9 @@ public class RoseWraith extends StationaryMinion {
 
         Timer timer = buff(Timer.class);
         if (timer == null){
-            Buff.affect(this, Timer.class, Random.IntRange(4, 8)*attackDelay());
+            int timing = Random.IntRange(4, 8);
+            if (buff(MagicPower.class) != null) timing /= 3;
+            Buff.affect(this, Timer.class, timing*attackDelay());
             Wraith.summonAt(this);
             this.damage(1, this);
         }

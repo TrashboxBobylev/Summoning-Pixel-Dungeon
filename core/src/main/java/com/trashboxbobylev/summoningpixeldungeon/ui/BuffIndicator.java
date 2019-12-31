@@ -98,6 +98,11 @@ public class BuffIndicator extends Component {
     public static final int SOUL_PARALYSIS = 47;
     public static final int HATE = 48;
     public static final int ERADICATION = 49;
+    public static final int WAR = 50;
+    public static final int ROG = 51;
+    public static final int MAG = 52;
+    public static final int HUN = 53;
+    public static final int CON = 54;
 
 	public static final int SIZE	= 7;
 	

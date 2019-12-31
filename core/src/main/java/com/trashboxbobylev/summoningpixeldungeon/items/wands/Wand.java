@@ -36,6 +36,8 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.LockedFloor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.MagicImmune;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Recharging;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.SoulMark;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.EnergyOverload;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.SoulWeakness;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroClass;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroSubClass;
@@ -122,6 +124,10 @@ public abstract class Wand extends Item {
 			GLog.warning( Messages.get(this, "no_magic") );
 			return false;
 		}
+		if (owner.buff(SoulWeakness.class) != null){
+            GLog.warning(Messages.get(this, "fizzles"));
+            return false;
+        }
 
 		if ( curCharges >= (cursed ? 1 : chargesPerCast())){
 			return true;
@@ -324,6 +330,7 @@ public abstract class Wand extends Item {
 		}
 		
 		curCharges -= cursed ? 1 : chargesPerCast();
+		if (Dungeon.hero.buff(EnergyOverload.class) != null && !cursed) curCharges += chargesPerCast();
 		
 		if (curUser.heroClass == HeroClass.MAGE) levelKnown = true;
 		updateQuickslot();

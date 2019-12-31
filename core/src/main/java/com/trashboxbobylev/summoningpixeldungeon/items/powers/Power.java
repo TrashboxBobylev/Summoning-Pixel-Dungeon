@@ -33,6 +33,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
+import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 
 import java.util.ArrayList;
 
@@ -40,10 +41,12 @@ public abstract class Power extends Item {
 
     public static final String AC_DRINK = "DRINK";
     ArrayList<? extends Class> minionClasses;
+    Minion.MinionClass featuredClass = null;
 
     {
         stackable = true;
         defaultAction = AC_DRINK;
+        image = ItemSpriteSheet.WARRIOR_POWER;
     }
 
     @Override
@@ -66,10 +69,11 @@ public abstract class Power extends Item {
         affectDungeon();
         buffPlayer();
         buffMinions();
+        Invisibility.dispel();
     }
 
     protected boolean isRespectable(Minion minion){
-        return minionClasses.contains(minion.getClass());
+        return minion.minionClass == featuredClass;
     }
 
     Class<? extends FlavourBuff> playerBuff;
