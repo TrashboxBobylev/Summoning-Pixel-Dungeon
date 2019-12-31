@@ -62,7 +62,7 @@ public class ConjurerPower extends Power {
 
         {
             inputs =  new Class[]{ScrollOfAttunement.class, PotionOfHealing.class, ScrollOfTransmutation.class};
-            inQuantity = new int[]{1, 1};
+            inQuantity = new int[]{1, 1, 1};
 
             cost = 15;
 

@@ -83,7 +83,7 @@ public class RangePower extends Power {
 
         {
             inputs =  new Class[]{ScrollOfConfusion.class, PotionOfStamina.class, ScrollOfTransmutation.class};
-            inQuantity = new int[]{1, 1};
+            inQuantity = new int[]{1, 1, 1};
 
             cost = 15;
 

@@ -67,7 +67,7 @@ public class WarriorPower extends Power {
 
         {
             inputs =  new Class[]{ScrollOfRage.class, PotionOfHealing.class, ScrollOfTransmutation.class};
-            inQuantity = new int[]{1, 1};
+            inQuantity = new int[]{1, 1, 1};
 
             cost = 15;
 

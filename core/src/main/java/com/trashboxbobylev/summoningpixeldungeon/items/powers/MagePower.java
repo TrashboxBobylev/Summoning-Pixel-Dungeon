@@ -65,7 +65,7 @@ public class MagePower extends Power {
 
         {
             inputs =  new Class[]{ScrollOfRecharging.class, PotionOfShroudingFog.class, ScrollOfTransmutation.class};
-            inQuantity = new int[]{1, 1};
+            inQuantity = new int[]{1, 1, 1};
 
             cost = 15;
 

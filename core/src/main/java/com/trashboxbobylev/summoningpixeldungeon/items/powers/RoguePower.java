@@ -65,7 +65,7 @@ public class RoguePower extends Power {
 
         {
             inputs =  new Class[]{ScrollOfMirrorImage.class, ScrollOfEnchantment.class, ScrollOfTransmutation.class};
-            inQuantity = new int[]{1, 1};
+            inQuantity = new int[]{1, 1, 1};
 
             cost = 15;
 
