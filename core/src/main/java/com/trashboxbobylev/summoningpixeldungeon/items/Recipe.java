@@ -35,6 +35,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.potions.Potion;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.brews.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.exotic.ExoticPotion;
+import com.trashboxbobylev.summoningpixeldungeon.items.powers.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.Scroll;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.trashboxbobylev.summoningpixeldungeon.items.spells.*;
@@ -212,7 +213,12 @@ public abstract class Recipe {
 		new ExoticPotion.PotionToExotic(),
 		new ExoticScroll.ScrollToExotic(),
 		new StewedMeat.threeMeat(),
-		new MeatPie.Recipe()
+		new MeatPie.Recipe(),
+        new WarriorPower.Recipe(),
+        new RoguePower.Recipe(),
+        new MagePower.Recipe(),
+        new RangePower.Recipe(),
+        new ConjurerPower.Recipe()
 	};
 	
 	public static Recipe findRecipe(ArrayList<Item> ingredients){

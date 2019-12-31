@@ -33,6 +33,11 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.SpikyShield
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.TankHeal;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
+import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfHealing;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRage;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTransmutation;
+import com.trashboxbobylev.summoningpixeldungeon.items.spells.ArcaneCatalyst;
+import com.trashboxbobylev.summoningpixeldungeon.items.spells.Enrage;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 
 public class WarriorPower extends Power {
@@ -58,5 +63,17 @@ public class WarriorPower extends Power {
         }
     }
 
+    public static class Recipe extends com.trashboxbobylev.summoningpixeldungeon.items.Recipe.SimpleRecipe {
 
+        {
+            inputs =  new Class[]{ScrollOfRage.class, PotionOfHealing.class, ScrollOfTransmutation.class};
+            inQuantity = new int[]{1, 1};
+
+            cost = 15;
+
+            output = WarriorPower.class;
+            outQuantity =1;
+        }
+
+    }
 }

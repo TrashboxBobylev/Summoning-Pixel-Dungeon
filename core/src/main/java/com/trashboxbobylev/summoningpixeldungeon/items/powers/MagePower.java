@@ -32,6 +32,11 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Vertigo;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
+import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfHealing;
+import com.trashboxbobylev.summoningpixeldungeon.items.potions.exotic.PotionOfShroudingFog;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRage;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRecharging;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 
 public class MagePower extends Power {
@@ -54,5 +59,19 @@ public class MagePower extends Power {
                 Buff.prolong(mob, Vertigo.class, 30f);
             }
         }
+    }
+
+    public static class Recipe extends com.trashboxbobylev.summoningpixeldungeon.items.Recipe.SimpleRecipe {
+
+        {
+            inputs =  new Class[]{ScrollOfRecharging.class, PotionOfShroudingFog.class, ScrollOfTransmutation.class};
+            inQuantity = new int[]{1, 1};
+
+            cost = 15;
+
+            output = MagePower.class;
+            outQuantity =1;
+        }
+
     }
 }

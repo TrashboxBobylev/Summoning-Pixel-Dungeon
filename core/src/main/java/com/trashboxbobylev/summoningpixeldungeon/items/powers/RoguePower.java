@@ -31,6 +31,11 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
+import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfHealing;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfMirrorImage;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRage;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTransmutation;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfEnchantment;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 
 public class RoguePower extends Power {
@@ -54,5 +59,19 @@ public class RoguePower extends Power {
                 }
             }
         }
+    }
+
+    public static class Recipe extends com.trashboxbobylev.summoningpixeldungeon.items.Recipe.SimpleRecipe {
+
+        {
+            inputs =  new Class[]{ScrollOfMirrorImage.class, ScrollOfEnchantment.class, ScrollOfTransmutation.class};
+            inQuantity = new int[]{1, 1};
+
+            cost = 15;
+
+            output = RoguePower.class;
+            outQuantity =1;
+        }
+
     }
 }

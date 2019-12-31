@@ -30,6 +30,10 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
+import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfHealing;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfAttunement;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRage;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 
 public class ConjurerPower extends Power {
@@ -52,5 +56,19 @@ public class ConjurerPower extends Power {
                 Buff.prolong(mob, Slow.class, 15f);
             }
         }
+    }
+
+    public static class Recipe extends com.trashboxbobylev.summoningpixeldungeon.items.Recipe.SimpleRecipe {
+
+        {
+            inputs =  new Class[]{ScrollOfAttunement.class, PotionOfHealing.class, ScrollOfTransmutation.class};
+            inQuantity = new int[]{1, 1};
+
+            cost = 15;
+
+            output = ConjurerPower.class;
+            outQuantity =1;
+        }
+
     }
 }

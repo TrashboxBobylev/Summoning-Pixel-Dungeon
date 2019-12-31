@@ -41,6 +41,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.potions.Potion;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.brews.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.exotic.ExoticPotion;
+import com.trashboxbobylev.summoningpixeldungeon.items.powers.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.Scroll;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.trashboxbobylev.summoningpixeldungeon.items.spells.*;
@@ -357,6 +358,13 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe(new Alchemize.Recipe()));
 				result.add(new QuickRecipe(new Recycle.Recipe()));
 				return result;
+            case 9:
+                result.add(new QuickRecipe(new WarriorPower.Recipe()));
+                result.add(new QuickRecipe(new RoguePower.Recipe()));
+                result.add(new QuickRecipe(new MagePower.Recipe()));
+                result.add(new QuickRecipe(new RangePower.Recipe()));
+                result.add(new QuickRecipe(new ConjurerPower.Recipe()));
+                return result;
 		}
 	}
 	
