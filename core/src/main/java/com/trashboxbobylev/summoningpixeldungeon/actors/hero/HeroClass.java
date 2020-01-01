@@ -30,6 +30,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Challenges;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Invisibility;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.SupportPower;
 import com.trashboxbobylev.summoningpixeldungeon.items.BrokenSeal;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.TomeOfMastery;
@@ -49,6 +50,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.potions.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.brews.PerfumeBrew;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.brews.RagingBrew;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.ElixirOfAttunement;
+import com.trashboxbobylev.summoningpixeldungeon.items.powers.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfEnchantment;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfSoulEnergy;
@@ -243,6 +245,11 @@ public enum HeroClass {
         new ImpQueenStaff().identify().collect();
         new HacatuStaff().identify().collect();
         new BlasterStaff().identify().collect();
+        new WarriorPower().collect();
+        new RoguePower().collect();
+        new MagePower().collect();
+        new RangePower().collect();
+        new ConjurerPower().collect();
 
         hero.belongings.armor = ClassArmor.upgrade(hero, (Armor)(new ClothArmor().identify()));
 
