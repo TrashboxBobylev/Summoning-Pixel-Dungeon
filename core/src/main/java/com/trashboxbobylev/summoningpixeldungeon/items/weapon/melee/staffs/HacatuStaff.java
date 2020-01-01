@@ -27,6 +27,7 @@
 package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs;
 
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Hacatu;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 
 public class HacatuStaff extends Staff{
@@ -34,6 +35,7 @@ public class HacatuStaff extends Staff{
         image = ItemSpriteSheet.HACATU_STAFF;
         minionType = Hacatu.class;
         tier = 5;
+        minionClass = Minion.MinionClass.RANGE;
     }
 
     @Override

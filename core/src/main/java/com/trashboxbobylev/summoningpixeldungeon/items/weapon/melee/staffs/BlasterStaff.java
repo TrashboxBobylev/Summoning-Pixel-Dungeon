@@ -26,6 +26,7 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs;
 
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary.GasterBlaster;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary.MagicMissileMinion;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
@@ -35,6 +36,7 @@ public class BlasterStaff extends StationaryStaff {
         image = ItemSpriteSheet.GASTER_STAFF;
         minionType = GasterBlaster.class;
         tier = 5;
+        minionClass = Minion.MinionClass.MAGIC;
     }
 
     @Override

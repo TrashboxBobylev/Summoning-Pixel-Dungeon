@@ -27,6 +27,7 @@
 package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs;
 
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.GrayRat;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Slime;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 
@@ -35,5 +36,6 @@ public class SlimeStaff extends Staff {
         image = ItemSpriteSheet.SLIME_STAFF;
         minionType = Slime.class;
         tier = 2;
+        minionClass = Minion.MinionClass.SUPPORT;
     }
 }

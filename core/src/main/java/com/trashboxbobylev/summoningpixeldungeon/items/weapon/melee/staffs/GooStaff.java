@@ -26,6 +26,7 @@ package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs;
 
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.FrostElemental;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.GooMinion;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 
 public class GooStaff extends Staff {
@@ -33,6 +34,7 @@ public class GooStaff extends Staff {
         image = ItemSpriteSheet.GOO_STAFF;
         minionType = GooMinion.class;
         tier = 5;
+        minionClass = Minion.MinionClass.MELEE;
     }
 
     @Override

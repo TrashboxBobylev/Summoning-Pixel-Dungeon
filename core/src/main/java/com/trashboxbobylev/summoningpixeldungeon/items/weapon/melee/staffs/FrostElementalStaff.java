@@ -28,6 +28,7 @@ package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs;
 
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.FrostElemental;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.GrayRat;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 
 public class FrostElementalStaff extends Staff {
@@ -35,6 +36,7 @@ public class FrostElementalStaff extends Staff {
         image = ItemSpriteSheet.FROST_ELEMENTAL_STAFF;
         minionType = FrostElemental.class;
         tier = 4;
+        minionClass = Minion.MinionClass.MELEE;
     }
 
     @Override

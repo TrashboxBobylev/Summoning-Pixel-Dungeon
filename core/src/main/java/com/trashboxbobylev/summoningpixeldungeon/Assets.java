@@ -147,6 +147,7 @@ public class Assets {
 	public static final String BUFFS_LARGE	= "large_buffs.png";
 	public static final String SPELL_ICONS	= "spell_icons.png";
 	public static final String CONS_ICONS   = "consumable_icons.png";
+	public static final String CLASS_ICONS = "minion_classes.png";
 	
 	public static final String PIXELFONT    = "pixel_font.png";
 	public static final String FONT1X       = "font1x.png";

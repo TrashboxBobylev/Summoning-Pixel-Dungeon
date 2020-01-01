@@ -25,6 +25,7 @@
 package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs;
 
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.ImpQueen;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 
 public class ImpQueenStaff extends Staff {
@@ -34,6 +35,7 @@ public class ImpQueenStaff extends Staff {
         tier = 5;
         isTanky = true;
         chargeTurns = 750;
+        minionClass = Minion.MinionClass.MAGIC;
     }
 
     @Override

@@ -62,6 +62,7 @@ public class Staff extends Weapon {
 
     //type of minion, since we need to spawn them, not hold
     public Class<? extends Minion> minionType;
+    public Minion.MinionClass minionClass = Minion.MinionClass.MELEE;
 
     //the property of tank minion, to prevent abuse of high health minions
     protected boolean isTanky = false;
@@ -356,6 +357,7 @@ public class Staff extends Weapon {
             this.customizeMinion(minion);
             minion.enchantment = enchantment;
             minion.lvl = level();
+            minion.minionClass = minionClass;
 
             //if we have upgraded robe, increase hp
             float robeBonus = 1f;
@@ -547,6 +549,8 @@ public class Staff extends Weapon {
         if (!statsInfo.equals("")) info += "\n\n" + statsInfo;
 
         if (level() >= 3) info += "\n\n" + Messages.get(Staff.class, "upgrade_info");
+
+        info += "\n\n" + Messages.get(Staff.class, "class", minionClass);
 
         switch (augment) {
             case SPEED:

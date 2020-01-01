@@ -28,6 +28,7 @@ package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs;
 
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Froggit;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.GrayRat;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 
 public class GreyRatStaff extends Staff {
@@ -35,6 +36,7 @@ public class GreyRatStaff extends Staff {
         image = ItemSpriteSheet.GREY_RAT_STAFF;
         minionType = GrayRat.class;
         tier = 2;
+        minionClass = Minion.MinionClass.MELEE;
     }
 
     @Override

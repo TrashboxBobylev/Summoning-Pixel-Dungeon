@@ -26,6 +26,7 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs;
 
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Sheep;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Skele;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
@@ -37,6 +38,7 @@ public class SheepStaff extends Staff {
         tier = 2;
         isTanky = true;
         chargeTurns = 500;
+        minionClass = Minion.MinionClass.DEFENSE;
     }
 
     @Override

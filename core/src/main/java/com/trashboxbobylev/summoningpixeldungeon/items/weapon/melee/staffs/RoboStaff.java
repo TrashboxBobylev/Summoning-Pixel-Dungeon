@@ -27,6 +27,7 @@
 package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs;
 
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Chicken;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Robo;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 
@@ -37,6 +38,7 @@ public class RoboStaff extends Staff {
         tier = 4;
         isTanky = true;
         chargeTurns = 600;
+        minionClass = Minion.MinionClass.DEFENSE;
     }
 
     @Override

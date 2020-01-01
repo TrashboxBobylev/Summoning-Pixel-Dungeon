@@ -37,6 +37,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ExoticScro
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Slingshot;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.PixelScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSprite;
@@ -61,6 +62,7 @@ public class ItemSlot extends Button {
 	protected BitmapText topRight;
 	protected BitmapText bottomRight;
 	protected Image      bottomRightIcon;
+	protected Image bottomLeftIcon;
 	protected boolean    iconVisible = true;
 	
 	private static final String TXT_STRENGTH	= ":%d";
@@ -156,6 +158,12 @@ public class ItemSlot extends Button {
 			bottomRightIcon.y = y + (height - bottomRightIcon.height());
 			PixelScene.align(bottomRightIcon);
 		}
+
+        if (bottomLeftIcon != null) {
+            bottomLeftIcon.x = x;
+            bottomLeftIcon.y = y + (height - bottomLeftIcon.height());
+            PixelScene.align(bottomLeftIcon);
+        }
 	}
 	
 	public void item( Item item ) {
@@ -193,6 +201,11 @@ public class ItemSlot extends Button {
 			remove(bottomRightIcon);
 			bottomRightIcon = null;
 		}
+
+        if (bottomLeftIcon != null){
+            remove(bottomLeftIcon);
+            bottomLeftIcon = null;
+        }
 
 		if (item == null){
 			topLeft.visible = topRight.visible = bottomRight.visible = false;
@@ -238,11 +251,35 @@ public class ItemSlot extends Button {
 
 		int level = item.visiblyUpgraded();
 
+		if (item instanceof Staff){
+		    int iconInt = 0;
+		    switch (((Staff) item).minionClass){
+                case DEFENSE:
+                    iconInt = 0; break;
+                case MELEE:
+                    iconInt = 1; break;
+                case MAGIC:
+                    iconInt = 2; break;
+                case RANGE:
+                    iconInt = 3; break;
+                case SUPPORT:
+                    iconInt = 4; break;
+            }
+            if (iconVisible){
+                bottomLeftIcon = new Image(Assets.CLASS_ICONS);
+                int left = iconInt*7;
+                int top = 0;
+                bottomLeftIcon.frame(left, top, 7, 8);
+                add(bottomLeftIcon);
+            }
+        }
+
 		if (level != 0) {
 			bottomRight.text( item.levelKnown ? Messages.format( TXT_LEVEL, level ) : TXT_CURSED );
 			bottomRight.measure();
 			bottomRight.hardlight( level > 0 ? UPGRADED : DEGRADED );
-		} else if (item instanceof Scroll || item instanceof Potion) {
+		}
+		else if (item instanceof Scroll || item instanceof Potion) {
 			bottomRight.text( null );
 
 			Integer iconInt;
@@ -289,6 +326,7 @@ public class ItemSlot extends Button {
 		topRight.alpha( alpha );
 		bottomRight.alpha( alpha );
 		if (bottomRightIcon != null) bottomRightIcon.alpha( alpha );
+        if (bottomLeftIcon != null) bottomLeftIcon.alpha( alpha );
 	}
 
 	public void showParams( boolean TL, boolean TR, boolean BR ) {

@@ -27,6 +27,7 @@
 package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs;
 
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.GnollHunter;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Wizard;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 
@@ -35,6 +36,7 @@ public class WizardStaff extends Staff{
         image = ItemSpriteSheet.WIZARD_STAFF;
         minionType = Wizard.class;
         tier = 4;
+        minionClass = Minion.MinionClass.SUPPORT;
     }
 
     @Override

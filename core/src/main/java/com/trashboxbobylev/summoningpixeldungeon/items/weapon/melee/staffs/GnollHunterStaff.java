@@ -28,6 +28,7 @@ package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs;
 
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.GnollHunter;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.GrayRat;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 
 public class GnollHunterStaff extends Staff{
@@ -35,6 +36,7 @@ public class GnollHunterStaff extends Staff{
         image = ItemSpriteSheet.GNOLL_HUNTER_STAFF;
         minionType = GnollHunter.class;
         tier = 3;
+        minionClass = Minion.MinionClass.RANGE;
     }
 
     @Override

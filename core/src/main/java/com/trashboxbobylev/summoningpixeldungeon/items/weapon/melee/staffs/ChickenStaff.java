@@ -27,6 +27,7 @@
 package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs;
 
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Chicken;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 
 public class ChickenStaff extends Staff {
@@ -35,6 +36,7 @@ public class ChickenStaff extends Staff {
         minionType = Chicken.class;
         tier = 3;
         chargeTurns = 90;
+        minionClass = Minion.MinionClass.SUPPORT;
     }
 
     @Override

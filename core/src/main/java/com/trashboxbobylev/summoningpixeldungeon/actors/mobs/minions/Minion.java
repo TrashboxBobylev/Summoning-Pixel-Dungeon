@@ -79,6 +79,7 @@ public abstract class Minion extends Mob {
         bundle.put("str", strength);
         bundle.put("enchantment", enchantment);
         bundle.put("level", lvl);
+        bundle.put("class", minionClass);
     }
 
     @Override
@@ -92,6 +93,7 @@ public abstract class Minion extends Mob {
         strength = bundle.getInt("str");
         lvl = bundle.getInt("lvl");
         enchantment = (Weapon.Enchantment) bundle.get("enchantment");
+        minionClass = bundle.getEnum("class", MinionClass.class);
     }
 
     public float attunement = 1;

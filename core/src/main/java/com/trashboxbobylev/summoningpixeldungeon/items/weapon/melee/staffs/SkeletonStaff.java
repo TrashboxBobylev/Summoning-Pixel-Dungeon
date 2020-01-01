@@ -27,6 +27,7 @@
 package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs;
 
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.GrayRat;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Skele;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 
@@ -36,6 +37,7 @@ public class SkeletonStaff extends Staff {
         minionType = Skele.class;
         tier = 3;
         chargeTurns = 450;
+        minionClass = Minion.MinionClass.DEFENSE;
     }
 
     @Override

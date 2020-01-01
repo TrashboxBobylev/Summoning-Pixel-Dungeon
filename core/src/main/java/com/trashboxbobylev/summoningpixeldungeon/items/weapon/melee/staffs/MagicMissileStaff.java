@@ -26,6 +26,7 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs;
 
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Sheep;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary.MagicMissileMinion;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
@@ -35,6 +36,7 @@ public class MagicMissileStaff extends StationaryStaff {
         image = ItemSpriteSheet.MAGIC_MISSILE_STAFF;
         minionType = MagicMissileMinion.class;
         tier = 3;
+        minionClass = Minion.MinionClass.RANGE;
     }
 
     @Override

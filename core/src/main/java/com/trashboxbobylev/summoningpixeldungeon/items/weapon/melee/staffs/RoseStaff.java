@@ -26,6 +26,7 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs;
 
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary.MagicMissileMinion;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary.RoseWraith;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
@@ -35,6 +36,7 @@ public class RoseStaff extends StationaryStaff {
         image = ItemSpriteSheet.ROSE_STAFF;
         minionType = RoseWraith.class;
         tier = 4;
+        minionClass = Minion.MinionClass.MAGIC;
     }
 
     @Override
