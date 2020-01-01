@@ -42,6 +42,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.bags.MagicalHolster;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.PotionBandolier;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.ScrollHolder;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.VelvetPouch;
+import com.trashboxbobylev.summoningpixeldungeon.items.food.Blandfruit;
 import com.trashboxbobylev.summoningpixeldungeon.items.food.Food;
 import com.trashboxbobylev.summoningpixeldungeon.items.food.SmallRation;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.*;
@@ -61,7 +62,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.weapon.SpiritBow;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Unstable;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.*;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.FroggitStaff;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.ThrowingKnife;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.ThrowingStone;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
@@ -226,7 +227,22 @@ public enum HeroClass {
         FroggitStaff staff = new FroggitStaff();
         staff.identify().collect();
 
-        Dungeon.quickslot.setSlot(1, staff);
+        //Dungeon.quickslot.setSlot(1, staff);
+        new GreyRatStaff().identify().collect();
+        new SheepStaff().identify().collect();
+        new SlimeStaff().identify().collect();
+        new SkeletonStaff().identify().collect();
+        new GnollHunterStaff().identify().collect();
+        new MagicMissileStaff().identify().collect();
+        new ChickenStaff().identify().collect();
+        new FrostElementalStaff().identify().collect();
+        new RoseStaff().identify().collect();
+        new RoboStaff().identify().collect();
+        new WizardStaff().identify().collect();
+        new GooStaff().identify().collect();
+        new ImpQueenStaff().identify().collect();
+        new HacatuStaff().identify().collect();
+        new BlasterStaff().identify().collect();
 
         hero.belongings.armor = ClassArmor.upgrade(hero, (Armor)(new ClothArmor().identify()));
 
@@ -237,8 +253,8 @@ public enum HeroClass {
 
         Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
 
-        hero.attunement = 1;
-        hero.STR = 9;
+        hero.attunement = 5;
+        hero.STR = 19;
         hero.HP = hero.HT = 15;
 
         new PotionOfStrength().identify();
