@@ -26,7 +26,9 @@ package com.trashboxbobylev.summoningpixeldungeon.items.powers;
 
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.ShatteredPixelDungeon;
+import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.DummyBuff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.FlavourBuff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Invisibility;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
@@ -70,10 +72,16 @@ public abstract class Power extends Item {
         buffPlayer();
         buffMinions();
         Invisibility.dispel();
+        Dungeon.hero.spendAndNext(Actor.TICK);
     }
 
     protected boolean isRespectable(Minion minion){
         return minion.minionClass == featuredClass;
+    }
+
+    @Override
+    public boolean isIdentified() {
+        return true;
     }
 
     Class<? extends FlavourBuff> playerBuff;
