@@ -71,8 +71,11 @@ public class RangePower extends Power {
                 mob.damage(Math.round(Random.NormalIntRange(1, 6)), this);
 
                 if (mob.isAlive()) {
-                    Ballistica trajectory = new Ballistica(mob.pos, Dungeon.hero.pos, Ballistica.MAGIC_BOLT);
-                    WandOfBlastWave.throwChar(mob, trajectory, 8);
+                    //trace a ballistica to our target (which will also extend past them
+                    Ballistica trajectory = new Ballistica(mob.pos, Dungeon.hero.pos, Ballistica.STOP_TARGET);
+                    //trim it to just be the part that goes past them
+                    trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size()-1), Ballistica.PROJECTILE);
+                    WandOfBlastWave.throwChar(mob, trajectory, 4);
                     Buff.prolong(mob, Roots.class, 5f);
                 }
             }
