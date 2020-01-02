@@ -35,6 +35,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
+import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 
 import java.util.ArrayList;
@@ -109,5 +110,15 @@ public abstract class Power extends Item {
         if (isRespectable(minion)){
                 Buff.affect(minion, classBuff, classBuffDuration);
         } else Buff.affect(minion, basicBuff, basicBuffDuration);
+    }
+
+    @Override
+    public String info() {
+        String info = desc();
+        info += "\n\n" + Messages.get(this, "class_minion_buff");
+        info += "\n\n" + Messages.get(Power.class, "class_members");
+        info += "\n\n" + Messages.get(this, "members");
+        info += "\n\n" + Messages.get(this, "other_minion_buff");
+        return info;
     }
 }
