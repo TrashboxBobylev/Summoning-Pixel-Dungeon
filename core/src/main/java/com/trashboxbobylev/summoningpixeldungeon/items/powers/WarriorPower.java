@@ -57,7 +57,6 @@ public class WarriorPower extends Power {
     protected void affectDungeon() {
         for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
             if (mob.alignment != Char.Alignment.ALLY && Dungeon.level.heroFOV[mob.pos]) {
-                Buff.prolong(mob, Amok.class, 5f);
                 mob.beckon(Dungeon.hero.pos);
             }
         }
