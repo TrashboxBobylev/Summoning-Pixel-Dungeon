@@ -39,20 +39,6 @@ public class SheepStaff extends Staff {
         isTanky = true;
         chargeTurns = 500;
         minionClass = Minion.MinionClass.DEFENSE;
-    }
-
-    @Override
-    public int minionMin(int lvl) {
-        return 0; //always 0
-    }
-
-    @Override
-    public int minionMax(int lvl) {
-        return 1; //always 1
-    }
-
-    @Override
-    public int hp(int lvl) {
-        return 30*tier + lvl*(tier+8); //60 hp and +10 for every tier
+        table = MinionBalanceTable.SHEEP;
     }
 }

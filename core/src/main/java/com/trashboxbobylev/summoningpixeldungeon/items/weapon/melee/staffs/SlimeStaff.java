@@ -37,5 +37,6 @@ public class SlimeStaff extends Staff {
         minionType = Slime.class;
         tier = 2;
         minionClass = Minion.MinionClass.SUPPORT;
+        table = MinionBalanceTable.SLIME;
     }
 }

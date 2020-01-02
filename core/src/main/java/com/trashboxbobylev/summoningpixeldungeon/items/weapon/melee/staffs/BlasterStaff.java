@@ -37,25 +37,11 @@ public class BlasterStaff extends StationaryStaff {
         minionType = GasterBlaster.class;
         tier = 5;
         minionClass = Minion.MinionClass.MAGIC;
+        table = MinionBalanceTable.GASTER_BLASTER;
     }
 
     @Override
     public float requiredAttunement() {
         return 2f;
-    }
-
-    @Override
-    public int hp(int lvl) {
-        return 30*tier + lvl*(tier+10); //150 hp and +15 for every tier
-    }
-
-    @Override
-    public int minionMin(int lvl) {
-        return tier+10 + lvl*3; //15, +3
-    }
-
-    @Override
-    public int minionMax(int lvl) {
-        return 8*(tier+1) + lvl*(tier+8); //48, +13
     }
 }

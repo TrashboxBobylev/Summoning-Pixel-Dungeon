@@ -37,10 +37,6 @@ public class MagicMissileStaff extends StationaryStaff {
         minionType = MagicMissileMinion.class;
         tier = 3;
         minionClass = Minion.MinionClass.RANGE;
-    }
-
-    @Override
-    public int hp(int lvl) {
-        return 24*tier + lvl*(tier+9); //72 hp and +12 for every tier
+        table = MinionBalanceTable.MAGIC_MISSILE;
     }
 }

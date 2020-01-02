@@ -36,20 +36,11 @@ public class HacatuStaff extends Staff{
         minionType = Hacatu.class;
         tier = 5;
         minionClass = Minion.MinionClass.RANGE;
-    }
-
-    @Override
-    public int minionMax(int lvl) {
-        return  (4*(tier+1)) +    //24
-                lvl*tier;               //+5
+        table = MinionBalanceTable.HACATU;
     }
 
     @Override
     public float requiredAttunement() {
         return 2f;
-    }
-
-    public int hp(int lvl){
-        return 4*tier + lvl*(tier) - 1; //20
     }
 }

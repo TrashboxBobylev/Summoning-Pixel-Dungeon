@@ -37,10 +37,6 @@ public class RoseStaff extends StationaryStaff {
         minionType = RoseWraith.class;
         tier = 4;
         minionClass = Minion.MinionClass.MAGIC;
-    }
-
-    @Override
-    public int hp(int lvl) {
-        return 7*tier + lvl*2; //28 hp and +2 for every tier
+        table = MinionBalanceTable.DARK_ROSE;
     }
 }

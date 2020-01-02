@@ -37,11 +37,6 @@ public class GreyRatStaff extends Staff {
         minionType = GrayRat.class;
         tier = 2;
         minionClass = Minion.MinionClass.MELEE;
-    }
-
-    @Override
-    public int minionMax(int lvl) {
-        return  13 +    //13 base
-                lvl*(tier-1);   //scaling lowered
+        table = MinionBalanceTable.GREY_RAT;
     }
 }

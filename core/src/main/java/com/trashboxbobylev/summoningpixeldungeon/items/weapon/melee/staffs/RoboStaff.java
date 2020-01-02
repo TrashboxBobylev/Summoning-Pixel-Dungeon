@@ -39,21 +39,12 @@ public class RoboStaff extends Staff {
         isTanky = true;
         chargeTurns = 600;
         minionClass = Minion.MinionClass.DEFENSE;
-    }
-
-    @Override
-    public int minionMax(int lvl) {
-        return  5*(tier+2) +    //30 base
-                lvl*(tier-1);   //+3 scaling
+        table = MinionBalanceTable.ROBOT;
     }
 
     //heavy minion
     @Override
     public float requiredAttunement() {
         return 1.5f;
-    }
-
-    public int hp(int lvl){
-        return 42*tier + lvl*(tier+10); // from 32 to 168, and +14
     }
 }

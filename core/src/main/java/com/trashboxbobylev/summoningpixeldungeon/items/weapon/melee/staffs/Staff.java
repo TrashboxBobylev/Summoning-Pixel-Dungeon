@@ -67,6 +67,7 @@ public class Staff extends Weapon {
     //the property of tank minion, to prevent abuse of high health minions
     protected boolean isTanky = false;
     public int tier;
+    public MinionBalanceTable table;
 
     public static final String AC_SUMMON = "SUMMON";
     public static final String AC_ZAP = "ZAP";
@@ -198,7 +199,7 @@ public class Staff extends Weapon {
     }
 
     public int hp(int lvl){
-        return 14*tier + lvl*(tier+1); //16 and +2 per upgrade
+        return table.hp + table.hp_grow*lvl;
     }
 
     //but they have additional stat: minion damage
@@ -210,8 +211,7 @@ public class Staff extends Weapon {
     }
 
     public int minionMin(int lvl) {
-        return  tier +  //base
-                lvl;    //level scaling
+        return table.min + table.min_grow*lvl;
     }
 
     public int minionmax() {
@@ -219,8 +219,7 @@ public class Staff extends Weapon {
     }
 
     public int minionMax(int lvl) {
-        return  4*(tier+1) +    //reduced from 10 to 8
-                lvl*(tier+1);
+        return table.max + table.max_grow*lvl;
     }
 
     @Override

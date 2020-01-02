@@ -35,22 +35,12 @@ public class GooStaff extends Staff {
         minionType = GooMinion.class;
         tier = 5;
         minionClass = Minion.MinionClass.MELEE;
-    }
-
-    @Override
-    public int minionMax(int lvl) {
-        return  7*(tier+1) +    //42 base, from 24
-                lvl*(tier+1);   //+6 scaling
+        table = MinionBalanceTable.GOO;
     }
 
     //heavy minion
     @Override
     public float requiredAttunement() {
         return 2f;
-    }
-
-    @Override
-    public int hp(int lvl){
-        return 19*tier + lvl*(tier); //95
     }
 }

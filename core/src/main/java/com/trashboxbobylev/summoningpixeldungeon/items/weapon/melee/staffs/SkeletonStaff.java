@@ -38,16 +38,6 @@ public class SkeletonStaff extends Staff {
         tier = 3;
         chargeTurns = 450;
         minionClass = Minion.MinionClass.DEFENSE;
-    }
-
-    @Override
-    public int minionMax(int lvl) {
-        return  8 +    //8, from 16
-                lvl*(tier);   //scaling lowered
-    }
-
-    @Override
-    public int hp(int lvl) {
-        return 14*tier + lvl*(tier+2); //42 hp and +5 for every tier
+        table = MinionBalanceTable.SKELETON;
     }
 }

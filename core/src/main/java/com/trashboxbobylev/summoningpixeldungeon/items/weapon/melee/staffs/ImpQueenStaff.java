@@ -36,22 +36,12 @@ public class ImpQueenStaff extends Staff {
         isTanky = true;
         chargeTurns = 750;
         minionClass = Minion.MinionClass.MAGIC;
-    }
-
-    @Override
-    public int minionMax(int lvl) {
-        return  4*(tier+1) +    //18
-                lvl*(tier);   //+5 scaling
+        table = MinionBalanceTable.IMP_QUEEN;
     }
 
     //very heavy minion
     @Override
     public float requiredAttunement() {
         return 3f;
-    }
-
-    @Override
-    public int hp(int lvl){
-        return 16*tier + lvl*(tier+3); //90, +8
     }
 }

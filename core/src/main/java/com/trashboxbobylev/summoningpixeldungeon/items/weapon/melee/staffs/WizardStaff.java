@@ -37,15 +37,6 @@ public class WizardStaff extends Staff{
         minionType = Wizard.class;
         tier = 4;
         minionClass = Minion.MinionClass.SUPPORT;
-    }
-
-    @Override
-    public int minionMax(int lvl) {
-        return (int) ((2.5f*(tier)) +    //10
-                        lvl*(tier-1));               //+3
-    }
-
-    public int hp(int lvl){
-        return 7*tier + lvl*(tier) - 1; // from 32 to 28, and scaling unchanged
+        table = MinionBalanceTable.WIZARD;
     }
 }

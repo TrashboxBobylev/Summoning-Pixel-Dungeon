@@ -37,22 +37,12 @@ public class ChickenStaff extends Staff {
         tier = 3;
         chargeTurns = 90;
         minionClass = Minion.MinionClass.SUPPORT;
-    }
-
-    @Override
-    public int minionMax(int lvl) {
-        return  5*(tier+1) +    //20 base
-                lvl*(tier+1);   //+4 scaling
+        table = MinionBalanceTable.CHICKEN;
     }
 
     //cheap minion
     @Override
     public float requiredAttunement() {
         return 0.5f;
-    }
-
-    @Override
-    public int hp(int lvl){
-        return 2 + lvl;
     }
 }

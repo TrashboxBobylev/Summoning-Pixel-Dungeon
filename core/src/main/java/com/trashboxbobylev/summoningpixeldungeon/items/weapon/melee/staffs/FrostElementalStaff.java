@@ -37,22 +37,12 @@ public class FrostElementalStaff extends Staff {
         minionType = FrostElemental.class;
         tier = 4;
         minionClass = Minion.MinionClass.MELEE;
-    }
-
-    @Override
-    public int minionMax(int lvl) {
-        return  10*(tier+1) +    //50 base, from 20
-                lvl*(tier+4);   //+8 scaling
+        table = MinionBalanceTable.FROST_ELEMENTAL;
     }
 
     //heavy minion
     @Override
     public float requiredAttunement() {
         return 1.5f;
-    }
-
-    @Override
-    public int hp(int lvl){
-        return 18*tier + lvl*(tier); //72, from 31
     }
 }

@@ -37,15 +37,6 @@ public class GnollHunterStaff extends Staff{
         minionType = GnollHunter.class;
         tier = 3;
         minionClass = Minion.MinionClass.RANGE;
-    }
-
-    @Override
-    public int minionMax(int lvl) {
-        return  (5*(tier)) +    //15
-                lvl*(tier+1);               //+4
-    }
-
-    public int hp(int lvl){
-        return 4*tier + lvl*(tier-1); // 12, +2
+        table = MinionBalanceTable.GNOLL_HUNTER;
     }
 }
