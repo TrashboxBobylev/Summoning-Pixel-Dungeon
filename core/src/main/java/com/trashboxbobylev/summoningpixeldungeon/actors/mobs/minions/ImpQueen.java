@@ -71,7 +71,7 @@ public class ImpQueen extends Minion {
     @Override
     protected boolean act() {
         for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-            if (fieldOfView != null) {
+            if (fieldOfView != null && fieldOfView.length == Dungeon.level.length()) {
                 if (fieldOfView[mob.pos] && mob instanceof Imp) {
                     ((Imp) mob).callToQueen(pos);
                     if (buff(MagicPower.class) != null && mob.HP < mob.HT) mob.HP++;
