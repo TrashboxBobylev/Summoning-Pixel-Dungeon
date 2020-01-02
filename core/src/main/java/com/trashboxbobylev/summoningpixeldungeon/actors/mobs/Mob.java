@@ -977,6 +977,7 @@ public abstract class Mob extends Char {
 					&& mob.intelligentAlly
 					&& Dungeon.level.distance(Dungeon.hero.pos, mob.pos) <= 3){
 				level.mobs.remove( mob );
+				if (mob instanceof Minion) ((Minion) mob).onLeaving();
 				heldAllies.add(mob);
 			}
 		}

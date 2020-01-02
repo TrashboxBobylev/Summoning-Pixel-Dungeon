@@ -56,6 +56,11 @@ public class Imp extends Minion {
         queenPos = posisiion;
     }
 
+    @Override
+    public void onLeaving() {
+        queenPos = -1;
+    }
+
     //imp chooses his queen as target
     private class Wandering extends Mob.Wandering {
 
@@ -80,6 +85,7 @@ public class Imp extends Minion {
 
                 int oldPos = pos;
                 target = defendingPos != -1 ? defendingPos : queenPos;
+                if (target == -1) target = Dungeon.level.randomDestination();
                 //always move towards the hero when wandering
                 if (getCloser( target )) {
                     //moves 2 tiles at a time when returning to the hero

@@ -292,4 +292,6 @@ public abstract class Minion extends Mob {
         Dungeon.hero.usedAttunement -= attunement;
         super.destroy();
     }
+
+    public void onLeaving(){}
 }
