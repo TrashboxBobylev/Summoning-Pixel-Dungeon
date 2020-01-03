@@ -34,7 +34,7 @@ public class StoneHammer extends MeleeWeapon {
     {
         image = ItemSpriteSheet.STONE_HAMMER;
         tier = 2;
-        DLY = 0.45f;
+        DLY = 2.1f;
         ACC = 0.9f;
     }
 
