@@ -63,6 +63,7 @@ public class Slingshot extends Weapon {
         defaultAction = AC_SHOOT;
         usesTargeting = true;
         levelKnown = true;
+        bones = false;
         Stone.slingshot = this;
     }
 

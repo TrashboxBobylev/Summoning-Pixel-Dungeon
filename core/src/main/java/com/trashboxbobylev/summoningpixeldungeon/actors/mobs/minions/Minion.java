@@ -52,7 +52,7 @@ public abstract class Minion extends Mob {
         DEFENSE, MELEE, MAGIC, RANGE, SUPPORT
     }
 
-    public MinionClass minionClass;
+    public MinionClass minionClass = MinionClass.MELEE;
 
     public int minDamage = 0;
     public int maxDamage = 0;
