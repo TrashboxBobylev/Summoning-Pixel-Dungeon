@@ -172,6 +172,20 @@ public class SummPDChanges {
 //                        "_-_ Added the article about allies into Adventurer Guide\n"+
 //                        "We are almost finished. If nothing major will happen with this damn sleepy minions, I will publish the release."));
 //    }
+    public static void add_1_1_Changes(ArrayList<ChangeInfo> changeInfos){
+        ChangeInfo changes = new ChangeInfo( "1.1", true, "");
+        changes.hardlight( Window.TITLE_COLOR);
+        changeInfos.add(changes);
+        changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
+        changes.addButton( new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
+                "_-_ Released Januar 4nd, 2019\n" +
+                        "_-_ 2 days after 1.0.0"));
+        changes = ChangesScene.createChangeInfo(changeInfos, "Changes", false, Window.SHPX_COLOR);
+        changes.addButton( new ChangeButton(new Image(Assets.CONJURER, 0, 90, 12, 15), "Conjurer",
+                "Have recieved a rework\n" +
+                        "_-_ Energy storm now takes 25% current HP and 12.5% max HP"));
+    }
+
 public static void add_1_0_1_Changes(ArrayList<ChangeInfo> changeInfos ) {
     ChangeInfo changes = new ChangeInfo( "1.0.1", true, "");
     changes.hardlight( Window.TITLE_COLOR);
