@@ -576,4 +576,22 @@ public class Staff extends Weapon {
 
         return info;
     }
+
+    @Override
+    public int price() {
+        int price = 30 * tier;
+        if (hasGoodEnchant()) {
+            price *= 1.5;
+        }
+        if (cursedKnown && (cursed || hasCurseEnchant())) {
+            price /= 2;
+        }
+        if (levelKnown && level() > 0) {
+            price *= (level() + 1);
+        }
+        if (price < 1) {
+            price = 1;
+        }
+        return price;
+    }
 }
