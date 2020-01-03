@@ -66,6 +66,10 @@ import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfMagicMissile;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.*;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.shop.Jjango;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.shop.Pike;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.shop.Stabber;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.shop.StoneHammer;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.Bolas;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.FishingSpear;
@@ -220,6 +224,8 @@ public class ShopRoom extends SpecialRoom {
             itemsToSpawn.add(new CleanWater());
 			break;
 		}
+
+		if (Random.Float() < 0.6) itemsToSpawn.add(ChooseShopWeapon());
 
 		itemsToSpawn.add(new CleanWater());
 		if (Dungeon.isChallenged(Challenges.NO_HEALING)) itemsToSpawn.add(new CleanWater());
@@ -424,5 +430,28 @@ public class ShopRoom extends SpecialRoom {
 		}
 
 	}
+
+	protected static Weapon ChooseShopWeapon(){
+	    MeleeWeapon wepToReplace = Generator.randomWeapon();
+	    MeleeWeapon shopWeapon;
+	    switch (wepToReplace.tier){
+            case 2:
+                shopWeapon = new StoneHammer(); break;
+            case 3:
+                shopWeapon = new Pike(); break;
+            case 4:
+                shopWeapon = new Stabber(); break;
+            case 5:
+                shopWeapon = new Jjango(); break;
+            default:
+                shopWeapon = new WornShortsword(); break;
+        }
+        shopWeapon.enchantment = wepToReplace.enchantment;
+	    shopWeapon.augment = wepToReplace.augment;
+	    shopWeapon.cursed = wepToReplace.cursed;
+	    shopWeapon.identify();
+	    shopWeapon.level(wepToReplace.level());
+	    return shopWeapon;
+    }
 
 }
