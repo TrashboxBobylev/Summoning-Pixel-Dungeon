@@ -64,6 +64,10 @@ import com.trashboxbobylev.summoningpixeldungeon.items.weapon.SpiritBow;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Unstable;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.*;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.shop.Jjango;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.shop.Pike;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.shop.Stabber;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.shop.StoneHammer;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.ThrowingKnife;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.ThrowingStone;
@@ -198,11 +202,17 @@ public enum HeroClass {
 		Dungeon.quickslot.setSlot(0, cloak);
 		Dungeon.quickslot.setSlot(1, knives);
 
+		new StoneHammer().identify().collect();
+		new Pike().identify().collect();
+		new Stabber().identify().collect();
+		new Jjango().identify().collect();
+
 		new VelvetPouch().collect();
 		Dungeon.LimitedDrops.VELVET_POUCH.drop();
 		
 		new ScrollOfMagicMapping().identify();
 		new PotionOfInvisibility().identify();
+		hero.STR = 18;
 	}
 
 	private static void initHuntress( Hero hero ) {
