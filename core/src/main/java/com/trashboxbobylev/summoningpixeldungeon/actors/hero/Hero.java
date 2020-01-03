@@ -440,6 +440,7 @@ public class Hero extends Char {
 	}
 
 	public boolean canAttack(Char enemy){
+        if (buff(SoulWeakness.class) != null) return false;
 		if (enemy == null || pos == enemy.pos) {
 			return false;
 		}
@@ -451,7 +452,7 @@ public class Hero extends Char {
 
 		KindOfWeapon wep = Dungeon.hero.belongings.weapon;
 
-		if (buff(SoulWeakness.class) != null) return false;
+
 
 		if (wep != null){
 			return wep.canReach(this, enemy.pos);
