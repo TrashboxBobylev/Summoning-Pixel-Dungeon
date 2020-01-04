@@ -61,6 +61,7 @@ public class Assets {
 	public static final String EFFECTS		= "effects.png";
 	
 	public static final String RAT		= "rat.png";
+	public static final String DOG = "doggy.png";
     public static final String CHICKEN		= "chicken.png";
 	public static final String GNOLL	= "gnoll.png";
 	public static final String CRAB		= "crab.png";

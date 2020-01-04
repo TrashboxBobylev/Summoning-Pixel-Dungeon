@@ -25,43 +25,40 @@
 package com.trashboxbobylev.summoningpixeldungeon.actors.mobs;
 
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.items.Generator;
 import com.trashboxbobylev.summoningpixeldungeon.items.food.MysteryMeat;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.CrabSprite;
+import com.trashboxbobylev.summoningpixeldungeon.sprites.DogSprite;
 import com.watabou.utils.Random;
 
-public class Crab extends Mob {
+public class Dog extends Mob {
 
 	{
-		spriteClass = CrabSprite.class;
+		spriteClass = DogSprite.class;
 		
-		HP = HT = 30;
-		defenseSkill = 1;
-		baseSpeed = 0.5f;
+		HP = HT = 11;
+		defenseSkill = 7;
+		baseSpeed = 2f;
 		
-		EXP = 5;
-		maxLvl = 11;
+		EXP = 4;
+		maxLvl = 9;
 		
-		loot = new MysteryMeat();
-		lootChance = 0.33f;
+		loot = Generator.random();
+		lootChance = 0.1f;
 	}
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 3, 17 );
+		return Random.NormalIntRange( 1, 7 );
 	}
 	
 	@Override
 	public int attackSkill( Char target ) {
-		return 13;
+		return 12;
 	}
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 6);
+		return Random.NormalIntRange(0, 2);
 	}
-
-    @Override
-    protected float attackDelay() {
-        return super.attackDelay()*0.5f;
-    }
 }

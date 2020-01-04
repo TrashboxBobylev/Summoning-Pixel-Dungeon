@@ -33,30 +33,36 @@ import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.CharSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.GreatCrabSprite;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
+import com.watabou.utils.Random;
 
 public class GreatCrab extends Crab {
 
 	{
 		spriteClass = GreatCrabSprite.class;
 
-		HP = HT = 25;
+		HP = HT = 40;
 		defenseSkill = 0; //see damage()
-		baseSpeed = 1f;
+		baseSpeed = 0.25f;
 
-		EXP = 6;
+		EXP = 7;
 
 		state = WANDERING;
 
 		properties.add(Property.MINIBOSS);
 	}
 
-	private int moving = 0;
+    @Override
+    public int damageRoll() {
+        return Random.NormalIntRange( 5, 21 );
+    }
+
+    private int moving = 0;
 
 	@Override
 	protected boolean getCloser( int target ) {
 		//this is used so that the crab remains slower, but still detects the player at the expected rate.
 		moving++;
-		if (moving < 3) {
+		if (moving < 4) {
 			return super.getCloser( target );
 		} else {
 			moving = 0;
@@ -64,6 +70,11 @@ public class GreatCrab extends Crab {
 		}
 
 	}
+
+    @Override
+    public int attackSkill( Char target ) {
+        return 15;
+    }
 
 	@Override
 	public void damage( int dmg, Object src ){

@@ -22,46 +22,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.trashboxbobylev.summoningpixeldungeon.actors.mobs;
+package com.trashboxbobylev.summoningpixeldungeon.sprites;
 
-import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
-import com.trashboxbobylev.summoningpixeldungeon.items.food.MysteryMeat;
-import com.trashboxbobylev.summoningpixeldungeon.sprites.CrabSprite;
-import com.watabou.utils.Random;
+import com.trashboxbobylev.summoningpixeldungeon.Assets;
+import com.watabou.noosa.TextureFilm;
 
-public class Crab extends Mob {
+public class DogSprite extends MobSprite {
 
-	{
-		spriteClass = CrabSprite.class;
+	public DogSprite() {
+		super();
 		
-		HP = HT = 30;
-		defenseSkill = 1;
-		baseSpeed = 0.5f;
+		texture( Assets.DOG );
 		
-		EXP = 5;
-		maxLvl = 11;
+		TextureFilm frames = new TextureFilm( texture, 16, 15 );
 		
-		loot = new MysteryMeat();
-		lootChance = 0.33f;
+		idle = new Animation( 2, true );
+		idle.frames( frames, 0, 0, 0, 1 );
+		
+		run = new Animation( 10, true );
+		run.frames( frames, 6, 7, 8, 9, 10 );
+		
+		attack = new Animation( 15, false );
+		attack.frames( frames, 2, 3, 4, 5, 0 );
+		
+		die = new Animation( 10, false );
+		die.frames( frames, 11, 12, 13, 14 );
+		
+		play( idle );
 	}
-	
-	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 3, 17 );
-	}
-	
-	@Override
-	public int attackSkill( Char target ) {
-		return 13;
-	}
-	
-	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 6);
-	}
-
-    @Override
-    protected float attackDelay() {
-        return super.attackDelay()*0.5f;
-    }
 }
