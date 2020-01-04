@@ -30,7 +30,10 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Paralysis;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.noosa.Camera;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
@@ -59,6 +62,7 @@ public class StoneHammer extends MeleeWeapon {
         defender.sprite.centerEmitter().start( Speck.factory( Speck.KIT ), 0.05f, 10 );
         if (Random.Float() < 0.5f) Buff.prolong(defender, Paralysis.class, 5f);
         Sample.INSTANCE.play( Assets.SND_EVOKE );
+        Camera.main.shake( 5, 0.7f );
         return super.proc(attacker, defender, damage);
     }
 }

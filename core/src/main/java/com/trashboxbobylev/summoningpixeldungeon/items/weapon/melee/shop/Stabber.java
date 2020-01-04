@@ -56,7 +56,7 @@ public class Stabber extends MeleeWeapon {
             Hero hero = (Hero)owner;
             Char enemy = hero.enemy();
             if (enemy instanceof Mob && ((Mob) enemy).state != ((Mob) enemy).HUNTING && ((Mob) enemy).surprisedBy(owner)) {
-                //deals 0-18000 damage to sleeping monsters
+                //grims non-hunting targets
                 Weapon weapon = new Weapon() {
                     @Override
                     public int STRReq(int lvl) {
