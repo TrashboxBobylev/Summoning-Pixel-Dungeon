@@ -50,20 +50,20 @@ public class Bestiary {
 						Rat.class, Rat.class, Rat.class, Rat.class, Rat.class,
 						Rat.class, Rat.class, Rat.class, Rat.class, Rat.class));
 			case 2:
-				//3x rat, 3x gnoll
-				return new ArrayList<>(Arrays.asList(Rat.class, Rat.class, Rat.class,
-						Gnoll.class, Gnoll.class, Gnoll.class));
-			case 3:
-				//2x rat, 4x gnoll, 1x crab, 1x swarm
+				//2x rat, 3x gnoll, 2x dogs
 				return new ArrayList<>(Arrays.asList(Rat.class, Rat.class,
-						Gnoll.class, Gnoll.class, Gnoll.class, Gnoll.class,
-						Crab.class, Swarm.class));
-			case 4: case 5:
-				//1x rat, 2x gnoll, 3x crab, 1x swarm
+						Gnoll.class, Gnoll.class, Gnoll.class, Dog.class, Dog.class));
+			case 3:
+				//1x rat, 4x gnoll, 1x crab, 1x swarm, 1x dogs
 				return new ArrayList<>(Arrays.asList(Rat.class,
+						Gnoll.class, Gnoll.class, Gnoll.class, Gnoll.class,
+						Crab.class, Swarm.class, Dog.class));
+			case 4: case 5:
+				//2x gnoll, 2x crab, 2x swarm, 2x dogs
+				return new ArrayList<>(Arrays.asList(
 						Gnoll.class, Gnoll.class,
-						Crab.class, Crab.class, Crab.class,
-						Swarm.class));
+						Crab.class, Crab.class, Swarm.class,
+						Swarm.class, Dog.class, Dog.class));
 				
 			// Prison
 			case 6:
