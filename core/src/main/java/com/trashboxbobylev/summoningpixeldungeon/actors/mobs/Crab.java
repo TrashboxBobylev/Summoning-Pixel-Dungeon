@@ -62,6 +62,6 @@ public class Crab extends Mob {
 
     @Override
     protected float attackDelay() {
-        return super.attackDelay()*0.5f;
+        return super.attackDelay()*2f;
     }
 }
