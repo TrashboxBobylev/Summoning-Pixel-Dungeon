@@ -25,6 +25,8 @@
 package com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments;
 
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Healing;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.CharSprite;
@@ -38,25 +40,19 @@ public class Vampiric extends Weapon.Enchantment {
 	
 	@Override
 	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
-		
+
+	    //vampiric
 		//chance to heal scales from 5%-30% based on missing HP
 		float missingPercent = (attacker.HT - attacker.HP) / (float)attacker.HT;
-		float healChance = 0.05f + .25f*missingPercent;
-		
-		if (Random.Float() < healChance){
+        //heals 20% of max HP, but intensifies with levels
+        //int healAmt = Math.round(damage * 0.5f);
+        //healAmt = Math.min( healAmt, attacker.HT - attacker.HP );
 			
-			//heals for 50% of damage dealt
-			int healAmt = Math.round(damage * 0.5f);
-			healAmt = Math.min( healAmt, attacker.HT - attacker.HP );
-			
-			if (healAmt > 0 && attacker.isAlive()) {
-				
-				attacker.HP += healAmt;
-				attacker.sprite.emitter().start( Speck.factory( Speck.HEALING ), 0.4f, 1 );
-				attacker.sprite.showStatus( CharSprite.POSITIVE, Integer.toString( healAmt ) );
-				
-			}
-		}
+        if (attacker.isAlive()) {
+
+            Buff.affect(attacker, Healing.class).setHeal(damage / 4 + weapon.level()*2 + 3, 0.25f, 0);
+            //attacker.sprite.showStatus( CharSprite.POSITIVE, Integer.toString( healAmt ) );
+        }
 
 		return damage;
 	}
