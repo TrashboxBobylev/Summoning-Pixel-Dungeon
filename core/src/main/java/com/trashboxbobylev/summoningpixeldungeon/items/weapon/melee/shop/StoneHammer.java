@@ -34,8 +34,8 @@ public class StoneHammer extends MeleeWeapon {
     {
         image = ItemSpriteSheet.STONE_HAMMER;
         tier = 2;
-        DLY = 2.1f;
-        ACC = 0.75f;
+        DLY = 3.2f;
+        ACC = 0.7f;
     }
 
     @Override
@@ -46,8 +46,8 @@ public class StoneHammer extends MeleeWeapon {
 
     @Override
     public int max(int lvl) {
-        return  10*(tier+1) +    //30
-                lvl*(tier+4);   //+6
+        return  20*(tier) +    //40
+                lvl*(tier+5);   //+7
     }
 
     public int STRReq(int lvl){
@@ -58,7 +58,7 @@ public class StoneHammer extends MeleeWeapon {
 
     @Override
     public int proc(Char attacker, Char defender, int damage) {
-        Buff.prolong(defender, Paralysis.class, 3.5f);
+        Buff.prolong(defender, Paralysis.class, 4f);
         return super.proc(attacker, defender, damage);
     }
 }
