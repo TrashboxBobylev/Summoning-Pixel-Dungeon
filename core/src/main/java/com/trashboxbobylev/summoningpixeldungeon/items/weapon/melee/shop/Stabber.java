@@ -27,6 +27,9 @@ package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.shop;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
+import com.trashboxbobylev.summoningpixeldungeon.effects.Wound;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Grim;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
@@ -52,9 +55,29 @@ public class Stabber extends MeleeWeapon {
         if (owner instanceof Hero) {
             Hero hero = (Hero)owner;
             Char enemy = hero.enemy();
-            if (enemy instanceof Mob && ((Mob) enemy).state == ((Mob) enemy).SLEEPING && ((Mob) enemy).surprisedBy(owner)) {
+            if (enemy instanceof Mob && ((Mob) enemy).state != ((Mob) enemy).SLEEPING && ((Mob) enemy).surprisedBy(owner)) {
                 //deals 0-18000 damage to sleeping monsters
-                return Random.NormalIntRange(0, 18000);
+                Weapon weapon = new Weapon() {
+                    @Override
+                    public int STRReq(int lvl) {
+                        return 0;
+                    }
+
+                    @Override
+                    public int min(int lvl) {
+                        return 0;
+                    }
+
+                    @Override
+                    public int max(int lvl) {
+                        return 0;
+                    }
+                };
+                weapon.upgrade(90);
+                weapon.enchant(new Grim());
+                weapon.proc(curUser, enemy, enemy.HP - 1);
+                Wound.hit(enemy);
+                return 0;
             }
         }
         return super.damageRoll(owner);
