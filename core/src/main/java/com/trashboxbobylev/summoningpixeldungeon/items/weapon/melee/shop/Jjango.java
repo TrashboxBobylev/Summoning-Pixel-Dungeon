@@ -38,13 +38,13 @@ public class Jjango extends MeleeWeapon {
 
     @Override
     public int max(int lvl) {
-        return 3*(tier + 1) +
-                lvl*tier; //18, +5
+        return 4*(tier - 1) +
+                lvl*tier; //16, +5
     }
 
     @Override
     public int proc(Char attacker, Char defender, int damage) {
-        Buff.affect( defender, Bleeding.class ).set( Math.round(damage*0.6f) );
+        Buff.affect( defender, Bleeding.class ).set( Math.round(damage*0.85f) );
         return super.proc(attacker, defender, damage);
     }
 }
