@@ -55,7 +55,7 @@ public class Stabber extends MeleeWeapon {
         if (owner instanceof Hero) {
             Hero hero = (Hero)owner;
             Char enemy = hero.enemy();
-            if (enemy instanceof Mob && ((Mob) enemy).state != ((Mob) enemy).SLEEPING && ((Mob) enemy).surprisedBy(owner)) {
+            if (enemy instanceof Mob && ((Mob) enemy).state != ((Mob) enemy).HUNTING && ((Mob) enemy).surprisedBy(owner)) {
                 //deals 0-18000 damage to sleeping monsters
                 Weapon weapon = new Weapon() {
                     @Override
