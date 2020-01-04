@@ -24,11 +24,15 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.shop;
 
+import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Paralysis;
+import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
 
 public class StoneHammer extends MeleeWeapon {
     {
@@ -46,19 +50,15 @@ public class StoneHammer extends MeleeWeapon {
 
     @Override
     public int max(int lvl) {
-        return  20*(tier) +    //40
-                lvl*(tier+5);   //+7
-    }
-
-    public int STRReq(int lvl){
-        lvl = Math.max(0, lvl);
-        //strength req decreases at +1,+3,+6,+10,etc.
-        return (9 + tier * 2) - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
+        return  13*(tier+1) +    //39
+                lvl*(tier+1);   //+3
     }
 
     @Override
     public int proc(Char attacker, Char defender, int damage) {
-        Buff.prolong(defender, Paralysis.class, 4f);
+        defender.sprite.centerEmitter().start( Speck.factory( Speck.KIT ), 0.05f, 10 );
+        if (Random.Float() < 0.5f) Buff.prolong(defender, Paralysis.class, 5f);
+        Sample.INSTANCE.play( Assets.SND_EVOKE );
         return super.proc(attacker, defender, damage);
     }
 }
