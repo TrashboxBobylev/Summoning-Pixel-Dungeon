@@ -54,9 +54,9 @@ public class Bestiary {
 				return new ArrayList<>(Arrays.asList(Rat.class, Rat.class,
 						Gnoll.class, Gnoll.class, Gnoll.class, Dog.class, Dog.class));
 			case 3:
-				//1x rat, 4x gnoll, 1x crab, 1x swarm, 1x dogs
+				//1x rat, 3x gnoll, 2x crab, 1x swarm, 1x dogs
 				return new ArrayList<>(Arrays.asList(Rat.class,
-						Gnoll.class, Gnoll.class, Gnoll.class, Gnoll.class,
+						Gnoll.class, Gnoll.class, Gnoll.class, Crab.class,
 						Crab.class, Swarm.class, Dog.class));
 			case 4: case 5:
 				//2x gnoll, 2x crab, 2x swarm, 2x dogs

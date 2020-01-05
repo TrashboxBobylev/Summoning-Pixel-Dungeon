@@ -189,8 +189,8 @@ public class Staff extends Weapon {
 
     public int STRReq(int lvl){
         lvl = Math.max(0, lvl);
-        //strength req decreases with every level
-        return (7 + tier * 2) - lvl;
+        //strength req doesn't decreases
+        return (7 + tier * 2);
     }
 
     @Override
@@ -225,6 +225,11 @@ public class Staff extends Weapon {
     @Override
     public boolean isUpgradable() {
         return level() < 3;
+    }
+
+    @Override
+    public boolean isIdentified() {
+        return true;
     }
 
     //only for cursed behavour
