@@ -34,7 +34,7 @@ public class Crab extends Mob {
 	{
 		spriteClass = CrabSprite.class;
 		
-		HP = HT = 30;
+		HP = HT = 22;
 		defenseSkill = 1;
 		baseSpeed = 0.5f;
 		
@@ -62,6 +62,6 @@ public class Crab extends Mob {
 
     @Override
     protected float attackDelay() {
-        return super.attackDelay()*2f;
+        return super.attackDelay()*1.35f;
     }
 }
