@@ -43,7 +43,7 @@ public class ShockingDart extends TippedDart {
 	
 	@Override
 	public int proc(Char attacker, Char defender, int damage) {
-		
+		//it just does additional damage without scaling? bruh
 		defender.damage(Random.NormalIntRange(8, 12), this);
 		
 		CharSprite s = defender.sprite;

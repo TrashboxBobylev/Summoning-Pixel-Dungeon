@@ -71,6 +71,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.shop.StoneHa
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.ThrowingKnife;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.ThrowingStone;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.darts.TippedDart;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.DeviceCompat;
@@ -225,6 +226,8 @@ public enum HeroClass {
 
 		new VelvetPouch().collect();
 		Dungeon.LimitedDrops.VELVET_POUCH.drop();
+        TippedDart.randomTipped(2).collect();
+        new ScrollOfEnchantment().identify().collect();
 		
 		new PotionOfMindVision().identify();
 		new ScrollOfLullaby().identify();

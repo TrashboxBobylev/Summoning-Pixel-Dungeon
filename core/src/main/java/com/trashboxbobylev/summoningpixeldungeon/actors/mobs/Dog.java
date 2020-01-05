@@ -40,7 +40,7 @@ public class Dog extends Mob {
 		defenseSkill = 7;
 		baseSpeed = 2f;
 		
-		EXP = 4;
+		EXP = 3;
 		maxLvl = 9;
 		
 		loot = Generator.random();
