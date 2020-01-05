@@ -38,6 +38,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.KindofMisc;
 import com.trashboxbobylev.summoningpixeldungeon.items.Recipe;
 import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.Artifact;
+import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.UnstableSpellbook;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
@@ -62,6 +63,7 @@ public class RatSkull extends Artifact {
 		charge = 0;
 		unique = true;
 		chargeCap = 100;
+		defaultAction = AC_USE;
 	}
 
 	public static final String AC_USE = "USE";
@@ -79,11 +81,11 @@ public class RatSkull extends Artifact {
 
         super.execute(hero, action);
 
-        if (action.equals(AC_USE)) {
+        if (action.equals(AC_USE) && charge == 100) {
             curUser = hero;
             curItem = this;
             GameScene.selectCell( zapper );
-        }
+        }  else if (charge <= 0)                     GLog.i( Messages.get(UnstableSpellbook.class, "no_charge") );
     }
 	
 	@Override
@@ -106,7 +108,8 @@ public class RatSkull extends Artifact {
         public boolean act() {
             LockedFloor lock = target.buff(LockedFloor.class);
             if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
-                partialCharge += 1 / (50f - (chargeCap - charge)*5f);
+                charge += 1 / (120f - (chargeCap - charge));
+                GLog.warning(Float.toString(partialCharge));
 
                 if (partialCharge >= 1) {
                     partialCharge --;

@@ -181,7 +181,7 @@ public enum HeroClass {
 		hero.belongings.weapon.activate(hero);
         WandOfStench stench = new WandOfStench();
         stench.identify().collect();
-        new RatSkull().collect();
+        //new RatSkull().collect();
 
 		Dungeon.quickslot.setSlot(0, staff);
 
