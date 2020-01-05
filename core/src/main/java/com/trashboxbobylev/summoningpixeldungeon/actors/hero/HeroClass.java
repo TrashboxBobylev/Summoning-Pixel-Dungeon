@@ -51,6 +51,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.potions.brews.PerfumeBrew
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.brews.RagingBrew;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.ElixirOfAttunement;
 import com.trashboxbobylev.summoningpixeldungeon.items.powers.*;
+import com.trashboxbobylev.summoningpixeldungeon.items.quest.RatSkull;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfEnchantment;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfSoulEnergy;
@@ -180,6 +181,7 @@ public enum HeroClass {
 		hero.belongings.weapon.activate(hero);
         WandOfStench stench = new WandOfStench();
         stench.identify().collect();
+        new RatSkull().collect();
 
 		Dungeon.quickslot.setSlot(0, staff);
 
