@@ -252,25 +252,25 @@ public abstract class Char extends Actor {
 			if (shake > 1f)
 				Camera.main.shake( GameMath.gate( 1, shake, 5), 0.3f );
 
-            if (this instanceof Hero && ((Hero) this).subClass == HeroSubClass.OCCULTIST){
-                if (this.buff(HateOccult.class) != null){
-                    ((ConjurerArmor)((Hero) this).belongings.armor).doAsOccultist(enemy, 0, (Hero) this);
-                    if (enemy.buff(Corruption.class) != null) return true;
-                }
-            }
+//            if (this instanceof Hero && ((Hero) this).subClass == HeroSubClass.OCCULTIST){
+//                if (this.buff(HateOccult.class) != null){
+//                    ((ConjurerArmor)((Hero) this).belongings.armor).doAsOccultist(enemy, 0, (Hero) this);
+//                    if (enemy.buff(Corruption.class) != null) return true;
+//                }
+//            }
 
-            if (effectiveDamage > enemy.HP) {
-                float hateGain = 0f;
-                if (this instanceof Hero && ((Hero) this).subClass == HeroSubClass.OCCULTIST) {
-                    hateGain = (effectiveDamage - enemy.HP) * 0.75f;
-                } else if (this instanceof Minion && Dungeon.hero.subClass == HeroSubClass.OCCULTIST) {
-                    hateGain = (enemy.HP - effectiveDamage) * 0.2f;
-                }
-                if (hateGain > 0) {
-                    Dungeon.hero.sprite.showStatus(CharSprite.DEFAULT, "+%s HATE", hateGain);
-                    Buff.affect(Dungeon.hero, HateOccult.class).gainHate(hateGain);
-                }
-            }
+//            if (effectiveDamage > enemy.HP) {
+//                float hateGain = 0f;
+//                if (this instanceof Hero && ((Hero) this).subClass == HeroSubClass.OCCULTIST) {
+//                    hateGain = (effectiveDamage - enemy.HP) * 0.75f;
+//                } else if (this instanceof Minion && Dungeon.hero.subClass == HeroSubClass.OCCULTIST) {
+//                    hateGain = (enemy.HP - effectiveDamage) * 0.2f;
+//                }
+//                if (hateGain > 0) {
+//                    Dungeon.hero.sprite.showStatus(CharSprite.DEFAULT, "+%s HATE", hateGain);
+//                    Buff.affect(Dungeon.hero, HateOccult.class).gainHate(hateGain);
+//                }
+//            }
 
 			enemy.damage( effectiveDamage, this );
 

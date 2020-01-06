@@ -64,6 +64,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Slingshot;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.SpiritBow;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Unstable;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Vampiric;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.shop.Jjango;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.shop.Pike;
@@ -223,6 +224,7 @@ public enum HeroClass {
 		(hero.belongings.weapon = new Gloves()).identify();
 		SpiritBow bow = new SpiritBow();
 		bow.identify().collect();
+		bow.enchant(new Vampiric());
 
 		Dungeon.quickslot.setSlot(0, bow);
 

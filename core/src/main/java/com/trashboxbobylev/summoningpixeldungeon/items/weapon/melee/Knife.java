@@ -45,7 +45,7 @@ public class Knife extends MeleeWeapon {
     public int STRReq(int lvl) {
         lvl = Math.max(0, lvl);
         //9 base strength req, down from 10
-        return (7 + tier * 2) - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
+        return (7 + tier * 2) - lvl;
     }
 
     @Override

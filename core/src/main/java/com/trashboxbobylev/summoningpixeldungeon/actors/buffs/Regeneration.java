@@ -65,10 +65,6 @@ public class Regeneration extends Buff {
 				else
 					tick -= regenBuff.itemLevel()*0.9f;
 
-				if (lul != null){
-				    tick -= lul.getHealingRatio()*3f;
-                }
-
 				spend( tick );
 			
 		} else {

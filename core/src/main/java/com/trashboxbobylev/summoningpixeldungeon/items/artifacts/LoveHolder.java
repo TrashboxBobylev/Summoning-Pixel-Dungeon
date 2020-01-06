@@ -39,6 +39,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.effects.MagicMissile;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
+import com.trashboxbobylev.summoningpixeldungeon.items.armor.ConjurerArmor;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
@@ -50,10 +51,7 @@ import com.trashboxbobylev.summoningpixeldungeon.ui.QuickSlotButton;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.trashboxbobylev.summoningpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Bundle;
-import com.watabou.utils.Callback;
-import com.watabou.utils.GameMath;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.*;
 
 import java.util.ArrayList;
 
@@ -84,6 +82,7 @@ public class LoveHolder extends Artifact {
     public static final String AC_SPLASH = "SPLASH";
     public static final String AC_DEFENSE = "DEFENSE";
     public static final String AC_OFFENSE = "OFFENSE";
+    public static final String AC_DAMAGE = "DAMAGE";
     public static final String HEALING = "healing";
     public static final String STRENGTH = "str";
 
@@ -105,6 +104,10 @@ public class LoveHolder extends Artifact {
             if (hero.subClass == HeroSubClass.SOUL_REAVER){
                 actions.add(AC_OFFENSE);
                 actions.add(AC_DEFENSE);
+            }
+            if (hero.subClass == HeroSubClass.OCCULTIST){
+                actions.remove(AC_PRICK);
+                actions.remove(AC_SHIELD);
             }
         }
 		return actions;
@@ -169,6 +172,14 @@ public class LoveHolder extends Artifact {
 				prick(hero);
 			}*/
 		}
+        if (action.equals(AC_OFFENSE)){
+            if (hero.subClass != HeroSubClass.NONE) {
+                curUser = hero;
+                GameScene.selectCell(zapper2);
+            } else {
+                Messages.get(ConjurerArmor.class, "no_mastery");
+            }
+        }
 	}
 
 	private void prick(Hero hero, int type){
@@ -320,6 +331,72 @@ public class LoveHolder extends Artifact {
         @Override
         public String prompt() {
              return Messages.get(Wand.class, "prompt");
+        }
+    };
+
+    //offensive option
+    protected CellSelector.Listener zapper2 = new CellSelector.Listener() {
+        @Override
+        public void onSelect(Integer target) {
+            if (target != null){
+                final Ballistica shot = new Ballistica( curUser.pos, target, Ballistica.MAGIC_BOLT);
+                int cell = shot.collisionPos;
+
+                if (target == curUser.pos || cell == curUser.pos) {
+                    GLog.i( Messages.get(Wand.class, "self_target") );
+                    return;
+                }
+
+                curUser.sprite.zap(cell);
+
+                //attempts to target the cell aimed at if something is there, otherwise targets the collision pos.
+                if (Actor.findChar(target) != null)
+                    QuickSlotButton.target(Actor.findChar(target));
+                else
+                    QuickSlotButton.target(Actor.findChar(cell));
+
+                LoveHolder artifact = null;
+                if (curUser.belongings.misc1 instanceof LoveHolder) artifact = (LoveHolder) curUser.belongings.misc1;
+                else if (curUser.belongings.misc2 instanceof LoveHolder) artifact = (LoveHolder) curUser.belongings.misc2;
+
+                if (artifact == null){
+                    GLog.i( Messages.get(Artifact.class, "need_to_equip") );
+                    return;
+                } else {
+                    final int str = artifact.str;
+                    if (artifact.charge >= str*2){
+                        artifact.charge -= str*2;
+                        updateQuickslot();
+                        curUser.busy();
+                        Invisibility.dispel();
+                        MagicMissile.boltFromChar(curUser.sprite.parent,
+                                MagicMissile.BEACON,
+                                curUser.sprite,
+                                shot.collisionPos,
+                                new Callback() {
+                                    @Override
+                                    public void call() {
+                                        Char ch = Actor.findChar(shot.collisionPos);
+
+                                        if (ch != null){
+                                            int damageRoll = Random.NormalIntRange(0, (int) (curUser.lvl*Math.pow(1.25f, str)));
+                                            ch.damage(damageRoll, this);
+
+                                            ch.sprite.burst(0xFFFFFFFF, str*2);
+                                        }
+                                        curUser.spendAndNext(Actor.TICK);
+                                    }
+                                });
+                    } else {
+                        GLog.i(Messages.get(LoveHolder.class, "not_enough"));
+                    }
+                }
+            }
+        }
+
+        @Override
+        public String prompt() {
+            return Messages.get(Wand.class, "prompt");
         }
     };
 
