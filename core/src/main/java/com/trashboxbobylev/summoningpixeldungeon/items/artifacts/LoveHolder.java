@@ -30,9 +30,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Barrier;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Invisibility;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroSubClass;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
@@ -232,6 +230,11 @@ public class LoveHolder extends Artifact {
                                         Sample.INSTANCE.play(Assets.SND_DRINK);
 
                                         int healing = getHealingFromStrength(str);
+
+                                        if (Random.Float() < 0.33f){
+                                            if (Random.Int(1) == 0) Buff.prolong(ch, Empowered.class, 7f);
+                                            else Buff.prolong(ch, Bless.class, 7f);
+                                        }
 
                                         int wastedHealing = (ch.HP + healing) - ch.HT;
                                         if (wastedHealing > 0){

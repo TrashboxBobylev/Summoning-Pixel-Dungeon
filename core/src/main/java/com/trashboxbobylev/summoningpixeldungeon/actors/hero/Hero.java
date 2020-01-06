@@ -406,6 +406,7 @@ public class Hero extends Char {
 		if (berserk != null) dmg = berserk.damageFactor(dmg);
 
 		if (buff(SoulWeakness.class) != null) dmg /= 4;
+		if (subClass == HeroSubClass.SOUL_REAVER) dmg *= 0.25f;
 		
 		return buff( Fury.class ) != null ? (int)(dmg * 1.5f) : dmg;
 	}
@@ -982,6 +983,8 @@ public class Hero extends Char {
 			break;
 		default:
 		}
+
+
 		
 		return damage;
 	}
