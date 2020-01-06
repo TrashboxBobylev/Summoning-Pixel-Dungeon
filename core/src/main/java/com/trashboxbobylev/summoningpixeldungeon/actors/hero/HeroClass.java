@@ -267,6 +267,7 @@ public enum HeroClass {
         new MagePower().collect();
         new RangePower().collect();
         new ConjurerPower().collect();
+        new TomeOfMastery().collect();
 
         hero.belongings.armor = ClassArmor.upgrade(hero, (Armor)(new ClothArmor().identify()));
 
