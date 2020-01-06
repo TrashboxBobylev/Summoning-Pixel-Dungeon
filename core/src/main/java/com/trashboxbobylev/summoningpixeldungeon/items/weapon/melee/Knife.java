@@ -28,6 +28,8 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Cripple;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.FlavourBuff;
+import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
+import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroSubClass;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Knife extends MeleeWeapon {
@@ -58,6 +60,13 @@ public class Knife extends MeleeWeapon {
     public int proc(Char attacker, Char defender, int damage ) {
         Buff.prolong( defender, SoulGain.class, speedFactor(attacker) * 2 );
         return super.proc( attacker, defender, damage );
+    }
+
+    @Override
+    public float speedFactor(Char owner) {
+        float v = super.speedFactor(owner);
+        if (((Hero)owner).subClass == HeroSubClass.OCCULTIST) v *= 0.5f;
+        return v;
     }
 
     public static class SoulGain extends FlavourBuff{
