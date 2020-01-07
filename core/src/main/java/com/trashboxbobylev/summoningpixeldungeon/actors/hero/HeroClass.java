@@ -180,8 +180,6 @@ public enum HeroClass {
 
 		(hero.belongings.weapon = staff).identify();
 		hero.belongings.weapon.activate(hero);
-        WandOfStench stench = new WandOfStench();
-        stench.identify().collect();
         //new RatSkull().collect();
 
 		Dungeon.quickslot.setSlot(0, staff);
@@ -206,17 +204,11 @@ public enum HeroClass {
 		Dungeon.quickslot.setSlot(0, cloak);
 		Dungeon.quickslot.setSlot(1, knives);
 
-		new StoneHammer().identify().collect();
-		new Pike().identify().collect();
-		new Stabber().identify().collect();
-		new Jjango().identify().collect();
-
 		new VelvetPouch().collect();
 		Dungeon.LimitedDrops.VELVET_POUCH.drop();
 		
 		new ScrollOfMagicMapping().identify();
 		new PotionOfInvisibility().identify();
-		hero.STR = 18;
 	}
 
 	private static void initHuntress( Hero hero ) {
@@ -224,13 +216,11 @@ public enum HeroClass {
 		(hero.belongings.weapon = new Gloves()).identify();
 		SpiritBow bow = new SpiritBow();
 		bow.identify().collect();
-		bow.enchant(new Vampiric());
 
 		Dungeon.quickslot.setSlot(0, bow);
 
 		new VelvetPouch().collect();
 		Dungeon.LimitedDrops.VELVET_POUCH.drop();
-        TippedDart.randomTipped(2).collect();
         new ScrollOfEnchantment().identify().collect();
 		
 		new PotionOfMindVision().identify();
@@ -246,28 +236,8 @@ public enum HeroClass {
         FroggitStaff staff = new FroggitStaff();
         staff.identify().collect();
 
-        //Dungeon.quickslot.setSlot(1, staff);
-        new GreyRatStaff().identify().collect();
-        new SheepStaff().identify().collect();
-        new SlimeStaff().identify().collect();
-        new SkeletonStaff().identify().collect();
-        new GnollHunterStaff().identify().collect();
-        new MagicMissileStaff().identify().collect();
-        new ChickenStaff().identify().collect();
-        new FrostElementalStaff().identify().collect();
-        new RoseStaff().identify().collect();
-        new RoboStaff().identify().collect();
-        new WizardStaff().identify().collect();
-        new GooStaff().identify().collect();
-        new ImpQueenStaff().identify().collect();
-        new HacatuStaff().identify().collect();
-        new BlasterStaff().identify().collect();
-        new WarriorPower().collect();
-        new RoguePower().collect();
-        new MagePower().collect();
-        new RangePower().collect();
-        new ConjurerPower().collect();
-        new TomeOfMastery().collect();
+       Dungeon.quickslot.setSlot(1, staff);
+
 
         hero.belongings.armor = ClassArmor.upgrade(hero, (Armor)(new ClothArmor().identify()));
 
