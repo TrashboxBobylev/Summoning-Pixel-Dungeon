@@ -51,11 +51,14 @@ public class SummPDChanges {
 	
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
 		
-		ChangeInfo changes = new ChangeInfo( "1.0.0", true, "");
-		changes.hardlight( Window.TITLE_COLOR);
-		changeInfos.add(changes);
+		//ChangeInfo changes = new ChangeInfo( "1.1", true, "");
+		//changes.hardlight( Window.TITLE_COLOR);
+		//changeInfos.add(changes);
         add_1_1_Changes(changeInfos);
         add_1_0_1_Changes(changeInfos);
+        ChangeInfo changes = new ChangeInfo( "1.0", true, "");
+        changes.hardlight( Window.TITLE_COLOR);
+        changeInfos.add(changes);
 		add_General_Changes(changeInfos);
 		add_Items_Changes(changeInfos);
 		add_Mobs_Changes(changeInfos);
