@@ -34,6 +34,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfHealing;
 import com.trashboxbobylev.summoningpixeldungeon.items.quest.CleanWater;
 import com.trashboxbobylev.summoningpixeldungeon.items.spells.ArcaneCatalyst;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfStench;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Vampiric;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.ChangesScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.CharSprite;
@@ -53,11 +54,12 @@ public class SummPDChanges {
 		ChangeInfo changes = new ChangeInfo( "1.0.0", true, "");
 		changes.hardlight( Window.TITLE_COLOR);
 		changeInfos.add(changes);
+        add_1_1_Changes(changeInfos);
+        add_1_0_1_Changes(changeInfos);
 		add_General_Changes(changeInfos);
 		add_Items_Changes(changeInfos);
 		add_Mobs_Changes(changeInfos);
 		add_Minor_Changes(changeInfos);
-        add_1_0_1_Changes(changeInfos);
 	}
 
 //    public static void add_Beta_Changes( ArrayList<ChangeInfo> changeInfos ){
@@ -178,12 +180,55 @@ public class SummPDChanges {
         changeInfos.add(changes);
         changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
         changes.addButton( new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
-                "_-_ Released Januar 4nd, 2019\n" +
+                "_-_ Beta test is began in Januar 7nd, 2019\n" +
                         "_-_ 2 days after 1.0.0"));
         changes = ChangesScene.createChangeInfo(changeInfos, "Changes", false, Window.SHPX_COLOR);
         changes.addButton( new ChangeButton(new Image(Assets.CONJURER, 0, 90, 12, 15), "Conjurer",
-                "Have recieved a rework\n" +
-                        "_-_ Energy storm now takes 25% current HP and 12.5% max HP"));
+                "Have recieved a rework:\n\n" +
+                        "_-_ Has a new melee weapon instead of using staff in melee: toy knife! It's usable to get all the soul and play with new subclass.\n\n" +
+                        "_-_ Deltarune robe can't be upgraded, but gains levels from attunement.\n\n" +
+                        "_-_ Now is one character with starting attunement.\n\n" +
+                        "_-_ Froggit Staff have rebalanced to include decrease of start attunement.\n\n" +
+                        "_-_ Have recieved redesigned mastery:\n\n\n" +
+                        "   _-_ Soul Wielder: in exchange of melee damage his healing abilities can buff enemies, and conjurer can tweak minion's stats.\n\n" +
+                        "   _-_Knight: in exchange of healing ability recieves a soul blast spell, the damaging magic bolt that consumes soul energy, and can collect a soul on killing the enemies with toy knife."));
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.GREY_RAT_STAFF, null), "Summon weapon rework",
+                "This type of weapons also have recieved a rework:\n\n" +
+                        "_-_ Summon weapons can't be equipped now, melee damage is also removed.\n\n" +
+                        "_-_ Alongside with tiers, staves have assigned to 5 different classes: defense, melee, magic, range and support. This stat affects an effect of new category of items on the minions.\n\n" +
+                        "_-_ A bunch of balance changes, accounting for different minions.\n\n" +
+                        "_-_ A new minion have been added: the slime, that stuns enemies.\n\n" +
+                        "_-_ Gnoll hunter have been moved to tier 3.\n\n" +
+                        "_-_ Mimic staff have been removed from game.\n\n" +
+                        "_-_ Charge mechanic of staves should be more stable that before."));
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WARRIOR_POWER, null), "Power ups!",
+                "5 different powers have added as ultimate spells. At cost of transumation scroll and other goodies you can make a very powerful item, that affects your enemies, minions and character.\n\n" +
+                        "Each power up have different set of effects, so check for alchemy guide!"
+        ));
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.STONE_HAMMER, null), "Shop weapons",
+                "4 different weapons have been added into shops across all dungeon. They have unique properties and can be used for different synergies.\n\n" +
+                        "That weapon can appear in shop with 50% chance."
+                ));
+        changes.addButton( new ChangeButton(new Image(Assets.DOG, 0, 0, 15, 15), "New mob and changes",
+                "_-_ Added a new monster into the sewers: sewer dog. He is fast, dexterious and can be a problem. It drops random items with 10% chance.\n\n" +
+                        "_-_ Crabs have been reworked into very tough enemy with low speed and heavy punch. You should dispatch that guys from range."));
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SWORD, new ItemSprite.Glowing( 0x660022 )), "Vampiric rework",
+                "Vampiric enchantment have been reworked to be more viable with low-damage weapons and more consistent.\n\n" +
+                        "_-_ Now proc always.\n\n" +
+                        "_-_ Gives a heal in form of Healing buff, which scales with weapon's level and damage roll."
+        ));
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAND_STENCH, null), "Wand of Stench rework",
+                "Wand of Stench have been reworked to be more strategic and viable.\n\n" +
+                        "_-_ Instead of infusing enemies, it creates a unique creature, that spreads the stench gas.\n\n" +
+                        "_-_ This stench gas deals constant damage, that scales with wand's level.\n\n" +
+                        "_-_ Stench creature have limited lifespan and explodes on collision with monsters or expiring."
+        ));
+
+        changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+                "_-_ Pickaxes are melee weapons now, that can be enchanted or upgraded.\n\n" +
+                                        "_-_ Fixed bug, when Imp Queen's minions can crash a game.\n\n" +
+                                        "_-_ Final Froggits's level seal were working incorrectly\n\n." +
+                                        "_-_ Fixed sneaky weapons."));
     }
 
 public static void add_1_0_1_Changes(ArrayList<ChangeInfo> changeInfos ) {
