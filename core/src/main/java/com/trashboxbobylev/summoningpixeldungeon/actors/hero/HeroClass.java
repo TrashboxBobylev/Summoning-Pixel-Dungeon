@@ -278,8 +278,7 @@ public enum HeroClass {
 
         Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
 
-        hero.attunement = 5;
-        hero.STR = 19;
+        hero.attunement = 2;
         hero.HP = hero.HT = 15;
 
         new PotionOfStrength().identify();

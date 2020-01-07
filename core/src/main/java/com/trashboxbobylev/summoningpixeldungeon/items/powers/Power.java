@@ -74,6 +74,7 @@ public abstract class Power extends Item {
         buffMinions();
         Invisibility.dispel();
         Dungeon.hero.spendAndNext(Actor.TICK);
+        detach( Dungeon.hero.belongings.backpack );
     }
 
     protected boolean isRespectable(Minion minion){
