@@ -24,6 +24,7 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee;
 
+import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Cripple;
@@ -65,7 +66,7 @@ public class Knife extends MeleeWeapon {
     @Override
     public float speedFactor(Char owner) {
         float v = super.speedFactor(owner);
-        if (((Hero)owner).subClass == HeroSubClass.OCCULTIST) v *= 0.5f;
+        if (Dungeon.hero.subClass == HeroSubClass.OCCULTIST) v *= 0.5f;
         return v;
     }
 
