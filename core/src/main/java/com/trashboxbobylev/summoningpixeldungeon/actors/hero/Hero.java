@@ -1249,9 +1249,13 @@ public class Hero extends Char {
         } else if ((cell == Dungeon.level.exit || Dungeon.level.map[cell] == Terrain.EXIT || Dungeon.level.map[cell] == Terrain.UNLOCKED_EXIT)
                 && Dungeon.depth < 26) {
 		        boolean canDo = true;
-		        if (((21 < Dungeon.depth) && (Dungeon.depth < 25)) && Dungeon.level.checkForFroggits()) canDo = false;
+                if ((Dungeon.depth > 21) && (Dungeon.depth < 25))
+                if (Dungeon.level.checkForFroggits()) {
+                    canDo = false;
+                }
 
                 if (canDo) curAction = new HeroAction.Descend(cell);
+                else GLog.warning(Messages.get(Level.class, "seal"));
 
         } else if (cell == Dungeon.level.entrance || Dungeon.level.map[cell] == Terrain.ENTRANCE) {
 			
