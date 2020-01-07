@@ -59,8 +59,9 @@ public class MeleeWeapon extends Weapon {
 
 		if (owner instanceof Hero) {
 			int exStr = ((Hero)owner).STR() - STRReq();
+			int modifier = this instanceof Knife ? 2 : 1;
 			if (exStr > 0) {
-				damage += Random.IntRange( 0, exStr );
+				damage += Random.IntRange( 0, exStr * modifier );
 			}
 		}
 		
@@ -77,7 +78,9 @@ public class MeleeWeapon extends Weapon {
 			if (STRReq() > Dungeon.hero.STR()) {
 				info += " " + Messages.get(Weapon.class, "too_heavy");
 			} else if (Dungeon.hero.STR() > STRReq()){
-				info += " " + Messages.get(Weapon.class, "excess_str", Dungeon.hero.STR() - STRReq());
+			    int additional_damage = Dungeon.hero.STR() - STRReq();
+			    if (this instanceof Knife) additional_damage *= 2;
+				info += " " + Messages.get(Weapon.class, "excess_str", additional_damage);
 			}
 		} else {
 			info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_unknown", tier, min(0), max(0), STRReq(0));
