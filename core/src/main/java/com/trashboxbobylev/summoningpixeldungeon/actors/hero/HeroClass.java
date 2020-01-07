@@ -280,6 +280,7 @@ public enum HeroClass {
 
         hero.attunement = 2;
         hero.HP = hero.HT = 15;
+        hero.STR = 9;
 
         new PotionOfStrength().identify();
         new ScrollOfAttunement().identify();
