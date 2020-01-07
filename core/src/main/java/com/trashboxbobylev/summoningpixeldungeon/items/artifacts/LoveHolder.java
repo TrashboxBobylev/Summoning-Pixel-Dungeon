@@ -236,7 +236,7 @@ public class LoveHolder extends Artifact {
 
                                         int healing = getHealingFromStrength(str);
 
-                                        if (Random.Float() < 0.33f){
+                                        if (Random.Float() < 0.33f && curUser.subClass == HeroSubClass.SOUL_REAVER){
                                             if (Random.Int(1) == 0) Buff.prolong(ch, Empowered.class, 7f);
                                             else Buff.prolong(ch, Bless.class, 7f);
                                         }
