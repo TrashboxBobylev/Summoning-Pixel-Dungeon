@@ -170,7 +170,7 @@ public class LoveHolder extends Artifact {
 				prick(hero);
 			}*/
 		}
-        if (action.equals(AC_OFFENSE)){
+        if (action.equals(AC_DAMAGE)){
             if (hero.subClass != HeroSubClass.NONE) {
                 curUser = hero;
                 GameScene.selectCell(zapper2);
@@ -181,9 +181,12 @@ public class LoveHolder extends Artifact {
 	}
 
 	private void prick(Hero hero, int type){
+        if (hero.subClass == HeroSubClass.OCCULTIST) GLog.i(Messages.get(LoveHolder.class, "no_way"));
         if (charge < str || (type == 2 && (charge < str * 2))) {
             GLog.i(Messages.get(LoveHolder.class, "not_enough"));
-        } else {
+        }
+
+                else {
             curUser = hero;
             curItem = this;
             soultype = type;
