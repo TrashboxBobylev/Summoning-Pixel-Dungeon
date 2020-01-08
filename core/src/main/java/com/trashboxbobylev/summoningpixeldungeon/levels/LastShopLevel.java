@@ -28,9 +28,14 @@ import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Bones;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
+import com.trashboxbobylev.summoningpixeldungeon.items.Generator;
 import com.trashboxbobylev.summoningpixeldungeon.items.Heap;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
+import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfHealing;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfPassage;
+import com.trashboxbobylev.summoningpixeldungeon.items.spells.Recycle;
+import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfEnchantment;
+import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfShock;
 import com.trashboxbobylev.summoningpixeldungeon.levels.builders.BranchesBuilder;
 import com.trashboxbobylev.summoningpixeldungeon.levels.builders.Builder;
 import com.trashboxbobylev.summoningpixeldungeon.levels.builders.LineBuilder;
@@ -129,6 +134,12 @@ public class LastShopLevel extends RegularLevel {
 	    itemsToSpawn.add(new ScrollOfPassage());
         itemsToSpawn.add(new ScrollOfPassage());
         itemsToSpawn.add(new ScrollOfPassage());
+        itemsToSpawn.add(new PotionOfHealing());
+        itemsToSpawn.add(new StoneOfEnchantment());
+        itemsToSpawn.add(new StoneOfShock());
+        itemsToSpawn.add(new StoneOfShock());
+        itemsToSpawn.add(new StoneOfShock());
+        itemsToSpawn.add(new Recycle().quantity(5));
 		super.createItems();
 	}
 	
