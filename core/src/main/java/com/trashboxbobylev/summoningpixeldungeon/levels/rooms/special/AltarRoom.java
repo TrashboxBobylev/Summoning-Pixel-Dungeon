@@ -24,7 +24,15 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.levels.rooms.special;
 
+import com.trashboxbobylev.summoningpixeldungeon.Challenges;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
+import com.trashboxbobylev.summoningpixeldungeon.items.Generator;
+import com.trashboxbobylev.summoningpixeldungeon.items.Gold;
+import com.trashboxbobylev.summoningpixeldungeon.items.Item;
+import com.trashboxbobylev.summoningpixeldungeon.items.armor.Armor;
+import com.trashboxbobylev.summoningpixeldungeon.items.keys.IronKey;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.trashboxbobylev.summoningpixeldungeon.levels.Level;
 import com.trashboxbobylev.summoningpixeldungeon.levels.Terrain;
 import com.trashboxbobylev.summoningpixeldungeon.levels.painters.Painter;
@@ -55,8 +63,7 @@ public class AltarRoom extends SpecialRoom {
 		
 		Painter.fill( level, c.x - 1, c.y - 1, 3, 3, Terrain.EMBERS );
 		Painter.set( level, c, Terrain.PEDESTAL );
-
-		//TODO: find some use for sacrificial fire... but not the vanilla one. scroll of wipe out is too strong.
+        level.drop( prize( level ), c.x + c.y * level.width());
 		/*SacrificialFire fire = (SacrificialFire)level.blobs.get( SacrificialFire.class );
 		if (fire == null) {
 			fire = new SacrificialFire();
@@ -64,6 +71,25 @@ public class AltarRoom extends SpecialRoom {
 		fire.seed( c.x + c.y * Level.WIDTH, 5 + Dungeon.depth * 5 );
 		level.blobs.put( SacrificialFire.class, fire );*/
 
-		door.set( Door.Type.EMPTY );
+        entrance().set( Door.Type.LOCKED );
+        level.addItemToSpawn( new IronKey( Dungeon.depth ) );
 	}
+
+    private static Item prize(Level level ) {
+
+        //1 floor set higher than normal
+        Staff prize = Generator.randomStaff( (Dungeon.depth / 5) + 1);
+
+        //if it isn't already cursed, give it a free upgrade
+        if (!prize.cursed){
+            prize.upgrade();
+            //curse the staff, unless it has a enchant
+            if (!prize.hasGoodEnchant()){
+                prize.enchant(Weapon.Enchantment.randomCurse());
+            }
+        }
+        prize.cursed = prize.cursedKnown = true;
+
+        return prize;
+    }
 }
