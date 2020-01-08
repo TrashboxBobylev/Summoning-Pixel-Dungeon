@@ -213,9 +213,16 @@ public class SummPDChanges {
                 "4 different weapons have been added into shops across all dungeon. They have unique properties and can be used for different synergies.\n\n" +
                         "That weapon can appear in shop with 50% chance."
                 ));
+        changes.addButton( new ChangeButton(new Image(Assets.TILES_CORE, 0, 64, 16, 16 ), "Floor 21 rework!",
+        "Floor 21 recieved a big changes, making them more memorable and valuable.\n\n" +
+                "_-_ It's now full depth, featuring many rooms, not just shop.\n\n" +
+                "_-_ It always contain 3 scrolls of passage, allowing you to rest after exploring a demon halls.\n\n" +
+                "_-_ The imp shopkeeper have replaced by new mysterious merchant, that serves same purpose."));
         changes.addButton( new ChangeButton(new Image(Assets.DOG, 0, 0, 15, 15), "New mob and changes",
                 "_-_ Added a new monster into the sewers: sewer dog. He is fast, dexterious and can be a problem. It drops random items with 10% chance.\n\n" +
-                        "_-_ Crabs have been reworked into very tough enemy with low speed and heavy punch. You should dispatch that guys from range."));
+                        "_-_ Crabs have been reworked into very tough enemy with low speed and heavy punch. You should dispatch that guys from range.\n\n" +
+                        "_-_ Added a new monster into Demon Halls: inferno bat! It attacks you with fire, forcing you staying in inferno cloud.\n\n" +
+                        "_-_ All Demon Halls enemies have buffed, partially because of depth 21 rework."));
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SWORD, new ItemSprite.Glowing( 0x660022 )), "Vampiric rework",
                 "Vampiric enchantment have been reworked to be more viable with low-damage weapons and more consistent.\n\n" +
                         "_-_ Now proc always.\n\n" +
@@ -234,7 +241,8 @@ public class SummPDChanges {
                                         "_-_ Final Froggits's level seal were working incorrectly.\n\n" +
                                         "_-_ Fixed sneaky weapons.\n\n" +
                                         "_-_ Fixed clean water being not identified and having no readable drink option.\n\n" +
-                                        "_-_ Changed sprites of some bombs."));
+                                        "_-_ Changed sprites of some bombs.\n\n" +
+                                        "_-_ Added a altar locked room, which contain cursed staff that can be upgraded!"));
     }
 
 public static void add_1_0_1_Changes(ArrayList<ChangeInfo> changeInfos ) {
