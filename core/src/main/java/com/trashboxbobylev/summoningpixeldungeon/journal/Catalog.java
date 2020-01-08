@@ -66,6 +66,10 @@ import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTransmuta
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.*;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.shop.Jjango;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.shop.Pike;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.shop.Stabber;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.shop.StoneHammer;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.*;
 import com.watabou.utils.Bundle;
 
@@ -114,6 +118,7 @@ public enum Catalog {
 		WEAPONS.seen.put( Quarterstaff.class,               false);
 		WEAPONS.seen.put( Dirk.class,                       false);
         WEAPONS.seen.put(Cleaver.class, false);
+        WEAPONS.seen.put(StoneHammer.class, false);
         WEAPONS.seen.put(GreyRatStaff.class, false);
         WEAPONS.seen.put(SlimeStaff.class, false);
         WEAPONS.seen.put(SheepStaff.class, false);
@@ -123,6 +128,7 @@ public enum Catalog {
 		WEAPONS.seen.put( RoundShield.class,                false);
 		WEAPONS.seen.put( Sai.class,                        false);
 		WEAPONS.seen.put( Whip.class,                       false);
+        WEAPONS.seen.put(Pike.class, false);
         WEAPONS.seen.put(SkeletonStaff.class, false);
         WEAPONS.seen.put(GnollHunterStaff.class, false);
         //WEAPONS.seen.put(MimicStaff.class, false);
@@ -134,6 +140,7 @@ public enum Catalog {
 		WEAPONS.seen.put( RunicBlade.class,                 false);
 		WEAPONS.seen.put( AssassinsBlade.class,             false);
 		WEAPONS.seen.put( Crossbow.class,                   false);
+        WEAPONS.seen.put(Stabber.class, false);
         WEAPONS.seen.put(FrostElementalStaff.class, false);
         WEAPONS.seen.put(WizardStaff.class, false);
         WEAPONS.seen.put(RoseStaff.class, false);
@@ -144,6 +151,7 @@ public enum Catalog {
 		WEAPONS.seen.put( Greataxe.class,                   false);
 		WEAPONS.seen.put( Greatshield.class,                false);
 		WEAPONS.seen.put( Gauntlet.class,                   false);
+        WEAPONS.seen.put( Jjango.class, false);
         WEAPONS.seen.put(GooStaff.class, false);
         WEAPONS.seen.put(BlasterStaff.class, false);
         WEAPONS.seen.put(ImpQueenStaff.class, false);
