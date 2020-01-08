@@ -194,7 +194,7 @@ public class SummPDChanges {
                         "_-_ Froggit Staff have rebalanced to include decrease of start attunement.\n\n" +
                         "_-_ Have recieved redesigned mastery:\n\n\n" +
                         "   _-_ Soul Wielder: in exchange of melee damage his healing abilities can buff enemies, and conjurer can tweak minion's stats.\n\n" +
-                        "   _-_Knight: in exchange of healing ability recieves a soul blast spell, the damaging magic bolt that consumes soul energy, and can collect a soul on killing the enemies with toy knife."));
+                        "   _-_ Knight: in exchange of healing ability recieves a soul blast spell, the damaging magic bolt that consumes soul energy, and can collect a soul on killing the enemies with toy knife."));
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.GREY_RAT_STAFF, null), "Summon weapon rework",
                 "This type of weapons also have recieved a rework:\n\n" +
                         "_-_ Summon weapons can't be equipped now, melee damage is also removed.\n\n" +
