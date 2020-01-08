@@ -246,7 +246,6 @@ public enum HeroClass {
         (hero.belongings.misc1 = cloak).identify();
         hero.belongings.misc1.activate( hero );
         Dungeon.quickslot.setSlot(0, hero.belongings.misc1);
-        new LeatherArmor().upgrade(3).identify().collect();
 
         Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
 
