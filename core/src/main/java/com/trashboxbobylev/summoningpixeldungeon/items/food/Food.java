@@ -84,7 +84,7 @@ public class Food extends Item {
 			GLog.i( message );
 
 			HellBat hellBat = new HellBat();
-			hellBat.pos = Dungeon.level.randomRespawnCell();
+			hellBat.pos = Dungeon.level.randomDestination();
 			GameScene.add(hellBat);
 			
 			foodProc( hero );

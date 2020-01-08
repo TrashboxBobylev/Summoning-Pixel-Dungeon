@@ -168,7 +168,7 @@ public class ConjurerArmor extends ClassArmor {
 
     @Override
     public int level() {
-        return (int) (super.level() + Dungeon.hero.attunement() - 1);
+        return (int) (super.level() + (Dungeon.hero == null ? 1 : Dungeon.hero.attunement()) - 1);
     }
 
     @Override
