@@ -71,7 +71,7 @@ public class LastShopLevel extends RegularLevel {
     @Override
     protected int standardRooms() {
         //12 to 15, average 13
-        return 15+ Random.chances(new float[]{4, 3, 2, 1});
+        return 12 + Random.chances(new float[]{4, 3, 2, 1});
     }
 
     @Override

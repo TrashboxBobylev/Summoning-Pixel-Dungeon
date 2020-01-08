@@ -69,6 +69,11 @@ public class CleanWater extends Item {
     }
 
     @Override
+    public boolean isIdentified() {
+        return true;
+    }
+
+    @Override
     public void execute( final Hero hero, String action ) {
 
         super.execute( hero, action );
