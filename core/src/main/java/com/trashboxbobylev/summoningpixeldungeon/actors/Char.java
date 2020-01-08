@@ -250,7 +250,7 @@ public abstract class Char extends Actor {
 				shake = effectiveDamage / (enemy.HT / 4);
 
 			if (shake > 1f)
-				Camera.main.shake( GameMath.gate( 1, shake, 5), 0.3f );
+				Camera.main.shake( shake, 0.3f );
 
 //            if (this instanceof Hero && ((Hero) this).subClass == HeroSubClass.OCCULTIST){
 //                if (this.buff(HateOccult.class) != null){
