@@ -64,7 +64,7 @@ public class ImpShopRoom extends ShopRoom {
 			door.set( Door.Type.REGULAR );
 		}
 
-		if (Imp.Quest.isCompleted()){
+		if (/*Imp.Quest.isCompleted()*/true){
 			impSpawned = true;
 			placeItems(level);
 			placeShopkeeper(level);
