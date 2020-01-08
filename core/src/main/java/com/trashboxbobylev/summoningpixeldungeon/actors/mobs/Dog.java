@@ -36,8 +36,8 @@ public class Dog extends Mob {
 	{
 		spriteClass = DogSprite.class;
 		
-		HP = HT = 11;
-		defenseSkill = 7;
+		HP = HT = 10;
+		defenseSkill = 8;
 		baseSpeed = 2f;
 		
 		EXP = 3;
@@ -49,7 +49,7 @@ public class Dog extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 1, 7 );
+		return Random.NormalIntRange( 1, 5 );
 	}
 	
 	@Override
@@ -61,4 +61,9 @@ public class Dog extends Mob {
 	public int drRoll() {
 		return Random.NormalIntRange(0, 2);
 	}
+
+    @Override
+    protected float attackDelay() {
+        return super.attackDelay()*0.6f;
+    }
 }
