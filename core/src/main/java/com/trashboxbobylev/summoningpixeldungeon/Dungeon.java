@@ -183,7 +183,7 @@ public class Dungeon {
 		quickslot.reset();
 		QuickSlotButton.reset();
 		
-		depth = 0;
+		depth = 20;
 		gold = 0;
 
 		droppedItems = new SparseArray<>();
@@ -232,7 +232,6 @@ public class Dungeon {
 		Level level;
 		switch (depth) {
 		case 1:
-		    level = new LastShopLevel();break;
 		case 2:
 		case 3:
 		case 4:

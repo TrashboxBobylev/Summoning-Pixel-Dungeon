@@ -206,7 +206,7 @@ public class ShopRoom extends SpecialRoom {
             itemsToSpawn.add(new CleanWater());
 			break;
 			
-		case 1:
+		case 21:
 		    itemsToSpawn.add(new ScrollOfEnchantment());
 			itemsToSpawn.add( new BeaconOfReturning());
             itemsToSpawn.add(Generator.random(Generator.Category.EXOTIC_POTION));

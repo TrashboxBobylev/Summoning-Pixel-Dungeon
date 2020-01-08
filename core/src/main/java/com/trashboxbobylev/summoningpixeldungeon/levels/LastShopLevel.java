@@ -169,7 +169,7 @@ public class LastShopLevel extends RegularLevel {
 				return Messages.get(CityLevel.class, "sp_desc");
 			case Terrain.STATUE:
 			case Terrain.STATUE_SP:
-				return Messages.get(CityLevel.class, "statue_desc");
+				return Messages.get(SewerLevel.class, "statue_desc");
 			case Terrain.BOOKSHELF:
 				return Messages.get(CityLevel.class, "bookshelf_desc");
 			default:
