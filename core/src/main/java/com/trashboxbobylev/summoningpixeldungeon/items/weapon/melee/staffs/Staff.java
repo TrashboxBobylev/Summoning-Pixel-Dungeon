@@ -370,7 +370,7 @@ public class Staff extends Weapon {
                 robeBonus = 1f + curUser.belongings.armor.level() * 0.1f;
             }
             minion.setMaxHP((int) (hp(level()) * robeBonus));
-        } else GLog.warning( Messages.get(Wand.class, "fizzles") );
+        } else GLog.warning( Messages.get(Staff.class, "fizzles") );
         wandUsed(false);
     }
 
@@ -539,9 +539,7 @@ public class Staff extends Weapon {
                     minionmax(),
                     (int)(hp(level()) * robeBonus));
             if (STRReq() > Dungeon.hero.STR()) {
-                info += " " + Messages.get(MeleeWeapon.class, "too_heavy");
-            } else if (Dungeon.hero.STR() > STRReq()){
-                info += " " + Messages.get(Weapon.class, "excess_str", Dungeon.hero.STR() - STRReq());
+                info += " " + Messages.get(Staff.class, "too_heavy");
             }
         } else {
             info += "\n\n" + Messages.get(Staff.class, "stats_unknown", tier, min(0), max(0), STRReq(0), minionMin(0), minionMax(0), hp(0));

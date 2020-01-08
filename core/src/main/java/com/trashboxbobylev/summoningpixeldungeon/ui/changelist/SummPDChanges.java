@@ -203,7 +203,8 @@ public class SummPDChanges {
                         "_-_ A new minion have been added: the slime, that stuns enemies.\n\n" +
                         "_-_ Gnoll hunter have been moved to tier 3.\n\n" +
                         "_-_ Mimic staff have been removed from game.\n\n" +
-                        "_-_ Charge mechanic of staves should be more stable that before."));
+                        "_-_ Charge mechanic of staves should be more stable that before.\n\n" +
+                        "_-_ Minions go invisible on drinking an invisibility potion."));
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WARRIOR_POWER, null), "Power ups!",
                 "5 different powers have added as ultimate spells. At cost of transumation scroll and other goodies you can make a very powerful item, that affects your enemies, minions and character.\n\n" +
                         "Each power up have different set of effects, so check for alchemy guide!"
@@ -230,8 +231,10 @@ public class SummPDChanges {
         changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
                 "_-_ Pickaxes are melee weapons now, that can be enchanted or upgraded.\n\n" +
                                         "_-_ Fixed bug, when Imp Queen's minions can crash a game.\n\n" +
-                                        "_-_ Final Froggits's level seal were working incorrectly\n\n." +
-                                        "_-_ Fixed sneaky weapons."));
+                                        "_-_ Final Froggits's level seal were working incorrectly.\n\n" +
+                                        "_-_ Fixed sneaky weapons.\n\n" +
+                                        "_-_ Fixed clean water being not identified and having no readable drink option.\n\n" +
+                                        "_-_ Changed sprites of some bombs."));
     }
 
 public static void add_1_0_1_Changes(ArrayList<ChangeInfo> changeInfos ) {
