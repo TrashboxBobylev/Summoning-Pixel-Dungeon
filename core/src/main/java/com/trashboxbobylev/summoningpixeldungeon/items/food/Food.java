@@ -26,12 +26,14 @@ package com.trashboxbobylev.summoningpixeldungeon.items.food;
 
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Badges;
+import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.Statistics;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Hunger;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Invisibility;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Recharging;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.HellBat;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
 import com.trashboxbobylev.summoningpixeldungeon.effects.SpellSprite;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
@@ -80,6 +82,10 @@ public class Food extends Item {
 			
 			satisfy(hero);
 			GLog.i( message );
+
+			HellBat hellBat = new HellBat();
+			hellBat.pos = Dungeon.level.randomRespawnCell();
+			GameScene.add(hellBat);
 			
 			foodProc( hero );
 			
