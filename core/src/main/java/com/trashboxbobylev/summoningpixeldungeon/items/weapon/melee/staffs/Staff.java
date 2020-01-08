@@ -96,6 +96,7 @@ public class Staff extends Weapon {
         if (super.collect( container )) {
             if (container.owner != null) {
                 charge( container.owner );
+                identify();
             }
             return true;
         } else {
