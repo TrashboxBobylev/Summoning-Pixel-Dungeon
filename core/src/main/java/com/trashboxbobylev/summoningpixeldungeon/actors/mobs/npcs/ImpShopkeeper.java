@@ -30,12 +30,13 @@ import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.ElmoParticle;
 import com.trashboxbobylev.summoningpixeldungeon.items.Heap;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
+import com.trashboxbobylev.summoningpixeldungeon.sprites.ImpShopkeeperSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ImpSprite;
 
 public class ImpShopkeeper extends Shopkeeper {
 
 	{
-		spriteClass = ImpSprite.class;
+		spriteClass = ImpShopkeeperSprite.class;
 	}
 	
 	private boolean seenBefore = false;

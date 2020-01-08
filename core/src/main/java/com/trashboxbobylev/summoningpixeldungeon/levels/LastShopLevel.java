@@ -30,6 +30,8 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.items.Heap;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfPassage;
+import com.trashboxbobylev.summoningpixeldungeon.levels.builders.BranchesBuilder;
 import com.trashboxbobylev.summoningpixeldungeon.levels.builders.Builder;
 import com.trashboxbobylev.summoningpixeldungeon.levels.builders.LineBuilder;
 import com.trashboxbobylev.summoningpixeldungeon.levels.painters.CityPainter;
@@ -52,7 +54,7 @@ public class LastShopLevel extends RegularLevel {
 	
 	@Override
 	public String tilesTex() {
-		return Assets.TILES_CITY;
+		return Assets.TILES_CORE;
 	}
 	
 	@Override
@@ -79,21 +81,16 @@ public class LastShopLevel extends RegularLevel {
 	
 	@Override
 	protected ArrayList<Room> initRooms() {
-		ArrayList<Room> rooms = new ArrayList<>();
-		
-		rooms.add ( roomEntrance = new EntranceRoom());
+		ArrayList<Room> rooms = super.initRooms();
+
 		rooms.add( new ImpShopRoom() );
-		rooms.add( roomExit = new ExitRoom());
 		
 		return rooms;
 	}
 	
 	@Override
 	protected Builder builder() {
-		return new LineBuilder()
-				.setPathVariance(0f)
-				.setPathLength(1f, new float[]{1})
-				.setTunnelLength(new float[]{0, 0, 1}, new float[]{1});
+		return new BranchesBuilder();
 	}
 	
 	@Override
@@ -118,14 +115,10 @@ public class LastShopLevel extends RegularLevel {
 	
 	@Override
 	protected void createItems() {
-		Item item = Bones.get();
-		if (item != null) {
-			int pos;
-			do {
-				pos = pointToCell(roomEntrance.random());
-			} while (pos == entrance);
-			drop( item, pos ).setHauntedIfCursed(1f).type = Heap.Type.REMAINS;
-		}
+	    itemsToSpawn.add(new ScrollOfPassage());
+        itemsToSpawn.add(new ScrollOfPassage());
+        itemsToSpawn.add(new ScrollOfPassage());
+		super.createItems();
 	}
 	
 	@Override
