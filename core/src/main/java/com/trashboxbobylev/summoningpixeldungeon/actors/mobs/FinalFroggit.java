@@ -53,7 +53,7 @@ public class FinalFroggit extends Mob implements Callback {
 		HP = HT = 90;
 		defenseSkill = 20;
 		
-		EXP = 15;
+		EXP = 20;
 		maxLvl = 30;
 		
 		loot = Generator.random();

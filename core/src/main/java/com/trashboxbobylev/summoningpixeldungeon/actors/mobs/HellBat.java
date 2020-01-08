@@ -50,7 +50,7 @@ public class HellBat extends Mob {
 		defenseSkill = 32;
 		baseSpeed = 2f;
 		
-		EXP = 16;
+		EXP = 15;
 		maxLvl = 27;
 		
 		flying = true;
