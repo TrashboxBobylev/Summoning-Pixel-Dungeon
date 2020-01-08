@@ -66,13 +66,13 @@ public class LastShopLevel extends RegularLevel {
     @Override
     protected int standardRooms() {
         //12 to 15, average 13
-        return 12+ Random.chances(new float[]{4, 3, 2, 1});
+        return 15+ Random.chances(new float[]{4, 3, 2, 1});
     }
 
     @Override
     protected int specialRooms() {
         //4 to 6, average 5
-        return 4 + Random.chances(new float[]{2, 1});
+        return 7 + Random.chances(new float[]{2, 1});
     }
 	
 	@Override
@@ -108,9 +108,7 @@ public class LastShopLevel extends RegularLevel {
 	
 	@Override
 	protected Painter painter() {
-		return new CityPainter()
-				.setWater( 0.10f, 4 )
-				.setGrass( 0.10f, 3 );
+		return new CityPainter();
 	}
 	
 	@Override
