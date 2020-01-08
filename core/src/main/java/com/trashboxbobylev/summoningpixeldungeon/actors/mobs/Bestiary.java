@@ -156,13 +156,13 @@ public class Bestiary {
 				return new ArrayList<>(Arrays.asList(
 						Succubus.class, Slime.class,
 						Eye.class, Eye.class, Eye.class, Slime.class,
-						Scorpio.class, Scorpio.class));
+						Scorpio.class, Scorpio.class, HellBat.class));
 			case 24: case 25: case 26:
 				//2x evil eye, 3x scorpio, 1x slime
 				return new ArrayList<>(Arrays.asList(
 						Slime.class,
 						Eye.class, Eye.class,
-						Scorpio.class, Scorpio.class, Scorpio.class));
+						Scorpio.class, Scorpio.class, Scorpio.class, HellBat.class, HellBat.class));
 		}
 		
 	}
