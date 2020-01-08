@@ -47,7 +47,7 @@ public class Crab extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 3, 17 );
+		return Random.NormalIntRange( 2, 12 );
 	}
 	
 	@Override
@@ -62,6 +62,6 @@ public class Crab extends Mob {
 
     @Override
     protected float attackDelay() {
-        return super.attackDelay()*1.35f;
+        return super.attackDelay()*1.65f;
     }
 }
