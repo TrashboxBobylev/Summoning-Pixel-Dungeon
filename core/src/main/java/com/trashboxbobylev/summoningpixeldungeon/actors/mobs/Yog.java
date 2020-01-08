@@ -72,7 +72,7 @@ public class Yog extends Mob {
 	{
 		spriteClass = YogSprite.class;
 		
-		HP = HT = 300;
+		HP = HT = 2000;
 		
 		EXP = 50;
 		
@@ -105,7 +105,7 @@ public class Yog extends Mob {
 	@Override
 	protected boolean act() {
 		//heals 1 health per turn
-		HP = Math.min( HT, HP+1 );
+		HP = Math.min( HT, HP+5 );
 
 		return super.act();
 	}
@@ -220,7 +220,7 @@ public class Yog extends Mob {
 		{
 			spriteClass = RottingFistSprite.class;
 			
-			HP = HT = 300;
+			HP = HT = 500;
 			defenseSkill = 25;
 			
 			EXP = 0;
@@ -239,7 +239,7 @@ public class Yog extends Mob {
 		
 		@Override
 		public int damageRoll() {
-			return Random.NormalIntRange( 20, 50 );
+			return Random.NormalIntRange( 20, 55 );
 		}
 		
 		@Override
@@ -292,7 +292,7 @@ public class Yog extends Mob {
 		{
 			spriteClass = BurningFistSprite.class;
 			
-			HP = HT = 200;
+			HP = HT = 300;
 			defenseSkill = 25;
 			
 			EXP = 0;
@@ -311,7 +311,7 @@ public class Yog extends Mob {
 		
 		@Override
 		public int damageRoll() {
-			return Random.NormalIntRange( 26, 32 );
+			return Random.NormalIntRange( 28, 36 );
 		}
 		
 		@Override
@@ -387,7 +387,7 @@ public class Yog extends Mob {
 		{
 			spriteClass = LarvaSprite.class;
 			
-			HP = HT = 25;
+			HP = HT = 35;
 			defenseSkill = 20;
 			
 			EXP = 0;
@@ -406,7 +406,7 @@ public class Yog extends Mob {
 		
 		@Override
 		public int damageRoll() {
-			return Random.NormalIntRange( 22, 30 );
+			return Random.NormalIntRange( 22, 34 );
 		}
 		
 		@Override

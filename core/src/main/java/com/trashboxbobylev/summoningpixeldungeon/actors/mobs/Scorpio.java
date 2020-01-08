@@ -31,6 +31,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Cripple;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Light;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.food.MysteryMeat;
+import com.trashboxbobylev.summoningpixeldungeon.items.food.StewedMeat;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfHealing;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ScorpioSprite;
@@ -41,12 +42,12 @@ public class Scorpio extends Mob {
 	{
 		spriteClass = ScorpioSprite.class;
 		
-		HP = HT = 95;
+		HP = HT = 150;
 		defenseSkill = 24;
 		viewDistance = Light.DISTANCE;
 		
-		EXP = 14;
-		maxLvl = 25;
+		EXP = 17;
+		maxLvl = 28;
 		
 		loot = new PotionOfHealing();
 		lootChance = 0.2f;
@@ -56,7 +57,7 @@ public class Scorpio extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 26, 36 );
+		return Random.NormalIntRange( 30, 40 );
 	}
 	
 	@Override
@@ -66,7 +67,7 @@ public class Scorpio extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 16);
+		return Random.NormalIntRange(0, 12);
 	}
 	
 	@Override
@@ -101,7 +102,7 @@ public class Scorpio extends Mob {
 			Dungeon.LimitedDrops.SCORPIO_HP.count++;
 			return (Item)loot;
 		} else {
-			return new MysteryMeat();
+			return new StewedMeat();
 		}
 	}
 	

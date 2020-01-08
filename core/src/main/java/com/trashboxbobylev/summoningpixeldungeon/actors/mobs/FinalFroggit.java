@@ -50,7 +50,7 @@ public class FinalFroggit extends Mob implements Callback {
 	{
 		spriteClass = FinalFroggitSprite.class;
 		
-		HP = HT = 80;
+		HP = HT = 90;
 		defenseSkill = 20;
 		
 		EXP = 15;
@@ -65,7 +65,7 @@ public class FinalFroggit extends Mob implements Callback {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 16, 22 );
+		return Random.NormalIntRange( 18, 25 );
 	}
 	
 	@Override
@@ -106,10 +106,10 @@ public class FinalFroggit extends Mob implements Callback {
 			Eradication eradication = enemy.buff(Eradication.class);
 			float multiplier = 1f;
 			if (eradication != null){
-			    multiplier = (float) (Math.pow(1.2f, eradication.combo));
+			    multiplier = (float) (Math.pow(1.15f, eradication.combo));
             }
 			
-			int dmg = Math.round(Random.Int( 3, 9 ) * multiplier);
+			int dmg = Math.round(Random.Int( 4, 10 ) * multiplier);
 
 
 			Buff.prolong( enemy, Eradication.class, Eradication.DURATION ).combo++;

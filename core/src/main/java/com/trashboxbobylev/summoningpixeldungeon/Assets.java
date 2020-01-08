@@ -76,6 +76,7 @@ public class Assets {
 	public static final String SHEEP	= "sheep.png";
 	public static final String KEEPER	= "shopkeeper.png";
 	public static final String BAT		= "bat.png";
+	public static final String HELL_BAT = "hell_bat.png";
 	public static final String BRUTE	= "brute.png";
 	public static final String SPINNER	= "spinner.png";
 	public static final String DM300	= "dm300.png";

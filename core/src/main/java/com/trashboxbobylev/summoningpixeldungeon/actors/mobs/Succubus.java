@@ -34,6 +34,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Charm;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Light;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Sleep;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
+import com.trashboxbobylev.summoningpixeldungeon.items.Generator;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfLullaby;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
@@ -53,22 +54,22 @@ public class Succubus extends Mob {
 	{
 		spriteClass = SuccubusSprite.class;
 		
-		HP = HT = 80;
+		HP = HT = 95;
 		defenseSkill = 25;
 		viewDistance = Light.DISTANCE;
 		
-		EXP = 12;
-		maxLvl = 25;
+		EXP = 13;
+		maxLvl = 26;
 		
-		loot = new ScrollOfLullaby();
-		lootChance = 0.05f;
+		loot = Generator.random(Generator.Category.SCROLL);
+		lootChance = 0.25f;
 
 		properties.add(Property.DEMONIC);
 	}
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 22, 30 );
+		return Random.NormalIntRange( 24, 34 );
 	}
 	
 	@Override
@@ -76,12 +77,12 @@ public class Succubus extends Mob {
 		damage = super.attackProc( enemy, damage );
 		
 		if (enemy.buff(Charm.class) != null ){
-			int shield = (HP - HT) + (5 + damage);
+			int shield = (HP - HT) + (8 + damage);
 			if (shield > 0){
 				HP = HT;
 				Buff.affect(this, Barrier.class).setShield(shield);
 			} else {
-				HP += 5 + damage;
+				HP += 8 + damage;
 			}
 			sprite.emitter().burst( Speck.factory( Speck.HEALING ), 2 );
 			Sample.INSTANCE.play( Assets.SND_CHARMS );
@@ -148,7 +149,7 @@ public class Succubus extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 10);
+		return Random.NormalIntRange(0, 13);
 	}
 	
 	{

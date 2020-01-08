@@ -86,7 +86,7 @@ public class Slime extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 15, 20 );
+		return Random.NormalIntRange( 17, 24 );
 	}
 
     @Override

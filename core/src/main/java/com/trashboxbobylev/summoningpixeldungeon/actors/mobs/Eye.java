@@ -48,18 +48,18 @@ public class Eye extends Mob {
 	{
 		spriteClass = EyeSprite.class;
 		
-		HP = HT = 100;
+		HP = HT = 115;
 		defenseSkill = 20;
 		viewDistance = Light.DISTANCE;
 		
-		EXP = 13;
-		maxLvl = 25;
+		EXP = 14;
+		maxLvl = 26;
 		
 		flying = true;
 
 		HUNTING = new Hunting();
 		
-		loot = new Dewdrop();
+		loot = new Dewdrop().quantity(2);
 		lootChance = 0.5f;
 
 		properties.add(Property.DEMONIC);
@@ -67,7 +67,7 @@ public class Eye extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange(20, 30);
+		return Random.NormalIntRange(18, 33);
 	}
 
 	@Override
@@ -176,7 +176,7 @@ public class Eye extends Mob {
 			}
 
 			if (hit( this, ch, true )) {
-				ch.damage( Random.NormalIntRange( 30, 50 ), new DeathGaze() );
+				ch.damage( Random.NormalIntRange( 40, 65 ), new DeathGaze() );
 
 				if (Dungeon.level.heroFOV[pos]) {
 					ch.sprite.flash();
