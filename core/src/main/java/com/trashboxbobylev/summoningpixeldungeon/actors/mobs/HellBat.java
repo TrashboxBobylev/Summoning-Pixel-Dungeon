@@ -28,10 +28,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Blob;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Inferno;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.BlobImmunity;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Burning;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Roots;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfHealing;
@@ -61,7 +58,7 @@ public class HellBat extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 25, 36 );
+		return Random.NormalIntRange( 20, 24 );
 	}
 	
 	@Override
@@ -84,7 +81,10 @@ public class HellBat extends Mob {
 			sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
 		}
 		if (enemy.buff(BlobImmunity.class) != null) enemy.buff(BlobImmunity.class).detach();
+        if (enemy.buff(FireImbue.class) != null) enemy.buff(FireImbue.class).detach();
         Buff.affect(enemy, Roots.class, 4);
+        Buff.affect(enemy, BurnInDespair.class, 4);
+
 		
 		return damage;
 	}
@@ -98,6 +98,13 @@ public class HellBat extends Mob {
     {
         immunities.add(Burning.class);
         immunities.add(Inferno.class);
+    }
+
+    public static class BurnInDespair extends FlavourBuff{
+        {
+            immunities.add(FireImbue.class);
+            immunities.add(BlobImmunity.class);
+        }
     }
 	
 }
