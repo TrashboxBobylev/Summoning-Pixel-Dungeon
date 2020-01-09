@@ -228,7 +228,6 @@ public class ShopRoom extends SpecialRoom {
 		if (Random.Float() < 0.6) itemsToSpawn.add(ChooseShopWeapon());
 
 		itemsToSpawn.add(new CleanWater());
-		if (Dungeon.isChallenged(Challenges.NO_HEALING)) itemsToSpawn.add(new CleanWater());
 		
 		itemsToSpawn.add( TippedDart.randomTipped(2) );
 

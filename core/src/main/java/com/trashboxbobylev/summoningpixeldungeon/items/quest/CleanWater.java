@@ -156,7 +156,7 @@ public class CleanWater extends Item {
 	@Override
 	public int price() {
         int i = 100 * quantity;
-        if (Dungeon.isChallenged(Challenges.NO_HEALING)) i *= 4;
+        if (Dungeon.isChallenged(Challenges.NO_HEALING)) i *= 1.5f;
         return i;
 	}
 }
