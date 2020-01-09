@@ -64,6 +64,6 @@ public class Dog extends Mob {
 
     @Override
     protected float attackDelay() {
-        return super.attackDelay()*0.6f;
+        return super.attackDelay()*0.75f;
     }
 }
