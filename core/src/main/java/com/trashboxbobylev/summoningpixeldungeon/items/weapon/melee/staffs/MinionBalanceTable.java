@@ -25,7 +25,7 @@
 package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs;
 
 public enum MinionBalanceTable {
-    FROGGIT(13, 2, 1, 1,8, 2),
+    FROGGIT(10, 2, 1, 1,10, 2),
     GREY_RAT(28, 4, 3, 1, 13, 2),
     SLIME(28, 4, 2, 1, 12, 2),
     SHEEP(60, 10, 0, 0, 1, 0),
