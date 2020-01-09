@@ -36,7 +36,7 @@ public class SkeletonStaff extends Staff {
         image = ItemSpriteSheet.SKELETON_STAFF;
         minionType = Skele.class;
         tier = 3;
-        chargeTurns = 450;
+        chargeTurns = 520;
         minionClass = Minion.MinionClass.DEFENSE;
         table = MinionBalanceTable.SKELETON;
     }

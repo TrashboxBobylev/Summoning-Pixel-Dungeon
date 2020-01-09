@@ -29,7 +29,7 @@ public enum MinionBalanceTable {
     GREY_RAT(28, 4, 3, 1, 13, 2),
     SLIME(25, 4, 2, 1, 8, 3),
     SHEEP(50, 10, 0, 0, 1, 0),
-    SKELETON(42, 6, 3, 1, 8, 2),
+    SKELETON(70, -10, 3, 1, 6, 1),
     GNOLL_HUNTER(12, 2, 3, 1, 15, 3),
     CHICKEN(2, 1, 3, 1, 20, 3),
     MAGIC_MISSILE(72, 12, 3, 1, 16, 3),
