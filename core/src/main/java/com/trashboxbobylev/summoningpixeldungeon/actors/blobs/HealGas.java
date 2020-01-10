@@ -45,7 +45,7 @@ public class HealGas extends Blob {
 				cell = i + j*Dungeon.level.width();
 				if (cur[cell] > 0 && (ch = Actor.findChar( cell )) != null) {
 					if (!ch.isImmune(Healing.class)) {
-                        Buff.affect( ch, Healing.class ).setHeal((int)(0.05f*ch.HT), 1f, 0);
+                        ch.HP = Math.min(ch.HT, ch.HP + 1);
 					} else {
 
                         int damage = (ch.HT + 5 + Dungeon.depth * 5) / 40;
