@@ -26,6 +26,7 @@ package com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions;
 
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.SparkParticle;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
@@ -46,9 +47,9 @@ public class Hacatu extends Minion implements Callback {
 		attunement = 2f;
 		
 		properties.add(Property.ELECTRIC);
-		baseMaxDR = 10;
-		baseMinDR = 1;
-		baseSpeed = 1.6f;
+		baseMaxDR = 6;
+		baseMinDR = 0;
+		baseSpeed = 1.75f;
 	}
 	
 	@Override
@@ -99,7 +100,8 @@ public class Hacatu extends Minion implements Callback {
                 int max = maxDamage;
 
                 for (Char ch : affected){
-                    ch.damage(Math.round(damageRoll() * multipler), this);
+                    if (ch instanceof Hero) ch.damage(Math.round(damageRoll() * multipler * 0.5f), this);
+                    else ch.damage(Math.round(damageRoll() * multipler), this);
 
                     if (ch == Dungeon.hero) Camera.main.shake( 2, 0.3f );
                     ch.sprite.centerEmitter().burst( SparkParticle.FACTORY, 3 );

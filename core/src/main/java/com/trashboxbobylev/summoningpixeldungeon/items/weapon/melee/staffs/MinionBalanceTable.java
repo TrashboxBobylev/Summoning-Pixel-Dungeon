@@ -40,7 +40,7 @@ public enum MinionBalanceTable {
     GOO(70, 10, 8, 3, 35, 7),
     GASTER_BLASTER(80, 12, 15, 5, 50, 15),
     IMP_QUEEN(120, 5, 5, 2, 30, 5),
-    HACATU(19, 4, 5, 2, 24, 6);
+    HACATU(50, 8, 5, 3, 29, 4);
 
     public int hp;
     public int hp_grow;
