@@ -68,12 +68,12 @@ public class ConjurerArmor extends ClassArmor {
 	
 	{
 		image = ItemSpriteSheet.ARMOR_CONJURER;
-		defaultAction = AC_OFFENSE;
+		defaultAction = AC_SPECIAL;
 	}
 
     private static final String AC_IMBUE = "IMBUE";
     private static final String AC_CHAOS = "CHAOS";
-    private static final String AC_OFFENSE = "OFFENSE";
+    //private static final String AC_OFFENSE = "OFFENSE";
 
     @Override
     public ArrayList<String> actions(Hero hero ) {
@@ -84,7 +84,6 @@ public class ConjurerArmor extends ClassArmor {
         actions.remove(AC_THROW);
         if (hero.subClass != HeroSubClass.NONE) {
             actions.add(AC_CHAOS);
-            actions.add(AC_OFFENSE);
         }
         return actions;
     }
@@ -120,13 +119,6 @@ public class ConjurerArmor extends ClassArmor {
                     curUser.HP -= (curUser.HT / 3);
                     curUser.spendAndNext( Actor.TICK );
                 }
-            }
-        } else if (action.equals(AC_OFFENSE)){
-            if (hero.subClass != HeroSubClass.NONE) {
-                curUser = hero;
-                GameScene.selectCell(zapper);
-            } else {
-                Messages.get(this, "no_mastery");
             }
         }
     }

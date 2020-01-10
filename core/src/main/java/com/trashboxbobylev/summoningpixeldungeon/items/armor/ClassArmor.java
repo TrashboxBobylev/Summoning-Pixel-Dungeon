@@ -36,7 +36,7 @@ import java.util.ArrayList;
 
 abstract public class ClassArmor extends Armor {
 
-	private static final String AC_SPECIAL = "SPECIAL";
+	protected static final String AC_SPECIAL = "SPECIAL";
 	
 	{
 		levelKnown = true;
