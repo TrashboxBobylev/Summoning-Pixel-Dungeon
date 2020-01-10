@@ -26,6 +26,7 @@ package com.trashboxbobylev.summoningpixeldungeon.levels.rooms.special;
 
 import com.trashboxbobylev.summoningpixeldungeon.Challenges;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.SupportPower;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Belongings;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.npcs.Shopkeeper;
@@ -50,6 +51,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.food.SmallRation;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.Potion;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfExperience;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfHealing;
+import com.trashboxbobylev.summoningpixeldungeon.items.powers.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.quest.CleanWater;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.Scroll;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfIdentify;
@@ -175,7 +177,7 @@ public class ShopRoom extends SpecialRoom {
 	protected static ArrayList<Item> generateItems() {
 
 		ArrayList<Item> itemsToSpawn = new ArrayList<>();
-		
+        Item[] powers = {new WarriorPower(), new RoguePower(), new MagePower(), new RangePower(), new ConjurerPower()};
 		switch (Dungeon.depth) {
 		case 6:
             Item i;
@@ -194,6 +196,8 @@ public class ShopRoom extends SpecialRoom {
             }  while (i.cursed);
             i.upgrade(1).identify();
             itemsToSpawn.add(i);
+
+            itemsToSpawn.add(Random.element(powers));
 			break;
 			
 		case 16:
@@ -222,6 +226,8 @@ public class ShopRoom extends SpecialRoom {
             }
 			itemsToSpawn.add( new Torch() );
             itemsToSpawn.add(new CleanWater());
+
+            itemsToSpawn.add(Random.element(powers));
 			break;
 		}
 

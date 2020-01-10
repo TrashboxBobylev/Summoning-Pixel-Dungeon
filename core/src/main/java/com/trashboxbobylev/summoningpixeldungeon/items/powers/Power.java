@@ -119,6 +119,11 @@ public abstract class Power extends Item {
     }
 
     @Override
+    public int price() {
+        return 200 * quantity;
+    }
+
+    @Override
     public String info() {
         String info = desc();
         info += "\n\n" + Messages.get(this, "class_minion_buff");
