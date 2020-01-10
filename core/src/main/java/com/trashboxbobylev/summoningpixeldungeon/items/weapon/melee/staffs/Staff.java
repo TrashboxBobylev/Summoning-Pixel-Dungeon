@@ -539,7 +539,7 @@ public class Staff extends Weapon {
                     minionmax(),
                     (int)(hp(level()) * robeBonus));
             if (STRReq() > Dungeon.hero.STR()) {
-                info += " " + Messages.get(Staff.class, "too_heavy");
+                info += " " + Messages.get(Staff.class, "too_heavy_uh");
             }
         } else {
             info += "\n\n" + Messages.get(Staff.class, "stats_unknown", tier, min(0), max(0), STRReq(0), minionMin(0), minionMax(0), hp(0));

@@ -28,6 +28,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Lightning;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.SparkParticle;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
@@ -58,6 +59,7 @@ public class Shocking extends Weapon.Enchantment {
 			arc(attacker, defender, 2);
 			
 			affected.remove(defender); //defender isn't hurt by lightning
+            if (attacker instanceof Minion) affected.remove(attacker);
 			for (Char ch : affected) {
 				ch.damage(Math.round(damage*0.4f), this);
 			}

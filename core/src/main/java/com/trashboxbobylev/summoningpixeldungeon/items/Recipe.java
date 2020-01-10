@@ -177,7 +177,7 @@ public abstract class Recipe {
 		new InfernalBrew.Recipe(),
 		new ShockingBrew.Recipe(),
 		new CausticBrew.Recipe(),
-        new PerfumeBrew.Recipe(),
+
         new RagingBrew.Recipe(),
 		new Alchemize.Recipe(),
 		new AquaBlast.Recipe(),
@@ -185,7 +185,7 @@ public abstract class Recipe {
 		new CurseInfusion.Recipe(),
 		new FeatherFall.Recipe(),
 		new MagicalInfusion.Recipe(),
-		new Contain.Recipe(),
+
 		new PhaseShift.Recipe(),
 		new ReclaimTrap.Recipe(),
 		new Recycle.Recipe(),
@@ -218,7 +218,9 @@ public abstract class Recipe {
         new RoguePower.Recipe(),
         new MagePower.Recipe(),
         new RangePower.Recipe(),
-        new ConjurerPower.Recipe()
+        new ConjurerPower.Recipe(),
+            new PerfumeBrew.Recipe(),
+            new Contain.Recipe(),
 	};
 	
 	public static Recipe findRecipe(ArrayList<Item> ingredients){
