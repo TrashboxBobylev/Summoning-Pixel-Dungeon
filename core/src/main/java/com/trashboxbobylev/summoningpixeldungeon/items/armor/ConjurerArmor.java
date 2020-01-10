@@ -143,13 +143,13 @@ public class ConjurerArmor extends ClassArmor {
     private void upgrade(Armor armor){
         GLog.warning( Messages.get(ConjurerArmor.class, "upgraded", armor.name()) );
 
-        //syncs the level of the two items.
-        int targetLevel = Math.max(this.level() - (curseInfusionBonus ? 1 : 0), armor.level());
+//        //syncs the level of the two items.
+//        int targetLevel = Math.max(this.level() - (curseInfusionBonus ? 1 : 0), armor.level());
+//
+//        //if the robe's level is being overridden by the armor, preserve 1 upgrade
+//        if (armor.level() >= this.level() && this.level() > (curseInfusionBonus ? 1 : 0)) targetLevel++;
 
-        //if the robe's level is being overridden by the armor, preserve 1 upgrade
-        if (armor.level() >= this.level() && this.level() > (curseInfusionBonus ? 1 : 0)) targetLevel++;
-
-        level(targetLevel);
+//        level(targetLevel);
         updateQuickslot();
         this.armorTier = armor.tier;
         if (this.glyph == null) this.inscribe( armor.glyph );
@@ -168,7 +168,7 @@ public class ConjurerArmor extends ClassArmor {
 
     @Override
     public int level() {
-        return (int) (super.level() + (Dungeon.hero == null ? 1 : Dungeon.hero.attunement()) - 1);
+        return (int) ( (Dungeon.hero == null ? 1 : Dungeon.hero.attunement()) - 1);
     }
 
     @Override
