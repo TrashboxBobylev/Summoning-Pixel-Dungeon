@@ -37,7 +37,7 @@ public enum MinionBalanceTable {
     WIZARD(25, 4, 4, 1, 15, 4),
     DARK_ROSE(30, 5, 4, 1, 26, 4),
     ROBOT(140, 30, 4, 4, 25, 4),
-    GOO(95, 10, 5, 2, 42, 6),
+    GOO(70, 10, 8, 3, 35, 7),
     GASTER_BLASTER(110, 20, 15, 4, 48, 12),
     IMP_QUEEN(80, 10, 5, 2, 24, 6),
     HACATU(19, 4, 5, 2, 24, 6);
