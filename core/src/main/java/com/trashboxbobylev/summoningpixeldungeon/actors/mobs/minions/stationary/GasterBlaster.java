@@ -42,6 +42,8 @@ public class GasterBlaster extends StationaryMinion {
     {
         spriteClass = BlasterSprite.class;
         attunement = 2f;
+        baseMinDR = 9;
+        baseMaxDR = 11;
     }
 
     @Override
@@ -99,6 +101,6 @@ public class GasterBlaster extends StationaryMinion {
                 ch.sprite.showStatus(CharSprite.NEUTRAL, ch.defenseVerb());
             }
         }
-        damage(10, this);
+        damage(5, this);
     }
 }
