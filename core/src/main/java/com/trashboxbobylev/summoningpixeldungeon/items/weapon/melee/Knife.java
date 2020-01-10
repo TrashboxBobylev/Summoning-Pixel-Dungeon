@@ -31,6 +31,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Cripple;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.FlavourBuff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroSubClass;
+import com.trashboxbobylev.summoningpixeldungeon.effects.WhiteWound;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Knife extends MeleeWeapon {
@@ -60,6 +61,7 @@ public class Knife extends MeleeWeapon {
     @Override
     public int proc(Char attacker, Char defender, int damage ) {
         Buff.prolong( defender, SoulGain.class, speedFactor(attacker) * 2 );
+        WhiteWound.hit(defender);
         return super.proc( attacker, defender, damage );
     }
 
