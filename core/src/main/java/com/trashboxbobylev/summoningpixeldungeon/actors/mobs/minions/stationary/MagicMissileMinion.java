@@ -67,7 +67,7 @@ public class MagicMissileMinion extends StationaryMinion {
             int dmg = Random.NormalIntRange(minDamage, maxDamage);
             enemy.damage(dmg, this);
 
-            damage(3, this);
+            damage(2, this);
         } else {
             enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
         }
