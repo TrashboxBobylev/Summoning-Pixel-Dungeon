@@ -68,7 +68,7 @@ public class Knife extends MeleeWeapon {
     @Override
     public float speedFactor(Char owner) {
         float v = super.speedFactor(owner);
-        if (Dungeon.hero.subClass == HeroSubClass.OCCULTIST) v *= 0.5f;
+        if (Dungeon.hero.subClass == HeroSubClass.OCCULTIST) v *= 0.7f;
         return v;
     }
 
