@@ -55,8 +55,8 @@ public class Wizard extends Minion implements Callback {
 
 		properties.add(Property.UNDEAD);
 
-		baseMaxDR = 7;
-		baseMinDR = 3;
+		baseMaxDR = 5;
+		baseMinDR = 1;
 	}
 	
 	@Override

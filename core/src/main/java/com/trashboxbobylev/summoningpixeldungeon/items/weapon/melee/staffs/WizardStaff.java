@@ -38,5 +38,6 @@ public class WizardStaff extends Staff{
         tier = 4;
         minionClass = Minion.MinionClass.SUPPORT;
         table = MinionBalanceTable.WIZARD;
+        chargeTurns = 500;
     }
 }

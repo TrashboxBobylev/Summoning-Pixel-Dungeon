@@ -34,7 +34,7 @@ public enum MinionBalanceTable {
     CHICKEN(2, 1, 3, 1, 20, 3),
     MAGIC_MISSILE(34, 8, 3, 1, 18, 3),
     FROST_ELEMENTAL(64, 10, 4, 2, 30, 7),
-    WIZARD(27, 4, 4, 1, 15, 4),
+    WIZARD(25, 4, 4, 1, 15, 4),
     DARK_ROSE(28, 4, 4, 1, 20, 5),
     ROBOT(168, 20, 4, 1, 30, 5),
     GOO(95, 10, 5, 2, 42, 6),
