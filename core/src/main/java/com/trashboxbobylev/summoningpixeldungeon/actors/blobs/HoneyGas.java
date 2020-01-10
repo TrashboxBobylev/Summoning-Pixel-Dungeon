@@ -48,7 +48,7 @@ public class HoneyGas extends Blob {
                 cell = i + j* Dungeon.level.width();
                 if (cur[cell] > 0 && (ch = Actor.findChar( cell )) != null) {
                     if (ch.alignment == Char.Alignment.ALLY && ch != Dungeon.hero) {
-                        Buff.affect( ch, Healing.class ).setHeal((int)(0.1f*ch.HT), 1f, 0);
+                        ch.HP = Math.min(ch.HT, ch.HP + 3);
                     } else if (ch.isImmune(Healing.class)){
                         Buff.affect(ch, Weakness.class, 3f);
                         Buff.affect(ch, Slow.class, 3f);
