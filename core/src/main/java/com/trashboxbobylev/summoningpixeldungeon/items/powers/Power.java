@@ -114,6 +114,11 @@ public abstract class Power extends Item {
     }
 
     @Override
+    public boolean isUpgradable() {
+        return false;
+    }
+
+    @Override
     public String info() {
         String info = desc();
         info += "\n\n" + Messages.get(this, "class_minion_buff");
