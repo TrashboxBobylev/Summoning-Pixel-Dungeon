@@ -47,11 +47,6 @@ public class FrostElemental extends Minion {
     }
 
     @Override
-    protected float attackDelay() {
-        return super.attackDelay()*1.5f;
-    }
-
-    @Override
     public int attackProc(Char enemy, int damage ) {
         damage = super.attackProc( enemy, damage );
         if (Random.Int( 2 ) == 0) {
