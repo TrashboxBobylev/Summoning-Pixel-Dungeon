@@ -222,7 +222,9 @@ public class SummPDChanges {
                 "_-_ Added a new monster into the sewers: sewer dog. He is fast, dexterious and can be a problem. It drops random items with 10% chance.\n\n" +
                         "_-_ Crabs have been reworked into very tough enemy with low speed and heavy punch. You should dispatch that guys from range.\n\n" +
                         "_-_ Added a new monster into Demon Halls: inferno bat! It attacks you with fire, forcing you staying in inferno cloud.\n\n" +
-                        "_-_ All Demon Halls enemies have buffed, partially because of depth 21 rework."));
+                        "_-_ All Demon Halls enemies have buffed, partially because of depth 21 rework.\n\n" +
+                        "_-_ Added new monster into caves: TNT mouse! It will blind and explode you, while trying to keep distance. It can be quite devastating enemy, if you don't have any range.\n\n" +
+                        "_-_ Cave Spinner have been reworked into support enemy, which usually doesn't fight in melee, but spits up a web trap around you every few turns."));
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SWORD, new ItemSprite.Glowing( 0x660022 )), "Vampiric rework",
                 "Vampiric enchantment have been reworked to be more viable with low-damage weapons and more consistent.\n\n" +
                         "_-_ Now proc always.\n\n" +
