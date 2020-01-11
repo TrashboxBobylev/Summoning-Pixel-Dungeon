@@ -27,6 +27,7 @@ package com.trashboxbobylev.summoningpixeldungeon.actors.mobs;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Poison;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Terror;
 import com.trashboxbobylev.summoningpixeldungeon.items.Heap;
 import com.trashboxbobylev.summoningpixeldungeon.items.bombs.Bomb;
@@ -55,10 +56,10 @@ public class ExplodingTNT extends Mob {
 
 	//he doesn't attack in melee
     public boolean attack = true;
-	@Override
-	public int damageRoll() {
-		return 0;
-	}
+    @Override
+    public int damageRoll() {
+        return Random.NormalIntRange( 1, 4 );
+    }
 
     @Override
     public float speed() {
@@ -74,7 +75,7 @@ public class ExplodingTNT extends Mob {
 
     @Override
     protected boolean canAttack(Char enemy) {
-        return new Ballistica( pos, enemy.pos, Ballistica.STOP_TERRAIN).collisionPos == enemy.pos && attack;
+        return new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE).collisionPos == enemy.pos && attack;
     }
 
     @Override
@@ -83,13 +84,13 @@ public class ExplodingTNT extends Mob {
 	    if (!attack) {
             return super.doAttack(enemy);
         } else {
-	        final Ballistica ballistica = new Ballistica( pos, enemy.pos, Ballistica.STOP_TERRAIN);
+	        final Ballistica ballistica = new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE);
             Callback call = new Callback() {
                 @Override
                 public void call() {
                     final Flashbang bomb = new Flashbang();
-                    Bomb.Fuse fuse  = new Bomb.Fuse().ignite(bomb);
-                    Actor.addDelayed( fuse, 1);
+                    bomb.fuse  = new Bomb.Fuse().ignite(bomb);
+                    Actor.addDelayed( bomb.fuse, 0);
                     Heap heap = Dungeon.level.drop( bomb, ballistica.collisionPos );
                     if (!heap.isEmpty()) {
                         heap.sprite.drop( ballistica.collisionPos );
@@ -120,13 +121,24 @@ public class ExplodingTNT extends Mob {
     private class Fleeing extends Mob.Fleeing {
         @Override
         protected void nowhereToRun() {
-            if (buff(Terror.class) != null){
+            if (buff(Terror.class) == null) {
+                state = HUNTING;
                 attack = true;
-                state = WANDERING;
             } else {
                 super.nowhereToRun();
             }
         }
+    }
+
+    @Override
+    protected boolean act() {
+        boolean result = super.act();
+
+        if (state == FLEEING && buff( Terror.class ) == null && target == -1) {
+            state = HUNTING;
+            attack = true;
+        }
+        return result;
     }
 
     @Override
