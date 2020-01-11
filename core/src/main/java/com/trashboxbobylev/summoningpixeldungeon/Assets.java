@@ -119,6 +119,7 @@ public class Assets {
     public static final String IMP_MINION = "imp_minion.png";
     public static final String IMP_QUEEN = "imp_queen.png";
     public static final String MERCHANT = "Mysterious_Merchant.png";
+    public static final String EXPLODING_TNT_ARE_YOU_A_MOUSE = "explodingmouse.png";
 
 	public static final String ITEMS	        = "items.png";
 	public static final String TERRAIN_FEATURES	= "terrain_features.png";
