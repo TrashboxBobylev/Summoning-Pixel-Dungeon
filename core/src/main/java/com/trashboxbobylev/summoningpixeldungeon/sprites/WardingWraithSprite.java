@@ -25,6 +25,7 @@
 package com.trashboxbobylev.summoningpixeldungeon.sprites;
 
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.WardingWraith;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Warlock;
 import com.trashboxbobylev.summoningpixeldungeon.effects.MagicMissile;
 import com.watabou.noosa.TextureFilm;
@@ -70,7 +71,7 @@ public class WardingWraithSprite extends MobSprite {
 				new Callback() {
 					@Override
 					public void call() {
-						((Warlock)ch).onZapComplete();
+						((WardingWraith)ch).onZapComplete();
 					}
 				} );
 		Sample.INSTANCE.play( Assets.SND_ZAP );

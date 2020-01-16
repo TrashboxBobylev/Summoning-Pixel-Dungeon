@@ -29,6 +29,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Cripple;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary.RoseWraith;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Chains;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Pushing;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
@@ -36,6 +37,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.Generator;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.Armor;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfHealing;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfAggression;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
@@ -45,7 +47,10 @@ import com.trashboxbobylev.summoningpixeldungeon.sprites.DwarfGuard;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.GuardSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class DwarfGuardMob extends Mob {
 
@@ -127,8 +132,23 @@ public class DwarfGuardMob extends Mob {
     public void damage( int dmg, Object src ) {
         if (!stasis) super.damage( dmg, src );
 
-        if (isAlive() && !stasis && HP < HT / 2) {
+        if (isAlive() && !stasis && HP < HT / 4 && buff(RoseWraith.Timer.class) == null) {
             stasis = true;
+            ArrayList<Integer> spawnPoints = new ArrayList<Integer>();
+
+            for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
+                int p = pos + PathFinder.NEIGHBOURS8[i];
+                if (Actor.findChar( p ) == null && Dungeon.level.passable[p]) {
+                    spawnPoints.add( p );
+                }
+            }
+            if (spawnPoints.size() > 0) {
+                WardingWraith wardingWraith = new WardingWraith();
+                wardingWraith.pos = Random.element(spawnPoints);
+                GameScene.add( wardingWraith );
+
+                ScrollOfTeleportation.appear( wardingWraith, wardingWraith.pos );
+            }
             spend( TICK );
             if (Dungeon.level.heroFOV[pos]) {
                 sprite.showStatus( CharSprite.NEGATIVE, Messages.get(this, "stasis") );
@@ -140,13 +160,16 @@ public class DwarfGuardMob extends Mob {
     protected boolean act() {
         boolean result = super.act();
         if (stasis){
+            HP = Math.min(HT, HP + 4);
                 for (Char ch : Actor.chars()) {
                     if (ch instanceof WardingWraith && fieldOfView[ch.pos] && ch.HP < ch.HT) {
                         HP = Math.min(HT, HP + 8);
                         sprite.emitter().burst(Speck.factory(Speck.HEALING), 4);
                         if (HP > HT * 0.5f){
                             stasis = false;
+                            chainsUsed = false;
                             spend(TICK);
+                            Buff.affect(this, RoseWraith.Timer.class, 40f);
                             return result;
                         }
                     }

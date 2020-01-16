@@ -130,19 +130,18 @@ public class Bestiary {
 						Warlock.class, Warlock.class,
 						Monk.class, Monk.class));
 			case 18:
-				//1x elemental, 1x warlock, 2x monk, 1x golem
+				//1x elemental, 1x warlock, 2x monk, 1x golem, 1x dwarf guard
 				return new ArrayList<>(Arrays.asList(
 						Elemental.class,
 						Warlock.class,
 						Monk.class, Monk.class,
-						Golem.class));
+						Golem.class, DwarfGuardMob.class));
 			case 19: case 20:
-				//1x elemental, 1x warlock, 2x monk, 3x golem
+				//1x warlock, 2x monk, 2x golem, 2x dwarf guards
 				return new ArrayList<>(Arrays.asList(
-						Elemental.class,
 						Warlock.class,
 						Monk.class, Monk.class,
-						Golem.class, Golem.class, Golem.class));
+						Golem.class, Golem.class, DwarfGuardMob.class, DwarfGuardMob.class));
 				
 			// Halls
 			case 21: case 22:
