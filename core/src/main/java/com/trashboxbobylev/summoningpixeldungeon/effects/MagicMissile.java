@@ -63,9 +63,11 @@ public class MagicMissile extends Emitter {
 	public static final int WARD            = 10;
 	public static final int FROGGIT = 11;
 	public static final int STENCH = 12;
+	public static final int SPINNER = 13;
 
 	public static final int FIRE_CONE       = 100;
 	public static final int FOLIAGE_CONE    = 101;
+    public static final int WARD_CONE    = 102;
 	
 	public void reset( int type, int from, int to, Callback callback ) {
 		reset( type,
@@ -156,6 +158,10 @@ public class MagicMissile extends Emitter {
                 size( 8 );
                 pour(StenchParticle.FACTORY, 0.01f );
                 break;
+            case SPINNER:
+                size (12);
+                pour(WebParticle.FACTORY, 0.01f);
+                break;
 
 			case FIRE_CONE:
 				size( 10 );
@@ -165,6 +171,10 @@ public class MagicMissile extends Emitter {
 				size( 10 );
 				pour( LeafParticle.GENERAL, 0.03f );
 				break;
+            case WARD_CONE:
+                size( 20 );
+                pour( WardParticle.FACTORY, 0.03f );
+                break;
 		}
 	}
 	

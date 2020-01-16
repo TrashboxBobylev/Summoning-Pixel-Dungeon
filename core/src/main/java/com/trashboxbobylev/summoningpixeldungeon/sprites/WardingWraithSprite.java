@@ -25,57 +25,62 @@
 package com.trashboxbobylev.summoningpixeldungeon.sprites;
 
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
-import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Warlock;
 import com.trashboxbobylev.summoningpixeldungeon.effects.MagicMissile;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 
-public class SpinnerSprite extends MobSprite {
-	
-	public SpinnerSprite() {
+public class WardingWraithSprite extends MobSprite {
+
+	public WardingWraithSprite() {
 		super();
+		
+		texture( Assets.WRAITH );
+		hardlight(84, 10, 98);
 
-		perspectiveRaise = 0f;
+        TextureFilm frames = new TextureFilm( texture, 14, 15 );
 
-		texture( Assets.SPINNER );
-		
-		TextureFilm frames = new TextureFilm( texture, 16, 16 );
-		
-		idle = new Animation( 10, true );
-		idle.frames( frames, 0, 0, 0, 0, 0, 1, 0, 1 );
-		
-		run = new Animation( 15, true );
-		run.frames( frames, 0, 2, 0, 3 );
-		
-		attack = new Animation( 12, false );
-		attack.frames( frames, 0, 4, 5, 0 );
+        idle = new Animation( 5, true );
+        idle.frames( frames, 0, 1 );
 
+        run = new Animation( 10, true );
+        run.frames( frames, 0, 1 );
+
+        attack = new Animation( 10, false );
+        attack.frames( frames, 0, 2, 3 );
+		
 		zap = attack.clone();
-		
-		die = new Animation( 12, false );
-		die.frames( frames, 6, 7, 8, 9 );
+
+        die = new Animation( 8, false );
+        die.frames( frames, 0, 4, 5, 6, 7 );
 		
 		play( idle );
 	}
+	
+	public void zap( int cell ) {
+		
+		turnTo( ch.pos , cell );
+		play( zap );
 
-	@Override
-	public void link(Char ch) {
-		super.link(ch);
-		if (parent != null) parent.sendToBack(this);
-		renderShadow = false;
+		MagicMissile.boltFromChar( parent,
+				MagicMissile.WARD_CONE,
+				this,
+				cell,
+				new Callback() {
+					@Override
+					public void call() {
+						((Warlock)ch).onZapComplete();
+					}
+				} );
+		Sample.INSTANCE.play( Assets.SND_ZAP );
 	}
-
-    public void zap( int cell ) {
-
-        turnTo( ch.pos , cell );
-        play( zap );
-
-    }
-
-    @Override
-	public int blood() {
-		return 0xFFBFE5B8;
+	
+	@Override
+	public void onComplete( Animation anim ) {
+		if (anim == zap) {
+			idle();
+		}
+		super.onComplete( anim );
 	}
 }
