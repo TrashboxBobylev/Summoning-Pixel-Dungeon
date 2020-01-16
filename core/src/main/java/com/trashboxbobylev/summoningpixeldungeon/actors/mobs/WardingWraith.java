@@ -81,6 +81,14 @@ public class WardingWraith extends Mob implements Callback {
 	protected boolean canAttack( Char enemy ) {
 		return new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos;
 	}
+
+    @Override
+    public void damage(int dmg, Object src) {
+        if (dmg >= 8){
+            dmg = 8 + (int)(Math.sqrt(12*(dmg - 4) + 1) - 1)/2;
+        }
+        super.damage(dmg, src);
+    }
 	
 	protected boolean doAttack( Char enemy ) {
 			
