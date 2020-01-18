@@ -72,11 +72,15 @@ public class WardingWraith extends Mob implements Callback {
 		properties.add(Property.INORGANIC);
 
 		Buff.affect(this, RoseWraith.Timer.class, 20f);
+
+		intelligentAlly = true;
 	}
 	
 	@Override
 	public int attackSkill( Char target ) {
-		return 30;
+        int i = 30;
+        if (alignment == Alignment.ALLY) i = 40;
+        return i;
 	}
 
     @Override
@@ -112,6 +116,7 @@ public class WardingWraith extends Mob implements Callback {
 		if (hit( this, enemy, true )) {
 			
 			int dmg = Random.Int( 13, 18 );
+			if (alignment == Alignment.ALLY) dmg = Random.Int(15, 20);
 			enemy.damage( dmg, new DarkBolt() );
 			
 			if (!enemy.isAlive() && enemy == Dungeon.hero) {
@@ -140,7 +145,8 @@ public class WardingWraith extends Mob implements Callback {
     }
 
     public Char chooseEnemy() {
-	    if (enraged) {
+	    if (alignment == Alignment.ALLY) return super.chooseEnemy();
+	    else if (enraged) {
             //find a new enemy if..
             boolean newEnemy = false;
             //we have no enemy, or the current one is dead
@@ -193,11 +199,17 @@ public class WardingWraith extends Mob implements Callback {
     @Override
     public void damage( int dmg, Object src ) {
 
-        if (!enraged) enraged = true;
-        Sample.INSTANCE.play(Assets.SND_DEGRADE);
-        if (Dungeon.level.heroFOV[pos]) {
-            sprite.showStatus( CharSprite.NEGATIVE, Messages.get(Brute.class, "enraged") );
+        if (!enraged) {
+            enraged = true;
+            Sample.INSTANCE.play(Assets.SND_DEGRADE);
+            if (Dungeon.level.heroFOV[pos]) {
+                sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Brute.class, "enraged"));
+            }
         }
+        else if (alignment == Alignment.ALLY){
+            Dungeon.hero.damage(dmg / 2, src);
+        }
+        Sample.INSTANCE.play(Assets.SND_GHOST);
 
         super.damage( dmg, src );
     }

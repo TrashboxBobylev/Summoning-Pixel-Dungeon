@@ -100,7 +100,6 @@ public class Spinner extends Mob {
                                 if (Dungeon.level.passable[cell + i]) GameScene.add(Blob.seed(cell + i, Random.Int(5, 10), Web.class));
                                 CellEmitter.get(cell + i).burst(MagicMissile.ForceParticle.FACTORY, 15);
                             }
-                            spend(TICK);
                             Buff.affect(spinner, RoseWraith.Timer.class, 10f);
                         }
                     } );

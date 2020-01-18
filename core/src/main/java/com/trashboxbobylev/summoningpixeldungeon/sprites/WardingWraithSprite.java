@@ -51,6 +51,8 @@ public class WardingWraithSprite extends MobSprite {
         attack = new Animation( 12, false );
         attack.frames( frames, 4, 5, 6 );
 
+        zap = attack.clone();
+
         die = new Animation( 15, false );
         die.frames( frames, 7, 8, 9, 10, 11, 12, 13, 12 );
 
@@ -72,7 +74,7 @@ public class WardingWraithSprite extends MobSprite {
 						((WardingWraith)ch).onZapComplete();
 					}
 				} );
-        Sample.INSTANCE.play(Assets.SND_GHOST);
+        Sample.INSTANCE.play(Assets.SND_ZAP);
 	}
 	
 	@Override

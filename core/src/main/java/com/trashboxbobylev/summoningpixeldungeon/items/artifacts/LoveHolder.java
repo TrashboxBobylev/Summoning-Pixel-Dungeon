@@ -33,7 +33,9 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroSubClass;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.WardingWraith;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary.RoseWraith;
 import com.trashboxbobylev.summoningpixeldungeon.effects.MagicMissile;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
@@ -140,7 +142,7 @@ public class LoveHolder extends Artifact {
                     new WndOptions(Messages.titleCase(Messages.get(this, "name")),
                             Messages.get(this, "how_many"),
                             Messages.get(this, "bit"),
-                            str > 0 ? Messages.get(this, "few") : "") {
+                            str > 1 ? Messages.get(this, "few") : "") {
                         @Override
                         protected void onSelect(int index) {
                                 if (index == 0) str++;
@@ -323,6 +325,16 @@ public class LoveHolder extends Artifact {
                                                     totalHealing = 0;
                                                 }
                                             }
+                                        }
+                                    }
+                                    else if (ch instanceof WardingWraith){
+                                        if (str >= 12){
+                                            ((WardingWraith) ch).enraged = false;
+                                            ch.alignment = Char.Alignment.ALLY;
+                                            ch.HP = ch.HT;
+                                            charge += 12;
+                                            charge = Math.min(0, charge - 50);
+                                            Buff.prolong(ch, RoseWraith.Timer.class, Integer.MAX_VALUE);
                                         }
                                     }
                                     curUser.spendAndNext( 1f );
