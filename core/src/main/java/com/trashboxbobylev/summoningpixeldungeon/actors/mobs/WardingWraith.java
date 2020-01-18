@@ -178,7 +178,7 @@ public class WardingWraith extends Mob implements Callback {
                         }
                     }
                     return closest;
-            }
+            } else return enemy;
         }
 	    return null;
     }
