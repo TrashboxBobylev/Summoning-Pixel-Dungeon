@@ -72,7 +72,7 @@ public class WardingWraithSprite extends MobSprite {
 						((WardingWraith)ch).onZapComplete();
 					}
 				} );
-		Sample.INSTANCE.play( Assets.SND_ZAP );
+        Sample.INSTANCE.play(Assets.SND_SPIRIT);
 	}
 	
 	@Override

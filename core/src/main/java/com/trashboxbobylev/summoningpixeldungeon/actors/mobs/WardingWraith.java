@@ -24,6 +24,7 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.actors.mobs;
 
+import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Amok;
@@ -43,6 +44,7 @@ import com.trashboxbobylev.summoningpixeldungeon.sprites.CharSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.WardingWraithSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.WarlockSprite;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
@@ -140,6 +142,7 @@ public class WardingWraith extends Mob implements Callback {
     @Override
     public void damage(int dmg, Object src) {
         super.damage(dmg, src);
+        Sample.INSTANCE.play(Assets.SND_SPIRIT);
         if (isAlive() && buff(Amok.class) != null){
             Buff.affect(this, Amok.class, 20f);
             if (src instanceof Char) enemy = (Char) src;
