@@ -26,12 +26,15 @@ package com.trashboxbobylev.summoningpixeldungeon.actors.mobs;
 
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Amok;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Terror;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Weakness;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary.RoseWraith;
 import com.trashboxbobylev.summoningpixeldungeon.items.Generator;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfHealing;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfAttunement;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfWarding;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Grim;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
@@ -45,50 +48,39 @@ import com.watabou.utils.Random;
 
 public class WardingWraith extends Mob implements Callback {
 	
-	private static final float TIME_TO_ZAP	= 1.4f;
+	private static final float TIME_TO_ZAP	= 0.5f;
 	
 	{
 		spriteClass = WardingWraithSprite.class;
 		
-		HP = HT = 25;
-		defenseSkill = 55;
+		HP = HT = 72;
+		defenseSkill = 27;
 		
-		EXP = 5;
+		EXP = 8;
 		maxLvl = 23;
 		
-		loot = new WandOfWarding();
-		lootChance = 0.05f;
+		loot = new ScrollOfAttunement();
+		lootChance = 1f;
 
-		properties.add(Property.UNDEAD);
-	}
-	
-	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 16, 22 );
+		properties.add(Property.INORGANIC);
+
+		Buff.affect(this, RoseWraith.Timer.class, 20f);
 	}
 	
 	@Override
 	public int attackSkill( Char target ) {
 		return 30;
 	}
-	
-	@Override
-	public int drRoll() {
-		return 0;
-	}
+
+    @Override
+    public int drRoll() {
+        return Random.NormalIntRange(0, 5);
+    }
 	
 	@Override
 	protected boolean canAttack( Char enemy ) {
 		return new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos;
 	}
-
-    @Override
-    public void damage(int dmg, Object src) {
-        if (dmg >= 8){
-            dmg = 8 + (int)(Math.sqrt(12*(dmg - 4) + 1) - 1)/2;
-        }
-        super.damage(dmg, src);
-    }
 	
 	protected boolean doAttack( Char enemy ) {
 			
@@ -110,7 +102,7 @@ public class WardingWraith extends Mob implements Callback {
 		
 		if (hit( this, enemy, true )) {
 			
-			int dmg = Random.Int( 14, 20 );
+			int dmg = Random.Int( 13, 18 );
 			enemy.damage( dmg, new DarkBolt() );
 			
 			if (!enemy.isAlive() && enemy == Dungeon.hero) {
@@ -132,8 +124,52 @@ public class WardingWraith extends Mob implements Callback {
 		next();
 	}
 
+    @Override
+    public Char chooseEnemy() {
+	    if (buff(Amok.class) != null) return null;
+        else return super.chooseEnemy();
+    }
+
+    @Override
+    public float speed() {
+        float speed = super.speed();
+        if (buff(Amok.class) != null) speed *= 1.5;
+        return speed;
+    }
+
+    @Override
+    public void damage(int dmg, Object src) {
+        super.damage(dmg, src);
+        if (isAlive() && buff(Amok.class) != null){
+            Buff.affect(this, Amok.class, 20f);
+            if (src instanceof Char) enemy = (Char) src;
+        }
+    }
+
+    @Override
+    public void die(Object cause) {
+        if (cause == null) EXP = 0;
+        super.die(cause);
+    }
+
+    @Override
+    protected Item createLoot() {
+        if (EXP != 0){
+            return (Item) loot;
+        }
+        return null;
+    }
+
+    @Override
+    protected boolean act() {
+        boolean act = super.act();
+        if (buff(RoseWraith.Timer.class) == null) die(null);
+        return act;
+    }
+
     {
         immunities.add( Grim.class );
         immunities.add( Terror.class );
+        immunities.add( Weakness.class);
     }
 }

@@ -30,6 +30,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Cripple;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary.RoseWraith;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.npcs.MirrorImage;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Chains;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Pushing;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
@@ -38,7 +39,9 @@ import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.Armor;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfHealing;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfSoulEnergy;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfAggression;
+import com.trashboxbobylev.summoningpixeldungeon.levels.features.Chasm;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
@@ -56,7 +59,6 @@ public class DwarfGuardMob extends Mob {
 
 	//they can only use their chains once
 	private boolean chainsUsed = false;
-	public boolean stasis = false;
 
 	{
 		spriteClass = DwarfGuard.class;
@@ -67,7 +69,7 @@ public class DwarfGuardMob extends Mob {
 		EXP = 13;
 		maxLvl = 23;
 
-		loot = null;    //see createloot.
+		loot = new ScrollOfSoulEnergy();
 		lootChance = 0.25f;
 
 		properties.add(Property.UNDEAD);
@@ -77,7 +79,7 @@ public class DwarfGuardMob extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange(15, 27);
+		return Random.NormalIntRange(10, 18);
 	}
 
 	private boolean chain(int target){
@@ -129,11 +131,9 @@ public class DwarfGuardMob extends Mob {
 	}
 
     @Override
-    public void damage( int dmg, Object src ) {
-        if (!stasis) super.damage( dmg, src );
-
-        if (isAlive() && !stasis && HP < HT / 4 && buff(RoseWraith.Timer.class) == null) {
-            stasis = true;
+    public void die(Object cause) {
+        super.die(cause);
+        if (cause != Chasm.class){
             ArrayList<Integer> spawnPoints = new ArrayList<Integer>();
 
             for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
@@ -142,63 +142,18 @@ public class DwarfGuardMob extends Mob {
                     spawnPoints.add( p );
                 }
             }
-            if (spawnPoints.size() > 0) {
-                WardingWraith wardingWraith = new WardingWraith();
-                wardingWraith.pos = Random.element(spawnPoints);
-                GameScene.add( wardingWraith );
+            int nImages = Random.Int(2, 3);
+            while (nImages > 0 && spawnPoints.size() > 0) {
+                int index = Random.index( spawnPoints );
 
-                ScrollOfTeleportation.appear( wardingWraith, wardingWraith.pos );
-            }
-            spend( TICK );
-            if (Dungeon.level.heroFOV[pos]) {
-                sprite.showStatus( CharSprite.NEGATIVE, Messages.get(this, "stasis") );
+                WardingWraith mob = new WardingWraith();
+                GameScene.add( mob );
+                ScrollOfTeleportation.appear( mob, spawnPoints.get( index ) );
+
+                spawnPoints.remove( index );
+                nImages--;
             }
         }
-    }
-
-    @Override
-    protected boolean act() {
-        boolean result = super.act();
-        if (stasis){
-            HP = Math.min(HT, HP + 4);
-                for (Char ch : Actor.chars()) {
-                    if (ch instanceof WardingWraith && fieldOfView[ch.pos] && ch.HP < ch.HT) {
-                        HP = Math.min(HT, HP + 8);
-                        sprite.emitter().burst(Speck.factory(Speck.HEALING), 4);
-                        if (HP > HT * 0.5f){
-                            stasis = false;
-                            chainsUsed = false;
-                            spend(TICK);
-                            Buff.affect(this, RoseWraith.Timer.class, 40f);
-                            return result;
-                        }
-                    }
-                }
-            }
-        return result;
-    }
-
-    @Override
-    protected boolean canAttack(Char enemy) {
-	    if (stasis) return false;
-        return super.canAttack(enemy);
-    }
-
-    @Override
-    protected boolean getCloser(int target) {
-	    if (stasis) return false;
-        return super.getCloser(target);
-    }
-
-    @Override
-    protected boolean getFurther(int target) {
-	    if (stasis) return false;
-        return super.getFurther(target);
-    }
-
-    @Override
-    public void add(Buff buff) {
-        if (!stasis) super.add(buff);
     }
 
     @Override
@@ -208,40 +163,21 @@ public class DwarfGuardMob extends Mob {
 
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(4, 15);
-	}
-
-	@Override
-	protected Item createLoot() {
-		//first see if we drop armor, overall chance is 1/8
-		if (Random.Int(2) == 0){
-			Armor loot;
-			do{
-				loot = Generator.randomArmor();
-				//50% chance of re-rolling tier 4 or 5 items
-			} while (loot.tier <= 4 && Random.Int(2) == 0);
-			loot.level(0);
-			return loot;
-		}
-
-		return null;
+		return Random.NormalIntRange(8, 18);
 	}
 
 	private final String CHAINSUSED = "chainsused";
-    private final String STASIS = "stasis";
 
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
 		bundle.put(CHAINSUSED, chainsUsed);
-		bundle.put(STASIS, stasis);
 	}
 
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 		chainsUsed = bundle.getBoolean(CHAINSUSED);
-		stasis = bundle.getBoolean(STASIS);
 	}
 	
 	private class Hunting extends Mob.Hunting{
@@ -256,7 +192,7 @@ public class DwarfGuardMob extends Mob {
 					&& Dungeon.level.distance( pos, enemy.pos ) < 8
 					&& Random.Int(3) == 0
 					
-					&& chain(enemy.pos) && !stasis){
+					&& chain(enemy.pos)){
 				return false;
 			} else {
 				return super.act( enemyInFOV, justAlerted );

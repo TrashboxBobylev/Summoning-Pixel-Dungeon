@@ -25,6 +25,7 @@
 package com.trashboxbobylev.summoningpixeldungeon.sprites;
 
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
+import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.WardingWraith;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Warlock;
 import com.trashboxbobylev.summoningpixeldungeon.effects.MagicMissile;
@@ -36,27 +37,24 @@ public class WardingWraithSprite extends MobSprite {
 
 	public WardingWraithSprite() {
 		super();
-		
-		texture( Assets.WRAITH );
-		hardlight(84, 10, 98);
 
-        TextureFilm frames = new TextureFilm( texture, 14, 15 );
+        texture( Assets.ATTUNEMENT_SPIRIT );
 
-        idle = new Animation( 5, true );
-        idle.frames( frames, 0, 1 );
+        TextureFilm frames = new TextureFilm( texture, 12, 14 );
 
-        run = new Animation( 10, true );
-        run.frames( frames, 0, 1 );
+        idle = new Animation( 8, true );
+        idle.frames( frames, 0, 0, 0, 0, 0, 0,0, 1, 2 );
 
-        attack = new Animation( 10, false );
-        attack.frames( frames, 0, 2, 3 );
-		
-		zap = attack.clone();
+        run = new Animation( 12, true );
+        run.frames( frames, 0, 3 );
 
-        die = new Animation( 8, false );
-        die.frames( frames, 0, 4, 5, 6, 7 );
-		
-		play( idle );
+        attack = new Animation( 12, false );
+        attack.frames( frames, 4, 5, 6 );
+
+        die = new Animation( 15, false );
+        die.frames( frames, 7, 8, 9, 10, 11, 12, 13, 12 );
+
+        play( idle );
 	}
 	
 	public void zap( int cell ) {
@@ -65,7 +63,7 @@ public class WardingWraithSprite extends MobSprite {
 		play( zap );
 
 		MagicMissile.boltFromChar( parent,
-				MagicMissile.WARD_CONE,
+				MagicMissile.BEACON,
 				this,
 				cell,
 				new Callback() {
@@ -84,4 +82,21 @@ public class WardingWraithSprite extends MobSprite {
 		}
 		super.onComplete( anim );
 	}
+
+    @Override
+    public int blood() {
+        return 0xFFFFFFFF;
+    }
+
+    @Override
+    public void link( Char ch ) {
+        super.link( ch );
+        add( State.SPIRIT );
+    }
+
+    @Override
+    public void die() {
+        super.die();
+        remove( State.SPIRIT );
+    }
 }
