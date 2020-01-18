@@ -41,6 +41,8 @@ import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.ConjurerArmor;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
+import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfLivingEarth;
+import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfWarding;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.CellSelector;
@@ -233,7 +235,7 @@ public class LoveHolder extends Artifact {
                                 public void call() {
                                     Char ch = Actor.findChar(shot.collisionPos);
 
-                                    if (ch instanceof Minion){
+                                    if (ch instanceof Minion || ch instanceof DriedRose.GhostHero || ch instanceof WandOfLivingEarth.EarthGuardian || ch instanceof WandOfWarding.Ward){
                                         Sample.INSTANCE.play(Assets.SND_DRINK);
 
                                         int healing = getHealingFromStrength(str);
