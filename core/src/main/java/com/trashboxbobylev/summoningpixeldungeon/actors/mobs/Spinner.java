@@ -82,11 +82,6 @@ public class Spinner extends Mob {
 	@Override
 	protected boolean act() {
 		boolean result = super.act();
-
-		if (state == FLEEING && buff( Terror.class ) == null &&
-				enemy != null && enemySeen && enemy.buff( Poison.class ) == null) {
-				state = HUNTING;
-		}
         if (buff(RoseWraith.Timer.class) != null) sprite.showStatus(CharSprite.DEFAULT, String.valueOf(Math.round(buff(RoseWraith.Timer.class).cooldown()+1)));
         if (enemy !=null && state == HUNTING && buff(RoseWraith.Timer.class) == null && enemySeen) {
             final Ballistica ballistica = new Ballistica(pos, enemy.pos, Ballistica.PROJECTILE);
@@ -102,10 +97,11 @@ public class Spinner extends Mob {
                             int cell = ballistica.collisionPos;
                             Sample.INSTANCE.play(Assets.SND_PUFF);
                             for (int i : PathFinder.NEIGHBOURS8) {
-                                if (Dungeon.level.passable[cell + i]) GameScene.add(Blob.seed(cell + i, Random.Int(4, 7), Web.class));
+                                if (Dungeon.level.passable[cell + i]) GameScene.add(Blob.seed(cell + i, Random.Int(5, 10), Web.class));
                                 CellEmitter.get(cell + i).burst(MagicMissile.ForceParticle.FACTORY, 15);
                             }
-                            Buff.affect(spinner, RoseWraith.Timer.class, 6f);
+                            spend(TICK);
+                            Buff.affect(spinner, RoseWraith.Timer.class, 10f);
                         }
                     } );
             Sample.INSTANCE.play(Assets.SND_BADGE);
