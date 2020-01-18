@@ -63,7 +63,7 @@ public class DwarfGuardMob extends Mob {
 	{
 		spriteClass = DwarfGuard.class;
 
-		HP = HT = 100;
+		HP = HT = 72;
 		defenseSkill = 20;
 
 		EXP = 13;
@@ -148,6 +148,7 @@ public class DwarfGuardMob extends Mob {
 
                 WardingWraith mob = new WardingWraith();
                 GameScene.add( mob );
+                mob.state = mob.WANDERING;
                 ScrollOfTeleportation.appear( mob, spawnPoints.get( index ) );
 
                 spawnPoints.remove( index );

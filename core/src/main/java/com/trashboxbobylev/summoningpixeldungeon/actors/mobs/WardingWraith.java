@@ -26,16 +26,17 @@ package com.trashboxbobylev.summoningpixeldungeon.actors.mobs;
 
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
+import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Amok;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Terror;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Weakness;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.SoulFlame;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary.RoseWraith;
 import com.trashboxbobylev.summoningpixeldungeon.items.Generator;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfHealing;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfAttunement;
+import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfAggression;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfWarding;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Grim;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
@@ -45,17 +46,21 @@ import com.trashboxbobylev.summoningpixeldungeon.sprites.WardingWraithSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.WarlockSprite;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
+
+import java.util.HashSet;
 
 public class WardingWraith extends Mob implements Callback {
 	
 	private static final float TIME_TO_ZAP	= 0.5f;
+	public boolean enraged = false;
 	
 	{
 		spriteClass = WardingWraithSprite.class;
 		
-		HP = HT = 72;
+		HP = HT = 65;
 		defenseSkill = 27;
 		
 		EXP = 8;
@@ -81,8 +86,10 @@ public class WardingWraith extends Mob implements Callback {
 	
 	@Override
 	protected boolean canAttack( Char enemy ) {
-		return new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos;
+		return new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos && enraged;
 	}
+
+
 	
 	protected boolean doAttack( Char enemy ) {
 			
@@ -127,9 +134,53 @@ public class WardingWraith extends Mob implements Callback {
 	}
 
     @Override
+    public boolean reset() {
+	    state = WANDERING;
+        return true;
+    }
+
     public Char chooseEnemy() {
-	    if (buff(Amok.class) != null) return null;
-        else return super.chooseEnemy();
+	    if (enraged) {
+            //find a new enemy if..
+            boolean newEnemy = false;
+            //we have no enemy, or the current one is dead
+            if ( enemy == null || !enemy.isAlive() || state == WANDERING)
+                newEnemy = true;
+            //We are charmed and current enemy is what charmed us
+            else if (buff(Charm.class) != null && buff(Charm.class).object == enemy.id())
+                newEnemy = true;
+            if ( newEnemy ) {
+
+                HashSet<Char> enemies = new HashSet<>();
+                for (Mob mob : Dungeon.level.mobs)
+                    if (mob.alignment == Alignment.ENEMY && mob != this && fieldOfView[mob.pos])
+                        enemies.add(mob);
+
+                if (enemies.isEmpty()) {
+                    //try to find ally mobs to attack second, ignoring the soul flame
+                    for (Mob mob : Dungeon.level.mobs)
+                        if (mob.alignment == Alignment.ALLY && mob != this && fieldOfView[mob.pos] && !(mob instanceof SoulFlame))
+                            enemies.add(mob);
+
+                    if (enemies.isEmpty()) {
+                        //try to find the hero third
+                        if (fieldOfView[Dungeon.hero.pos]) {
+                            enemies.add(Dungeon.hero);
+                        }
+                    }
+                    }
+                    Char closest = null;
+                    for (Char curr : enemies){
+                        if (closest == null
+                                || Dungeon.level.distance(pos, curr.pos) < Dungeon.level.distance(pos, closest.pos)
+                                || Dungeon.level.distance(pos, curr.pos) == Dungeon.level.distance(pos, closest.pos)){
+                            closest = curr;
+                        }
+                    }
+                    return closest;
+            }
+        }
+	    return null;
     }
 
     @Override
@@ -140,14 +191,18 @@ public class WardingWraith extends Mob implements Callback {
     }
 
     @Override
-    public void damage(int dmg, Object src) {
-        super.damage(dmg, src);
-        Sample.INSTANCE.play(Assets.SND_SPIRIT);
-        if (isAlive() && buff(Amok.class) != null){
-            Buff.affect(this, Amok.class, 20f);
-            if (src instanceof Char) enemy = (Char) src;
+    public void damage( int dmg, Object src ) {
+
+        if (!enraged) enraged = true;
+        Sample.INSTANCE.play(Assets.SND_DEGRADE);
+        if (Dungeon.level.heroFOV[pos]) {
+            sprite.showStatus( CharSprite.NEGATIVE, Messages.get(Brute.class, "enraged") );
         }
+
+        super.damage( dmg, src );
     }
+
+
 
     @Override
     public void die(Object cause) {
@@ -170,9 +225,24 @@ public class WardingWraith extends Mob implements Callback {
         return act;
     }
 
+    private final String CHAINSUSED = "chainsused";
+
+    @Override
+    public void storeInBundle(Bundle bundle) {
+        super.storeInBundle(bundle);
+        bundle.put(CHAINSUSED, enraged);
+    }
+
+    @Override
+    public void restoreFromBundle(Bundle bundle) {
+        super.restoreFromBundle(bundle);
+        enraged = bundle.getBoolean(CHAINSUSED);
+    }
+
     {
         immunities.add( Grim.class );
         immunities.add( Terror.class );
         immunities.add( Weakness.class);
+        immunities.add( Charm.class);
     }
 }

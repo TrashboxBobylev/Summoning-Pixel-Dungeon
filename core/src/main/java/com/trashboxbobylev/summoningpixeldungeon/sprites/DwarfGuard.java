@@ -36,7 +36,7 @@ public class DwarfGuard extends MobSprite {
 	public DwarfGuard() {
 		super();
 
-		texture( Assets.GUARD );
+		texture( Assets.DWARF_GUARD );
 
 		TextureFilm frames = new TextureFilm( texture, 12, 16 );
 
@@ -65,10 +65,4 @@ public class DwarfGuard extends MobSprite {
 		}
 		super.play( anim );
 	}
-
-    @Override
-    public void idle() {
-        if (((DwarfGuardMob) ch).stasis) play(healing);
-            else play(idle);
-    }
 }

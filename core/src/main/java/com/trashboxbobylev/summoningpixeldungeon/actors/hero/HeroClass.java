@@ -34,10 +34,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.SupportPowe
 import com.trashboxbobylev.summoningpixeldungeon.items.BrokenSeal;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.TomeOfMastery;
-import com.trashboxbobylev.summoningpixeldungeon.items.armor.Armor;
-import com.trashboxbobylev.summoningpixeldungeon.items.armor.ClassArmor;
-import com.trashboxbobylev.summoningpixeldungeon.items.armor.ClothArmor;
-import com.trashboxbobylev.summoningpixeldungeon.items.armor.LeatherArmor;
+import com.trashboxbobylev.summoningpixeldungeon.items.armor.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.CloakOfShadows;
 import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.LoveHolder;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.MagicalHolster;
@@ -137,6 +134,10 @@ public enum HeroClass {
 		}
 
 		new Sword().upgrade(13).identify().collect();
+
+		new LeatherArmor().upgrade(8).identify().collect();
+
+		new PotionOfExperience().quantity(18).collect();
 
 		hero.attunement = 0;
 		

@@ -339,8 +339,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				}
 				break;
             case SPIRIT:
-                burning = emitter();
-                burning.pour(MagicMissile.ForceParticle.FACTORY, 0.06f );
+                spirit = emitter();
+                spirit.pour(MagicMissile.ForceParticle.FACTORY, 0.06f );
                 if (visible) {
                     Sample.INSTANCE.play( Assets.SND_BURNING );
                 }
