@@ -136,6 +136,8 @@ public enum HeroClass {
 			new SmallRation().collect();
 		}
 
+		new Sword().upgrade(13).identify().collect();
+
 		hero.attunement = 0;
 		
 		new ScrollOfIdentify().identify();
