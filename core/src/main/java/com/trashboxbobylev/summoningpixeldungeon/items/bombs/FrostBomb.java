@@ -30,31 +30,53 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Blob;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Freezing;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Chill;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Frost;
+import com.trashboxbobylev.summoningpixeldungeon.levels.RegularLevel;
+import com.trashboxbobylev.summoningpixeldungeon.levels.rooms.Room;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 import com.trashboxbobylev.summoningpixeldungeon.utils.BArray;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Point;
 
 public class FrostBomb extends Bomb {
 	
 	{
 		image = ItemSpriteSheet.FROST_BOMB;
+		harmless = true;
+		fuseDelay = 1;
 	}
 	
 	@Override
 	public void explode(int cell) {
 		super.explode(cell);
-		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 2 );
-		for (int i = 0; i < PathFinder.distance.length; i++) {
-			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
-				GameScene.add(Blob.seed(i, 10, Freezing.class));
-				Char ch = Actor.findChar(i);
-				if (ch != null){
-					Buff.affect(ch, Frost.class, 2f);
-				}
-			}
-		}
+		GameScene.flash(0xFFA5F1FF);
+		Room room = ((RegularLevel)Dungeon.level).room(cell);
+		if (room != null){
+            for (Point point : room.getPoints()){
+                int tile = Dungeon.level.pointToCell(point);
+                Char ch = Actor.findChar(tile);
+                if (ch != null && ch != Dungeon.hero){
+                    Buff.affect(ch, Frost.class, 15f);
+                    for (int i : PathFinder.NEIGHBOURS8){
+                        GameScene.add(Blob.seed(tile + i, 8, Freezing.class));
+                    }
+                } else{
+                    Buff.affect(ch, Chill.class, 9f);
+                }
+            }
+        }
+//		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 2 );
+//		for (int i = 0; i < PathFinder.distance.length; i++) {
+//			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+//				GameScene.add(Blob.seed(i, 10, Freezing.class));
+//				Char ch = Actor.findChar(i);
+//				if (ch != null){
+//					Buff.affect(ch, Frost.class, 15f);
+//				}
+//			}
+//		}
 	}
 	
 	@Override

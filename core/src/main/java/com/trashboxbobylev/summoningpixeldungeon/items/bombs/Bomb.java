@@ -75,6 +75,8 @@ public class Bomb extends Item {
 	}
 
 	public Fuse fuse;
+    public int fuseDelay = 2;
+    public boolean harmless = false;
 
 	//FIXME using a static variable for this is kinda gross, should be a better way
 	private static boolean lightingFuse = false;
@@ -112,7 +114,7 @@ public class Bomb extends Item {
 	@Override
 	protected void onThrow( int cell ) {
 		if (!Dungeon.level.pit[ cell ] && lightingFuse) {
-			Actor.addDelayed(fuse = new Fuse().ignite(this), 2);
+			Actor.addDelayed(fuse = new Fuse().ignite(this), fuseDelay);
 		}
 		if (Actor.findChar( cell ) != null && !(Actor.findChar( cell ) instanceof Hero) ){
 			ArrayList<Integer> candidates = new ArrayList<>();
@@ -184,7 +186,7 @@ public class Bomb extends Item {
 
 				dmg -= ch.drRoll();
 
-				if (dmg > 0) {
+				if (dmg > 0 && !harmless) {
 					ch.damage(dmg, this);
 				}
 				
