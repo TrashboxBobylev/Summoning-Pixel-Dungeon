@@ -46,7 +46,7 @@ public class ExplodingTNT extends Mob {
 	{
 		spriteClass = ExplodingTNTSprite.class;
 		
-		HP = HT = 28;
+		HP = HT = 48;
 		defenseSkill = 13;
 		
 		maxLvl = 18;
