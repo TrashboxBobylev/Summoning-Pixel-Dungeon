@@ -235,7 +235,7 @@ public class LoveHolder extends Artifact {
                                 public void call() {
                                     Char ch = Actor.findChar(shot.collisionPos);
 
-                                    if (ch instanceof Minion || ch instanceof DriedRose.GhostHero || ch instanceof WandOfLivingEarth.EarthGuardian || ch instanceof WandOfWarding.Ward){
+                                    if (ch instanceof Minion || ch instanceof DriedRose.GhostHero || ch instanceof WandOfLivingEarth.EarthGuardian || ch instanceof WandOfWarding.Ward || (ch instanceof WardingWraith && ch.alignment == Char.Alignment.ALLY)){
                                         Sample.INSTANCE.play(Assets.SND_DRINK);
 
                                         int healing = getHealingFromStrength(str);
