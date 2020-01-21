@@ -54,8 +54,8 @@ public class Spinner extends Mob {
 	{
 		spriteClass = SpinnerSprite.class;
 
-		HP = HT = 50;
-		defenseSkill = 14;
+		HP = HT = 36;
+		defenseSkill = 12;
 
 		EXP = 9;
 		maxLvl = 17;
@@ -69,45 +69,22 @@ public class Spinner extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange(10, 25);
+		return Random.NormalIntRange(6, 18);
 	}
 
 	@Override
 	public int attackSkill(Char target) {
-		return 20;
+		return 18;
 	}
 
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 6);
+		return Random.NormalIntRange(0, 4);
 	}
 
 	@Override
 	protected boolean act() {
         if (buff(RoseWraith.Timer.class) != null) sprite.showStatus(CharSprite.DEFAULT, String.valueOf(Math.round(buff(RoseWraith.Timer.class).cooldown()+1)));
-        if (enemy != null && state == HUNTING && buff(RoseWraith.Timer.class) == null && enemySeen) {
-            final Ballistica ballistica = new Ballistica(pos, enemy.pos, Ballistica.PROJECTILE);
-            final Char spinner = this;
-            if (Dungeon.level.heroFOV[pos]) sprite.zap(enemy.pos);
-            MagicMissile.boltFromChar( sprite.parent,
-                    MagicMissile.SPINNER,
-                    sprite,
-                    enemy.pos,
-                    new Callback() {
-                        @Override
-                        public void call() {
-                            int cell = ballistica.collisionPos;
-                            Sample.INSTANCE.play(Assets.SND_PUFF);
-                            for (int i : PathFinder.NEIGHBOURS8) {
-                                if (Dungeon.level.passable[cell + i]) GameScene.add(Blob.seed(cell + i, Random.Int(5, 10), Web.class));
-                                CellEmitter.get(cell + i).burst(MagicMissile.ForceParticle.FACTORY, 15);
-                            }
-                            Buff.affect(spinner, RoseWraith.Timer.class, 10f);
-                            return;
-                        }
-                    } );
-            Sample.INSTANCE.play(Assets.SND_BADGE);
-        }
 		return super.act();
 	}
 
@@ -126,7 +103,7 @@ public class Spinner extends Mob {
 	public int attackProc(Char enemy, int damage) {
 		damage = super.attackProc( enemy, damage );
 		if (Random.Int(2) == 0) {
-			Buff.affect(enemy, Poison.class).set(Random.Int(7, 9) );
+			Buff.affect(enemy, Poison.class).set(Random.Int(8, 12) );
 		}
 
 		return damage;
@@ -177,7 +154,6 @@ public class Spinner extends Mob {
             if (newPos == -1){
                 return false;
             } else {
-                final int newPosFinal = newPos;
                 this.target = newPos;
                 yell( Messages.get(this, "scorpion") );
                 final Char spinner = this;
@@ -191,6 +167,7 @@ public class Spinner extends Mob {
                             public void call() {
                                 int cell = path.collisionPos;
                                 Sample.INSTANCE.play(Assets.SND_PUFF);
+                                sprite.attack(cell);
                                 for (int i : PathFinder.NEIGHBOURS8) {
                                     if (Dungeon.level.passable[cell + i]) GameScene.add(Blob.seed(cell + i, Random.Int(5, 10), Web.class));
                                     CellEmitter.get(cell + i).burst(MagicMissile.ForceParticle.FACTORY, 15);
