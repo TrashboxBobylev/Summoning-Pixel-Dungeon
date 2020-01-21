@@ -54,7 +54,7 @@ public class Spinner extends Mob {
 	{
 		spriteClass = SpinnerSprite.class;
 
-		HP = HT = 36;
+		HP = HT = 50;
 		defenseSkill = 12;
 
 		EXP = 9;
