@@ -48,7 +48,7 @@ public class Bestiary {
 				//10x rat
 				return new ArrayList<Class<? extends Mob>>(Arrays.asList(
 						Rat.class, Rat.class, Rat.class, Rat.class, Rat.class,
-						Rat.class, Rat.class, Rat.class, DwarfGuardMob.class, Spinner.class));
+						Rat.class, Rat.class, Rat.class, Rat.class, Rat.class));
 			case 2:
 				//2x rat, 3x gnoll, 2x dogs
 				return new ArrayList<>(Arrays.asList(Rat.class, Rat.class,
@@ -202,6 +202,7 @@ public class Bestiary {
 			// City
 			case 19:
 				if (Random.Float() < 0.02f) rotation.add(Succubus.class);
+				if (Random.Float() < 0.015f) rotation.add(Slime.class);
 				return;
 		}
 	}
