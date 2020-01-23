@@ -27,6 +27,7 @@ package com.trashboxbobylev.summoningpixeldungeon.items.bombs;
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
+import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mimic;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
@@ -34,38 +35,54 @@ import com.trashboxbobylev.summoningpixeldungeon.effects.CellEmitter;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
 import com.trashboxbobylev.summoningpixeldungeon.items.Heap;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
+import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfBlastWave;
+import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
+import com.trashboxbobylev.summoningpixeldungeon.utils.BArray;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 
 public class Noisemaker extends Bomb {
 	
 	{
 		image = ItemSpriteSheet.NOISEMAKER;
+		fuseDelay = 20;
 	}
 
-	public void setTrigger(int cell){
+    @Override
+    public void explode(int cell) {
+        super.explode(cell);
+        PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 3 );
+        for (int i = 0; i < PathFinder.distance.length; i++) {
+            if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+                Char ch = Actor.findChar(i);
+                if (ch != null) {
+                    //trace a ballistica to our target (which will also extend past them
+                    Ballistica trajectory = new Ballistica(ch.pos, cell, Ballistica.PROJECTILE);
+                    //trim it to just be the part that goes past them
+                    trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size()-1), Ballistica.PROJECTILE);
+                    //knock them back along that ballistica
+                    WandOfBlastWave.throwChar(ch, trajectory, 3);
+                }
+            }
+        }
+    }
 
-		Buff.affect(Dungeon.hero, Trigger.class).set(cell);
-
-		CellEmitter.center( cell ).start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
-		Sample.INSTANCE.play( Assets.SND_ALERT );
-
-		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-			mob.beckon( cell );
-		}
-
-		for (Heap heap : Dungeon.level.heaps.valueList()) {
-			if (heap.type == Heap.Type.MIMIC) {
-				Mimic m = Mimic.spawnAt( heap.pos, heap.items );
-				if (m != null) {
-					m.beckon( cell );
-					heap.destroy();
-				}
-			}
-		}
-
-	}
+//    public void setTrigger(int cell){
+//
+//		Buff.affect(Dungeon.hero, Trigger.class).set(cell);
+//
+//		CellEmitter.center( cell ).start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
+//		Sample.INSTANCE.play( Assets.SND_ALERT );
+//
+//		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+//			mob.beckon( cell );
+//		}
+//
+//
+//
+//	}
 	
 	public static class Trigger extends Buff {
 
@@ -102,17 +119,7 @@ public class Noisemaker extends Bomb {
 			if (bomb == null) {
 				detach();
 
-			} else if (Actor.findChar(cell) != null)  {
-
-				heap.items.remove(bomb);
-				if (heap.items.isEmpty()) {
-					heap.destroy();
-				}
-
-				detach();
-				bomb.explode(cell);
-
-			} else {
+			}  else {
 				spend(TICK);
 
 				left--;
@@ -124,7 +131,16 @@ public class Noisemaker extends Bomb {
 					for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 						mob.beckon( cell );
 					}
-					left = 6;
+                    for (Heap levelheap : Dungeon.level.heaps.valueList()) {
+                        if (levelheap.type == Heap.Type.MIMIC) {
+                            Mimic m = Mimic.spawnAt( levelheap.pos, levelheap.items );
+                            if (m != null) {
+                                m.beckon( cell );
+                                levelheap.destroy();
+                            }
+                        }
+                    }
+					left = 4;
 				}
 
 			}

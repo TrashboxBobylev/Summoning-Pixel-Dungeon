@@ -30,6 +30,7 @@ import com.trashboxbobylev.summoningpixeldungeon.SPDSettings;
 import com.trashboxbobylev.summoningpixeldungeon.ShatteredPixelDungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.effects.CellEmitter;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.BlastParticle;
@@ -116,6 +117,7 @@ public class Bomb extends Item {
 	protected void onThrow( int cell ) {
 		if (!Dungeon.level.pit[ cell ] && lightingFuse) {
 			Actor.addDelayed(fuse = new Fuse().ignite(this), fuseDelay);
+			if (this instanceof Noisemaker) Buff.affect(Dungeon.hero, Noisemaker.Trigger.class).set(cell);;
 		}
 		if (Actor.findChar( cell ) != null && !(Actor.findChar( cell ) instanceof Hero) ){
 			ArrayList<Integer> candidates = new ArrayList<>();
@@ -282,21 +284,12 @@ public class Bomb extends Item {
 			for (Heap heap : Dungeon.level.heaps.valueList()) {
 				if (heap.items.contains(bomb)) {
 
-					//FIXME this is a bit hacky, might want to generalize the functionality
-					//of bombs that don't explode instantly when their fuse ends
-					if (bomb instanceof Noisemaker){
-
-						((Noisemaker) bomb).setTrigger(heap.pos);
-
-					} else {
-
 						heap.items.remove(bomb);
 						if (heap.items.isEmpty()) {
 							heap.destroy();
 						}
 
 						bomb.explode(heap.pos);
-					}
 
 					diactivate();
 					Actor.remove(this);
@@ -359,7 +352,7 @@ public class Bomb extends Item {
 			bombCosts.put(WoollyBomb.class,     2);
 			
 			bombCosts.put(Firebomb.class,       4);
-			bombCosts.put(Noisemaker.class,     4);
+			bombCosts.put(Noisemaker.class,     7);
 			
 			bombCosts.put(Flashbang.class,      6);
 			bombCosts.put(ShockBomb.class,      6);
