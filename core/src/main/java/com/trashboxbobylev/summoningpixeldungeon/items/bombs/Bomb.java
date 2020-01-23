@@ -360,9 +360,27 @@ public class Bomb extends Item {
 			bombCosts.put(RegrowthBomb.class,   8);
 			bombCosts.put(HolyBomb.class,       8);
 			
-			bombCosts.put(ArcaneBomb.class,     10);
+			bombCosts.put(ArcaneBomb.class,     15);
 			bombCosts.put(ShrapnelBomb.class,   10);
 		}
+
+        private static final HashMap<Class<?extends Bomb>, Integer> bombQuantity = new HashMap<>();
+        static {
+            bombCosts.put(FrostBomb.class,      1);
+            bombCosts.put(WoollyBomb.class,     1);
+
+            bombCosts.put(Firebomb.class,       1);
+            bombCosts.put(Noisemaker.class,     1);
+
+            bombCosts.put(Flashbang.class,      1);
+            bombCosts.put(ShockBomb.class,      1);
+
+            bombCosts.put(RegrowthBomb.class,   1);
+            bombCosts.put(HolyBomb.class,       1);
+
+            bombCosts.put(ArcaneBomb.class,     2);
+            bombCosts.put(ShrapnelBomb.class,   1);
+        }
 		
 		@Override
 		public boolean testIngredients(ArrayList<Item> ingredients) {
