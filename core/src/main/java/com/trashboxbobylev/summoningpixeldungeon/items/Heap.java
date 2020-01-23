@@ -347,6 +347,46 @@ public class Heap implements Bundlable {
 			}
 		}
 	}
+    public void explodeByNuke() {
+
+        //breaks open most standard containers, mimics die.
+            type = Type.HEAP;
+            sprite.link();
+            sprite.drop();
+
+        if (type != Type.HEAP) {
+
+            return;
+
+        } else {
+
+            for (Item item : items.toArray( new Item[0] )) {
+
+                if (item instanceof Potion) {
+                    items.remove( item );
+                    ((Potion) item).shatter(pos);
+
+                } else if (item instanceof Bomb) {
+                    items.remove( item );
+                    ((Bomb) item).explode(pos);
+                    if (((Bomb) item).explodesDestructively()) {
+                        //stop processing current explosion, it will be replaced by the new one.
+                        return;
+                    }
+
+                    //only amulet can endure the blast
+                } else if (!(item instanceof Amulet))
+                    items.remove( item );
+
+            }
+
+            if (isEmpty()){
+                destroy();
+            } else if (sprite != null) {
+                sprite.view( items.peek() );
+            }
+        }
+    }
 	
 	public void freeze() {
 
