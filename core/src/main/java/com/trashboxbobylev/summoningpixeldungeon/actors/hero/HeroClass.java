@@ -41,7 +41,10 @@ import com.trashboxbobylev.summoningpixeldungeon.items.bags.MagicalHolster;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.PotionBandolier;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.ScrollHolder;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.VelvetPouch;
+import com.trashboxbobylev.summoningpixeldungeon.items.bombs.Firebomb;
 import com.trashboxbobylev.summoningpixeldungeon.items.bombs.FrostBomb;
+import com.trashboxbobylev.summoningpixeldungeon.items.bombs.Noisemaker;
+import com.trashboxbobylev.summoningpixeldungeon.items.bombs.WoollyBomb;
 import com.trashboxbobylev.summoningpixeldungeon.items.food.Blandfruit;
 import com.trashboxbobylev.summoningpixeldungeon.items.food.Food;
 import com.trashboxbobylev.summoningpixeldungeon.items.food.SmallRation;
@@ -134,7 +137,9 @@ public enum HeroClass {
 			new SmallRation().collect();
 		}
 
-		new FrostBomb().identify().collect();
+		new Firebomb().identify().collect();
+		new WoollyBomb().identify().collect();
+		new Noisemaker().identify().collect();
 
 		new PotionOfExperience().quantity(18).collect();
 
