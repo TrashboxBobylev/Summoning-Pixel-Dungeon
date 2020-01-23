@@ -30,6 +30,8 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Blindness;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Cripple;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.ExplodingTNT;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.levels.Level;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
@@ -51,6 +53,11 @@ public class Flashbang extends Bomb {
 				if (power > 0){
 					Buff.prolong(ch, Blindness.class, power);
 					Buff.prolong(ch, Cripple.class, power);
+					if (ch instanceof Mob && !(ch instanceof ExplodingTNT)){
+					    ((Mob) ch).enemy = null;
+					    ((Mob) ch).enemySeen = false;
+					    ((Mob) ch).state = ((Mob) ch).WANDERING;
+                    }
 				}
 				if (ch == Dungeon.hero){
 					GameScene.flash(0xFFFFFF);
