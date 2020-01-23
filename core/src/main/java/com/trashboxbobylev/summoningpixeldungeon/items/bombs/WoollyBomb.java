@@ -53,16 +53,15 @@ public class WoollyBomb extends Bomb {
 	@Override
 	public void explode(int cell) {
 		super.explode(cell);
-
+        GameScene.flash(0xA09d309f);
         Room room = ((RegularLevel)Dungeon.level).room(cell);
         if (room != null){
             for (Point point : room.getPoints()){
                 int tile = Dungeon.level.pointToCell(point);
                 Char ch = Actor.findChar(tile);
-                if (ch != null && ch != Dungeon.hero && ch.alignment != Char.Alignment.ALLY){
+                if (ch != null && ch != Dungeon.hero && ch.alignment != Char.Alignment.ALLY && !ch.properties().contains(Char.Property.BOSS)
+                        && !ch.properties().contains(Char.Property.MINIBOSS)){
                     Buff.affect(ch, Shrink.class);
-                } else if (ch instanceof Hero){
-                    Buff.affect(ch, Weakness.class, 9f);
                 }
             }
         }
