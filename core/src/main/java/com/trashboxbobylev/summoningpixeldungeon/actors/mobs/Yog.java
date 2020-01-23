@@ -31,17 +31,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Blob;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Fire;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.PerfumeGas;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.ToxicGas;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Amok;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Burning;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Charm;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.LockedFloor;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Ooze;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Paralysis;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Poison;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Sleep;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Terror;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Vertigo;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Pushing;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.ShadowParticle;
 import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.DriedRose;
@@ -336,6 +326,7 @@ public class Yog extends Mob {
 				if (hit( this, enemy, true )) {
 					
 					int dmg =  damageRoll();
+                    if (buff(Shrink.class) != null) dmg *= 0.75f;
 					enemy.damage( dmg, new DarkBolt() );
 					
 					enemy.sprite.bloodBurstA( sprite.center(), dmg );

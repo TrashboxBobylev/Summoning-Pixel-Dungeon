@@ -534,12 +534,14 @@ public abstract class Mob extends Char {
 	
 	@Override
 	public int defenseSkill( Char enemy ) {
+	    float modifier =1f;
+
 		boolean seen = (enemySeen && enemy.invisible == 0);
 		if (enemy == Dungeon.hero && !Dungeon.hero.canSurpriseAttack()) seen = true;
 		if ( seen
 				&& paralysed == 0
 				&& !(alignment == Alignment.ALLY && enemy == Dungeon.hero)) {
-			return this.defenseSkill;
+			return Math.round(this.defenseSkill * modifier);
 		} else {
 			return 0;
 		}
@@ -757,7 +759,7 @@ public abstract class Mob extends Char {
 	
 	public String description() {
         String desc = Messages.get(this, "desc");
-        desc += "\n\n" + Messages.get(Mob.class, "stats", HP, HT, attackSkill(Dungeon.hero), defenseSkill);
+        desc += "\n\n" + Messages.get(Mob.class, "stats", HP, HT, attackSkill(Dungeon.hero), defenseSkill(Dungeon.hero));
         return desc;
 	}
 	

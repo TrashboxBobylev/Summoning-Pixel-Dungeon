@@ -28,6 +28,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Light;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Shrink;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Terror;
 import com.trashboxbobylev.summoningpixeldungeon.effects.CellEmitter;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.PurpleParticle;
@@ -176,7 +177,9 @@ public class Eye extends Mob {
 			}
 
 			if (hit( this, ch, true )) {
-				ch.damage( Random.NormalIntRange( 40, 65 ), new DeathGaze() );
+                int damage = Random.NormalIntRange( 40, 65 );
+                if (buff(Shrink.class) != null) damage *= 0.75f;
+				ch.damage(damage , new DeathGaze() );
 
 				if (Dungeon.level.heroFOV[pos]) {
 					ch.sprite.flash();

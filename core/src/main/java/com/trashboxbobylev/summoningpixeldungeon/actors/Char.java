@@ -208,6 +208,7 @@ public abstract class Char extends Actor {
 		if (hit( this, enemy, false )) {
 			
 			int dr = enemy.drRoll();
+			if (enemy.buff(Shrink.class) != null) dr *= 0.5f;
 			
 			if (this instanceof Hero){
 				Hero h = (Hero)this;
@@ -227,6 +228,9 @@ public abstract class Char extends Actor {
 			} else {
 				dmg = damageRoll();
 			}
+
+			if (enemy.buff(Shrink.class) != null) dmg *= 1.25f;
+			if (buff(Shrink.class) != null) dmg *= 0.75f;
 			
 			int effectiveDamage = enemy.defenseProc( this, dmg );
 			effectiveDamage = Math.max( effectiveDamage - dr, 0 );
@@ -321,6 +325,8 @@ public abstract class Char extends Actor {
 		float defRoll = Random.Float( defender.defenseSkill( attacker ) );
 		if (attacker.buff(Bless.class) != null) acuRoll *= 1.20f;
 		if (defender.buff(Bless.class) != null) defRoll *= 1.20f;
+		if (attacker.buff(Shrink.class) != null) acuRoll *= 0.75f;
+        if (defender.buff(Shrink.class) != null) defRoll *= 0.75f;
 		return (magic ? acuRoll * 2 : acuRoll) >= defRoll;
 	}
 	

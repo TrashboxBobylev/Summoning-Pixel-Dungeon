@@ -27,6 +27,7 @@ package com.trashboxbobylev.summoningpixeldungeon.actors.mobs;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Shrink;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Weakness;
 import com.trashboxbobylev.summoningpixeldungeon.items.Generator;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
@@ -110,6 +111,7 @@ public class Warlock extends Mob implements Callback {
 			}
 			
 			int dmg = Random.Int( 12, 18 );
+            if (buff(Shrink.class) != null) dmg *= 0.75f;
 			enemy.damage( dmg, new DarkBolt() );
 			
 			if (!enemy.isAlive() && enemy == Dungeon.hero) {

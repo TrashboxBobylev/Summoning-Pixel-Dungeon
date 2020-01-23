@@ -26,6 +26,7 @@ package com.trashboxbobylev.summoningpixeldungeon.actors.mobs;
 
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Shrink;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.SparkParticle;
 import com.trashboxbobylev.summoningpixeldungeon.items.Generator;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
@@ -97,6 +98,7 @@ public class Shaman extends Mob implements Callback {
 			
 			if (hit( this, enemy, true )) {
 				int dmg = Random.NormalIntRange(3, 10);
+                if (buff(Shrink.class) != null) dmg *= 0.75f;
 				if (Dungeon.level.water[enemy.pos] && !enemy.flying) {
 					dmg *= 1.5f;
 				}

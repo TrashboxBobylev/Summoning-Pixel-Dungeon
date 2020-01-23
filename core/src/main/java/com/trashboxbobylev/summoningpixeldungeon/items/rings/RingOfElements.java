@@ -29,10 +29,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Electricity;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.ToxicGas;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.WandOfStenchGas;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
-import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Eye;
-import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Shaman;
-import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Warlock;
-import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Yog;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Hacatu;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Wizard;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfBlastWave;
@@ -106,6 +103,7 @@ public class RingOfElements extends Ring {
         RESISTS.add( Wizard.DarkBolt.class );
 		RESISTS.add( Eye.DeathGaze.class );
 		RESISTS.add( Yog.BurningFist.DarkBolt.class );
+		RESISTS.add(FinalFroggit.Bolt.class);
 	}
 	
 	public static float resist( Char target, Class effect ){
