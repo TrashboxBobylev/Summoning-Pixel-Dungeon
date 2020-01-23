@@ -32,6 +32,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Freezing;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Chill;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Frost;
+import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.levels.RegularLevel;
 import com.trashboxbobylev.summoningpixeldungeon.levels.rooms.Room;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
@@ -59,10 +60,7 @@ public class FrostBomb extends Bomb {
                 Char ch = Actor.findChar(tile);
                 if (ch != null && ch != Dungeon.hero){
                     Buff.affect(ch, Frost.class, 15f);
-                    for (int i : PathFinder.NEIGHBOURS8){
-                        GameScene.add(Blob.seed(tile + i, 8, Freezing.class));
-                    }
-                } else{
+                } else if (ch instanceof Hero){
                     Buff.affect(ch, Chill.class, 9f);
                 }
             }

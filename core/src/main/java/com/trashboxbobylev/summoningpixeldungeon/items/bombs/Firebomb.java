@@ -28,6 +28,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Blob;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Fire;
+import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.FireKeeper;
 import com.trashboxbobylev.summoningpixeldungeon.effects.CellEmitter;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.FlameParticle;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
@@ -40,6 +41,7 @@ public class Firebomb extends Bomb {
 	
 	{
 		image = ItemSpriteSheet.FIRE_BOMB;
+		harmless = true;
 	}
 	
 	@Override
@@ -50,10 +52,10 @@ public class Firebomb extends Bomb {
 		for (int i = 0; i < PathFinder.distance.length; i++) {
 			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
 				if (Dungeon.level.pit[i])
-					GameScene.add(Blob.seed(i, 2, Fire.class));
+					GameScene.add(Blob.seed(i, 8, FireKeeper.class));
 				else
-					GameScene.add(Blob.seed(i, 10, Fire.class));
-				CellEmitter.get(i).burst(FlameParticle.FACTORY, 5);
+					GameScene.add(Blob.seed(i, 35, FireKeeper.class));
+				CellEmitter.get(i).burst(FlameParticle.FACTORY, 8);
 			}
 		}
 		Sample.INSTANCE.play(Assets.SND_BURNING);
