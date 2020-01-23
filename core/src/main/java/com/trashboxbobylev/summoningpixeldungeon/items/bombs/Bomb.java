@@ -47,6 +47,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfMirrorIma
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRage;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
+import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfPassage;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Languages;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
@@ -337,7 +338,7 @@ public class Bomb extends Item {
 		public static final LinkedHashMap<Class<?extends Item>, Class<?extends Bomb>> validIngredients = new LinkedHashMap<>();
 		static {
 			validIngredients.put(PotionOfFrost.class,           FrostBomb.class);
-			validIngredients.put(ScrollOfMirrorImage.class,     WoollyBomb.class);
+			validIngredients.put(ScrollOfPassage.class,     WoollyBomb.class);
 			
 			validIngredients.put(PotionOfLiquidFlame.class,     Firebomb.class);
 			validIngredients.put(ScrollOfRage.class,            Noisemaker.class);
