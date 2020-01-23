@@ -27,41 +27,45 @@ package com.trashboxbobylev.summoningpixeldungeon.items.bombs;
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
+import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
+import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.npcs.Sheep;
 import com.trashboxbobylev.summoningpixeldungeon.effects.CellEmitter;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
+import com.trashboxbobylev.summoningpixeldungeon.levels.RegularLevel;
+import com.trashboxbobylev.summoningpixeldungeon.levels.rooms.Room;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 import com.trashboxbobylev.summoningpixeldungeon.utils.BArray;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 public class WoollyBomb extends Bomb {
 	
 	{
 		image = ItemSpriteSheet.WOOLY_BOMB;
+		harmless = true;
 	}
 	
 	@Override
 	public void explode(int cell) {
 		super.explode(cell);
-		
-		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 2 );
-		for (int i = 0; i < PathFinder.distance.length; i++) {
-			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
-				if (Dungeon.level.insideMap(i)
-						&& Actor.findChar(i) == null
-						&& !(Dungeon.level.pit[i])) {
-					Sheep sheep = new Sheep();
-					sheep.lifespan = Random.NormalIntRange( 8, 16 );
-					sheep.pos = i;
-					Dungeon.level.press(sheep.pos, sheep);
-					GameScene.add(sheep);
-					CellEmitter.get(i).burst(Speck.factory(Speck.WOOL), 4);
-				}
-			}
-		}
+
+        Room room = ((RegularLevel)Dungeon.level).room(cell);
+        if (room != null){
+            for (Point point : room.getPoints()){
+                int tile = Dungeon.level.pointToCell(point);
+                Char ch = Actor.findChar(tile);
+                if (ch != null && ch != Dungeon.hero && ch.alignment != Char.Alignment.ALLY){
+                    Buff.affect(ch, Shrink.class);
+                } else if (ch instanceof Hero){
+                    Buff.affect(ch, Weakness.class, 9f);
+                }
+            }
+        }
 		
 		Sample.INSTANCE.play(Assets.SND_PUFF);
 		
