@@ -54,6 +54,7 @@ import com.trashboxbobylev.summoningpixeldungeon.utils.BArray;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
@@ -109,6 +110,7 @@ public class ShockBomb extends Bomb {
     }
 
 	public int charge;
+    public int numberOfUses;
     public Charger charger;
 
     @Override
@@ -139,6 +141,18 @@ public class ShockBomb extends Bomb {
             fuse = null;
         }
         return super.doPickUp(hero);
+    }
+
+    public boolean canBreak(){
+        float chance = 0;
+
+        if (numberOfUses < 10) chance = 0.01f;
+        if (numberOfUses > 10 && numberOfUses < 20) chance = 0.033f;
+        if (numberOfUses > 20 && numberOfUses < 30) chance = 0.05f;
+        if (numberOfUses > 30 && numberOfUses < 40) chance = 0.075f;
+        if (numberOfUses > 40 && numberOfUses > 50) chance = 0.1f;
+        if (numberOfUses > 50) chance = 0.2f;
+        return (Random.Float() < chance);
     }
 
     private void arc( Char ch, ArrayList<Char> affected, ArrayList<Lightning.Arc> arcs ) {
@@ -175,10 +189,7 @@ public class ShockBomb extends Bomb {
 
         ArrayList<Lightning.Arc> arcs = new ArrayList<>();
 
-        if (Dungeon.level.heroFOV[cell]) {
-            CellEmitter.center(cell).burst(SparkParticle.FACTORY, 20);
-            Dungeon.hero.sprite.parent.addToFront(new Lightning(arcs, null));
-        }
+
 
         charge = 0;
 
@@ -196,6 +207,10 @@ public class ShockBomb extends Bomb {
         //if the main target is in water, all affected take full damage
         if (Dungeon.level.water[cell]) multipler = 1f;
 
+        if (Dungeon.level.heroFOV[cell]) {
+            CellEmitter.center(cell).burst(SparkParticle.FACTORY, 20);
+            Dungeon.hero.sprite.parent.addToFront(new Lightning(arcs, null));
+        }
 
         for (Char target : affected){
             int dmg = (int) (Random.NormalIntRange(15, 22) * (charge / 100) * multipler);
@@ -207,6 +222,22 @@ public class ShockBomb extends Bomb {
 
             if (target == Dungeon.hero && !target.isAlive()) {
                 Dungeon.fail(Electricity.class);
+            }
+        }
+
+        if (canBreak()) {
+            for (Heap heap : Dungeon.level.heaps.valueList()) {
+                if (heap.items.contains(this)) {
+
+                    heap.items.remove(this);
+                    if (heap.items.isEmpty()) {
+                        heap.destroy();
+                    }
+                    if (Dungeon.level.heroFOV[cell]){
+                        CellEmitter.center(cell).burst(BlastParticle.FACTORY, 50);
+                        Sample.INSTANCE.play(Assets.SND_DEGRADE);
+                    }
+                }
             }
         }
     }
@@ -299,10 +330,21 @@ public class ShockBomb extends Bomb {
         }
     }
 
+    @Override
+    public void storeInBundle(Bundle bundle) {
+        super.storeInBundle(bundle);
+        bundle.put("charge", charge);
+        bundle.put("number_of_uses", numberOfUses);
+    }
 
+    @Override
+    public void restoreFromBundle(Bundle bundle) {
+        super.restoreFromBundle(bundle);
+        charge = bundle.getInt("charge");
+        numberOfUses = bundle.getInt("number_of_uses");
+    }
 
-	
-//	@Override
+    //	@Override
 //	public void explode(int cell) {
 //		super.explode(cell);
 //
