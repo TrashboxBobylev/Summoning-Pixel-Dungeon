@@ -363,24 +363,6 @@ public class Bomb extends Item {
 			bombCosts.put(ArcaneBomb.class,     15);
 			bombCosts.put(ShrapnelBomb.class,   10);
 		}
-
-        private static final HashMap<Class<?extends Bomb>, Integer> bombQuantity = new HashMap<>();
-        static {
-            bombCosts.put(FrostBomb.class,      1);
-            bombCosts.put(WoollyBomb.class,     1);
-
-            bombCosts.put(Firebomb.class,       1);
-            bombCosts.put(Noisemaker.class,     1);
-
-            bombCosts.put(Flashbang.class,      1);
-            bombCosts.put(ShockBomb.class,      1);
-
-            bombCosts.put(RegrowthBomb.class,   1);
-            bombCosts.put(HolyBomb.class,       1);
-
-            bombCosts.put(ArcaneBomb.class,     2);
-            bombCosts.put(ShrapnelBomb.class,   1);
-        }
 		
 		@Override
 		public boolean testIngredients(ArrayList<Item> ingredients) {
@@ -418,6 +400,7 @@ public class Bomb extends Item {
 				if (validIngredients.containsKey(i.getClass())){
 					try {
 						result = validIngredients.get(i.getClass()).newInstance();
+						if (result instanceof HolyBomb) result.quantity(2);
 					} catch (Exception e) {
 						ShatteredPixelDungeon.reportException(e);
 					}
@@ -432,7 +415,9 @@ public class Bomb extends Item {
 			for (Item i : ingredients){
 				if (validIngredients.containsKey(i.getClass())){
 					try {
-						return validIngredients.get(i.getClass()).newInstance();
+                        Bomb bomb = validIngredients.get(i.getClass()).newInstance();
+                        if (bomb instanceof HolyBomb) bomb.quantity(2);
+                        return bomb;
 					} catch (Exception e) {
 						ShatteredPixelDungeon.reportException(e);
 					}
