@@ -95,7 +95,7 @@ public class Electricity extends Blob {
 						} else if (toShock instanceof MagesStaff){
 							((MagesStaff) toShock).gainCharge(0.333f);
 						} else if (toShock instanceof ShockBomb){
-                            ((ShockBomb) toShock).gainCharge(33f);
+                            ((ShockBomb) toShock).gainCharge(0.333f);
                         }
                     }
 					

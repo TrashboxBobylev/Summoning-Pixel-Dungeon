@@ -141,6 +141,7 @@ public enum HeroClass {
 		new ArcaneBomb().identify().collect();
         new Bomb().quantity(25).collect();
         new HolyBomb().quantity(5).collect();
+        new ShockBomb().collect();
 
 		new PotionOfExperience().quantity(18).collect();
 

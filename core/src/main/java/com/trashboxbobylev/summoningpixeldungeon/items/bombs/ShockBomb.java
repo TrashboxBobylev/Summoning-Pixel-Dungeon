@@ -31,23 +31,18 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Electricity;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.LockedFloor;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Paralysis;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Recharging;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
-import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroClass;
 import com.trashboxbobylev.summoningpixeldungeon.effects.CellEmitter;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Lightning;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.BlastParticle;
-import com.trashboxbobylev.summoningpixeldungeon.effects.particles.SmokeParticle;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.SparkParticle;
 import com.trashboxbobylev.summoningpixeldungeon.items.Heap;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.Bag;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfLightning;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.Staff;
-import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
-import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
+import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 import com.trashboxbobylev.summoningpixeldungeon.tiles.DungeonTilemap;
 import com.trashboxbobylev.summoningpixeldungeon.utils.BArray;
@@ -58,6 +53,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class ShockBomb extends Bomb {
@@ -66,7 +62,7 @@ public class ShockBomb extends Bomb {
 		image = ItemSpriteSheet.SHOCK_BOMB;
 	}
 
-	public Fuse fuse;
+	public Fuse fuseShock;
 
     public static class Fuse extends Actor{
 
@@ -85,7 +81,7 @@ public class ShockBomb extends Bomb {
         protected boolean act() {
 
             //something caused our bomb to explode early, or be defused. Do nothing.
-            if (bomb.fuse != this){
+            if (bomb.fuseShock != this){
                 Actor.remove( this );
                 return true;
             }
@@ -103,25 +99,25 @@ public class ShockBomb extends Bomb {
             }
 
             //can't find our bomb, something must have removed it, do nothing.
-            bomb.fuse = null;
+            bomb.fuseShock = null;
             Actor.remove( this );
             return true;
         }
     }
 
-	public int charge;
+	public float charge;
     public int numberOfUses;
     public Charger charger;
 
     @Override
     public boolean isSimilar(Item item) {
-        return super.isSimilar(item) && this.fuse == ((ShockBomb) item).fuse;
+        return super.isSimilar(item) && this.fuseShock == ((ShockBomb) item).fuseShock;
     }
 
     @Override
     protected void onThrow( int cell ) {
         if (!Dungeon.level.pit[ cell ] && lightingFuse) {
-            Actor.addDelayed(fuse = new ShockBomb.Fuse().ignite(this), 1);
+            Actor.addDelayed(fuseShock = new ShockBomb.Fuse().ignite(this), 0);
         }
         if (Actor.findChar( cell ) != null && !(Actor.findChar( cell ) instanceof Hero) ){
             ArrayList<Integer> candidates = new ArrayList<>();
@@ -130,29 +126,33 @@ public class ShockBomb extends Bomb {
                     candidates.add(cell + i);
             int newCell = candidates.isEmpty() ? cell : Random.element(candidates);
             Dungeon.level.drop( this, newCell ).sprite.drop( cell );
-        } else
-            super.onThrow( cell );
+        } else {
+            Heap heap = Dungeon.level.drop(this, cell);
+            if (!heap.isEmpty()) {
+                heap.sprite.drop(cell);
+            }
+        }
     }
 
     @Override
     public boolean doPickUp(Hero hero) {
-        if (fuse != null) {
+        if (fuseShock != null) {
             GLog.warning( Messages.get(this, "snuff_fuse") );
-            fuse = null;
+            fuseShock = null;
         }
         return super.doPickUp(hero);
     }
 
-    public boolean canBreak(){
+    public float canBreak(){
         float chance = 0;
 
         if (numberOfUses < 10) chance = 0.01f;
         if (numberOfUses > 10 && numberOfUses < 20) chance = 0.033f;
-        if (numberOfUses > 20 && numberOfUses < 30) chance = 0.05f;
-        if (numberOfUses > 30 && numberOfUses < 40) chance = 0.075f;
-        if (numberOfUses > 40 && numberOfUses > 50) chance = 0.1f;
-        if (numberOfUses > 50) chance = 0.2f;
-        return (Random.Float() < chance);
+        if (numberOfUses > 20 && numberOfUses < 30) chance = 0.06f;
+        if (numberOfUses > 30 && numberOfUses < 40) chance = 0.08f;
+        if (numberOfUses > 40 && numberOfUses > 50) chance = 0.12f;
+        if (numberOfUses > 50) chance = 0.24f;
+        return chance;
     }
 
     private void arc( Char ch, ArrayList<Char> affected, ArrayList<Lightning.Arc> arcs ) {
@@ -181,7 +181,8 @@ public class ShockBomb extends Bomb {
     }
 
     public void explode(int cell){
-        this.fuse = null;
+        this.fuseShock = null;
+        this.glowing();
 
         Sample.INSTANCE.play( Assets.SND_LIGHTNING );
 
@@ -189,31 +190,40 @@ public class ShockBomb extends Bomb {
 
         ArrayList<Lightning.Arc> arcs = new ArrayList<>();
 
-
-
-        charge = 0;
-
-        Char ch = Actor.findChar( cell );
-        if (ch != null) {
-            arcs.add( new Lightning.Arc(curUser.sprite.center(), ch.sprite.center()));
-            arc(ch, affected, arcs);
-        } else {
-            arcs.add( new Lightning.Arc(curUser.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(cell)));
-            CellEmitter.center( cell ).burst( SparkParticle.FACTORY, 3 );
+        Heap h = null;
+        for (Heap heap : Dungeon.level.heaps.valueList()) {
+            if (heap.items.contains(this)) {
+                h = heap;
+                break;
+            }
         }
 
-        //lightning deals less damage per-target, the more targets that are hit.
-        float multipler = 0.4f + (0.6f/affected.size());
-        //if the main target is in water, all affected take full damage
-        if (Dungeon.level.water[cell]) multipler = 1f;
+
+        for (int i : PathFinder.NEIGHBOURS9) {
+            Char ch = Actor.findChar(cell + i);
+            if (ch != null) {
+                arcs.add(new Lightning.Arc(h.sprite.center(), ch.sprite.center()));
+                arc(ch, affected, arcs);
+            } else {
+                arcs.add(new Lightning.Arc(h.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(cell)));
+                CellEmitter.center(cell).burst(SparkParticle.FACTORY, 3);
+            }
+        }
+
+
 
         if (Dungeon.level.heroFOV[cell]) {
+
             CellEmitter.center(cell).burst(SparkParticle.FACTORY, 20);
-            Dungeon.hero.sprite.parent.addToFront(new Lightning(arcs, null));
+            h.sprite.parent.addToFront(new Lightning(arcs, null));
         }
 
         for (Char target : affected){
-            int dmg = (int) (Random.NormalIntRange(15, 22) * (charge / 100) * multipler);
+            //lightning deals less damage per-target, the more targets that are hit.
+            float multipler = 0.4f + (0.6f/affected.size());
+            //if the main target is in water, all affected take full damage
+            if (Dungeon.level.water[cell]) multipler = 1f;
+            int dmg = Math.round(Random.NormalIntRange(14, 24) * charge * multipler);
 
             target.damage(dmg, new WandOfLightning());
             if (target == Dungeon.hero) Camera.main.shake( 2, 0.3f );
@@ -225,7 +235,10 @@ public class ShockBomb extends Bomb {
             }
         }
 
-        if (canBreak()) {
+        charge = 0;
+        numberOfUses++;
+
+        if (Random.Float() < canBreak()) {
             for (Heap heap : Dungeon.level.heaps.valueList()) {
                 if (heap.items.contains(this)) {
 
@@ -253,7 +266,7 @@ public class ShockBomb extends Bomb {
 
         @Override
         public boolean act() {
-            if (charge < 100)
+            if (charge < 1)
                 recharge();
 
             spend( TICK );
@@ -265,13 +278,14 @@ public class ShockBomb extends Bomb {
 
             LockedFloor lock = target.buff(LockedFloor.class);
             if (lock == null || lock.regenOn())
-                charge += 2;
+                charge += 0.02f;
 
             for (Recharging bonus : target.buffs(Recharging.class)){
                 if (bonus != null && bonus.remainder() > 0f) {
-                    charge += 5 * bonus.remainder();
+                    charge += 0.05f * bonus.remainder();
                 }
             }
+            updateQuickslot();
         }
 
         public ShockBomb bomb(){
@@ -280,9 +294,16 @@ public class ShockBomb extends Bomb {
 
         public void gainCharge(float charge) {
             ShockBomb.this.charge += charge;
-            charge = Math.min(charge, 100);
+            charge = Math.min(charge, 1);
             updateQuickslot();
         }
+    }
+
+    @Override
+    public String desc() {
+        String info = super.desc();
+        info += "\n\n" + Messages.get(this, "counter", new DecimalFormat("#.##").format(canBreak() * 100f));
+        return info;
     }
 
     @Override
@@ -317,14 +338,14 @@ public class ShockBomb extends Bomb {
 
     public void gainCharge( float amt ){
         charge += amt;
-        charge = Math.min(100, charge);
+        charge = Math.min(1, charge);
         updateQuickslot();
     }
 
     @Override
     public String status() {
         if (levelKnown) {
-            return Messages.format( "%d%%", charge);
+            return Messages.format( "%s%%", Math.round(charge*100));
         } else {
             return null;
         }
@@ -340,7 +361,7 @@ public class ShockBomb extends Bomb {
     @Override
     public void restoreFromBundle(Bundle bundle) {
         super.restoreFromBundle(bundle);
-        charge = bundle.getInt("charge");
+        charge = bundle.getFloat("charge");
         numberOfUses = bundle.getInt("number_of_uses");
     }
 
