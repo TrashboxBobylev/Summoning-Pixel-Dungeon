@@ -54,15 +54,28 @@ public class ArcaneBomb extends Bomb {
 		image = ItemSpriteSheet.ARCANE_BOMB;
 		fuseDelay = 8;
 	}
+
+	private static final int RADIUS = 5;
+
+	public static ArrayList<Integer> getAreaOfEffect(int cell){
+	    ArrayList<Integer> aoe = new ArrayList<>();
+	    int bx = cell % Dungeon.level.width();
+	    int by = cell / Dungeon.level.width();
+	    for (int i = 0; i < Dungeon.level.map.length; i++){
+	        int dx = bx - (i % Dungeon.level.width());
+	        int dy = by - (i / Dungeon.level.width());
+	        if (dx*dx + dy*dy <= RADIUS*RADIUS) aoe.add(i);
+        }
+	    return aoe;
+    }
 	
 	@Override
 	protected void onThrow(int cell) {
 		super.onThrow(cell);
 		if (fuse != null){
-			PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 5 );
-			for (int i = 0; i < PathFinder.distance.length; i++) {
-				if (PathFinder.distance[i] < Integer.MAX_VALUE)
-					GameScene.add(Blob.seed(i, 3, GooWarn.class));
+            ArrayList<Integer> aoe = getAreaOfEffect(cell);
+			for (int i : aoe) {
+			    GameScene.add(Blob.seed(i, 9, GooWarn.class));
 			}
 		}
 	}
@@ -77,33 +90,31 @@ public class ArcaneBomb extends Bomb {
 		super.explode(cell);
 		
 		ArrayList<Char> affected = new ArrayList<>();
-		
-		PathFinder.buildDistanceMap( cell, BArray.not( new boolean[Dungeon.level.length()], null ), 5 );
-		for (int i = 0; i < PathFinder.distance.length; i++) {
-			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+
+        ArrayList<Integer> aoe = getAreaOfEffect(cell);
+        if (!Dungeon.bossLevel()) {
+            Level.set(cell, Terrain.CHASM);
+            GameScene.updateMap(cell);
+            for (int k : PathFinder.NEIGHBOURS4){
+                Level.set(cell + k, Terrain.CHASM);
+                GameScene.updateMap(cell+k);
+            }
+        }
+		for (int i : aoe) {
 				if (Dungeon.level.heroFOV[i]) {
 					CellEmitter.get(i).burst(ShadowParticle.UP, 10);
-					GameScene.flash(0xFF181818);
 				}
-				if (!Dungeon.bossLevel()) {
-				    Level.set(cell, Terrain.CHASM);
-                    GameScene.updateMap(cell);
-				    for (int k : PathFinder.NEIGHBOURS4){
-				        Level.set(cell + k, Terrain.CHASM);
-                        GameScene.updateMap(cell+i);
-                    }
 
-
-                }
 				if (Dungeon.level.solid[i] && !Dungeon.bossLevel()){
 				    float chance = 1;
 				    if (Dungeon.level.distance(cell, i) > 3) chance = 0.6f;
 				    if (Dungeon.level.distance(cell, i) > 4) chance = 0.4f;
 				    if (Random.Float() < chance){
                         Level.set( i, Terrain.EMPTY );
-                        GameScene.updateMap( i );
+
                     }
                 }
+                GameScene.updateMap( i );
 				Char ch = Actor.findChar(i);
 				if (ch != null){
 					affected.add(ch);
@@ -115,17 +126,18 @@ public class ArcaneBomb extends Bomb {
 
                 GameScene.add(Blob.seed(i, Random.NormalIntRange(1000, 1500), Miasma.class));
 			}
-		}
 		
 		for (Char ch : affected){
-			// 500%/442%/385%/327%/270%/2125 bomb damage based on distance, but pierces armor.
-			int damage = Math.round(Random.NormalIntRange( Dungeon.depth*3+18, 35 + Dungeon.depth * 7 ));
-			float multiplier = 1f - (.115f*Dungeon.level.distance(cell, ch.pos));
+			// 500%/460%/420%/380%/340%/300% bomb damage based on distance, but pierces armor.
+			int damage = Math.round(Random.NormalIntRange( Dungeon.depth*5+18, 35 + Dungeon.depth * 10 ));
+			float multiplier = 1f - (.08f*Dungeon.level.distance(cell, ch.pos));
 			ch.damage(Math.round(damage*multiplier), this);
 			if (ch == Dungeon.hero && !ch.isAlive()){
 				Dungeon.fail(ArcaneBomb.class);
 			}
 		}
+
+		Dungeon.observe();
         Sample.INSTANCE.play( Assets.SND_BLAST, 6 );
 	}
 	
