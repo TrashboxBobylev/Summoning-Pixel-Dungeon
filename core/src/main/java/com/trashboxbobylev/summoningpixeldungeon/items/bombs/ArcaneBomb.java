@@ -106,7 +106,7 @@ public class ArcaneBomb extends Bomb {
 					CellEmitter.get(i).burst(ShadowParticle.UP, 10);
 				}
 
-				if (Dungeon.level.solid[i] && !Dungeon.bossLevel()){
+				if (Dungeon.level.losBlocking[i] && !Dungeon.bossLevel()){
 				    float chance = 1;
 				    if (Dungeon.level.distance(cell, i) > 3) chance = 0.6f;
 				    if (Dungeon.level.distance(cell, i) > 4) chance = 0.4f;
@@ -138,10 +138,12 @@ public class ArcaneBomb extends Bomb {
 			}
 		}
         DoomCloud.hit(cell);
-		for (int k = 0; k < 20; k++) GameScene.flash(0xFFFFFFFF);
+		for (int k = 0; k < 4; k++) GameScene.flash(0xFFFFFFFF);
 
-		Dungeon.observe();
-        Sample.INSTANCE.play( Assets.SND_BLAST, 9 );
+        Dungeon.level.buildFlagMaps();
+        Dungeon.level.cleanWalls();
+        Dungeon.observe();
+        Sample.INSTANCE.play( Assets.SND_BLAST, 18 );
 	}
 	
 	@Override

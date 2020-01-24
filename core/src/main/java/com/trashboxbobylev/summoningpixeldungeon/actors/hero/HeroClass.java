@@ -140,6 +140,7 @@ public enum HeroClass {
 		new Noisemaker().identify().collect();
 		new ArcaneBomb().identify().collect();
         new Bomb().quantity(25).collect();
+        new HolyBomb().quantity(5).collect();
 
 		new PotionOfExperience().quantity(18).collect();
 

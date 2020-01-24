@@ -648,7 +648,7 @@ public abstract class Level implements Bundlable {
 		set( pos, Terrain.EMBERS );
 	}
 
-	protected void cleanWalls() {
+	public void cleanWalls() {
 		discoverable = new boolean[length()];
 
 		for (int i=0; i < length(); i++) {
