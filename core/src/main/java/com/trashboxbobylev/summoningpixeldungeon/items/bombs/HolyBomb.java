@@ -43,9 +43,15 @@ public class HolyBomb extends Bomb {
 	
 	{
 		image = ItemSpriteSheet.HOLY_BOMB;
+		fuseDelay = 0;
 	}
-	
-	@Override
+
+    @Override
+    public boolean explodesDestructively() {
+        return false;
+    }
+
+    @Override
 	public void explode(int cell) {
 		super.explode(cell);
 		
@@ -55,25 +61,25 @@ public class HolyBomb extends Bomb {
 		
 		ArrayList<Char> affected = new ArrayList<>();
 		
-		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 2 );
+		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 1 );
 		for (int i = 0; i < PathFinder.distance.length; i++) {
 			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
 				Char ch = Actor.findChar(i);
 				if (ch != null) {
 					affected.add(ch);
-					
 				}
 			}
 		}
 		
 		for (Char ch : affected){
+            int damage = Math.round(Random.NormalIntRange( Dungeon.depth+5, 10 + Dungeon.depth * 2 ) * 0.8f);
 			if (ch.properties().contains(Char.Property.UNDEAD) || ch.properties().contains(Char.Property.DEMONIC)){
 				ch.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
 				
-				//bomb deals an additional 67% damage to unholy enemies in a 5x5 range
-				int damage = Math.round(Random.NormalIntRange( Dungeon.depth+5, 10 + Dungeon.depth * 2 ) * 0.67f);
-				ch.damage(damage, this);
+				//bomb deals an additional 20% damage to unholy enemies in a 5x5 range
+                damage *= 1.2f;
 			}
+            ch.damage(damage, this);
 		}
 		
 		Sample.INSTANCE.play( Assets.SND_READ );

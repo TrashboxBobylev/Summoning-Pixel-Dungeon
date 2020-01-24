@@ -48,8 +48,11 @@ public class WoollyBomb extends Bomb {
 	{
 		image = ItemSpriteSheet.WOOLY_BOMB;
 		harmless = true;
+		fuseDelay = 1;
 	}
-	
+
+
+
 	@Override
 	public void explode(int cell) {
 		super.explode(cell);
