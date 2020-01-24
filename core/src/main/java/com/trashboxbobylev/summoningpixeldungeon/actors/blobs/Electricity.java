@@ -34,6 +34,7 @@ import com.trashboxbobylev.summoningpixeldungeon.effects.BlobEmitter;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.SparkParticle;
 import com.trashboxbobylev.summoningpixeldungeon.items.Heap;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
+import com.trashboxbobylev.summoningpixeldungeon.items.bombs.ShockBomb;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MagesStaff;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Languages;
@@ -93,8 +94,10 @@ public class Electricity extends Blob {
 							((Wand) toShock).gainCharge(0.333f);
 						} else if (toShock instanceof MagesStaff){
 							((MagesStaff) toShock).gainCharge(0.333f);
-						}
-					}
+						} else if (toShock instanceof ShockBomb){
+                            ((ShockBomb) toShock).gainCharge(33f);
+                        }
+                    }
 					
 					off[cell] = cur[cell] - 1;
 					volume += off[cell];

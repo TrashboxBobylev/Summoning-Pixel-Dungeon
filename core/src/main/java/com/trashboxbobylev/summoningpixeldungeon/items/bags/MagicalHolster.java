@@ -26,6 +26,7 @@ package com.trashboxbobylev.summoningpixeldungeon.items.bags;
 
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.bombs.Bomb;
+import com.trashboxbobylev.summoningpixeldungeon.items.bombs.ShockBomb;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.MissileWeapon;
@@ -58,6 +59,8 @@ public class MagicalHolster extends Bag {
 						((MissileWeapon) item).holster = true;
 					} else if (item instanceof Staff){
 					    ((Staff) item).charge(owner);
+                    } else if (item instanceof ShockBomb){
+                        ((ShockBomb) item).charge(owner);
                     }
 				}
 			}

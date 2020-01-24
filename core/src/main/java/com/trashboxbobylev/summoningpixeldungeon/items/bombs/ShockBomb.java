@@ -28,15 +28,30 @@ import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Electricity;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.LockedFloor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Paralysis;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Recharging;
+import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
+import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroClass;
 import com.trashboxbobylev.summoningpixeldungeon.effects.CellEmitter;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Lightning;
+import com.trashboxbobylev.summoningpixeldungeon.effects.particles.BlastParticle;
+import com.trashboxbobylev.summoningpixeldungeon.effects.particles.SmokeParticle;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.SparkParticle;
+import com.trashboxbobylev.summoningpixeldungeon.items.Heap;
+import com.trashboxbobylev.summoningpixeldungeon.items.Item;
+import com.trashboxbobylev.summoningpixeldungeon.items.bags.Bag;
+import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfLightning;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
+import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
+import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 import com.trashboxbobylev.summoningpixeldungeon.tiles.DungeonTilemap;
 import com.trashboxbobylev.summoningpixeldungeon.utils.BArray;
+import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -48,43 +63,272 @@ public class ShockBomb extends Bomb {
 	{
 		image = ItemSpriteSheet.SHOCK_BOMB;
 	}
-	
-	@Override
-	public void explode(int cell) {
-		super.explode(cell);
 
-		ArrayList<Char> affected = new ArrayList<>();
-		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 3 );
-		for (int i = 0; i < PathFinder.distance.length; i++) {
-			if (PathFinder.distance[i] < Integer.MAX_VALUE
-				&& Actor.findChar(i) != null) {
-				affected.add(Actor.findChar(i));
-			}
-		}
+	public Fuse fuse;
 
-		for (Char ch : affected.toArray(new Char[0])){
-			Ballistica LOS = new Ballistica(cell, ch.pos, Ballistica.PROJECTILE);
-			if (LOS.collisionPos != ch.pos){
-				affected.remove(ch);
-			}
-		}
+    public static class Fuse extends Actor{
 
-		ArrayList<Lightning.Arc> arcs = new ArrayList<>();
-		for (Char ch : affected){
-			int power = 16 - 4*Dungeon.level.distance(ch.pos, cell);
-			if (power > 0){
-				//32% to 8% regular bomb damage
-				int damage = Math.round(Random.NormalIntRange(5 + Dungeon.depth, 10 + 2*Dungeon.depth) * (power/50f));
-				ch.damage(damage, this);
-				if (ch.isAlive()) Buff.prolong(ch, Paralysis.class, power);
-				arcs.add(new Lightning.Arc(DungeonTilemap.tileCenterToWorld(cell), ch.sprite.center()));
-			}
-		}
+        {
+            actPriority = BLOB_PRIO+1; //after hero, before other actors
+        }
 
-		CellEmitter.center(cell).burst(SparkParticle.FACTORY, 20);
-		Dungeon.hero.sprite.parent.addToFront(new Lightning(arcs, null));
+        private ShockBomb bomb;
+
+        public Fuse ignite(ShockBomb bomb){
+            this.bomb = bomb;
+            return this;
+        }
+
+        @Override
+        protected boolean act() {
+
+            //something caused our bomb to explode early, or be defused. Do nothing.
+            if (bomb.fuse != this){
+                Actor.remove( this );
+                return true;
+            }
+
+            //look for our bomb, remove it from its heap, and blow it up.
+            for (Heap heap : Dungeon.level.heaps.valueList()) {
+                if (heap.items.contains(bomb)) {
+
+                    bomb.explode(heap.pos);
+
+                    diactivate();
+                    Actor.remove(this);
+                    return true;
+                }
+            }
+
+            //can't find our bomb, something must have removed it, do nothing.
+            bomb.fuse = null;
+            Actor.remove( this );
+            return true;
+        }
+    }
+
+	public int charge;
+    public Charger charger;
+
+    @Override
+    public boolean isSimilar(Item item) {
+        return super.isSimilar(item) && this.fuse == ((ShockBomb) item).fuse;
+    }
+
+    @Override
+    protected void onThrow( int cell ) {
+        if (!Dungeon.level.pit[ cell ] && lightingFuse) {
+            Actor.addDelayed(fuse = new ShockBomb.Fuse().ignite(this), 1);
+        }
+        if (Actor.findChar( cell ) != null && !(Actor.findChar( cell ) instanceof Hero) ){
+            ArrayList<Integer> candidates = new ArrayList<>();
+            for (int i : PathFinder.NEIGHBOURS8)
+                if (Dungeon.level.passable[cell + i])
+                    candidates.add(cell + i);
+            int newCell = candidates.isEmpty() ? cell : Random.element(candidates);
+            Dungeon.level.drop( this, newCell ).sprite.drop( cell );
+        } else
+            super.onThrow( cell );
+    }
+
+    @Override
+    public boolean doPickUp(Hero hero) {
+        if (fuse != null) {
+            GLog.warning( Messages.get(this, "snuff_fuse") );
+            fuse = null;
+        }
+        return super.doPickUp(hero);
+    }
+
+    private void arc( Char ch, ArrayList<Char> affected, ArrayList<Lightning.Arc> arcs ) {
+
+        affected.add( ch );
+
+        int dist;
+        if (Dungeon.level.water[ch.pos] && !ch.flying)
+            dist = 4;
+        else
+            dist = 2;
+
+        PathFinder.buildDistanceMap( ch.pos, BArray.not( Dungeon.level.solid, null ), dist );
+        for (int i = 0; i < PathFinder.distance.length; i++) {
+            if (PathFinder.distance[i] < Integer.MAX_VALUE){
+                Char n = Actor.findChar( i );
+                if (n == Dungeon.hero && PathFinder.distance[i] > 1)
+                    //the hero is only zapped if they are adjacent
+                    continue;
+                else if (n != null && !affected.contains( n )) {
+                    arcs.add(new Lightning.Arc(ch.sprite.center(), n.sprite.center()));
+                    arc(n, affected, arcs);
+                }
+            }
+        }
+    }
+
+    public void explode(int cell){
+        this.fuse = null;
+
         Sample.INSTANCE.play( Assets.SND_LIGHTNING );
-	}
+
+        ArrayList<Char> affected = new ArrayList<>();
+
+        ArrayList<Lightning.Arc> arcs = new ArrayList<>();
+
+        if (Dungeon.level.heroFOV[cell]) {
+            CellEmitter.center(cell).burst(SparkParticle.FACTORY, 20);
+            Dungeon.hero.sprite.parent.addToFront(new Lightning(arcs, null));
+        }
+
+        charge = 0;
+
+        Char ch = Actor.findChar( cell );
+        if (ch != null) {
+            arcs.add( new Lightning.Arc(curUser.sprite.center(), ch.sprite.center()));
+            arc(ch, affected, arcs);
+        } else {
+            arcs.add( new Lightning.Arc(curUser.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(cell)));
+            CellEmitter.center( cell ).burst( SparkParticle.FACTORY, 3 );
+        }
+
+
+        for (Char target : affected){
+            int dmg = Random.NormalIntRange(15, 22) * (charge / 100);
+
+            target.damage(dmg, new WandOfLightning());
+
+            if (target == Dungeon.hero && !target.isAlive()) {
+                Dungeon.fail(Electricity.class);
+            }
+        }
+    }
+
+    public class Charger extends Buff {
+
+        @Override
+        public boolean attachTo( Char target ) {
+            super.attachTo( target );
+
+            return true;
+        }
+
+        @Override
+        public boolean act() {
+            if (charge < 100)
+                recharge();
+
+            spend( TICK );
+
+            return true;
+        }
+
+        private void recharge(){
+
+            LockedFloor lock = target.buff(LockedFloor.class);
+            if (lock == null || lock.regenOn())
+                charge += 2;
+
+            for (Recharging bonus : target.buffs(Recharging.class)){
+                if (bonus != null && bonus.remainder() > 0f) {
+                    charge += 5 * bonus.remainder();
+                }
+            }
+        }
+
+        public ShockBomb bomb(){
+            return ShockBomb.this;
+        }
+
+        public void gainCharge(float charge) {
+            ShockBomb.this.charge += charge;
+            charge = Math.min(charge, 100);
+            updateQuickslot();
+        }
+    }
+
+    @Override
+    public boolean collect( Bag container ) {
+        if (super.collect( container )) {
+            if (container.owner != null) {
+                charge( container.owner );
+                identify();
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void charge(Char owner ) {
+        if (charger == null) charger = new Charger();
+        charger.attachTo( owner );
+    }
+
+    @Override
+    public void onDetach( ) {
+        stopCharging();
+    }
+
+    public void stopCharging() {
+        if (charger != null) {
+            charger.detach();
+            charger = null;
+        }
+    }
+
+    public void gainCharge( float amt ){
+        charge += amt;
+        charge = Math.min(100, charge);
+        updateQuickslot();
+    }
+
+    @Override
+    public String status() {
+        if (levelKnown) {
+            return Messages.format( "%d%%", charge);
+        } else {
+            return null;
+        }
+    }
+
+
+
+	
+//	@Override
+//	public void explode(int cell) {
+//		super.explode(cell);
+//
+//		ArrayList<Char> affected = new ArrayList<>();
+//		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 3 );
+//		for (int i = 0; i < PathFinder.distance.length; i++) {
+//			if (PathFinder.distance[i] < Integer.MAX_VALUE
+//				&& Actor.findChar(i) != null) {
+//				affected.add(Actor.findChar(i));
+//			}
+//		}
+//
+//		for (Char ch : affected.toArray(new Char[0])){
+//			Ballistica LOS = new Ballistica(cell, ch.pos, Ballistica.PROJECTILE);
+//			if (LOS.collisionPos != ch.pos){
+//				affected.remove(ch);
+//			}
+//		}
+//
+//		ArrayList<Lightning.Arc> arcs = new ArrayList<>();
+//		for (Char ch : affected){
+//			int power = 16 - 4*Dungeon.level.distance(ch.pos, cell);
+//			if (power > 0){
+//				//32% to 8% regular bomb damage
+//				int damage = Math.round(Random.NormalIntRange(5 + Dungeon.depth, 10 + 2*Dungeon.depth) * (power/50f));
+//				ch.damage(damage, this);
+//				if (ch.isAlive()) Buff.prolong(ch, Paralysis.class, power);
+//				arcs.add(new Lightning.Arc(DungeonTilemap.tileCenterToWorld(cell), ch.sprite.center()));
+//			}
+//		}
+//
+//		CellEmitter.center(cell).burst(SparkParticle.FACTORY, 20);
+//		Dungeon.hero.sprite.parent.addToFront(new Lightning(arcs, null));
+//        Sample.INSTANCE.play( Assets.SND_LIGHTNING );
+//	}
 	
 	@Override
 	public int price() {
