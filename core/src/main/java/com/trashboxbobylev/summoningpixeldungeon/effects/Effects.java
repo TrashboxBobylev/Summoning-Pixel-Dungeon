@@ -37,7 +37,8 @@ public class Effects {
 		CHAIN,
 		DEATH_RAY,
 		LIGHT_RAY,
-		HEALTH_RAY
+		HEALTH_RAY,
+        DOOM_CLOUD
 	};
 	
 	public static Image get( Type type ) {
@@ -67,6 +68,9 @@ public class Effects {
 			case HEALTH_RAY:
 				icon.frame(icon.texture.uvRect(16, 30, 32, 38));
 				break;
+            case DOOM_CLOUD:
+                icon.frame(icon.texture.uvRect(0, 38, 28, 62));
+                break;
 		}
 		return icon;
 	}

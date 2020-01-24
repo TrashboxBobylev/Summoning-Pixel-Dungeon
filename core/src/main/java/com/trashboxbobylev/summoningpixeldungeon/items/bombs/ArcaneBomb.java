@@ -33,6 +33,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.FireKeeper;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.GooWarn;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Miasma;
 import com.trashboxbobylev.summoningpixeldungeon.effects.CellEmitter;
+import com.trashboxbobylev.summoningpixeldungeon.effects.DoomCloud;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.ElmoParticle;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.ShadowParticle;
 import com.trashboxbobylev.summoningpixeldungeon.items.Heap;
@@ -136,9 +137,11 @@ public class ArcaneBomb extends Bomb {
 				Dungeon.fail(ArcaneBomb.class);
 			}
 		}
+        DoomCloud.hit(cell);
+		GameScene.flash(0xFF989498);
 
 		Dungeon.observe();
-        Sample.INSTANCE.play( Assets.SND_BLAST, 6 );
+        Sample.INSTANCE.play( Assets.SND_BLAST, 9 );
 	}
 	
 	@Override
