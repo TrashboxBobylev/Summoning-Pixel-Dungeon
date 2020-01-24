@@ -35,6 +35,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.BrokenSeal;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.TomeOfMastery;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.*;
+import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.CloakOfShadows;
 import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.LoveHolder;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.MagicalHolster;
@@ -138,6 +139,12 @@ public enum HeroClass {
 		new WoollyBomb().identify().collect();
 		new Noisemaker().identify().collect();
 		new ArcaneBomb().identify().collect();
+        AlchemistsToolkit a = new AlchemistsToolkit();
+        a.charge = 100;
+        a.identify();
+        a.collect();
+        new ScrollOfRemoveCurse().identify().collect();
+        new Bomb().collect();
 
 		new PotionOfExperience().quantity(18).collect();
 
