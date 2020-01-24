@@ -30,9 +30,11 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Flare;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.ShadowParticle;
+import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 import com.trashboxbobylev.summoningpixeldungeon.tiles.DungeonTilemap;
 import com.trashboxbobylev.summoningpixeldungeon.utils.BArray;
+import com.watabou.noosa.Camera;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -58,6 +60,8 @@ public class HolyBomb extends Bomb {
 		if (Dungeon.level.heroFOV[cell]) {
 			new Flare(10, 64).show(Dungeon.hero.sprite.parent, DungeonTilemap.tileCenterToWorld(cell), 2f);
 		}
+
+        Camera.main.shake( 4, 0.175f );
 		
 		ArrayList<Char> affected = new ArrayList<>();
 		
