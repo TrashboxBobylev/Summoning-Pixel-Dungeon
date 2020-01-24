@@ -38,22 +38,18 @@ import java.util.HashMap;
 
 public class Miasma extends Blob {
 
-    private static final HashMap<Class<? extends Buff>, Float> MINOR_DEBUFFS = new HashMap<>();
+    private static final HashMap<Class<? extends FlavourBuff>, Float> MINOR_DEBUFFS = new HashMap<>();
     static{
-        MINOR_DEBUFFS.put(Weakness.class,       2f);
+        MINOR_DEBUFFS.put(Weakness.class,       1f);
         MINOR_DEBUFFS.put(Cripple.class,        1f);
         MINOR_DEBUFFS.put(Blindness.class,      1f);
         MINOR_DEBUFFS.put(Terror.class,         1f);
 
-        MINOR_DEBUFFS.put(Chill.class,          0f);
-        MINOR_DEBUFFS.put(Ooze.class,           1f);
+        MINOR_DEBUFFS.put(Chill.class,          1f);
         MINOR_DEBUFFS.put(Roots.class,          1f);
         MINOR_DEBUFFS.put(Vertigo.class,        1f);
-        MINOR_DEBUFFS.put(Drowsy.class,         0f);
-        MINOR_DEBUFFS.put(Bleeding.class,       1f);
-        MINOR_DEBUFFS.put(Burning.class,        0f);
-        MINOR_DEBUFFS.put(Poison.class,         1f);
-        MINOR_DEBUFFS.put(Corrosion.class, 1f);
+        MINOR_DEBUFFS.put(Paralysis.class, 1f);
+        MINOR_DEBUFFS.put(Slow.class, 1f);
     }
 
 	@Override
@@ -73,9 +69,17 @@ public class Miasma extends Blob {
 					Char ch = Actor.findChar( cell );
 
 					if (ch != null && !ch.isImmune(this.getClass())) {
-                        Class<?extends FlavourBuff> debuffCls = (Class<? extends FlavourBuff>) Random.chances(MINOR_DEBUFFS);
-						Buff.prolong( ch, debuffCls, TICK );
-					}
+                        Class<?extends FlavourBuff> debuffCls = Random.chances(MINOR_DEBUFFS);
+                        Buff.affect(ch, debuffCls, 5);
+                        if (Random.Float() < 0.75) {
+                            switch(Random.Int(4)) {
+                                case 0: Buff.affect(ch, Poison.class).set(3 + Dungeon.depth / 3); break;
+                                case 1: Buff.affect( ch, Burning.class ).reignite( ch ); break;
+                                case 2: Buff.affect(ch, Ooze.class).set( 20f ); break;
+                                case 3: Buff.affect(ch, Corrosion.class).set(10f, Dungeon.depth/3); break;
+                            }
+                        }
+                    }
 				}
 			}
 		}
