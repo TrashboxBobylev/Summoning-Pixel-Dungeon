@@ -139,12 +139,7 @@ public enum HeroClass {
 		new WoollyBomb().identify().collect();
 		new Noisemaker().identify().collect();
 		new ArcaneBomb().identify().collect();
-        AlchemistsToolkit a = new AlchemistsToolkit();
-        a.charge = 100;
-        a.identify();
-        a.collect();
-        new ScrollOfRemoveCurse().identify().collect();
-        new Bomb().collect();
+        new Bomb().quantity(25).collect();
 
 		new PotionOfExperience().quantity(18).collect();
 
