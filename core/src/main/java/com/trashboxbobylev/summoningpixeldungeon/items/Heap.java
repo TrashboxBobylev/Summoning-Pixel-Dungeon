@@ -323,15 +323,15 @@ public class Heap implements Bundlable {
 
 				if (item instanceof Potion) {
 					items.remove( item );
-					((Potion) item).shatter(pos);
+                    for (int i = 0; i < item.quantity; i++)  ((Potion) item).shatter(pos);
 
 				} else if (item instanceof Bomb) {
 					items.remove( item );
-					((Bomb) item).explode(pos);
-//					if (((Bomb) item).explodesDestructively()) {
-//						//stop processing current explosion, it will be replaced by the new one.
-//						return;
-//					}
+					for (int i = 0; i < item.quantity; i++) ((Bomb) item).explode(pos);
+					if (((Bomb) item).explodesDestructively()) {
+						//stop processing current explosion, it will be replaced by the new one.
+						return;
+					}
 
 				//unique and upgraded items can endure the blast
 				} else if (!(item.level() > 0 || item.unique
