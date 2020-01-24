@@ -42,6 +42,7 @@ public class Firebomb extends Bomb {
 	{
 		image = ItemSpriteSheet.FIRE_BOMB;
 		harmless = true;
+		fuseDelay = 1;
 	}
 	
 	@Override
