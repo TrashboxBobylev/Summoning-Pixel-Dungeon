@@ -64,15 +64,13 @@ public class HolyBomb extends Bomb {
         Camera.main.shake( 4, 0.175f );
 		
 		ArrayList<Char> affected = new ArrayList<>();
-		
-		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 1 );
-		for (int i = 0; i < PathFinder.distance.length; i++) {
-			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
-				Char ch = Actor.findChar(i);
+
+        int[] area = new int[]{-Dungeon.level.width(), -1, +1, +Dungeon.level.width()};
+		for (int i : area) {
+				Char ch = Actor.findChar(cell + i);
 				if (ch != null) {
 					affected.add(ch);
 				}
-			}
 		}
 		
 		for (Char ch : affected){
