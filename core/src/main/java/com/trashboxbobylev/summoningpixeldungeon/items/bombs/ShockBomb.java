@@ -52,6 +52,7 @@ import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 import com.trashboxbobylev.summoningpixeldungeon.tiles.DungeonTilemap;
 import com.trashboxbobylev.summoningpixeldungeon.utils.BArray;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
+import com.watabou.noosa.Camera;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -190,11 +191,19 @@ public class ShockBomb extends Bomb {
             CellEmitter.center( cell ).burst( SparkParticle.FACTORY, 3 );
         }
 
+        //lightning deals less damage per-target, the more targets that are hit.
+        float multipler = 0.4f + (0.6f/affected.size());
+        //if the main target is in water, all affected take full damage
+        if (Dungeon.level.water[cell]) multipler = 1f;
+
 
         for (Char target : affected){
-            int dmg = Random.NormalIntRange(15, 22) * (charge / 100);
+            int dmg = (int) (Random.NormalIntRange(15, 22) * (charge / 100) * multipler);
 
             target.damage(dmg, new WandOfLightning());
+            if (target == Dungeon.hero) Camera.main.shake( 2, 0.3f );
+            target.sprite.centerEmitter().burst( SparkParticle.FACTORY, 3 );
+            target.sprite.flash();
 
             if (target == Dungeon.hero && !target.isAlive()) {
                 Dungeon.fail(Electricity.class);
