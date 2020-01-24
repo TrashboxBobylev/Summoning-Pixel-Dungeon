@@ -205,6 +205,16 @@ public class SummPDChanges {
                         "_-_ Mimic staff have been removed from game.\n\n" +
                         "_-_ Charge mechanic of staves should be more stable that before.\n\n" +
                         "_-_ Minions go invisible on drinking an invisibility potion."));
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARCANE_BOMB, null), "Bomb rework",
+                "Enchanced bombs have recieved a rework, making them a powerful AoE consumables. Most of them doesn't deal damage anymore.\n\n" +
+                        "_-_ Frost Bomb now freezes every mob in room for 15 turns.\n\n" +
+                        "_-_ Firebomb produces long-lasting field of fire.\n\n" +
+                        "_-_ Flashbang forces enemies to lose memories about their targets.\n\n" +
+                        "_-_ Woolly Bomb have been replaced by Shrinking Bomb, that decreases size and stats of every enemy in room.\n\n" +
+                        "_-_ Noisemaker doesn't explode in proximity of monster, instead it alerts monsters for 20 turns, and then explodes with knockback.\n\n" +
+                        "_-_ Shock Bomb have been redesigned into Electrical Explosive, the charging bomb, that electrocutes creatures in 3x3 area. This bomb can break after long using..\n\n" +
+                        "_-_ Holy bombs have been redesigned into Holy Grenades, that can be used as small-AoE ranged weapon with medium damage.\n\n" +
+                        "_-_ Arcane Bomb have been reworked into Arcane Nuke, which explode in 11x11 with tremendous damage, destroys obstacles and leaves a harmful cloud of miasma."));
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WARRIOR_POWER, null), "Power ups!",
                 "5 different powers have added as ultimate spells. At cost of transumation scroll and other goodies you can make a very powerful item, that affects your enemies, minions and character.\n\n" +
                         "Each power up have different set of effects, so check for alchemy guide!"
