@@ -89,7 +89,7 @@ public class Miasma extends Blob {
 	public void use( BlobEmitter emitter ) {
 		super.use( emitter );
 		
-		emitter.pour( GooSprite.GooParticle.FACTORY, 0.4f );
+		emitter.pour( GooSprite.GooParticle.FACTORY, 0.06f );
 	}
 	
 	@Override

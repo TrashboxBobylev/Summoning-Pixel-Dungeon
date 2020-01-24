@@ -59,7 +59,7 @@ public class FireKeeper extends Blob {
 
 					volume += off[cell];
 
-                    GameScene.add(Blob.seed(cell, 2, Fire.class));
+                    GameScene.add(Blob.seed(cell, 5, Fire.class));
 				}
 			}
 		}

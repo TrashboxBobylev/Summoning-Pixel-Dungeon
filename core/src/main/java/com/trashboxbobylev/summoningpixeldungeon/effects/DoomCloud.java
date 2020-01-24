@@ -34,15 +34,15 @@ import com.watabou.noosa.Visual;
 
 public class DoomCloud extends Image {
 
-	private static final float TIME_TO_FADE = 9f;
+	private static final float TIME_TO_FADE = 18f;
 
 	private float time;
 
 	public DoomCloud() {
 		super(Effects.get(Effects.Type.DOOM_CLOUD));
 		origin.set(width / 2, height / 2);
-		scale.x = 2f;
-		scale.y = 2f;
+		scale.x = 4f;
+		scale.y = 4f;
 	}
 
 	public void reset(int p) {

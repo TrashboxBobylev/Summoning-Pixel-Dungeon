@@ -138,7 +138,7 @@ public class ArcaneBomb extends Bomb {
 			}
 		}
         DoomCloud.hit(cell);
-		GameScene.flash(0xFF989498);
+		for (int k = 0; k < 20; k++) GameScene.flash(0xFFFFFFFF);
 
 		Dungeon.observe();
         Sample.INSTANCE.play( Assets.SND_BLAST, 9 );
