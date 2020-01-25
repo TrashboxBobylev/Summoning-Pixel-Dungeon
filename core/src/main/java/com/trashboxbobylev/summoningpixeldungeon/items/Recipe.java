@@ -40,6 +40,8 @@ import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.Scroll;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.trashboxbobylev.summoningpixeldungeon.items.spells.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Broadsword;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.WornShortsword;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.darts.Dart;
 
 import java.util.ArrayList;
@@ -191,7 +193,8 @@ public abstract class Recipe {
 		new Recycle.Recipe(),
 		new WildEnergy.Recipe(),
         new Enrage.Recipe(),
-		new StewedMeat.twoMeat()
+		new StewedMeat.twoMeat(),
+        new Broadsword.Recipe()
 	};
 
 	//calculates price of item based on their simple recipe
@@ -252,7 +255,7 @@ public abstract class Recipe {
 	
 	public static boolean usableInRecipe(Item item){
 		return !item.cursed
-				&& (!(item instanceof EquipableItem) || item instanceof Dart || item instanceof AlchemistsToolkit)
+				&& (item instanceof WornShortsword || !(item instanceof EquipableItem) || item instanceof Dart || item instanceof AlchemistsToolkit)
 				&& !(item instanceof Wand);
 	}
 }

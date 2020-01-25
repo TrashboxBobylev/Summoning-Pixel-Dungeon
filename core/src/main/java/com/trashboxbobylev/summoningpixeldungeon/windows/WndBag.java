@@ -49,6 +49,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.spells.Recycle;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Slingshot;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.SpiritBow;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Broadsword;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.MissileWeapon;
@@ -399,7 +400,7 @@ public class WndBag extends WndTabbed {
 						mode == Mode.WEAPON && (item instanceof MeleeWeapon) ||
 						mode == Mode.ARMOR && (item instanceof Armor) ||
                         mode == Mode.ARMOR_FOR_IMBUE && (item instanceof Armor && !(item instanceof ConjurerArmor)) ||
-						mode == Mode.ENCHANTABLE && (item instanceof MeleeWeapon || item instanceof SpiritBow || item instanceof Slingshot || item instanceof Armor || item instanceof Staff) ||
+						mode == Mode.ENCHANTABLE && ((item instanceof MeleeWeapon || item instanceof SpiritBow || item instanceof Slingshot || item instanceof Armor || item instanceof Staff) && !(item instanceof Broadsword)) ||
 						mode == Mode.WAND && (item instanceof Wand) ||
 						mode == Mode.SEED && (item instanceof Seed) ||
 						mode == Mode.FOOD && (item instanceof Food) ||
