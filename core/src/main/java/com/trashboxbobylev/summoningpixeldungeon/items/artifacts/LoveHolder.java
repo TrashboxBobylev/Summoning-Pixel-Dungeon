@@ -110,6 +110,7 @@ public class LoveHolder extends Artifact {
             if (hero.subClass == HeroSubClass.OCCULTIST){
                 actions.remove(AC_PRICK);
                 actions.remove(AC_SHIELD);
+                actions.remove(AC_SPLASH);
                 actions.add(AC_DAMAGE);
                 defaultAction = AC_DAMAGE;
             }
