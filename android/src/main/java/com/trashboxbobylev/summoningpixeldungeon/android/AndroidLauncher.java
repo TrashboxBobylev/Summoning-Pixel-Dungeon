@@ -50,7 +50,8 @@ public class AndroidLauncher extends AndroidApplication {
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
+
 		instance = this;
 		
 		try {
@@ -67,8 +68,19 @@ public class AndroidLauncher extends AndroidApplication {
 		// grab preferences directly using our instance first
 		// so that we don't need to rely on Gdx.app, which isn't initialized yet.
 		SPDSettings.setPrefsFromInstance(instance);
-		
-		//set desired orientation (if it exists) before initializing the app.
+
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread thread, Throwable throwable) {
+                throwable.printStackTrace();
+                String name = LogHandling.extractLogToFile();
+                if (name != null){
+                    SPDSettings.crashed(true);
+                }
+            }
+        });
+
+        //set desired orientation (if it exists) before initializing the app.
 		if (SPDSettings.landscapeFromSettings() != null) {
 			if (SPDSettings.landscapeFromSettings()){
 				instance.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);

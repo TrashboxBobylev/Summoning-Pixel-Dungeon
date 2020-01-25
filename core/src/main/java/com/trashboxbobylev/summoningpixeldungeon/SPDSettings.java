@@ -265,5 +265,14 @@ public class SPDSettings extends GameSettings {
 		return getBoolean(KEY_SYSTEMFONT,
 				(language() == Languages.CHINESE));
 	}
-	
+
+    public static final String CRASH         = "crash";
+
+    public static void crashed( boolean value ) {
+        put( CRASH, value );
+    }
+
+    public static boolean crashed() {
+        return getBoolean( CRASH, false );
+    }
 }

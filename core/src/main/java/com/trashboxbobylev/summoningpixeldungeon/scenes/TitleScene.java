@@ -38,6 +38,7 @@ import com.trashboxbobylev.summoningpixeldungeon.ui.Icons;
 import com.trashboxbobylev.summoningpixeldungeon.ui.LanguageButton;
 import com.trashboxbobylev.summoningpixeldungeon.ui.PrefsButton;
 import com.trashboxbobylev.summoningpixeldungeon.ui.StyledButton;
+import com.trashboxbobylev.summoningpixeldungeon.windows.WndMessage;
 import com.trashboxbobylev.summoningpixeldungeon.windows.WndOptions;
 import com.trashboxbobylev.summoningpixeldungeon.windows.WndStartGame;
 import com.watabou.glwrap.Blending;
@@ -228,6 +229,12 @@ public class TitleScene extends PixelScene {
 		ExitButton btnExit = new ExitButton();
 		btnExit.setPos( w - btnExit.width(), 0 );
 		add( btnExit );
+
+		if (SPDSettings.crashed()){
+		    SPDSettings.crashed(false);
+            add(
+                    new WndMessage(Messages.get(TitleScene.class, "crash")));
+        }
 
 		fadeIn();
 	}
