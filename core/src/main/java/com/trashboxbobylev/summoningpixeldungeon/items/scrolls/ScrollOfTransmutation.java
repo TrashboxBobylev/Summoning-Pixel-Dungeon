@@ -41,6 +41,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ExoticScro
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.Runestone;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Broadsword;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MagesStaff;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.Staff;
@@ -71,7 +72,8 @@ public class ScrollOfTransmutation extends InventoryScroll {
 				item instanceof Wand ||
 				item instanceof Plant.Seed ||
 				item instanceof Runestone ||
-				item instanceof Artifact;
+				item instanceof Artifact ||
+                item instanceof Staff;
 	}
 	
 	@Override
