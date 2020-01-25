@@ -34,7 +34,7 @@ public class FroggitStaff extends Staff {
         image = ItemSpriteSheet.FROGGIT_STAFF;
         minionType = Froggit.class;
         tier = 1;
-        chargeTurns = 120;
+        chargeTurns = 200;
         table = MinionBalanceTable.FROGGIT;
     }
 
