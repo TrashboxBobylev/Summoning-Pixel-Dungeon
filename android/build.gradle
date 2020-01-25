@@ -74,6 +74,7 @@ dependencies {
     natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
     implementation "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
     implementation "com.badlogicgames.gdx:gdx-controllers-android:$gdxVersion"
+    implementation "com.github.RohitSurwase.UCE-Handler:uce_handler:1.4"
 }
 
 // called every time gradle gets executed, takes the native dependencies of

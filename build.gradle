@@ -1,7 +1,9 @@
 buildscript {
     repositories {
+        maven { url 'https://jitpack.io'}
         google()
         jcenter()
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.1'
@@ -18,7 +20,7 @@ allprojects {
         appVersionName = '1.1'
 
         appAndroidCompileSDK = 28
-        appAndroidMinSDK = 9
+        appAndroidMinSDK = 15
         appAndroidTargetSDK = 28
 
         gdxVersion = '1.9.10'
@@ -26,8 +28,10 @@ allprojects {
     version = appVersionName
 
     repositories {
+        maven { url 'https://jitpack.io'}
         google()
         jcenter()
+
     }
 
 }

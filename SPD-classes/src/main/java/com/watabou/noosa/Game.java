@@ -252,7 +252,7 @@ public class Game implements ApplicationListener {
 		if (instance != null) instance.logException(tr);
 	}
 	
-	protected void logException( Throwable tr ){
+	public void logException(Throwable tr){
 		StringWriter sw = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw);
 		tr.printStackTrace(pw);

@@ -82,6 +82,7 @@ public class Food extends Item {
 			
 			satisfy(hero);
 			GLog.i( message );
+
 			
 			foodProc( hero );
 			
@@ -94,6 +95,7 @@ public class Food extends Item {
 			
 			Statistics.foodEaten++;
 			Badges.validateFoodEaten();
+            throw new UnsupportedOperationException();
 //			Buff.prolong(hero, Invisibility.class, 100f);
 //
 //			InterlevelScene.mode = InterlevelScene.Mode.DESCEND;

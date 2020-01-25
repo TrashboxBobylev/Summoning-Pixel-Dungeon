@@ -35,6 +35,7 @@ import android.telephony.TelephonyManager;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.rohitss.uceh.UCEHandler;
 import com.trashboxbobylev.summoningpixeldungeon.SPDSettings;
 import com.trashboxbobylev.summoningpixeldungeon.ShatteredPixelDungeon;
 import com.watabou.noosa.Game;
@@ -44,6 +45,7 @@ public class AndroidLauncher extends AndroidApplication {
 	
 	public static AndroidApplication instance;
 	protected static GLSurfaceView view;
+	public boolean googlePlay;
 	
 	private AndroidPlatformSupport support;
 	
@@ -68,17 +70,19 @@ public class AndroidLauncher extends AndroidApplication {
 		// grab preferences directly using our instance first
 		// so that we don't need to rely on Gdx.app, which isn't initialized yet.
 		SPDSettings.setPrefsFromInstance(instance);
+		new UCEHandler.Builder(this).setUCEHEnabled(!googlePlay).build();
 
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            @Override
-            public void uncaughtException(Thread thread, Throwable throwable) {
-                throwable.printStackTrace();
-                String name = LogHandling.extractLogToFile();
-                if (name != null){
-                    SPDSettings.crashed(true);
-                }
-            }
-        });
+//        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+//            @Override
+//            public void uncaughtException(Thread thread, Throwable throwable) {
+//                throwable.printStackTrace();
+//                boolean crash = LogHandling.extractLogToFile();
+//                if (crash){
+//                    SPDSettings.crashed(true);
+//                }
+//                System.exit(1);
+//            }
+//        });
 
         //set desired orientation (if it exists) before initializing the app.
 		if (SPDSettings.landscapeFromSettings() != null) {

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.trashboxbobylev.summoningpixeldungeon.android"
+          xmlns:tools="http://schemas.android.com/tools" package="com.trashboxbobylev.summoningpixeldungeon.android"
 	android:installLocation="auto">
+    <uses-permission android:name="android.permission.READ_LOGS" tools:ignore="ProtectedPermissions"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 	
 	<uses-feature
 		android:glEsVersion="0x00020000"/>
@@ -32,6 +34,7 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
+
 
 	</application>
 

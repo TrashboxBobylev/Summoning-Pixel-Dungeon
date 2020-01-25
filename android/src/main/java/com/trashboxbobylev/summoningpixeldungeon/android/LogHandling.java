@@ -24,38 +24,34 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.android;
 
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
+import com.badlogic.gdx.backends.android.AndroidClipboard;
+import com.watabou.noosa.Game;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
 public class LogHandling {
-    public static String extractLogToFile(){
+    public static boolean extractLogToFile(){
         PackageManager manager = AndroidLauncher.instance.getPackageManager();
         PackageInfo info = null;
         try {
-            manager.getPackageInfo(AndroidLauncher.instance.getPackageName(), 0);
+            info = manager.getPackageInfo(AndroidLauncher.instance.getPackageName(), 0);
         } catch (PackageManager.NameNotFoundException ignored) {
         }
         String model = Build.MODEL;
         if (!model.startsWith(Build.MANUFACTURER)){
             model = Build.MANUFACTURER + " " + model;
         }
-        String path = Environment.getExternalStorageDirectory() + "/" + "SummPDCrashes/";
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
-        String fullName = path + sdf.format(new Date());
 
-        File file = new File(fullName);
         InputStreamReader reader = null;
-        FileWriter writer = null;
         try {
             String cmd = (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) ?
                     "logcat -d -v time MyApp:v dalvikvm:v System.err:v *:s" :
@@ -63,29 +59,28 @@ public class LogHandling {
             Process process = Runtime.getRuntime().exec(cmd);
             reader = new InputStreamReader(process.getInputStream());
 
-            writer = new FileWriter(file);
-            writer.write("Android version: " + Build.VERSION.SDK_INT + "\n");
-            writer.write("Device: " + model +"\n");
-            writer.write("Mod version: " + (info == null ? "(undefined" : info.versionCode) + "\n");
+            StringBuilder out = new StringBuilder();
+            out.append("Android version: ").append(Build.VERSION.SDK_INT).append("\n");
+            out.append("Device: ").append(model).append("\n");
+            out.append("Mod version: ").append(info == null ? "(undefined" : info.versionCode).append("\n");
             char[] buffer = new char[10000];
-            do {
-                int n = reader.read(buffer, 0, buffer.length);
-                if (n == -1) break;
-                writer.write(buffer, 0, n);
-            } while (true);
 
-            writer.close();
+            int charRead;
+            while((charRead = reader.read(buffer, 0, buffer.length)) > 0 ) {
+                out.append(buffer, 0, charRead);
+            }
+            AndroidClipboard androidClipboard = new AndroidClipboard(AndroidLauncher.instance.getContext());
+            androidClipboard.setContents(out.toString());
+
             reader.close();
         } catch (IOException e) {
-            if (writer != null) {
-                try {writer.close();} catch (IOException ignored) {}
-            }
             if (reader != null) {
                 try {reader.close();} catch (IOException ignored) {}
             }
+            e.printStackTrace();
 
-            return null;
+            return false;
         }
-        return fullName;
+        return true;
     }
 }
