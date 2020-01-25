@@ -143,8 +143,6 @@ public enum HeroClass {
         new HolyBomb().quantity(5).collect();
         new ShockBomb().collect();
 
-		new PotionOfExperience().quantity(18).collect();
-
 		hero.attunement = 0;
 		
 		new ScrollOfIdentify().identify();
@@ -175,6 +173,9 @@ public enum HeroClass {
 		if (hero.belongings.armor != null){
 			hero.belongings.armor.affixSeal(new BrokenSeal());
 		}
+
+		new Scimitar().identify().collect();
+		hero.STR = 14;
 		
 		new PotionBandolier().collect();
 		Dungeon.LimitedDrops.POTION_BANDOLIER.drop();

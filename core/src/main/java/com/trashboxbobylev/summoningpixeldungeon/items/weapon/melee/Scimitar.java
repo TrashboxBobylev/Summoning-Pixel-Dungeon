@@ -35,7 +35,7 @@ public class Scimitar extends MeleeWeapon {
 		image = ItemSpriteSheet.SCIMITAR;
 
 		tier = 3;
-		DLY = 0.8f; //1.25x speed
+		DLY = 0.9f; //1.11x speed
 	}
 
 	public int strikes;
@@ -53,15 +53,24 @@ public class Scimitar extends MeleeWeapon {
     }
 
     @Override
+    public int min(int lvl) {
+        return tier + lvl/2;
+    }
+
+    @Override
 	public int max(int lvl) {
-		return  3*(tier) +    //15 base, down from 20
+		return  5*(tier) +    //15 base, down from 20
 				lvl*(tier);   //+3 instead of +4
 	}
 
     @Override
     public int proc(Char attacker, Char defender, int damage) {
-        if (++strikes > 4) damage *= 2;
-        defender.sprite.showStatus(CharSprite.WARNING, "crit!");
+        if (++strikes == 4) {
+            damage *= 2;
+            defender.sprite.showStatus(CharSprite.WARNING, "crit!");
+            strikes = 0;
+        }
+
         return super.proc(attacker, defender, damage);
     }
 }
