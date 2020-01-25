@@ -94,6 +94,16 @@ public class Broadsword extends MeleeWeapon {
     }
 
     @Override
+    public int level() {
+        return 6;
+    }
+
+    @Override
+    public int visiblyUpgraded() {
+        return 0;
+    }
+
+    @Override
     public int defenseFactor( Char owner ) {
         return 4;	//4 extra defence
     }
@@ -119,6 +129,7 @@ public class Broadsword extends MeleeWeapon {
             defender.sprite.showStatus(CharSprite.WARNING, "crit!");
             strikes = 0;
         }
+        new Unstable().proc(this, attacker, defender, damage);
         new Unstable().proc(this, attacker, defender, damage);
         new Unstable().proc(this, attacker, defender, damage);
         return super.proc(attacker, defender, damage);
