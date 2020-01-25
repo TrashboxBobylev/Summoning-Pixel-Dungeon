@@ -440,7 +440,7 @@ public class Staff extends Weapon {
 
     public class Charger extends Buff {
 
-        private static final float CHARGE_BUFF_BONUS = 0.25f;
+        private static final float CHARGE_BUFF_BONUS = 0.1f;
 
         @Override
         public boolean attachTo( Char target ) {
@@ -472,7 +472,7 @@ public class Staff extends Weapon {
 
             LockedFloor lock = target.buff(LockedFloor.class);
             if (lock == null || lock.regenOn())
-                partialCharge += (1f / chargeTurns) * (Dungeon.hero.heroClass == HeroClass.CONJURER ? 1 : 0.8);
+                partialCharge += (1f / chargeTurns) * (Dungeon.hero.heroClass == HeroClass.CONJURER ? 1 : 0.9);
             updateQuickslot();
 
             for (Recharging bonus : target.buffs(Recharging.class)){
