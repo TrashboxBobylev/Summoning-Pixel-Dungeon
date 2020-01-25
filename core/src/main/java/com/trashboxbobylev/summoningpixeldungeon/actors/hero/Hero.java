@@ -154,7 +154,7 @@ public class Hero extends Char {
 	public float usedAttunement;
 
 	public float attunement(){
-	    return attunement + RingOfAttunement.attunementMultiplier(this);
+	    return attunement + RingOfAttunement.attunementMultiplier(this) + (subClass == HeroSubClass.SOUL_REAVER ? 1 : 0);
     }
 	
 	public int lvl = 1;
