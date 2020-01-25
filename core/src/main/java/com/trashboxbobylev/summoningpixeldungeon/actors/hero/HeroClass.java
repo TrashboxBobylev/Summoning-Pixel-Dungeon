@@ -175,7 +175,8 @@ public enum HeroClass {
 		}
 
 		new Scimitar().identify().collect();
-		hero.STR = 14;
+		new Broadsword().identify().collect();
+		hero.STR = 18;
 		
 		new PotionBandolier().collect();
 		Dungeon.LimitedDrops.POTION_BANDOLIER.drop();
