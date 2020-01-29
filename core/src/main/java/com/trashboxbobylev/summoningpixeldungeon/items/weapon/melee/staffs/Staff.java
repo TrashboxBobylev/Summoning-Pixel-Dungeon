@@ -30,8 +30,10 @@ import com.trashboxbobylev.summoningpixeldungeon.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroClass;
+import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroSubClass;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Beam;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
@@ -71,6 +73,7 @@ public class Staff extends Weapon {
 
     public static final String AC_SUMMON = "SUMMON";
     public static final String AC_ZAP = "ZAP";
+    public static final String AC_ENHANCE = "ENHANCE";
 
     public int curCharges = 1;
     public float partialCharge = 0f;
@@ -250,9 +253,14 @@ public class Staff extends Weapon {
             actions.add( AC_SUMMON );
         }
         actions.add( AC_ZAP );
+        if (hero.subClass == HeroSubClass.SOUL_REAVER && hero.buff(SoulReaver.class) != null){
+            actions.add(AC_ENHANCE);
+        }
         actions.remove( AC_EQUIP);
         return actions;
     }
+
+    private static boolean enchance = false;
 
     @Override
     public void execute(Hero hero, String action) {
@@ -270,7 +278,8 @@ public class Staff extends Weapon {
                 GLog.warning( Messages.get(Wand.class, "fizzles") );
             }
 
-        } else if (action.equals(AC_ZAP)){
+        } else if (action.equals(AC_ZAP) || action.equals(AC_ENHANCE)){
+            enchance = action.equals(AC_ENHANCE);
             curUser = hero;
             curItem = this;
             GameScene.selectCell( zapper );
@@ -419,7 +428,24 @@ public class Staff extends Weapon {
                         Char ch = Actor.findChar(shot.collisionPos);
                         if (ch != null){
                             if (ch instanceof Minion){
-                                ch.die( curUser );
+                                if (!enchance)ch.die( curUser );
+                                else {
+                                    SoulReaver buff = curUser.buff(SoulReaver.class);
+                                    if (buff != null){
+                                        switch (buff.type){
+                                            case MELEE:
+                                                Buff.prolong(ch, AdditionalDamage.class, buff.cooldown()+1); break;
+                                            case RANGE:
+                                                Buff.prolong(ch, AdditionalEvasion.class, buff.cooldown()+1); break;
+                                            case MAGIC:
+                                                Buff.prolong(ch, MagicalResistance.class, buff.cooldown()+1); break;
+                                            case DEFENSE:
+                                                Buff.prolong(ch, AdditionalDefense.class, buff.cooldown()+1); break;
+                                        }
+                                        buff.detach();
+
+                                    }
+                                }
                             }
                             else ch.damage(0, this);
                         }

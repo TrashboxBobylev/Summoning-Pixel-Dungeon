@@ -31,6 +31,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Electricity;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.PerfumeGas;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.ToxicGas;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.SoulReaver;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroSubClass;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
@@ -59,6 +60,7 @@ import com.trashboxbobylev.summoningpixeldungeon.levels.features.Door;
 import com.trashboxbobylev.summoningpixeldungeon.levels.traps.GrimTrap;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.CharSprite;
+import com.trashboxbobylev.summoningpixeldungeon.sprites.MissileSprite;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.audio.Sample;
@@ -284,6 +286,15 @@ public abstract class Char extends Actor {
 				buff(EarthImbue.class).proc(enemy);
 			if (buff(FrostImbue.class) != null)
 				buff(FrostImbue.class).proc(enemy);
+
+            if (this instanceof Hero)
+                if (((Hero) this).subClass == HeroSubClass.SOUL_REAVER) {
+                    if (!(((Hero) this).belongings.weapon instanceof MissileWeapon)) {
+                        Buff.affect(this, SoulReaver.class, 5f).type = SoulReaver.Type.MELEE;
+                    } else {
+                        Buff.affect(this, SoulReaver.class, 5f).type = SoulReaver.Type.RANGE;
+                    }
+                }
 
 
 			enemy.sprite.bloodBurstA( sprite.center(), effectiveDamage );

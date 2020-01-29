@@ -36,6 +36,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Alchemy;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.FierySlash;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.SoulReaver;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.SoulWeakness;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.SpikyShield;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
@@ -991,6 +992,8 @@ public class Hero extends Char {
 	
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
+
+	    int initialDamage = damage;
 		
 		if (damage > 0 && subClass == HeroSubClass.BERSERKER){
 			Berserk berserk = Buff.affect(this, Berserk.class);
@@ -1015,6 +1018,10 @@ public class Hero extends Char {
 		if (rockArmor != null) {
 			damage = rockArmor.absorb(damage);
 		}
+
+		if (subClass == HeroSubClass.SOUL_REAVER && (initialDamage / 2 >= damage)){
+            Buff.affect(this, SoulReaver.class, 5f).type = SoulReaver.Type.DEFENSE;
+        }
 		
 		return damage;
 	}

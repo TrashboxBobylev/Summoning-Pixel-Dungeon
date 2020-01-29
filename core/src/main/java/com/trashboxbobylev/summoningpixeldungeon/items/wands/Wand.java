@@ -37,6 +37,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.MagicImmune;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Recharging;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.SoulMark;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.EnergyOverload;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.SoulReaver;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.SoulWeakness;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroClass;
@@ -182,6 +183,10 @@ public abstract class Wand extends Item {
 				Random.Float() > (Math.pow(0.92f, (wandLevel*chargesUsed)+1) - 0.07f)){
 			SoulMark.prolong(target, SoulMark.class, SoulMark.DURATION + wandLevel);
 		}
+
+		if (target != Dungeon.hero && Dungeon.hero.subClass == HeroSubClass.SOUL_REAVER){
+            Buff.affect(Dungeon.hero, SoulReaver.class, 5f).type = SoulReaver.Type.MAGIC;
+        }
 	}
 
 	@Override
