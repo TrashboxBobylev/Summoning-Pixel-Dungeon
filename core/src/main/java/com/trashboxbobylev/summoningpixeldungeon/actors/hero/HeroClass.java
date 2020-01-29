@@ -135,12 +135,6 @@ public enum HeroClass {
 			new SmallRation().collect();
 		}
 
-		new Firebomb().identify().collect();
-		new WoollyBomb().identify().collect();
-		new Noisemaker().identify().collect();
-		new ArcaneBomb().identify().collect();
-        new Bomb().quantity(25).collect();
-        new HolyBomb().quantity(5).collect();
         new ShockBomb().collect();
 
 		hero.attunement = 0;
