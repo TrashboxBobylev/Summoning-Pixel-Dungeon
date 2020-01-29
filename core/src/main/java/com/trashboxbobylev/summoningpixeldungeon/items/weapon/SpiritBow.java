@@ -28,17 +28,24 @@ import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Shrink;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Eye;
+import com.trashboxbobylev.summoningpixeldungeon.effects.CellEmitter;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Splash;
+import com.trashboxbobylev.summoningpixeldungeon.effects.particles.PurpleParticle;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfFuror;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfSharpshooting;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.MissileWeapon;
+import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.CellSelector;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
+import com.trashboxbobylev.summoningpixeldungeon.sprites.CharSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.MissileSprite;
 import com.trashboxbobylev.summoningpixeldungeon.ui.QuickSlotButton;
+import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
@@ -220,8 +227,18 @@ public class SpiritBow extends Weapon {
 		{
 			image = ItemSpriteSheet.SPIRIT_ARROW;
 		}
-		
-		@Override
+
+        @Override
+        public int image() {
+            switch (SpiritBow.this.augment){
+                case DAMAGE:
+                    return ItemSpriteSheet.SPIRIT_BLAST;
+                default:
+                    return ItemSpriteSheet.SPIRIT_ARROW;
+            }
+        }
+
+        @Override
 		public int damageRoll(Char owner) {
 			return SpiritBow.this.damageRoll(owner);
 		}
@@ -273,8 +290,43 @@ public class SpiritBow extends Weapon {
 		
 		@Override
 		public void cast(final Hero user, final int dst) {
-			final int cell = throwPos( user, dst );
-			SpiritBow.this.targetPos = cell;
+            final Ballistica ballistica = new Ballistica( user.pos, dst, Ballistica.STOP_TERRAIN | Ballistica.STOP_TARGET );
+			final int cell = SpiritBow.this.augment == Augment.DAMAGE ?  ballistica.collisionPos : throwPos( user, dst );
+            SpiritBow.this.targetPos = cell;
+			if (sniperSpecial && SpiritBow.this.augment == Augment.DAMAGE){
+
+                ((MissileSprite) user.sprite.parent.recycle(MissileSprite.class)).
+                        reset(user.sprite,
+                                cell,
+                                this,
+                                new Callback() {
+                                    @Override
+                                    public void call() {
+                                        for (int pos : ballistica.subPath(1, ballistica.dist)) {
+
+
+                                            Char ch = Actor.findChar( pos );
+                                            if (ch == null) {
+                                                continue;
+                                            }
+
+                                            if (Char.hit( user, ch, false )) {
+                                                int damage = (int) (damageRoll(user)*0.9f);
+                                                ch.damage(damage , new SpiritBow.SpiritArrow() );
+                                            } else {
+                                                ch.sprite.showStatus( CharSprite.NEUTRAL,  ch.defenseVerb() );
+                                            }
+                                        }
+
+                                        user.spendAndNext(castDelay(user, dst));
+                                        sniperSpecial = false;
+                                    }
+                                });
+                user.busy();
+
+                Sample.INSTANCE.play( Assets.SND_MISS, 0.6f, 0.6f, 1.5f );
+                user.sprite.zap(cell);
+            }
 			if (sniperSpecial && SpiritBow.this.augment == Augment.SPEED){
 				if (flurryCount == -1) flurryCount = 3;
 				
