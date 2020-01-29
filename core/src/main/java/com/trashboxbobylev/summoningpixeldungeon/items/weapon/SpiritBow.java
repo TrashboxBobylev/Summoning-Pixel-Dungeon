@@ -313,6 +313,7 @@ public class SpiritBow extends Weapon {
                                             if (Char.hit( user, ch, false )) {
                                                 int damage = (int) (damageRoll(user)*0.9f);
                                                 ch.damage(damage , new SpiritBow.SpiritArrow() );
+                                                SpiritBow.this.proc(user, ch, damage);
                                             } else {
                                                 ch.sprite.showStatus( CharSprite.NEUTRAL,  ch.defenseVerb() );
                                             }
