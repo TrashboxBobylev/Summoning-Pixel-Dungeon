@@ -134,7 +134,7 @@ public enum HeroClass {
 		if (Dungeon.isChallenged(Challenges.NO_FOOD)){
 			new SmallRation().collect();
 		}
-
+        new TomeOfMastery().collect();
         new ShockBomb().collect();
 
 		hero.attunement = 0;
@@ -221,7 +221,9 @@ public enum HeroClass {
 
 		(hero.belongings.weapon = new Gloves()).identify();
 		SpiritBow bow = new SpiritBow();
+		bow.augment = Weapon.Augment.DAMAGE;
 		bow.identify().collect();
+		new ThrowingKnife().collect();
 
 		Dungeon.quickslot.setSlot(0, bow);
 
