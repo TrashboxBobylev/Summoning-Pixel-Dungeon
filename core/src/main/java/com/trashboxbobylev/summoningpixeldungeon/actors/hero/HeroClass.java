@@ -73,6 +73,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.shop.StoneHa
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.ThrowingKnife;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.ThrowingStone;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.darts.TippedDart;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
@@ -223,7 +224,7 @@ public enum HeroClass {
 		SpiritBow bow = new SpiritBow();
 		bow.augment = Weapon.Augment.DAMAGE;
 		bow.identify().collect();
-		new ThrowingKnife().collect();
+		new Dart().quantity(8).collect();
 
 		Dungeon.quickslot.setSlot(0, bow);
 

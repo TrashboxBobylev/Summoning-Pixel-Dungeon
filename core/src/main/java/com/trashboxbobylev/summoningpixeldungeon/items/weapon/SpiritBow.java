@@ -293,94 +293,95 @@ public class SpiritBow extends Weapon {
             final Ballistica ballistica = new Ballistica( user.pos, dst, Ballistica.STOP_TERRAIN );
 			final int cell = SpiritBow.this.augment == Augment.DAMAGE ?  ballistica.collisionPos : throwPos( user, dst );
             SpiritBow.this.targetPos = cell;
-			if (sniperSpecial && SpiritBow.this.augment == Augment.DAMAGE){
+            if (sniperSpecial) {
+                if (SpiritBow.this.augment == Augment.DAMAGE) {
+                    user.busy();
 
-                ((MissileSprite) user.sprite.parent.recycle(MissileSprite.class)).
-                        reset(user.sprite,
-                                cell,
-                                this,
-                                new Callback() {
-                                    @Override
-                                    public void call() {
-                                        for (int pos : ballistica.subPath(1, ballistica.dist)) {
+                    Sample.INSTANCE.play( Assets.SND_MISS, 0.6f, 0.6f, 1.5f );
+                    user.sprite.zap(cell);
+
+                    ((MissileSprite) user.sprite.parent.recycle(MissileSprite.class)).
+                            reset(user.sprite,
+                                    cell,
+                                    this,
+                                    new Callback() {
+                                        @Override
+                                        public void call() {
+                                            for (int pos : ballistica.subPath(1, ballistica.dist)) {
 
 
-                                            Char ch = Actor.findChar( pos );
-                                            if (ch == null) {
-                                                continue;
+                                                Char ch = Actor.findChar( pos );
+                                                if (ch == null) {
+                                                    continue;
+                                                }
+
+                                                if (Char.hit( user, ch, false )) {
+                                                    Sample.INSTANCE.play( Assets.SND_HIT, 1, 1, Random.Float( 0.8f, 1.25f ) );
+                                                    int damage = (int) (damageRoll(user)*0.9f);
+                                                    ch.sprite.bloodBurstA( user.sprite.center(), damage );
+                                                    ch.sprite.flash();
+
+                                                    ch.damage(damage , new SpiritBow.SpiritArrow() );
+                                                    SpiritBow.this.proc(user, ch, damage);
+                                                } else {
+                                                    ch.sprite.showStatus( CharSprite.NEUTRAL,  ch.defenseVerb() );
+                                                }
                                             }
 
-                                            if (Char.hit( user, ch, false )) {
-                                                int damage = (int) (damageRoll(user)*0.9f);
-                                                ch.damage(damage , new SpiritBow.SpiritArrow() );
-                                                SpiritBow.this.proc(user, ch, damage);
-                                            } else {
-                                                ch.sprite.showStatus( CharSprite.NEUTRAL,  ch.defenseVerb() );
+                                            user.spendAndNext(castDelay(user, dst));
+                                            sniperSpecial = false;
+                                        }
+                                    });
+
+                } else if ( SpiritBow.this.augment == Augment.SPEED){
+                    if (flurryCount == -1) flurryCount = 3;
+
+                    final Char enemy = Actor.findChar( cell );
+
+                    if (enemy == null){
+                        user.spendAndNext(castDelay(user, dst));
+                        sniperSpecial = false;
+                        flurryCount = -1;
+                        return;
+                    }
+                    QuickSlotButton.target(enemy);
+
+                    final boolean last = flurryCount == 1;
+
+                    Sample.INSTANCE.play( Assets.SND_MISS, 0.6f, 0.6f, 1.5f );
+
+                    ((MissileSprite) user.sprite.parent.recycle(MissileSprite.class)).
+                            reset(user.sprite,
+                                    cell,
+                                    this,
+                                    new Callback() {
+                                        @Override
+                                        public void call() {
+                                            if (enemy.isAlive()) {
+                                                curUser = user;
+                                                onThrow(cell);
+                                            }
+
+                                            if (last) {
+                                                user.spendAndNext(castDelay(user, dst));
+                                                sniperSpecial = false;
+                                                flurryCount = -1;
                                             }
                                         }
+                                    });
 
-                                        user.spendAndNext(castDelay(user, dst));
-                                        sniperSpecial = false;
-                                    }
-                                });
-                user.busy();
+                    user.sprite.zap(cell, new Callback() {
+                        @Override
+                        public void call() {
+                            flurryCount--;
+                            if (flurryCount > 0){
+                                cast(user, dst);
+                            }
+                        }
+                    });
 
-                Sample.INSTANCE.play( Assets.SND_MISS, 0.6f, 0.6f, 1.5f );
-                user.sprite.zap(cell);
+                }
             } else {
-                super.cast(user, dst);
-                return;
-            }
-			if (sniperSpecial && SpiritBow.this.augment == Augment.SPEED){
-				if (flurryCount == -1) flurryCount = 3;
-				
-				final Char enemy = Actor.findChar( cell );
-				
-				if (enemy == null){
-					user.spendAndNext(castDelay(user, dst));
-					sniperSpecial = false;
-					flurryCount = -1;
-					return;
-				}
-				QuickSlotButton.target(enemy);
-				
-				final boolean last = flurryCount == 1;
-				
-				user.busy();
-				
-				Sample.INSTANCE.play( Assets.SND_MISS, 0.6f, 0.6f, 1.5f );
-				
-				((MissileSprite) user.sprite.parent.recycle(MissileSprite.class)).
-						reset(user.sprite,
-								cell,
-								this,
-								new Callback() {
-									@Override
-									public void call() {
-										if (enemy.isAlive()) {
-											curUser = user;
-											onThrow(cell);
-										}
-										
-										if (last) {
-											user.spendAndNext(castDelay(user, dst));
-											sniperSpecial = false;
-											flurryCount = -1;
-										}
-									}
-								});
-				
-				user.sprite.zap(cell, new Callback() {
-					@Override
-					public void call() {
-						flurryCount--;
-						if (flurryCount > 0){
-							cast(user, dst);
-						}
-					}
-				});
-				
-			} else {
 				super.cast(user, dst);
 				return;
 			}

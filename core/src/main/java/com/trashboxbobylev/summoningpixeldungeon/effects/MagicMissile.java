@@ -202,6 +202,8 @@ public class MagicMissile extends Emitter {
 		}
 		return missile;
 	}
+
+
 	
 	@Override
 	public void update() {
