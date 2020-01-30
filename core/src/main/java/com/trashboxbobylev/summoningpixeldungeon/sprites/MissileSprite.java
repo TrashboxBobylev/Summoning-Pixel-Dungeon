@@ -143,6 +143,9 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		}
 		
 		float speed = SPEED;
+		if (item instanceof SpiritBow.SpiritArrow && item.image() == ItemSpriteSheet.SPIRIT_BLAST){
+		    speed *= 0.4f;
+        }
 		if (item instanceof Dart && Dungeon.hero.belongings.weapon instanceof Crossbow){
 			speed *= 3f;
 			
