@@ -222,9 +222,7 @@ public enum HeroClass {
 
 		(hero.belongings.weapon = new Gloves()).identify();
 		SpiritBow bow = new SpiritBow();
-		bow.augment = Weapon.Augment.DAMAGE;
 		bow.identify().collect();
-		new Dart().quantity(8).collect();
 
 		Dungeon.quickslot.setSlot(0, bow);
 
