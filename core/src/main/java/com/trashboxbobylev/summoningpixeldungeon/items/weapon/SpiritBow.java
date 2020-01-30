@@ -327,6 +327,9 @@ public class SpiritBow extends Weapon {
 
                 Sample.INSTANCE.play( Assets.SND_MISS, 0.6f, 0.6f, 1.5f );
                 user.sprite.zap(cell);
+            } else {
+                super.cast(user, dst);
+                return;
             }
 			if (sniperSpecial && SpiritBow.this.augment == Augment.SPEED){
 				if (flurryCount == -1) flurryCount = 3;
@@ -379,6 +382,7 @@ public class SpiritBow extends Weapon {
 				
 			} else {
 				super.cast(user, dst);
+				return;
 			}
 		}
 	}
