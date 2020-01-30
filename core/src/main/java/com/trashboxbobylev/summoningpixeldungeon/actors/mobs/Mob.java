@@ -853,18 +853,18 @@ public abstract class Mob extends Char {
 					return moveSprite( oldPos, pos );
 				} else {
                     PerfumeGas perfume = (PerfumeGas) Dungeon.level.blobs.get(PerfumeGas.class);
-                    if (perfume != null) {
+                    if (perfume != null && perfume.volume > 0) {
                         if (!isImmune(PerfumeGas.Affection.class) && buff(PerfumeGas.Aggression.class) == null) {
                             Char ch = Actor.findChar(pos);
                             do {
                                 int cell = Dungeon.level.randomDestination();
                                 if (perfume.volume > 0 && perfume.cur[cell] > 0){
 
-                                    if (ch instanceof Mob) ((Mob)ch).beckon(cell);
+                                    if (ch instanceof Mob) ((Mob)ch).target = cell;
+                                    Buff.affect(ch, PerfumeGas.Affection.class, 6);
                                     break;
                                 }
                             } while (true);
-                            Buff.affect(ch, PerfumeGas.Affection.class, 2);
                         }
                     } else {
                         target = Dungeon.level.randomDestination();

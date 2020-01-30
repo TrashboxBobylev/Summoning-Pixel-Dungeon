@@ -79,6 +79,12 @@ public class PerfumeGas extends Blob {
         }
 
         @Override
+        public void fx(boolean on) {
+            if (on) target.sprite.add(CharSprite.State.ALLURED);
+            else target.sprite.remove(CharSprite.State.ALLURED);
+        }
+
+        @Override
         public int icon() {
             return BuffIndicator.HEART;
         }
@@ -106,11 +112,7 @@ public class PerfumeGas extends Blob {
             announced = true;
         }
 
-        @Override
-        public void fx(boolean on) {
-            if (on) target.sprite.add(CharSprite.State.ALLURED);
-            else target.sprite.remove(CharSprite.State.ALLURED);
-        }
+
 
         @Override
         public int icon() {

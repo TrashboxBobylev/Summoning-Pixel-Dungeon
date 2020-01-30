@@ -348,7 +348,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
                 break;
             case ALLURED:
                 allured = emitter();
-                allured.pour(Speck.factory(Speck.HEART), 0.06f );
+                allured.pour(Speck.factory(Speck.HEART), 0.08f );
                 if (visible) {
                     Sample.INSTANCE.play( Assets.SND_CHARMS );
                 }
