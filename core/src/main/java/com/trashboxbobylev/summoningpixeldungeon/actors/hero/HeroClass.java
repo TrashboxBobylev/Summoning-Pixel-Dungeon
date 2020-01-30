@@ -137,6 +137,7 @@ public enum HeroClass {
 		}
         new TomeOfMastery().collect();
         new ShockBomb().collect();
+        new PerfumeBrew().collect();
 
 		hero.attunement = 0;
 		
@@ -171,7 +172,6 @@ public enum HeroClass {
 
 		new Scimitar().identify().collect();
 		new Broadsword().identify().collect();
-		hero.STR = 18;
 		
 		new PotionBandolier().collect();
 		Dungeon.LimitedDrops.POTION_BANDOLIER.drop();
