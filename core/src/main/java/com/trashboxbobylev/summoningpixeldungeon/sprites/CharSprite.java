@@ -76,7 +76,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected float shadowOffset    = 0.25f;
 
 	public enum State {
-		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, HEALING, SHIELDED, FROSTBURNING, SPIRIT, SHRUNK
+		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, HEALING, SHIELDED, FROSTBURNING, SPIRIT, SHRUNK, ALLURED
 	}
 	
 	protected Animation idle;
@@ -97,6 +97,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected Emitter healing;
 	protected Emitter frostburning;
 	protected Emitter spirit;
+	protected Emitter allured;
 	
 	protected IceBlock iceBlock;
 	protected DarkBlock darkBlock;
@@ -345,6 +346,13 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
                     Sample.INSTANCE.play( Assets.SND_BURNING );
                 }
                 break;
+            case ALLURED:
+                allured = emitter();
+                allured.pour(Speck.factory(Speck.HEART), 0.06f );
+                if (visible) {
+                    Sample.INSTANCE.play( Assets.SND_CHARMS );
+                }
+                break;
             case FROSTBURNING:
                 frostburning = emitter();
                 frostburning.pour( FrostfireParticle.FACTORY, 0.06f );
@@ -413,6 +421,12 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
                 if (spirit != null) {
                     spirit.on = false;
                     spirit = null;
+                }
+                break;
+            case ALLURED:
+                if (allured != null) {
+                    allured.on = false;
+                    allured = null;
                 }
                 break;
             case FROSTBURNING:

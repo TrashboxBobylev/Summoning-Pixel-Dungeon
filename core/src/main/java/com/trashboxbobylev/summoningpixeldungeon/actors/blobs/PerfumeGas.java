@@ -34,6 +34,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Vertigo;
 import com.trashboxbobylev.summoningpixeldungeon.effects.BlobEmitter;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
+import com.trashboxbobylev.summoningpixeldungeon.sprites.CharSprite;
 import com.trashboxbobylev.summoningpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 
@@ -62,7 +63,7 @@ public class PerfumeGas extends Blob {
 	public void use( BlobEmitter emitter ) {
 		super.use( emitter );
 
-		emitter.pour( Speck.factory( Speck.PERFUME, true ), 0.5f );
+		emitter.pour( Speck.factory( Speck.PERFUME, true ), 0.3f );
 	}
 
 	@Override
@@ -103,6 +104,12 @@ public class PerfumeGas extends Blob {
         {
             type = buffType.NEGATIVE;
             announced = true;
+        }
+
+        @Override
+        public void fx(boolean on) {
+            if (on) target.sprite.add(CharSprite.State.ALLURED);
+            else target.sprite.remove(CharSprite.State.ALLURED);
         }
 
         @Override
