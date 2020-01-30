@@ -43,14 +43,14 @@ public class Vampiric extends Weapon.Enchantment {
 
 	    //vampiric
 		//chance to heal scales from 5%-30% based on missing HP
-		float missingPercent = (attacker.HT - attacker.HP) / (float)attacker.HT;
+		//float missingPercent = (attacker.HT - attacker.HP) / (float)attacker.HT;
         //heals 20% of max HP, but intensifies with levels
         //int healAmt = Math.round(damage * 0.5f);
         //healAmt = Math.min( healAmt, attacker.HT - attacker.HP );
 			
         if (attacker.isAlive()) {
 
-            Buff.affect(attacker, Healing.class).setHeal(damage / 4 + weapon.level()*2 + 3, 0.25f, 0);
+            Buff.affect(attacker, Healing.class).setHeal(Math.round(damage / 2.5f) + weapon.level()*2 + 3, 0.25f, 0);
             //attacker.sprite.showStatus( CharSprite.POSITIVE, Integer.toString( healAmt ) );
         }
 
