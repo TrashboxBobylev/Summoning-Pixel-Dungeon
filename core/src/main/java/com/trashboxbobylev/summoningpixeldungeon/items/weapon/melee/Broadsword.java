@@ -90,7 +90,7 @@ public class Broadsword extends MeleeWeapon {
 
     @Override
     public int max(int lvl) {
-        return 20;
+        return 30;
     }
 
     @Override
@@ -125,7 +125,7 @@ public class Broadsword extends MeleeWeapon {
     @Override
     public int proc(Char attacker, Char defender, int damage) {
         if (++strikes == 3) {
-            damage *= 3;
+            damage *= 3.5f;
             defender.sprite.showStatus(CharSprite.WARNING, "crit!");
             strikes = 0;
         }
