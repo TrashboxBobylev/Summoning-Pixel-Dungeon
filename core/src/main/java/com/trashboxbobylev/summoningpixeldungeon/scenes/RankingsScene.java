@@ -30,6 +30,7 @@ import com.trashboxbobylev.summoningpixeldungeon.ShatteredPixelDungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroClass;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Flare;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Sword;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
@@ -214,7 +215,8 @@ public class RankingsScene extends PixelScene {
 			int odd = pos % 2;
 			
 			if (rec.win) {
-				shield.view( ItemSpriteSheet.AMULET, null );
+			    if (rec.cause == Sword.class) shield.view( ItemSpriteSheet.BONES, null);
+				else shield.view( ItemSpriteSheet.AMULET, null );
 				position.hardlight( TEXT_WIN[odd] );
 				desc.hardlight( TEXT_WIN[odd] );
 				depth.hardlight( TEXT_WIN[odd] );

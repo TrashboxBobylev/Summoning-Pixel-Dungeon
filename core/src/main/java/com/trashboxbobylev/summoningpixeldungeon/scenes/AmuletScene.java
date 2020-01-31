@@ -25,11 +25,13 @@
 package com.trashboxbobylev.summoningpixeldungeon.scenes;
 
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
+import com.trashboxbobylev.summoningpixeldungeon.Challenges;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.GamesInProgress;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Flare;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
 import com.trashboxbobylev.summoningpixeldungeon.items.Amulet;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Sword;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.ui.RedButton;
 import com.trashboxbobylev.summoningpixeldungeon.ui.RenderedTextMultiline;
@@ -66,7 +68,8 @@ public class AmuletScene extends PixelScene {
 		RedButton btnExit = new RedButton( Messages.get(this, "exit") ) {
 			@Override
 			protected void onClick() {
-				Dungeon.win( Amulet.class );
+			    Class clazz = Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE) ? Sword.class : Amulet.class;
+				Dungeon.win( clazz );
 				Dungeon.deleteGame( GamesInProgress.curSlot, true );
 				Game.switchScene( RankingsScene.class );
 			}
