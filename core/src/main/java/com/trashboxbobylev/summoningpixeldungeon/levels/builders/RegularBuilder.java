@@ -24,6 +24,8 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.levels.builders;
 
+import com.trashboxbobylev.summoningpixeldungeon.Challenges;
+import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.levels.rooms.Room;
 import com.trashboxbobylev.summoningpixeldungeon.levels.rooms.connection.ConnectionRoom;
 import com.trashboxbobylev.summoningpixeldungeon.levels.rooms.connection.MazeConnectionRoom;
@@ -100,7 +102,7 @@ public abstract class RegularBuilder extends Builder {
 				entrance = r;
 			} else if (r instanceof ExitRoom) {
 				exit = r;
-			} else if (r instanceof ShopRoom && r.maxConnections(Room.ALL) == 1){
+			} else if (r instanceof ShopRoom && r.maxConnections(Room.ALL) == 1 && !Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)){
 				shop = r;
 			} else if (r.maxConnections(Room.ALL) > 1){
 				multiConnections.add(r);
