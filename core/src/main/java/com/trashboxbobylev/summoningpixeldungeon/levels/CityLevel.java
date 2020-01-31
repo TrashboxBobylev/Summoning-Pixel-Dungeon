@@ -25,6 +25,7 @@
 package com.trashboxbobylev.summoningpixeldungeon.levels;
 
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
+import com.trashboxbobylev.summoningpixeldungeon.Challenges;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.npcs.Imp;
 import com.trashboxbobylev.summoningpixeldungeon.levels.painters.CityPainter;
@@ -107,7 +108,7 @@ public class CityLevel extends RegularLevel {
 	
 	@Override
 	protected void createMobs() {
-		Imp.Quest.spawn( this );
+        if (!Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) Imp.Quest.spawn( this );
 		
 		super.createMobs();
 	}

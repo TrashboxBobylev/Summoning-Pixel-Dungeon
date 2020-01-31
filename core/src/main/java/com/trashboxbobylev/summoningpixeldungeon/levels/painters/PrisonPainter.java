@@ -24,6 +24,8 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.levels.painters;
 
+import com.trashboxbobylev.summoningpixeldungeon.Challenges;
+import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.npcs.Wandmaker;
 import com.trashboxbobylev.summoningpixeldungeon.levels.Level;
 import com.trashboxbobylev.summoningpixeldungeon.levels.Terrain;
@@ -40,7 +42,7 @@ public class PrisonPainter extends RegularPainter {
 		
 		for (Room r : rooms) {
 			if (r instanceof EntranceRoom) {
-				Wandmaker.Quest.spawnWandmaker(level, r);
+				if (!Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) Wandmaker.Quest.spawnWandmaker(level, r);
 				break;
 			}
 		}

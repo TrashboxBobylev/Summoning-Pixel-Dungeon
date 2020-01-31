@@ -25,6 +25,7 @@
 package com.trashboxbobylev.summoningpixeldungeon.levels;
 
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
+import com.trashboxbobylev.summoningpixeldungeon.Challenges;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.npcs.Ghost;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Ripple;
@@ -115,7 +116,7 @@ public class SewerLevel extends RegularLevel {
 			Dungeon.LimitedDrops.DEW_VIAL.drop();
 		}
 
-		Ghost.Quest.spawn( this );
+		if (!Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) Ghost.Quest.spawn( this );
 		
 		super.createItems();
 	}

@@ -25,6 +25,7 @@
 package com.trashboxbobylev.summoningpixeldungeon.levels;
 
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
+import com.trashboxbobylev.summoningpixeldungeon.Challenges;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.npcs.Wandmaker;
 import com.watabou.noosa.Halo;
@@ -62,7 +63,8 @@ public class PrisonLevel extends RegularLevel {
 	
 	@Override
 	protected ArrayList<Room> initRooms() {
-		return Wandmaker.Quest.spawnRoom(super.initRooms());
+	    if (Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) return super.initRooms();
+        else return Wandmaker.Quest.spawnRoom(super.initRooms());
 	}
 	
 	@Override
