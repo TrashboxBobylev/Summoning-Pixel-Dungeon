@@ -24,13 +24,7 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.actors.hero;
 
-import com.trashboxbobylev.summoningpixeldungeon.Assets;
-import com.trashboxbobylev.summoningpixeldungeon.Badges;
-import com.trashboxbobylev.summoningpixeldungeon.Bones;
-import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
-import com.trashboxbobylev.summoningpixeldungeon.GamesInProgress;
-import com.trashboxbobylev.summoningpixeldungeon.ShatteredPixelDungeon;
-import com.trashboxbobylev.summoningpixeldungeon.Statistics;
+import com.trashboxbobylev.summoningpixeldungeon.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Alchemy;
@@ -886,7 +880,7 @@ public class Hero extends Char {
 			
 			if (Dungeon.depth == 1) {
 				
-				if (belongings.getItem( Amulet.class ) == null) {
+				if (belongings.getItem( Amulet.class ) == null || Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) {
 					GameScene.show( new WndMessage( Messages.get(this, "leave") ) );
 					ready();
 				} else {
