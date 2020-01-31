@@ -25,6 +25,7 @@
 package com.trashboxbobylev.summoningpixeldungeon.levels;
 
 import com.trashboxbobylev.summoningpixeldungeon.Bones;
+import com.trashboxbobylev.summoningpixeldungeon.Challenges;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
@@ -172,12 +173,13 @@ public abstract class RegularLevel extends Level {
 	
 	@Override
 	public int nMobs() {
+	    int additional = Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE) ? 1 : 0;
 		switch(Dungeon.depth) {
 			case 1:
 				//mobs are not randomly spawned on floor 1.
-				return 0;
+				return additional;
 			default:
-				return 2 + Dungeon.depth % 5 + Random.Int(5);
+				return 2 + Dungeon.depth % 5 + Random.Int(5) + additional;
 		}
 	}
 	

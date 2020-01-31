@@ -527,7 +527,7 @@ public abstract class Level implements Bundlable {
 					if (mob.alignment == Char.Alignment.ENEMY) count++;
 				}
 				
-				if (count < nMobs()) {
+				if (count < nMobs() && !Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) {
 
 					Mob mob = createMob();
 					mob.state = mob.WANDERING;
@@ -546,6 +546,9 @@ public abstract class Level implements Bundlable {
 	}
 	
 	public float respawnTime(){
+	    if (Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)){
+	        return 32_000_000;
+        }
 		if (Statistics.amuletObtained){
 			return TIME_TO_RESPAWN/2f;
 		} else if (Dungeon.level.feeling == Feeling.DARK){
