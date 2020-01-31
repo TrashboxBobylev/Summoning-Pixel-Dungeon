@@ -406,6 +406,9 @@ public class Hero extends Char {
 
 		if (buff(SoulWeakness.class) != null) dmg /= 4;
 		if (subClass == HeroSubClass.SOUL_REAVER) dmg *= 0.25f;
+		if (Dungeon.isChallenged(
+		        Challenges.SWARM_INTELLIGENCE
+        )) dmg += Random.NormalIntRange(lvl / 2, lvl*2);
 		
 		return buff( Fury.class ) != null ? (int)(dmg * 1.5f) : dmg;
 	}
