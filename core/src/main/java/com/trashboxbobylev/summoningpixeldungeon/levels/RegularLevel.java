@@ -295,6 +295,8 @@ public abstract class RegularLevel extends Level {
 		
 		// drops 3/4/5 items 60%/30%/10% of the time
 		int nItems = 3 + Random.chances(new float[]{6, 3, 1});
+
+		if (Dungeon.depth > 16 && Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) nItems -= 2;
 		
 		for (int i=0; i < nItems; i++) {
 			Heap.Type type = null;
