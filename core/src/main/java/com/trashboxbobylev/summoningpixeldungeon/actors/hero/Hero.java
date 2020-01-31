@@ -34,6 +34,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Statistics;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Alchemy;
+import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.PerfumeGas;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.FierySlash;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.SoulReaver;
@@ -51,6 +52,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.Heap;
 import com.trashboxbobylev.summoningpixeldungeon.items.Heap.Type;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.KindOfWeapon;
+import com.trashboxbobylev.summoningpixeldungeon.items.armor.glyphs.Affection;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.glyphs.Brimstone;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.glyphs.Viscosity;
@@ -122,6 +124,8 @@ public class Hero extends Char {
 		actPriority = HERO_PRIO;
 		
 		alignment = Alignment.ALLY;
+
+		immunities.add(PerfumeGas.Affection.class);
 	}
 	
 	public static final int MAX_LEVEL = 30;
