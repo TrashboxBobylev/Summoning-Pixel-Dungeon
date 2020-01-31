@@ -24,6 +24,8 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.levels.rooms.secret;
 
+import com.trashboxbobylev.summoningpixeldungeon.Challenges;
+import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.npcs.RatKing;
 import com.trashboxbobylev.summoningpixeldungeon.items.Gold;
 import com.trashboxbobylev.summoningpixeldungeon.items.Heap;
@@ -57,21 +59,24 @@ public class RatKingRoom extends SecretRoom {
 		Door entrance = entrance();
 		entrance.set( Door.Type.HIDDEN );
 		int door = entrance.x + entrance.y * level.width();
-		
-		for (int i=left + 1; i < right; i++) {
-			addChest( level, (top + 1) * level.width() + i, door );
-			addChest( level, (bottom - 1) * level.width() + i, door );
-		}
-		
-		for (int i=top + 2; i < bottom - 1; i++) {
-			addChest( level, i * level.width() + left + 1, door );
-			addChest( level, i * level.width() + right - 1, door );
-		}
 
-		RatKing king = new RatKing();
-		king.pos = level.pointToCell(random( 2 ));
-		level.mobs.add( king );
-	}
+        if (!Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) {
+            for (int i=left + 1; i < right; i++) {
+                addChest( level, (top + 1) * level.width() + i, door );
+                addChest( level, (bottom - 1) * level.width() + i, door );
+            }
+
+            for (int i=top + 2; i < bottom - 1; i++) {
+                addChest( level, i * level.width() + left + 1, door );
+                addChest( level, i * level.width() + right - 1, door );
+            }
+
+            RatKing king = new RatKing();
+            king.pos = level.pointToCell(random( 2 ));
+            level.mobs.add( king );
+        }
+
+    }
 	
 	private static void addChest( Level level, int pos, int door ) {
 		

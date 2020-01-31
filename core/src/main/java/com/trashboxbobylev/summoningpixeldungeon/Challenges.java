@@ -29,6 +29,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.Armor;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.ClassArmor;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.ClothArmor;
+import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.DriedRose;
 import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.HornOfPlenty;
 import com.trashboxbobylev.summoningpixeldungeon.items.food.Blandfruit;
 import com.trashboxbobylev.summoningpixeldungeon.items.food.Food;
@@ -70,6 +71,12 @@ public class Challenges {
 				return true;
 			}
 		}
+
+		if (Dungeon.isChallenged(SWARM_INTELLIGENCE)){
+		    if (item instanceof DriedRose){
+		        return true;
+            }
+        }
 
 		if (Dungeon.isChallenged(NO_ARMOR)){
 			if (item instanceof Armor && !(item instanceof ClothArmor || item instanceof ClassArmor)) {
