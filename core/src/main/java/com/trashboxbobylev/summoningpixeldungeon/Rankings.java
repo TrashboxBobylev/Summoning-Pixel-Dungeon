@@ -112,6 +112,7 @@ public enum Rankings {
 	}
 
 	private static int pacifistCheck(boolean win){
+	    if (Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) return Statistics.enemiesSlain * 75;
 	    if (Statistics.enemiesSlain <= 7 && win) return 2500000;
 	    return Statistics.enemiesSlain * 50;
     }
