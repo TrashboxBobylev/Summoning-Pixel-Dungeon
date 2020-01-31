@@ -175,6 +175,7 @@ public class RankingsScene extends PixelScene {
 		private static final float GAP	= 4;
 		
 		private static final int[] TEXT_WIN	= {0xFFFF88, 0xB2B25F};
+        private static final int[] TEXT_GENO	= {0xFF0000, 0xEE0000};
 		private static final int[] TEXT_LOSE= {0xDDDDDD, 0x888888};
 		private static final int FLARE_WIN	= 0x888866;
 		private static final int FLARE_LOSE	= 0x666666;
@@ -215,12 +216,20 @@ public class RankingsScene extends PixelScene {
 			int odd = pos % 2;
 			
 			if (rec.win) {
-			    if (rec.cause == Sword.class) shield.view( ItemSpriteSheet.BONES, null);
-				else shield.view( ItemSpriteSheet.AMULET, null );
-				position.hardlight( TEXT_WIN[odd] );
-				desc.hardlight( TEXT_WIN[odd] );
-				depth.hardlight( TEXT_WIN[odd] );
-				level.hardlight( TEXT_WIN[odd] );
+			    if (rec.cause == Sword.class) {
+                    shield.view(ItemSpriteSheet.BONES, null);
+                    position.hardlight(TEXT_GENO[odd]);
+                    desc.hardlight(TEXT_GENO[odd]);
+                    depth.hardlight(TEXT_GENO[odd]);
+                    level.hardlight(TEXT_GENO[odd]);
+                }
+				else {
+                    shield.view(ItemSpriteSheet.AMULET, null);
+                    position.hardlight(TEXT_WIN[odd]);
+                    desc.hardlight(TEXT_WIN[odd]);
+                    depth.hardlight(TEXT_WIN[odd]);
+                    level.hardlight(TEXT_WIN[odd]);
+                }
 			} else {
 				position.hardlight( TEXT_LOSE[odd] );
 				desc.hardlight( TEXT_LOSE[odd] );
