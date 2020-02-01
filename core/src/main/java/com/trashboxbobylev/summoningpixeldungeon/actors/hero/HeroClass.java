@@ -135,9 +135,6 @@ public enum HeroClass {
 		if (Dungeon.isChallenged(Challenges.NO_FOOD)){
 			new SmallRation().collect();
 		}
-        new TomeOfMastery().collect();
-        new ShockBomb().collect();
-        new PerfumeBrew().collect();
 
 		hero.attunement = 0;
 		
@@ -169,9 +166,6 @@ public enum HeroClass {
 		if (hero.belongings.armor != null){
 			hero.belongings.armor.affixSeal(new BrokenSeal());
 		}
-
-		new Scimitar().identify().collect();
-		new Broadsword().identify().collect();
 		
 		new PotionBandolier().collect();
 		Dungeon.LimitedDrops.POTION_BANDOLIER.drop();
@@ -206,7 +200,7 @@ public enum HeroClass {
 		hero.belongings.misc1.activate( hero );
 
 		ThrowingKnife knives = new ThrowingKnife();
-		knives.quantity(3).collect();
+		knives.quantity(1).collect();
 
 		Dungeon.quickslot.setSlot(0, cloak);
 		Dungeon.quickslot.setSlot(1, knives);
@@ -228,7 +222,6 @@ public enum HeroClass {
 
 		new VelvetPouch().collect();
 		Dungeon.LimitedDrops.VELVET_POUCH.drop();
-        new ScrollOfEnchantment().identify().collect();
 		
 		new PotionOfMindVision().identify();
 		new ScrollOfLullaby().identify();
