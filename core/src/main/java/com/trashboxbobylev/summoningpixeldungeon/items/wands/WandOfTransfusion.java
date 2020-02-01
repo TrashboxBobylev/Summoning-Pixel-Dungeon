@@ -162,6 +162,14 @@ public class WandOfTransfusion extends Wand {
 		callback.call();
 	}
 
+    @Override
+    public String statsDesc() {
+        if (levelKnown)
+            return Messages.get(this, "stats_desc", 5, Dungeon.hero.HT / 10, 3, 6);
+        else
+            return Messages.get(this, "stats_desc", 5 + 2*level(), Dungeon.hero.HT / 10 + 3*level(), 3 + level()/2, 6 + level());
+    }
+
 	@Override
 	public void staffFx(MagesStaff.StaffParticle particle) {
 		particle.color( 0xCC0000 );
