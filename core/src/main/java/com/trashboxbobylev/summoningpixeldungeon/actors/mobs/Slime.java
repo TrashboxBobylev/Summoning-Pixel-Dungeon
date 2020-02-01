@@ -111,7 +111,7 @@ public class Slime extends Mob {
 			
 			int[] neighbours = {pos + 1, pos - 1, pos + Dungeon.level.width(), pos - Dungeon.level.width()};
 			for (int n : neighbours) {
-				if (!solid[n] && Actor.findChar( n ) == null) {
+				if (solid[n] && Actor.findChar( n ) == null) {
 					candidates.add( n );
 				}
 			}
