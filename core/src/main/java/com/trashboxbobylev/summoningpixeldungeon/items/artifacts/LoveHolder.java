@@ -197,7 +197,7 @@ public class LoveHolder extends Artifact {
                 hero.sprite.operate(hero.pos, new Callback() {
                     @Override
                     public void call() {
-                        hero.spend(2f);
+                        hero.spendAndNext(2f);
                         hero.sprite.emitter().burst(WhiteParticle.UP, 8);
                         Sample.INSTANCE.play(Assets.SND_LULLABY);
                         hero.sprite.showStatus( CharSprite.POSITIVE, Integer.toString( str*2 ) );
