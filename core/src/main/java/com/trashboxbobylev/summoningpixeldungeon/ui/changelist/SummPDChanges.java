@@ -193,8 +193,8 @@ public class SummPDChanges {
                         "_-_ Now is one character with starting attunement.\n\n" +
                         "_-_ Froggit Staff have rebalanced to include decrease of start attunement.\n\n" +
                         "_-_ Have recieved redesigned mastery:\n\n\n" +
-                        "   _-_ Soul Wielder: in exchange of melee damage his healing abilities can buff enemies, and conjurer can tweak minion's stats.\n\n" +
-                        "   _-_ Knight: in exchange of healing ability recieves a soul blast spell, the damaging magic bolt that consumes soul energy, and can collect a soul on killing the enemies with toy knife."));
+                        "   _-_ Soul Wielder: in exchange of melee damage his healing abilities can buff summons, and they can tweak minion's stats. Offensive action will form a controllable boosts for minions.\n\n" +
+                        "   _-_ Knight: in exchange of healing ability recieves a soul blast spell, the damaging magic bolt that consumes soul energy, the healing spell, and can collect a soul on killing the enemies with toy knife."));
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.GREY_RAT_STAFF, null), "Summon weapon rework",
                 "This type of weapons also have recieved a rework:\n\n" +
                         "_-_ Summon weapons can't be equipped now, melee damage is also removed.\n\n" +
@@ -247,15 +247,31 @@ public class SummPDChanges {
                         "_-_ This stench gas deals constant damage, that scales with wand's level.\n\n" +
                         "_-_ Stench creature have limited lifespan and explodes on collision with monsters or expiring."
         ));
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SCIMITAR, null), "Scimitar rework",
+                "Scimitar have been reworked to move from 'sword but faster' to charging hits.\n\n" +
+                        "_-_ Damage have been reduced to 3-15 (+0.5/3).\n\n" +
+                        "_-_ Every 4th strike a damage will be increased to 6-30 (+1/+6).\n\n"
+        ));
+
+        changes.addButton( new ChangeButton(Icons.get(Icons.CHALLENGE_ON), "New challenge",
+                "Swarm Intelligence have been replaced by more powerful challenge.\n\n" +
+                        "_-_ All NPCs will completely diappear.\n\n" +
+                        "_-_ Shops will be not accessible.\n\n" +
+                        "_-_ Each floor have one additional mob, but mobs don't respawn at all.\n\n" +
+                        "_-_ You can't achieve happy end, and there will be unique ending.\n\n"));
+
 
         changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
                 "_-_ Pickaxes are melee weapons now, that can be enchanted or upgraded.\n\n" +
                                         "_-_ Fixed bug, when Imp Queen's minions can crash a game.\n\n" +
                                         "_-_ Final Froggits's level seal were working incorrectly.\n\n" +
                                         "_-_ Fixed sneaky weapons.\n\n" +
+                                        "_-_ Fixed bugs with Perfume Brew.\n\n" +
                                         "_-_ Fixed clean water being not identified and having no readable drink option.\n\n" +
                                         "_-_ Changed sprites of some bombs.\n\n" +
-                                        "_-_ Added a altar locked room, which contain cursed staff that can be upgraded!"));
+                                        "_-_ Removed Russian and Chinese, because I can't support it properly.\n\n" +
+                                        "_-_ Added a altar locked room, which contain cursed staff that can be upgraded.\n\n" +
+                                        "_-_ Reworked sniper's shot from accelerating arrow to piercing javelin."));
     }
 
 public static void add_1_0_1_Changes(ArrayList<ChangeInfo> changeInfos ) {
