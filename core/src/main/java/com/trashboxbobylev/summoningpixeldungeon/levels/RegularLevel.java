@@ -108,7 +108,7 @@ public abstract class RegularLevel extends Level {
 			initRooms.add(s);
 		}
 		
-		if (Dungeon.shopOnLevel())
+		if (Dungeon.shopOnLevel() && !Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE))
 			initRooms.add(new ShopRoom());
 		
 		int specials = specialRooms();
