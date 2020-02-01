@@ -198,6 +198,7 @@ public class LoveHolder extends Artifact {
                     @Override
                     public void call() {
                         hero.spendAndNext(2f);
+                        hero.sprite.idle();
                         hero.sprite.emitter().burst(WhiteParticle.UP, 8);
                         Sample.INSTANCE.play(Assets.SND_LULLABY);
                         hero.sprite.showStatus( CharSprite.POSITIVE, Integer.toString( str*2 ) );
@@ -417,6 +418,8 @@ public class LoveHolder extends Artifact {
                         updateQuickslot();
                         curUser.busy();
                         Invisibility.dispel();
+                        curUser.sprite.zap(shot.collisionPos);
+                        Sample.INSTANCE.play(Assets.SND_BURNING);
                         MagicMissile.boltFromChar(curUser.sprite.parent,
                                 MagicMissile.BEACON,
                                 curUser.sprite,
@@ -433,8 +436,11 @@ public class LoveHolder extends Artifact {
                                                     (int) ((2 + curUser.lvl / 2) * Math.pow(1.1, str)),
                                                     (int) ((5 + curUser.lvl)*Math.pow(1.1f, str)));
                                             ch.damage(damageRoll, this);
+                                            Sample.INSTANCE.play(Assets.SND_BLAST);
 
-                                            ch.sprite.burst(0xFFFFFFFF, str*2);
+                                            ch.sprite.burst(0xFFFFFFFF, str*3);
+                                            ch.sprite.emitter().burst(WhiteParticle.UP, 8);
+
                                         }
                                         curUser.spendAndNext(Actor.TICK);
                                     }
