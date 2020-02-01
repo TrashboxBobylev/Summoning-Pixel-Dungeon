@@ -32,6 +32,7 @@ import com.trashboxbobylev.summoningpixeldungeon.effects.CellEmitter;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.PurpleParticle;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MagesStaff;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
+import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 import com.trashboxbobylev.summoningpixeldungeon.tiles.DungeonTilemap;
@@ -135,5 +136,13 @@ public class WandOfDisintegration extends DamageWand {
 		particle.setSize( 0.5f, 3f);
 		particle.shuffleXY(1f);
 	}
+
+    @Override
+    public String statsDesc() {
+        if (!levelKnown)
+            return Messages.get(this, "stats_desc", min(0), max(0), 4);
+        else
+            return Messages.get(this, "stats_desc", min(), max(),  4 + level()*2);
+    }
 
 }

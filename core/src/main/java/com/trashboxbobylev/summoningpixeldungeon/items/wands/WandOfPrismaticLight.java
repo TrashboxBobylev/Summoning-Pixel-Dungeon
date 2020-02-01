@@ -42,6 +42,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfMagicMapp
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MagesStaff;
 import com.trashboxbobylev.summoningpixeldungeon.levels.Terrain;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
+import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 import com.trashboxbobylev.summoningpixeldungeon.tiles.DungeonTilemap;
@@ -50,6 +51,8 @@ import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
+
+import java.text.DecimalFormat;
 
 public class WandOfPrismaticLight extends DamageWand {
 
@@ -85,6 +88,14 @@ public class WandOfPrismaticLight extends DamageWand {
 			affectTarget(ch);
 		}
 	}
+
+    @Override
+    public String statsDesc() {
+        if (!levelKnown)
+            return Messages.get(this, "stats_desc", min(0), max(0), new DecimalFormat("#.##").format(40f), 2f);
+        else
+            return Messages.get(this, "stats_desc", min(), max(),  new DecimalFormat("#.##").format(100f - (30f / (50f + 10f*level()))), 2 + 0.333*level());
+    }
 
 	private void affectTarget(Char ch){
 		int dmg = damageRoll();

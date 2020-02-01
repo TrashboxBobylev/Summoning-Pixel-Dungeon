@@ -36,6 +36,7 @@ import com.trashboxbobylev.summoningpixeldungeon.effects.MagicMissile;
 import com.trashboxbobylev.summoningpixeldungeon.items.Heap;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MagesStaff;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
+import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
@@ -93,6 +94,14 @@ public class WandOfFrost extends DamageWand {
 			Dungeon.level.press(bolt.collisionPos, null, true);
 		}
 	}
+
+    @Override
+    public String statsDesc() {
+        if (!levelKnown)
+            return Messages.get(this, "stats_desc", min(0), max(0), 4);
+        else
+            return Messages.get(this, "stats_desc", min(), max(),  4 + level());
+    }
 
 	@Override
 	protected void fx(Ballistica bolt, Callback callback) {
