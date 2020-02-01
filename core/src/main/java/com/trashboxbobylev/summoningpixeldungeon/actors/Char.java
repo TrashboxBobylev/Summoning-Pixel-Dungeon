@@ -41,6 +41,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.armor.ConjurerArmor;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.glyphs.Brimstone;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.glyphs.Potential;
+import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.LoveHolder;
 import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfElements;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRetribution;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfPsionicBlast;
@@ -52,6 +53,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Blazi
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Grim;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Shocking;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Cleaver;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Knife;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.darts.ShockingDart;
 import com.trashboxbobylev.summoningpixeldungeon.levels.Terrain;
@@ -243,6 +245,13 @@ public abstract class Char extends Actor {
 				if (this instanceof Hero &&
                     ((Hero) this).belongings.weapon instanceof Cleaver && enemy.oneShottedByCleaver) Wound.hit(enemy);
 			}
+
+            LoveHolder.lul buff = Dungeon.hero.buff(LoveHolder.lul.class);
+            if (buff(Knife.SoulGain.class) != null && buff != null && Dungeon.hero.subClass == HeroSubClass.OCCULTIST){
+                int gain = Random.IntRange(1, 4);
+                int charge = buff.gainCharge(gain);
+                if (charge == 0) sprite.showStatus(CharSprite.DEFAULT, "+%d♥", gain);
+            }
 
 			// If the enemy is already dead, interrupt the attack.
 			// This matters as defence procs can sometimes inflict self-damage, such as armor glyphs.

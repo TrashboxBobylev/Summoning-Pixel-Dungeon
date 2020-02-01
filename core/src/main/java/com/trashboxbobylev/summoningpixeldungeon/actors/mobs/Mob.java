@@ -659,12 +659,13 @@ public abstract class Mob extends Char {
 			if (EXP % 2 == 1) EXP += Random.Int(2);
 			EXP /= 2;
 		}
+
         LoveHolder.lul buff = Dungeon.hero.buff(LoveHolder.lul.class);
-		if (((cause instanceof Minion && Dungeon.hero.subClass != HeroSubClass.OCCULTIST) || buff(Knife.SoulGain.class) != null) && buff != null){
-		    int gain = EXP;
-		    if (Dungeon.hero.subClass == HeroSubClass.OCCULTIST) gain *= 1.5f;
-		    int charge = buff.gainCharge(gain);
-            if (charge == 0) sprite.showStatus(CharSprite.NEUTRAL, "+%d♥", gain);
+        if (((cause instanceof Minion) || (cause instanceof Hero && ((Hero) cause).subClass != HeroSubClass.OCCULTIST && buff(Knife.SoulGain.class) != null)) && buff != null){
+            int gain = EXP;
+            //if (Dungeon.hero.subClass == HeroSubClass.OCCULTIST) gain *= 1.5f;
+            int charge = buff.gainCharge(gain);
+            if (charge == 0) sprite.showStatus(CharSprite.DEFAULT, "+%d♥", gain);
         }
 
 		if (alignment == Alignment.ENEMY){
