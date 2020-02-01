@@ -37,6 +37,7 @@ import com.trashboxbobylev.summoningpixeldungeon.effects.MagicMissile;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.CorrosionParticle;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MagesStaff;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
+import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
@@ -105,5 +106,13 @@ public class WandOfCorrosion extends Wand {
 		particle.setSize( 0.5f, 3f );
 		particle.shuffleXY( 1f );
 	}
+
+    @Override
+    public String statsDesc() {
+        if (!levelKnown)
+            return Messages.get(this, "stats_desc", 1, 50);
+        else
+            return Messages.get(this, "stats_desc", 1 + level(), 50 + level()*10);
+    }
 
 }
