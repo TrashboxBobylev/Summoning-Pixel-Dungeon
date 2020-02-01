@@ -107,7 +107,7 @@ public class Slime extends Mob {
 
 		if (HP >= damage + 2) {
 			ArrayList<Integer> candidates = new ArrayList<>();
-			boolean[] solid = Dungeon.level.solid;
+			boolean[] solid = Dungeon.level.passable;
 			
 			int[] neighbours = {pos + 1, pos - 1, pos + Dungeon.level.width(), pos - Dungeon.level.width()};
 			for (int n : neighbours) {
@@ -121,9 +121,9 @@ public class Slime extends Mob {
 				Slime clone = split();
                 HP = HT;
                 GLog.i("Old HP: " + HT);
-				HT *= 0.75f;
+				HT *= 0.8f;
 				GLog.i("New HP: " + HT);
-				clone.HP = HT;
+				clone.HT = clone.HP = HT;
 				clone.pos = Random.element( candidates );
 				clone.state = clone.HUNTING;
 				Dungeon.level.pressCell(clone.pos);
