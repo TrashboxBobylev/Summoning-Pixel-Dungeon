@@ -94,7 +94,7 @@ public class WhiteParticle extends PixelParticle.Shrinking {
 		
 		float p = left / lifespan;
 		// alpha: 0 -> 1 -> 0; size: 6 -> 0; color: 0x660044 -> 0x000000
-		color( ColorMath.interpolate( 0x55FFFFF, 0xFFFFFF, p ) );
+		color( ColorMath.interpolate( 0xE0E0E0, 0xFFFFFF, p ) );
 		am = p < 0.5f ? p * p * 4 : (1 - p) * 2;
 	}
 }

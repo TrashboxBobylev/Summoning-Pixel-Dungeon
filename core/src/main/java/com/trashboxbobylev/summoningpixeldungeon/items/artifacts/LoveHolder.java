@@ -36,8 +36,10 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroSubClass;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.WardingWraith;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Minion;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary.RoseWraith;
+import com.trashboxbobylev.summoningpixeldungeon.effects.Flare;
 import com.trashboxbobylev.summoningpixeldungeon.effects.MagicMissile;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
+import com.trashboxbobylev.summoningpixeldungeon.effects.particles.WhiteParticle;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.armor.ConjurerArmor;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
@@ -49,6 +51,7 @@ import com.trashboxbobylev.summoningpixeldungeon.scenes.CellSelector;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.CharSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
+import com.trashboxbobylev.summoningpixeldungeon.tiles.DungeonTilemap;
 import com.trashboxbobylev.summoningpixeldungeon.ui.QuickSlotButton;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.trashboxbobylev.summoningpixeldungeon.windows.WndOptions;
@@ -85,6 +88,7 @@ public class LoveHolder extends Artifact {
     public static final String AC_DEFENSE = "DEFENSE";
     public static final String AC_OFFENSE = "OFFENSE";
     public static final String AC_DAMAGE = "DAMAGE";
+    public static final String AC_HEAL = "HEAL";
     public static final String HEALING = "healing";
     public static final String STRENGTH = "str";
 
@@ -112,6 +116,7 @@ public class LoveHolder extends Artifact {
                 actions.remove(AC_SHIELD);
                 actions.remove(AC_SPLASH);
                 actions.add(AC_DAMAGE);
+                actions.add(AC_HEAL);
                 defaultAction = AC_DAMAGE;
             }
         }
@@ -183,6 +188,26 @@ public class LoveHolder extends Artifact {
                 GameScene.selectCell(zapper2);
             } else {
                 Messages.get(ConjurerArmor.class, "no_mastery");
+            }
+        }
+        if (action.equals(AC_HEAL)){
+
+            if (charge >= str*2) {
+                hero.busy();
+                hero.sprite.operate(hero.pos, new Callback() {
+                    @Override
+                    public void call() {
+                        hero.spend(2f);
+                        hero.sprite.emitter().burst(WhiteParticle.UP, 8);
+                        Sample.INSTANCE.play(Assets.SND_LULLABY);
+                        hero.sprite.showStatus( CharSprite.POSITIVE, Integer.toString( str*2 ) );
+                        hero.HP = Math.min(hero.HT, hero.HP + str*2);
+                        charge = Math.max(0, charge - str*2);
+                        new Flare(10, 64).color(0xFFFFFF, true).show(Dungeon.hero.sprite.parent, DungeonTilemap.tileCenterToWorld(hero.pos), 1.5f);
+                    }
+                });
+            } else {
+                GLog.i(Messages.get(LoveHolder.class, "not_enough"));
             }
         }
 	}
@@ -475,7 +500,7 @@ public class LoveHolder extends Artifact {
 
 			if (Dungeon.hero.subClass == HeroSubClass.OCCULTIST){
 			    desc += Messages.get(this, "dmg", (int) ((2 + Dungeon.hero.lvl / 2) * Math.pow(1.1, str)),
-                        (int) ((5 + Dungeon.hero.lvl)*Math.pow(1.1f, str)));
+                        (int) ((5 + Dungeon.hero.lvl)*Math.pow(1.1f, str)), str*2);
             }
 		}
 
