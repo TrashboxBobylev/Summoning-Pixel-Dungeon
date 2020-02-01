@@ -26,6 +26,7 @@ package com.trashboxbobylev.summoningpixeldungeon.actors.buffs;
 
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
+import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroSubClass;
 import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.LoveHolder;
 
@@ -43,7 +44,7 @@ public class Regeneration extends Buff {
 	public boolean act() {
 		if (target.isAlive()) {
 
-			if (target.HP < regencap() && !((Hero)target).isStarving()) {
+			if (target.HP < regencap() && !((Hero)target).isStarving() && ((Hero) target).subClass != HeroSubClass.OCCULTIST) {
 				LockedFloor lock = target.buff(LockedFloor.class);
 				if (target.HP > 0 && (lock == null || lock.regenOn())) {
 					target.HP += 1;
