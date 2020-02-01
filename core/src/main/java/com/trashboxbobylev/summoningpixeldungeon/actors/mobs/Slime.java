@@ -42,6 +42,7 @@ import com.trashboxbobylev.summoningpixeldungeon.levels.features.Door;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.SlimeSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.SwarmSprite;
+import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -119,7 +120,9 @@ public class Slime extends Mob {
 				
 				Slime clone = split();
                 HP = HT;
+                GLog.i("Old HP: " + HT);
 				HT *= 0.75f;
+				GLog.i("New HP: " + HT);
 				clone.HP = HT;
 				clone.pos = Random.element( candidates );
 				clone.state = clone.HUNTING;
