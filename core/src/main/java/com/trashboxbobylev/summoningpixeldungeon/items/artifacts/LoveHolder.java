@@ -387,8 +387,8 @@ public class LoveHolder extends Artifact {
                     return;
                 } else {
                     final int str = artifact.str;
-                    if (artifact.charge >= str*2){
-                        artifact.charge -= str*2;
+                    if (artifact.charge >= str){
+                        artifact.charge -= str;
                         updateQuickslot();
                         curUser.busy();
                         Invisibility.dispel();
@@ -402,7 +402,11 @@ public class LoveHolder extends Artifact {
                                         Char ch = Actor.findChar(shot.collisionPos);
 
                                         if (ch != null){
-                                            int damageRoll = Random.NormalIntRange(0, (int) (curUser.lvl*Math.pow(1.25f, str)));
+                                            //min damage: 2, +0.5 per hero level, +10% per str
+                                            //max damage: 5, +1 per hero level, +10% per str
+                                            int damageRoll = Random.NormalIntRange(
+                                                    (int) ((2 + curUser.lvl / 2) * Math.pow(1.1, str)),
+                                                    (int) ((5 + curUser.lvl)*Math.pow(1.1f, str)));
                                             ch.damage(damageRoll, this);
 
                                             ch.sprite.burst(0xFFFFFFFF, str*2);
@@ -467,6 +471,11 @@ public class LoveHolder extends Artifact {
                 desc += Messages.get(this, "desc_2");
             } else if (level() >= 6){
                 desc += Messages.get(this, "desc_3");
+            }
+
+			if (Dungeon.hero.subClass == HeroSubClass.OCCULTIST){
+			    desc += Messages.get(this, "dmg", (int) ((2 + Dungeon.hero.lvl / 2) * Math.pow(1.1, str)),
+                        (int) ((5 + Dungeon.hero.lvl)*Math.pow(1.1f, str)));
             }
 		}
 
