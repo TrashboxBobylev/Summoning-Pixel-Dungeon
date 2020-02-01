@@ -70,7 +70,11 @@ public class AndroidLauncher extends AndroidApplication {
 		// grab preferences directly using our instance first
 		// so that we don't need to rely on Gdx.app, which isn't initialized yet.
 		SPDSettings.setPrefsFromInstance(instance);
-		new UCEHandler.Builder(this).setUCEHEnabled(!googlePlay).build();
+		String installer = getPackageManager().getInstallerPackageName("com.trashboxbobylev.summoningpixeldungeon");
+		//if we not from GP, activate crash handler
+		if (installer == null) {
+            new UCEHandler.Builder(this).addCommaSeparatedEmailAddresses("trashboxbobylev@gmail.com").build();
+        }
 
 //        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
 //            @Override

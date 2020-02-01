@@ -260,6 +260,9 @@ public class SummPDChanges {
                         "_-_ Each floor have one additional mob, but mobs don't respawn at all.\n\n" +
                         "_-_ You can't achieve happy end, and there will be unique ending.\n\n"));
 
+        changes.addButton( new ChangeButton(Icons.get(Icons.WARNING), "Crash report system",
+                "Added a simple crash handler, that allows to capture stacktraces.\n\n" +
+                                        "This feature will be disabled for Google Play version."));
 
         changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
                 "_-_ Pickaxes are melee weapons now, that can be enchanted or upgraded.\n\n" +
