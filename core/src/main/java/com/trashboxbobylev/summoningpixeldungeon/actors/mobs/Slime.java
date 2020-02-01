@@ -53,10 +53,8 @@ public class Slime extends Mob {
 	{
 		spriteClass = SlimeSprite.class;
 		
-		//HP = HT = 100;
-        HP = HT = 20;
-		//defenseSkill = 23;
-        defenseSkill = 2;
+		HP = HT = 100;
+		defenseSkill = 23;
 
 		EXP = 12;
 		maxLvl = 25;
@@ -89,7 +87,7 @@ public class Slime extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return /*Random.NormalIntRange( 8, 16 );*/Random.NormalIntRange(2, 4);
+		return Random.NormalIntRange(2, 4);
 	}
 
     @Override
