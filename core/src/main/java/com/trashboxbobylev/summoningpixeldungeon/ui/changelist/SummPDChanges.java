@@ -266,6 +266,7 @@ public class SummPDChanges {
                                         "_-_ Fixed bug, when Imp Queen's minions can crash a game.\n\n" +
                                         "_-_ Final Froggits's level seal were working incorrectly.\n\n" +
                                         "_-_ Fixed sneaky weapons.\n\n" +
+                                        "_-_ Fixed dark slime's splits, less annoying now.\n\n" +
                                         "_-_ Fixed bugs with Perfume Brew.\n\n" +
                                         "_-_ Fixed clean water being not identified and having no readable drink option.\n\n" +
                                         "_-_ Changed sprites of some bombs.\n\n" +
