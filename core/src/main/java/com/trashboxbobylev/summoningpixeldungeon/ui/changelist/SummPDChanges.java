@@ -275,7 +275,8 @@ public class SummPDChanges {
                                         "_-_ Changed sprites of some bombs.\n\n" +
                                         "_-_ Removed Russian and Chinese, because I can't support it properly.\n\n" +
                                         "_-_ Added a altar locked room, which contain cursed staff that can be upgraded.\n\n" +
-                                        "_-_ Reworked sniper's shot from accelerating arrow to piercing javelin."));
+                                        "_-_ Reworked sniper's shot from accelerating arrow to piercing javelin.\n\n" +
+                                        "_-_ Changed descriptions of some wands to be more detailed."));
     }
 
 public static void add_1_0_1_Changes(ArrayList<ChangeInfo> changeInfos ) {

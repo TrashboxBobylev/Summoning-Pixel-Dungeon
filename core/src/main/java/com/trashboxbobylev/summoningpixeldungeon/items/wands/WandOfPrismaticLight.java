@@ -94,7 +94,7 @@ public class WandOfPrismaticLight extends DamageWand {
         if (!levelKnown)
             return Messages.get(this, "stats_desc", min(0), max(0), new DecimalFormat("#.##").format(40f), 2f);
         else
-            return Messages.get(this, "stats_desc", min(), max(),  new DecimalFormat("#.##").format(100f - (30f / (50f + 10f*level()))), 2 + 0.333*level());
+            return Messages.get(this, "stats_desc", min(), max(),  new DecimalFormat("#.##").format((1f - (3f / (5f + level())))*100f), 2 + 0.333*level());
     }
 
 	private void affectTarget(Char ch){
