@@ -247,7 +247,7 @@ public abstract class Char extends Actor {
 			}
 
             LoveHolder.lul buff = Dungeon.hero.buff(LoveHolder.lul.class);
-            if (enemy.buff(Knife.SoulGain.class) != null && buff != null && Dungeon.hero.subClass == HeroSubClass.OCCULTIST){
+            if (enemy.buff(Knife.SoulGain.class) != null && buff != null && Dungeon.hero.subClass == HeroSubClass.OCCULTIST && this instanceof Hero){
                 int gain = 3;
                 int charge = buff.gainCharge(gain);
                 if (charge == 0) sprite.showStatus(CharSprite.DEFAULT, "+%d♥", gain);
