@@ -33,7 +33,16 @@ import com.trashboxbobylev.summoningpixeldungeon.ui.BuffIndicator;
 public class Attunement extends Buff{
     @Override
     public int icon() {
-        return BuffIndicator.SACRIFICE;
+        return BuffIndicator.SOUL_REFUSAL;
+    }
+
+    {
+        announced = true;
+        type = buffType.POSITIVE;
+    }
+
+    public static float empowering(){
+        return 2.5f * ((Dungeon.hero.HT - Dungeon.hero.HP * 1f) / (Dungeon.hero.HT * 1f));
     }
 
     @Override
@@ -43,6 +52,6 @@ public class Attunement extends Buff{
 
     @Override
     public String desc() {
-        return Messages.get(this, "desc", Dungeon.hero.usedAttunement, Dungeon.hero.attunement());
+        return Messages.get(this, "desc", empowering());
     }
 }

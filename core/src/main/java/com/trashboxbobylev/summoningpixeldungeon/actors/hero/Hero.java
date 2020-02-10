@@ -583,6 +583,13 @@ public class Hero extends Char {
 		if( subClass == HeroSubClass.WARDEN && Dungeon.level.map[pos] == Terrain.FURROWED_GRASS){
 			Buff.affect(this, Barkskin.class).set( lvl + 5, 1 );
 		}
+
+        if (heroClass == HeroClass.CONJURER) {
+            if (HP <= HT / 2) {
+                Buff.affect(this, Attunement.class);
+            }
+            else if (buff(Attunement.class) != null) buff(Attunement.class).detach();
+        }
 		
 		return actResult;
 	}

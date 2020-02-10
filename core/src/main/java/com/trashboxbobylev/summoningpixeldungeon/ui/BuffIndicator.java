@@ -103,6 +103,7 @@ public class BuffIndicator extends Component {
     public static final int MAG = 52;
     public static final int HUN = 53;
     public static final int CON = 54;
+    public static final int SOUL_REFUSAL = 55;
 
 	public static final int SIZE	= 7;
 	
