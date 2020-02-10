@@ -196,7 +196,8 @@ public static void add_1_1_1_Changes(ArrayList<ChangeInfo> changeInfos) {
                     "_-_ Slingshot's stone crashing without slingshot\n" +
                     "_-_ Lacking string for cave spinner\n" +
                     "_-_ Crash for level 16\n" +
-                    "_-_ Flashbang breaking the game, when pickuped after mouse's attack"));
+                    "_-_ Flashbang breaking the game, when pickuped after mouse's attack\n" +
+                    "_-_ Spirit Bow being a not usable with sniper special and no augment"));
     changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
             "_-_ Replaced donation button with settings button.\n\n" +
                                     "_-_ Removed upgraded missiles from shops."));
