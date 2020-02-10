@@ -310,14 +310,21 @@ public class Slingshot extends Weapon {
         public boolean doPickUp( Hero hero ) {
             slingshot = hero.belongings.getItem(Slingshot.class);
 
-            if (slingshot != null && !slingshot.isFull()){
+            if (slingshot != null) {
+                if (!slingshot.isFull()) {
 
-                slingshot.collectStone(quantity);
+                    slingshot.collectStone(quantity);
 
+                } else {
+
+                    GLog.i(Messages.get(this, "already_full"));
+                    return false;
+
+                }
             } else {
 
-                    GLog.i( Messages.get(this, "already_full") );
-                    return false;
+                GLog.i(Messages.get(this, "cant_pickup"));
+                return false;
 
             }
 
