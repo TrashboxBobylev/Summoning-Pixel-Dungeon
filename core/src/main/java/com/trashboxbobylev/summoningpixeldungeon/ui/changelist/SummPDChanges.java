@@ -183,8 +183,9 @@ public class SummPDChanges {
         changeInfos.add(changes);
         changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
         changes.addButton( new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
-                "_-_ Beta test is began in Januar 7nd, 2019\n" +
-                        "_-_ 2 days after 1.0.0"));
+                "_-_ Released February 8th, 2020\n" +
+                        "_-_ 99 days after 1.0.1a\n" +
+                        "_-_ 101 days after 1.0.0"));
         changes = ChangesScene.createChangeInfo(changeInfos, "Changes", false, Window.SHPX_COLOR);
         changes.addButton( new ChangeButton(new Image(Assets.CONJURER, 0, 90, 12, 15), "Conjurer",
                 "Have recieved a rework:\n\n" +
