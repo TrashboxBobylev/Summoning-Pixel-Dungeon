@@ -139,7 +139,7 @@ public class StationaryStaff extends Staff {
 
         @Override
         public String prompt() {
-            return Messages.get(Wand.class, "prompt");
+            return Messages.get(StationaryStaff.class, "prompt");
         }
     };
 
