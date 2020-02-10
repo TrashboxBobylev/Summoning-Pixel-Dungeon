@@ -26,6 +26,7 @@ package com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions;
 
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Attunement;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.SparkParticle;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
@@ -95,6 +96,7 @@ public class Hacatu extends Minion implements Callback {
                 float multipler = 0.4f + (0.6f/affected.size());
                 //if the main target is in water, all affected take full damage
                 if (Dungeon.level.water[enemy.pos]) multipler = 1f;
+                if (Dungeon.hero.buff(Attunement.class) != null) multipler *= Attunement.empowering();
 
                 int min = minDamage;
                 int max = maxDamage;

@@ -28,6 +28,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Attunement;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Corruption;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Terror;
@@ -86,7 +87,10 @@ public class Wraith extends Mob {
 	@Override
 	public int damageRoll() {
         int i = Random.NormalIntRange(1 + level / 2, 2 + level);
-        if (parent != null) i = Random.NormalIntRange(parent.minDamage, parent.maxDamage);
+        if (parent != null) {
+            i = Random.NormalIntRange(parent.minDamage, parent.maxDamage);
+            if (Dungeon.hero.buff(Attunement.class) != null) i *= Attunement.empowering();
+        }
         return i;
 	}
 	

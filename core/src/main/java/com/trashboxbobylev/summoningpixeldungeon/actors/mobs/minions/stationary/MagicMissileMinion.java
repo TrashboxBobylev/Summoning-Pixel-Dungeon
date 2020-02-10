@@ -26,7 +26,9 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary;
 
+import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Attunement;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.CharSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.MagicMissileSprite;
@@ -65,6 +67,7 @@ public class MagicMissileMinion extends StationaryMinion {
 
         if (hit( this, enemy, false )) {
             int dmg = Random.NormalIntRange(minDamage, maxDamage);
+            if (Dungeon.hero.buff(Attunement.class) != null) dmg *= Attunement.empowering();
             enemy.damage(dmg, this);
 
             damage(2, this);

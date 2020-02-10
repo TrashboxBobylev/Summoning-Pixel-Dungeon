@@ -27,10 +27,7 @@ package com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.PerfumeGas;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.ArcaneArmor;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.MagicImmune;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Roots;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
@@ -139,6 +136,7 @@ public abstract class Minion extends Mob {
     public int damageRoll() {
         int i = Random.NormalIntRange(minDamage, maxDamage);
         if (buff(AdditionalDamage.class) != null) i += minDamage*2;
+        if (Dungeon.hero.buff(Attunement.class) != null) i *= Attunement.empowering();
         return i;
     }
 

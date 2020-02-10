@@ -29,6 +29,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.Blob;
 import com.trashboxbobylev.summoningpixeldungeon.actors.blobs.GooWarn;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Attunement;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.LockedFloor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Ooze;
@@ -87,7 +88,9 @@ public class GooMinion extends Minion {
                     CellEmitter.get(i).burst(ElmoParticle.FACTORY, 10);
             }
             Sample.INSTANCE.play( Assets.SND_BURNING );
-            return Random.NormalIntRange( Math.round(min*2.5f), Math.round(max*2.5f) );
+            float multiplier = 1f;
+            if (Dungeon.hero.buff(Attunement.class) != null) multiplier *= Attunement.empowering();
+            return Random.NormalIntRange((int) (Math.round(min*2.5f) * multiplier), (int) (Math.round(max*2.5f) * multiplier));
         } else {
             return Random.NormalIntRange( min, max );
         }
