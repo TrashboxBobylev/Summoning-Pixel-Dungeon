@@ -200,7 +200,9 @@ public static void add_1_1_1_Changes(ArrayList<ChangeInfo> changeInfos) {
                     "_-_ Spirit Bow being a not usable with sniper special and no augment"));
     changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
             "_-_ Replaced donation button with settings button.\n\n" +
-                                    "_-_ Removed upgraded missiles from shops."));
+                                    "_-_ Removed upgraded missiles from shops.\n\n" +
+                                    "_-_ Adjusted attunement gain from level 10 to level 6.\n\n" +
+                    "_-_ Edited sentry's summon prompt to be less confusing."));
 }
     public static void add_1_1_Changes(ArrayList<ChangeInfo> changeInfos){
         ChangeInfo changes = new ChangeInfo( "1.1", true, "");
