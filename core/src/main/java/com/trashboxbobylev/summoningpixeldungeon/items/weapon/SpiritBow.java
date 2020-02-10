@@ -380,6 +380,9 @@ public class SpiritBow extends Weapon {
                         }
                     });
 
+                } else {
+                    super.cast(user, dst);
+                    return;
                 }
             } else {
 				super.cast(user, dst);
