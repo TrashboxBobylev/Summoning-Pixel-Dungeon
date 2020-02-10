@@ -90,7 +90,7 @@ public class ExplodingTNT extends Mob {
                 public void call() {
                     final Flashbang bomb = new Flashbang();
                     bomb.fuse  = new Bomb.Fuse().ignite(bomb);
-                    Actor.addDelayed( bomb.fuse, 0);
+                    Actor.addDelayed( bomb.fuse, -1);
                     Heap heap = Dungeon.level.drop( bomb, ballistica.collisionPos );
                     if (!heap.isEmpty()) {
                         heap.sprite.drop( ballistica.collisionPos );
