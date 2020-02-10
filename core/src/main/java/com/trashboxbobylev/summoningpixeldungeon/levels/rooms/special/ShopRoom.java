@@ -204,9 +204,6 @@ public class ShopRoom extends SpecialRoom {
 			itemsToSpawn.add(new StoneOfEnchantment());
 			itemsToSpawn.add(Generator.random(Generator.Category.EXOTIC_POTION));
 			itemsToSpawn.add(Generator.random(Generator.Category.EXOTIC_SCROLL));
-            i = Generator.randomMissile();
-            if (i != null) i.upgrade(1).quantity(1).identify();
-            itemsToSpawn.add(i);
             itemsToSpawn.add(new CleanWater());
 			break;
 			
