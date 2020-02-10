@@ -177,6 +177,30 @@ public class SummPDChanges {
 //                        "_-_ Added the article about allies into Adventurer Guide\n"+
 //                        "We are almost finished. If nothing major will happen with this damn sleepy minions, I will publish the release."));
 //    }
+public static void add_1_1_1_Changes(ArrayList<ChangeInfo> changeInfos) {
+    ChangeInfo changes = new ChangeInfo("1.1.1", true, "");
+    changes.hardlight(Window.TITLE_COLOR);
+    changeInfos.add(changes);
+    changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
+    changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
+            "_-_ Released February 10th, 2020\n" +
+                    "_-_ 2 days after 1.1.0"));
+    changes = ChangesScene.createChangeInfo(changeInfos, "Changes", false, Window.SHPX_COLOR);
+    changes.addButton( new ChangeButton(new Image(Assets.CONJURER, 0, 90, 12, 15), "Conjurer",
+            "Have obtained the new ability: Soul Sparkling, that increases damage of your allies, when are heavily wounded."));
+    changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.CRYSTAL_WAND, null), "New Wand",
+            "Added the new wand: Wand of Crystal Bullet:\n\n" +
+                    "This wand shoots splitting crystals, that can deal damage for several trajectories."));
+    changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+            "Fixed:\n" +
+                    "_-_ Slingshot's stone crashing without slingshot\n" +
+                    "_-_ Lacking string for cave spinner\n" +
+                    "_-_ Crash for level 16\n" +
+                    "_-_ Flashbang breaking the game, when pickuped after mouse's attack"));
+    changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+            "_-_ Replaced donation button with settings button.\n\n" +
+                                    "_-_ Removed upgraded missiles from shops."));
+}
     public static void add_1_1_Changes(ArrayList<ChangeInfo> changeInfos){
         ChangeInfo changes = new ChangeInfo( "1.1", true, "");
         changes.hardlight( Window.TITLE_COLOR);
