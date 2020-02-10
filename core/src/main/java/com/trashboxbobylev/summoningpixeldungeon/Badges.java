@@ -726,7 +726,7 @@ public class Badges {
 	}
 
     public static void validateConjurerUnlock(){
-        if (Statistics.summonedMinions >= 2 && !global.contains(Badge.UNLOCK_CONJURER)){
+        if (Statistics.summonedMinions >= 1 && !global.contains(Badge.UNLOCK_CONJURER)){
             displayBadge( Badge.UNLOCK_CONJURER );
         }
     }
