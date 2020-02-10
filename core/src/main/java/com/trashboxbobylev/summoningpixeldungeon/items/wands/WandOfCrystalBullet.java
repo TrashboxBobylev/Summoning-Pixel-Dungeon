@@ -33,6 +33,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Recharging;
 import com.trashboxbobylev.summoningpixeldungeon.effects.MagicMissile;
 import com.trashboxbobylev.summoningpixeldungeon.effects.SpellSprite;
+import com.trashboxbobylev.summoningpixeldungeon.effects.Splash;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MagesStaff;
 import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
@@ -42,6 +43,7 @@ import com.trashboxbobylev.summoningpixeldungeon.sprites.MissileSprite;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -53,6 +55,8 @@ public class WandOfCrystalBullet extends DamageWand {
 
         collisionProperties = Ballistica.STOP_TARGET | Ballistica.STOP_TERRAIN;
 	}
+
+	public ArrayList<Integer> shardPositions = new ArrayList<>();
 
 	public int min(int lvl){
 		return 4+lvl;
@@ -69,43 +73,25 @@ public class WandOfCrystalBullet extends DamageWand {
 	@Override
 	protected void onZap( Ballistica bolt ) {
         Dungeon.level.pressCell(bolt.collisionPos);
-        int cell = bolt.collisionPos;
-        ArrayList<Integer> shardPositions = new ArrayList<>();
+        Splash.at(bolt.collisionPos, Random.Int(0xFFe380e3, 0xFF9485c9), level()*4);
+        for (final int k : shardPositions){
+            MagicMissile missile = ((MagicMissile)curUser.sprite.parent.recycle( MagicMissile.class ));
+            missile.reset(MagicMissile.CRYSTAL, bolt.collisionPos, k,   new Callback() {
+                @Override
+                public void call() {
+                    Char ch = Actor.findChar( k );
+                    if (ch != null) {
 
-        for (int i: PathFinder.NEIGHBOURS8){
-            if (shards(level()) != 9){
-                if (!shardPositions.contains(cell + i) && Dungeon.level.passable[cell +i]){
-                    if (Actor.findChar(cell + i) != null) shardPositions.add(cell + i);
-                    else if (Random.Float() < 0.5f) shardPositions.add(cell + i);
-                    if (shardPositions.size() >= shards(level())) break;
+                        processSoulMark(ch, chargesPerCast());
+                        ch.damage(damageRoll(), this);
+
+                        ch.sprite.burst(Random.Int(0xFFe380e3, 0xFF9485c9), level() + 3);
+
+                    } else {
+                        Dungeon.level.pressCell(k);
+                    }
                 }
-            } else {
-                shardPositions.add(cell + i);
-            }
-        }
-
-        for (int k : shardPositions){
-            final int target = new Ballistica(cell, k, Ballistica.MAGIC_BOLT ).collisionPos;
-            MagicMissile.boltFromChar(curUser.sprite.parent,
-                    MagicMissile.CRYSTAL,
-                    curUser.sprite,
-                    bolt.collisionPos,
-                    new Callback() {
-                        @Override
-                        public void call() {
-                            Char ch = Actor.findChar( target );
-                            if (ch != null) {
-
-                                processSoulMark(ch, chargesPerCast());
-                                ch.damage(damageRoll(), this);
-
-                                ch.sprite.burst(Random.Int(0xFFe380e3, 0xFF9485c9), level() + 3);
-
-                            } else {
-                                Dungeon.level.pressCell(target);
-                            }
-                        }
-                    });
+            });
             Sample.INSTANCE.play( Assets.SND_SHATTER );
         }
 	}
@@ -117,6 +103,16 @@ public class WandOfCrystalBullet extends DamageWand {
 //                curUser.sprite,
 //                bolt.collisionPos,
 //                callback);
+        int cell = bolt.collisionPos;
+        shardPositions.clear();
+        for (int i: PathFinder.NEIGHBOURS8){
+            int dest = new Ballistica(cell, cell+i, Ballistica.MAGIC_BOLT).collisionPos;
+            if (!shardPositions.contains(dest)){
+                if (Actor.findChar(dest) != null) shardPositions.add(dest);
+                else if (Random.Float() < 0.5f) shardPositions.add(dest);
+                if (shardPositions.size() >= shards(level())) break;
+            }
+        }
         ((MissileSprite)curUser.sprite.parent.recycle( MissileSprite.class )).
                 reset( curUser.pos, bolt.collisionPos, new Crystal(), callback );
         Sample.INSTANCE.play( Assets.SND_ZAP );
@@ -132,6 +128,16 @@ public class WandOfCrystalBullet extends DamageWand {
             }
         }
 	}
+
+    @Override
+    public void staffFx(MagesStaff.StaffParticle particle) {
+        particle.color( Random.Int(0xFFe380e3, 0xFF9485c9) );
+        particle.am = 0.5f;
+        particle.setLifespan(1f);
+        particle.speed.polar(Random.Float(PointF.PI2), 2f);
+        particle.setSize( 1f, 2f);
+        particle.radiateXY( 0.5f);
+    }
 
     @Override
     public String statsDesc() {

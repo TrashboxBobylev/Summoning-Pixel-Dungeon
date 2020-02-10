@@ -138,6 +138,7 @@ public enum HeroClass {
 		}
 		new TomeOfMastery().collect();
 		new WandOfCrystalBullet().identify().collect();
+		new ScrollOfUpgrade().quantity(4).collect();
 
 		hero.attunement = 0;
 		

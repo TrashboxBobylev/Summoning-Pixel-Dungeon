@@ -52,6 +52,6 @@ public class Attunement extends Buff{
 
     @Override
     public String desc() {
-        return Messages.get(this, "desc", empowering());
+        return Messages.get(this, "desc", (empowering() - 1f)*100f);
     }
 }
