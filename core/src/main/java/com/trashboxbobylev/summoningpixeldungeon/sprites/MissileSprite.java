@@ -26,6 +26,7 @@ package com.trashboxbobylev.summoningpixeldungeon.sprites;
 
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
+import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfCrystalBullet;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.SpiritBow;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Crossbow;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.RunicBlade;
@@ -146,10 +147,13 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		if (item instanceof SpiritBow.SpiritArrow && item.image() == ItemSpriteSheet.SPIRIT_BLAST){
 		    speed = 200f;
         }
-		if (item instanceof Dart && Dungeon.hero.belongings.weapon instanceof Crossbow){
-			speed *= 3f;
-			
-		} else if (item instanceof SpiritBow.SpiritArrow
+		if (item instanceof Dart && Dungeon.hero.belongings.weapon instanceof Crossbow) {
+            speed *= 3f;
+        }
+
+        else if (item instanceof WandOfCrystalBullet.Crystal){
+            speed = 200f;
+        } else if (item instanceof SpiritBow.SpiritArrow
 				|| item instanceof ScorpioSprite.ScorpioShot
 				|| item instanceof TenguSprite.TenguShuriken){
 			speed *= 1.5f;

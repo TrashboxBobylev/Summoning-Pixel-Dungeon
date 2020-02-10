@@ -64,6 +64,7 @@ public class MagicMissile extends Emitter {
 	public static final int FROGGIT = 11;
 	public static final int STENCH = 12;
 	public static final int SPINNER = 13;
+	public static final int CRYSTAL = 14;
 
 	public static final int FIRE_CONE       = 100;
 	public static final int FOLIAGE_CONE    = 101;
@@ -161,6 +162,11 @@ public class MagicMissile extends Emitter {
             case SPINNER:
                 size (12);
                 pour(WebParticle.FACTORY, 0.01f);
+                break;
+            case CRYSTAL:
+                size (4);
+                pour(FrostfireParticle.FACTORY, 0.01f);
+                pour(WardParticle.FACTORY, 0.01f);
                 break;
 
 			case FIRE_CONE:
