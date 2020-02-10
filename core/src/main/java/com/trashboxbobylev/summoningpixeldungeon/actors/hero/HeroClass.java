@@ -136,9 +136,6 @@ public enum HeroClass {
 		if (Dungeon.isChallenged(Challenges.NO_FOOD)){
 			new SmallRation().collect();
 		}
-		new TomeOfMastery().collect();
-		new WandOfCrystalBullet().identify().collect();
-		new ScrollOfUpgrade().quantity(4).collect();
 
 		hero.attunement = 0;
 		
