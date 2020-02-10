@@ -1331,7 +1331,7 @@ public class Hero extends Char {
                     if (lvl % 6 == 0) {
                         attunement++;
                     }
-                } else if (lvl == 10){
+                } else if (lvl == 6){
                     attunement++;
                 }
 				Item.updateQuickslot();
