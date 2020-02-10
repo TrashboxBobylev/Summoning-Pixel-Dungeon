@@ -40,6 +40,7 @@ import com.trashboxbobylev.summoningpixeldungeon.ui.PrefsButton;
 import com.trashboxbobylev.summoningpixeldungeon.ui.StyledButton;
 import com.trashboxbobylev.summoningpixeldungeon.windows.WndMessage;
 import com.trashboxbobylev.summoningpixeldungeon.windows.WndOptions;
+import com.trashboxbobylev.summoningpixeldungeon.windows.WndSettings;
 import com.trashboxbobylev.summoningpixeldungeon.windows.WndStartGame;
 import com.watabou.glwrap.Blending;
 import com.watabou.noosa.BitmapText;
@@ -126,25 +127,13 @@ public class TitleScene extends PixelScene {
 		btnPlay.icon(Icons.get(Icons.ENTER));
 		add(btnPlay);
 		
-		TitleButton btnSupport = new TitleButton(Messages.get(this, "support")){
+		TitleButton btnSupport = new TitleButton(Messages.get(this, "settings")){
 			@Override
 			protected void onClick() {
-				WndOptions wnd = new WndOptions(Messages.get(TitleScene.class, "support"),
-						Messages.get(TitleScene.class, "patreon_body"),
-						Messages.get(TitleScene.class, "patreon_button")){
-					@Override
-					protected void onSelect(int index) {
-						if (index == 0){
-							DeviceCompat.openURI("https://www.patreon.com/ShatteredPixel");
-						} else {
-							hide();
-						}
-					}
-				};
-				parent.add(wnd);
+                parent.add( new WndSettings() );
 			}
 		};
-		btnSupport.icon(Icons.get(Icons.GOLD));
+		btnSupport.icon(Icons.get(Icons.PREFS));
 		add(btnSupport);
 		
 		TitleButton btnRankings = new TitleButton(Messages.get(this, "rankings")){
@@ -216,15 +205,15 @@ public class TitleScene extends PixelScene {
 		
 		int pos = 2;
 		
-		PrefsButton btnPrefs = new PrefsButton();
-		btnPrefs.setRect( pos, 0, 16, 20 );
-		add( btnPrefs );
-		
-		pos += btnPrefs.width();
-
-		LanguageButton btnLang = new LanguageButton();
-		btnLang.setRect(pos, 0, 16, 20);
-		add( btnLang );
+//		PrefsButton btnPrefs = new PrefsButton();
+//		btnPrefs.setRect( pos, 0, 16, 20 );
+//		add( btnPrefs );
+//
+//		pos += btnPrefs.width();
+//
+//		LanguageButton btnLang = new LanguageButton();
+//		btnLang.setRect(pos, 0, 16, 20);
+//		add( btnLang );
 
 		ExitButton btnExit = new ExitButton();
 		btnExit.setPos( w - btnExit.width(), 0 );
