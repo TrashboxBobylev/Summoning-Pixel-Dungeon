@@ -58,6 +58,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfSo
 import com.trashboxbobylev.summoningpixeldungeon.items.spells.Contain;
 import com.trashboxbobylev.summoningpixeldungeon.items.spells.Enrage;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfTargeting;
+import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfCrystalBullet;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfMagicMissile;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfStench;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Slingshot;
@@ -135,6 +136,8 @@ public enum HeroClass {
 		if (Dungeon.isChallenged(Challenges.NO_FOOD)){
 			new SmallRation().collect();
 		}
+		new TomeOfMastery().collect();
+		new WandOfCrystalBullet().identify().collect();
 
 		hero.attunement = 0;
 		
