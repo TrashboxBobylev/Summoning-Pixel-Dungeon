@@ -43,7 +43,7 @@ public class HellBat extends Mob {
 	{
 		spriteClass = HellBatSprite.class;
 		
-		HP = HT = 80;
+		HP = HT = 55;
 		defenseSkill = 32;
 		baseSpeed = 2f;
 		
@@ -58,7 +58,7 @@ public class HellBat extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 20, 24 );
+		return Random.NormalIntRange( 16, 17 );
 	}
 	
 	@Override
@@ -68,7 +68,7 @@ public class HellBat extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 7);
+		return Random.NormalIntRange(0, 6);
 	}
 	
 	@Override
