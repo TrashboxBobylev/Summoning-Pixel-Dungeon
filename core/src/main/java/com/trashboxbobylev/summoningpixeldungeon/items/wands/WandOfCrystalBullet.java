@@ -61,15 +61,15 @@ public class WandOfCrystalBullet extends DamageWand {
     private int collisionPos;
 
 	public int min(int lvl){
-		return 4+lvl;
+		return 2+lvl;
 	}
 
 	public int max(int lvl){
-		return 6+3*lvl;
+		return 6+4*lvl;
 	}
 
 	public int shards(int lvl){
-	    return Math.min(3 + lvl/2,9);
+	    return Math.min(3 + lvl/2,8);
     }
 	
 	@Override
@@ -102,8 +102,9 @@ public class WandOfCrystalBullet extends DamageWand {
         for (int i: PathFinder.NEIGHBOURS8){
             final int dest = new Ballistica(collisionPos, collisionPos+i, Ballistica.MAGIC_BOLT).collisionPos;
             if (!shardPositions.contains(dest)){
-                if (Actor.findChar(dest) != null || Random.Float() < 0.5f) {
+                if (Actor.findChar(dest) != null && Actor.findChar(dest) != Dungeon.hero) {
                     MagicMissile missile = ((MagicMissile)curUser.sprite.parent.recycle( MagicMissile.class ));
+                    shardPositions.add(dest);
                     missile.reset(MagicMissile.CRYSTAL_SHARDS, collisionPos, dest,   new Callback() {
                         @Override
                         public void call() {
@@ -119,14 +120,13 @@ public class WandOfCrystalBullet extends DamageWand {
                                 Dungeon.level.pressCell(dest);
                             }
 
-                            shardPositions.remove(dest);
+                            shardPositions.remove(shardPositions.get(shardPositions.indexOf(dest) ));
                             if (shardPositions.size() == 0){
                                 curUser.spendAndNext( 1f );
                             }
                         }
                     });
                     Sample.INSTANCE.play( Assets.SND_SHATTER );
-                    shardPositions.add(dest);
                 }
                 if (shardPositions.size() >= shards(level())) break;
             }
@@ -180,4 +180,10 @@ public class WandOfCrystalBullet extends DamageWand {
         }
     }
 
+    @Override
+    public int damageRoll() {
+        int i = super.damageRoll();
+        if (shardPositions.size() == 1) i *= 0.66f;
+        return i;
+    }
 }

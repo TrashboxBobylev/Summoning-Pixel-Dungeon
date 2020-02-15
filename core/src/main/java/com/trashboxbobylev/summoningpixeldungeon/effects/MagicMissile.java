@@ -565,6 +565,7 @@ public class MagicMissile extends Emitter {
 
             this.x = x;
             this.y = y;
+            color( Random.element(colors) );
 
             left = lifespan;
             size = 12;
@@ -580,7 +581,7 @@ public class MagicMissile extends Emitter {
         public void update() {
             super.update();
 
-            am = 1 - left / lifespan;
+            am = Random.Float();
         }
     }
 }
