@@ -34,12 +34,7 @@ import com.trashboxbobylev.summoningpixeldungeon.effects.particles.ElmoParticle;
 import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.bags.Bag;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfRecharging;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfCorrosion;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfCorruption;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfDisintegration;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfLivingEarth;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfRegrowth;
+import com.trashboxbobylev.summoningpixeldungeon.items.wands.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
@@ -104,6 +99,9 @@ public class MagesStaff extends MeleeWeapon {
 		if (wand!= null && wand.curCharges > 0) {
 			actions.add( AC_ZAP );
 		}
+		if (wand instanceof WandOfStars && Dungeon.level.numberOfStars() > 0){
+		    actions.add(WandOfStars.AC_UNLEASH);
+        }
 		return actions;
 	}
 
@@ -132,7 +130,9 @@ public class MagesStaff extends MeleeWeapon {
 			if (cursed || hasCurseEnchant()) wand.cursed = true;
 			else                             wand.cursed = false;
 			wand.execute(hero, AC_ZAP);
-		}
+		} else if (action.equals(WandOfStars.AC_UNLEASH)){
+		    wand.execute(hero, action);
+        }
 	}
 
 	@Override
