@@ -176,12 +176,6 @@ public class WandOfCrystalBullet extends DamageWand {
             return Messages.get(this, "stats_desc", min(), max(),  3 + level() / 2);
     }
 
-	public static class Crystal extends Item {
-        {
-            image = ItemSpriteSheet.CRYSTAL;
-        }
-    }
-
     @Override
     public int damageRoll() {
         int i = super.damageRoll();
