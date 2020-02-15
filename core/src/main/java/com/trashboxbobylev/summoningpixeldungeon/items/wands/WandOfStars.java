@@ -196,7 +196,7 @@ public class WandOfStars extends DamageWand {
 
         @Override
         public ItemSprite.Glowing glowing() {
-            return super.glowing();
+            return WHITE;
         }
 
         @Override
