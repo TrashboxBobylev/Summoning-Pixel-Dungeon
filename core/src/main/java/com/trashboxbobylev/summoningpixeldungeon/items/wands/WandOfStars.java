@@ -120,7 +120,7 @@ public class WandOfStars extends DamageWand {
             Dungeon.level.drop(star, bolt.collisionPos);
             Dungeon.level.pressCell(bolt.collisionPos);
         } else {
-
+            GLog.warning( Messages.get(this, "bad_location"));
         }
 
 	}
