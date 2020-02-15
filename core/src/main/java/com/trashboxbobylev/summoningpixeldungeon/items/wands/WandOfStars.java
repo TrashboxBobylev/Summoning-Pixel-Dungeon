@@ -126,8 +126,10 @@ public class WandOfStars extends DamageWand {
 
         for (int i : PathFinder.NEIGHBOURS9){
             Heap heap = Dungeon.level.heaps.get(pos + i);
-            for (Item item : heap.items){
-                if (item instanceof Star) return false;
+            if (heap != null) {
+                for (Item item : heap.items) {
+                    if (item instanceof Star) return false;
+                }
             }
         }
 
