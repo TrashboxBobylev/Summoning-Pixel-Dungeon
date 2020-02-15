@@ -55,6 +55,7 @@ public class WandOfStars extends DamageWand {
 
 	{
 		image = ItemSpriteSheet.STAR_WAND;
+		collisionProperties = Ballistica.STOP_TARGET | Ballistica.STOP_TERRAIN;
 	}
 
     @Override
