@@ -459,9 +459,6 @@ public class LoveHolder extends Artifact {
     };
 
     public static int getHealingFromStrength(int str) {
-        if (str == 1) {
-            return 1;
-        }
         return str * 2;
     }
 
