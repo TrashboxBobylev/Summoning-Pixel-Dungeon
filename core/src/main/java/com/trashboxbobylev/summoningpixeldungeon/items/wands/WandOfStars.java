@@ -101,14 +101,14 @@ public class WandOfStars extends DamageWand {
 	    if (Dungeon.level == null) return (3+lvl);
 	    int num = Dungeon.level.numberOfStars();
 	    if (num < 3) num = 0;
-		return (int) ((3+lvl) * (Math.pow(0.9f, num - 2)));
+		return (int) ((3+lvl) * (Math.pow(0.9f, Math.min(1, num - 2))));
 	}
 
 	public int max(int lvl){
         if (Dungeon.level == null) return (8+lvl*3);
         int num = Dungeon.level.numberOfStars();
         if (num < 3) num = 0;
-        return (int) ((8+lvl*3) * (Math.pow(0.9f, num - 2)));
+        return (int) ((8+lvl*3) * (Math.pow(0.9f, Math.min(1, num - 2))));
 	}
 	
 	@Override
@@ -141,7 +141,7 @@ public class WandOfStars extends DamageWand {
     public void staffFx(MagesStaff.StaffParticle particle) {
         particle.color(0x6de8e4);
         particle.am = 0.6f;
-        particle.setLifespan(3f);
+        particle.setLifespan(1.2f);
         float angle = Random.Float(PointF.PI2);
         particle.speed.polar( angle, 5f);
         particle.acc.set( 0f, 2f);
