@@ -53,7 +53,7 @@ public class Slime extends Mob {
 	{
 		spriteClass = SlimeSprite.class;
 		
-		HP = HT = 100;
+		HP = HT = 80;
 		defenseSkill = 23;
 
 		EXP = 12;
