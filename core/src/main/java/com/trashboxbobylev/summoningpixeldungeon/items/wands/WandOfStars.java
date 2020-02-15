@@ -95,14 +95,14 @@ public class WandOfStars extends DamageWand {
 	    if (Dungeon.level == null) return (3+lvl);
 	    int num = Dungeon.level.numberOfStars();
 	    if (num < 3) num = 0;
-		return (int) ((3+lvl) * (Math.pow(0.9f, Math.min(1, num - 2))));
+		return (int) ((3+lvl) * (Math.pow(0.9f, Math.max(0, num - 2))));
 	}
 
 	public int max(int lvl){
         if (Dungeon.level == null) return (8+lvl*3);
         int num = Dungeon.level.numberOfStars();
         if (num < 3) num = 0;
-        return (int) ((8+lvl*3) * (Math.pow(0.9f, Math.min(1, num - 2))));
+        return (int) ((8+lvl*3) * (Math.pow(0.9f, Math.max(0, num - 2))));
 	}
 	
 	@Override

@@ -151,7 +151,7 @@ public class WandOfCrystalBullet extends DamageWand {
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
 		for (int c : PathFinder.NEIGHBOURS8){
             Char ch = Actor.findChar(defender.pos + c);
-            if (ch != null){
+            if (ch != null && ch != Dungeon.hero){
                 ch.damage((int) (damage * Random.Float(0.2f, 0.5f)), attacker);
                 ch.sprite.burst(Random.Int(0xFFe380e3, 0xFF9485c9), level() + 3);
             }
