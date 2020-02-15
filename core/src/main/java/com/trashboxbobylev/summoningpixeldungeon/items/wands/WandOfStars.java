@@ -31,6 +31,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.effects.CellEmitter;
+import com.trashboxbobylev.summoningpixeldungeon.effects.MagicMissile;
 import com.trashboxbobylev.summoningpixeldungeon.effects.SpellSprite;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.FlameParticle;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.FrostfireParticle;
@@ -43,10 +44,7 @@ import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.PathFinder;
-import com.watabou.utils.PointF;
-import com.watabou.utils.Random;
-import com.watabou.utils.SparseArray;
+import com.watabou.utils.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -151,6 +149,16 @@ public class WandOfStars extends DamageWand {
         float dst = Random.Float(1f);
         particle.x -= dst;
         particle.y += dst;
+    }
+
+    @Override
+    protected void fx(Ballistica bolt, Callback callback) {
+        MagicMissile.boltFromChar(curUser.sprite.parent,
+                MagicMissile.STAR,
+                curUser.sprite,
+                bolt.collisionPos,
+                callback);
+        Sample.INSTANCE.play(Assets.SND_ZAP);
     }
 
     @Override
