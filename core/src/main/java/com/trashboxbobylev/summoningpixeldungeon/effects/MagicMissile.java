@@ -37,6 +37,8 @@ import com.watabou.utils.ColorMath;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
+import java.util.Collections;
+
 public class MagicMissile extends Emitter {
 
 	private static final float SPEED	= 200f;
@@ -65,6 +67,7 @@ public class MagicMissile extends Emitter {
 	public static final int STENCH = 12;
 	public static final int SPINNER = 13;
 	public static final int CRYSTAL = 14;
+	public static final int CRYSTAL_SHARDS = 15;
 
 	public static final int FIRE_CONE       = 100;
 	public static final int FOLIAGE_CONE    = 101;
@@ -164,9 +167,12 @@ public class MagicMissile extends Emitter {
                 pour(WebParticle.FACTORY, 0.01f);
                 break;
             case CRYSTAL:
-                size (4);
-                pour(FrostfireParticle.FACTORY, 0.01f);
-                pour(WardParticle.FACTORY, 0.01f);
+                size (9);
+                pour(CrystalParticle.FACTORY, 0.01f);
+                break;
+            case CRYSTAL_SHARDS:
+                size (6);
+                pour(CrystalParticle.SHARD, 0.01f);
                 break;
 
 			case FIRE_CONE:
@@ -465,58 +471,116 @@ public class MagicMissile extends Emitter {
 	}
 
 	public static class WardParticle extends PixelParticle.Shrinking {
-		
-		public static final Emitter.Factory FACTORY = new Factory() {
-			@Override
-			public void emit( Emitter emitter, int index, float x, float y ) {
-				((WardParticle)emitter.recycle( WardParticle.class )).reset( x, y );
-			}
-			@Override
-			public boolean lightMode() {
-				return true;
-			}
-		};
 
-		public static final Emitter.Factory UP = new Factory() {
-			@Override
-			public void emit( Emitter emitter, int index, float x, float y ) {
-				((WardParticle)emitter.recycle( WardParticle.class )).resetUp( x, y );
-			}
-			@Override
-			public boolean lightMode() {
-				return true;
-			}
-		};
-		
-		public WardParticle() {
-			super();
-			
-			lifespan = 0.6f;
-			
-			color( 0x8822FF );
-		}
-		
-		public void reset( float x, float y ) {
-			revive();
-			
-			this.x = x;
-			this.y = y;
-			
-			left = lifespan;
-			size = 8;
-		}
+        public static final Emitter.Factory FACTORY = new Factory() {
+            @Override
+            public void emit( Emitter emitter, int index, float x, float y ) {
+                ((WardParticle)emitter.recycle( WardParticle.class )).reset( x, y );
+            }
+            @Override
+            public boolean lightMode() {
+                return true;
+            }
+        };
 
-		public void resetUp( float x, float y){
-			reset(x, y);
+        public static final Emitter.Factory UP = new Factory() {
+            @Override
+            public void emit( Emitter emitter, int index, float x, float y ) {
+                ((WardParticle)emitter.recycle( WardParticle.class )).resetUp( x, y );
+            }
+            @Override
+            public boolean lightMode() {
+                return true;
+            }
+        };
 
-			speed.set( Random.Float( -8, +8 ), Random.Float( -32, -48 ) );
-		}
-		
-		@Override
-		public void update() {
-			super.update();
-			
-			am = 1 - left / lifespan;
-		}
-	}
+        public WardParticle() {
+            super();
+
+            lifespan = 0.6f;
+
+            color( 0x8822FF );
+        }
+
+        public void reset( float x, float y ) {
+            revive();
+
+            this.x = x;
+            this.y = y;
+
+            left = lifespan;
+            size = 8;
+        }
+
+        public void resetUp( float x, float y){
+            reset(x, y);
+
+            speed.set( Random.Float( -8, +8 ), Random.Float( -32, -48 ) );
+        }
+
+        @Override
+        public void update() {
+            super.update();
+
+            am = 1 - left / lifespan;
+        }
+    }
+
+    public static class CrystalParticle extends PixelParticle.Shrinking {
+
+        public static final Emitter.Factory FACTORY = new Factory() {
+            @Override
+            public void emit( Emitter emitter, int index, float x, float y ) {
+                ((WardParticle)emitter.recycle( WardParticle.class )).reset( x, y );
+            }
+            @Override
+            public boolean lightMode() {
+                return true;
+            }
+        };
+
+        static Integer[] colors = {0xFFe380e3, 0xFF9485c9};
+
+        public static final Emitter.Factory SHARD = new Factory() {
+            @Override
+            public void emit( Emitter emitter, int index, float x, float y ) {
+                ((WardParticle)emitter.recycle( WardParticle.class )).resetUp( x, y );
+            }
+            @Override
+            public boolean lightMode() {
+                return true;
+            }
+        };
+
+        public CrystalParticle() {
+            super();
+
+            lifespan = 0.6f;
+
+            color( Random.element(colors) );
+        }
+
+        public void reset( float x, float y ) {
+            revive();
+
+            this.x = x;
+            this.y = y;
+
+            left = lifespan;
+            size = 12;
+        }
+
+        public void resetUp( float x, float y){
+            reset(x, y);
+
+            size = 8;
+        }
+
+        @Override
+        public void update() {
+            super.update();
+
+            am = 1 - left / lifespan;
+        }
+    }
 }

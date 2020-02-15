@@ -24,13 +24,13 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.items.wands;
 
-import com.trashboxbobylev.summoningpixeldungeon.Assets;
-import com.trashboxbobylev.summoningpixeldungeon.Challenges;
-import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
+import com.trashboxbobylev.summoningpixeldungeon.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Recharging;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.EnergyOverload;
+import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroClass;
 import com.trashboxbobylev.summoningpixeldungeon.effects.MagicMissile;
 import com.trashboxbobylev.summoningpixeldungeon.effects.SpellSprite;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Splash;
@@ -40,6 +40,7 @@ import com.trashboxbobylev.summoningpixeldungeon.mechanics.Ballistica;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.MissileSprite;
+import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
@@ -57,6 +58,7 @@ public class WandOfCrystalBullet extends DamageWand {
 	}
 
 	public ArrayList<Integer> shardPositions = new ArrayList<>();
+    private int collisionPos;
 
 	public int min(int lvl){
 		return 4+lvl;
@@ -74,27 +76,62 @@ public class WandOfCrystalBullet extends DamageWand {
 	protected void onZap( Ballistica bolt ) {
         Dungeon.level.pressCell(bolt.collisionPos);
         Splash.at(bolt.collisionPos, Random.Int(0xFFe380e3, 0xFF9485c9), level()*4);
-        for (final int k : shardPositions){
-            MagicMissile missile = ((MagicMissile)curUser.sprite.parent.recycle( MagicMissile.class ));
-            missile.reset(MagicMissile.CRYSTAL, bolt.collisionPos, k,   new Callback() {
-                @Override
-                public void call() {
-                    Char ch = Actor.findChar( k );
-                    if (ch != null) {
 
-                        processSoulMark(ch, chargesPerCast());
-                        ch.damage(damageRoll(), this);
-
-                        ch.sprite.burst(Random.Int(0xFFe380e3, 0xFF9485c9), level() + 3);
-
-                    } else {
-                        Dungeon.level.pressCell(k);
-                    }
-                }
-            });
-            Sample.INSTANCE.play( Assets.SND_SHATTER );
-        }
 	}
+
+    @Override
+    protected void wandUsed() {
+        Statistics.wandUses++;
+        if (!isIdentified() && availableUsesToID >= 1) {
+            availableUsesToID--;
+            usesLeftToID--;
+            if (usesLeftToID <= 0) {
+                identify();
+                GLog.positive( Messages.get(Wand.class, "identify") );
+                Badges.validateItemLevelAquired( this );
+            }
+        }
+
+        curCharges -= cursed ? 1 : chargesPerCast();
+        if (Dungeon.hero.buff(EnergyOverload.class) != null && !cursed) curCharges += chargesPerCast();
+
+        if (curUser.heroClass == HeroClass.MAGE) levelKnown = true;
+        updateQuickslot();
+
+        shardPositions.clear();
+        for (int i: PathFinder.NEIGHBOURS8){
+            final int dest = new Ballistica(collisionPos, collisionPos+i, Ballistica.MAGIC_BOLT).collisionPos;
+            if (!shardPositions.contains(dest)){
+                if (Actor.findChar(dest) != null || Random.Float() < 0.5f) {
+                    MagicMissile missile = ((MagicMissile)curUser.sprite.parent.recycle( MagicMissile.class ));
+                    missile.reset(MagicMissile.CRYSTAL_SHARDS, collisionPos, dest,   new Callback() {
+                        @Override
+                        public void call() {
+                            Char ch = Actor.findChar( shardPositions.get(shardPositions.indexOf(dest) ));
+                            if (ch != null) {
+
+                                processSoulMark(ch, chargesPerCast());
+                                ch.damage(damageRoll(), this);
+
+                                ch.sprite.burst(Random.Int(0xFFe380e3, 0xFF9485c9), level() + 3);
+
+                            } else {
+                                Dungeon.level.pressCell(dest);
+                            }
+
+                            shardPositions.remove(dest);
+                            if (shardPositions.size() == 0){
+                                curUser.spendAndNext( 1f );
+                            }
+                        }
+                    });
+                    Sample.INSTANCE.play( Assets.SND_SHATTER );
+                    shardPositions.add(dest);
+                }
+                if (shardPositions.size() >= shards(level())) break;
+            }
+        }
+    }
 
     @Override
     protected void fx(Ballistica bolt, Callback callback) {
@@ -103,18 +140,8 @@ public class WandOfCrystalBullet extends DamageWand {
 //                curUser.sprite,
 //                bolt.collisionPos,
 //                callback);
-        int cell = bolt.collisionPos;
-        shardPositions.clear();
-        for (int i: PathFinder.NEIGHBOURS8){
-            int dest = new Ballistica(cell, cell+i, Ballistica.MAGIC_BOLT).collisionPos;
-            if (!shardPositions.contains(dest)){
-                if (Actor.findChar(dest) != null) shardPositions.add(dest);
-                else if (Random.Float() < 0.5f) shardPositions.add(dest);
-                if (shardPositions.size() >= shards(level())) break;
-            }
-        }
-        ((MissileSprite)curUser.sprite.parent.recycle( MissileSprite.class )).
-                reset( curUser.pos, bolt.collisionPos, new Crystal(), callback );
+        collisionPos = bolt.collisionPos;
+        MagicMissile.boltFromChar(curUser.sprite.parent, MagicMissile.CRYSTAL, curUser.sprite, bolt.collisionPos, callback);
         Sample.INSTANCE.play( Assets.SND_ZAP );
     }
 
