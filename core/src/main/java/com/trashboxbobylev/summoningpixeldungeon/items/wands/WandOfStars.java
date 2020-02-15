@@ -44,6 +44,7 @@ import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 import com.watabou.utils.SparseArray;
 
@@ -134,6 +135,22 @@ public class WandOfStars extends DamageWand {
 
         return true;
 
+    }
+
+    @Override
+    public void staffFx(MagesStaff.StaffParticle particle) {
+        particle.color(0x6de8e4);
+        particle.am = 0.6f;
+        particle.setLifespan(3f);
+        float angle = Random.Float(PointF.PI2);
+        particle.speed.polar( angle, 5f);
+        particle.acc.set( 0f, 2f);
+        particle.setSize( 0f, 3.2f);
+        particle.sizeJitter = 1f;
+        particle.radiateXY(Random.Float(1f));
+        float dst = Random.Float(1f);
+        particle.x -= dst;
+        particle.y += dst;
     }
 
     @Override
