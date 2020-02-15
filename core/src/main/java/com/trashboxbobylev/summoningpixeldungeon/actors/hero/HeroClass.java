@@ -60,6 +60,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.spells.Enrage;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfTargeting;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfCrystalBullet;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfMagicMissile;
+import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfStars;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfStench;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Slingshot;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.SpiritBow;
@@ -179,6 +180,7 @@ public enum HeroClass {
 		MagesStaff staff;
 		
 		staff = new MagesStaff(new WandOfCrystalBullet());
+		new WandOfStars().identify().collect();
 
 		(hero.belongings.weapon = staff).identify();
 		hero.belongings.weapon.activate(hero);
