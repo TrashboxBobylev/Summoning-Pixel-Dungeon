@@ -24,6 +24,7 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.levels;
 
+import android.annotation.SuppressLint;
 import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Challenges;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
@@ -63,6 +64,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.potions.PotionOfStrength;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfEnchantment;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfIntuition;
+import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfStars;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfWarding;
 import com.trashboxbobylev.summoningpixeldungeon.levels.features.Chasm;
 import com.trashboxbobylev.summoningpixeldungeon.levels.features.Door;
@@ -609,6 +611,28 @@ public abstract class Level implements Bundlable {
 	        if (mob instanceof FinalFroggit) return false;
         }
 	    return true;
+    }
+
+    public int numberOfStars(){
+        int num = 0;
+        for (Heap heap : heaps.valueList()) {
+            for (Item item : heap.items){
+                if (item instanceof WandOfStars.Star) num++;
+            }
+        }
+
+        return num;
+    }
+
+    public SparseArray<WandOfStars.Star> stars(){
+	    SparseArray<WandOfStars.Star> arr = new SparseArray<>();
+        for (Heap heap : heaps.valueList()) {
+            for (Item item : heap.items){
+                if (item instanceof WandOfStars.Star) arr.put(heap.pos, (WandOfStars.Star) item);
+            }
+        }
+
+        return arr;
     }
 
 	public void buildFlagMaps() {

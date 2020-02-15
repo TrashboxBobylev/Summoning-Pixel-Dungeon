@@ -106,7 +106,7 @@ public class ItemSpriteSheet {
         assignItemRect(TENGU_BOMB,      13, 12);
         assignItemRect(TENGU_SHOCKER,   13, 12);
         assignItemRect(SPIRIT_BLAST, 15, 15);
-        assignItemRect(CRYSTAL, 12, 12);
+        assignItemRect(CRYSTAL, 11, 11);
     }
 
 	private static final int CONTAINERS     =                               xy(1, 3);   //16 slots
@@ -433,10 +433,12 @@ public class ItemSpriteSheet {
     public static final int WAND_STENCH    = WANDS+13;
     public static final int SLIME_STAFF = WANDS+14;
     public static final int CRYSTAL_WAND = WANDS+15;
+    public static final int STAR_WAND = STAFFS +5;
 	static {
 		for (int i = WANDS; i < WANDS+16; i++)
 			assignItemRect(i, 14, 14);
 		assignItemRect(SLIME_STAFF, 16, 16);
+		assignItemRect(STAR_WAND, 14, 14);
 	}
 
 	private static final int RINGS          =                               xy(1, 15);  //16 slots

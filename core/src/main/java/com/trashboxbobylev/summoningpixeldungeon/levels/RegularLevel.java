@@ -35,6 +35,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.Item;
 import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.Artifact;
 import com.trashboxbobylev.summoningpixeldungeon.items.journal.GuidePage;
 import com.trashboxbobylev.summoningpixeldungeon.items.keys.GoldenKey;
+import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfStars;
 import com.trashboxbobylev.summoningpixeldungeon.journal.Document;
 import com.trashboxbobylev.summoningpixeldungeon.levels.builders.Builder;
 import com.trashboxbobylev.summoningpixeldungeon.levels.builders.LoopBuilder;
@@ -467,6 +468,8 @@ public abstract class RegularLevel extends Level {
 		
 		return super.fallCell( false );
 	}
+
+
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
