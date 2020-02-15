@@ -99,9 +99,6 @@ public class MagesStaff extends MeleeWeapon {
 		if (wand!= null && wand.curCharges > 0) {
 			actions.add( AC_ZAP );
 		}
-		if (wand instanceof WandOfStars && Dungeon.level.numberOfStars() > 0){
-		    actions.add(WandOfStars.AC_UNLEASH);
-        }
 		return actions;
 	}
 

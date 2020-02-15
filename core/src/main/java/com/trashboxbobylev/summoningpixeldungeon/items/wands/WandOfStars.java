@@ -58,13 +58,6 @@ public class WandOfStars extends DamageWand {
 	}
 
     @Override
-    public ArrayList<String> actions(Hero hero) {
-        ArrayList<String> actions = super.actions(hero);
-        if (Dungeon.level.numberOfStars() > 0) actions.add(AC_UNLEASH);
-        return actions;
-    }
-
-    @Override
     public void execute(Hero hero, String action) {
         super.execute(hero, action);
         if (action.equals(AC_UNLEASH)){
@@ -114,10 +107,20 @@ public class WandOfStars extends DamageWand {
 	@Override
 	protected void onZap( Ballistica bolt ) {
 
+	    Heap heap = Dungeon.level.heaps.get(bolt.collisionPos);
+	    if (heap != null){
+	        for (Item item: heap.items){
+	            if (item instanceof Star) execute(Dungeon.hero, AC_UNLEASH);
+	            return;
+            }
+        }
+
         if (canPlaceStar(bolt.collisionPos)){
             Star star = new Star();
             Dungeon.level.drop(star, bolt.collisionPos);
             Dungeon.level.pressCell(bolt.collisionPos);
+        } else {
+
         }
 
 	}
