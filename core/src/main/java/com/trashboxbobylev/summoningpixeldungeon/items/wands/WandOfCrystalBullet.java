@@ -131,6 +131,8 @@ public class WandOfCrystalBullet extends DamageWand {
                 if (shardPositions.size() >= shards(level())) break;
             }
         }
+
+        if (shardPositions.size() == 0) curUser.spendAndNext(1f);
     }
 
     @Override
