@@ -294,13 +294,11 @@ public class LoveHolder extends Artifact {
                                             healing *= 2;
                                             charge -= str;
                                             //searching for neighbours
-                                            ArrayList<Integer> neighbours = new ArrayList<Integer>();
+                                            ArrayList<Minion> neighbours = new ArrayList<>();
 
-                                            for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-                                                int p = ch.pos + PathFinder.NEIGHBOURS8[i];
-                                                if (Actor.findChar( p ) instanceof Minion) {
-                                                    neighbours.add( p );
-                                                }
+                                            for(int i : PathFinder.NEIGHBOURS8){
+                                                Char uh = Actor.findChar(shot.collisionPos + i);
+                                                if (uh instanceof Minion) neighbours.add((Minion) uh);
                                             }
 
                                             if (neighbours.size() == 0){
@@ -310,17 +308,13 @@ public class LoveHolder extends Artifact {
 
                                                 ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healing);
                                             } else {
-                                                ArrayList<Minion> tempChar = new ArrayList<Minion>();
-                                                for (Integer pos : neighbours){
-                                                    tempChar.add((Minion) Actor.findChar(pos));
-                                                }
-                                                int healingForEveryMinion = healing / tempChar.size();
+                                                int healingForEveryMinion = healing / neighbours.size();
                                                 ch.HP += healingForEveryMinion;
 
                                                 ch.sprite.emitter().burst(Speck.factory(Speck.STEAM), 10);
 
                                                 ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healingForEveryMinion);
-                                                for (Minion minion : tempChar){
+                                                for (Minion minion : neighbours){
                                                     minion.HP += healingForEveryMinion;
 
                                                     minion.sprite.emitter().burst(Speck.factory(Speck.STEAM), 10);
