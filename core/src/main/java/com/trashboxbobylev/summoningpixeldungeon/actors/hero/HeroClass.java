@@ -179,8 +179,7 @@ public enum HeroClass {
 	private static void initMage( Hero hero ) {
 		MagesStaff staff;
 		
-		staff = new MagesStaff(new WandOfCrystalBullet());
-		new WandOfStars().identify().collect();
+		staff = new MagesStaff(new WandOfMagicMissile());
 
 		(hero.belongings.weapon = staff).identify();
 		hero.belongings.weapon.activate(hero);
