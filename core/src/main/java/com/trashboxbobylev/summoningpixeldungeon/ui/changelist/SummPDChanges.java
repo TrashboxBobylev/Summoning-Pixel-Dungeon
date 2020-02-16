@@ -54,6 +54,7 @@ public class SummPDChanges {
 		//ChangeInfo changes = new ChangeInfo( "1.1", true, "");
 		//changes.hardlight( Window.TITLE_COLOR);
 		//changeInfos.add(changes);
+        add_1_1_2_Changes(changeInfos);
         add_1_1_1_Changes(changeInfos);
         add_1_1_Changes(changeInfos);
         add_1_0_1_Changes(changeInfos);
@@ -178,6 +179,36 @@ public class SummPDChanges {
 //                        "_-_ Added the article about allies into Adventurer Guide\n"+
 //                        "We are almost finished. If nothing major will happen with this damn sleepy minions, I will publish the release."));
 //    }
+
+    public static void add_1_1_2_Changes(ArrayList<ChangeInfo> changeInfos) {
+        ChangeInfo changes = new ChangeInfo("1.1.2", true, "");
+        changes.hardlight(Window.TITLE_COLOR);
+        changeInfos.add(changes);
+        changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
+        changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
+                "_-_ Released February 16th, 2020\n" +
+                        "_-_ 6 days after 1.1.1\n\n" +
+                        "Sorry for such small updates, I will make more drastical changes with more feedback and better time management."));
+        changes = ChangesScene.createChangeInfo(changeInfos, "Changes", false, Window.SHPX_COLOR);
+        changes.addButton( new ChangeButton(new Image(Assets.CONJURER, 0, 90, 12, 15), "Conjurer",
+                "_-_ AoE healing should work properly."));
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.CRYSTAL_WAND, null), "Changes to WoCB",
+                "Wand of Crystal Bullet have been patched to be more usable:\n\n" +
+                        "_-_ Shards can't go to empty tiles and to player.\n\n" +
+                        "_-_ Shards can catch moving enemies now."));
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.STAR_WAND, null), "New Wand",
+                "Added the new wand: Wand of Stars:\n\n" +
+                        "This wand shoots star mines, that can be exploded by zapping into them."));
+        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "Fixed:\n" +
+                        "_-_ Lack of fizzle string for staves"));
+        changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+                "_-_ Gnoll hunter can gain distance better.\n\n" +
+                        "_-_ Increased amount of craftable Stones of Targeting from 3 to 5.\n\n" +
+                        "_-_ 1 soul strength's zap heals 2 hp.\n\n" +
+                        "_-_ Added funny quotes for each wand."));
+    }
+
 public static void add_1_1_1_Changes(ArrayList<ChangeInfo> changeInfos) {
     ChangeInfo changes = new ChangeInfo("1.1.1", true, "");
     changes.hardlight(Window.TITLE_COLOR);
