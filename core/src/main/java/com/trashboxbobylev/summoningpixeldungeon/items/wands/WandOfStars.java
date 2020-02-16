@@ -58,10 +58,13 @@ public class WandOfStars extends DamageWand {
 		collisionProperties = Ballistica.STOP_TARGET | Ballistica.STOP_TERRAIN;
 	}
 
+	private boolean detonation = false;
+
     @Override
     public void execute(Hero hero, String action) {
         super.execute(hero, action);
         if (action.equals(AC_UNLEASH)){
+            detonation = true;
             SparseArray<Star> stars = Dungeon.level.stars();
             int[] pos = stars.keyArray();
             boolean effect = false;
@@ -104,8 +107,16 @@ public class WandOfStars extends DamageWand {
         if (num < 3) num = 0;
         return (int) ((8+lvl*3) * (Math.pow(0.9f, Math.max(0, num - 2))));
 	}
-	
-	@Override
+
+    @Override
+    protected int chargesPerCast() {
+        if (detonation){
+            detonation = false;
+            return 0;
+        } else return super.chargesPerCast();
+    }
+
+    @Override
 	protected void onZap( Ballistica bolt ) {
 
 	    Heap heap = Dungeon.level.heaps.get(bolt.collisionPos);
