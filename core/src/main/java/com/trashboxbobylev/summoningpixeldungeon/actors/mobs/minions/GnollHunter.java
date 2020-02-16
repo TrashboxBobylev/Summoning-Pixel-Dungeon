@@ -49,7 +49,7 @@ public class GnollHunter extends Minion {
     @Override
     protected boolean getCloser( int target ) {
         if (state == HUNTING) {
-            return enemySeen && getFurther( target );
+            return enemySeen && getFurther( target ) && getFurther(target);
         } else {
             return super.getCloser( target );
         }
