@@ -312,7 +312,7 @@ public abstract class Scroll extends Item {
 			amnts.put(ScrollOfTeleportation.class,  2);
 			
 			stones.put(ScrollOfAttunement.class,        StoneOfTargeting.class);
-			amnts.put(ScrollOfAttunement.class,         3);
+			amnts.put(ScrollOfAttunement.class,         5);
 			
 			stones.put(ScrollOfTransmutation.class, StoneOfAugmentation.class);
 			amnts.put(ScrollOfTransmutation.class,  2);
