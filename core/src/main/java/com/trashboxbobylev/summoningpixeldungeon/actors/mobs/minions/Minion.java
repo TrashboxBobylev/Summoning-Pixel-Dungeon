@@ -45,6 +45,8 @@ import com.watabou.utils.Random;
 
 public abstract class Minion extends Mob {
 
+    public int independenceRange = 8;
+
     public enum  MinionClass{
         DEFENSE, MELEE, MAGIC, RANGE, SUPPORT
     }
@@ -171,7 +173,7 @@ public abstract class Minion extends Mob {
         Char enemy = super.chooseEnemy();
 
         int targetPos = defendingPos != -1 ? defendingPos : Dungeon.hero.pos;
-        int distance = this instanceof StationaryMinion ? Integer.MAX_VALUE : 8;
+        int distance = this instanceof StationaryMinion ? Integer.MAX_VALUE : independenceRange;
 
         //will never attack something far from their target
         if (enemy != null

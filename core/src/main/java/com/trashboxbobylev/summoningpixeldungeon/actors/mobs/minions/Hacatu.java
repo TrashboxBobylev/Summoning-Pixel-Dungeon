@@ -46,6 +46,7 @@ public class Hacatu extends Minion implements Callback {
 	{
 		spriteClass = HacatuSprite.class;
 		attunement = 2f;
+		independenceRange = 16;
 		
 		properties.add(Property.ELECTRIC);
 		baseMaxDR = 6;

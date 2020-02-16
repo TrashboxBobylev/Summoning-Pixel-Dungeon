@@ -35,6 +35,7 @@ public class GnollHunter extends Minion {
     {
         spriteClass = GnollHunterSprite.class;
         baseMaxDR = 1;
+        independenceRange = 12;
     }
 
     //he is ranged minion
