@@ -27,8 +27,10 @@ package com.trashboxbobylev.summoningpixeldungeon.actors.mobs;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Poison;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Terror;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Timer;
 import com.trashboxbobylev.summoningpixeldungeon.items.Heap;
 import com.trashboxbobylev.summoningpixeldungeon.items.bombs.Bomb;
 import com.trashboxbobylev.summoningpixeldungeon.items.bombs.Flashbang;
@@ -62,13 +64,6 @@ public class ExplodingTNT extends Mob {
     }
 
     @Override
-    public float speed() {
-        float speed = super.speed();
-        if (!attack) speed *= 2;
-        return speed;
-    }
-
-    @Override
 	public int attackSkill( Char target ) {
 		return 21;
 	}
@@ -85,6 +80,7 @@ public class ExplodingTNT extends Mob {
             return super.doAttack(enemy);
         } else {
 	        final Ballistica ballistica = new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE);
+	        final ExplodingTNT mouse = this;
             Callback call = new Callback() {
                 @Override
                 public void call() {
@@ -98,13 +94,21 @@ public class ExplodingTNT extends Mob {
                     spend(TICK);
                     next();
                     attack = false;
+                    Buff.affect(mouse, Timer.class, 7f);
                 }
             };
             ((MissileSprite)sprite.parent.recycle(MissileSprite.class)).reset(pos, enemy.pos, new Bomb(), call);
-            state = FLEEING;
 
             return !visible;
         }
+    }
+
+    @Override
+    protected boolean getCloser(int target) {
+        if (buff(Timer.class) != null){
+            return enemySeen && getFurther(target);
+        }
+        else return super.getCloser(target);
     }
 
     @Override
@@ -118,24 +122,11 @@ public class ExplodingTNT extends Mob {
         immunities.add(ExplosiveTrap.class);
     }
 
-    private class Fleeing extends Mob.Fleeing {
-        @Override
-        protected void nowhereToRun() {
-            if (buff(Terror.class) == null) {
-                state = HUNTING;
-                attack = true;
-            } else {
-                super.nowhereToRun();
-            }
-        }
-    }
-
     @Override
     protected boolean act() {
         boolean result = super.act();
 
-        if (state == FLEEING && buff( Terror.class ) == null && target == -1) {
-            state = HUNTING;
+        if (buff(Timer.class) == null) {
             attack = true;
         }
         return result;
