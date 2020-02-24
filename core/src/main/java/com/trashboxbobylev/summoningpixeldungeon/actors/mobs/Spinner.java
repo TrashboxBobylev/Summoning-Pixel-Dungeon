@@ -167,7 +167,7 @@ public class Spinner extends Mob {
                             public void call() {
                                 int cell = path.collisionPos;
                                 Sample.INSTANCE.play(Assets.SND_PUFF);
-                                sprite.attack(cell);
+                                sprite.zap(cell);
                                 for (int i : PathFinder.NEIGHBOURS8) {
                                     if (Dungeon.level.passable[cell + i]) GameScene.add(Blob.seed(cell + i, Random.Int(5, 10), Web.class));
                                     CellEmitter.get(cell + i).burst(MagicMissile.ForceParticle.FACTORY, 15);
