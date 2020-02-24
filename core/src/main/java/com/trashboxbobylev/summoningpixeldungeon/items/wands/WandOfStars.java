@@ -64,7 +64,6 @@ public class WandOfStars extends DamageWand {
     public void execute(Hero hero, String action) {
         super.execute(hero, action);
         if (action.equals(AC_UNLEASH)){
-            detonation = true;
             SparseArray<Star> stars = Dungeon.level.stars();
             int[] pos = stars.keyArray();
             boolean effect = false;
@@ -122,7 +121,10 @@ public class WandOfStars extends DamageWand {
 	    Heap heap = Dungeon.level.heaps.get(bolt.collisionPos);
 	    if (heap != null){
 	        for (Item item: heap.items){
-	            if (item instanceof Star) execute(Dungeon.hero, AC_UNLEASH);
+	            if (item instanceof Star) {
+	                detonation = true;
+	                execute(Dungeon.hero, AC_UNLEASH);
+                }
 	            return;
             }
         }
