@@ -49,7 +49,7 @@ public class SoulReaver extends DummyBuff {
     @Override
     public boolean attachTo(Char target) {
         if (super.attachTo( target )) {
-            target.sprite.emitter().burst(WhiteParticle.UP, 8);
+            if (target != null) target.sprite.emitter().burst(WhiteParticle.UP, 8);
             return true;
         } else {
             return false;
