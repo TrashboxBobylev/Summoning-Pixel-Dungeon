@@ -32,16 +32,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Hacatu;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.Wizard;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfBlastWave;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfDisintegration;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfFireblast;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfFrost;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfLightning;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfLivingEarth;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfMagicMissile;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfPrismaticLight;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfTransfusion;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfWarding;
+import com.trashboxbobylev.summoningpixeldungeon.items.wands.*;
 import com.trashboxbobylev.summoningpixeldungeon.levels.traps.DisintegrationTrap;
 import com.trashboxbobylev.summoningpixeldungeon.levels.traps.GrimTrap;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
@@ -53,9 +44,9 @@ public class RingOfElements extends Ring {
 	
 	public String statsInfo() {
 		if (isIdentified()){
-			return Messages.get(this, "stats", new DecimalFormat("#.##").format(100f * (1f - Math.pow(0.90f, soloBonus()))));
+			return Messages.get(this, "stats", new DecimalFormat("#.##").format(100f * (1f - Math.pow(0.935f, soloBonus()))));
 		} else {
-			return Messages.get(this, "typical_stats", new DecimalFormat("#.##").format(10f));
+			return Messages.get(this, "typical_stats", new DecimalFormat("#.##").format(7.5f));
 		}
 	}
 	
@@ -64,7 +55,6 @@ public class RingOfElements extends Ring {
 		return new Resistance();
 	}
 
-	//FIXME probably should add wands here
 	public static final HashSet<Class> RESISTS = new HashSet<>();
 	static {
 		RESISTS.add( Burning.class );
@@ -92,6 +82,8 @@ public class RingOfElements extends Ring {
 		RESISTS.add( WandOfPrismaticLight.class );
 		RESISTS.add( WandOfTransfusion.class );
 		RESISTS.add( WandOfWarding.Ward.class );
+		RESISTS.add(WandOfCrystalBullet.class);
+		RESISTS.add( WandOfStars.Star.class);
 		
 		RESISTS.add( ToxicGas.class );
 		RESISTS.add (WandOfStenchGas.class);
@@ -111,7 +103,7 @@ public class RingOfElements extends Ring {
 		
 		for (Class c : RESISTS){
 			if (c.isAssignableFrom(effect)){
-				return (float)Math.pow(0.90, getBonus(target, Resistance.class));
+				return (float)Math.pow(0.935, getBonus(target, Resistance.class));
 			}
 		}
 		
@@ -120,7 +112,7 @@ public class RingOfElements extends Ring {
 
     public static float damageMultiplier( Char t ){
         //(HT - HP)/HT = heroes current % missing health.
-        return (float)Math.pow(0.90, getBonus( t, Resistance.class));
+        return (float)Math.pow(0.935, getBonus( t, Resistance.class));
     }
 	
 	public class Resistance extends RingBuff {
