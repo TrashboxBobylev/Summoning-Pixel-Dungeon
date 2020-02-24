@@ -292,17 +292,20 @@ public class Slingshot extends Weapon {
 
         @Override
         public int proc(Char attacker, Char defender, int damage) {
-            return slingshot.proc(attacker, defender, damage);
+            if (slingshot != null) return slingshot.proc(attacker, defender, damage);
+            else return damage;
         }
 
         @Override
         public float speedFactor(Char user) {
-            return slingshot.speedFactor(user);
+            if (slingshot != null) return slingshot.speedFactor(user);
+            else return 1f;
         }
 
         @Override
         public int STRReq(int lvl) {
-            return slingshot.STRReq(lvl);
+            if (slingshot != null)return slingshot.STRReq(lvl);
+            else return 10;
         }
 
 
@@ -328,6 +331,7 @@ public class Slingshot extends Weapon {
 
             }
 
+            GameScene.pickUp( this, hero.pos );
             Sample.INSTANCE.play( Assets.SND_DEWDROP );
             hero.spendAndNext( TIME_TO_PICK_UP );
 
