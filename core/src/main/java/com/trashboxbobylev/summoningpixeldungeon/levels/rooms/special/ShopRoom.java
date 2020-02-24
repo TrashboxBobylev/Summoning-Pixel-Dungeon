@@ -340,6 +340,8 @@ public class ShopRoom extends SpecialRoom {
 
         //on faith is my armor, no armor
         if (Challenges.isItemBlocked(new Armor(2))) return null;
+        //where you did dropped your armor, boi?
+        if (armor == null) return null;
         //we do not bother, if hero's armor is too powerful
         if (armor.level() > 2) return null;
         //do not bother, if player have augmented their armor
@@ -347,7 +349,7 @@ public class ShopRoom extends SpecialRoom {
 
         boolean enchant = false;
         //if player's armor is not enchanted, with 75% shop's armor will be enchanted
-        if (!armor.hasGoodGlyph() && Random.Int(4 ) < 4) enchant = true;
+        if (!armor.hasGoodGlyph() && Random.Float() < 0.75f) enchant = true;
 
         int armorDefenseMax = armor.DRMax();
 
@@ -356,23 +358,37 @@ public class ShopRoom extends SpecialRoom {
         do {
             neededArmor = Generator.randomArmor();
             neededArmor.identify();
-        } while (neededArmor.cursed && neededArmor.DRMax() <= armorDefenseMax && (enchant && !neededArmor.hasGoodGlyph() && neededArmor.hasCurseGlyph())
-        &&  (neededArmor.STRReq() > neededArmor.STRReq() + 1));
-        neededArmor.upgrade();
+            //don't want cursed one
+            if (neededArmor.cursed) continue;
+            //enchant? good! take it instantly
+            if (neededArmor.hasGoodGlyph() && enchant) break;
+            //don't try to give uber tiered items
+            if (neededArmor.STRReq() >= armor.STRReq() + 2) continue;
+            //don't want to spend all coins on one armor
+            if (neededArmor.price() > Dungeon.gold * 0.6) continue;
+            //don't want to give too weak items
+            if (neededArmor.DRMax() < armorDefenseMax) continue;
+
+        } while (true);
         return neededArmor;
     }
 
     protected static Weapon ChooseWeapon(Weapon weapon){
         //shop's weapon will be better, that player's one
+        //FIXME: this is goddamn awful
+
+        //no weapon, you saying?
+        if (weapon == null) return null;
 
         //we do not bother, if hero's weapon is too powerful
         if (weapon.level() > 2) return null;
+
         //do not bother, if player have augmented their weapon
         if (weapon.augment != Weapon.Augment.NONE) return null;
 
         boolean enchant = false;
         //if player's armor is not enchanted, with 75% shop's weapon will be enchanted
-        if (!weapon.hasGoodEnchant() && Random.Int(4 ) < 4) enchant = true;
+        if (!weapon.hasGoodEnchant() && Random.Float() < 0.75f) enchant = true;
 
         int weaponDmgMax = weapon.max();
 
@@ -381,9 +397,19 @@ public class ShopRoom extends SpecialRoom {
         do {
             weapon1 = Generator.randomWeapon();
             weapon1.identify();
-        } while (weapon1.cursed && weapon1.max() <= weaponDmgMax && (enchant && !weapon1.hasGoodEnchant() && weapon1.hasCurseEnchant())
-         && (weapon1.STRReq() > weapon.STRReq() + 1));
-        weapon1.upgrade();
+
+            //don't want cursed one
+            if (weapon1.cursed) continue;
+            //enchant? good! take it instantly
+            if (weapon1.hasGoodEnchant() && enchant) break;
+            //don't try to give uber tiered items
+            if (weapon1.STRReq() >= weapon.STRReq() + 2) continue;
+            //don't want to spend all coins on one weapon
+            if (weapon1.price() > Dungeon.gold * 0.6) continue;
+            //don't want to give too weak items
+            if (weapon1.max() < weaponDmgMax) continue;
+
+        } while (true);
         return weapon1;
     }
 
@@ -448,9 +474,9 @@ public class ShopRoom extends SpecialRoom {
             default:
                 shopWeapon = new WornShortsword(); break;
         }
-        shopWeapon.enchantment = wepToReplace.enchantment;
+        if (!wepToReplace.hasCurseEnchant()) shopWeapon.enchantment = wepToReplace.enchantment;
 	    shopWeapon.augment = wepToReplace.augment;
-	    shopWeapon.cursed = wepToReplace.cursed;
+	    shopWeapon.cursed = false;
 	    shopWeapon.identify();
 	    shopWeapon.level(wepToReplace.level());
 	    return shopWeapon;
