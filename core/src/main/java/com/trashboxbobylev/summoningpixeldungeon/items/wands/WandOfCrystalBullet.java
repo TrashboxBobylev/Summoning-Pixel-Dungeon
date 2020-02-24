@@ -99,36 +99,38 @@ public class WandOfCrystalBullet extends DamageWand {
         updateQuickslot();
 
         shardPositions.clear();
-        for (int i: PathFinder.NEIGHBOURS8){
-            final int dest = new Ballistica(collisionPos, collisionPos+i, Ballistica.MAGIC_BOLT).collisionPos;
-            if (!shardPositions.contains(dest)){
-                if (Actor.findChar(dest) != null && Actor.findChar(dest) != Dungeon.hero) {
-                    MagicMissile missile = ((MagicMissile)curUser.sprite.parent.recycle( MagicMissile.class ));
-                    shardPositions.add(dest);
-                    missile.reset(MagicMissile.CRYSTAL_SHARDS, collisionPos, dest,   new Callback() {
-                        @Override
-                        public void call() {
-                            Char ch = Actor.findChar( shardPositions.get(shardPositions.indexOf(dest) ));
-                            if (ch != null) {
+        if (!cursed) {
+            for (int i: PathFinder.NEIGHBOURS8){
+                final int dest = new Ballistica(collisionPos, collisionPos+i, Ballistica.MAGIC_BOLT).collisionPos;
+                if (!shardPositions.contains(dest)){
+                    if (Actor.findChar(dest) != null && Actor.findChar(dest) != Dungeon.hero) {
+                        MagicMissile missile = ((MagicMissile)curUser.sprite.parent.recycle( MagicMissile.class ));
+                        shardPositions.add(dest);
+                        missile.reset(MagicMissile.CRYSTAL_SHARDS, collisionPos, dest,   new Callback() {
+                            @Override
+                            public void call() {
+                                Char ch = Actor.findChar( shardPositions.get(shardPositions.indexOf(dest) ));
+                                if (ch != null) {
 
-                                processSoulMark(ch, chargesPerCast());
-                                ch.damage(damageRoll(), this);
+                                    processSoulMark(ch, chargesPerCast());
+                                    ch.damage(damageRoll(), this);
 
-                                ch.sprite.burst(Random.Int(0xFFe380e3, 0xFF9485c9), level() + 3);
+                                    ch.sprite.burst(Random.Int(0xFFe380e3, 0xFF9485c9), level() + 3);
 
-                            } else {
-                                Dungeon.level.pressCell(dest);
+                                } else {
+                                    Dungeon.level.pressCell(dest);
+                                }
+
+                                shardPositions.remove(shardPositions.get(shardPositions.indexOf(dest) ));
+                                if (shardPositions.size() == 0){
+                                    curUser.spendAndNext( 1f );
+                                }
                             }
-
-                            shardPositions.remove(shardPositions.get(shardPositions.indexOf(dest) ));
-                            if (shardPositions.size() == 0){
-                                curUser.spendAndNext( 1f );
-                            }
-                        }
-                    });
-                    Sample.INSTANCE.play( Assets.SND_SHATTER );
+                        });
+                        Sample.INSTANCE.play( Assets.SND_SHATTER );
+                    }
+                    if (shardPositions.size() >= shards(level())) break;
                 }
-                if (shardPositions.size() >= shards(level())) break;
             }
         }
 
