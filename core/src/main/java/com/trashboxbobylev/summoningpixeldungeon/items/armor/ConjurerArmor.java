@@ -105,7 +105,7 @@ public class ConjurerArmor extends ClassArmor {
                 curUser = hero;
                 Invisibility.dispel();
                 ArrayList<Integer> spawnPoints = Level.getSpawningPoints(hero.pos);
-                if (spawnPoints.size() > 0){
+                if (spawnPoints.size() > 1){
                     for (int i = 0; i < 2; i++) {
                         int index = Random.index( spawnPoints );
 
