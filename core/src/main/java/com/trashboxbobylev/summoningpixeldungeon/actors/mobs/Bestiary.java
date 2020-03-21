@@ -24,8 +24,11 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.actors.mobs;
 
+import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
+import com.trashboxbobylev.summoningpixeldungeon.ShatteredPixelDungeon;
 import com.watabou.utils.Random;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -36,6 +39,17 @@ public class Bestiary {
 		addRareMobs(depth, mobs);
 		swapMobAlts(mobs);
 		Random.shuffle(mobs);
+
+		//remove mobs, that don't give anything
+		for (int i = 0; i < mobs.size(); i++){
+		    try {
+                Mob mob = mobs.get(i).newInstance();
+                if (Dungeon.hero.lvl > mob.maxLvl + 2) mobs.remove(i);
+            } catch (Throwable e){
+                ShatteredPixelDungeon.reportException(e);
+            }
+        }
+
 		return mobs;
 	}
 	
