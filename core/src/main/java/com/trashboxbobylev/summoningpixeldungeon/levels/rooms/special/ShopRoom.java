@@ -346,6 +346,7 @@ public class ShopRoom extends SpecialRoom {
         if (armor.level() > 2) return null;
         //do not bother, if player have augmented their armor
         if (armor.augment != Armor.Augment.NONE) return null;
+        if (armor instanceof ConjurerArmor) return null;
 
         boolean enchant = false;
         //if player's armor is not enchanted, with 75% shop's armor will be enchanted
