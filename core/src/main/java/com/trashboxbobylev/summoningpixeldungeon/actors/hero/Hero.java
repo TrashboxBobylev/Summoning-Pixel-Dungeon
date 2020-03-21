@@ -1036,9 +1036,11 @@ public class Hero extends Char {
 		if (buff(TimekeepersHourglass.timeStasis.class) != null)
 			return;
 
+		dmg = 0;
+
 		if (!(src instanceof Hunger || src instanceof Viscosity.DeferedDamage || src instanceof HateOccult) && damageInterrupt) {
-			interrupt();
-			resting = false;
+			//interrupt();
+			//resting = false;
 		}
 
 		if (this.buff(Drowsy.class) != null){
