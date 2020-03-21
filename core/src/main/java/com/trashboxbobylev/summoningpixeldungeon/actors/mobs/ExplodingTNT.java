@@ -93,11 +93,13 @@ public class ExplodingTNT extends Mob {
                     }
                     spend(TICK);
                     next();
-                    attack = false;
-                    Buff.affect(mouse, Timer.class, 7f);
+
                 }
             };
             ((MissileSprite)sprite.parent.recycle(MissileSprite.class)).reset(pos, enemy.pos, new Bomb(), call);
+            attack = false;
+
+            Buff.affect(mouse, Timer.class, 7f);
 
             return !visible;
         }
