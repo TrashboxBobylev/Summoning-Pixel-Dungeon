@@ -361,16 +361,15 @@ public class ShopRoom extends SpecialRoom {
             //don't want cursed one
             if (neededArmor.cursed) continue;
             //enchant? good! take it instantly
-            if (neededArmor.hasGoodGlyph() && enchant) break;
+            if (!neededArmor.hasGoodGlyph() && enchant) continue;
             //don't try to give uber tiered items
             if (neededArmor.STRReq() >= armor.STRReq() + 2) continue;
             //don't want to spend all coins on one armor
             if (neededArmor.price() > Dungeon.gold * 0.6) continue;
             //don't want to give too weak items
             if (neededArmor.DRMax() < armorDefenseMax) continue;
-
+            return neededArmor;
         } while (true);
-        return neededArmor;
     }
 
     protected static Weapon ChooseWeapon(Weapon weapon){
@@ -401,16 +400,15 @@ public class ShopRoom extends SpecialRoom {
             //don't want cursed one
             if (weapon1.cursed) continue;
             //enchant? good! take it instantly
-            if (weapon1.hasGoodEnchant() && enchant) break;
+            if (!weapon1.hasGoodEnchant() && enchant) continue;
             //don't try to give uber tiered items
             if (weapon1.STRReq() >= weapon.STRReq() + 2) continue;
             //don't want to spend all coins on one weapon
             if (weapon1.price() > Dungeon.gold * 0.6) continue;
             //don't want to give too weak items
             if (weapon1.max() < weaponDmgMax) continue;
-
+            return weapon1;
         } while (true);
-        return weapon1;
     }
 
 	protected static Bag ChooseBag(Belongings pack){
