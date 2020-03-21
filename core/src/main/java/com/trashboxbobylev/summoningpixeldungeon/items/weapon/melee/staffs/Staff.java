@@ -49,7 +49,6 @@ import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.CellSelector;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.tiles.DungeonTilemap;
-import com.trashboxbobylev.summoningpixeldungeon.ui.BuffIndicator;
 import com.trashboxbobylev.summoningpixeldungeon.ui.QuickSlotButton;
 import com.trashboxbobylev.summoningpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -64,12 +63,15 @@ public class Staff extends Weapon {
 
     //type of minion, since we need to spawn them, not hold
     public Class<? extends Minion> minionType;
+
     public Minion.MinionClass minionClass = Minion.MinionClass.MELEE;
 
     //the property of tank minion, to prevent abuse of high health minions
     protected boolean isTanky = false;
     public int tier;
     public MinionBalanceTable table;
+
+    public int Tier;
 
     public static final String AC_SUMMON = "SUMMON";
     public static final String AC_ZAP = "ZAP";
@@ -462,7 +464,11 @@ public class Staff extends Weapon {
         }
     };
 
-    public int chargeTurns = 400;
+    protected int chargeTurns = 400;
+
+    public int getChargeTurns() {
+        return chargeTurns;
+    }
 
     public class Charger extends Buff {
 
