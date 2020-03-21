@@ -33,13 +33,19 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Chill;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Frost;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
+import com.trashboxbobylev.summoningpixeldungeon.effects.CellEmitter;
+import com.trashboxbobylev.summoningpixeldungeon.effects.particles.BlastParticle;
 import com.trashboxbobylev.summoningpixeldungeon.levels.RegularLevel;
 import com.trashboxbobylev.summoningpixeldungeon.levels.rooms.Room;
+import com.trashboxbobylev.summoningpixeldungeon.mechanics.ShadowCaster;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 import com.trashboxbobylev.summoningpixeldungeon.utils.BArray;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
+import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class FrostBomb extends Bomb {
 	
@@ -53,18 +59,20 @@ public class FrostBomb extends Bomb {
 	public void explode(int cell) {
 		super.explode(cell);
 		GameScene.flash(0xFFA5F1FF);
-		Room room = ((RegularLevel)Dungeon.level).room(cell);
-		if (room != null){
-            for (Point point : room.getPoints()){
-                int tile = Dungeon.level.pointToCell(point);
-                Char ch = Actor.findChar(tile);
-                if (ch != null && ch != Dungeon.hero){
-                    Buff.affect(ch, Frost.class, 15f);
-                } else if (ch instanceof Hero){
-                    Buff.affect(ch, Chill.class, 9f);
+		if (Dungeon.level instanceof RegularLevel) {
+            Room room = ((RegularLevel) Dungeon.level).room(cell);
+            if (room != null) {
+                for (Point point : room.getPoints()) {
+                    int tile = Dungeon.level.pointToCell(point);
+                    Char ch = Actor.findChar(tile);
+                    if (ch != null && ch != Dungeon.hero) {
+                        Buff.affect(ch, Frost.class, 15f);
+                    } else if (ch instanceof Hero) {
+                        Buff.affect(ch, Chill.class, 9f);
+                    }
                 }
             }
-        }
+        } else {
 //		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 2 );
 //		for (int i = 0; i < PathFinder.distance.length; i++) {
 //			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
@@ -75,6 +83,29 @@ public class FrostBomb extends Bomb {
 //				}
 //			}
 //		}
+            boolean[] FOV = new boolean[Dungeon.level.length()];
+            Point c = Dungeon.level.cellToPoint(cell);
+            ShadowCaster.castShadow(c.x, c.y, FOV, Dungeon.level.losBlocking, Dungeon.level.viewDistance);
+
+            ArrayList<Char> affected = new ArrayList<>();
+
+            for (int i = 0; i < FOV.length; i++) {
+                if (FOV[i]) {
+                    Char ch = Actor.findChar(i);
+                    if (ch != null){
+                        affected.add(ch);
+                    }
+                }
+            }
+
+            for (Char ch : affected){
+                if (ch != null && ch != Dungeon.hero) {
+                    Buff.affect(ch, Frost.class, 15f);
+                } else if (ch instanceof Hero) {
+                    Buff.affect(ch, Chill.class, 9f);
+                }
+            }
+        }
 	}
 	
 	@Override
