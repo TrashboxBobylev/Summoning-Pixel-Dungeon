@@ -31,6 +31,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
+import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Piranha;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary.StationaryMinion;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
 import com.trashboxbobylev.summoningpixeldungeon.items.KindOfWeapon;
@@ -175,11 +176,14 @@ public abstract class Minion extends Mob {
         int targetPos = defendingPos != -1 ? defendingPos : Dungeon.hero.pos;
         int distance = this instanceof StationaryMinion ? Integer.MAX_VALUE : independenceRange;
 
+
+
         //will never attack something far from their target
         if (enemy != null
                 && Dungeon.level.mobs.contains(enemy)
                 && (Dungeon.level.distance(enemy.pos, targetPos) <= distance)
                 && (invisible == 0)){
+            if (!(enemy instanceof Piranha && enemy.HP != enemy.HT))
             return enemy;
         }
 
