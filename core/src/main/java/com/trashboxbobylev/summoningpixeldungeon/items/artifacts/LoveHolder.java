@@ -192,7 +192,7 @@ public class LoveHolder extends Artifact {
         }
         if (action.equals(AC_HEAL)){
 
-            if (charge >= str*2) {
+            if (charge >= str*1.5f) {
                 hero.busy();
                 hero.sprite.operate(hero.pos, new Callback() {
                     @Override
@@ -203,7 +203,7 @@ public class LoveHolder extends Artifact {
                         Sample.INSTANCE.play(Assets.SND_LULLABY);
                         hero.sprite.showStatus( CharSprite.POSITIVE, Integer.toString( str*2 ) );
                         hero.HP = Math.min(hero.HT, hero.HP + str*2);
-                        charge = Math.max(0, charge - str*2);
+                        charge = (int) Math.max(0, charge - str*1.5f);
                         new Flare(10, 64).color(0xFFFFFF, true).show(Dungeon.hero.sprite.parent, DungeonTilemap.tileCenterToWorld(hero.pos), 1.5f);
                     }
                 });
@@ -424,11 +424,11 @@ public class LoveHolder extends Artifact {
                                         Char ch = Actor.findChar(shot.collisionPos);
 
                                         if (ch != null){
-                                            //min damage: 2, +0.5 per hero level, +10% per str
-                                            //max damage: 5, +1 per hero level, +10% per str
+                                            //min damage: 6, +0.33 per hero level, +15% addictive per str
+                                            //max damage: 12, +0.75 per hero level, +15% addicitive per str
                                             int damageRoll = Random.NormalIntRange(
-                                                    (int) ((2 + curUser.lvl / 2) * Math.pow(1.1, str)),
-                                                    (int) ((5 + curUser.lvl)*Math.pow(1.1f, str)));
+                                                    (int) ((6 + curUser.lvl / 3) * (1 + (str - 1) * 0.15f)),
+                                                    (int) ((12 + curUser.lvl * 0.75f) * (1 + (str - 1) * 0.15f)));
                                             ch.damage(damageRoll, this);
                                             Sample.INSTANCE.play(Assets.SND_BLAST);
 
@@ -496,8 +496,8 @@ public class LoveHolder extends Artifact {
             }
 
 			if (Dungeon.hero.subClass == HeroSubClass.OCCULTIST){
-			    desc += Messages.get(this, "dmg", (int) ((2 + Dungeon.hero.lvl / 2) * Math.pow(1.1, str)),
-                        (int) ((5 + Dungeon.hero.lvl)*Math.pow(1.1f, str)), str*2);
+			    desc += Messages.get(this, "dmg", (int) ((6 + curUser.lvl / 3) * (1 + (str - 1) * 0.15f)),
+                        (int) ((12 + curUser.lvl * 0.75f) * (1 + (str - 1) * 0.15f)), str*2, Math.round(str*1.5));
             }
 		}
 
