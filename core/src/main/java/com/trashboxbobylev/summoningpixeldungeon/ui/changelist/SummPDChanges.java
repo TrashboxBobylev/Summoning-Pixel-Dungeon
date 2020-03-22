@@ -200,7 +200,9 @@ public static void add_1_1_3_Changes(ArrayList<ChangeInfo> changeInfos) {
             "_-_ Buffed the Ring of Endurance\n\n" +
                     "_-_ Changed crabs to be slime-like enemies, should be less annoying for allies.\n\n" +
                     "_-_ Changed TNT mouse's retreat, less annoying now.\n\n" +
-                    "_-_ Shop's equipment shouldn't feature curses."));
+                    "_-_ Shop's equipment shouldn't feature curses\n\n" +
+                    "_-_ Minions are now able to attack Yog.\n\n" +
+                    "_-_ Piranhas and minions are neutral to each other."));
     changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
             "Fixed:\n" +
                     "_-_ Lack of hero message, when eradicated.\n\n" +
