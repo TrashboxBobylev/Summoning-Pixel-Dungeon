@@ -179,6 +179,41 @@ public class SummPDChanges {
 //                        "_-_ Added the article about allies into Adventurer Guide\n"+
 //                        "We are almost finished. If nothing major will happen with this damn sleepy minions, I will publish the release."));
 //    }
+public static void add_1_1_3_Changes(ArrayList<ChangeInfo> changeInfos) {
+    ChangeInfo changes = new ChangeInfo("1.1.3", true, "");
+    changes.hardlight(Window.TITLE_COLOR);
+    changeInfos.add(changes);
+    changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
+    changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
+            "_-_ Released March 22th, 2020\n" +
+                    "_-_ 35 days after 1.1.2\n\n" +
+                    "Global rework will come as soon as needed, enjoy this bugfix update."));
+    changes = ChangesScene.createChangeInfo(changeInfos, "Changes", false, Window.SHPX_COLOR);
+    changes.addButton( new ChangeButton(new Image(Assets.CONJURER, 0, 90, 12, 15), "Conjurer",
+            "The goat boy recieved some buffs:\n\n" +
+                    "_-_ Starting strength is raised from 9 to 10, and max HP scaling is increased from 3 to 4.\n\n" +
+                    "_-_ Buffed knife's damage from 1-5 (+1/+1) to 1-9 (+1/+2), but removed strength bonus (nerf in late game).\n\n" +
+                    "_-_ Buffed froggit's damage from 1-10 (+1/+2) to 4-10 (+2/+3), basically same damage with gray rat when leveled.\n\n" +
+                    "_-_ Reworked Knight: now have to throw his knife to get soul from enemies, offensive ability is rebalanced, heal is buffed.\n\n" +
+                    "_-_ Changed Soul Wielder: his empowerment lasts much longer."));
+    changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+            "_-_ Buffed the Ring of Endurance\n\n" +
+                    "_-_ Changed crabs to be slime-like enemies, should be less annoying for allies.\n\n" +
+                    "_-_ Changed TNT mouse's retreat, less annoying now.\n\n" +
+                    "_-_ Shop's equipment shouldn't feature curses."));
+    changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+            "Fixed:\n" +
+                    "_-_ Lack of hero message, when eradicated.\n\n" +
+                    "_-_ Shops crashing the game or oftenly not loading after all\n\n" +
+                    "_-_ TNT mouses being able to crash the game\n\n" +
+                    "_-_ Lack of wandmaker reaction for conjurer\n\n" +
+                    "_-_ Cursed Wand of Crystal Bullets crashing the game and having wrong type of damage\n\n" +
+                    "_-_ Wand of Stars spending charge on detonating\n\n" +
+                    "_-_ Slingshot's stone crashing the game\n\n" +
+                    "_-_ Cave Spinner being able to damage with web\n\n" +
+                    "_-_ Frost bomb crashing the game on non-regular floors"));
+
+}
 
     public static void add_1_1_2_Changes(ArrayList<ChangeInfo> changeInfos) {
         ChangeInfo changes = new ChangeInfo("1.1.2", true, "");

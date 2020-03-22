@@ -113,7 +113,7 @@ public class WandOfCrystalBullet extends DamageWand {
                                 if (ch != null) {
 
                                     processSoulMark(ch, chargesPerCast());
-                                    ch.damage(damageRoll(), this);
+                                    ch.damage(damageRoll(), new WandOfCrystalBullet());
 
                                     ch.sprite.burst(Random.Int(0xFFe380e3, 0xFF9485c9), level() + 3);
 
