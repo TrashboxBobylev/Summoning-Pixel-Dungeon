@@ -183,7 +183,7 @@ public class Hero extends Char {
 		int curHT = HT;
 
 		float adjustHT = heroClass == HeroClass.CONJURER ? 15 : 20;
-        float adjustScaling = heroClass == HeroClass.CONJURER ? 3 : 5;
+        float adjustScaling = heroClass == HeroClass.CONJURER ? 4 : 5;
 
 		HT = (int) ((adjustHT + adjustScaling*(lvl-1)) + HTBoost);
 		float multiplier = RingOfMight.HTMultiplier(this);
