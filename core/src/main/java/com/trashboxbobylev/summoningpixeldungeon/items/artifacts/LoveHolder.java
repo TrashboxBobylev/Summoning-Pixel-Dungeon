@@ -496,8 +496,8 @@ public class LoveHolder extends Artifact {
             }
 
 			if (Dungeon.hero.subClass == HeroSubClass.OCCULTIST){
-			    desc += Messages.get(this, "dmg", (int) ((6 + curUser.lvl / 3) * (1 + (str - 1) * 0.15f)),
-                        (int) ((12 + curUser.lvl * 0.75f) * (1 + (str - 1) * 0.15f)), str*2, Math.round(str*1.5));
+			    desc += Messages.get(this, "dmg", (int) ((6 + Dungeon.hero.lvl / 3) * (1 + (str - 1) * 0.15f)),
+                        (int) ((12 + Dungeon.hero.lvl * 0.75f) * (1 + (str - 1) * 0.15f)), str*2, Math.round(str*1.5));
             }
 		}
 

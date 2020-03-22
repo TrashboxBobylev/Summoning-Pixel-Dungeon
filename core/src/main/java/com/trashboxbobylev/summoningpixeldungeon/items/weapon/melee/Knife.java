@@ -80,7 +80,7 @@ public class Knife extends MeleeWeapon {
                     Dungeon.level.drop( this, cell ).sprite.drop();
                 }
             }
-        }
+        } else super.onThrow(cell);
     }
 
     @Override
