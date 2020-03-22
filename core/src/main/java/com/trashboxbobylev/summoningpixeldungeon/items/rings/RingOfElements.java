@@ -44,9 +44,9 @@ public class RingOfElements extends Ring {
 	
 	public String statsInfo() {
 		if (isIdentified()){
-			return Messages.get(this, "stats", new DecimalFormat("#.##").format(100f * (1f - Math.pow(0.935f, soloBonus()))));
+			return Messages.get(this, "stats", new DecimalFormat("#.##").format(100f * (1f - Math.pow(0.88f, soloBonus()))));
 		} else {
-			return Messages.get(this, "typical_stats", new DecimalFormat("#.##").format(7.5f));
+			return Messages.get(this, "typical_stats", new DecimalFormat("#.##").format(12f));
 		}
 	}
 	
@@ -111,8 +111,7 @@ public class RingOfElements extends Ring {
 	}
 
     public static float damageMultiplier( Char t ){
-        //(HT - HP)/HT = heroes current % missing health.
-        return (float)Math.pow(0.935, getBonus( t, Resistance.class));
+        return (float)Math.pow(0.88, getBonus( t, Resistance.class));
     }
 	
 	public class Resistance extends RingBuff {
