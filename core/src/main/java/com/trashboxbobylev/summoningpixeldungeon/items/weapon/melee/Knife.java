@@ -35,6 +35,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.SoulWeaknes
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroSubClass;
 import com.trashboxbobylev.summoningpixeldungeon.effects.WhiteWound;
+import com.trashboxbobylev.summoningpixeldungeon.sprites.CharSprite;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Knife extends MeleeWeapon {
@@ -90,6 +91,10 @@ public class Knife extends MeleeWeapon {
     }
 
     public static class SoulGain extends FlavourBuff{
-
+        @Override
+        public void fx(boolean on) {
+            if (on) target.sprite.add(CharSprite.State.SPIRIT);
+            else target.sprite.remove(CharSprite.State.SPIRIT);
+        }
     }
 }
