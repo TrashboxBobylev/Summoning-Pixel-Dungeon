@@ -40,7 +40,7 @@ public class GreatCrab extends Crab {
 	{
 		spriteClass = GreatCrabSprite.class;
 
-		HP = HT = 40;
+		HP = HT = 10;
 		defenseSkill = 0; //see damage()
 		baseSpeed = 0.25f;
 
@@ -53,7 +53,7 @@ public class GreatCrab extends Crab {
 
     @Override
     public int damageRoll() {
-        return Random.NormalIntRange( 5, 21 );
+        return Random.NormalIntRange( 8, 12 );
     }
 
     private int moving = 0;
