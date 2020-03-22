@@ -185,7 +185,7 @@ public abstract class Wand extends Item {
 		}
 
 		if (target != Dungeon.hero && Dungeon.hero.subClass == HeroSubClass.SOUL_REAVER){
-            Buff.affect(Dungeon.hero, SoulReaver.class, 5f).type = SoulReaver.Type.MAGIC;
+            Buff.affect(Dungeon.hero, SoulReaver.class, 20f).type = SoulReaver.Type.MAGIC;
         }
 	}
 

@@ -436,13 +436,13 @@ public class Staff extends Weapon {
                                     if (buff != null){
                                         switch (buff.type){
                                             case MELEE:
-                                                Buff.prolong(ch, AdditionalDamage.class, buff.cooldown()+1); break;
+                                                Buff.prolong(ch, AdditionalDamage.class, buff.cooldown()*2); break;
                                             case RANGE:
-                                                Buff.prolong(ch, AdditionalEvasion.class, buff.cooldown()+1); break;
+                                                Buff.prolong(ch, AdditionalEvasion.class, buff.cooldown()*2); break;
                                             case MAGIC:
-                                                Buff.prolong(ch, MagicalResistance.class, buff.cooldown()+1); break;
+                                                Buff.prolong(ch, MagicalResistance.class, buff.cooldown()*2); break;
                                             case DEFENSE:
-                                                Buff.prolong(ch, AdditionalDefense.class, buff.cooldown()+1); break;
+                                                Buff.prolong(ch, AdditionalDefense.class, buff.cooldown()*2); break;
                                         }
                                         buff.detach();
 

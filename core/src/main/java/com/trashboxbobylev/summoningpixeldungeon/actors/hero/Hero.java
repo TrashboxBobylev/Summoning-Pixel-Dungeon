@@ -1041,7 +1041,7 @@ public class Hero extends Char {
 		}
 
 		if (subClass == HeroSubClass.SOUL_REAVER && (initialDamage / 2 >= damage)){
-            Buff.affect(this, SoulReaver.class, 5f).type = SoulReaver.Type.DEFENSE;
+            Buff.affect(this, SoulReaver.class, 20f).type = SoulReaver.Type.DEFENSE;
         }
 		
 		return damage;

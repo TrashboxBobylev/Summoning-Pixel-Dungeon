@@ -300,9 +300,9 @@ public abstract class Char extends Actor {
             if (this instanceof Hero)
                 if (((Hero) this).subClass == HeroSubClass.SOUL_REAVER) {
                     if (!(((Hero) this).belongings.weapon instanceof MissileWeapon)) {
-                        Buff.affect(this, SoulReaver.class, 5f).type = SoulReaver.Type.MELEE;
+                        Buff.affect(this, SoulReaver.class, 20f).type = SoulReaver.Type.MELEE;
                     } else {
-                        Buff.affect(this, SoulReaver.class, 5f).type = SoulReaver.Type.RANGE;
+                        Buff.affect(this, SoulReaver.class, 20f).type = SoulReaver.Type.RANGE;
                     }
                 }
 
