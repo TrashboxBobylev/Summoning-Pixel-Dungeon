@@ -79,6 +79,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Blazi
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.enchantments.Blocking;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Cleaver;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Flail;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.Knife;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.trashboxbobylev.summoningpixeldungeon.journal.Notes;
 import com.trashboxbobylev.summoningpixeldungeon.levels.Level;
@@ -304,7 +305,7 @@ public class Hero extends Char {
 		boolean hit = attack( enemy );
 		Invisibility.dispel();
 		belongings.weapon = equipped;
-		
+
 		if (subClass == HeroSubClass.GLADIATOR){
 			if (hit) {
 				Buff.affect( this, Combo.class ).hit( enemy );
@@ -316,6 +317,21 @@ public class Hero extends Char {
 
 		return hit;
 	}
+
+	//same, but with knife
+    //I am lazy to implement interfaces
+    public boolean shoot(Char enemy, Knife knife) {
+
+        //temporarily set the hero's weapon to the missile weapon being used
+        KindOfWeapon equipped = belongings.weapon;
+        belongings.weapon = knife;
+        knife.ranged = true;
+        boolean hit = attack( enemy );
+        Invisibility.dispel();
+        belongings.weapon = equipped;
+
+        return hit;
+    }
 	
 	@Override
 	public int attackSkill( Char target ) {

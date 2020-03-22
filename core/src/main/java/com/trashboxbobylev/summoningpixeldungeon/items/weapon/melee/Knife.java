@@ -25,16 +25,21 @@
 package com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee;
 
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
+import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Cripple;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.FlavourBuff;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.PinCushion;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.SoulWeakness;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroSubClass;
 import com.trashboxbobylev.summoningpixeldungeon.effects.WhiteWound;
 import com.trashboxbobylev.summoningpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Knife extends MeleeWeapon {
+
+    public boolean ranged;
 	
 	{
 		image = ItemSpriteSheet.KNIFE;
@@ -42,6 +47,8 @@ public class Knife extends MeleeWeapon {
 		tier = 1;
 
 		bones = false;
+
+		defaultAction = AC_THROW;
 
 	}
 
@@ -53,9 +60,26 @@ public class Knife extends MeleeWeapon {
 
     @Override
     public int proc(Char attacker, Char defender, int damage ) {
-        Buff.prolong( defender, SoulGain.class, speedFactor(attacker) * 2 );
+	    int modifier = ranged ? 7 : 2;
+        Buff.prolong( defender, SoulGain.class, speedFactor(attacker) * modifier );
         WhiteWound.hit(defender);
         return super.proc( attacker, defender, damage );
+    }
+
+    @Override
+    public void onThrow(int cell) {
+	    if (Dungeon.hero.subClass == HeroSubClass.OCCULTIST) {
+            Char enemy = Actor.findChar(cell);
+            if (enemy == null || enemy == curUser || curUser.buff(SoulWeakness.class) != null) {
+                super.onThrow(cell);
+            } else {
+                if (!curUser.shoot(enemy, this)) {
+                    super.onThrow(cell);
+                } else {
+                    Dungeon.level.drop( this, cell ).sprite.drop();
+                }
+            }
+        }
     }
 
     @Override
