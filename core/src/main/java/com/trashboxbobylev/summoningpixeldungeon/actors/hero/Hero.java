@@ -340,7 +340,7 @@ public class Hero extends Char {
 		float accuracy = 1;
 		accuracy *= RingOfAccuracy.accuracyMultiplier( this );
 		
-		if (wep instanceof MissileWeapon){
+		if (wep instanceof MissileWeapon || (wep instanceof Knife && ((Knife) wep).ranged)){
 			if (Dungeon.level.adjacent( pos, target.pos )) {
 				accuracy *= 0.5f;
 			} else {
