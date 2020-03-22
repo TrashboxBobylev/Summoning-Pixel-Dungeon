@@ -54,6 +54,7 @@ public class SummPDChanges {
 		//ChangeInfo changes = new ChangeInfo( "1.1", true, "");
 		//changes.hardlight( Window.TITLE_COLOR);
 		//changeInfos.add(changes);
+        add_1_1_3_Changes(changeInfos);
         add_1_1_2_Changes(changeInfos);
         add_1_1_1_Changes(changeInfos);
         add_1_1_Changes(changeInfos);
