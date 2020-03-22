@@ -59,9 +59,8 @@ public class MeleeWeapon extends Weapon {
 
 		if (owner instanceof Hero) {
 			int exStr = ((Hero)owner).STR() - STRReq();
-			float modifier = this instanceof Knife ? 1.5f : 1;
-			if (exStr > 0) {
-				damage += Random.IntRange( 0, Math.round(exStr * modifier) );
+            if (exStr > 0) {
+                damage += Random.IntRange( 0, Math.round(exStr) );
 			}
 		}
 		
