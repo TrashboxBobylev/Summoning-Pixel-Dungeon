@@ -52,6 +52,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.potions.brews.RagingBrew;
 import com.trashboxbobylev.summoningpixeldungeon.items.potions.elixirs.ElixirOfAttunement;
 import com.trashboxbobylev.summoningpixeldungeon.items.powers.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.quest.RatSkull;
+import com.trashboxbobylev.summoningpixeldungeon.items.rings.RingOfElements;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfEnchantment;
 import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfSoulEnergy;

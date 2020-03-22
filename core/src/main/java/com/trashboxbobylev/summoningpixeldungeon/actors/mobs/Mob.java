@@ -286,7 +286,7 @@ public abstract class Mob extends Char {
 					if (mob.alignment == Alignment.ENEMY && fieldOfView[mob.pos])
 						//intelligent allies do not target mobs which are passive, wandering, or asleep
 						if (!intelligentAlly ||
-								(mob.state != mob.SLEEPING && mob.state != mob.PASSIVE && mob.state != mob.WANDERING)) {
+                                ((mob.state != mob.SLEEPING && mob.state != mob.PASSIVE && mob.state != mob.WANDERING) || mob instanceof Yog)) {
 							enemies.add(mob);
 						}
 				
