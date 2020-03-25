@@ -175,7 +175,7 @@ public class ShopRoom extends SpecialRoom {
                 i = Generator.random(Generator.Category.WAND);
                 if (i instanceof DamageWand) break;
                 else continue;
-            }  while (i.cursed);
+            } while (i.cursed);
             i.upgrade(1).identify();
 			itemsToSpawn.add(i);
 			break;
@@ -183,9 +183,8 @@ public class ShopRoom extends SpecialRoom {
 		case 11:
 			itemsToSpawn.add(new PotionOfExperience());
 			itemsToSpawn.add(new ScrollOfDivination());
-            do {
-                i = Generator.random(Generator.Category.RING);
-            }  while (i.cursed);
+			i = Generator.random(Generator.Category.RING);
+			i.cursed = false;
             i.upgrade(1).identify();
             itemsToSpawn.add(i);
 
