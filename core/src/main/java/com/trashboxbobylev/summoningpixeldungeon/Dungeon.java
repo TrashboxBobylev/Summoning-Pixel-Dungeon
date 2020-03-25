@@ -183,8 +183,8 @@ public class Dungeon {
 		quickslot.reset();
 		QuickSlotButton.reset();
 		
-		depth = 20;
-		gold = 10000;
+		depth = 0;
+		gold = 0;
 
 		droppedItems = new SparseArray<>();
 		portedItems = new SparseArray<>();
