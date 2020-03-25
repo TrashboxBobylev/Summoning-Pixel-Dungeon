@@ -26,7 +26,6 @@ package com.trashboxbobylev.summoningpixeldungeon.levels.rooms.special;
 
 import com.trashboxbobylev.summoningpixeldungeon.Challenges;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.SupportPower;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Belongings;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mob;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.npcs.Shopkeeper;
@@ -65,7 +64,6 @@ import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfAugmentatio
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfEnchantment;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.DamageWand;
 import com.trashboxbobylev.summoningpixeldungeon.items.wands.Wand;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfMagicMissile;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.shop.Jjango;
@@ -73,15 +71,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.shop.Pike;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.shop.Stabber;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.shop.StoneHammer;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.staffs.Staff;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.Bolas;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.FishingSpear;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.Javelin;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.MissileWeapon;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.Shuriken;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.ThrowingHammer;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.ThrowingSpear;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.Tomahawk;
-import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.Trident;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.missiles.darts.TippedDart;
 import com.trashboxbobylev.summoningpixeldungeon.levels.Level;
 import com.trashboxbobylev.summoningpixeldungeon.levels.Terrain;
@@ -183,7 +173,9 @@ public class ShopRoom extends SpecialRoom {
             Item i;
             do {
                 i = Generator.random(Generator.Category.WAND);
-            }  while (i.cursed && !(i instanceof DamageWand));
+                if (i instanceof DamageWand) break;
+                else continue;
+            }  while (i.cursed);
             i.upgrade(1).identify();
 			itemsToSpawn.add(i);
 			break;
@@ -243,8 +235,8 @@ public class ShopRoom extends SpecialRoom {
         Staff s = Generator.randomStaff();
         while (s.cursed){
             s = Generator.randomStaff();
-            s.identify();
         }
+        s.identify();
         itemsToSpawn.add(s);
         itemsToSpawn.add(Generator.randomMissile());
         itemsToSpawn.add(Generator.randomMissile());
@@ -335,6 +327,16 @@ public class ShopRoom extends SpecialRoom {
 		return itemsToSpawn;
 	}
 
+    private static boolean armorIsAlright(Armor armor, Armor compArmor){
+        if (armor.cursed) return false;
+            //don't try to give uber tiered items
+        else if (armor.STRReq() >= compArmor.STRReq() + 2) return false;
+            //don't want to spend all coins on one weapon
+        else if (armor.price() > Dungeon.gold * 0.6) return false;
+            //don't want to give too weak items
+        else return armor.DRMax() >= compArmor.DRMax();
+    }
+
 	protected static Armor ChooseArmor(Armor armor){
 	    //shop's armor will be better, that player's one
 
@@ -348,34 +350,29 @@ public class ShopRoom extends SpecialRoom {
         if (armor.augment != Armor.Augment.NONE) return null;
         if (armor instanceof ConjurerArmor) return null;
 
-        boolean enchant = false;
-        //if player's armor is not enchanted, with 75% shop's armor will be enchanted
-        if (!armor.hasGoodGlyph() && Random.Float() < 0.75f) enchant = true;
-
-        int armorDefenseMax = armor.DRMax();
-
         //roll armor, until we get the needed
         Armor neededArmor;
         do {
             neededArmor = Generator.randomArmor();
+
+            if (!armorIsAlright(neededArmor, armor)) continue;
             neededArmor.identify();
-            //don't want cursed one
-            if (neededArmor.cursed) continue;
-            //enchant? good! take it instantly
-            if (!neededArmor.hasGoodGlyph() && enchant) continue;
-            //don't try to give uber tiered items
-            if (neededArmor.STRReq() >= armor.STRReq() + 2) continue;
-            //don't want to spend all coins on one armor
-            if (neededArmor.price() > Dungeon.gold * 0.6) continue;
-            //don't want to give too weak items
-            if (neededArmor.DRMax() < armorDefenseMax) continue;
             return neededArmor;
         } while (true);
     }
 
+    private static boolean wepIsAlright(Weapon wep, Weapon compWep){
+        if (wep.cursed) return false;
+        //don't try to give uber tiered items
+        else if (wep.STRReq() >= compWep.STRReq() + 2) return false;
+        //don't want to spend all coins on one weapon
+        else if (wep.price() > Dungeon.gold * 0.6) return false;
+        //don't want to give too weak items
+        else return wep.max() >= compWep.max();
+    }
+
     protected static Weapon ChooseWeapon(Weapon weapon){
         //shop's weapon will be better, that player's one
-        //FIXME: this is goddamn awful
 
         //no weapon, you saying?
         if (weapon == null) return null;
@@ -386,28 +383,12 @@ public class ShopRoom extends SpecialRoom {
         //do not bother, if player have augmented their weapon
         if (weapon.augment != Weapon.Augment.NONE) return null;
 
-        boolean enchant = false;
-        //if player's armor is not enchanted, with 75% shop's weapon will be enchanted
-        if (!weapon.hasGoodEnchant() && Random.Float() < 0.75f) enchant = true;
-
-        int weaponDmgMax = weapon.max();
-
         //roll weapon, until we get the needed
         MeleeWeapon weapon1;
         do {
             weapon1 = Generator.randomWeapon();
+            if (!wepIsAlright(weapon1, weapon)) continue;
             weapon1.identify();
-
-            //don't want cursed one
-            if (weapon1.cursed) continue;
-            //enchant? good! take it instantly
-            if (!weapon1.hasGoodEnchant() && enchant) continue;
-            //don't try to give uber tiered items
-            if (weapon1.STRReq() >= weapon.STRReq() + 2) continue;
-            //don't want to spend all coins on one weapon
-            if (weapon1.price() > Dungeon.gold * 0.6) continue;
-            //don't want to give too weak items
-            if (weapon1.max() < weaponDmgMax) continue;
             return weapon1;
         } while (true);
     }
