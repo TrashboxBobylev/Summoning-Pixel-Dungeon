@@ -61,7 +61,7 @@ public class DM300 extends Mob {
 		spriteClass = DM300Sprite.class;
 		
 		HP = HT = 200;
-		EXP = 30;
+		EXP = 0;
 		defenseSkill = 18;
 		
 
@@ -148,6 +148,7 @@ public class DM300 extends Mob {
 		
 		GameScene.bossSlain();
 		Dungeon.level.drop( new SkeletonKey( Dungeon.depth  ), pos ).sprite.drop();
+        Dungeon.hero.earnExp( Dungeon.hero.maxExp(), getClass() );
 		
 		//60% chance of 2 shards, 30% chance of 3, 10% chance for 4. Average of 2.5
 		int shards = Random.chances(new float[]{0, 0, 6, 3, 1});

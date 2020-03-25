@@ -57,7 +57,7 @@ public class Goo extends Mob {
 
 	{
 		HP = HT = 100;
-		EXP = 10;
+		EXP = 0;//see loot
 		defenseSkill = 8;
 		spriteClass = GooSprite.class;
 
@@ -235,6 +235,7 @@ public class Goo extends Mob {
 		
 		GameScene.bossSlain();
 		Dungeon.level.drop( new SkeletonKey( Dungeon.depth ), pos ).sprite.drop();
+        Dungeon.hero.earnExp( Dungeon.hero.maxExp(), getClass() );
 		
 		//60% chance of 2 blobs, 30% chance of 3, 10% chance for 4. Average of 2.5
 		int blobs = Random.chances(new float[]{0, 0, 6, 3, 1});

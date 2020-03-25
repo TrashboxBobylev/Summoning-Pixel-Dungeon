@@ -64,7 +64,7 @@ public class Yog extends Mob {
 		
 		HP = HT = 500;
 		
-		EXP = 50;
+		EXP = 0;
 		
 		state = PASSIVE;
 
@@ -164,6 +164,7 @@ public class Yog extends Mob {
 		GameScene.bossSlain();
 		Dungeon.level.drop( new SkeletonKey( Dungeon.depth ), pos ).sprite.drop();
 		super.die( cause );
+        Dungeon.hero.earnExp( Dungeon.hero.maxExp(), getClass() );
 		
 		yell( Messages.get(this, "defeated") );
 	}

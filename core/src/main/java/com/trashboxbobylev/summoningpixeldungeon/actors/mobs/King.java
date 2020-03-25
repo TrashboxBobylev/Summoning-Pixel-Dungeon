@@ -66,7 +66,7 @@ public class King extends Mob {
 		spriteClass = KingSprite.class;
 		
 		HP = HT = 300;
-		EXP = 40;
+		EXP = 0;
 		defenseSkill = 25;
 		
 		Undead.count = 0;
@@ -158,6 +158,7 @@ public class King extends Mob {
 		Dungeon.level.drop( new SkeletonKey( Dungeon.depth ), pos ).sprite.drop();
 		
 		super.die( cause );
+        Dungeon.hero.earnExp( Dungeon.hero.maxExp(), getClass() );
 		
 		Badges.validateBossSlain();
 

@@ -73,7 +73,7 @@ public class NewTengu extends Mob {
         spriteClass = TenguSprite.class;
 
         HP = HT = 160;
-        EXP = 20;
+        EXP = 0;
         defenseSkill = 15;
 
         HUNTING = new Hunting();
@@ -180,6 +180,8 @@ public class NewTengu extends Mob {
         super.die( cause );
 
         Badges.validateBossSlain();
+
+        Dungeon.hero.earnExp( Dungeon.hero.maxExp(), getClass() );
 
         LloydsBeacon beacon = Dungeon.hero.belongings.getItem(LloydsBeacon.class);
         if (beacon != null) {
