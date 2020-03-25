@@ -53,6 +53,8 @@ import com.watabou.utils.DeviceCompat;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class InterlevelScene extends PixelScene {
 	
@@ -315,6 +317,7 @@ public class InterlevelScene extends PixelScene {
 								"Seed:" + Dungeon.seed + " depth:" + Dungeon.depth + " trace:" +
 								s)
 				);
+
 			}
 			break;
 		}

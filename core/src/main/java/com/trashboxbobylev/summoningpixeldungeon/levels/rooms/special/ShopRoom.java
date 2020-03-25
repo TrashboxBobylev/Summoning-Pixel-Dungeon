@@ -329,9 +329,9 @@ public class ShopRoom extends SpecialRoom {
     private static boolean armorIsAlright(Armor armor, Armor compArmor){
         if (armor.cursed) return false;
             //don't try to give uber tiered items
-        else if (armor.STRReq() >= compArmor.STRReq() + 2) return false;
+        else if (armor.STRReq() > compArmor.STRReq() + 2) return false;
             //don't want to spend all coins on one weapon
-        else if (armor.price() > Dungeon.gold * 0.6) return false;
+        else if ((armor.price() * 5 * (Dungeon.depth / 5 + 1)) > Dungeon.gold * 0.6) return false;
             //don't want to give too weak items
         else return armor.DRMax() >= compArmor.DRMax();
     }
@@ -347,49 +347,41 @@ public class ShopRoom extends SpecialRoom {
         if (armor.level() > 2) return null;
         //do not bother, if player have augmented their armor
         if (armor.augment != Armor.Augment.NONE) return null;
-        if (armor instanceof ConjurerArmor) return null;
 
         //roll armor, until we get the needed
         Armor neededArmor;
         do {
             neededArmor = Generator.randomArmor();
-
-            if (!armorIsAlright(neededArmor, armor)) continue;
-            neededArmor.identify();
-            return neededArmor;
-        } while (true);
+        } while (!armorIsAlright(neededArmor, armor));
+        neededArmor.identify();
+        return neededArmor;
     }
 
     private static boolean wepIsAlright(Weapon wep, Weapon compWep){
         if (wep.cursed) return false;
         //don't try to give uber tiered items
-        else if (wep.STRReq() >= compWep.STRReq() + 2) return false;
+        else if (wep.STRReq() > compWep.STRReq() + 2) return false;
         //don't want to spend all coins on one weapon
-        else if (wep.price() > Dungeon.gold * 0.6) return false;
+        else if ((wep.price() * 5 * (Dungeon.depth / 5 + 1)) > Dungeon.gold * 0.6) return false;
         //don't want to give too weak items
         else return wep.max() >= compWep.max();
     }
 
     protected static Weapon ChooseWeapon(Weapon weapon){
         //shop's weapon will be better, that player's one
-
         //no weapon, you saying?
         if (weapon == null) return null;
-
         //we do not bother, if hero's weapon is too powerful
         if (weapon.level() > 2) return null;
-
         //do not bother, if player have augmented their weapon
         if (weapon.augment != Weapon.Augment.NONE) return null;
-
         //roll weapon, until we get the needed
         MeleeWeapon weapon1;
         do {
             weapon1 = Generator.randomWeapon();
-            if (!wepIsAlright(weapon1, weapon)) continue;
-            weapon1.identify();
-            return weapon1;
-        } while (true);
+        } while (!wepIsAlright(weapon1, weapon));
+        weapon1.identify();
+        return weapon1;
     }
 
 	protected static Bag ChooseBag(Belongings pack){
