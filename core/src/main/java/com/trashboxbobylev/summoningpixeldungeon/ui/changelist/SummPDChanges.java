@@ -181,9 +181,20 @@ public class SummPDChanges {
 //                        "We are almost finished. If nothing major will happen with this damn sleepy minions, I will publish the release."));
 //    }
 public static void add_1_1_3_Changes(ArrayList<ChangeInfo> changeInfos) {
+
     ChangeInfo changes = new ChangeInfo("1.1.3", true, "");
     changes.hardlight(Window.TITLE_COLOR);
     changeInfos.add(changes);
+
+    changes = new ChangeInfo("v1.1.3a", false, null);
+    changes.hardlight( Window.TITLE_COLOR );
+    changeInfos.add(changes);
+
+    changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+            "_-_ Going to shop level will not softlock game.\n\n" +
+                    "_-_ Buffed crabs and sewer minibosses.\n\n" +
+                    "_-_ Bosses will instantly rise hero's level instead of giving expeirence."));
+
     changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
     changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
             "_-_ Released March 22th, 2020\n" +
