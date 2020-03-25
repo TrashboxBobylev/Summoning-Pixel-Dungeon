@@ -34,12 +34,12 @@ public class Crab extends Mob {
 	{
 		spriteClass = CrabSprite.class;
 		
-		HP = HT = 5;
+		HP = HT = 15;
 		defenseSkill = 1;
 		baseSpeed = 0.8f;
 		
-		EXP = 5;
-		maxLvl = 7;
+		EXP = 4;
+		maxLvl = 6;
 		
 		loot = new MysteryMeat();
 		lootChance = 0.4f;
@@ -67,14 +67,8 @@ public class Crab extends Mob {
 
     @Override
     public void damage(int dmg, Object src) {
-        if (dmg > 1){
-            if (dmg < 6){
-                dmg = 1;
-            } else if (dmg < 12){
-                dmg = 2;
-            } else if (dmg < 18){
-                dmg = 3;
-            } else dmg = 4;
+        if (dmg >= 3){
+            dmg = (int) (3 + Math.sqrt(dmg - 3)/3);
         }
         super.damage(dmg, src);
     }
