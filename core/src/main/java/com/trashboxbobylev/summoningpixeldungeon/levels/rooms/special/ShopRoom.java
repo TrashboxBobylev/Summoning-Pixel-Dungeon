@@ -330,8 +330,6 @@ public class ShopRoom extends SpecialRoom {
         if (armor.cursed) return false;
             //don't try to give uber tiered items
         else if (armor.STRReq() > compArmor.STRReq() + 2) return false;
-            //don't want to spend all coins on one weapon
-        else if ((armor.price() * 5 * (Dungeon.depth / 5 + 1)) > Dungeon.gold * 0.6) return false;
             //don't want to give too weak items
         else return armor.DRMax() >= compArmor.DRMax();
     }
@@ -361,8 +359,6 @@ public class ShopRoom extends SpecialRoom {
         if (wep.cursed) return false;
         //don't try to give uber tiered items
         else if (wep.STRReq() > compWep.STRReq() + 2) return false;
-        //don't want to spend all coins on one weapon
-        else if ((wep.price() * 5 * (Dungeon.depth / 5 + 1)) > Dungeon.gold * 0.6) return false;
         //don't want to give too weak items
         else return wep.max() >= compWep.max();
     }
