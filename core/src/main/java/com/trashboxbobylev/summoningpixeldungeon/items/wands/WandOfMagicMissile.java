@@ -41,11 +41,11 @@ public class WandOfMagicMissile extends DamageWand {
 	}
 
 	public int min(int lvl){
-		return 2+lvl;
+		return 4+lvl*2;
 	}
 
 	public int max(int lvl){
-		return 8+2*lvl;
+		return 6+2*lvl;
 	}
 	
 	@Override

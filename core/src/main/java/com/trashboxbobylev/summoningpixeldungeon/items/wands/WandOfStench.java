@@ -65,7 +65,7 @@ public class WandOfStench extends Wand {
             ch.pos = attack.collisionPos;
             GameScene.add((Mob) ch);
             GameScene.add(Blob.seed(ch.pos, 30 + level()*5, WandOfStenchGas.class));
-            StenchHolder buff = Buff.affect(ch, StenchHolder.class, 4 + level()/2);
+            StenchHolder buff = Buff.affect(ch, StenchHolder.class, 4 + level());
             buff.minDamage = 3 + level();
             buff.maxDamage = 3 + level();
 

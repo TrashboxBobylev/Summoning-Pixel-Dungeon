@@ -58,11 +58,11 @@ public class WandOfLightning extends DamageWand {
 	ArrayList<Lightning.Arc> arcs = new ArrayList<>();
 
 	public int min(int lvl){
-		return 5+lvl;
+		return 2+lvl*2;
 	}
 
 	public int max(int lvl){
-		return 10+5*lvl;
+		return 6+2*lvl;
 	}
 	
 	@Override
@@ -70,11 +70,11 @@ public class WandOfLightning extends DamageWand {
 
 		//lightning deals less damage per-target, the more targets that are hit.
 		float multipler = 0.4f + (0.6f/affected.size());
-		//if the main target is in water, all affected take full damage
-		if (Dungeon.level.water[bolt.collisionPos]) multipler = 1f;
+		//if the main target is in water, all affected take 2x more damage
+		if (Dungeon.level.water[bolt.collisionPos]) multipler *= 2f;
 
-		int min = 5 + level();
-		int max = 10 + 5*level();
+		int min = 2 + level()*2;
+		int max = 6 + 2*level();
 
 		for (Char ch : affected){
 			processSoulMark(ch, chargesPerCast());

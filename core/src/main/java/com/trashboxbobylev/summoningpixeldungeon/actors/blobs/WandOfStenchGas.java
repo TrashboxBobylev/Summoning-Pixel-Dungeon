@@ -28,6 +28,8 @@ import com.trashboxbobylev.summoningpixeldungeon.Badges;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Slow;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.StenchHolder;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.effects.BlobEmitter;
@@ -58,8 +60,8 @@ public class WandOfStenchGas extends Blob implements Hero.Doom {
 				cell = i + j*Dungeon.level.width();
 				if (cur[cell] > 0 && (ch = Actor.findChar( cell )) != null) {
 					if (!ch.isImmune(this.getClass())) {
-
 						ch.damage(damage, this);
+                        Buff.affect(ch, Slow.class, 2f);
 					} else if (ch.buff(StenchHolder.class) != null) {
 					    StenchHolder stench = ch.buff(StenchHolder.class);
 					    minDamage = stench.minDamage;

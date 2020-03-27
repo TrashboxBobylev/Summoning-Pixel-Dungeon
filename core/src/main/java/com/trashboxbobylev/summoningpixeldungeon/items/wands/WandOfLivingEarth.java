@@ -303,17 +303,17 @@ public class WandOfLivingEarth extends DamageWand {
 		private void setInfo(Hero hero, int wandLevel, int healthToAdd){
 			if (wandLevel > this.wandLevel) {
 				this.wandLevel = wandLevel;
-				HT = 16 + 8 * wandLevel;
+				HT = 30 + 15 * wandLevel;
 			}
 			HP = Math.min(HT, HP + healthToAdd);
-			//half of hero's evasion
-			defenseSkill = (hero.lvl + 4)/2;
+			//25% of hero's evasion
+			defenseSkill = (hero.lvl + 4)/4;
 		}
 
 		@Override
 		public int attackSkill(Char target) {
 			//same as the hero
-			return 2*defenseSkill + 5;
+			return 4*defenseSkill + 5;
 		}
 
 		@Override
@@ -324,24 +324,24 @@ public class WandOfLivingEarth extends DamageWand {
 
 		@Override
 		public int damageRoll() {
-			return Random.NormalIntRange(3 + Dungeon.depth/4, 6 + Dungeon.depth/2);
+			return Random.NormalIntRange(1 + Dungeon.depth/5, 3 + Dungeon.depth/3);
 		}
 
 		@Override
 		public int drRoll() {
 			if (Dungeon.isChallenged(Challenges.NO_ARMOR)){
-				return Random.NormalIntRange(wandLevel, 2 + wandLevel);
+				return Random.NormalIntRange(wandLevel/2, wandLevel + 1);
 			} else {
-				return Random.NormalIntRange(wandLevel, 3 + 3 * wandLevel);
+				return Random.NormalIntRange(wandLevel, (int) (2 + 1.5f * wandLevel));
 			}
 		}
 
 		@Override
 		public String description() {
 			if (Dungeon.isChallenged(Challenges.NO_ARMOR)){
-				return Messages.get(this, "desc", wandLevel, 2 + wandLevel);
+				return Messages.get(this, "desc", wandLevel/2, wandLevel + 1, HP, HT);
 			} else {
-				return Messages.get(this, "desc", wandLevel, 3 + 3*wandLevel);
+				return Messages.get(this, "desc", wandLevel, (int) (2 + 1.5f * wandLevel), HP, HT);
 			}
 			
 		}
