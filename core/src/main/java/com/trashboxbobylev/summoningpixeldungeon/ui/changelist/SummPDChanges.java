@@ -186,6 +186,20 @@ public static void add_1_1_3_Changes(ArrayList<ChangeInfo> changeInfos) {
     changes.hardlight(Window.TITLE_COLOR);
     changeInfos.add(changes);
 
+    changes = new ChangeInfo("v1.1.3b", false, null);
+    changes.hardlight( Window.TITLE_COLOR );
+    changeInfos.add(changes);
+
+    changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+            "Removed gold condition for shop weapons."));
+
+    changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAND_MAGIC_MISSILE, null), "Wand Changes",
+            "_-_ Wand of Magic Missile is buffed from 2-8 (+1/+2) damage to 4-6 (+2/+2) damage.\n\n" +
+                    "_-_ Wand of Lightning is changed: nerfed damage from 5-10 (+1/+5) to 2-6 (+2/+2), but zaps into water will do double damage (4-12 (+4/+4)).\n\n" +
+                    "_-_ Wand of Frost is changed: nerfed damage from 2-8 (+1/+5) to 5-7 (+2/+3), but increased chill duration.\n\n" +
+                    "_-_ Wand of Living Earth is nerfed: increased guardian's HP to 30 (+15), but decreased his DR, damage and evasion.\n\n" +
+                    "_-_ Wand of Stench is buffed: added Slowness effect for a blob."));
+
     changes = new ChangeInfo("v1.1.3a", false, null);
     changes.hardlight( Window.TITLE_COLOR );
     changeInfos.add(changes);
