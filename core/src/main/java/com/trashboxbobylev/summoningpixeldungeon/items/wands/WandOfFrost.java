@@ -43,6 +43,8 @@ import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
+import java.text.DecimalFormat;
+
 public class WandOfFrost extends DamageWand {
 
 	{
@@ -50,12 +52,20 @@ public class WandOfFrost extends DamageWand {
 	}
 
 	public int min(int lvl){
-		return 5+lvl*2;
+		return 2+lvl*3;
 	}
 
 	public int max(int lvl){
-		return 7+3*lvl;
+		return 6+3*lvl;
 	}
+
+	private float chanceToFreeze(){
+	    return Math.min(0.2f + 0.075f * level(), 0.6f);
+    }
+
+    private float freezeDuration(){
+	    return 2f + level() / 2f;
+    }
 
 	@Override
 	protected void onZap(Ballistica bolt) {
@@ -69,26 +79,28 @@ public class WandOfFrost extends DamageWand {
 		if (ch != null){
 
 			int damage = damageRoll();
+			boolean freeze = Random.Float() < chanceToFreeze();
 
 			if (ch.buff(Frost.class) != null){
 				return; //do nothing, can't affect a frozen target
 			}
-			if (ch.buff(Chill.class) != null){
+			if (ch.buff(Chill.class) != null && !freeze){
 				//7.5% less damage per turn of chill remaining
 				float chill = ch.buff(Chill.class).cooldown();
 				damage = (int)Math.round(damage * Math.pow(0.9f, chill));
 			} else {
-				ch.sprite.burst( 0xFF99CCFF, level() / 2 + 2 );
+				ch.sprite.burst( 0xFF99CCFF, level() * 2 );
+                Buff.affect(ch, Frost.class, freezeDuration());
 			}
 
 			processSoulMark(ch, chargesPerCast());
-			ch.damage(damage, this);
+			if (!freeze) ch.damage(damage, this);
 
 			if (ch.isAlive()){
 				if (Dungeon.level.water[ch.pos])
-					Buff.prolong(ch, Chill.class, 8+level());
+					Buff.prolong(ch, Chill.class, 8);
 				else
-					Buff.prolong(ch, Chill.class, 4+level());
+					Buff.prolong(ch, Chill.class, 5);
 			}
 		} else {
 			Dungeon.level.press(bolt.collisionPos, null, true);
@@ -98,9 +110,9 @@ public class WandOfFrost extends DamageWand {
     @Override
     public String statsDesc() {
         if (!levelKnown)
-            return Messages.get(this, "stats_desc", min(0), max(0), 4);
+            return Messages.get(this, "stats_desc", min(0), max(0), new DecimalFormat("#.##").format(20f), new DecimalFormat("#.##").format(2f));
         else
-            return Messages.get(this, "stats_desc", min(), max(),  4 + level());
+            return Messages.get(this, "stats_desc", min(), max(),  new DecimalFormat("#.##").format(chanceToFreeze()*100f), new DecimalFormat("#.#").format(freezeDuration()));
     }
 
 	@Override

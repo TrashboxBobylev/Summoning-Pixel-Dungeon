@@ -303,7 +303,7 @@ public class WandOfLivingEarth extends DamageWand {
 		private void setInfo(Hero hero, int wandLevel, int healthToAdd){
 			if (wandLevel > this.wandLevel) {
 				this.wandLevel = wandLevel;
-				HT = 30 + 15 * wandLevel;
+				HT = 20 + 8 * wandLevel;
 			}
 			HP = Math.min(HT, HP + healthToAdd);
 			//25% of hero's evasion
@@ -339,9 +339,9 @@ public class WandOfLivingEarth extends DamageWand {
 		@Override
 		public String description() {
 			if (Dungeon.isChallenged(Challenges.NO_ARMOR)){
-				return Messages.get(this, "desc", wandLevel/2, wandLevel + 1, HP, HT);
+				return Messages.get(this, "desc", 1, 2, HP, HT);
 			} else {
-				return Messages.get(this, "desc", wandLevel, (int) (2 + 1.5f * wandLevel), HP, HT);
+				return Messages.get(this, "desc", 1, 4 + wandLevel/4, HP, HT);
 			}
 			
 		}

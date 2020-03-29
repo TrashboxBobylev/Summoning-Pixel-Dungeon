@@ -29,6 +29,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Paralysis;
+import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Effects;
 import com.trashboxbobylev.summoningpixeldungeon.effects.MagicMissile;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Pushing;
@@ -82,7 +83,7 @@ public class WandOfBlastWave extends DamageWand {
 
                     if (ch != null){
                         processSoulMark(ch, chargesPerCast());
-                        ch.damage(Math.round(damage * 0.667f), this);
+                        if (!(ch instanceof Hero)) ch.damage(Math.round(damage * 0.667f), this);
 
                         if (ch.isAlive()) {
                             Ballistica trajectory = new Ballistica(ch.pos, ch.pos + i, Ballistica.MAGIC_BOLT);
@@ -99,7 +100,7 @@ public class WandOfBlastWave extends DamageWand {
 		Char ch = Actor.findChar(bolt.collisionPos);
 		if (ch != null){
 			processSoulMark(ch, chargesPerCast());
-			ch.damage(damage, this);
+            if (!(ch instanceof Hero)) ch.damage(damage, this);
 
 			if (ch.isAlive() && bolt.path.size() > bolt.dist+1) {
 				Ballistica trajectory = new Ballistica(ch.pos, bolt.path.get(bolt.dist + 1), Ballistica.MAGIC_BOLT);
