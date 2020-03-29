@@ -28,10 +28,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Chill;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.FlavourBuff;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Frost;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.effects.MagicMissile;
 import com.trashboxbobylev.summoningpixeldungeon.items.Heap;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.melee.MagesStaff;
@@ -52,19 +49,23 @@ public class WandOfFrost extends DamageWand {
 	}
 
 	public int min(int lvl){
-		return 2+lvl*3;
+		return 2+lvl;
 	}
 
 	public int max(int lvl){
-		return 6+3*lvl;
+		return 5+2*lvl;
 	}
 
 	private float chanceToFreeze(){
-	    return Math.min(0.2f + 0.075f * level(), 0.6f);
+	    return Math.min(0.2f + 0.05f * level(), 0.33f);
     }
 
     private float freezeDuration(){
-	    return 2f + level() / 2f;
+        float baseChance = 2f + level() / 2f;
+        if (chanceToFreeze() == 0.33f){
+            baseChance = 3f + level();
+        }
+        return baseChance;
     }
 
 	@Override
@@ -88,19 +89,21 @@ public class WandOfFrost extends DamageWand {
 				//7.5% less damage per turn of chill remaining
 				float chill = ch.buff(Chill.class).cooldown();
 				damage = (int)Math.round(damage * Math.pow(0.9f, chill));
-			} else {
+			} else if (freeze){
 				ch.sprite.burst( 0xFF99CCFF, level() * 2 );
                 Buff.affect(ch, Frost.class, freezeDuration());
 			}
 
 			processSoulMark(ch, chargesPerCast());
-			if (!freeze) ch.damage(damage, this);
+			if (!freeze) {
+			    ch.damage(damage, this);
+            }
 
-			if (ch.isAlive()){
+			if (ch.isAlive() && !freeze){
 				if (Dungeon.level.water[ch.pos])
-					Buff.prolong(ch, Chill.class, 8);
+                    Buff.affect( ch, FrostBurn.class ).reignite( ch, 7f);
 				else
-					Buff.prolong(ch, Chill.class, 5);
+                    Buff.affect( ch, FrostBurn.class ).reignite( ch, 4f );
 			}
 		} else {
 			Dungeon.level.press(bolt.collisionPos, null, true);

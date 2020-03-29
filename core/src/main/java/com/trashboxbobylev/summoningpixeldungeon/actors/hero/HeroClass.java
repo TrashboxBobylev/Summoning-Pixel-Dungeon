@@ -59,10 +59,7 @@ import com.trashboxbobylev.summoningpixeldungeon.items.scrolls.exotic.ScrollOfSo
 import com.trashboxbobylev.summoningpixeldungeon.items.spells.Contain;
 import com.trashboxbobylev.summoningpixeldungeon.items.spells.Enrage;
 import com.trashboxbobylev.summoningpixeldungeon.items.stones.StoneOfTargeting;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfCrystalBullet;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfMagicMissile;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfStars;
-import com.trashboxbobylev.summoningpixeldungeon.items.wands.WandOfStench;
+import com.trashboxbobylev.summoningpixeldungeon.items.wands.*;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Slingshot;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.SpiritBow;
 import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
