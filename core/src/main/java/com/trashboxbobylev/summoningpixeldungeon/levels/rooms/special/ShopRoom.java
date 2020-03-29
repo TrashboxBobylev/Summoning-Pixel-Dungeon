@@ -174,7 +174,6 @@ public class ShopRoom extends SpecialRoom {
             do {
                 i = Generator.random(Generator.Category.WAND);
                 if (i instanceof DamageWand) break;
-                else continue;
             } while (i.cursed);
             i.upgrade(1).identify();
 			itemsToSpawn.add(i);
@@ -229,14 +228,15 @@ public class ShopRoom extends SpecialRoom {
 
         for (int i=0; i < 2; i++) itemsToSpawn.add(Generator.random(Generator.Category.STONE));
 
-		itemsToSpawn.add(ChooseArmor(Dungeon.hero.belongings.armor));
-        itemsToSpawn.add(ChooseWeapon((Weapon) Dungeon.hero.belongings.weapon));
+//		itemsToSpawn.add(ChooseArmor(Dungeon.hero.belongings.armor));
+//        itemsToSpawn.add(ChooseWeapon((Weapon) Dungeon.hero.belongings.weapon));
         Staff s = Generator.randomStaff();
         while (s.cursed){
             s = Generator.randomStaff();
         }
         s.identify();
         itemsToSpawn.add(s);
+        itemsToSpawn.add(Generator.randomMissile());
         itemsToSpawn.add(Generator.randomMissile());
         itemsToSpawn.add(Generator.randomMissile());
 
@@ -247,6 +247,7 @@ public class ShopRoom extends SpecialRoom {
 			itemsToSpawn.add( Generator.random( Generator.Category.POTION ) );
 
 		itemsToSpawn.add( new ScrollOfIdentify() );
+        itemsToSpawn.add( new ScrollOfIdentify() );
 		itemsToSpawn.add( new ScrollOfRemoveCurse() );
 		itemsToSpawn.add( new ScrollOfMagicMapping() );
 		itemsToSpawn.add( Generator.random( Generator.Category.SCROLL ) );

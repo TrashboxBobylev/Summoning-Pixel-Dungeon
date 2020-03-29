@@ -186,6 +186,18 @@ public static void add_1_1_3_Changes(ArrayList<ChangeInfo> changeInfos) {
     changes.hardlight(Window.TITLE_COLOR);
     changeInfos.add(changes);
 
+    changes = new ChangeInfo("v1.1.3c", false, null);
+    changes.hardlight( Window.TITLE_COLOR );
+    changeInfos.add(changes);
+
+    changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+            "Removed dedicated weapon and armor from shops, as it was too unstable. Instead, shops have additional Scroll of Identity and missile weapon stack."));
+
+    changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAND_MAGIC_MISSILE, null), "Wand Changes",
+                    "_-_ Wand of Frost is reworked: nerfed damage from 5-7 (+2/+3) to 2-6 (+3/+3), but added utility in form of increasing freezing chance.\n\n" +
+                    "_-_ Wand of Living Earth is nerfed: decreased guardian's HP to 20 (+8), decreased his DR to 1-4 (+0/+0.25).\n\n" +
+                    "_-_ Wand of Blast Wave is buffed: it doesn't directly damage hero at all."));
+
     changes = new ChangeInfo("v1.1.3b", false, null);
     changes.hardlight( Window.TITLE_COLOR );
     changeInfos.add(changes);
