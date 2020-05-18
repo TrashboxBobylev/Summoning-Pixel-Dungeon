@@ -54,6 +54,7 @@ public class SummPDChanges {
 		//ChangeInfo changes = new ChangeInfo( "1.1", true, "");
 		//changes.hardlight( Window.TITLE_COLOR);
 		//changeInfos.add(changes);
+        add_1_1_4_Changes(changeInfos);
         add_1_1_3_Changes(changeInfos);
         add_1_1_2_Changes(changeInfos);
         add_1_1_1_Changes(changeInfos);
@@ -180,6 +181,27 @@ public class SummPDChanges {
 //                        "_-_ Added the article about allies into Adventurer Guide\n"+
 //                        "We are almost finished. If nothing major will happen with this damn sleepy minions, I will publish the release."));
 //    }
+
+    public static void add_1_1_4_Changes(ArrayList<ChangeInfo> changeInfos) {
+
+        ChangeInfo changes = new ChangeInfo("1.1.4", true, "");
+        changes.hardlight(Window.TITLE_COLOR);
+        changeInfos.add(changes);
+
+        changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
+        changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
+                "_-_ Released May 18th, 2020\n" +
+                        "_-_ 58 days after 1.1.3\n\n" +
+                        "YEEEEEEEEEE"));
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAND_DISINTEGRATION, null), "New wand",
+                "Replaced Wand of Disintegration with Wand of Shadow Beams, that bounces off the cells, increasing vulnerability of hit targets."));
+        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "Fixed:\n" +
+                        "_-_ Soul Wielder's buff crashing, when reloaded from save file.\n\n" +
+                        "_-_ Soul refound from augmenting minions.\n\n"+
+                        "_-_ Wand of Stars not saving shot from detonation.\n\n" +
+                        "_-_ Arcane Bomb destroying level's in/out tiles."));
+    }
 public static void add_1_1_3_Changes(ArrayList<ChangeInfo> changeInfos) {
 
     ChangeInfo changes = new ChangeInfo("1.1.3", true, "");
