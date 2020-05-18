@@ -275,7 +275,7 @@ public class LoveHolder extends Artifact {
                                         int wastedHealing = (ch.HP + healing) - ch.HT;
                                         if (wastedHealing > 0){
                                             healing -= wastedHealing;
-                                            if (soultype != 2) charge += wastedHealing / 2; //some of unnecessary soul will return
+                                            if (soultype < 2) charge += wastedHealing / 2; //some of unnecessary soul will return
                                         }
                                         updateQuickslot();
 
