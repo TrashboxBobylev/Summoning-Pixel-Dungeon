@@ -97,7 +97,7 @@ public class ArcaneBomb extends Bomb {
             Level.set(cell, Terrain.CHASM);
             GameScene.updateMap(cell);
             for (int k : PathFinder.NEIGHBOURS4){
-                Level.set(cell + k, Terrain.CHASM);
+                if (cell + k != Dungeon.level.exit && cell + k != Dungeon.level.entrance)Level.set(cell + k, Terrain.CHASM);
                 GameScene.updateMap(cell+k);
             }
         }
