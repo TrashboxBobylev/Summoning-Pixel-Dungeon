@@ -76,6 +76,7 @@ public class WandOfStars extends DamageWand {
                         }
                     }
                     Sample.INSTANCE.play(Assets.SND_ZAP);
+                    charger.gainCharge(1f);
                     for (int i : PathFinder.NEIGHBOURS9){
                         CellEmitter.get(p + i).burst(FrostfireParticle.FACTORY, 8 + 4 * level());
                         Char ch = Actor.findChar(p + i);
