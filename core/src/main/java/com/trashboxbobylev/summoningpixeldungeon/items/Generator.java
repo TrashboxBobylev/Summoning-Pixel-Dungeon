@@ -296,7 +296,7 @@ public class Generator {
 			WAND.classes = new Class<?>[]{
 					WandOfMagicMissile.class,
 					WandOfLightning.class,
-					WandOfDisintegration.class,
+					WandOfBounceBeams.class,
 					WandOfFireblast.class,
 					WandOfCorrosion.class,
 					WandOfBlastWave.class,
@@ -310,7 +310,7 @@ public class Generator {
 					WandOfCorruption.class,
 					WandOfRegrowth.class,
                     WandOfStench.class};
-			WAND.probs = new float[]{ 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
+			WAND.probs = new float[]{ 4, 4, 3, 4, 4, 3, 3, 3, 3, 4, 3, 3, 3, 3, 3, 3 };
 			
 			//see generator.randomWeapon
 			WEAPON.classes = new Class<?>[]{};
