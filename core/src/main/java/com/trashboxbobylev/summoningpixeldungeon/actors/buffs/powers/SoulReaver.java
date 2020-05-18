@@ -31,8 +31,10 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Preparation;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.HeroSubClass;
 import com.trashboxbobylev.summoningpixeldungeon.effects.particles.WhiteParticle;
+import com.trashboxbobylev.summoningpixeldungeon.items.weapon.Weapon;
 import com.trashboxbobylev.summoningpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
+import com.watabou.utils.Bundle;
 
 //dummy buffs is my favorite type of buffs
 public class SoulReaver extends DummyBuff {
@@ -73,5 +75,17 @@ public class SoulReaver extends DummyBuff {
             case RANGE:
                 icon.tint(0, 1, 0.1f, 0.5f); break;
         }
+    }
+
+    @Override
+    public void storeInBundle(Bundle bundle) {
+        super.storeInBundle(bundle);
+        bundle.put("type", type);
+    }
+
+    @Override
+    public void restoreFromBundle(Bundle bundle) {
+        super.restoreFromBundle(bundle);
+        type = bundle.getEnum("type", Type.class);
     }
 }
