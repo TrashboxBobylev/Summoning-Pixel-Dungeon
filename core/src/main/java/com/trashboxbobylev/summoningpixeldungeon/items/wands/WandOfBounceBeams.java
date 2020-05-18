@@ -78,7 +78,9 @@ public class WandOfBounceBeams extends DamageWand{
         Char ch = Actor.findChar(beam.collisionPos);
         if (ch != null) {
             processSoulMark(ch, chargesPerCast());
-            ch.damage(damageRoll(), this);
+            if (ch != Dungeon.hero) ch.damage(damageRoll(), this);
+            else ch.damage((int) (damageRoll()*0.66f), this);
+            Buff.prolong(ch, DefenseDebuff.class, 3 + level());
 
             ch.sprite.centerEmitter().burst( PurpleParticle.BURST, Random.IntRange( 1, 2 ) );
         } else {
