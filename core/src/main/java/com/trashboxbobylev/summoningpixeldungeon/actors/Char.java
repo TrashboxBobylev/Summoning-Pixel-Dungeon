@@ -434,6 +434,9 @@ public abstract class Char extends Actor {
         if (this.buff(Empowered.class) != null){
             dmg *= 0.65f;
         }
+        if (this.buff(DefenseDebuff.class) != null){
+            dmg *= 1.333f;
+        }
 		
 		Class<?> srcClass = src.getClass();
 		if (isImmune( srcClass )) {

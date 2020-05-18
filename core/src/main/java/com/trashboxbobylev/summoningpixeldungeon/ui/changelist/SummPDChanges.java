@@ -194,7 +194,7 @@ public static void add_1_1_3_Changes(ArrayList<ChangeInfo> changeInfos) {
             "Removed dedicated weapon and armor from shops, as it was too unstable. Instead, shops have additional Scroll of Identity and missile weapon stack."));
 
     changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAND_MAGIC_MISSILE, null), "Wand Changes",
-                    "_-_ Wand of Frost is reworked: nerfed damage from 5-7 (+2/+3) to 2-6 (+3/+3), but added utility in form of increasing freezing chance.\n\n" +
+                    "_-_ Wand of Frost is reworked: nerfed damage from 5-7 (+2/+3) to 2-5 (+1/+2), but added utility in form of increasing freezing chance and Frostburn debuff.\n\n" +
                     "_-_ Wand of Living Earth is nerfed: decreased guardian's HP to 20 (+8), decreased his DR to 1-4 (+0/+0.25).\n\n" +
                     "_-_ Wand of Blast Wave is buffed: it doesn't directly damage hero at all."));
 

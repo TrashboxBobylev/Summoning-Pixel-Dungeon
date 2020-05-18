@@ -184,6 +184,8 @@ public enum HeroClass {
         //new RatSkull().collect();
 
 		Dungeon.quickslot.setSlot(0, staff);
+		new WandOfBounceBeams().identify().collect();
+		new ScrollOfUpgrade().quantity(10).collect();
 
 		new ScrollHolder().collect();
 		Dungeon.LimitedDrops.SCROLL_HOLDER.drop();

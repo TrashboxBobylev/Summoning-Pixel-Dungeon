@@ -147,9 +147,9 @@ public class MagesStaff extends MeleeWeapon {
 	public int reachFactor(Char owner) {
 		int reach = super.reachFactor(owner);
 		if (owner instanceof Hero
-				&& wand instanceof WandOfDisintegration
+				&& wand instanceof WandOfBounceBeams
 				&& ((Hero)owner).subClass == HeroSubClass.BATTLEMAGE){
-			reach++;
+			reach += 2;
 		}
 		return reach;
 	}
