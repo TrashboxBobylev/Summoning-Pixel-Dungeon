@@ -31,6 +31,7 @@ import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.minions.stationary.
 import com.trashboxbobylev.summoningpixeldungeon.effects.Beam;
 import com.trashboxbobylev.summoningpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.TextureFilm;
+import com.watabou.noosa.audio.Sample;
 
 public class BlasterSprite extends MobSprite {
     private int attackPos;
@@ -69,6 +70,7 @@ public class BlasterSprite extends MobSprite {
             if (Dungeon.level.heroFOV[ch.pos] || Dungeon.level.heroFOV[attackPos]){
                 parent.add(new Beam.LightRay(center(), DungeonTilemap.raisedTileCenterToWorld(attackPos)));
                 ((GasterBlaster)ch).attock(attackPos);
+                Sample.INSTANCE.play( Assets.SND_RAY );
                 ch.next();
             }
         }

@@ -165,6 +165,7 @@ public class Necromancer extends Mob {
 		if (mySkeleton.HP < mySkeleton.HT){
 			
 			sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
+            Sample.INSTANCE.play( Assets.SND_RAY );
 			
 			mySkeleton.HP = Math.min(mySkeleton.HP + 8, mySkeleton.HT);
 			mySkeleton.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
@@ -173,6 +174,7 @@ public class Necromancer extends Mob {
 		} else if (mySkeleton.buff(Adrenaline.class) == null) {
 			
 			sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
+            Sample.INSTANCE.play( Assets.SND_RAY );
 			
 			Buff.affect(mySkeleton, Adrenaline.class, 4f);
             Buff.affect(mySkeleton, Empowered.class, 4f);

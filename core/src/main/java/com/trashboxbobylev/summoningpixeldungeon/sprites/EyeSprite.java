@@ -32,6 +32,7 @@ import com.trashboxbobylev.summoningpixeldungeon.effects.Beam;
 import com.trashboxbobylev.summoningpixeldungeon.effects.MagicMissile;
 import com.trashboxbobylev.summoningpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.TextureFilm;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 
 public class EyeSprite extends MobSprite {
@@ -113,6 +114,7 @@ public class EyeSprite extends MobSprite {
 			} else {
 				parent.add(new Beam.DeathRay(center(), DungeonTilemap.raisedTileCenterToWorld(zapPos)));
 			}
+            Sample.INSTANCE.play( Assets.SND_RAY );
 			((Eye)ch).deathGaze();
 			ch.next();
 		} else if (anim == die){

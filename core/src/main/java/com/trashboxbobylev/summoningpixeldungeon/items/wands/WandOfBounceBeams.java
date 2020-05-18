@@ -140,6 +140,7 @@ public class WandOfBounceBeams extends DamageWand{
     protected void fx( Ballistica beam, Callback callback ) {
         curUser.sprite.parent.add(
                 new Beam.DeathRay(curUser.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(beam.collisionPos)));
+        Sample.INSTANCE.play( Assets.SND_RAY );
         callback.call();
     }
 
