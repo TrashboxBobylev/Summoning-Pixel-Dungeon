@@ -64,6 +64,7 @@ public class WandOfStars extends DamageWand {
     public void execute(Hero hero, String action) {
         super.execute(hero, action);
         if (action.equals(AC_UNLEASH)){
+            charger.gainCharge(1f);
             SparseArray<Star> stars = Dungeon.level.stars();
             int[] pos = stars.keyArray();
             boolean effect = false;
@@ -76,7 +77,7 @@ public class WandOfStars extends DamageWand {
                         }
                     }
                     Sample.INSTANCE.play(Assets.SND_ZAP);
-                    charger.gainCharge(1f);
+
                     for (int i : PathFinder.NEIGHBOURS9){
                         CellEmitter.get(p + i).burst(FrostfireParticle.FACTORY, 8 + 4 * level());
                         Char ch = Actor.findChar(p + i);
