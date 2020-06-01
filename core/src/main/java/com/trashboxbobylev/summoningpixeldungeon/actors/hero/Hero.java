@@ -539,6 +539,7 @@ public class Hero extends Char {
 			curAction = null;
 			
 			spendAndNext( TICK );
+            Hunger.adjustHunger(-0.2f * (1f + (Math.max(1/(HP/HT), 3))) * (buff(Shadows.class) != null ? 0.66f : 1f));
 			return false;
 		}
 		
@@ -547,6 +548,7 @@ public class Hero extends Char {
 			
 			if (resting) {
 				spend( TIME_TO_REST );
+				Hunger.adjustHunger(-0.2f * (1f + (Math.max(1/(HP/HT), 3))) * (buff(Shadows.class) != null ? 0.66f : 1f));
 				next();
 			} else {
 				ready();
@@ -648,6 +650,7 @@ public class Hero extends Char {
 
 		if (getCloser( action.dst )) {
 			justMoved = true;
+			Hunger.adjustHunger(-1);
 			return true;
 
 		} else {
@@ -760,7 +763,7 @@ public class Hero extends Char {
 							GLog.i( Messages.get(this, "you_now_have", item.name()) );
 						}
 					}
-					
+					Hunger.adjustHunger(-1);
 					curAction = null;
 				} else {
 					heap.sprite.drop();
@@ -875,6 +878,7 @@ public class Hero extends Char {
 		if (pos == stairs) {
 			
 			curAction = null;
+			Hunger.adjustHunger(-20);
 
 			Buff buff = buff(TimekeepersHourglass.timeFreeze.class);
 			if (buff != null) buff.detach();
@@ -915,6 +919,7 @@ public class Hero extends Char {
 			} else {
 				
 				curAction = null;
+				Hunger.adjustHunger(-20);
 
 				Buff buff = buff(TimekeepersHourglass.timeFreeze.class);
 				if (buff != null) buff.detach();
@@ -944,6 +949,7 @@ public class Hero extends Char {
 		if (enemy.isAlive() && canAttack( enemy ) && !isCharmedBy( enemy )) {
 			
 			sprite.attack( enemy.pos );
+            Hunger.adjustHunger(2f);
 
 			return false;
 
@@ -1619,6 +1625,7 @@ public class Hero extends Char {
                     Level.set(doorCell, door == Terrain.LOCKED_DOOR ? Terrain.DOOR : Terrain.UNLOCKED_EXIT);
                     GameScene.updateMap(doorCell);
                     spend(Key.TIME_TO_UNLOCK);
+                    Hunger.adjustHunger(-2);
                 }
             }
 
@@ -1640,6 +1647,7 @@ public class Hero extends Char {
                     GameScene.updateKeyDisplay();
                     heap.open(this);
                     spend(Key.TIME_TO_UNLOCK);
+                    Hunger.adjustHunger(-3);
                 }
             }
 
@@ -1758,9 +1766,9 @@ public class Hero extends Char {
 			if (!Dungeon.level.locked) {
 				if (cursed) {
 					GLog.negative(Messages.get(this, "search_distracted"));
-					Buff.affect(this, Hunger.class).adjustHunger(-(TIME_TO_SEARCH - (2 * HUNGER_FOR_SEARCH)));
+					Hunger.adjustHunger(-(TIME_TO_SEARCH - (2 * HUNGER_FOR_SEARCH)));
 				} else {
-					Buff.affect(this, Hunger.class).adjustHunger(-(TIME_TO_SEARCH - HUNGER_FOR_SEARCH));
+					Hunger.adjustHunger(-(TIME_TO_SEARCH - HUNGER_FOR_SEARCH));
 				}
 			}
 			spendAndNext(TIME_TO_SEARCH);

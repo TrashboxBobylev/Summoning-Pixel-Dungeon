@@ -26,6 +26,7 @@ package com.trashboxbobylev.summoningpixeldungeon.actors.buffs;
 
 import com.trashboxbobylev.summoningpixeldungeon.Badges;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
+import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.Artifact;
 import com.trashboxbobylev.summoningpixeldungeon.items.artifacts.HornOfPlenty;
@@ -38,8 +39,8 @@ public class Hunger extends Buff implements Hero.Doom {
 
 	private static final float STEP	= 10f;
 
-	public static final float HUNGRY	= 300f;
-	public static final float STARVING	= 450f;
+	public static final float HUNGRY	= 3000f;
+	public static final float STARVING	= 4500f;
 
 	private float level;
 	private float partialDamage;
@@ -85,7 +86,7 @@ public class Hunger extends Buff implements Hero.Doom {
 	}
 
 	//directly interacts with hunger, no checks.
-	public void adjustHunger(float energy ) {
+	public static void adjustHunger(float energy ) {
 //		if (level < 0) {
 //			level = 0;
 //		} else if (level > STARVING) {
@@ -95,35 +96,37 @@ public class Hunger extends Buff implements Hero.Doom {
 //		}
 //
 //		BuffIndicator.refreshHero();
+        Hunger hunger = Buff.affect(Dungeon.hero, Hunger.class);
+        Char target = hunger.target;
         if (Dungeon.level.locked || target.buff(WellFed.class) != null || Dungeon.depth == 21){
             return;
         }
-        if (isStarving()){
-            partialDamage += energy * target.HT/1000f;
+        if (hunger.isStarving()){
+            hunger.partialDamage += energy * target.HT/1000f;
 
-            if (partialDamage > 1){
-                target.damage( (int)partialDamage, this);
-                partialDamage -= (int)partialDamage;
+            if (hunger.partialDamage > 1){
+                target.damage( (int)hunger.partialDamage, target);
+                hunger.partialDamage -= (int)hunger.partialDamage;
             }
         } else {
-            float newLevel = level + energy;
+            float newLevel = hunger.level + energy;
             boolean statusUpdated = false;
             if (newLevel >= STARVING) {
 
-                GLog.negative(Messages.get(this, "onstarving"));
+                GLog.negative(Messages.get(hunger, "onstarving"));
                 Dungeon.hero.resting = false;
-                Dungeon.hero.damage(1, this);
+                Dungeon.hero.damage(1, hunger);
                 statusUpdated = true;
 
                 Dungeon.hero.interrupt();
 
-            } else if (newLevel >= HUNGRY && level < HUNGRY) {
+            } else if (newLevel >= HUNGRY && hunger.level < HUNGRY) {
 
-                GLog.warning(Messages.get(this, "onhungry"));
+                GLog.warning(Messages.get(hunger, "onhungry"));
                 statusUpdated = true;
 
             }
-            level = newLevel;
+            hunger.level = newLevel;
 
             if (statusUpdated) {
                 BuffIndicator.refreshHero();
