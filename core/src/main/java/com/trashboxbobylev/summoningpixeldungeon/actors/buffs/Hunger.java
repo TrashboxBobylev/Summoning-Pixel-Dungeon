@@ -64,60 +64,13 @@ public class Hunger extends Buff implements Hero.Doom {
 	@Override
 	public boolean act() {
 
-		if (Dungeon.level.locked || target.buff(WellFed.class) != null || Dungeon.depth == 21){
-			spend(STEP);
-			return true;
-		}
+        if (!target.isAlive() || !(target instanceof Hero)) {
 
-		if (target.isAlive() && target instanceof Hero) {
+            diactivate();
 
-			Hero hero = (Hero)target;
+        }
 
-			if (isStarving()) {
-
-				partialDamage += STEP * target.HT/1000f;
-
-				if (partialDamage > 1){
-					target.damage( (int)partialDamage, this);
-					partialDamage -= (int)partialDamage;
-				}
-				
-			} else {
-
-				float newLevel = level + STEP;
-				boolean statusUpdated = false;
-				if (newLevel >= STARVING) {
-
-					GLog.negative( Messages.get(this, "onstarving") );
-					hero.resting = false;
-					hero.damage( 1, this );
-					statusUpdated = true;
-
-					hero.interrupt();
-
-				} else if (newLevel >= HUNGRY && level < HUNGRY) {
-
-					GLog.warning( Messages.get(this, "onhungry") );
-					statusUpdated = true;
-
-				}
-				level = newLevel;
-
-				if (statusUpdated) {
-					BuffIndicator.refreshHero();
-				}
-
-			}
-			
-			spend( target.buff( Shadows.class ) == null ? STEP : STEP * 1.5f );
-
-		} else {
-
-			diactivate();
-
-		}
-
-		return true;
+        return true;
 	}
 
 	public void satisfy( float energy ) {
@@ -128,22 +81,55 @@ public class Hunger extends Buff implements Hero.Doom {
 			GLog.negative( Messages.get(this, "cursedhorn") );
 		}
 
-		reduceHunger( energy );
+		adjustHunger( energy );
 	}
 
 	//directly interacts with hunger, no checks.
-	public void reduceHunger( float energy ) {
+	public void adjustHunger(float energy ) {
+//		if (level < 0) {
+//			level = 0;
+//		} else if (level > STARVING) {
+//			float excess = level - STARVING;
+//			level = STARVING;
+//			partialDamage += excess * (target.HT/1000f);
+//		}
+//
+//		BuffIndicator.refreshHero();
+        if (Dungeon.level.locked || target.buff(WellFed.class) != null || Dungeon.depth == 21){
+            return;
+        }
+        if (isStarving()){
+            partialDamage += energy * target.HT/1000f;
 
-		level -= energy;
-		if (level < 0) {
-			level = 0;
-		} else if (level > STARVING) {
-			float excess = level - STARVING;
-			level = STARVING;
-			partialDamage += excess * (target.HT/1000f);
-		}
+            if (partialDamage > 1){
+                target.damage( (int)partialDamage, this);
+                partialDamage -= (int)partialDamage;
+            }
+        } else {
+            float newLevel = level + energy;
+            boolean statusUpdated = false;
+            if (newLevel >= STARVING) {
 
-		BuffIndicator.refreshHero();
+                GLog.negative(Messages.get(this, "onstarving"));
+                Dungeon.hero.resting = false;
+                Dungeon.hero.damage(1, this);
+                statusUpdated = true;
+
+                Dungeon.hero.interrupt();
+
+            } else if (newLevel >= HUNGRY && level < HUNGRY) {
+
+                GLog.warning(Messages.get(this, "onhungry"));
+                statusUpdated = true;
+
+            }
+            level = newLevel;
+
+            if (statusUpdated) {
+                BuffIndicator.refreshHero();
+            }
+        }
+
 	}
 
 	public boolean isStarving() {

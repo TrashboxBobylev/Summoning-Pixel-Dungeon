@@ -193,6 +193,7 @@ public class SummPDChanges {
                 "_-_ Released May 18th, 2020\n" +
                         "_-_ 58 days after 1.1.3\n\n" +
                         "YEEEEEEEEEE"));
+        changes = ChangesScene.createChangeInfo(changeInfos, "Changes", false, Window.SHPX_COLOR);
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAND_DISINTEGRATION, null), "New wand",
                 "Replaced Wand of Disintegration with Wand of Shadow Beams, that bounces off the cells, increasing vulnerability of hit targets."));
         changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
