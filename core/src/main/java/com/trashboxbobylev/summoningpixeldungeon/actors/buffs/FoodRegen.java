@@ -37,7 +37,7 @@ public class FoodRegen extends Buff {
 
 	//food regen always lasts 50 turns
 	int left;
-    int leftHP;
+    public int leftHP;
 	
 	@Override
 	public boolean act() {

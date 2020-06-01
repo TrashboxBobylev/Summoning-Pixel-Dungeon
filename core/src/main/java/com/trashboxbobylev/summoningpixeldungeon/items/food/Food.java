@@ -28,10 +28,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Badges;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.Statistics;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Hunger;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Invisibility;
-import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Recharging;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.*;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.HellBat;
 import com.trashboxbobylev.summoningpixeldungeon.effects.Speck;
@@ -55,6 +52,7 @@ public class Food extends Item {
 	public static final String AC_EAT	= "EAT";
 	
 	public float energy = Hunger.HUNGRY;
+	public int regen = 0;
 	public String message = Messages.get(this, "eat_msg");
 	
 	{
@@ -105,6 +103,9 @@ public class Food extends Item {
 	
 	protected void satisfy( Hero hero ){
 		Buff.affect(hero, Hunger.class).satisfy( energy );
+        FoodRegen foodRegen = Buff.affect(hero, FoodRegen.class);
+        foodRegen.leftHP = regen;
+        foodRegen.reset();
 	}
 	
 	public static void foodProc( Hero hero ){
