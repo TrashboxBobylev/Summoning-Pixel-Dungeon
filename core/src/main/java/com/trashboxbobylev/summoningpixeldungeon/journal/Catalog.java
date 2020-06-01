@@ -170,7 +170,7 @@ public enum Catalog {
 	
 		WANDS.seen.put( WandOfMagicMissile.class,           false);
 		WANDS.seen.put( WandOfLightning.class,              false);
-		WANDS.seen.put( WandOfDisintegration.class,         false);
+		WANDS.seen.put( WandOfBounceBeams.class,         false);
 		WANDS.seen.put( WandOfFireblast.class,              false);
 		WANDS.seen.put( WandOfCorrosion.class,              false);
         WANDS.seen.put( WandOfStench.class,              false);
