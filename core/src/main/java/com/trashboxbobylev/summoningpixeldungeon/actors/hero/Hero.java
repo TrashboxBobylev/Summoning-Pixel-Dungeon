@@ -650,7 +650,7 @@ public class Hero extends Char {
 
 		if (getCloser( action.dst )) {
 			justMoved = true;
-			Hunger.adjustHunger(-1);
+			Hunger.adjustHunger(-1*speed());
 			return true;
 
 		} else {

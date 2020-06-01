@@ -31,6 +31,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Statistics;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Hunger;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.MagicImmune;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Momentum;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
@@ -209,6 +210,7 @@ public class Armor extends EquipableItem {
 			
 			((HeroSprite)hero.sprite).updateArmor();
 			activate(hero);
+			Hunger.adjustHunger(-10);
 
 			hero.spendAndNext( time2equip( hero ) );
 			return true;
@@ -257,6 +259,7 @@ public class Armor extends EquipableItem {
 
 			BrokenSeal.WarriorShield sealBuff = hero.buff(BrokenSeal.WarriorShield.class);
 			if (sealBuff != null) sealBuff.setArmor(null);
+			Hunger.adjustHunger(-10);
 
 			return true;
 

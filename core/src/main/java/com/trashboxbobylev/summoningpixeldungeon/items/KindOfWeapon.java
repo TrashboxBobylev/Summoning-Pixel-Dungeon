@@ -27,6 +27,7 @@ package com.trashboxbobylev.summoningpixeldungeon.items;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Hunger;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.utils.BArray;
@@ -62,6 +63,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 			}
 			
 			hero.spendAndNext( TIME_TO_EQUIP );
+            Hunger.adjustHunger(-5);
 			return true;
 			
 		} else {
@@ -76,6 +78,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 		if (super.doUnequip( hero, collect, single )) {
 
 			hero.belongings.weapon = null;
+            Hunger.adjustHunger(-5);
 			return true;
 
 		} else {

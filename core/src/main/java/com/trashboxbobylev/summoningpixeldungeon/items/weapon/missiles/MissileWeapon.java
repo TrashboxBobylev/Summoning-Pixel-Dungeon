@@ -28,6 +28,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Actor;
 import com.trashboxbobylev.summoningpixeldungeon.actors.Char;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Hunger;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.PinCushion;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.SoulWeakness;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.powers.SpeedyShots;
@@ -162,6 +163,7 @@ abstract public class MissileWeapon extends Weapon {
 	public void doThrow(Hero hero) {
 		parent = null; //reset parent before throwing, just incase
 		super.doThrow(hero);
+        Hunger.adjustHunger(-3);
 	}
 
 	@Override
