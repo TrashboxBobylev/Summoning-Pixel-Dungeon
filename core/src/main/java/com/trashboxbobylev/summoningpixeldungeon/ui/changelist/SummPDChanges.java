@@ -190,8 +190,8 @@ public class SummPDChanges {
 
         changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
         changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
-                "_-_ Released May 18th, 2020\n" +
-                        "_-_ 58 days after 1.1.3\n\n" +
+                "_-_ Released June 2th, 2020\n" +
+                        "_-_ 73 days after 1.1.3\n\n" +
                         "YEEEEEEEEEE"));
         changes = ChangesScene.createChangeInfo(changeInfos, "Changes", false, Window.SHPX_COLOR);
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RATION, null), "Reworked hunger",
