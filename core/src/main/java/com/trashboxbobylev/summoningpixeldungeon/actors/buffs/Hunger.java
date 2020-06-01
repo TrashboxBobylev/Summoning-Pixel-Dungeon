@@ -39,8 +39,8 @@ public class Hunger extends Buff implements Hero.Doom {
 
 	private static final float STEP	= 10f;
 
-	public static final float HUNGRY	= 3000f;
-	public static final float STARVING	= 4500f;
+	public static final float HUNGRY	= 1500f;
+	public static final float STARVING	= 2250f;
 
 	private float level;
 	private float partialDamage;

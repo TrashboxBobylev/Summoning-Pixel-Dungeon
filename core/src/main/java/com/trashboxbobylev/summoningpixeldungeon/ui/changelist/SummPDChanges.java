@@ -194,6 +194,13 @@ public class SummPDChanges {
                         "_-_ 58 days after 1.1.3\n\n" +
                         "YEEEEEEEEEE"));
         changes = ChangesScene.createChangeInfo(changeInfos, "Changes", false, Window.SHPX_COLOR);
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RATION, null), "Reworked hunger",
+                        "The hunger have been reworked.\n\n" +
+                                "Instead of depleting at fixed pace, now it can be spent by different actions.\n" +
+                                "Staying still spends a far less hunger than running or fighting monsters.\n\n" +
+                                "Some food, like cooked meat, might give you regeneration effect. As result, natural regeneration rate have been significantly slowed.\n\n" +
+                                "There will be more food types in future, but I want some feedback over mechanic in general."
+            ));
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAND_DISINTEGRATION, null), "New wand",
                 "Replaced Wand of Disintegration with Wand of Shadow Beams, that bounces off the cells, increasing vulnerability of hit targets."));
         changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
