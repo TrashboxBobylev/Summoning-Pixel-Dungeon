@@ -539,7 +539,7 @@ public class Hero extends Char {
 			curAction = null;
 			
 			spendAndNext( TICK );
-            Hunger.adjustHunger(-0.2f * (1f + (Math.max(1/(HP/HT), 3))) * (buff(Shadows.class) != null ? 0.66f : 1f));
+            Hunger.adjustHunger(-0.35f  * (buff(Shadows.class) != null ? 0.66f : 1f));
 			return false;
 		}
 		
@@ -548,8 +548,8 @@ public class Hero extends Char {
 			
 			if (resting) {
 				spend( TIME_TO_REST );
-				Hunger.adjustHunger(-0.2f * (1f + (Math.max(1/(HP/HT), 3))) * (buff(Shadows.class) != null ? 0.66f : 1f));
-				next();
+				Hunger.adjustHunger(-0.35f  * (buff(Shadows.class) != null ? 0.66f : 1f));
+				    next();
 			} else {
 				ready();
 			}
@@ -763,7 +763,7 @@ public class Hero extends Char {
 							GLog.i( Messages.get(this, "you_now_have", item.name()) );
 						}
 					}
-					Hunger.adjustHunger(-1);
+
 					curAction = null;
 				} else {
 					heap.sprite.drop();
@@ -949,7 +949,7 @@ public class Hero extends Char {
 		if (enemy.isAlive() && canAttack( enemy ) && !isCharmedBy( enemy )) {
 			
 			sprite.attack( enemy.pos );
-            Hunger.adjustHunger(2f);
+
 
 			return false;
 
@@ -1596,6 +1596,7 @@ public class Hero extends Char {
 		
 		Invisibility.dispel();
 		spend( attackDelay() );
+        Hunger.adjustHunger(-2f);
 
 		curAction = null;
 

@@ -51,13 +51,14 @@ public class Food extends Item {
 	
 	public static final String AC_EAT	= "EAT";
 	
-	public float energy = Hunger.HUNGRY;
+	public float energy = 350;
 	public int regen = 0;
 	public String message = Messages.get(this, "eat_msg");
 	
 	{
 		stackable = true;
 		image = ItemSpriteSheet.RATION;
+		defaultAction = AC_EAT;
 
 		bones = true;
 	}
@@ -103,9 +104,11 @@ public class Food extends Item {
 	
 	protected void satisfy( Hero hero ){
 		Buff.affect(hero, Hunger.class).satisfy( energy );
-        FoodRegen foodRegen = Buff.affect(hero, FoodRegen.class);
-        foodRegen.leftHP = regen;
-        foodRegen.reset();
+        if (regen > 0) {
+            FoodRegen foodRegen = Buff.affect(hero, FoodRegen.class);
+            foodRegen.leftHP = regen;
+            foodRegen.reset();
+        }
 	}
 	
 	public static void foodProc( Hero hero ){
@@ -141,4 +144,16 @@ public class Food extends Item {
 	public int price() {
 		return 20 * quantity;
 	}
+
+    @Override
+    public String desc() {
+        String desc = super.desc();
+        if (regen > 0) {
+            desc += Messages.get(Food.class, "stats", Math.ceil(energy / 10), regen);
+        } else {
+            desc += Messages.get(Food.class, "stats_regular", Math.ceil(energy / 10));
+        }
+
+        return desc;
+    }
 }

@@ -54,7 +54,7 @@ public class FoodRegen extends Buff {
 	}
 
 	public void reset(){
-	    left = 50;
+	    left = 52;
     }
 	
 	@Override

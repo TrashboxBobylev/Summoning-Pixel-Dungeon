@@ -42,7 +42,8 @@ public class MysteryMeat extends Food {
 
 	{
 		image = ItemSpriteSheet.MEAT;
-		energy = Hunger.HUNGRY/2f;
+		energy = 100;
+		regen = -15;
 	}
 	
 	@Override
@@ -56,7 +57,7 @@ public class MysteryMeat extends Food {
 	}
 
 	public static void effect(Hero hero){
-		switch (Random.Int( 5 )) {
+		switch (Random.Int( 4 )) {
 			case 0:
 				GLog.warning( Messages.get(MysteryMeat.class, "hot") );
 				Buff.affect( hero, Burning.class ).reignite( hero );
@@ -66,10 +67,6 @@ public class MysteryMeat extends Food {
 				Buff.prolong( hero, Roots.class, Paralysis.DURATION );
 				break;
 			case 2:
-				GLog.warning( Messages.get(MysteryMeat.class, "not_well") );
-				Buff.affect( hero, Poison.class ).set( hero.HT / 5 );
-				break;
-			case 3:
 				GLog.warning( Messages.get(MysteryMeat.class, "stuffed") );
 				Buff.prolong( hero, Slow.class, Slow.DURATION );
 				break;

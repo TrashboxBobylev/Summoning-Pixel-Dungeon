@@ -29,6 +29,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Burning;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Frost;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Hunger;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Mimic;
 import com.trashboxbobylev.summoningpixeldungeon.actors.mobs.Wraith;
@@ -187,6 +188,7 @@ public class Heap implements Bundlable {
 			sprite.view( image(), glowing() );
 			sprite.place( pos );
 		}
+
 		
 		return item;
 	}

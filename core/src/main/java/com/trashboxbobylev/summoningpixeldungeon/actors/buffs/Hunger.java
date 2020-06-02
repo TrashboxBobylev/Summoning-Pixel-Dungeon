@@ -39,8 +39,8 @@ public class Hunger extends Buff implements Hero.Doom {
 
 	private static final float STEP	= 10f;
 
-	public static final float HUNGRY	= 2000f;
-	public static final float STARVING	= 3000f;
+	public static final float HUNGRY	= 900f;
+	public static final float STARVING	= 1000f;
 
 	private float level;
 	private float partialDamage;
@@ -65,11 +65,12 @@ public class Hunger extends Buff implements Hero.Doom {
 	@Override
 	public boolean act() {
 
-        if (!target.isAlive() || !(target instanceof Hero)) {
+        if (!target.isAlive()) {
 
             diactivate();
 
         }
+        spend(TICK);
 
         return true;
 	}
@@ -102,7 +103,7 @@ public class Hunger extends Buff implements Hero.Doom {
             return;
         }
         if (hunger.isStarving()){
-            hunger.partialDamage += energy * target.HT/1000f;
+            hunger.partialDamage += energy * target.HT/5f;
 
             if (hunger.partialDamage > 1){
                 target.damage( (int)hunger.partialDamage, target);
@@ -132,6 +133,7 @@ public class Hunger extends Buff implements Hero.Doom {
                 BuffIndicator.refreshHero();
             }
         }
+
 
 	}
 

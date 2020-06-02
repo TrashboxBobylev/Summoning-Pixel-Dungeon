@@ -199,7 +199,8 @@ public class SummPDChanges {
                                 "Instead of depleting at fixed pace, now it can be spent by different actions.\n" +
                                 "Staying still spends a far less hunger than running or fighting monsters.\n\n" +
                                 "Some food, like cooked meat, might give you regeneration effect. As result, natural regeneration rate have been significantly slowed.\n\n" +
-                                "There will be more food types in future, but I want some feedback over mechanic in general."
+                                "There will be more food types in future, but I want some feedback over mechanic in general.\n\n" +
+                                "You can check your hunger in hero's info window."
             ));
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAND_DISINTEGRATION, null), "New wand",
                 "Replaced Wand of Disintegration with Wand of Shadow Beams, that bounces off the cells, increasing vulnerability of hit targets."));

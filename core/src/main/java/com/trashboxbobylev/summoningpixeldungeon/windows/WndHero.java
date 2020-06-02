@@ -28,6 +28,7 @@ import com.trashboxbobylev.summoningpixeldungeon.Assets;
 import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.Statistics;
 import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Buff;
+import com.trashboxbobylev.summoningpixeldungeon.actors.buffs.Hunger;
 import com.trashboxbobylev.summoningpixeldungeon.actors.hero.Hero;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.GameScene;
@@ -44,6 +45,7 @@ import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.ui.Component;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -119,6 +121,8 @@ public class WndHero extends WndTabbed {
 			if (hero.shielding() > 0) statSlot( Messages.get(this, "health"), hero.HP + "+" + hero.shielding() + "/" + hero.HT );
 			else statSlot( Messages.get(this, "health"), (hero.HP) + "/" + hero.HT );
 			statSlot( Messages.get(this, "exp"), hero.exp + "/" + hero.maxExp() );
+            Hunger hunger = Buff.affect(hero, Hunger.class);
+            statSlot( Messages.get(this, "hunger"), new DecimalFormat("#.##").format(100f * (hunger.hunger() / Hunger.STARVING)) + "%");
             statSlot( Messages.get(this, "attunement"), hero.usedAttunement + "/" + hero.attunement() );
 
 			pos += GAP;

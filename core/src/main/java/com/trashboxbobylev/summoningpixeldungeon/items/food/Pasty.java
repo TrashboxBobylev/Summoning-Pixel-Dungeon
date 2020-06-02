@@ -76,7 +76,7 @@ public class Pasty extends Food {
 	{
 		reset();
 
-		energy = Hunger.STARVING;
+		energy = 700;
 
 		regen = 20;
 
