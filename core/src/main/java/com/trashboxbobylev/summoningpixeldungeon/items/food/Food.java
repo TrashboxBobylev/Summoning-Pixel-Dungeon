@@ -104,7 +104,7 @@ public class Food extends Item {
 	
 	protected void satisfy( Hero hero ){
 		Buff.affect(hero, Hunger.class).satisfy( energy );
-        if (regen > 0) {
+        if (regen != 0) {
             FoodRegen foodRegen = Buff.affect(hero, FoodRegen.class);
             foodRegen.leftHP = regen;
             foodRegen.reset();
@@ -148,10 +148,10 @@ public class Food extends Item {
     @Override
     public String desc() {
         String desc = super.desc();
-        if (regen > 0) {
-            desc += Messages.get(Food.class, "stats", Math.ceil(energy / 10), regen);
+        if (regen != 0) {
+            desc += Messages.get(Food.class, "stats", Math.round(energy / 10), regen);
         } else {
-            desc += Messages.get(Food.class, "stats_regular", Math.ceil(energy / 10));
+            desc += Messages.get(Food.class, "stats_regular", Math.round(energy / 10));
         }
 
         return desc;

@@ -45,8 +45,8 @@ public class FoodRegen extends Buff {
 		if (left < 0){
 			detach();
 			return true;
-		} else if (left % (50 / leftHP) == 0){
-			target.HP = Math.min(target.HT, target.HP + 1);
+		} else if (left % (50 / Math.abs(leftHP)) == 0){
+			target.HP = Math.min(target.HT, target.HP + 1 * leftHP > 0 ? 1 : -1);
 		}
 		
 		spend(TICK);

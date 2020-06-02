@@ -192,7 +192,7 @@ public abstract class Level implements Bundlable {
 			if (Dungeon.isChallenged(Challenges.NO_FOOD)){
 				addItemToSpawn( new SmallRation() );
 			} else {
-				addItemToSpawn(Generator.random(Generator.Category.FOOD));
+			    if (Random.Float() < 0.5f) addItemToSpawn(Generator.random(Generator.Category.FOOD));
 			}
 
 			if (Dungeon.isChallenged(Challenges.DARKNESS)){
