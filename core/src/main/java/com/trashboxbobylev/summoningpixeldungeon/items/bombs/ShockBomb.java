@@ -285,6 +285,7 @@ public class ShockBomb extends Bomb {
                     charge += 0.05f * bonus.remainder();
                 }
             }
+            if (charge > 1) charge = 1;
             updateQuickslot();
         }
 
@@ -293,8 +294,7 @@ public class ShockBomb extends Bomb {
         }
 
         public void gainCharge(float charge) {
-            ShockBomb.this.charge += charge;
-            charge = Math.min(charge, 1);
+            ShockBomb.this.charge += Math.min(charge, 1);
             updateQuickslot();
         }
     }

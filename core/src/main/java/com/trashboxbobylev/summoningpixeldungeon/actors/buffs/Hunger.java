@@ -102,15 +102,9 @@ public class Hunger extends Buff implements Hero.Doom {
         if (Dungeon.level.locked || target.buff(WellFed.class) != null || Dungeon.depth == 21){
             return;
         }
-        if (hunger.isStarving()){
-            hunger.partialDamage += energy * target.HT/5f;
+        float newLevel = Math.max(hunger.level - energy, 0);
+        if (!hunger.isStarving() && newLevel - 1 < STARVING) {
 
-            if (hunger.partialDamage > 1){
-                target.damage( (int)hunger.partialDamage, target);
-                hunger.partialDamage -= (int)hunger.partialDamage;
-            }
-        } else {
-            float newLevel = hunger.level - energy;
             boolean statusUpdated = false;
             if (newLevel >= STARVING) {
 
@@ -132,10 +126,17 @@ public class Hunger extends Buff implements Hero.Doom {
             if (statusUpdated) {
                 BuffIndicator.refreshHero();
             }
+        } else {
+            hunger.partialDamage += Math.abs(energy) * target.HT/25f;
+
+            if (hunger.partialDamage > 1){
+                target.damage( (int)Math.abs(hunger.partialDamage), target);
+                hunger.partialDamage -= (int)hunger.partialDamage;
+            }
         }
 
 
-	}
+    }
 
 	public boolean isStarving() {
 		return level >= STARVING;

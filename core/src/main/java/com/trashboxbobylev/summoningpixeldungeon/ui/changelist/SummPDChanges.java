@@ -184,14 +184,14 @@ public class SummPDChanges {
 
     public static void add_1_1_4_Changes(ArrayList<ChangeInfo> changeInfos) {
 
-        ChangeInfo changes = new ChangeInfo("1.1.4", true, "");
+        ChangeInfo changes = new ChangeInfo("1.1.4.2", true, "");
         changes.hardlight(Window.TITLE_COLOR);
         changeInfos.add(changes);
 
         changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
         changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
-                "_-_ Released June 2th, 2020\n" +
-                        "_-_ 73 days after 1.1.3\n\n" +
+                "_-_ Released June 29th, 2020\n" +
+                        "_-_ 99 days after 1.1.3\n\n" +
                         "YEEEEEEEEEE"));
         changes = ChangesScene.createChangeInfo(changeInfos, "Changes", false, Window.SHPX_COLOR);
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RATION, null), "Reworked hunger",

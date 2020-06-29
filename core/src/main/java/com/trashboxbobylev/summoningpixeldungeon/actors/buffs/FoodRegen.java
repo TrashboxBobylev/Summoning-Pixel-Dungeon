@@ -24,6 +24,7 @@
 
 package com.trashboxbobylev.summoningpixeldungeon.actors.buffs;
 
+import com.trashboxbobylev.summoningpixeldungeon.Dungeon;
 import com.trashboxbobylev.summoningpixeldungeon.messages.Messages;
 import com.trashboxbobylev.summoningpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
@@ -33,6 +34,7 @@ public class FoodRegen extends Buff {
 	{
 		type = buffType.POSITIVE;
 		announced = true;
+		actPriority = 1;
 	}
 
 	//food regen always lasts 50 turns
@@ -46,7 +48,10 @@ public class FoodRegen extends Buff {
 			detach();
 			return true;
 		} else if (left % (50 / Math.abs(leftHP)) == 0){
-			target.HP = Math.min(target.HT, target.HP + 1 * leftHP > 0 ? 1 : -1);
+			target.HP = Math.min(target.HT, target.HP + (leftHP > 0 ? 1 : -1));
+			if (target.HP == 0){
+			    Dungeon.hero.die(Hunger.class);
+            }
 		}
 		
 		spend(TICK);

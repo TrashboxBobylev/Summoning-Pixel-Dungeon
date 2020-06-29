@@ -26,6 +26,7 @@ package com.trashboxbobylev.summoningpixeldungeon;
 
 import com.badlogic.gdx.Gdx;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.PixelScene;
+import com.trashboxbobylev.summoningpixeldungeon.scenes.TitleScene;
 import com.trashboxbobylev.summoningpixeldungeon.scenes.WelcomeScene;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
@@ -48,7 +49,7 @@ public class ShatteredPixelDungeon extends Game {
 	public static final int v0_7_3  = 346;
 	
 	public ShatteredPixelDungeon( PlatformSupport platform ) {
-		super( sceneClass == null ? WelcomeScene.class : sceneClass, platform );
+		super( sceneClass == null ? TitleScene.class : sceneClass, platform );
 		
 		//v0.7.0
 		com.watabou.utils.Bundle.addAlias(
