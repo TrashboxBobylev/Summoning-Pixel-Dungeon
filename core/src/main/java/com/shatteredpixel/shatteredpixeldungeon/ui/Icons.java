@@ -222,8 +222,8 @@ public enum Icons {
 			icon.frame( icon.texture.uvRect( 17, 81, 34, 93 ) );
 			break;
         case TRASHBOXBOBYLEV:
-                icon.frame( icon.texture.uvRect( 49, 81, 79, 102 ) );
-                break;
+        	icon.frame( icon.texture.uvRect( 0, 127, 28, 147 ) );
+        	break;
 		case WARNING:
 			icon.frame( icon.texture.uvRect( 34, 81, 48, 95 ) );
 			break;

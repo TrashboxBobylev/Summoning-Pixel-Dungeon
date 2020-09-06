@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.WindParticle;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
@@ -58,7 +59,34 @@ public class AboutScene extends PixelScene {
 		Component content = list.content();
 		content.clear();
 
+		CreditsBlock tb = new CreditsBlock(true, Window.TITLE_COLOR,
+				"Summoning Pixel Dungeon",
+				Icons.TRASHBOXBOBYLEV.get(),
+				"Developed by: _Trashbox Bobylev_\nBased on ShatteredPD's open source",
+				"reddit.com/u/TrashboxBobylev",
+				"https://reddit.com/u/TrashboxBobylev");
+		tb.setRect((w - fullWidth)/2f, 6, 120, 0);
+		content.add(tb);
+
+		CreditsBlock guys = new CreditsBlock(false, Window.TITLE_COLOR,
+				"Credits:",
+				Icons.INFO.get(),
+				"Krauzxe#1119 - Graphics and design\n" +
+						"MarshalldotEXE#9805 - Conjurer's graphics\n" +
+						"0microng9946 - Conjurer's graphics, app icon and proofreading\n" +
+						"smujames#5300, Gamma Lolman#3370 and rest of community - help and support",
+				"discord.gg/tkrjtUS",
+				"https://discord.gg/tkrjtUS");
+		guys.setSize(colWidth, 4);
+		if (landscape()){
+			guys.setPos(tb.right(), tb.top() + (tb.height() - guys.height())/2f + 5);
+		} else {
+			guys.setPos(w/2f - colWidth/2f, tb.bottom()+2);
+		}
+		content.add(guys);
+
 		//*** Shattered Pixel Dungeon Credits ***
+
 
 		String shpxLink = "https://ShatteredPixel.com";
 		//tracking codes, so that the website knows where this pageview came from
@@ -74,6 +102,13 @@ public class AboutScene extends PixelScene {
 				shpxLink);
 		shpx.setRect((w - fullWidth)/2f, 6, 120, 0);
 		content.add(shpx);
+		if (landscape()){
+			shpx.setRect(tb.left(), tb.bottom() + 24, colWidth, 0);
+		} else {
+			shpx.setRect(tb.left(), guys.bottom() + 16, colWidth, 0);
+		}
+
+		addLine(shpx.top() - 4, content);
 
 		CreditsBlock alex = new CreditsBlock(false, Window.SHPX_COLOR,
 				"Hero Art & Design:",
