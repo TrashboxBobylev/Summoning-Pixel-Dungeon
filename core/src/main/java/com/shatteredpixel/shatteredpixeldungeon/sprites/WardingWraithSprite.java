@@ -38,7 +38,7 @@ public class WardingWraithSprite extends MobSprite {
 	public WardingWraithSprite() {
 		super();
 
-        texture( Assets.ATTUNEMENT_SPIRIT );
+        texture( Assets.Sprites.ATTUNEMENT_SPIRIT );
 
         TextureFilm frames = new TextureFilm( texture, 12, 14 );
 

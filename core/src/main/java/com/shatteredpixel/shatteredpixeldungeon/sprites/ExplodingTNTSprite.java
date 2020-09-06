@@ -32,7 +32,7 @@ public class ExplodingTNTSprite extends MobSprite {
 	public ExplodingTNTSprite() {
 		super();
 		
-		texture( Assets.EXPLODING_TNT_ARE_YOU_A_MOUSE );
+		texture( Assets.Sprites.EXPLODING_TNT_ARE_YOU_A_MOUSE );
 		
 		TextureFilm frames = new TextureFilm( texture, 16, 15 );
 		

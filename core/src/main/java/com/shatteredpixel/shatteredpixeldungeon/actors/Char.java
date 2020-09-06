@@ -93,7 +93,7 @@ public abstract class Char extends Actor {
 	public int invisible		= 0;
 
     public String getName() {
-        return name;
+        return name();
     }
 
     //these are relative to the hero

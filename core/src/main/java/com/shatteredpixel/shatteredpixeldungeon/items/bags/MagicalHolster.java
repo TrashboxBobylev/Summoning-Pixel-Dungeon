@@ -42,10 +42,6 @@ public class MagicalHolster extends Bag {
 	public static final float HOLSTER_DURABILITY_FACTOR = 1.2f;
 	
 	@Override
-<<<<<<< HEAD
-	public boolean grab( Item item ) {
-		return item instanceof Wand || item instanceof MissileWeapon || item instanceof Bomb || item instanceof Staff;
-=======
 	public boolean canHold( Item item ) {
 		if (item instanceof Wand || item instanceof MissileWeapon || item instanceof Bomb){
 			return super.canHold(item);
@@ -56,7 +52,6 @@ public class MagicalHolster extends Bag {
 
 	public int capacity(){
 		return 19;
->>>>>>> remotes/ShPD/master
 	}
 	
 	@Override

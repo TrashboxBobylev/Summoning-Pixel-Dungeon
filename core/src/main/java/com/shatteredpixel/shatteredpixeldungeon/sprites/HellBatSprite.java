@@ -33,7 +33,7 @@ public class HellBatSprite extends MobSprite {
 	public HellBatSprite() {
 		super();
 		
-		texture( Assets.HELL_BAT );
+		texture( Assets.Sprites.HELL_BAT );
 		
 		TextureFilm frames = new TextureFilm( texture, 15, 15 );
 		

@@ -90,8 +90,8 @@ public class PerfumeGas extends Blob {
         }
 
         @Override
-        public void tintIcon(Image icon) {
-            if (cooldown() < 2f) greyIcon(icon, 2f, cooldown());
+        public float iconFadePercent() {
+            return Math.max(0, (2 - visualcooldown()) / 2);
         }
 
         @Override
@@ -122,7 +122,11 @@ public class PerfumeGas extends Blob {
         @Override
         public void tintIcon(Image icon) {
             icon.tint(1, 0, 0, 0.5f);
-            if (cooldown() < 1f) greyIcon(icon, 5f, cooldown());
+        }
+
+        @Override
+        public float iconFadePercent() {
+            return Math.max(0, (8 - visualcooldown()) / 8);
         }
 
         @Override

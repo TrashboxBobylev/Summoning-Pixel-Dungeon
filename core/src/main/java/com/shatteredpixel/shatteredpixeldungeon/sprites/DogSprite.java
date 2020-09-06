@@ -32,7 +32,7 @@ public class DogSprite extends MobSprite {
 	public DogSprite() {
 		super();
 		
-		texture( Assets.DOG );
+		texture( Assets.Sprites.DOG );
 		
 		TextureFilm frames = new TextureFilm( texture, 16, 15 );
 		

@@ -42,7 +42,7 @@ public class MagicMissileSprite extends MobSprite {
 	public MagicMissileSprite(){
 		super();
 
-        texture(Assets.MAGIC_MISSILE);
+        texture(Assets.Sprites.MAGIC_MISSILE);
 
         idle = new Animation( 1, true );
         idle.frames(texture.uvRect(0, 0, 15, 15));

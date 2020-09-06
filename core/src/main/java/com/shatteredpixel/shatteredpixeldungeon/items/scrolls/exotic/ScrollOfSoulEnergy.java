@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportat
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.ChickenStaff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -51,7 +52,7 @@ import java.util.ArrayList;
 public class ScrollOfSoulEnergy extends ExoticScroll {
 
     {
-        initials = 9;
+        icon = ItemSpriteSheet.Icons.SCROLL_CONFUSION;
     }
 
     @Override

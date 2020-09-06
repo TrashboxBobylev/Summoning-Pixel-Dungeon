@@ -121,9 +121,6 @@ public class ArcaneBomb extends Bomb {
 					affected.add(ch);
 				}
 
-                Heap heap = Dungeon.level.heaps.get(i);
-                if (heap != null)
-                    heap.explodeByNuke();
 
                 GameScene.add(Blob.seed(i, Random.NormalIntRange(1000, 1500), Miasma.class));
 			}

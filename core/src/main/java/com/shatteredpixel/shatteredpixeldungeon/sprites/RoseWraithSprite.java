@@ -34,7 +34,7 @@ public class RoseWraithSprite extends MobSprite {
 	public RoseWraithSprite() {
 		super();
 		
-		texture( Assets.ROSE_WRAITH );
+		texture( Assets.Sprites.ROSE_WRAITH );
 		
 		TextureFilm frames = new TextureFilm( texture, 14, 15 );
 		

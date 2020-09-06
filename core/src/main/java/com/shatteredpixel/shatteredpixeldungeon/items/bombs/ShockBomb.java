@@ -217,7 +217,6 @@ public class ShockBomb extends Bomb {
 		CellEmitter.center(cell).burst(SparkParticle.FACTORY, 20);
 		Dungeon.hero.sprite.parent.addToFront(new Lightning(arcs, null));
 		Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
-	}
             CellEmitter.center(cell).burst(SparkParticle.FACTORY, 20);
             h.sprite.parent.addToFront(new Lightning(arcs, null));
         }

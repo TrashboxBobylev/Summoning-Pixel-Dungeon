@@ -274,5 +274,25 @@ public class Assets {
 		public static final String PYLON	= "sprites/pylon.png";
 		public static final String DM200	= "sprites/dm200.png";
 		public static final String LOTUS	= "sprites/lotus.png";
+		public static final String ROSE_WRAITH = "sprites/rose_wraith.png";
+		public static final String FROGGIT = "sprites/froggit.png";
+		public static final String DWARF_GUARD = "sprites/guardian_dwarf.png";
+		public static final String CHICKEN = "sprites/chicken.png";
+		public static final String BLASTER = "sprites/blaster.png";
+		public static final String DM150 = "sprites/dm150.png";
+		public static final String DOG = "sprites/doggy.png";
+		public static final String EXPLODING_TNT_ARE_YOU_A_MOUSE = "sprites/explodingmouse.png";
+		public static final String FINAL_FROGGIT = "sprites/final_froggit.png";
+		public static final String CHAOS_SABER = "sprites/chaossaber.png";
+		public static final String HELL_BAT = "sprites/hell_bat.png";
+		public static final String ATTUNEMENT_SPIRIT = "sprites/attunement_spirit.png";
+		public static final String MERCHANT = "sprites/Mysterious_Merchant.png";
+		public static final String IMP_QUEEN = "sprites/imp_queen.png";
+		public static final String IMP_MINION = "sprites/imp_minion.png";
+		public static final String SLIME_MINION = "sprites/slime_minion.png";
+		public static final String SOUL_FLAME = "sprites/soulflame.png";
+		public static final String WIZARD = "sprites/wizard.png";
+		public static final String CONJURER = "sprites/conjurer.png";
+		public static final String MAGIC_MISSILE = "sprites/magic_missile.png";
 	}
 }

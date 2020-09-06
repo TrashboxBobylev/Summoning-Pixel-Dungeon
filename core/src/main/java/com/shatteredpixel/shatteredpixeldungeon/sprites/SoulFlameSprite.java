@@ -40,7 +40,7 @@ public class SoulFlameSprite extends MobSprite {
 	public SoulFlameSprite() {
 		super();
 		
-		texture( Assets.SOUL_FLAME );
+		texture( Assets.Sprites.SOUL_FLAME );
 		
 		TextureFilm frames = new TextureFilm( texture, 12, 14 );
 		

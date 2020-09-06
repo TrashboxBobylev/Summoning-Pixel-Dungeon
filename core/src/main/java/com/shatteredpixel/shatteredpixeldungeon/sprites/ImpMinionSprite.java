@@ -31,7 +31,7 @@ public class ImpMinionSprite extends MobSprite {
     public ImpMinionSprite() {
         super();
 
-        texture( Assets.IMP_MINION );
+        texture( Assets.Sprites.IMP_MINION );
 
         TextureFilm frames = new TextureFilm( texture, 16, 16 );
 

@@ -338,7 +338,7 @@ public class WndStartGame extends Window {
                         case CONJURER:
                             heroItem.icon(new ItemSprite(ItemSpriteSheet.ARTIFACT_LOVE1, null));
                             heroLoadout.icon(new ItemSprite(ItemSpriteSheet.ARMOR_CONJURER, null));
-                            heroMisc.icon(new Image(Assets.BUFFS_LARGE, 112, 32, 16, 16 ));
+                            heroMisc.icon(new Image(Assets.Interfaces.BUFFS_LARGE, 112, 32, 16, 16 ));
                             break;
 					}
 					

@@ -24,7 +24,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
-import android.annotation.SuppressLint;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;

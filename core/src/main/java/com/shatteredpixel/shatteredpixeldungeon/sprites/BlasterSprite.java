@@ -39,7 +39,7 @@ public class BlasterSprite extends MobSprite {
     public BlasterSprite() {
         super();
 
-        texture( Assets.BLASTER );
+        texture( Assets.Sprites.BLASTER );
 
         TextureFilm frames = new TextureFilm( texture, 15, 16 );
 

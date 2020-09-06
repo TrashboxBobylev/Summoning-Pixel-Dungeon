@@ -101,7 +101,7 @@ public class Invisibility extends FlavourBuff {
 			cloakBuff.dispel();
 		}
         for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-            buff = mob.buff( Invisibility.class );
+            Buff buff = mob.buff( Invisibility.class );
             if (mob instanceof Minion && buff != null){
                 buff.detach();
             }

@@ -38,7 +38,7 @@ public class ImpQueenSprite extends MobSprite {
 	public ImpQueenSprite() {
 		super();
 		
-		texture( Assets.IMP_QUEEN );
+		texture( Assets.Sprites.IMP_QUEEN );
 		
 		TextureFilm frames = new TextureFilm( texture, 16, 16 );
 		

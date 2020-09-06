@@ -40,7 +40,7 @@ public class FroggitSprite extends MobSprite {
 	public FroggitSprite() {
 		super();
 
-		texture( Assets.FROGGIT );
+		texture( Assets.Sprites.FROGGIT );
 
 		TextureFilm frames = new TextureFilm( texture, 16, 16 );
 

@@ -204,7 +204,7 @@ public class SummPDChanges {
             ));
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAND_DISINTEGRATION, null), "New wand",
                 "Replaced Wand of Disintegration with Wand of Shadow Beams, that bounces off the cells, increasing vulnerability of hit targets."));
-        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
                 "Fixed:\n" +
                         "_-_ Soul Wielder's buff crashing, when reloaded from save file.\n\n" +
                         "_-_ Soul refound from augmenting minions.\n\n"+
@@ -258,7 +258,7 @@ public static void add_1_1_3_Changes(ArrayList<ChangeInfo> changeInfos) {
                     "_-_ 35 days after 1.1.2\n\n" +
                     "Global rework will come as soon as needed, enjoy this bugfix update."));
     changes = ChangesScene.createChangeInfo(changeInfos, "Changes", false, Window.SHPX_COLOR);
-    changes.addButton( new ChangeButton(new Image(Assets.CONJURER, 0, 90, 12, 15), "Conjurer",
+    changes.addButton( new ChangeButton(new Image(Assets.Sprites.CONJURER, 0, 90, 12, 15), "Conjurer",
             "The goat boy recieved some buffs:\n\n" +
                     "_-_ Starting strength is raised from 9 to 10, and max HP scaling is increased from 3 to 4.\n\n" +
                     "_-_ Buffed knife's damage from 1-5 (+1/+1) to 1-9 (+1/+2), but removed strength bonus (nerf in late game).\n\n" +
@@ -272,7 +272,7 @@ public static void add_1_1_3_Changes(ArrayList<ChangeInfo> changeInfos) {
                     "_-_ Shop's equipment shouldn't feature curses\n\n" +
                     "_-_ Minions are now able to attack Yog.\n\n" +
                     "_-_ Piranhas and minions are neutral to each other."));
-    changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+    changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
             "Fixed:\n" +
                     "_-_ Lack of hero message, when eradicated.\n\n" +
                     "_-_ Shops crashing the game or oftenly not loading after all\n\n" +
@@ -296,7 +296,7 @@ public static void add_1_1_3_Changes(ArrayList<ChangeInfo> changeInfos) {
                         "_-_ 6 days after 1.1.1\n\n" +
                         "Sorry for such small updates, I will make more drastical changes with more feedback and better time management."));
         changes = ChangesScene.createChangeInfo(changeInfos, "Changes", false, Window.SHPX_COLOR);
-        changes.addButton( new ChangeButton(new Image(Assets.CONJURER, 0, 90, 12, 15), "Conjurer",
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.CONJURER, 0, 90, 12, 15), "Conjurer",
                 "_-_ AoE healing should work properly."));
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.CRYSTAL_WAND, null), "Changes to WoCB",
                 "Wand of Crystal Bullet have been patched to be more usable:\n\n" +
@@ -305,7 +305,7 @@ public static void add_1_1_3_Changes(ArrayList<ChangeInfo> changeInfos) {
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.STAR_WAND, null), "New Wand",
                 "Added the new wand: Wand of Stars:\n\n" +
                         "This wand shoots star mines, that can be exploded by zapping into them."));
-        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
                 "Fixed:\n" +
                         "_-_ Lack of fizzle string for staves"));
         changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
@@ -324,12 +324,12 @@ public static void add_1_1_1_Changes(ArrayList<ChangeInfo> changeInfos) {
             "_-_ Released February 10th, 2020\n" +
                     "_-_ 2 days after 1.1.0"));
     changes = ChangesScene.createChangeInfo(changeInfos, "Changes", false, Window.SHPX_COLOR);
-    changes.addButton( new ChangeButton(new Image(Assets.CONJURER, 0, 90, 12, 15), "Conjurer",
+    changes.addButton( new ChangeButton(new Image(Assets.Sprites.CONJURER, 0, 90, 12, 15), "Conjurer",
             "Have obtained the new ability: Soul Sparkling, that increases damage of your allies, when are heavily wounded."));
     changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.CRYSTAL_WAND, null), "New Wand",
             "Added the new wand: Wand of Crystal Bullet:\n\n" +
                     "This wand shoots splitting crystals, that can deal damage for several trajectories."));
-    changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+    changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
             "Fixed:\n" +
                     "_-_ Slingshot's stone crashing without slingshot\n" +
                     "_-_ Lacking string for cave spinner\n" +
@@ -352,7 +352,7 @@ public static void add_1_1_1_Changes(ArrayList<ChangeInfo> changeInfos) {
                         "_-_ 99 days after 1.0.1a\n" +
                         "_-_ 101 days after 1.0.0"));
         changes = ChangesScene.createChangeInfo(changeInfos, "Changes", false, Window.SHPX_COLOR);
-        changes.addButton( new ChangeButton(new Image(Assets.CONJURER, 0, 90, 12, 15), "Conjurer",
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.CONJURER, 0, 90, 12, 15), "Conjurer",
                 "Have recieved a rework:\n\n" +
                         "_-_ Has a new melee weapon instead of using staff in melee: toy knife! It's usable to get all the soul and play with new subclass.\n\n" +
                         "_-_ Deltarune robe can't be upgraded, but gains levels from attunement.\n\n" +
@@ -389,12 +389,12 @@ public static void add_1_1_1_Changes(ArrayList<ChangeInfo> changeInfos) {
                 "4 different weapons have been added into shops across all dungeon. They have unique properties and can be used for different synergies.\n\n" +
                         "That weapon can appear in shop with 50% chance."
                 ));
-        changes.addButton( new ChangeButton(new Image(Assets.TILES_CORE, 0, 64, 16, 16 ), "Floor 21 rework!",
+        changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_HALLS, 0, 64, 16, 16 ), "Floor 21 rework!",
         "Floor 21 recieved a big changes, making them more memorable and valuable.\n\n" +
                 "_-_ It's now full depth, featuring many rooms, not just shop.\n\n" +
                 "_-_ It always contain 3 scrolls of passage, allowing you to rest after exploring a demon halls.\n\n" +
                 "_-_ The imp shopkeeper have replaced by new mysterious merchant, that serves same purpose."));
-        changes.addButton( new ChangeButton(new Image(Assets.DOG, 0, 0, 15, 15), "New mob and changes",
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.DOG, 0, 0, 15, 15), "New mob and changes",
                 "_-_ Added a new monster into the sewers: sewer dog. He is fast, dexterious and can be a problem. It drops random items with 10% chance.\n\n" +
                         "_-_ Crabs have been reworked into very tough enemy with low speed and heavy punch. You should dispatch that guys from range.\n\n" +
                         "_-_ Added a new monster into Demon Halls: inferno bat! It attacks you with fire, forcing you staying in inferno cloud.\n\n" +
@@ -458,16 +458,16 @@ public static void add_1_0_1_Changes(ArrayList<ChangeInfo> changeInfos ) {
             "_-_ Adjusted gold drops from enemies and floor\n" +
                     "_-_ Increased cost of most items\n" +
                     "_-_ Gold Token is sellable now"));
-    changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+    changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
                "_-_ Slingshot's stone didn't saved properly\n" +
                        "_-_ Blasted enemies were able to levitate\n" +
                        "_-_ New statistics number weren't saved properly\n" +
                        "_-_ Sneaky missiles didn't get consumed even if player can't surprise attack\n" +
                        "_-_ Badges about completing the game didn't accounted for Conjurer"));
-    changes.addButton( new ChangeButton(new Image(Assets.GHOST, 0, 0, 14, 15), "Sad Ghost quest",
+    changes.addButton( new ChangeButton(new Image(Assets.Sprites.GHOST, 0, 0, 14, 15), "Sad Ghost quest",
             "_-_ Now shows rewards names\n" +
                     "_-_ Now can give a staff\n"));
-    changes.addButton( new ChangeButton(new Image(Assets.KEEPER, 0, 0, 14, 14), "Shops",
+    changes.addButton( new ChangeButton(new Image(Assets.Sprites.KEEPER, 0, 0, 14, 14), "Shops",
             "_-_ Adjusted shop's equipment choice to account hero's strength\n" +
                     "_-_ Guaranted wand and ring are always uncursed and upgraded; wand is also always have damage stat, so you can have weapon for Dark Matter Slimes\n" +
                     "_-_ You can find +10 artifact in imp shop"));
@@ -475,13 +475,13 @@ public static void add_1_0_1_Changes(ArrayList<ChangeInfo> changeInfos ) {
             "Added a mineral water. It heals full HP, but is pretty expensive. Can be found only in shops. Very useful for Pharmacophobia challenge."));
     changes.addButton( new ChangeButton(new WandOfStench(),
             "Added a Wand of Stench. It's imbue the target's with toxic energy, allowing them to release damaging gas. Essentially it's more tricky, but more effective variant of Wand of Corrosion."));
-    changes.addButton( new ChangeButton(new Image(Assets.CONJURER, 0, 90, 12, 15), "Conjurer",
+    changes.addButton( new ChangeButton(new Image(Assets.Sprites.CONJURER, 0, 90, 12, 15), "Conjurer",
             "_-_ New avatar sprite for conjurer\n" +
                     "_-_ Energy storm now takes 25% current HP and 12.5% max HP"));
     changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(ChangesScene.class, "language"),
             "Improved the English translation"));
     changes = ChangesScene.createChangeInfo(changeInfos, "1.0.1a", false, CharSprite.DEFAULT);
-    changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+    changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
             "Fixed infinity loop in Sad Ghost' quest, which prevented you from descending to new sewers depths"));
 	}
 
@@ -505,7 +505,7 @@ public static void add_1_0_1_Changes(ArrayList<ChangeInfo> changeInfos ) {
                         "_-_ Summon weapons can be used to summon the unique allies, which type depends on type's staff.\n\n" +
                         "_-_ As all weapons, summon weapons are splitted into 5 tiers, with more unique and powerful minions, that can carry enchantment and level of weapon, as you progress.\n" +
                         "_-_ Summon weapons can summon unlimited smount of creatures, but you can control only few."));
-        changes.addButton( new ChangeButton(new Image(Assets.BUFFS_LARGE, 112, 32, 16, 16), "Attunement",
+        changes.addButton( new ChangeButton(new Image(Assets.Interfaces.BUFFS_LARGE, 112, 32, 16, 16), "Attunement",
                 "_Attunement_ - the new hero stat which defines max amount of creatures, that you can control at once.\n\n"+
                         "_-_ Any minion require some amount of attunement (very likely, 1) to be summoned.\n\n"+
                         "_-_ More powerful minions require 2 or 3 attunement.\n\n"+
@@ -558,26 +558,26 @@ public static void add_1_0_1_Changes(ArrayList<ChangeInfo> changeInfos ) {
 
     public static void add_Mobs_Changes(ArrayList<ChangeInfo> changeInfos) {
         ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "Mobs", false, 0xffc511);
-        changes.addButton( new ChangeButton(new Image(Assets.SNAKE, 0, 0, 12, 12), "New monster in Caves",
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.SNAKE, 0, 0, 12, 12), "New monster in Caves",
                 "The Caves now have new inhabitant: Rattle Snakes!\n\n"+
                         "_-_ They shoot the deadly darts on range, but are weak in melee.\n"+
                         "_-_ They have resistant to most of controllable magical attacks.\n" +
                         "_-_ Shakes have very high evasion, but low HP.\n"+
                         "_-_ They drop a darts for crossbows."));
-        changes.addButton( new ChangeButton(new Image(Assets.NECRO, 0, 0, 16, 16), "Necromancer",
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.NECRO, 0, 0, 16, 16), "Necromancer",
                 "Added the necromancer from Shattered 0.7.5. Their stats are buffed compared to Shattered's.\n\n"+
                         "_-_ They have more HP now.\n\n"+
                         "_-_ They buff their skeleton both with Adrenaline and Empowered buffs.\n"+
                         "_-_ Drop: random staff with 12.5% chance."));
-        changes.addButton( new ChangeButton(new Image(Assets.TENGU, 0, 0, 14, 16), "New Tengu",
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.TENGU, 0, 0, 14, 16), "New Tengu",
                 "Added Tengu fight from Shattered 0.7.5. Nothing are changed."));
-        changes.addButton( new ChangeButton(new Image(Assets.SLIME, 0, 0, 14, 12), "New monster in Demon Halls",
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.SLIME, 0, 0, 14, 12), "New monster in Demon Halls",
                 "The Demon Halls now have new inhabitant: Dark Matter Slimes!\n\n"+
                         "_-_ Their stats are pretty low for stage, but...\n"+
                         "_-_ Slimes can split! While splitting, dark matter slimes fully heal, but lose 25% of max HP.\n" +
                         "_-_ Damage wands are 2.5x more effective against slimes.\n"+
                         "_-_ They rarely drop a goo blobs."));
-        changes.addButton( new ChangeButton(new Image(Assets.FINAL_FROGGIT, 0, 0, 16, 16), "Final Froggits",
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.FINAL_FROGGIT, 0, 0, 16, 16), "Final Froggits",
                 "Prepare for exit stairs defenders in Demon Halls - Final Froggits!\n\n"+
                         "_-_ They shoot a eradication bolts, that have small damage.\n"+
                         "_-_ But that bolts inflict Eradication debuff.\n" +
@@ -602,7 +602,7 @@ public static void add_1_0_1_Changes(ArrayList<ChangeInfo> changeInfos ) {
                 "Throwing sneaky weapons now doesn't consume a durability, while used with sneak attack"));
         changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Shattered 0.7.5",
                                         "Added the new camera panning from new Shattered."));
-        changes.addButton( new ChangeButton(new Image(Assets.BUFFS_LARGE, 64, 16, 16, 16), "Resistance",
+        changes.addButton( new ChangeButton(new Image(Assets.Interfaces.BUFFS_LARGE, 64, 16, 16, 16), "Resistance",
                 "If monsters are resisting the effect, effect's damage now square-rooted rather that halfing."));
         changes.addButton( new ChangeButton(Icons.get(Icons.RANKINGS), "Rankings",
                 "Completely changed the way, how game places run in rankings scene.\n\nMore info is on ranking scene."));

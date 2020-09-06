@@ -399,8 +399,8 @@ public class LoveHolder extends Artifact {
                     QuickSlotButton.target(Actor.findChar(cell));
 
                 LoveHolder artifact = null;
-                if (curUser.belongings.misc1 instanceof LoveHolder) artifact = (LoveHolder) curUser.belongings.misc1;
-                else if (curUser.belongings.misc2 instanceof LoveHolder) artifact = (LoveHolder) curUser.belongings.misc2;
+                if (curUser.belongings.artifact instanceof LoveHolder) artifact = (LoveHolder) curUser.belongings.artifact;
+                else if (curUser.belongings.misc instanceof LoveHolder) artifact = (LoveHolder) curUser.belongings.misc;
 
                 if (artifact == null){
                     GLog.i( Messages.get(Artifact.class, "need_to_equip") );

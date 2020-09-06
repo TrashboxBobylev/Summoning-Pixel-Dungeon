@@ -49,9 +49,9 @@ public class HacatuSprite extends MobSprite {
     public HacatuSprite() {
         super();
 
-        texture( Assets.ROGUE );
+        texture( Assets.Sprites.ROGUE );
 
-        SmartTexture texture = TextureCache.get( Assets.ROGUE );
+        SmartTexture texture = TextureCache.get( Assets.Sprites.ROGUE );
         TextureFilm tiers = new TextureFilm(texture, texture.width, 15);
 
         TextureFilm film = new TextureFilm( tiers, 6, 12, 15 );

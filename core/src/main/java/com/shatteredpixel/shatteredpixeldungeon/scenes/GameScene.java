@@ -630,15 +630,6 @@ public class GameScene extends PixelScene {
 	private boolean tagAction    = false;
 	private boolean tagResume    = false;
 
-    public static void add( CustomTilemap t, boolean wall ){
-        if (scene == null) return;
-        if (wall){
-            scene.addCustomWall(t);
-        } else {
-            scene.addCustomTile(t);
-        }
-    }
-
 	public static void layoutTags() {
 
 		if (scene == null) return;

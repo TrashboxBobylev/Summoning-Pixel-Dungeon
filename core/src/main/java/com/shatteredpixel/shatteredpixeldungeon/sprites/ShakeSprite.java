@@ -37,7 +37,7 @@ public class ShakeSprite extends MobSprite {
     public ShakeSprite() {
         super();
 
-        texture( Assets.SNAKE );
+        texture( Assets.Sprites.SNAKE );
 
         TextureFilm frames = new TextureFilm( texture, 12, 11 );
 

@@ -34,7 +34,7 @@ public class GrayRatSprite extends MobSprite {
 	public GrayRatSprite() {
 		super();
 		
-		texture( Assets.RAT );
+		texture( Assets.Sprites.RAT );
 		
 		TextureFilm frames = new TextureFilm( texture, 16, 15 );
 

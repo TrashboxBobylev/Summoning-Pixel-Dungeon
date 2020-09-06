@@ -332,7 +332,6 @@ public class SPDSettings extends GameSettings {
 
 	public static boolean windowMaximized(){
 		return getBoolean( KEY_WINDOW_MAXIMIZED, false );
-		return getBoolean(KEY_SYSTEMFONT, false);
 	}
 
     public static final String CRASH         = "crash";

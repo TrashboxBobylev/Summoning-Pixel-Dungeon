@@ -36,7 +36,7 @@ public class DwarfGuard extends MobSprite {
 	public DwarfGuard() {
 		super();
 
-		texture( Assets.DWARF_GUARD );
+		texture( Assets.Sprites.DWARF_GUARD );
 
 		TextureFilm frames = new TextureFilm( texture, 12, 16 );
 

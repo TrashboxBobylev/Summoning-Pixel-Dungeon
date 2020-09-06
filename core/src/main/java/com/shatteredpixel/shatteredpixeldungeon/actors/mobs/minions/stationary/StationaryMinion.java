@@ -57,13 +57,9 @@ public class StationaryMinion extends Minion {
         return false;
     }
 
-    @Override
-    public boolean canInteract(Hero h) {
-        return true;
-    }
 
     @Override
-    public boolean interact() {
+    public boolean interact(Char ch) {
         GameScene.show(new WndOptions( Messages.get(this, "dismiss_title"),
                 Messages.get(this, "dismiss_body"),
                 Messages.get(this, "dismiss_confirm"),

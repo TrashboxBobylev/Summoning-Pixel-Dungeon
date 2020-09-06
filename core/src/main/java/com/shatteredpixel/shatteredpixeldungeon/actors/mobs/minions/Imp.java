@@ -85,7 +85,7 @@ public class Imp extends Minion {
 
                 int oldPos = pos;
                 target = defendingPos != -1 ? defendingPos : queenPos;
-                if (target == -1) target = Dungeon.level.randomDestination();
+                if (target == -1) target = Dungeon.level.randomDestination(Imp.this);
                 //always move towards the hero when wandering
                 if (getCloser( target )) {
                     //moves 2 tiles at a time when returning to the hero

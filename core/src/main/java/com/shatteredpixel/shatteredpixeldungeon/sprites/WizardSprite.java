@@ -39,7 +39,7 @@ public class WizardSprite extends MobSprite {
 	public WizardSprite() {
 		super();
 		
-		texture( Assets.WIZARD );
+		texture( Assets.Sprites.WIZARD );
 		
 		TextureFilm frames = new TextureFilm( texture, 12, 15 );
 		

@@ -109,7 +109,7 @@ public abstract class TippedDart extends Dart {
 	//exact same damage as regular darts, despite being higher tier.
 
 	@Override
-	protected void rangedHit(Char enemy, int cell) {
+	public void rangedHit(Char enemy, int cell) {
 		targetPos = cell;
 		super.rangedHit( enemy, cell);
 		

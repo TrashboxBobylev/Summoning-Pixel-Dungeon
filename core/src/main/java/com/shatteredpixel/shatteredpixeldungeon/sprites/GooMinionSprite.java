@@ -43,7 +43,7 @@ public class GooMinionSprite extends MobSprite {
 	public GooMinionSprite() {
 		super();
 
-		texture( Assets.GOO );
+		texture( Assets.Sprites.GOO );
 
 		TextureFilm frames = new TextureFilm( texture, 20, 14 );
 

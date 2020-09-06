@@ -104,11 +104,6 @@ public class StoneOfTargeting extends Runestone {
         }
 
         @Override
-        public void tintIcon(Image icon) {
-            greyIcon(icon, 5f, cooldown());
-        }
-
-        @Override
         public String toString() {
             return Messages.get(this, "name");
         }

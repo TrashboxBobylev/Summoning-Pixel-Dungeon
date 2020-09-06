@@ -241,9 +241,9 @@ public enum HeroClass {
         hero.belongings.armor = ClassArmor.upgrade(hero, (Armor)(new ClothArmor().identify()));
 
         LoveHolder cloak = new LoveHolder();
-        (hero.belongings.misc1 = cloak).identify();
-        hero.belongings.misc1.activate( hero );
-        Dungeon.quickslot.setSlot(0, hero.belongings.misc1);
+        (hero.belongings.artifact = cloak).identify();
+        hero.belongings.artifact.activate( hero );
+        Dungeon.quickslot.setSlot(0, hero.belongings.artifact);
 
         Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
 

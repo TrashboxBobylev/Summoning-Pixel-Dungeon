@@ -31,7 +31,7 @@ public class SlimeMinionSprite extends MobSprite {
     public SlimeMinionSprite() {
         super();
 
-        texture( Assets.SLIME_MINION );
+        texture( Assets.Sprites.SLIME_MINION );
 
         TextureFilm frames = new TextureFilm( texture, 14, 12 );
 

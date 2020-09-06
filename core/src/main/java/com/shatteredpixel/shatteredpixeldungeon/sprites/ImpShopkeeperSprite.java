@@ -35,7 +35,7 @@ public class ImpShopkeeperSprite extends MobSprite {
 	public ImpShopkeeperSprite() {
 		super();
 		
-		texture( Assets.MERCHANT );
+		texture( Assets.Sprites.MERCHANT );
 		TextureFilm film = new TextureFilm( texture, 16, 16 );
 		
 		idle = new Animation( 10, true );

@@ -1830,7 +1830,6 @@ public class Hero extends Char {
                             continue;
                         }
 
-						Trap trap = Dungeon.level.traps.get( p );
 						float chance;
 
 						//searches aided by foresight always succeed, even if trap isn't searchable

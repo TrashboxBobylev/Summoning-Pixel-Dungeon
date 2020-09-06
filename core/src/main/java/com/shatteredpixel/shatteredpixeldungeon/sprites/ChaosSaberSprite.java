@@ -35,7 +35,7 @@ public class ChaosSaberSprite extends MobSprite {
     public ChaosSaberSprite() {
         super();
 
-        texture(Assets.CHAOS_SABER);
+        texture(Assets.Sprites.CHAOS_SABER);
         TextureFilm film = new TextureFilm(texture, 12, 12);
 
         idle = new Animation(1, true);

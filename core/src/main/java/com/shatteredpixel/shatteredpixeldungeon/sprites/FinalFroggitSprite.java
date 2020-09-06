@@ -39,7 +39,7 @@ public class FinalFroggitSprite extends MobSprite {
 	public FinalFroggitSprite() {
 		super();
 
-		texture( Assets.FINAL_FROGGIT );
+		texture( Assets.Sprites.FINAL_FROGGIT );
 
 		TextureFilm frames = new TextureFilm( texture, 16, 16 );
 

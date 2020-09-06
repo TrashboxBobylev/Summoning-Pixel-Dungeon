@@ -34,7 +34,7 @@ public class ChickenSprite extends MobSprite {
 	public ChickenSprite() {
 		super();
 		
-		texture( Assets.CHICKEN );
+		texture( Assets.Sprites.CHICKEN );
 		
 		TextureFilm frames = new TextureFilm( texture, 15, 15 );
 		
