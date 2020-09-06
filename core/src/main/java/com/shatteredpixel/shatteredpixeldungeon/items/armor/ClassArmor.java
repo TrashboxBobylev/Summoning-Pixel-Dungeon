@@ -136,7 +136,7 @@ abstract public class ClassArmor extends Armor {
 			
 			if (!isEquipped( hero )) {
 				GLog.warning( Messages.get(this, "not_equipped") );
-			} else if (charge < 35) {
+			} else if (charge < (hero.heroClass == HeroClass.CONJURER ? 75 : 35)) {
 				GLog.warning( Messages.get(this, "low_charge") );
 			} else  {
 				curUser = hero;

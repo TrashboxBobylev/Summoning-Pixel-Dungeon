@@ -39,7 +39,9 @@ public class FoodRegen extends Buff {
 
 	//food regen always lasts 50 turns
 	int left;
+	public int fullHP;
     public int leftHP;
+    float partialHP;
 	
 	@Override
 	public boolean act() {
@@ -47,11 +49,19 @@ public class FoodRegen extends Buff {
 		if (left < 0){
 			detach();
 			return true;
-		} else if (left % (50 / Math.abs(leftHP)) == 0){
-			target.HP = Math.min(target.HT, target.HP + (leftHP > 0 ? 1 : -1));
-			if (target.HP == 0){
-			    Dungeon.hero.die(Hunger.class);
-            }
+		} else {
+			partialHP += (52f / Math.abs(fullHP));
+			while (partialHP >= 1){
+				partialHP -= 1;
+				if (fullHP > 0){
+					Dungeon.hero.HP = Math.min(Dungeon.hero.HP + 1, Dungeon.hero.HT);
+					leftHP -= 1;
+				} else {
+					Dungeon.hero.damage(1, new Hunger());
+					leftHP += 1;
+				}
+
+			}
 		}
 		
 		spend(TICK);
@@ -76,15 +86,22 @@ public class FoodRegen extends Buff {
 	public String desc() {
 		return Messages.get(this, "desc", left + 1, leftHP);
 	}
-	
+
+	@Override
+	public float iconFadePercent() {
+		return (50 - cooldown()) / 50;
+	}
+
 	private static final String LEFT = "left";
 	private static final String HP = "hp";
+	private static final String FULLHP = "fullHP";
 	
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
 		bundle.put(LEFT, left);
 		bundle.put(HP, leftHP);
+		bundle.put(FULLHP, fullHP);
 	}
 	
 	@Override
@@ -92,5 +109,6 @@ public class FoodRegen extends Buff {
 		super.restoreFromBundle(bundle);
 		left = bundle.getInt(LEFT);
 		leftHP = bundle.getInt(HP);
+		fullHP = bundle.getInt(FULLHP);
 	}
 }

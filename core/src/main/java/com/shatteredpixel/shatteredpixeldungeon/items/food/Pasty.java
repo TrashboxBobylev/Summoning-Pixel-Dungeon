@@ -78,7 +78,7 @@ public class Pasty extends Food {
 
 		energy = 700;
 
-		regen = 20;
+		regen = 25;
 
 		bones = true;
 	}

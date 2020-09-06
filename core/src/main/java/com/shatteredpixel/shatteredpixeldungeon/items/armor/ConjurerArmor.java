@@ -173,7 +173,7 @@ public class ConjurerArmor extends ClassArmor {
 			}
 		}
 
-		curUser.HP -= (curUser.HT / 8) + (curUser.HP / 4);
+		charge -= 50;
 		
 		curUser.spend( Actor.TICK );
 		curUser.sprite.operate( curUser.pos );

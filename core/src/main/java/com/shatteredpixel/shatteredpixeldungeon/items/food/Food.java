@@ -103,6 +103,7 @@ public class Food extends Item {
         if (regen != 0) {
             FoodRegen foodRegen = Buff.affect(hero, FoodRegen.class);
             foodRegen.leftHP = regen;
+            foodRegen.fullHP = regen;
             foodRegen.reset();
         }
 	}

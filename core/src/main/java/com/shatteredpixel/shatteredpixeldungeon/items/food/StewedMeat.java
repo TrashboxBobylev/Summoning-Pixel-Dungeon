@@ -33,7 +33,7 @@ public class StewedMeat extends Food {
 	{
 		image = ItemSpriteSheet.STEWED;
 		energy = 150;
-		regen = 28;
+		regen = 20;
 	}
 	
 	@Override
