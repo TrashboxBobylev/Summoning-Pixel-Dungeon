@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -27,10 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.blobs;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 
 public class StormCloud extends Blob {
 	
@@ -43,19 +40,8 @@ public class StormCloud extends Blob {
 		for (int i = area.left; i < area.right; i++){
 			for (int j = area.top; j < area.bottom; j++){
 				cell = i + j*Dungeon.level.width();
-				if (off[cell] > 0) {
-					int terr = Dungeon.level.map[cell];
-					if (terr == Terrain.EMPTY || terr == Terrain.GRASS ||
-							terr == Terrain.EMBERS || terr == Terrain.EMPTY_SP ||
-							terr == Terrain.HIGH_GRASS || terr == Terrain.FURROWED_GRASS
-							|| terr == Terrain.EMPTY_DECO) {
-						Level.set(cell, Terrain.WATER);
-						GameScene.updateMap(cell);
-					} else if (terr == Terrain.SECRET_TRAP || terr == Terrain.TRAP || terr == Terrain.INACTIVE_TRAP) {
-						Level.set(cell, Terrain.WATER);
-						Dungeon.level.traps.remove(cell);
-						GameScene.updateMap(cell);
-					}
+				if (cur[cell] > 0) {
+					Dungeon.level.setCellToWater(true, cell);
 				}
 			}
 		}

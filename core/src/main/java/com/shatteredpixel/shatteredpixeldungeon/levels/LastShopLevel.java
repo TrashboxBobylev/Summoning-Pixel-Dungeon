@@ -3,10 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
- *
- * Summoning Pixel Dungeon
- * Copyright (C) 2019-2020 TrashboxBobylev
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,16 +24,10 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPassage;
-import com.shatteredpixel.shatteredpixeldungeon.items.spells.Recycle;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfShock;
-import com.shatteredpixel.shatteredpixeldungeon.levels.builders.BranchesBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LineBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.CityPainter;
@@ -47,7 +38,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ImpShopRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.Group;
-import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -60,29 +50,17 @@ public class LastShopLevel extends RegularLevel {
 	
 	@Override
 	public String tilesTex() {
-		return Assets.TILES_CORE;
+		return Assets.Environment.TILES_CITY;
 	}
 	
 	@Override
 	public String waterTex() {
-		return Assets.WATER_CORE;
+		return Assets.Environment.WATER_CITY;
 	}
-
-    @Override
-    protected int standardRooms() {
-        //9 to 11, average 10.67
-        return 9+Random.chances(new float[]{3, 2, 1});
-    }
-
-    @Override
-    protected int specialRooms() {
-        //3 to 4, average 3.5
-        return 3 + Random.chances(new float[]{1, 1});
-    }
 	
 	@Override
 	protected boolean build() {
-		feeling = Feeling.DARK;
+		feeling = Feeling.CHASM;
 		if (super.build()){
 			
 			for (int i=0; i < length(); i++) {
@@ -99,21 +77,28 @@ public class LastShopLevel extends RegularLevel {
 	
 	@Override
 	protected ArrayList<Room> initRooms() {
-		ArrayList<Room> rooms = super.initRooms();
-
+		ArrayList<Room> rooms = new ArrayList<>();
+		
+		rooms.add ( roomEntrance = new EntranceRoom());
 		rooms.add( new ImpShopRoom() );
+		rooms.add( roomExit = new ExitRoom());
 		
 		return rooms;
 	}
 	
 	@Override
 	protected Builder builder() {
-		return new BranchesBuilder();
+		return new LineBuilder()
+				.setPathVariance(0f)
+				.setPathLength(1f, new float[]{1})
+				.setTunnelLength(new float[]{0, 0, 1}, new float[]{1});
 	}
 	
 	@Override
 	protected Painter painter() {
-		return new CityPainter();
+		return new CityPainter()
+				.setWater( 0.10f, 4 )
+				.setGrass( 0.10f, 3 );
 	}
 	
 	@Override
@@ -125,30 +110,30 @@ public class LastShopLevel extends RegularLevel {
 	protected void createMobs() {
 	}
 	
-	public Actor respawner() {
+	public Actor addRespawner() {
 		return null;
 	}
 	
 	@Override
 	protected void createItems() {
-	    itemsToSpawn.add(new ScrollOfPassage());
-        itemsToSpawn.add(new ScrollOfPassage());
-        itemsToSpawn.add(new ScrollOfPassage());
-        itemsToSpawn.add(new PotionOfHealing());
-        itemsToSpawn.add(new StoneOfEnchantment());
-        itemsToSpawn.add(new StoneOfShock());
-        itemsToSpawn.add(new StoneOfShock());
-        itemsToSpawn.add(new StoneOfShock());
-        itemsToSpawn.add(new Recycle().quantity(5));
-		super.createItems();
+		Item item = Bones.get();
+		if (item != null) {
+			int pos;
+			do {
+				pos = pointToCell(roomEntrance.random());
+			} while (pos == entrance);
+			drop( item, pos ).setHauntedIfCursed().type = Heap.Type.REMAINS;
+		}
 	}
 	
 	@Override
-	public int randomRespawnCell() {
+	public int randomRespawnCell( Char ch ) {
 		int cell;
 		do {
 			cell = pointToCell( roomEntrance.random() );
-		} while (!passable[cell] || Actor.findChar(cell) != null);
+		} while (!passable[cell]
+				|| (Char.hasProp(ch, Char.Property.LARGE) && !openSpace[cell])
+				|| Actor.findChar(cell) != null);
 		return cell;
 	}
 	
@@ -178,7 +163,7 @@ public class LastShopLevel extends RegularLevel {
 				return Messages.get(CityLevel.class, "sp_desc");
 			case Terrain.STATUE:
 			case Terrain.STATUE_SP:
-				return Messages.get(SewerLevel.class, "statue_desc");
+				return Messages.get(CityLevel.class, "statue_desc");
 			case Terrain.BOOKSHELF:
 				return Messages.get(CityLevel.class, "bookshelf_desc");
 			default:

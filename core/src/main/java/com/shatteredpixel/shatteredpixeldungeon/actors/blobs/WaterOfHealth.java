@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -31,10 +31,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShaftParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
 import com.shatteredpixel.shatteredpixeldungeon.items.DewVial;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes.Landmark;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -47,14 +50,14 @@ public class WaterOfHealth extends WellWater {
 		
 		if (!hero.isAlive()) return false;
 		
-		Sample.INSTANCE.play( Assets.SND_DRINK );
+		Sample.INSTANCE.play( Assets.Sounds.DRINK );
 
 		hero.HP = hero.HT;
 		hero.sprite.emitter().start( Speck.factory( Speck.HEALING ), 0.4f, 4 );
 
 		PotionOfHealing.cure( hero );
 		hero.belongings.uncurseEquipped();
-		((Hunger)hero.buff( Hunger.class )).satisfy( Hunger.STARVING );
+		hero.buff( Hunger.class ).satisfy( Hunger.STARVING );
 		
 		CellEmitter.get( hero.pos ).start( ShaftParticle.FACTORY, 0.2f, 3 );
 
@@ -69,9 +72,21 @@ public class WaterOfHealth extends WellWater {
 	protected Item affectItem( Item item, int pos ) {
 		if (item instanceof DewVial && !((DewVial)item).isFull()) {
 			((DewVial)item).fill();
+			CellEmitter.get( pos ).start( Speck.factory( Speck.HEALING ), 0.4f, 4 );
+			Sample.INSTANCE.play( Assets.Sounds.DRINK );
+			return item;
+		} else if ( item instanceof Ankh && !(((Ankh) item).isBlessed())){
+			((Ankh) item).bless();
+			CellEmitter.get( pos ).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
+			Sample.INSTANCE.play( Assets.Sounds.DRINK );
+			return item;
+		} else if (ScrollOfRemoveCurse.uncursable(item)) {
+			if (ScrollOfRemoveCurse.uncurse( null, item )){
+				CellEmitter.get( pos ).start( ShadowParticle.UP, 0.05f, 10 );
+			}
+			Sample.INSTANCE.play( Assets.Sounds.DRINK );
 			return item;
 		}
-		
 		return null;
 	}
 	

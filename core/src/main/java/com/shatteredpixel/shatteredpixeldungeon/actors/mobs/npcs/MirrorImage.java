@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -32,12 +32,15 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.PerfumeGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MirrorSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -162,7 +165,12 @@ public class MirrorImage extends NPC {
 			((Mob)enemy).aggro( this );
 		}
 		if (hero.belongings.weapon != null){
-			return hero.belongings.weapon.proc( this, enemy, damage );
+			damage = hero.belongings.weapon.proc( this, enemy, damage );
+			if (!enemy.isAlive() && enemy == Dungeon.hero){
+				Dungeon.fail(getClass());
+				GLog.negative( Messages.capitalize(Messages.get(Char.class, "kill", name())) );
+			}
+			return damage;
 		} else {
 			return damage;
 		}
@@ -171,11 +179,6 @@ public class MirrorImage extends NPC {
 	@Override
 	public CharSprite sprite() {
 		CharSprite s = super.sprite();
-		
-		//pre-0.7.0 saves
-		if (heroID == 0){
-			heroID = Dungeon.hero.id();
-		}
 		
 		hero = (Hero)Actor.findById(heroID);
 		if (hero != null) {
@@ -189,6 +192,7 @@ public class MirrorImage extends NPC {
 		immunities.add( ToxicGas.class );
 		immunities.add( CorrosiveGas.class );
 		immunities.add( Burning.class );
+		immunities.add( Corruption.class );
 	}
 	
 	public static class MirrorInvis extends Invisibility {

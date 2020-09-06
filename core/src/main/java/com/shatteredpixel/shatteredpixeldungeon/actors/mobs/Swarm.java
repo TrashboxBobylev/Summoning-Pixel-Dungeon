@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -34,8 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SwarmSprite;
 import com.watabou.utils.Bundle;
@@ -105,9 +103,7 @@ public class Swarm extends Mob {
 				clone.pos = Random.element( candidates );
 				clone.state = clone.HUNTING;
 				
-				if (Dungeon.level.map[clone.pos] == Terrain.DOOR) {
-					Door.enter( clone.pos );
-				}
+				Dungeon.level.occupyCell(clone);
 				
 				GameScene.add( clone, SPLIT_DELAY );
 				Actor.addDelayed( new Pushing( clone, pos, clone.pos ), -1 );

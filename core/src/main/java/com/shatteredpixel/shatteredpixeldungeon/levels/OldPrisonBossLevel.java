@@ -3,10 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
- *
- * Summoning Pixel Dungeon
- * Copyright (C) 2019-2020 TrashboxBobylev
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,6 +55,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
+//Exists to support pre-0.7.5 saves
 public class OldPrisonBossLevel extends Level {
 
 	{
@@ -88,12 +86,12 @@ public class OldPrisonBossLevel extends Level {
 	
 	@Override
 	public String tilesTex() {
-		return Assets.TILES_PRISON;
+		return Assets.Environment.TILES_PRISON;
 	}
 	
 	@Override
 	public String waterTex() {
-		return Assets.WATER_PRISON;
+		return Assets.Environment.WATER_PRISON;
 	}
 	
 	private static final String STATE	        = "state";
@@ -154,7 +152,7 @@ public class OldPrisonBossLevel extends Level {
 		tengu = new OldTengu(); //We want to keep track of tengu independently of other mobs, he's not always in the level.
 	}
 	
-	public Actor respawner() {
+	public Actor addRespawner() {
 		return null;
 	}
 
@@ -162,7 +160,7 @@ public class OldPrisonBossLevel extends Level {
 	protected void createItems() {
 		Item item = Bones.get();
 		if (item != null) {
-			drop( item, randomRespawnCell() ).setHauntedIfCursed(1f).type = Heap.Type.REMAINS;
+			drop( item, randomRespawnCell( null ) ).setHauntedIfCursed().type = Heap.Type.REMAINS;
 		}
 		drop(new IronKey(10), randomPrisonCell());
 	}
@@ -192,32 +190,34 @@ public class OldPrisonBossLevel extends Level {
 	}
 
 	@Override
-	public void press( int cell, Char ch ) {
-
-		super.press(cell, ch);
+	public void occupyCell( Char ch ) {
+		
+		super.occupyCell( ch );
 
 		if (ch == Dungeon.hero){
 			//hero enters tengu's chamber
 			if (state == State.START
-					&& (new EmptyRoom().set(2, 25, 8, 32)).inside(cellToPoint(cell))){
+					&& (new EmptyRoom().set(2, 25, 8, 32)).inside(cellToPoint(ch.pos))){
 				progress();
 			}
 
 			//hero finishes the maze
 			else if (state == State.MAZE
-					&& (new EmptyRoom().set(4, 0, 7, 4)).inside(cellToPoint(cell))){
+					&& (new EmptyRoom().set(4, 0, 7, 4)).inside(cellToPoint(ch.pos))){
 				progress();
 			}
 		}
 	}
 
 	@Override
-	public int randomRespawnCell() {
+	public int randomRespawnCell( Char ch ) {
 		int pos = 5+2*32; //random cell adjacent to the entrance.
 		int cell;
 		do {
 			cell = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
-		} while (!passable[cell] || Actor.findChar(cell) != null);
+		} while (!passable[cell]
+				|| (Char.hasProp(ch, Char.Property.LARGE) && !openSpace[cell])
+				|| Actor.findChar(cell) != null);
 		return cell;
 	}
 	
@@ -283,7 +283,7 @@ public class OldPrisonBossLevel extends Level {
 	}
 
 	private void clearEntities(Room safeArea){
-		for (Heap heap : heaps.values()){
+		for (Heap heap : heaps.valueList()){
 			if (safeArea == null || !safeArea.inside(cellToPoint(heap.pos))){
 				storedItems.addAll(heap.items);
 				heap.destroy();
@@ -303,7 +303,7 @@ public class OldPrisonBossLevel extends Level {
 					mob.sprite.killAndErase();
 			}
 		}
-		for (Plant plant : plants.values()){
+		for (Plant plant : plants.valueList()){
 			if (safeArea == null || !safeArea.inside(cellToPoint(plant.pos))){
 				plants.remove(plant.pos);
 			}
@@ -362,7 +362,7 @@ public class OldPrisonBossLevel extends Level {
 				GameScene.resetMap();
 
 				GameScene.flash(0xFFFFFF);
-				Sample.INSTANCE.play(Assets.SND_BLAST);
+				Sample.INSTANCE.play(Assets.Sounds.BLAST);
 
 				state = State.MAZE;
 				break;
@@ -393,7 +393,7 @@ public class OldPrisonBossLevel extends Level {
 				tengu.notice();
 				
 				GameScene.flash(0xFFFFFF);
-				Sample.INSTANCE.play(Assets.SND_BLAST);
+				Sample.INSTANCE.play(Assets.Sounds.BLAST);
 
 				state = State.FIGHT_ARENA;
 				break;
@@ -447,7 +447,7 @@ public class OldPrisonBossLevel extends Level {
 					drop(item, randomTenguArenaCell());
 				
 				GameScene.flash(0xFFFFFF);
-				Sample.INSTANCE.play(Assets.SND_BLAST);
+				Sample.INSTANCE.play(Assets.Sounds.BLAST);
 				
 				state = State.WON;
 				break;
@@ -616,7 +616,7 @@ public class OldPrisonBossLevel extends Level {
 	public static class exitVisual extends CustomTilemap {
 		
 		{
-			texture = Assets.PRISON_EXIT_OLD;
+			texture = Assets.Environment.PRISON_EXIT_OLD;
 			
 			tileW = 12;
 			tileH = 14;
@@ -659,7 +659,7 @@ public class OldPrisonBossLevel extends Level {
 	public static class exitVisualWalls extends CustomTilemap {
 		
 		{
-			texture = Assets.PRISON_EXIT_OLD;
+			texture = Assets.Environment.PRISON_EXIT_OLD;
 			
 			tileW = 12;
 			tileH = 14;

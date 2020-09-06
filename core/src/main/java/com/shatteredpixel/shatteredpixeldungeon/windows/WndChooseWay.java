@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -30,7 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
 public class WndChooseWay extends Window {
@@ -49,7 +49,7 @@ public class WndChooseWay extends Window {
 		titlebar.setRect( 0, 0, WIDTH, 0 );
 		add( titlebar );
 
-		RenderedTextMultiline hl = PixelScene.renderMultiline( 6 );
+		RenderedTextBlock hl = PixelScene.renderTextBlock( 6 );
 		hl.text( way1.desc() + "\n\n" + way2.desc() + "\n\n" + Messages.get(this, "message"), WIDTH );
 		hl.setPos( titlebar.left(), titlebar.bottom() + GAP );
 		add( hl );

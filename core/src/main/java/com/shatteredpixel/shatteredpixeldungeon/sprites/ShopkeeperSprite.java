@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -35,7 +35,7 @@ public class ShopkeeperSprite extends MobSprite {
 	public ShopkeeperSprite() {
 		super();
 		
-		texture( Assets.KEEPER );
+		texture( Assets.Sprites.KEEPER );
 		TextureFilm film = new TextureFilm( texture, 14, 14 );
 		
 		idle = new Animation( 10, true );

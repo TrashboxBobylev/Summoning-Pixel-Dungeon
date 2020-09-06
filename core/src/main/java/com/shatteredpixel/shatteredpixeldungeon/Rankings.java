@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
@@ -42,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWea
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
+import com.watabou.noosa.Game;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.FileUtils;
@@ -203,6 +205,12 @@ public enum Rankings {
 			} else if (!Dungeon.quickslot.contains(item))
 				belongings.backpack.items.remove(item);
 		}
+
+		//remove all buffs (ones tied to equipment will be re-applied)
+		for(Buff b : Dungeon.hero.buffs()){
+			Dungeon.hero.remove(b);
+		}
+
 		rec.gameData.put( HERO, Dungeon.hero );
 
 		//save stats
@@ -219,9 +227,9 @@ public enum Rankings {
 		Bundle handler = new Bundle();
 		Scroll.saveSelectively(handler, belongings.backpack.items);
 		Potion.saveSelectively(handler, belongings.backpack.items);
-		//include worn rings
-		if (belongings.misc1 != null) belongings.backpack.items.add(belongings.misc1);
-		if (belongings.misc2 != null) belongings.backpack.items.add(belongings.misc2);
+		//include potentially worn rings
+		if (belongings.misc != null)        belongings.backpack.items.add(belongings.misc);
+		if (belongings.ring != null)        belongings.backpack.items.add(belongings.ring);
 		Ring.saveSelectively(handler, belongings.backpack.items);
 		rec.gameData.put( HANDLERS, handler);
 
@@ -238,7 +246,7 @@ public enum Rankings {
 		Actor.clear();
 		Dungeon.hero = null;
 		Dungeon.level = null;
-		Generator.reset();
+		Generator.fullReset();
 		Notes.reset();
 		Dungeon.quickslot.reset();
 		QuickSlotButton.reset();
@@ -311,7 +319,7 @@ public enum Rankings {
 		} catch (IOException e) {
 		}
 	}
-
+	
 	public static class Record implements Bundlable {
 
 		private static final String CAUSE   = "cause";

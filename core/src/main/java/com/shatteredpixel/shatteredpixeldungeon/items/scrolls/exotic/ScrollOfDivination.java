@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -25,8 +25,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Identification;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
@@ -36,12 +34,14 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -49,7 +49,7 @@ import java.util.HashSet;
 public class ScrollOfDivination extends ExoticScroll {
 	
 	{
-		initials = 0;
+		icon = ItemSpriteSheet.Icons.SCROLL_DIVINATE;
 	}
 	
 	@Override
@@ -57,11 +57,7 @@ public class ScrollOfDivination extends ExoticScroll {
 		
 		curUser.sprite.parent.add( new Identification( curUser.sprite.center().offset( 0, -16 ) ) );
 		
-		readAnimation();
-		setKnown();
-		
-		Sample.INSTANCE.play( Assets.SND_READ );
-		Invisibility.dispel();
+		Sample.INSTANCE.play( Assets.Sounds.READ );
 		
 		HashSet<Class<? extends Potion>> potions = Potion.getUnknown();
 		HashSet<Class<? extends Scroll>> scrolls = Scroll.getUnknown();
@@ -81,53 +77,52 @@ public class ScrollOfDivination extends ExoticScroll {
 		float[] probs = baseProbs.clone();
 		
 		while (left > 0 && total > 0) {
-			try {
-				switch (Random.chances(probs)) {
-					default:
-						probs = baseProbs.clone();
+			switch (Random.chances(probs)) {
+				default:
+					probs = baseProbs.clone();
+					continue;
+				case 0:
+					if (potions.isEmpty()) {
+						probs[0] = 0;
 						continue;
-					case 0:
-						if (potions.isEmpty()) {
-							probs[0] = 0;
-							continue;
-						}
-						probs[0]--;
-						Potion p = Random.element(potions).newInstance();
-						p.setKnown();
-						IDed.add(p);
-						potions.remove(p.getClass());
-						break;
-					case 1:
-						if (scrolls.isEmpty()) {
-							probs[1] = 0;
-							continue;
-						}
-						probs[1]--;
-						Scroll s = Random.element(scrolls).newInstance();
-						s.setKnown();
-						IDed.add(s);
-						scrolls.remove(s.getClass());
-						break;
-					case 2:
-						if (rings.isEmpty()) {
-							probs[2] = 0;
-							continue;
-						}
-						probs[2]--;
-						Ring r = Random.element(rings).newInstance();
-						r.setKnown();
-						IDed.add(r);
-						rings.remove(r.getClass());
-						break;
-				}
-			} catch (Exception e) {
-				ShatteredPixelDungeon.reportException(e);
+					}
+					probs[0]--;
+					Potion p = Reflection.newInstance(Random.element(potions));
+					p.setKnown();
+					IDed.add(p);
+					potions.remove(p.getClass());
+					break;
+				case 1:
+					if (scrolls.isEmpty()) {
+						probs[1] = 0;
+						continue;
+					}
+					probs[1]--;
+					Scroll s = Reflection.newInstance(Random.element(scrolls));
+					s.setKnown();
+					IDed.add(s);
+					scrolls.remove(s.getClass());
+					break;
+				case 2:
+					if (rings.isEmpty()) {
+						probs[2] = 0;
+						continue;
+					}
+					probs[2]--;
+					Ring r = Reflection.newInstance(Random.element(rings));
+					r.setKnown();
+					IDed.add(r);
+					rings.remove(r.getClass());
+					break;
 			}
 			left --;
 			total --;
 		}
 		
 		GameScene.show(new WndDivination( IDed ));
+
+		readAnimation();
+		setKnown();
 	}
 	
 	private class WndDivination extends Window {
@@ -140,7 +135,7 @@ public class ScrollOfDivination extends ExoticScroll {
 			cur.setRect(0, 0, WIDTH, 0);
 			add(cur);
 			
-			RenderedTextMultiline msg = PixelScene.renderMultiline(Messages.get(this, "desc"), 6);
+			RenderedTextBlock msg = PixelScene.renderTextBlock(Messages.get(this, "desc"), 6);
 			msg.maxWidth(120);
 			msg.setPos(0, cur.bottom() + 2);
 			add(msg);

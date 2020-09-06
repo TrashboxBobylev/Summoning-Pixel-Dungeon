@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -32,13 +32,14 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 
-//TODO this may be very powerful, consider balancing
 public class ArtifactRecharge extends Buff {
-	
+
+	public static final float DURATION = 30f;
+
 	{
 		type = buffType.POSITIVE;
 	}
-	
+
 	private int left;
 	
 	@Override
@@ -47,11 +48,11 @@ public class ArtifactRecharge extends Buff {
 		if (target instanceof Hero){
 			Belongings b = ((Hero) target).belongings;
 			
-			if (b.misc1 instanceof Artifact){
-				((Artifact)b.misc1).charge((Hero)target);
+			if (b.artifact instanceof Artifact){
+				((Artifact)b.artifact).charge((Hero)target);
 			}
-			if (b.misc2 instanceof Artifact){
-				((Artifact)b.misc2).charge((Hero)target);
+			if (b.misc instanceof Artifact){
+				((Artifact)b.misc).charge((Hero)target);
 			}
 		}
 		
@@ -82,7 +83,12 @@ public class ArtifactRecharge extends Buff {
 	public void tintIcon(Image icon) {
 		icon.hardlight(0, 1f, 0);
 	}
-	
+
+	@Override
+	public float iconFadePercent() {
+		return Math.max(0, (DURATION - left) / DURATION);
+	}
+
 	@Override
 	public String toString() {
 		return Messages.get(this, "name");

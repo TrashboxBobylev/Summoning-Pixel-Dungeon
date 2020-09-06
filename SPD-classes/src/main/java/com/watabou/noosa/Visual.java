@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -274,6 +274,9 @@ public class Visual extends Gizmo {
 		Camera c = camera();
 
 		if (c == null || !visible) return false;
+
+		//FIXME, the below calculations ignore angle, so assume visible if angle != 0
+		if (angle != 0) return true;
 
 		//x coord
 		if (x > c.scroll.x + c.width)

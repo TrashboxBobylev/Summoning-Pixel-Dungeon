@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,8 +24,10 @@
 
 package com.watabou.utils;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
-import com.watabou.BuildConfig;
+import com.badlogic.gdx.Input;
+import com.watabou.noosa.Game;
 
 //TODO migrate to platformSupport class
 public class DeviceCompat {
@@ -37,8 +39,16 @@ public class DeviceCompat {
 				return Gdx.app.getVersion() >= 19;
 			default:
 				//TODO implement functionality for other platforms here
-				return false;
+				return true;
 		}
+	}
+	
+	public static boolean isDesktop(){
+		return Gdx.app.getType() == Application.ApplicationType.Desktop;
+	}
+
+	public static boolean hasHardKeyboard(){
+		return Gdx.input.isPeripheralAvailable(Input.Peripheral.HardwareKeyboard);
 	}
 	
 	public static boolean legacyDevice(){
@@ -53,7 +63,7 @@ public class DeviceCompat {
 	}
 	
 	public static boolean isDebug(){
-		return BuildConfig.DEBUG;
+		return Game.version.contains("INDEV");
 	}
 	
 	public static void openURI( String URI ){

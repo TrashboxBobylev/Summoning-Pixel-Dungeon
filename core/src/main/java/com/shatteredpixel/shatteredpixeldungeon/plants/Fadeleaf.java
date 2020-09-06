@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -44,6 +44,7 @@ public class Fadeleaf extends Plant {
 	
 	{
 		image = 10;
+		seedClass = Seed.class;
 	}
 	
 	@Override
@@ -77,22 +78,26 @@ public class Fadeleaf extends Plant {
 			
 		} else if (ch instanceof Mob && !ch.properties().contains(Char.Property.IMMOVABLE)) {
 
-			int count = 10;
-			int newPos;
-			do {
-				newPos = Dungeon.level.randomRespawnCell();
-				if (count-- <= 0) {
-					break;
+			if (!Dungeon.bossLevel()) {
+
+				int count = 10;
+				int newPos;
+				do {
+					newPos = Dungeon.level.randomRespawnCell(ch);
+					if (count-- <= 0) {
+						break;
+					}
+				} while (newPos == -1);
+
+				if (newPos != -1) {
+
+					ch.pos = newPos;
+					if (((Mob) ch).state == ((Mob) ch).HUNTING)
+						((Mob) ch).state = ((Mob) ch).WANDERING;
+					ch.sprite.place(ch.pos);
+					ch.sprite.visible = Dungeon.level.heroFOV[ch.pos];
+
 				}
-			} while (newPos == -1);
-			
-			if (newPos != -1 && !Dungeon.bossLevel()) {
-			
-				ch.pos = newPos;
-				if (((Mob) ch).state == ((Mob) ch).HUNTING) ((Mob) ch).state = ((Mob) ch).WANDERING;
-				ch.sprite.place( ch.pos );
-				ch.sprite.visible = Dungeon.level.heroFOV[ch.pos];
-				
 			}
 
 		}

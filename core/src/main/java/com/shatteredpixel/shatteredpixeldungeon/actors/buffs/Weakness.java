@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -29,7 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class Weakness extends FlavourBuff {
 
-	public static final float DURATION = 40f;
+	public static final float DURATION = 20f;
 
 	{
 		type = buffType.NEGATIVE;
@@ -39,6 +39,11 @@ public class Weakness extends FlavourBuff {
 	@Override
 	public int icon() {
 		return BuffIndicator.WEAKNESS;
+	}
+
+	@Override
+	public float iconFadePercent() {
+		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
 	}
 	
 	@Override

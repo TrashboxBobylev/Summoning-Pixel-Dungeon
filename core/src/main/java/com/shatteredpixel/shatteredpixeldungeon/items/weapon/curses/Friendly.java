@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -41,13 +41,12 @@ public class Friendly extends Weapon.Enchantment {
 		
 		if (Random.Int(10) == 0){
 			
-			int base = Random.IntRange(3, 5);
-			
-			Buff.affect( attacker, Charm.class, base + 10 ).object = defender.id();
+			Buff.affect( attacker, Charm.class, Charm.DURATION ).object = defender.id();
 			attacker.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
 			
-			//5 turns will be reduced by the attack, so effectively lasts for base turns
-			Buff.affect( defender, Charm.class, base + 5 ).object = attacker.id();
+			Charm c = Buff.affect( defender, Charm.class, Charm.DURATION/2 );
+			c.ignoreNextHit = true;
+			c.object = attacker.id();
 			defender.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
 			
 		}

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -58,7 +58,7 @@ public class Gold extends Item {
 	
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
-		return new ArrayList<String>();
+		return new ArrayList<>();
 	}
 	
 	@Override
@@ -76,7 +76,7 @@ public class Gold extends Item {
 		hero.sprite.showStatus( CharSprite.NEUTRAL, TXT_VALUE, quantity );
 		hero.spendAndNext( TIME_TO_PICK_UP );
 		
-		Sample.INSTANCE.play( Assets.SND_GOLD, 1, 1, Random.Float( 0.9f, 1.1f ) );
+		Sample.INSTANCE.play( Assets.Sounds.GOLD, 1, 1, Random.Float( 0.9f, 1.1f ) );
 		
 		return true;
 	}

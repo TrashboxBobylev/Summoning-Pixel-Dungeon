@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -33,8 +33,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisintegration;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -60,8 +61,8 @@ public class Eye extends Mob {
 
 		HUNTING = new Hunting();
 		
-		loot = new Dewdrop().quantity(2);
-		lootChance = 0.5f;
+		loot = new Dewdrop();
+		lootChance = 1f;
 
 		properties.add(Property.DEMONIC);
 	}
@@ -107,6 +108,7 @@ public class Eye extends Mob {
 	protected boolean act() {
 		if (beamCharged && state != HUNTING){
 			beamCharged = false;
+			sprite.idle();
 		}
 		if (beam == null && beamTarget != -1) {
 			beam = new Ballistica(pos, beamTarget, Ballistica.STOP_TERRAIN);
@@ -136,6 +138,7 @@ public class Eye extends Mob {
 				sprite.zap( beam.collisionPos );
 				return false;
 			} else {
+				sprite.idle();
 				deathGaze();
 				return true;
 			}
@@ -157,7 +160,7 @@ public class Eye extends Mob {
 			return;
 
 		beamCharged = false;
-		beamCooldown = Random.IntRange(3, 6);
+		beamCooldown = Random.IntRange(4, 6);
 
 		boolean terrainAffected = false;
 
@@ -203,6 +206,24 @@ public class Eye extends Mob {
 		beamTarget = -1;
 	}
 
+	//generates an average of 1 dew, 0.25 seeds, and 0.25 stones
+	@Override
+	protected Item createLoot() {
+		Item loot;
+		switch(Random.Int(4)){
+			case 0: case 1: default:
+				loot = new Dewdrop().quantity(2);
+				break;
+			case 3:
+				loot = Generator.random(Generator.Category.SEED);
+				break;
+			case 4:
+				loot = Generator.random(Generator.Category.STONE);
+				break;
+		}
+		return loot;
+	}
+
 	private static final String BEAM_TARGET     = "beamTarget";
 	private static final String BEAM_COOLDOWN   = "beamCooldown";
 	private static final String BEAM_CHARGED    = "beamCharged";
@@ -226,11 +247,10 @@ public class Eye extends Mob {
 
 	{
 		resistances.add( WandOfDisintegration.class );
-		resistances.add( Grim.class );
 	}
 	
 	{
-		immunities.add( Terror.class );
+		//immunities.add( Terror.class );
 	}
 
 	private class Hunting extends Mob.Hunting{

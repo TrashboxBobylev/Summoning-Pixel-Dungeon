@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -26,14 +26,19 @@ package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 import java.text.DecimalFormat;
 
 public class RingOfEvasion extends Ring {
-	
+
+	{
+		icon = ItemSpriteSheet.Icons.RING_EVASION;
+	}
+
 	public String statsInfo() {
 		if (isIdentified()){
-			return Messages.get(this, "stats", new DecimalFormat("#.##").format(100f * (Math.pow(1.15f, soloBonus()) - 1f)));
+			return Messages.get(this, "stats", new DecimalFormat("#.##").format(100f * (Math.pow(1.15f, soloBuffedBonus()) - 1f)));
 		} else {
 			return Messages.get(this, "typical_stats", new DecimalFormat("#.##").format(15f));
 		}
@@ -45,7 +50,7 @@ public class RingOfEvasion extends Ring {
 	}
 	
 	public static float evasionMultiplier( Char target ){
-		return (float) Math.pow( 1.15, getBonus(target, Evasion.class));
+		return (float) Math.pow( 1.15, getBuffedBonus(target, Evasion.class));
 	}
 
 	public class Evasion extends RingBuff {

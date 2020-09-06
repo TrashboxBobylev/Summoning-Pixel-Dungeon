@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,36 +24,72 @@
 
 package com.watabou.utils;
 
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 public class FileUtils {
 	
+	// Helper methods for setting/using a default base path and file address mode
+	
+	private static Files.FileType defaultFileType = null;
+	private static String defaultPath = "";
+	
+	public static void setDefaultFileProperties( Files.FileType type, String path ){
+		defaultFileType = type;
+		defaultPath = path;
+	}
+	
+	public static FileHandle getFileHandle( String name ){
+		return getFileHandle( defaultFileType, defaultPath, name );
+	}
+	
+	public static FileHandle getFileHandle( Files.FileType type, String name ){
+		return getFileHandle( type, "", name );
+	}
+	
+	public static FileHandle getFileHandle( Files.FileType type, String basePath, String name ){
+		switch (type){
+			case Classpath:
+				return Gdx.files.classpath( basePath + name );
+			case Internal:
+				return Gdx.files.internal( basePath + name );
+			case External:
+				return Gdx.files.external( basePath + name );
+			case Absolute:
+				return Gdx.files.absolute( basePath + name );
+			case Local:
+				return Gdx.files.local( basePath + name );
+			default:
+				return null;
+		}
+	}
+	
 	// Files
 	
 	public static boolean fileExists( String name ){
-		FileHandle file = Gdx.files.local(name);
+		FileHandle file = getFileHandle( name );
 		return file.exists() && !file.isDirectory();
 	}
 	
 	public static boolean deleteFile( String name ){
-		return Gdx.files.local(name).delete();
+		return getFileHandle( name ).delete();
 	}
 	
 	// Directories
 	
 	public static boolean dirExists( String name ){
-		FileHandle dir = Gdx.files.local( name );
+		FileHandle dir = getFileHandle( name );
 		return dir.exists() && dir.isDirectory();
 	}
 	
 	public static boolean deleteDir( String name ){
-		FileHandle dir = Gdx.files.local( name );
+		FileHandle dir = getFileHandle( name );
 		
 		if (dir == null || !dir.isDirectory()){
 			return false;
@@ -66,11 +102,12 @@ public class FileUtils {
 	
 	//only works for base path
 	public static Bundle bundleFromFile( String fileName ) throws IOException{
-		FileHandle file = Gdx.files.local(fileName);
-		if (!file.exists()){
-			throw new FileNotFoundException("file not found: " + file.path());
-		} else {
+		try {
+			FileHandle file = getFileHandle( fileName );
 			return bundleFromStream(file.read());
+		} catch (GdxRuntimeException e){
+			//game classes expect an IO exception, so wrap the GDX exception in that
+			throw new IOException(e);
 		}
 	}
 	
@@ -84,7 +121,12 @@ public class FileUtils {
 	
 	//only works for base path
 	public static void bundleToFile( String fileName, Bundle bundle ) throws IOException{
-		bundleToStream( Gdx.files.local(fileName).write(false), bundle);
+		try {
+			bundleToStream(getFileHandle( fileName ).write(false), bundle);
+		} catch (GdxRuntimeException e){
+			//game classes expect an IO exception, so wrap the GDX exception in that
+			throw new IOException(e);
+		}
 	}
 	
 	private static void bundleToStream( OutputStream output, Bundle bundle ) throws IOException{

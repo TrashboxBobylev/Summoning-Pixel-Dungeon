@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.TenguDartTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -47,18 +48,28 @@ public class ForceCube extends MissileWeapon {
 		
 		sticky = false;
 	}
-	
+
 	@Override
-    public void onThrow(int cell) {
-        Dungeon.level.pressCell(cell);
+	public void hitSound(float pitch) {
+		//no hitsound as it never hits enemies directly
+	}
 
-        ArrayList<Char> targets = new ArrayList<>();
-        if (Actor.findChar(cell) != null) targets.add(Actor.findChar(cell));
+	@Override
+	public void onThrow(int cell) {
+		if (Dungeon.level.pit[cell]){
+			super.onThrow(cell);
+			return;
+		}
 
-        for (int i : PathFinder.NEIGHBOURS8){
-            Dungeon.level.pressCell(cell);
-            if (Actor.findChar(cell + i) != null) targets.add(Actor.findChar(cell + i));
-        }
+		Dungeon.level.pressCell(cell);
+
+		ArrayList<Char> targets = new ArrayList<>();
+		if (Actor.findChar(cell) != null) targets.add(Actor.findChar(cell));
+
+		for (int i : PathFinder.NEIGHBOURS8){
+			if (!(Dungeon.level.traps.get(cell+i) instanceof TenguDartTrap)) Dungeon.level.pressCell(cell+i);
+			if (Actor.findChar(cell + i) != null) targets.add(Actor.findChar(cell + i));
+		}
 		
 		for (Char target : targets){
 			curUser.shoot(target, this);
@@ -71,6 +82,6 @@ public class ForceCube extends MissileWeapon {
 		rangedHit( null, cell );
 		
 		WandOfBlastWave.BlastWave.blast(cell);
-		Sample.INSTANCE.play( Assets.SND_BLAST );
+		Sample.INSTANCE.play( Assets.Sounds.BLAST );
 	}
 }

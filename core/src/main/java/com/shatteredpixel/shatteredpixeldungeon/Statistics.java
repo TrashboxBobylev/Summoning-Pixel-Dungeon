@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -40,14 +40,16 @@ public class Statistics {
 	public static int upgradesUsed;
 	public static int sneakAttacks;
 	public static int thrownAssists;
+
+	public static int spawnersAlive;
 	public static int cloakUsing;
 	public static int wandUses;
 	public static boolean clothArmorForWarrior;
 	public static int summonedMinions;
-	
+
 	public static float duration;
 	public static int score;
-	
+
 	public static boolean qualifiedForNoKilling = false;
 	public static boolean completedWithNoKilling = false;
 	
@@ -70,7 +72,9 @@ public class Statistics {
 		cloakUsing = 0;
 		summonedMinions = 0;
         clothArmorForWarrior = true;
-		
+
+		spawnersAlive   = 0;
+
 		duration	= 0;
 		
 		qualifiedForNoKilling = false;
@@ -78,7 +82,7 @@ public class Statistics {
 		amuletObtained = false;
 
 		score = 0;
-		
+
 	}
 	
 	private static final String GOLD		= "score";
@@ -92,7 +96,9 @@ public class Statistics {
 	private static final String UPGRADES	= "upgradesUsed";
 	private static final String SNEAKS		= "sneakAttacks";
 	private static final String THROWN		= "thrownAssists";
-	
+
+	private static final String SPAWNERS	= "spawnersAlive";
+
 	private static final String DURATION	= "duration";
 	
 	private static final String AMULET		= "amuletObtained";
@@ -113,10 +119,12 @@ public class Statistics {
         bundle.put( "cloak",		cloakUsing );
         bundle.put("minions", summonedMinions);
         bundle.put("warrior_is_ech", clothArmorForWarrior);
-		
+
+		bundle.put( SPAWNERS,	spawnersAlive );
+
 		bundle.put( DURATION,	duration );
 		bundle.put("strange_number", score);
-		
+
 		bundle.put( AMULET,		amuletObtained );
 	}
 	
@@ -132,14 +140,16 @@ public class Statistics {
 		upgradesUsed    = bundle.getInt( UPGRADES );
 		sneakAttacks    = bundle.getInt( SNEAKS );
 		thrownAssists   = bundle.getInt( THROWN );
+
+		spawnersAlive   = bundle.getInt( SPAWNERS );
         wandUses   = bundle.getInt( "wand_uses" );
         cloakUsing = bundle.getInt("cloak");
         summonedMinions = bundle.getInt("minions");
         clothArmorForWarrior = bundle.getBoolean("warrior_is_ech");
-		
+
 		duration		= bundle.getFloat( DURATION );
 		score = bundle.getInt("strange_number");
-		
+
 		amuletObtained	= bundle.getBoolean( AMULET );
 	}
 	

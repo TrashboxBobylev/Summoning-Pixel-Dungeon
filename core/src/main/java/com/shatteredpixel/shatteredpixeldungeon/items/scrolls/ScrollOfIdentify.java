@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,45 +24,23 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Identification;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
-import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Random;
-
-import java.util.ArrayList;
 
 public class ScrollOfIdentify extends InventoryScroll {
 
 	{
-		initials = 0;
+		icon = ItemSpriteSheet.Icons.SCROLL_IDENTIFY;
 		mode = WndBag.Mode.UNIDENTIFED;
 
 		bones = true;
 	}
-	
-	@Override
-	public void empoweredRead() {
-		ArrayList<Item> unIDed = new ArrayList<>();
-		
-		for( Item i : curUser.belongings){
-			if (!i.isIdentified()){
-				unIDed.add(i);
-			}
-		}
-		
-		if (unIDed.size() > 1) {
-			Random.element(unIDed).identify();
-			Sample.INSTANCE.play( Assets.SND_TELEPORT );
-		}
-		
-		doRead();
-	}
-	
+
 	@Override
 	protected void onItemSelected( Item item ) {
 		
@@ -75,7 +53,7 @@ public class ScrollOfIdentify extends InventoryScroll {
 	}
 	
 	@Override
-	public int price() {
-		return isKnown() ? 45 * quantity : super.price();
+	public int value() {
+		return isKnown() ? 45 * quantity : super.value();
 	}
 }

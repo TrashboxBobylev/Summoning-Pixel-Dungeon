@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -95,21 +95,21 @@ public class HeroSprite extends CharSprite {
 		else
 			die();
 	}
+	
+	@Override
+	public void place( int p ) {
+		super.place( p );
+		Camera.main.panTo(center(), 5f);
+	}
 
-    @Override
-    public void place( int p ) {
-        super.place( p );
-        Camera.main.panTo(center(), 5f);
-    }
-
-    @Override
-    public void move( int from, int to ) {
-        super.move( from, to );
-        if (ch.flying) {
-            play( fly );
-        }
-        Camera.main.panFollow(this, 15f);
-    }
+	@Override
+	public void move( int from, int to ) {
+		super.move( from, to );
+		if (ch.flying) {
+			play( fly );
+		}
+		Camera.main.panFollow(this, 20f);
+	}
 
 	@Override
 	public void jump( int from, int to, Callback callback ) {
@@ -153,7 +153,7 @@ public class HeroSprite extends CharSprite {
 	
 	public static TextureFilm tiers() {
 		if (tiers == null) {
-			SmartTexture texture = TextureCache.get( Assets.ROGUE );
+			SmartTexture texture = TextureCache.get( Assets.Sprites.ROGUE );
 			tiers = new TextureFilm( texture, texture.width, FRAME_HEIGHT );
 		}
 		

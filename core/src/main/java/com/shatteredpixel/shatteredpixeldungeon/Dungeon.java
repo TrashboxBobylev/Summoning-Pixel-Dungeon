@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
@@ -47,6 +48,20 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Slingshot;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
+import com.shatteredpixel.shatteredpixeldungeon.levels.CavesLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.CityLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.DeadEndLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.HallsLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.LastLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.LastShopLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.NewCavesBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.NewCityBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.NewHallsBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.NewPrisonBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.SewerBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.SewerLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.*;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
@@ -81,16 +96,22 @@ public class Dungeon {
 		//Health potion sources
 		//enemies
 		SWARM_HP,
-		GUARD_HP,
+		NECRO_HP,
 		BAT_HP,
 		WARLOCK_HP,
-		SCORPIO_HP,
+		//Demon spawners are already limited in their spawnrate, no need to limit their health drops
 		//alchemy
 		COOKING_HP,
 		BLANDFRUIT_SEED,
 
-		//doesn't use Generator, so we have to enforce one armband drop here
-		THIEVES_ARMBAND,
+		//Other limited enemy drops
+		SLIME_WEP,
+		SKELE_WEP,
+		THEIF_MISC,
+		GUARD_ARM,
+		SHAMAN_WAND,
+		DM200_EQUIP,
+		GOLEM_EQUIP,
 
         //guaranted staff
         STAFF,
@@ -166,7 +187,7 @@ public class Dungeon {
 		Actor.clear();
 		Actor.resetNextID();
 		
-		Random.seed( seed );
+		Random.pushGenerator( seed );
 
 			Scroll.initLabels();
 			Potion.initColors();
@@ -175,7 +196,7 @@ public class Dungeon {
 			SpecialRoom.initForRun();
 			SecretRoom.initForRun();
 
-		Random.seed();
+		Random.resetGenerators();
 		
 		Statistics.reset();
 		Notes.reset();
@@ -192,15 +213,14 @@ public class Dungeon {
 		for (LimitedDrops a : LimitedDrops.values())
 			a.count = 0;
 		
-		chapters = new HashSet<Integer>();
+		chapters = new HashSet<>();
 		
 		Ghost.Quest.reset();
 		Wandmaker.Quest.reset();
 		Blacksmith.Quest.reset();
 		Imp.Quest.reset();
 
-		Generator.reset();
-		Generator.initArtifacts();
+		Generator.fullReset();
 		hero = new Hero();
 		hero.live();
 		
@@ -256,7 +276,7 @@ public class Dungeon {
 			level = new CavesLevel();
 			break;
 		case 15:
-			level = new CavesBossLevel();
+			level = new NewCavesBossLevel();
 			break;
 		case 16:
 		case 17:
@@ -265,10 +285,22 @@ public class Dungeon {
 			level = new CityLevel();
 			break;
 		case 20:
-			level = new CityBossLevel();
+			level = new NewCityBossLevel();
 			break;
 		case 21:
-			level = new LastShopLevel();
+			//logic for old city boss levels, need to spawn a shop on floor 21
+			try {
+				Bundle bundle = FileUtils.bundleFromFile(GamesInProgress.depthFile(GamesInProgress.curSlot, 20));
+				Class cls = bundle.getBundle(LEVEL).getClass("__className");
+				if (cls == NewCityBossLevel.class) {
+					level = new HallsLevel();
+				} else {
+					level = new LastShopLevel();
+				}
+			} catch (Exception e) {
+				ShatteredPixelDungeon.reportException(e);
+				level = new HallsLevel();
+			}
 			break;
 		case 22:
 		case 23:
@@ -276,7 +308,7 @@ public class Dungeon {
 			level = new HallsLevel();
 			break;
 		case 25:
-			level = new HallsBossLevel();
+			level = new NewHallsBossLevel();
 			break;
 		case 26:
 			level = new LastLevel();
@@ -306,11 +338,14 @@ public class Dungeon {
 	}
 
 	public static long seedForDepth(int depth){
-		Random.seed( seed );
-		for (int i = 0; i < depth; i ++)
-			Random.Long(); //we don't care about these values, just need to go through them
-		long result = Random.Long();
-		Random.seed();
+		Random.pushGenerator( seed );
+
+			for (int i = 0; i < depth; i ++) {
+				Random.Long(); //we don't care about these values, just need to go through them
+			}
+			long result = Random.Long();
+
+		Random.popGenerator();
 		return result;
 	}
 	
@@ -325,8 +360,7 @@ public class Dungeon {
 	public static boolean bossLevel( int depth ) {
 		return depth == 5 || depth == 10 || depth == 15 || depth == 20 || depth == 25;
 	}
-	
-	@SuppressWarnings("deprecation")
+
 	public static void switchLevel( final Level level, int pos ) {
 		
 		if (pos == -2){
@@ -340,11 +374,8 @@ public class Dungeon {
 		Dungeon.level = level;
 		Mob.restoreAllies( level, pos );
 		Actor.init();
-		
-		Actor respawner = level.respawner();
-		if (respawner != null) {
-			Actor.addDelayed( respawner, level.respawnTime() );
-		}
+
+		level.addRespawner();
 
 		hero.pos = pos;
 		
@@ -364,37 +395,7 @@ public class Dungeon {
 		hero.viewDistance = light == null ? level.viewDistance : Math.max( Light.DISTANCE, level.viewDistance );
 		
 		hero.curAction = hero.lastAction = null;
-		
-		//pre-0.7.1 saves. Adjusting for spirit bows in weapon slot or with upgrades.
-		SpiritBow bow;
-		if (hero.belongings.weapon instanceof SpiritBow){
-			bow = (SpiritBow)hero.belongings.weapon;
-			hero.belongings.weapon = null;
-			
-			if (!bow.collect()){
-				level.drop(bow, hero.pos);
-			}
-		} else {
-			bow = hero.belongings.getItem(SpiritBow.class);
-		}
-		
-		//pre-0.7.1 saves. refunding upgrades previously spend on a boomerang
-		if (bow != null && bow.spentUpgrades() > 0){
-			ScrollOfUpgrade refund = new ScrollOfUpgrade();
-			refund.quantity(bow.spentUpgrades());
-			bow.level(0);
-			
-			//to prevent exploits, some SoU are lost in the conversion of a boomerang higher than +1
-			if (refund.quantity() > 1){
-				refund.quantity(1 + (int)Math.floor((refund.quantity()-1)*0.8f));
-			}
-			
-			if (!refund.collect()){
-				level.drop(refund, hero.pos);
-			}
-		}
 
-		
 		observe();
 		try {
 			saveAll();
@@ -407,9 +408,9 @@ public class Dungeon {
 
 	public static void dropToChasm( Item item ) {
 		int depth = Dungeon.depth + 1;
-		ArrayList<Item> dropped = (ArrayList<Item>)Dungeon.droppedItems.get( depth );
+		ArrayList<Item> dropped = Dungeon.droppedItems.get( depth );
 		if (dropped == null) {
-			Dungeon.droppedItems.put( depth, dropped = new ArrayList<Item>() );
+			Dungeon.droppedItems.put( depth, dropped = new ArrayList<>() );
 		}
 		dropped.add( item );
 	}
@@ -469,7 +470,7 @@ public class Dungeon {
 	private static final String QUESTS		= "quests";
 	private static final String BADGES		= "badges";
 	
-	public static void saveGame( int save ) throws IOException {
+	public static void saveGame( int save ) {
 		try {
 			Bundle bundle = new Bundle();
 
@@ -585,7 +586,7 @@ public class Dungeon {
 			
 			LimitedDrops.restore( bundle.getBundle(LIMDROPS) );
 
-			chapters = new HashSet<Integer>();
+			chapters = new HashSet<>();
 			int ids[] = bundle.getIntArray( CHAPTERS );
 			if (ids != null) {
 				for (int id : ids) {
@@ -621,17 +622,6 @@ public class Dungeon {
 		
 		hero = null;
 		hero = (Hero)bundle.get( HERO );
-
-		//pre-0.7.0 saves, back when alchemy had a window which could store items
-		if (bundle.contains("alchemy_inputs")){
-			for (Bundlable item : bundle.getCollection("alchemy_inputs")){
-				
-				//try to add normally, force-add otherwise.
-				if (!((Item)item).collect(hero.belongings.backpack)){
-					hero.belongings.backpack.items.add((Item)item);
-				}
-			}
-		}
 		
 		gold = bundle.getInt( GOLD );
 		depth = bundle.getInt( DEPTH );
@@ -663,7 +653,6 @@ public class Dungeon {
 				portedItems.put( i, items );
 			}
 		}
-
 	}
 	
 	public static Level loadLevel( int save ) throws IOException {
@@ -776,6 +765,24 @@ public class Dungeon {
 			}
 		}
 
+		for (TalismanOfForesight.CharAwareness c : hero.buffs(TalismanOfForesight.CharAwareness.class)){
+			if (Dungeon.depth != c.depth) continue;
+			Char ch = (Char) Actor.findById(c.charID);
+			if (ch == null) continue;
+			BArray.or( level.visited, level.heroFOV, ch.pos - 1 - level.width(), 3, level.visited );
+			BArray.or( level.visited, level.heroFOV, ch.pos - 1, 3, level.visited );
+			BArray.or( level.visited, level.heroFOV, ch.pos - 1 + level.width(), 3, level.visited );
+			GameScene.updateFog(ch.pos, 2);
+		}
+
+		for (TalismanOfForesight.HeapAwareness h : hero.buffs(TalismanOfForesight.HeapAwareness.class)){
+			if (Dungeon.depth != h.depth) continue;
+			BArray.or( level.visited, level.heroFOV, h.pos - 1 - level.width(), 3, level.visited );
+			BArray.or( level.visited, level.heroFOV, h.pos - 1, 3, level.visited );
+			BArray.or( level.visited, level.heroFOV, h.pos - 1 + level.width(), 3, level.visited );
+			GameScene.updateFog(h.pos, 2);
+		}
+
 		GameScene.afterObserve();
 	}
 
@@ -789,7 +796,7 @@ public class Dungeon {
 			BArray.setFalse(passable);
 	}
 
-	public static PathFinder.Path findPath(Char ch, int from, int to, boolean pass[], boolean[] visible ) {
+	public static PathFinder.Path findPath(Char ch, int to, boolean[] pass, boolean[] vis, boolean chars) {
 
 		setupPassable();
 		if (ch.flying || ch.buff( Amok.class ) != null) {
@@ -798,19 +805,25 @@ public class Dungeon {
 			System.arraycopy( pass, 0, passable, 0, Dungeon.level.length() );
 		}
 
-		for (Char c : Actor.chars()) {
-			if (visible[c.pos]) {
-				passable[c.pos] = false;
+		if (Char.hasProp(ch, Char.Property.LARGE)){
+			BArray.and( pass, Dungeon.level.openSpace, passable );
+		}
+
+		if (chars) {
+			for (Char c : Actor.chars()) {
+				if (vis[c.pos]) {
+					passable[c.pos] = false;
+				}
 			}
 		}
 
-		return PathFinder.find( from, to, passable );
+		return PathFinder.find( ch.pos, to, passable );
 
 	}
 	
-	public static int findStep(Char ch, int from, int to, boolean pass[], boolean[] visible ) {
+	public static int findStep(Char ch, int to, boolean[] pass, boolean[] visible, boolean chars ) {
 
-		if (Dungeon.level.adjacent( from, to )) {
+		if (Dungeon.level.adjacent( ch.pos, to )) {
 			return Actor.findChar( to ) == null && (pass[to] || Dungeon.level.avoid[to]) ? to : -1;
 		}
 
@@ -820,18 +833,24 @@ public class Dungeon {
 		} else {
 			System.arraycopy( pass, 0, passable, 0, Dungeon.level.length() );
 		}
-		
-		for (Char c : Actor.chars()) {
-			if (visible[c.pos]) {
-				passable[c.pos] = false;
+
+		if (Char.hasProp(ch, Char.Property.LARGE)){
+			BArray.and( pass, Dungeon.level.openSpace, passable );
+		}
+
+		if (chars){
+			for (Char c : Actor.chars()) {
+				if (visible[c.pos]) {
+					passable[c.pos] = false;
+				}
 			}
 		}
 		
-		return PathFinder.getStep( from, to, passable );
+		return PathFinder.getStep( ch.pos, to, passable );
 
 	}
 	
-	public static int flee( Char ch, int cur, int from, boolean pass[], boolean[] visible ) {
+	public static int flee( Char ch, int from, boolean[] pass, boolean[] visible, boolean chars ) {
 
 		setupPassable();
 		if (ch.flying) {
@@ -839,15 +858,21 @@ public class Dungeon {
 		} else {
 			System.arraycopy( pass, 0, passable, 0, Dungeon.level.length() );
 		}
-		
-		for (Char c : Actor.chars()) {
-			if (visible[c.pos]) {
-				passable[c.pos] = false;
+
+		if (Char.hasProp(ch, Char.Property.LARGE)){
+			BArray.and( pass, Dungeon.level.openSpace, passable );
+		}
+
+		if (chars) {
+			for (Char c : Actor.chars()) {
+				if (visible[c.pos]) {
+					passable[c.pos] = false;
+				}
 			}
 		}
-		passable[cur] = true;
+		passable[ch.pos] = true;
 		
-		return PathFinder.getStepBack( cur, from, passable );
+		return PathFinder.getStepBack( ch.pos, from, passable );
 		
 	}
 

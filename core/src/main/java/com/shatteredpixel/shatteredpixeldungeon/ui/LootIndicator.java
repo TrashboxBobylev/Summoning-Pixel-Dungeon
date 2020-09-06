@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -25,8 +25,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.watabou.input.GameAction;
 
 public class LootIndicator extends Tag {
 	
@@ -42,20 +44,25 @@ public class LootIndicator extends Tag {
 		
 		visible = false;
 	}
-	
+
 	@Override
 	protected void createChildren() {
 		super.createChildren();
-		
+
 		slot = new ItemSlot() {
 			protected void onClick() {
 				if (Dungeon.hero.handle(Dungeon.hero.pos)){
 					Dungeon.hero.next();
 				}
 
-			};
+			}
+
+			@Override
+			public GameAction keyAction() {
+				return SPDAction.TAG_LOOT;
+			}
 		};
-		slot.showParams( true, false, false );
+		slot.showExtraInfo( false );
 		add( slot );
 	}
 	
@@ -63,7 +70,7 @@ public class LootIndicator extends Tag {
 	protected void layout() {
 		super.layout();
 		
-		slot.setRect( x + 2, y + 3, width - 2, height - 6 );
+		slot.setRect( x + 2, y + 3, width - 3, height - 6 );
 	}
 	
 	@Override

@@ -4,7 +4,7 @@
  *  * Copyright (C) 2012-2015 Oleg Dolya
  *  *
  *  * Shattered Pixel Dungeon
- *  * Copyright (C) 2014-2019 Evan Debenham
+ *  * Copyright (C) 2014-2021 Evan Debenham
  *  *
  *  * Summoning Pixel Dungeon
  *  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -426,7 +426,7 @@ public class Staff extends Weapon {
                     } else {
                         curUser.sprite.parent.add(
                                 new Beam.LightRay(curUser.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(shot.collisionPos)));
-                        Sample.INSTANCE.play( Assets.SND_ZAP );
+                        Sample.INSTANCE.play( Assets.Sounds.ZAP );
                         Char ch = Actor.findChar(shot.collisionPos);
                         if (ch != null){
                             if (ch instanceof Minion){
@@ -614,7 +614,7 @@ public class Staff extends Weapon {
     }
 
     @Override
-    public int price() {
+    public int value() {
         int price = 30 * tier;
         if (hasGoodEnchant()) {
             price *= 1.5;

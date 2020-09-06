@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -52,7 +52,7 @@ public class Bat extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 5, 18 );
+		return Random.NormalIntRange( 5, 15 );
 	}
 	
 	@Override
@@ -68,7 +68,7 @@ public class Bat extends Mob {
 	@Override
 	public int attackProc( Char enemy, int damage ) {
 		damage = super.attackProc( enemy, damage );
-		int reg = Math.min( damage, HT - HP );
+		int reg = Math.min( damage - 4, HT - HP );
 		
 		if (reg > 0) {
 			HP += reg;

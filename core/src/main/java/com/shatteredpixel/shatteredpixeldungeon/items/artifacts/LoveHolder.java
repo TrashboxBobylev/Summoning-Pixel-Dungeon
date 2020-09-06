@@ -4,7 +4,7 @@
  *  * Copyright (C) 2012-2015 Oleg Dolya
  *  *
  *  * Shattered Pixel Dungeon
- *  * Copyright (C) 2014-2019 Evan Debenham
+ *  * Copyright (C) 2014-2021 Evan Debenham
  *  *
  *  * Summoning Pixel Dungeon
  *  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -200,7 +200,7 @@ public class LoveHolder extends Artifact {
                         hero.spendAndNext(2f);
                         hero.sprite.idle();
                         hero.sprite.emitter().burst(WhiteParticle.UP, 8);
-                        Sample.INSTANCE.play(Assets.SND_LULLABY);
+                        Sample.INSTANCE.play(Assets.Sounds.LULLABY);
                         hero.sprite.showStatus( CharSprite.POSITIVE, Integer.toString( str*2 ) );
                         hero.HP = Math.min(hero.HT, hero.HP + str*2);
                         charge = (int) Math.max(0, charge - str*1.5f);
@@ -263,7 +263,7 @@ public class LoveHolder extends Artifact {
                                     Char ch = Actor.findChar(shot.collisionPos);
 
                                     if (ch instanceof Minion || ch instanceof DriedRose.GhostHero || ch instanceof WandOfLivingEarth.EarthGuardian || ch instanceof WandOfWarding.Ward || (ch instanceof WardingWraith && ch.alignment == Char.Alignment.ALLY)){
-                                        Sample.INSTANCE.play(Assets.SND_DRINK);
+                                        Sample.INSTANCE.play(Assets.Sounds.DRINK);
 
                                         int healing = getHealingFromStrength(str);
 
@@ -363,7 +363,7 @@ public class LoveHolder extends Artifact {
                                     curUser.spendAndNext( 1f );
                                 }
                             });
-                            Sample.INSTANCE.play( Assets.SND_ZAP );
+                            Sample.INSTANCE.play( Assets.Sounds.ZAP );
 
                 } else {
                     GLog.i(Messages.get(LoveHolder.class, "not_enough"));
@@ -413,7 +413,7 @@ public class LoveHolder extends Artifact {
                         curUser.busy();
                         Invisibility.dispel();
                         curUser.sprite.zap(shot.collisionPos);
-                        Sample.INSTANCE.play(Assets.SND_BURNING);
+                        Sample.INSTANCE.play(Assets.Sounds.BURNING);
                         MagicMissile.boltFromChar(curUser.sprite.parent,
                                 MagicMissile.BEACON,
                                 curUser.sprite,
@@ -430,7 +430,7 @@ public class LoveHolder extends Artifact {
                                                     (int) ((6 + curUser.lvl / 3) * (1 + (str - 1) * 0.15f)),
                                                     (int) ((12 + curUser.lvl * 0.75f) * (1 + (str - 1) * 0.15f)));
                                             ch.damage(damageRoll, this);
-                                            Sample.INSTANCE.play(Assets.SND_BLAST);
+                                            Sample.INSTANCE.play(Assets.Sounds.BLAST);
 
                                             ch.sprite.burst(0xFFFFFFFF, str*3);
                                             ch.sprite.emitter().burst(WhiteParticle.UP, 8);

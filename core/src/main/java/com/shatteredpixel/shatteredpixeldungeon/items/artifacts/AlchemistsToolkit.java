@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.AlchemyScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -182,7 +183,9 @@ public class AlchemistsToolkit extends Artifact {
 				//This means that energy absorbed into the kit is recovered in 6.67 hero levels (as 33% of input energy is kept)
 				//exp towards toolkit levels is included here
 				float effectiveLevel = GameMath.gate(0, level() + exp/10f, 10);
-				partialCharge += (2 + (1f * effectiveLevel)) * levelPortion;
+				float chargeGain = (2 + (1f * effectiveLevel)) * levelPortion;
+				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
+				partialCharge += chargeGain;
 				
 				//charge is in increments of 1/10 max hunger value.
 				while (partialCharge >= 1) {

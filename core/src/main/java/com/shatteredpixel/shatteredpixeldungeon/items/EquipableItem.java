@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -92,7 +92,7 @@ public abstract class EquipableItem extends Item {
 
 	public static void equipCursed( Hero hero ) {
 		hero.sprite.emitter().burst( ShadowParticle.CURSE, 6 );
-		Sample.INSTANCE.play( Assets.SND_CURSED );
+		Sample.INSTANCE.play( Assets.Sounds.CURSED );
 	}
 
 	protected float time2equip( Hero hero ) {

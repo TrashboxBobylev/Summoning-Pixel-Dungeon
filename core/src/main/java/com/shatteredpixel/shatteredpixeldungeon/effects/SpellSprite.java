@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -45,7 +45,7 @@ public class SpellSprite extends Image {
 	
 	private enum Phase {
 		FADE_IN, STATIC, FADE_OUT
-	};
+	}
 	
 	private static final float FADE_IN_TIME		= 0.2f;
 	private static final float STATIC_TIME		= 0.8f;
@@ -59,10 +59,10 @@ public class SpellSprite extends Image {
 	private float duration;
 	private float passed;
 	
-	private static HashMap<Char,SpellSprite> all = new HashMap<Char, SpellSprite>();
+	private static HashMap<Char,SpellSprite> all = new HashMap<>();
 	
 	public SpellSprite() {
-		super( Assets.SPELL_ICONS );
+		super( Assets.Effects.SPELL_ICONS );
 		
 		if (film == null) {
 			film = new TextureFilm( texture, SIZE );

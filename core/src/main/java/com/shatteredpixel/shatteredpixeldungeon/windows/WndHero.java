@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -35,13 +35,13 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.ui.Component;
 
@@ -66,7 +66,7 @@ public class WndHero extends WndTabbed {
 		
 		resize( WIDTH, HEIGHT );
 		
-		icons = TextureCache.get( Assets.BUFFS_LARGE );
+		icons = TextureCache.get( Assets.Interfaces.BUFFS_LARGE );
 		film = new TextureFilm( icons, 16, 16 );
 		
 		stats = new StatsTab();
@@ -81,13 +81,13 @@ public class WndHero extends WndTabbed {
 			protected void select( boolean value ) {
 				super.select( value );
 				stats.visible = stats.active = selected;
-			};
+			}
 		} );
 		add( new LabeledTab( Messages.get(this, "buffs") ) {
 			protected void select( boolean value ) {
 				super.select( value );
 				buffs.visible = buffs.active = selected;
-			};
+			}
 		} );
 
 		layoutTabs();
@@ -97,7 +97,7 @@ public class WndHero extends WndTabbed {
 	
 	private class StatsTab extends Group {
 		
-		private static final int GAP = 5;
+		private static final int GAP = 6;
 		
 		private float pos;
 		
@@ -107,10 +107,10 @@ public class WndHero extends WndTabbed {
 
 			IconTitle title = new IconTitle();
 			title.icon( HeroSprite.avatar(hero.heroClass, hero.tier()) );
-			if (hero.givenName().equals(hero.className()))
+			if (hero.name().equals(hero.className()))
 				title.label( Messages.get(this, "title", hero.lvl, hero.className() ).toUpperCase( Locale.ENGLISH ) );
 			else
-				title.label((hero.givenName() + "\n" + Messages.get(this, "title", hero.lvl, hero.className())).toUpperCase(Locale.ENGLISH));
+				title.label((hero.name() + "\n" + Messages.get(this, "title", hero.lvl, hero.className())).toUpperCase(Locale.ENGLISH));
 			title.color(Window.SHPX_COLOR);
 			title.setRect( 0, 0, WIDTH, 0 );
 			add(title);
@@ -134,18 +134,17 @@ public class WndHero extends WndTabbed {
 		}
 
 		private void statSlot( String label, String value ) {
-
-			RenderedText txt = PixelScene.renderText( label, 8 );
-			txt.y = pos;
+			
+			RenderedTextBlock txt = PixelScene.renderTextBlock( label, 8 );
+			txt.setPos(0, pos);
 			add( txt );
-
-			txt = PixelScene.renderText( value, 8 );
-			txt.x = WIDTH * 0.6f;
-			txt.y = pos;
+			
+			txt = PixelScene.renderTextBlock( value, 8 );
+			txt.setPos(WIDTH * 0.6f, pos);
 			PixelScene.align(txt);
 			add( txt );
 			
-			pos += GAP + txt.baseLine();
+			pos += GAP + txt.height();
 		}
 		
 		private void statSlot( String label, int value ) {
@@ -206,7 +205,7 @@ public class WndHero extends WndTabbed {
 			private Buff buff;
 
 			Image icon;
-			RenderedText txt;
+			RenderedTextBlock txt;
 
 			public BuffSlot( Buff buff ){
 				super();
@@ -219,9 +218,12 @@ public class WndHero extends WndTabbed {
 				icon.y = this.y;
 				add( icon );
 
-				txt = PixelScene.renderText( buff.toString(), 8 );
-				txt.x = icon.width + GAP;
-				txt.y = this.y + (int)(icon.height - txt.baseLine()) / 2;
+				txt = PixelScene.renderTextBlock( buff.toString(), 8 );
+				txt.setPos(
+						icon.width + GAP,
+						this.y + (icon.height - txt.height()) / 2
+				);
+				PixelScene.align(txt);
 				add( txt );
 
 			}
@@ -230,8 +232,10 @@ public class WndHero extends WndTabbed {
 			protected void layout() {
 				super.layout();
 				icon.y = this.y;
-				txt.x = icon.width + GAP;
-				txt.y = pos + (int)(icon.height - txt.baseLine()) / 2;
+				txt.setPos(
+						icon.width + GAP,
+						this.y + (icon.height - txt.height()) / 2
+				);
 			}
 			
 			protected boolean onClick ( float x, float y ) {

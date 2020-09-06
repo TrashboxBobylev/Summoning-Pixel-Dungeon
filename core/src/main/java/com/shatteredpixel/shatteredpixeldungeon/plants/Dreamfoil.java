@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -25,19 +25,13 @@
 package com.shatteredpixel.shatteredpixeldungeon.plants;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BlobImmunity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -46,6 +40,7 @@ public class Dreamfoil extends Plant {
 
 	{
 		image = 7;
+		seedClass = Seed.class;
 	}
 
 	@Override
@@ -56,16 +51,10 @@ public class Dreamfoil extends Plant {
 				Buff.affect(ch, MagicalSleep.class);
 			} else if (ch instanceof Hero){
 				GLog.i( Messages.get(this, "refreshed") );
-				Buff.detach( ch, Poison.class );
-				Buff.detach( ch, Cripple.class );
-				Buff.detach( ch, Weakness.class );
-				Buff.detach( ch, Bleeding.class );
-				Buff.detach( ch, Drowsy.class );
-				Buff.detach( ch, Slow.class );
-				Buff.detach( ch, Vertigo.class);
+				PotionOfHealing.cure(ch);
 				
 				if (((Hero) ch).subClass == HeroSubClass.WARDEN){
-					Buff.affect(ch, BlobImmunity.class, 10f);
+					Buff.affect(ch, BlobImmunity.class, BlobImmunity.DURATION/2f);
 				}
 				
 			}

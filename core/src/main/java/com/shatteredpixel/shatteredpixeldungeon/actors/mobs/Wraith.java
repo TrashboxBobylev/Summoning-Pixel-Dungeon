@@ -167,7 +167,7 @@ public class Wraith extends Mob {
 
                 w.sprite.emitter().burst(ShadowParticle.CURSE, 5);
 
-                Sample.INSTANCE.play( Assets.SND_CURSED );
+                Sample.INSTANCE.play( Assets.Sounds.CURSED );
 
                 return w;
         } else {

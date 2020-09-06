@@ -5,9 +5,6 @@
  * Shattered Pixel Dungeon
  * Copyright (C) 2014-2019 Evan Debenham
  *
- * Summoning Pixel Dungeon
- * Copyright (C) 2019-2020 TrashboxBobylev
- *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -26,6 +23,9 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion appAndroidCompileSDK
+    compileOptions.sourceCompatibility = compileOptions.targetCompatibility = appJavaCompatibility
+
+    sourceSets.main.assets.srcDirs = [new File(project(':core').projectDir, "/src/main/assets")]
 
     defaultConfig {
         manifestPlaceholders = [appName:appName]
@@ -38,7 +38,8 @@ android {
         minSdkVersion appAndroidMinSDK
         targetSdkVersion appAndroidTargetSDK
 
-        resConfigs "en_US", "ru", "zh_CN"
+        resConfigs "en_US", "cs", "tr", "ca", "ko", "pl", "it", "ja",
+                "eo", "ru", "zh_CN", "de", "fr", "es", "pt", "fi", "hu", "in"
     }
 
     buildTypes {
@@ -51,6 +52,11 @@ android {
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            dependencies {
+                releaseImplementation project(':services:updates:githubUpdates')
+                releaseImplementation project(':services:news:shatteredNews')
+            }
         }
     }
 
@@ -67,6 +73,7 @@ dependencies {
     implementation project(':core')
 
     implementation "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
     natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
     natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
     natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
@@ -75,6 +82,11 @@ dependencies {
     implementation "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
     implementation "com.badlogicgames.gdx:gdx-controllers-android:$gdxVersion"
     implementation "com.github.RohitSurwase.UCE-Handler:uce_handler:1.4"
+    natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi"
+    natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi-v7a"
+    natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-arm64-v8a"
+    natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86"
+    natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86_64"
 }
 
 // called every time gradle gets executed, takes the native dependencies of
@@ -87,7 +99,7 @@ task copyAndroidNatives() {
     file("libs/x86_64/").mkdirs()
     file("libs/x86/").mkdirs()
 
-    configurations.natives.files.each { jar ->
+    configurations.natives.copy().files.each { jar ->
         def outputDir = null
         if(jar.name.endsWith("natives-arm64-v8a.jar")) outputDir = file("libs/arm64-v8a")
         if(jar.name.endsWith("natives-armeabi-v7a.jar")) outputDir = file("libs/armeabi-v7a")

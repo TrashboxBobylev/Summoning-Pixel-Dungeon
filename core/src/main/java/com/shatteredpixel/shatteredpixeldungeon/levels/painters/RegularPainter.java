@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -26,17 +26,20 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Patch;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.watabou.utils.Graph;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 
@@ -187,6 +190,13 @@ public abstract class RegularPainter extends Painter {
 						}
 					} else {
 						d.type = Room.Door.Type.UNLOCKED;
+					}
+
+					//entrance doors on floor 2 are hidden if the player hasn't picked up 2nd guidebook page
+					if (Dungeon.depth == 2
+							&& !Document.ADVENTURERS_GUIDE.hasPage(Document.GUIDE_SEARCH_PAGE)
+							&& r instanceof EntranceRoom){
+						d.type = Room.Door.Type.HIDDEN;
 					}
 				}
 				
@@ -359,14 +369,10 @@ public abstract class RegularPainter extends Painter {
 			Integer trapPos = Random.element(validCells);
 			validCells.remove(trapPos); //removes the integer object, not at the index
 			
-			try {
-				Trap trap = trapClasses[Random.chances( trapChances )].newInstance().hide();
-				l.setTrap( trap, trapPos );
-				//some traps will not be hidden
-				l.map[trapPos] = trap.visible ? Terrain.TRAP : Terrain.SECRET_TRAP;
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
+			Trap trap = Reflection.newInstance(trapClasses[Random.chances( trapChances )]).hide();
+			l.setTrap( trap, trapPos );
+			//some traps will not be hidden
+			l.map[trapPos] = trap.visible ? Terrain.TRAP : Terrain.SECRET_TRAP;
 		}
 	}
 	

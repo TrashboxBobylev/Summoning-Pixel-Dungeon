@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -33,13 +33,14 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Levitation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 
 public class PotionOfLevitation extends Potion {
 
 	{
-		initials = 5;
+		icon = ItemSpriteSheet.Icons.POTION_LEVITATE;
 	}
 
 	@Override
@@ -49,7 +50,8 @@ public class PotionOfLevitation extends Potion {
 			setKnown();
 
 			splash( cell );
-			Sample.INSTANCE.play( Assets.SND_SHATTER );
+			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
+			Sample.INSTANCE.play( Assets.Sounds.GAS );
 		}
 
 		GameScene.add( Blob.seed( cell, 1000, ConfusionGas.class ) );
@@ -63,7 +65,7 @@ public class PotionOfLevitation extends Potion {
 	}
 	
 	@Override
-	public int price() {
-		return isKnown() ? 50 * quantity : super.price();
+	public int value() {
+		return isKnown() ? 50 * quantity : super.value();
 	}
 }

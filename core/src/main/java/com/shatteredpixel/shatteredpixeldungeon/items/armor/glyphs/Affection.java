@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -41,13 +41,14 @@ public class Affection extends Glyph {
 	@Override
 	public int proc( Armor armor, Char attacker, Char defender, int damage) {
 
-		int level = Math.max(0, armor.level());
+		int level = Math.max(0, armor.buffedLvl());
 		
-		if (Random.Int( level / 2 + 10 ) >= 9) {
-			
-			int duration = Random.IntRange( 8, 12 );
+		// lvl 0 - 15%
+		// lvl 1 ~ 19%
+		// lvl 2 ~ 23%
+		if (Random.Int( level + 20 ) >= 17) {
 
-			Buff.affect( attacker, Charm.class, duration ).object = defender.id();
+			Buff.affect( attacker, Charm.class, Charm.DURATION ).object = defender.id();
 			attacker.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
 
 		}

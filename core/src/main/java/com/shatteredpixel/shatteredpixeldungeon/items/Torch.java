@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,11 +24,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 
 import java.util.ArrayList;
@@ -69,7 +71,8 @@ public class Torch extends Item {
 			detach( hero.belongings.backpack );
 			
 			Buff.affect(hero, Light.class, Light.DURATION);
-			
+			Sample.INSTANCE.play(Assets.Sounds.BURNING);
+
 			Emitter emitter = hero.sprite.centerEmitter();
 			emitter.start( FlameParticle.FACTORY, 0.2f, 3 );
 			
@@ -87,8 +90,8 @@ public class Torch extends Item {
 	}
 	
 	@Override
-	public int price() {
-		return 12 * quantity;
+	public int value() {
+		return 8 * quantity;
 	}
 
 }

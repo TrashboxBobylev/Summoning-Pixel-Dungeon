@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -50,7 +50,7 @@ public abstract class Actor implements Bundlable {
 	protected static final int VFX_PRIO    = 100;   //visual effects take priority
 	protected static final int HERO_PRIO   = 0;     //positive is before hero, negative after
 	protected static final int BLOB_PRIO   = -10;   //blobs act after hero, before mobs
-	protected static final int MOB_PRIO    = -20;   //mobs act between buffs and blobd
+	protected static final int MOB_PRIO    = -20;   //mobs act between buffs and blobs
 	protected static final int BUFF_PRIO   = -30;   //buffs act last in a turn
 	private static final int   DEFAULT     = -100;  //if no priority is given, act after all else
 
@@ -207,6 +207,8 @@ public abstract class Actor implements Bundlable {
 		return current != null;
 	}
 	
+	public static boolean keepActorThreadAlive = true;
+	
 	public static void process() {
 		
 		boolean doNext;
@@ -287,7 +289,7 @@ public abstract class Actor implements Bundlable {
 				}
 			}
 
-		} while (true);
+		} while (keepActorThreadAlive);
 	}
 	
 	public static void add( Actor actor ) {

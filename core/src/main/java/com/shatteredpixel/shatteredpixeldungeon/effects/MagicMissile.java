@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -70,10 +70,16 @@ public class MagicMissile extends Emitter {
 	public static final int CRYSTAL_SHARDS = 15;
 	public static final int STAR = 16;
 
+	public static final int SHAMAN_RED      = 17;
+	public static final int SHAMAN_BLUE     = 18;
+	public static final int SHAMAN_PURPLE   = 19;
+	public static final int TOXIC_VENT      = 20;
+	public static final int ELMO            = 21;
+
 	public static final int FIRE_CONE       = 100;
 	public static final int FOLIAGE_CONE    = 101;
     public static final int WARD_CONE    = 102;
-	
+
 	public void reset( int type, int from, int to, Callback callback ) {
 		reset( type,
 				DungeonTilemap.raisedTileCenterToWorld( from ),
@@ -97,9 +103,7 @@ public class MagicMissile extends Emitter {
 
 	public void reset( int type, PointF from, PointF to, Callback callback ) {
 		this.callback = callback;
-		
-		revive();
-		
+
 		this.to = to;
 		
 		x = from.x;
@@ -159,6 +163,27 @@ public class MagicMissile extends Emitter {
 				size( 4 );
 				pour( WardParticle.FACTORY, 0.01f );
 				break;
+
+			case SHAMAN_RED:
+				size( 2 );
+				pour( ShamanParticle.RED, 0.01f );
+				break;
+			case SHAMAN_BLUE:
+				size( 2 );
+				pour( ShamanParticle.BLUE, 0.01f );
+				break;
+			case SHAMAN_PURPLE:
+				size( 2 );
+				pour( ShamanParticle.PURPLE, 0.01f );
+				break;
+			case TOXIC_VENT:
+				size( 10 );
+				pour( Speck.factory(Speck.TOXIC), 0.02f );
+				break;
+			case ELMO:
+				size( 5 );
+				pour( ElmoParticle.FACTORY, 0.01f );
+				break;
             case FROGGIT:
                 size( 5 );
                 pour( WhiteParticle.FACTORY, 0.005f );
@@ -193,6 +218,8 @@ public class MagicMissile extends Emitter {
                 pour( WardParticle.FACTORY, 0.03f );
                 break;
 		}
+
+		revive();
 	}
 	
 	public void size( float size ) {
@@ -221,7 +248,10 @@ public class MagicMissile extends Emitter {
 	}
 
 
-	
+	@Override
+	protected boolean isFrozen() {
+		return false; //cannot be frozen
+	}
 	@Override
 	public void update() {
 		super.update();
@@ -246,7 +276,7 @@ public class MagicMissile extends Emitter {
 			@Override
 			public boolean lightMode() {
 				return true;
-			};
+			}
 		};
 
 		public static final Emitter.Factory ATTRACTING = new Factory() {
@@ -257,7 +287,7 @@ public class MagicMissile extends Emitter {
 			@Override
 			public boolean lightMode() {
 				return true;
-			};
+			}
 		};
 		
 		public MagicParticle() {
@@ -338,7 +368,7 @@ public class MagicMissile extends Emitter {
 			size = 4;
 			
 			if (Random.Int(10) == 0){
-				color(ColorMath.random(0xFFF568, 0x80791A));
+				color(ColorMath.random(0xFFF266, 0x80771A));
 			} else {
 				color(ColorMath.random(0x805500, 0x332500));
 			}
@@ -365,7 +395,61 @@ public class MagicMissile extends Emitter {
 	}
 
 
-	
+
+	public static class ShamanParticle extends EarthParticle{
+
+		public static final Emitter.Factory RED = new Factory() {
+			@Override
+			public void emit( Emitter emitter, int index, float x, float y ) {
+				((ShamanParticle)emitter.recycle( ShamanParticle.class ))
+						.reset( x, y, ColorMath.random(0xFF4D4D, 0x801A1A) );
+			}
+		};
+
+		public static final Emitter.Factory BLUE = new Factory() {
+			@Override
+			public void emit( Emitter emitter, int index, float x, float y ) {
+				((ShamanParticle)emitter.recycle( ShamanParticle.class ))
+						.reset( x, y, ColorMath.random(0x6699FF, 0x1A3C80) );
+			}
+		};
+
+		public static final Emitter.Factory PURPLE = new Factory() {
+			@Override
+			public void emit( Emitter emitter, int index, float x, float y ) {
+				((ShamanParticle)emitter.recycle( ShamanParticle.class ))
+						.reset( x, y, ColorMath.random(0xBB33FF, 0x5E1A80) );
+			}
+		};
+
+		int startColor;
+		int endColor;
+
+		public ShamanParticle() {
+			super();
+
+			lifespan = 0.6f;
+			acc.set( 0, 0 );
+		}
+
+		public void reset( float x, float y, int endColor ){
+			super.reset( x, y );
+
+			size( 1 );
+
+			this.endColor = endColor;
+			startColor = ColorMath.random(0x805500, 0x332500);
+
+			speed.set( Random.Float( -10, +10 ), Random.Float( -10, +10 ) );
+		}
+
+		@Override
+		public void update() {
+			super.update();
+			color( ColorMath.interpolate( endColor, startColor, (left / lifespan) ));
+		}
+	}
+
 	public static class WhiteParticle extends PixelParticle {
 		
 		public static final Emitter.Factory FACTORY = new Factory() {
@@ -376,7 +460,7 @@ public class MagicMissile extends Emitter {
 			@Override
 			public boolean lightMode() {
 				return true;
-			};
+			}
 		};
 		
 		public WhiteParticle() {
@@ -416,7 +500,7 @@ public class MagicMissile extends Emitter {
 			@Override
 			public boolean lightMode() {
 				return true;
-			};
+			}
 		};
 		
 		public SlowParticle() {

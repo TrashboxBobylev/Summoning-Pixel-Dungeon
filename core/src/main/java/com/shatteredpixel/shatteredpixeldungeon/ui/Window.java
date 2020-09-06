@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -25,8 +25,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
+import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.effects.ShadowBox;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.watabou.input.KeyBindings;
 import com.watabou.input.KeyEvent;
 import com.watabou.input.PointerEvent;
 import com.watabou.noosa.Camera;
@@ -46,7 +48,8 @@ public class Window extends Group implements Signal.Listener<KeyEvent> {
 	protected PointerArea blocker;
 	protected ShadowBox shadow;
 	protected NinePatch chrome;
-	
+
+	public static final int WHITE = 0xFFFFFF;
 	public static final int TITLE_COLOR = 0xFFFF44;
 	public static final int SHPX_COLOR = 0x35bcee;
 	
@@ -159,23 +162,18 @@ public class Window extends Group implements Signal.Listener<KeyEvent> {
 	@Override
 	public boolean onSignal( KeyEvent event ) {
 		if (event.pressed) {
-			switch (event.code) {
-				case KeyEvent.BACK:
-					onBackPressed();
-					return true;
-				case KeyEvent.MENU:
-					onMenuPressed();
-					return true;
+			if (KeyBindings.getActionForKey( event ) == SPDAction.BACK){
+				onBackPressed();
 			}
 		}
 		
-		return false;
+		//TODO currently always eats the key event as windows always take full focus
+		// if they are ever made more flexible, might not want to do this in all cases
+		return true;
 	}
 	
 	public void onBackPressed() {
 		hide();
 	}
-	
-	public void onMenuPressed() {
-	}
+
 }

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -74,7 +74,7 @@ public class Noisemaker extends Bomb {
 //		Buff.affect(Dungeon.hero, Trigger.class).set(cell);
 //
 //		CellEmitter.center( cell ).start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
-//		Sample.INSTANCE.play( Assets.SND_ALERT );
+//		Sample.INSTANCE.play( Assets.Sounds.ALERT );
 //
 //		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 //			mob.beckon( cell );
@@ -126,7 +126,7 @@ public class Noisemaker extends Bomb {
 
 				if (left <= 0){
 					CellEmitter.center( cell ).start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
-					Sample.INSTANCE.play( Assets.SND_ALERT );
+					Sample.INSTANCE.play( Assets.Sounds.ALERT );
 
 					for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 						mob.beckon( cell );
@@ -170,7 +170,7 @@ public class Noisemaker extends Bomb {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		//prices of ingredients
 		return quantity * (35 + 50);
 	}

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -64,6 +64,8 @@ public class RunicBlade extends MeleeWeapon {
 
     {
 		image = ItemSpriteSheet.RUNIC_BLADE;
+		hitSound = Assets.Sounds.HIT_SLASH;
+		hitSoundPitch = 1f;
 
 		tier = 4;
 
@@ -195,7 +197,7 @@ public class RunicBlade extends MeleeWeapon {
                             GLog.negative(Messages.get(Wand.class, "curse_discover", curBlade.name()));
                         }
                     } else {
-                        Sample.INSTANCE.play(Assets.SND_ZAP);
+                        Sample.INSTANCE.play(Assets.Sounds.ZAP);
                         ((MissileSprite) curUser.sprite.parent.recycle(MissileSprite.class)).
                                 reset(curUser.sprite,
                                         cell,
@@ -210,7 +212,7 @@ public class RunicBlade extends MeleeWeapon {
                                                         enemy.damage(dmg, curBlade);
                                                         if (curUser.subClass == HeroSubClass.GLADIATOR) Buff.affect( curUser, Combo.class ).hit( enemy );
                                                         curBlade.proc(curUser, enemy, dmg);
-                                                        Sample.INSTANCE.play(Assets.SND_HIT);
+                                                        Sample.INSTANCE.play(Assets.Sounds.HIT);
                                                     } else {
                                                         enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
                                                         Combo combo = curUser.buff(Combo.class);
@@ -351,7 +353,7 @@ public class RunicBlade extends MeleeWeapon {
                 }
             }
             SpellSprite.show(Dungeon.hero, SpellSprite.CHARGE);
-            Sample.INSTANCE.play(Assets.SND_LEVELUP);
+            Sample.INSTANCE.play(Assets.Sounds.LEVELUP);
             super.detach();
         }
     }

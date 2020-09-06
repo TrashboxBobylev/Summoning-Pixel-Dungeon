@@ -44,7 +44,7 @@ public class RingOfElements extends Ring {
 	
 	public String statsInfo() {
 		if (isIdentified()){
-			return Messages.get(this, "stats", new DecimalFormat("#.##").format(100f * (1f - Math.pow(0.88f, soloBonus()))));
+			return Messages.get(this, "stats", new DecimalFormat("#.##").format(100f * (1f - Math.pow(0.88f, soloBuffedBonus()))));
 		} else {
 			return Messages.get(this, "typical_stats", new DecimalFormat("#.##").format(12f));
 		}
@@ -89,7 +89,7 @@ public class RingOfElements extends Ring {
 		RESISTS.add (WandOfStenchGas.class);
 		RESISTS.add( Electricity.class );
 		
-		RESISTS.add( Shaman.LightningBolt.class );
+		RESISTS.add( Shaman.EarthenBolt.class );
         RESISTS.add( Hacatu.LightningBolt.class );
 		RESISTS.add( Warlock.DarkBolt.class );
         RESISTS.add( Wizard.DarkBolt.class );

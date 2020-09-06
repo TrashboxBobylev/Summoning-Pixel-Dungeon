@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,10 +24,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.watabou.noosa.tweeners.AlphaTweener;
@@ -38,7 +40,9 @@ public class HeavyBoomerang extends MissileWeapon {
 	
 	{
 		image = ItemSpriteSheet.BOOMERANG;
-		
+		hitSound = Assets.Sounds.HIT_CRUSH;
+		hitSoundPitch = 1f;
+
 		tier = 4;
 		sticky = false;
 	}
@@ -95,6 +99,7 @@ public class HeavyBoomerang extends MissileWeapon {
 				left--;
 				if (left <= 0){
 					final Char returnTarget = Actor.findChar(returnPos);
+					final Char target = this.target;
 					MissileSprite visual = ((MissileSprite) Dungeon.hero.sprite.parent.recycle(MissileSprite.class));
 					visual.reset( thrownPos,
 									returnPos,
@@ -102,16 +107,16 @@ public class HeavyBoomerang extends MissileWeapon {
 									new Callback() {
 										@Override
 										public void call() {
-											if (returnTarget == Dungeon.hero){
-												if (boomerang.doPickUp(Dungeon.hero)) {
+											if (returnTarget == target){
+												if (target instanceof Hero && boomerang.doPickUp((Hero) target)) {
 													//grabbing the boomerang takes no time
-													Dungeon.hero.spend(-TIME_TO_PICK_UP);
+													((Hero) target).spend(-TIME_TO_PICK_UP);
 												} else {
 													Dungeon.level.drop(boomerang, returnPos).sprite.drop();
 												}
 												
 											} else if (returnTarget != null){
-												if (curUser.shoot( returnTarget, boomerang )) {
+												if (((Hero)target).shoot( returnTarget, boomerang )) {
 													boomerang.decrementDurability(null);
 												}
 												if (boomerang.durability > 0) {
@@ -126,7 +131,7 @@ public class HeavyBoomerang extends MissileWeapon {
 									});
 					visual.alpha(0f);
 					float duration = Dungeon.level.trueDistance(thrownPos, returnPos) / 20f;
-					Dungeon.hero.sprite.parent.add(new AlphaTweener(visual, 1f, duration));
+					target.sprite.parent.add(new AlphaTweener(visual, 1f, duration));
 					detach();
 					return false;
 				}

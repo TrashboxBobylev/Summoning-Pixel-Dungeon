@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -41,8 +41,8 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndItem;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndUseItem;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.PixelParticle;
@@ -62,6 +62,8 @@ public class MagesStaff extends MeleeWeapon {
 
 	{
 		image = ItemSpriteSheet.MAGES_STAFF;
+		hitSound = Assets.Sounds.HIT;
+		hitSoundPitch = 1.1f;
 
 		tier = 1;
 
@@ -89,7 +91,6 @@ public class MagesStaff extends MeleeWeapon {
 		this.wand = wand;
 		updateWand(false);
 		wand.curCharges = wand.maxCharges;
-		name = Messages.get(wand, "staff_name");
 	}
 
 	@Override
@@ -120,7 +121,7 @@ public class MagesStaff extends MeleeWeapon {
 		} else if (action.equals(AC_ZAP)){
 
 			if (wand == null) {
-				GameScene.show(new WndItem(null, this, true));
+				GameScene.show(new WndUseItem(null, this));
 				return;
 			}
 
@@ -130,6 +131,18 @@ public class MagesStaff extends MeleeWeapon {
 		} else if (action.equals(WandOfStars.AC_UNLEASH)){
 		    wand.execute(hero, action);
         }
+	}
+
+	@Override
+	public int buffedLvl() {
+		int lvl = super.buffedLvl();
+		if (curUser != null && wand != null) {
+			WandOfMagicMissile.MagicCharge buff = curUser.buff(WandOfMagicMissile.MagicCharge.class);
+			if (buff != null && buff.level() > lvl){
+				return buff.level();
+			}
+		}
+		return lvl;
 	}
 
 	@Override
@@ -186,8 +199,6 @@ public class MagesStaff extends MeleeWeapon {
 		updateWand(false);
 		wand.curCharges = wand.maxCharges;
 		if (owner != null) wand.charge(owner);
-
-		name = Messages.get(wand, "staff_name");
 
 		//This is necessary to reset any particles.
 		//FIXME this is gross, should implement a better way to fully reset quickslot visuals
@@ -250,6 +261,16 @@ public class MagesStaff extends MeleeWeapon {
 	}
 
 	@Override
+	public String name() {
+		if (wand == null) {
+			return super.name();
+		} else {
+			String name = Messages.get(wand, "staff_name");
+			return enchantment != null && (cursedKnown || !enchantment.curse()) ? enchantment.name( name ) : name;
+		}
+	}
+
+	@Override
 	public String info() {
 		String info = super.info();
 
@@ -288,12 +309,11 @@ public class MagesStaff extends MeleeWeapon {
 		wand = (Wand) bundle.get(WAND);
 		if (wand != null) {
 			wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
-			name = Messages.get(wand, "staff_name");
 		}
 	}
 
 	@Override
-	public int price() {
+	public int value() {
 		return 0;
 	}
 	
@@ -346,7 +366,7 @@ public class MagesStaff extends MeleeWeapon {
 		}
 
 		private void applyWand(Wand wand){
-			Sample.INSTANCE.play(Assets.SND_BURNING);
+			Sample.INSTANCE.play(Assets.Sounds.BURNING);
 			curUser.sprite.emitter().burst( ElmoParticle.FACTORY, 12 );
 			evoke(curUser);
 

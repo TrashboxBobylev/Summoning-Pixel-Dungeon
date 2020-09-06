@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
@@ -72,7 +73,16 @@ public class Barkskin extends Buff {
 	public int icon() {
 		return BuffIndicator.BARKSKIN;
 	}
-	
+
+	@Override
+	public float iconFadePercent() {
+		if (target instanceof Hero){
+			float max = ((Hero) target).lvl + 5;
+			return (max-level)/max;
+		}
+		return 0;
+	}
+
 	@Override
 	public String toString() {
 		return Messages.get(this, "name");
@@ -80,7 +90,7 @@ public class Barkskin extends Buff {
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", level, dispTurns(cooldown()+1));
+		return Messages.get(this, "desc", level, dispTurns(visualcooldown()));
 	}
 	
 	private static final String LEVEL	    = "level";

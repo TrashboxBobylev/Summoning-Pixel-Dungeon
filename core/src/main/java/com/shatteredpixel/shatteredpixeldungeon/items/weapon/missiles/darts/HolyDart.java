@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -38,7 +38,7 @@ public class HolyDart extends TippedDart {
 	@Override
 	public int proc(Char attacker, Char defender, int damage) {
 		
-		Buff.affect(defender, Bless.class, 20f);
+		Buff.affect(defender, Bless.class, Bless.DURATION);
 		
 		if (attacker.alignment == defender.alignment){
 			return 0;

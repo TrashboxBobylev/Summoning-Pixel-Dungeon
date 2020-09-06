@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -53,6 +53,13 @@ abstract public class Tweener extends Gizmo {
 			return;
 		}
 		elapsed += Game.elapsed;
+		
+		//it's better to skip this frame ahead and finish one frame early
+		// if doing one more frame would result in lots of overshoot
+		if ((interval - elapsed) < Game.elapsed/2f){
+			elapsed = interval;
+		}
+		
 		if (elapsed >= interval) {
 			updateValues( 1 );
 			onComplete();

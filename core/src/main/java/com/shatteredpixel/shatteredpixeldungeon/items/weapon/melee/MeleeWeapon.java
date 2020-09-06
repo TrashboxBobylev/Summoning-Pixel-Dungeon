@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -122,7 +122,7 @@ public class MeleeWeapon extends Weapon {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		int price = 30 * tier;
 		if (hasGoodEnchant()) {
 			price *= 1.5;

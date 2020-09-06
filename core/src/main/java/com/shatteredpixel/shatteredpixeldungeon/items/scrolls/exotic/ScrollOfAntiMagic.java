@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -25,22 +25,20 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class ScrollOfAntiMagic extends ExoticScroll {
 	
 	{
-		initials = 7;
+		icon = ItemSpriteSheet.Icons.SCROLL_ANTIMAGIC;
 	}
 	
 	@Override
 	public void doRead() {
 		
-		Invisibility.dispel();
-		
-		Buff.affect( curUser, MagicImmune.class, 20f );
+		Buff.affect( curUser, MagicImmune.class, MagicImmune.DURATION );
 		new Flare( 5, 32 ).color( 0xFF0000, true ).show( curUser.sprite, 2f );
 		
 		setKnown();

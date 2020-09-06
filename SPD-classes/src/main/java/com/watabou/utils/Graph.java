@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -43,7 +43,7 @@ public class Graph {
 			node.distance( Integer.MAX_VALUE );
 		}
 		
-		LinkedList<Node> queue = new LinkedList<Node>();
+		LinkedList<Node> queue = new LinkedList<>();
 		
 		focus.distance( 0 );
 		queue.add( focus );
@@ -52,7 +52,7 @@ public class Graph {
 			
 			Node node = queue.poll();
 			int distance = node.distance();
-			int price = node.price();
+			int price = node.value();
 			
 			for (Node edge : node.edges()) {
 				if (edge.distance() > distance + price) {
@@ -66,7 +66,7 @@ public class Graph {
 	@SuppressWarnings("unchecked")
 	public static <T extends Node> List<T> buildPath( Collection<T> nodes, T from, T to ) {
 		
-		List<T> path = new ArrayList<T>();
+		List<T> path = new ArrayList<>();
 		
 		T room = from;
 		while (room != to) {
@@ -101,7 +101,7 @@ public class Graph {
 		int distance();
 		void distance( int value );
 		
-		int price();
+		int value();
 		void price( int value );
 		
 		Collection<? extends Node> edges();

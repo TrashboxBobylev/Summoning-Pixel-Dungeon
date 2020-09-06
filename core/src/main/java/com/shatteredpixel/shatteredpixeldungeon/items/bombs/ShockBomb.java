@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -184,7 +184,7 @@ public class ShockBomb extends Bomb {
         this.fuseShock = null;
         this.glowing();
 
-        Sample.INSTANCE.play( Assets.SND_LIGHTNING );
+        Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
 
         ArrayList<Char> affected = new ArrayList<>();
 
@@ -214,6 +214,10 @@ public class ShockBomb extends Bomb {
 
         if (Dungeon.level.heroFOV[cell]) {
 
+		CellEmitter.center(cell).burst(SparkParticle.FACTORY, 20);
+		Dungeon.hero.sprite.parent.addToFront(new Lightning(arcs, null));
+		Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
+	}
             CellEmitter.center(cell).burst(SparkParticle.FACTORY, 20);
             h.sprite.parent.addToFront(new Lightning(arcs, null));
         }
@@ -248,7 +252,7 @@ public class ShockBomb extends Bomb {
                     }
                     if (Dungeon.level.heroFOV[cell]){
                         CellEmitter.center(cell).burst(BlastParticle.FACTORY, 50);
-                        Sample.INSTANCE.play(Assets.SND_DEGRADE);
+                        Sample.INSTANCE.play(Assets.Sounds.DEGRADE);
                     }
                 }
             }
@@ -399,11 +403,11 @@ public class ShockBomb extends Bomb {
 //
 //		CellEmitter.center(cell).burst(SparkParticle.FACTORY, 20);
 //		Dungeon.hero.sprite.parent.addToFront(new Lightning(arcs, null));
-//        Sample.INSTANCE.play( Assets.SND_LIGHTNING );
+//        Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
 //	}
-	
+
 	@Override
-	public int price() {
+	public int value() {
 		//prices of ingredients
 		return quantity * (35 + 40);
 	}

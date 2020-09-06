@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -35,7 +35,7 @@ public class GhostSprite extends MobSprite {
 	public GhostSprite() {
 		super();
 		
-		texture( Assets.GHOST );
+		texture( Assets.Sprites.GHOST );
 		
 		TextureFilm frames = new TextureFilm( texture, 14, 15 );
 		

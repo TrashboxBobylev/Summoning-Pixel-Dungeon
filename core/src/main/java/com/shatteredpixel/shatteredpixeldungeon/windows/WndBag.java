@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -26,14 +26,16 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
+import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SandalsOfNature;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
@@ -54,19 +56,20 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Plant.Seed;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.watabou.gltextures.TextureCache;
+import com.watabou.input.KeyBindings;
+import com.watabou.input.KeyEvent;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Sample;
 
 public class WndBag extends WndTabbed {
@@ -103,8 +106,12 @@ public class WndBag extends WndTabbed {
 	protected static final int COLS_P    = 4;
 	protected static final int COLS_L    = 6;
 	
-	protected static final int SLOT_WIDTH	= 28;
-	protected static final int SLOT_HEIGHT	= 28;
+	protected static int SLOT_WIDTH_P   = 28;
+	protected static int SLOT_WIDTH_L   = 28;
+
+	protected static int SLOT_HEIGHT_P	= 28;
+	protected static int SLOT_HEIGHT_L	= 28;
+
 	protected static final int SLOT_MARGIN	= 1;
 	
 	protected static final int TITLE_HEIGHT	= 14;
@@ -115,6 +122,9 @@ public class WndBag extends WndTabbed {
 
 	private int nCols;
 	private int nRows;
+
+	private int slotWidth;
+	private int slotHeight;
 
 	protected int count;
 	protected int col;
@@ -139,17 +149,32 @@ public class WndBag extends WndTabbed {
 		lastMode = mode;
 		lastBag = bag;
 
-		nCols = SPDSettings.landscape() ? COLS_L : COLS_P;
-		nRows = (int)Math.ceil((Belongings.BACKPACK_SIZE + 4) / (float)nCols);
+		slotWidth = PixelScene.landscape() ? SLOT_WIDTH_L : SLOT_WIDTH_P;
+		slotHeight = PixelScene.landscape() ? SLOT_HEIGHT_L : SLOT_HEIGHT_P;
 
-		int slotsWidth = SLOT_WIDTH * nCols + SLOT_MARGIN * (nCols - 1);
-		int slotsHeight = SLOT_HEIGHT * nRows + SLOT_MARGIN * (nRows - 1);
+		nCols = PixelScene.landscape() ? COLS_L : COLS_P;
+		nRows = (int)Math.ceil(25/(float)nCols); //we expect to lay out 25 slots in all cases
 
-		placeTitle( bag, slotsWidth );
+		int windowWidth = slotWidth * nCols + SLOT_MARGIN * (nCols - 1);
+		int windowHeight = TITLE_HEIGHT + slotHeight * nRows + SLOT_MARGIN * (nRows - 1);
+
+		if (PixelScene.landscape()){
+			while (slotHeight >= 24 && (windowHeight + 20 + chrome.marginTop()) > PixelScene.uiCamera.height){
+				slotHeight--;
+				windowHeight -= nRows;
+			}
+		} else {
+			while (slotWidth >= 26 && (windowWidth + chrome.marginHor()) > PixelScene.uiCamera.width){
+				slotWidth--;
+				windowWidth -= nCols;
+			}
+		}
+
+		placeTitle( bag, windowWidth );
 		
 		placeItems( bag );
 
-		resize( slotsWidth, slotsHeight + TITLE_HEIGHT );
+		resize( windowWidth, windowHeight );
 
 		Belongings stuff = Dungeon.hero.belongings;
 		Bag[] bags = {
@@ -192,15 +217,7 @@ public class WndBag extends WndTabbed {
 	}
 	
 	protected void placeTitle( Bag bag, int width ){
-		
-		RenderedText txtTitle = PixelScene.renderText(
-				title != null ? Messages.titleCase(title) : Messages.titleCase( bag.name() ), 9 );
-		txtTitle.hardlight( TITLE_COLOR );
-		txtTitle.x = 1;
-		txtTitle.y = (int)(TITLE_HEIGHT - txtTitle.baseLine()) / 2f - 1;
-		PixelScene.align(txtTitle);
-		add( txtTitle );
-		
+
 		ItemSprite gold = new ItemSprite(ItemSpriteSheet.GOLD, null);
 		gold.x = width - gold.width() - 1;
 		gold.y = (TITLE_HEIGHT - gold.height())/2f - 1;
@@ -214,6 +231,17 @@ public class WndBag extends WndTabbed {
 		amt.y = (TITLE_HEIGHT - amt.baseLine())/2f - 1;
 		PixelScene.align(amt);
 		add(amt);
+
+		RenderedTextBlock txtTitle = PixelScene.renderTextBlock(
+				title != null ? Messages.titleCase(title) : Messages.titleCase( bag.name() ), 8 );
+		txtTitle.hardlight( TITLE_COLOR );
+		txtTitle.maxWidth( (int)amt.x - 2 );
+		txtTitle.setPos(
+				1,
+				(TITLE_HEIGHT - txtTitle.height()) / 2f - 1
+		);
+		PixelScene.align(txtTitle);
+		add( txtTitle );
 	}
 	
 	protected void placeItems( Bag container ) {
@@ -222,24 +250,37 @@ public class WndBag extends WndTabbed {
 		Belongings stuff = Dungeon.hero.belongings;
 		placeItem( stuff.weapon != null ? stuff.weapon : new Placeholder( ItemSpriteSheet.WEAPON_HOLDER ) );
 		placeItem( stuff.armor != null ? stuff.armor : new Placeholder( ItemSpriteSheet.ARMOR_HOLDER ) );
-		placeItem( stuff.misc1 != null ? stuff.misc1 : new Placeholder( ItemSpriteSheet.RING_HOLDER ) );
-		placeItem( stuff.misc2 != null ? stuff.misc2 : new Placeholder( ItemSpriteSheet.RING_HOLDER ) );
+		placeItem( stuff.artifact != null ? stuff.artifact : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
+		placeItem( stuff.misc != null ? stuff.misc : new Placeholder( ItemSpriteSheet.SOMETHING ) );
+		placeItem( stuff.ring != null ? stuff.ring : new Placeholder( ItemSpriteSheet.RING_HOLDER ) );
 
-		// Items in the bag
+		//the container itself if it's not the root backpack
+		if (container != Dungeon.hero.belongings.backpack){
+			placeItem(container);
+			count--; //don't count this one, as it's not actually inside of itself
+		}
+
+		// Items in the bag, except other containers (they have tags at the bottom)
 		for (Item item : container.items.toArray(new Item[0])) {
-			placeItem( item );
+			if (!(item instanceof Bag)) {
+				placeItem( item );
+			} else {
+				count++;
+			}
 		}
 		
 		// Free Space
-		while ((count - 4) < container.size) {
+		while ((count - 5) < container.capacity()) {
 			placeItem( null );
 		}
 	}
 	
 	protected void placeItem( final Item item ) {
-		
-		int x = col * (SLOT_WIDTH + SLOT_MARGIN);
-		int y = TITLE_HEIGHT + row * (SLOT_HEIGHT + SLOT_MARGIN);
+
+		count++;
+
+		int x = col * (slotWidth + SLOT_MARGIN);
+		int y = TITLE_HEIGHT + row * (slotHeight + SLOT_MARGIN);
 		
 		add( new ItemButton( item ).setPos( x, y ) );
 		
@@ -247,14 +288,16 @@ public class WndBag extends WndTabbed {
 			col = 0;
 			row++;
 		}
-		
-		count++;
+
 	}
-	
+
 	@Override
-	public void onMenuPressed() {
-		if (listener == null) {
+	public boolean onSignal(KeyEvent event) {
+		if (event.pressed && KeyBindings.getActionForKey( event ) == SPDAction.INVENTORY) {
 			hide();
+			return true;
+		} else {
+			return super.onSignal(event);
 		}
 	}
 	
@@ -312,14 +355,16 @@ public class WndBag extends WndTabbed {
 	}
 	
 	public static class Placeholder extends Item {
-		{
-			name = null;
-		}
-		
-		public Placeholder( int image ) {
+
+		public Placeholder(int image ) {
 			this.image = image;
 		}
-		
+
+		@Override
+		public String name() {
+			return null;
+		}
+
 		@Override
 		public boolean isIdentified() {
 			return true;
@@ -344,17 +389,17 @@ public class WndBag extends WndTabbed {
 			super( item );
 
 			this.item = item;
-			if (item instanceof Gold) {
+			if (item instanceof Gold || item instanceof Bag) {
 				bg.visible = false;
 			}
 			
-			width = SLOT_WIDTH;
-			height = SLOT_HEIGHT;
+			width = slotWidth;
+			height = slotHeight;
 		}
 		
 		@Override
 		protected void createChildren() {
-			bg = new ColorBlock( SLOT_WIDTH, SLOT_HEIGHT, NORMAL );
+			bg = new ColorBlock( 1, 1, NORMAL );
 			add( bg );
 			
 			super.createChildren();
@@ -362,6 +407,7 @@ public class WndBag extends WndTabbed {
 		
 		@Override
 		protected void layout() {
+			bg.size(width, height);
 			bg.x = x;
 			bg.y = y;
 			
@@ -391,7 +437,7 @@ public class WndBag extends WndTabbed {
 					enable( false );
 				} else {
 					enable(
-						mode == Mode.FOR_SALE && !item.unique && (item.price() > 0) && (!item.isEquipped( Dungeon.hero ) || !item.cursed) ||
+						mode == Mode.FOR_SALE && Shopkeeper.willBuyItem(item) ||
 						mode == Mode.UPGRADEABLE && item.isUpgradable() ||
 						mode == Mode.UNIDENTIFED && !item.isIdentified() ||
 						mode == Mode.UNCURSABLE && ScrollOfRemoveCurse.uncursable(item) ||
@@ -402,7 +448,7 @@ public class WndBag extends WndTabbed {
                         mode == Mode.ARMOR_FOR_IMBUE && (item instanceof Armor && !(item instanceof ConjurerArmor)) ||
 						mode == Mode.ENCHANTABLE && ((item instanceof MeleeWeapon || item instanceof SpiritBow || item instanceof Slingshot || item instanceof Armor || item instanceof Staff) && !(item instanceof Broadsword)) ||
 						mode == Mode.WAND && (item instanceof Wand) ||
-						mode == Mode.SEED && (item instanceof Seed) ||
+						mode == Mode.SEED && SandalsOfNature.canUseSeed(item) ||
 						mode == Mode.FOOD && (item instanceof Food) ||
 						mode == Mode.POTION && (item instanceof Potion) ||
 						mode == Mode.SCROLL && (item instanceof Scroll) ||
@@ -423,16 +469,16 @@ public class WndBag extends WndTabbed {
 		@Override
 		protected void onPointerDown() {
 			bg.brightness( 1.5f );
-			Sample.INSTANCE.play( Assets.SND_CLICK, 0.7f, 0.7f, 1.2f );
-		};
+			Sample.INSTANCE.play( Assets.Sounds.CLICK, 0.7f, 0.7f, 1.2f );
+		}
 		
 		protected void onPointerUp() {
 			bg.brightness( 1.0f );
-		};
+		}
 		
 		@Override
 		protected void onClick() {
-			if (!lastBag.contains(item) && !item.isEquipped(Dungeon.hero)){
+			if (lastBag != item && !lastBag.contains(item) && !item.isEquipped(Dungeon.hero)){
 
 				hide();
 
@@ -443,7 +489,7 @@ public class WndBag extends WndTabbed {
 				
 			} else {
 				
-				Game.scene().addToFront(new WndItem( WndBag.this, item ) );
+				Game.scene().addToFront(new WndUseItem( WndBag.this, item ) );
 				
 			}
 		}

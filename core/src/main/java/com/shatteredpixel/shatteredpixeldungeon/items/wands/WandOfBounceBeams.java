@@ -3,7 +3,7 @@
  *   * Copyright (C) 2012-2015 Oleg Dolya
  *   *
  *   * Shattered Pixel Dungeon
- *   * Copyright (C) 2014-2019 Evan Debenham
+ *   * Copyright (C) 2014-2021 Evan Debenham
  *   *
  *   * Summoning Pixel Dungeon
  *   * Copyright (C) 2019-2020 TrashboxBobylev
@@ -142,7 +142,7 @@ public class WandOfBounceBeams extends DamageWand{
     protected void fx( Ballistica beam, Callback callback ) {
         curUser.sprite.parent.add(
                 new Beam.DeathRay(curUser.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(beam.collisionPos)));
-        Sample.INSTANCE.play( Assets.SND_RAY );
+        Sample.INSTANCE.play( Assets.Sounds.RAY );
         callback.call();
     }
 

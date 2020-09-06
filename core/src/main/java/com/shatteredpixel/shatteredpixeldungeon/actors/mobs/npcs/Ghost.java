@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -26,11 +26,8 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.FetidRat;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollTrickster;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GreatCrab;
@@ -56,9 +53,12 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSadGhost;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 public class Ghost extends NPC {
 
@@ -69,23 +69,21 @@ public class Ghost extends NPC {
 		
 		state = WANDERING;
 	}
-	
-	public Ghost() {
-		super();
-
-		Sample.INSTANCE.load( Assets.SND_GHOST );
-	}
 
 	@Override
 	protected boolean act() {
-		if (Quest.processed())
+		if (Quest.processed()) {
 			target = Dungeon.hero.pos;
+		}
+		if (Dungeon.level.heroFOV[pos] && !Quest.completed()){
+			Notes.add( Notes.Landmark.GHOST );
+		}
 		return super.act();
 	}
 
 	@Override
 	public int defenseSkill( Char enemy ) {
-		return 100_000_000;
+		return INFINITE_EVASION;
 	}
 	
 	@Override
@@ -112,32 +110,46 @@ public class Ghost extends NPC {
 	}
 	
 	@Override
-	public boolean interact() {
-		sprite.turnTo( pos, Dungeon.hero.pos );
+	public boolean interact(Char c) {
+		sprite.turnTo( pos, c.pos );
 		
-		Sample.INSTANCE.play( Assets.SND_GHOST );
+		Sample.INSTANCE.play( Assets.Sounds.GHOST );
+
+		if (c != Dungeon.hero){
+			return super.interact(c);
+		}
 		
 		if (Quest.given) {
 			if (Quest.weapon != null) {
 				if (Quest.processed) {
-					GameScene.show(new WndSadGhost(this, Quest.type));
+					Game.runOnRenderThread(new Callback() {
+						@Override
+						public void call() {
+							GameScene.show(new WndSadGhost(Ghost.this, Quest.type));
+						}
+					});
 				} else {
-					switch (Quest.type) {
-						case 1:
-						default:
-							GameScene.show(new WndQuest(this, Messages.get(this, "rat_2")));
-							break;
-						case 2:
-							GameScene.show(new WndQuest(this, Messages.get(this, "gnoll_2")));
-							break;
-						case 3:
-							GameScene.show(new WndQuest(this, Messages.get(this, "crab_2")));
-							break;
-					}
+					Game.runOnRenderThread(new Callback() {
+						@Override
+						public void call() {
+							switch (Quest.type) {
+								case 1:
+								default:
+									GameScene.show(new WndQuest(Ghost.this, Messages.get(Ghost.this, "rat_2")));
+									break;
+								case 2:
+									GameScene.show(new WndQuest(Ghost.this, Messages.get(Ghost.this, "gnoll_2")));
+									break;
+								case 3:
+									GameScene.show(new WndQuest(Ghost.this, Messages.get(Ghost.this, "crab_2")));
+									break;
+							}
+						}
+					});
 
 					int newPos = -1;
 					for (int i = 0; i < 10; i++) {
-						newPos = Dungeon.level.randomRespawnCell();
+						newPos = Dungeon.level.randomRespawnCell( this );
 						if (newPos != -1) {
 							break;
 						}
@@ -158,32 +170,31 @@ public class Ghost extends NPC {
 			switch (Quest.type){
 				case 1: default:
 					questBoss = new FetidRat();
-					txt_quest = Messages.get(this, "rat_1", Dungeon.hero.givenName()); break;
+					txt_quest = Messages.get(this, "rat_1", Dungeon.hero.name()); break;
 				case 2:
 					questBoss = new GnollTrickster();
-					txt_quest = Messages.get(this, "gnoll_1", Dungeon.hero.givenName()); break;
+					txt_quest = Messages.get(this, "gnoll_1", Dungeon.hero.name()); break;
 				case 3:
 					questBoss = new GreatCrab();
-					txt_quest = Messages.get(this, "crab_1", Dungeon.hero.givenName()); break;
+					txt_quest = Messages.get(this, "crab_1", Dungeon.hero.name()); break;
 			}
 
-			questBoss.pos = Dungeon.level.randomRespawnCell();
+			questBoss.pos = Dungeon.level.randomRespawnCell( this );
 
 			if (questBoss.pos != -1) {
 				GameScene.add(questBoss);
-				GameScene.show( new WndQuest( this, txt_quest ) );
 				Quest.given = true;
-				Notes.add( Notes.Landmark.GHOST );
+				Game.runOnRenderThread(new Callback() {
+					@Override
+					public void call() {
+						GameScene.show( new WndQuest( Ghost.this, txt_quest ) );
+					}
+				});
 			}
 
 		}
 
-		return false;
-	}
-	
-	{
-		immunities.add( Paralysis.class );
-		immunities.add( Roots.class );
+		return true;
 	}
 
 	public static class Quest {
@@ -200,7 +211,7 @@ public class Ghost extends NPC {
 		public static Weapon weapon;
 		public static Armor armor;
 		public static Staff staff;
-		
+
 		public static void reset() {
 			spawned = false;
 			
@@ -219,7 +230,7 @@ public class Ghost extends NPC {
 		private static final String WEAPON		= "weapon";
 		private static final String ARMOR		= "armor";
         private static final String STAFF		= "staff";
-		
+
 		public static void storeInBundle( Bundle bundle ) {
 			
 			Bundle node = new Bundle();
@@ -267,7 +278,7 @@ public class Ghost extends NPC {
 				
 				Ghost ghost = new Ghost();
 				do {
-					ghost.pos = level.randomRespawnCell();
+					ghost.pos = level.randomRespawnCell( ghost );
 				} while (ghost.pos == -1);
 				level.mobs.add( ghost );
 				
@@ -344,7 +355,7 @@ public class Ghost extends NPC {
 		public static void process() {
 			if (spawned && given && !processed && (depth == Dungeon.depth)) {
 				GLog.negative( Messages.get(Ghost.class, "find_me") );
-				Sample.INSTANCE.play( Assets.SND_GHOST );
+				Sample.INSTANCE.play( Assets.Sounds.GHOST );
 				processed = true;
 			}
 		}
@@ -353,7 +364,7 @@ public class Ghost extends NPC {
 			weapon = null;
 			armor = null;
 			staff = null;
-			
+
 			Notes.remove( Notes.Landmark.GHOST );
 		}
 

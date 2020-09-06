@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,7 +24,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret;
 
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfLullaby;
@@ -41,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.HashMap;
 
@@ -60,11 +60,11 @@ public class SecretLibraryRoom extends SecretRoom {
 	static{
 		scrollChances.put( ScrollOfIdentify.class,      1f );
 		scrollChances.put( ScrollOfRemoveCurse.class,   2f );
-		scrollChances.put( ScrollOfMagicMapping.class,  3f );
 		scrollChances.put( ScrollOfMirrorImage.class,   3f );
 		scrollChances.put( ScrollOfRecharging.class,    3f );
+		scrollChances.put( ScrollOfTeleportation.class, 3f );
 		scrollChances.put( ScrollOfLullaby.class,       4f );
-		scrollChances.put( ScrollOfRetribution.class,  4f );
+		scrollChances.put( ScrollOfMagicMapping.class,  4f );
 		scrollChances.put( ScrollOfRage.class,          4f );
 		scrollChances.put( ScrollOfTeleportation.class, 4f );
 		scrollChances.put( ScrollOfAttunement.class,        4f );
@@ -94,14 +94,9 @@ public class SecretLibraryRoom extends SecretRoom {
 				pos = level.pointToCell(random());
 			} while (level.map[pos] != Terrain.EMPTY_SP || level.heaps.get( pos ) != null);
 			
-			try{
-				Class<?extends Scroll> scrollCls = Random.chances(chances);
-				chances.put(scrollCls, 0f);
-				level.drop( scrollCls.newInstance(), pos );
-			} catch (Exception e){
-				ShatteredPixelDungeon.reportException(e);
-			}
-			
+			Class<?extends Scroll> scrollCls = Random.chances(chances);
+			chances.put(scrollCls, 0f);
+			level.drop( Reflection.newInstance(scrollCls), pos );
 		}
 	}
 	

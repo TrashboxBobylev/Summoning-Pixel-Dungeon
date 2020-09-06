@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -30,6 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 public class WndQuest extends WndTitledMessage {
 
 	public WndQuest( NPC questgiver, String text ) {
-		super( questgiver.sprite(), Messages.titleCase(questgiver.getName()), text );
+		super( questgiver.sprite(), Messages.titleCase( questgiver.name() ), text );
 	}
 }

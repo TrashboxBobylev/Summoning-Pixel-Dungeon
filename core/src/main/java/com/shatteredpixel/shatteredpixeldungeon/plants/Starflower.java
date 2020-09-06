@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,7 +24,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.plants;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -32,12 +31,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.watabou.utils.Random;
 
 public class Starflower extends Plant {
 
 	{
 		image = 9;
+		seedClass = Seed.class;
 	}
 
 	@Override
@@ -46,13 +45,10 @@ public class Starflower extends Plant {
 		if (ch != null) {
 			Buff.prolong(ch, Bless.class, Bless.DURATION);
 			if (ch instanceof Hero && ((Hero) ch).subClass == HeroSubClass.WARDEN){
-				Buff.prolong(ch, Recharging.class, Bless.DURATION);
+				Buff.prolong(ch, Recharging.class, Recharging.DURATION);
 			}
 		}
 
-		if (Random.Int(5) == 0){
-			Dungeon.level.drop(new Seed(), pos).sprite.drop();
-		}
 	}
 
 	public static class Seed extends Plant.Seed{
@@ -64,7 +60,7 @@ public class Starflower extends Plant {
 		}
 		
 		@Override
-		public int price() {
+		public int value() {
 			return 30 * quantity;
 		}
 	}

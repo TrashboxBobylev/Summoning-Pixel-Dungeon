@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -61,6 +61,10 @@ public class Texture {
 			Gdx.gl.glBindTexture( Gdx.gl.GL_TEXTURE_2D, id );
 			bound_id = id;
 		}
+	}
+	
+	public static void clear(){
+		bound_id = 0;
 	}
 	
 	public void filter( int minMode, int maxMode ) {

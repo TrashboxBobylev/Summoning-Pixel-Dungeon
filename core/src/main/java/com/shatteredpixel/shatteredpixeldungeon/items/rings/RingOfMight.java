@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -29,10 +29,15 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 import java.text.DecimalFormat;
 
 public class RingOfMight extends Ring {
+
+	{
+		icon = ItemSpriteSheet.Icons.RING_MIGHT;
+	}
 
 	@Override
 	public boolean doEquip(Hero hero) {
@@ -75,7 +80,7 @@ public class RingOfMight extends Ring {
 	
 	public String statsInfo() {
 		if (isIdentified()){
-			return Messages.get(this, "stats", soloBonus(), new DecimalFormat("#.##").format(100f * (Math.pow(1.035, soloBonus()) - 1f)));
+			return Messages.get(this, "stats", soloBonus(), new DecimalFormat("#.##").format(100f * (Math.pow(1.035, soloBuffedBonus()) - 1f)));
 		} else {
 			return Messages.get(this, "typical_stats", 1, new DecimalFormat("#.##").format(3.5f));
 		}
@@ -91,7 +96,7 @@ public class RingOfMight extends Ring {
 	}
 	
 	public static float HTMultiplier( Char target ){
-		return (float)Math.pow(1.035, getBonus(target, Might.class));
+		return (float)Math.pow(1.035, getBuffedBonus(target, Might.class));
 	}
 
 	public class Might extends RingBuff {

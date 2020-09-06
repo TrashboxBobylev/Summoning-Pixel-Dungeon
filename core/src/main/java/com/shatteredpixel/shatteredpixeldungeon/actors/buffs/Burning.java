@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -37,7 +37,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -101,8 +100,7 @@ public class Burning extends Buff implements Hero.Doom {
 					ArrayList<Item> burnable = new ArrayList<>();
 					//does not reach inside of containers
 					for (Item i : hero.belongings.backpack.items){
-						if ((i instanceof Scroll && !(i instanceof ScrollOfUpgrade))
-								|| i instanceof MysteryMeat){
+						if (!i.unique && (i instanceof Scroll || i instanceof MysteryMeat)){
 							burnable.add(i);
 						}
 					}
@@ -124,12 +122,11 @@ public class Burning extends Buff implements Hero.Doom {
 				target.damage( damage, this );
 			}
 
-			if (target instanceof Thief) {
+			if (target instanceof Thief && ((Thief) target).item != null) {
 
 				Item item = ((Thief) target).item;
 
-				if (item instanceof Scroll &&
-						!(item instanceof ScrollOfUpgrade)) {
+				if (!item.unique && item instanceof Scroll) {
 					target.sprite.emitter().burst( ElmoParticle.FACTORY, 6 );
 					((Thief)target).item = null;
 				} else if (item instanceof MysteryMeat) {
@@ -171,6 +168,11 @@ public class Burning extends Buff implements Hero.Doom {
 	@Override
 	public int icon() {
 		return BuffIndicator.FIRE;
+	}
+
+	@Override
+	public float iconFadePercent() {
+		return Math.max(0, (DURATION - left) / DURATION);
 	}
 
 	@Override

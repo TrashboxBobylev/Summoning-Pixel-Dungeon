@@ -3,10 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
- *
- * Summoning Pixel Dungeon
- * Copyright (C) 2019-2020 TrashboxBobylev
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -248,24 +245,24 @@ public class Tilemap extends Visual {
 		if (length <= 0)
 			return;*/
 
-        NoosaScript script = script();
+		NoosaScript script = script();
 
-        texture.bind();
+		texture.bind();
 
-        script.uModel.valueM4( matrix );
-        script.lighting(
-                rm, gm, bm, am,
-                ra, ga, ba, aa );
+		script.uModel.valueM4( matrix );
+		script.lighting(
+				rm, gm, bm, am,
+				ra, ga, ba, aa );
 
-        script.camera( camera );
+		script.camera( camera );
 
-        script.drawQuadSet( buffer, size, 0 );
+		script.drawQuadSet( buffer, size, 0 );
 
-    }
-
-    protected NoosaScript script(){
-        return NoosaScriptNoLighting.get();
-    }
+	}
+	
+	protected NoosaScript script(){
+		return NoosaScriptNoLighting.get();
+	}
 
 	@Override
 	public void destroy() {

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -27,16 +27,14 @@ package com.shatteredpixel.shatteredpixeldungeon.plants;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.watabou.noosa.Image;
+import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
@@ -45,6 +43,7 @@ public class Swiftthistle extends Plant {
 	
 	{
 		image = 2;
+		seedClass = Seed.class;
 	}
 	
 	@Override
@@ -75,16 +74,16 @@ public class Swiftthistle extends Plant {
 		}
 		
 		private float left;
-		ArrayList<Integer> presses = new ArrayList<Integer>();
+		ArrayList<Integer> presses = new ArrayList<>();
 		
 		@Override
 		public int icon() {
 			return BuffIndicator.SLOW;
 		}
-		
+
 		@Override
-		public void tintIcon(Image icon) {
-			FlavourBuff.greyIcon(icon, 5f, left);
+		public float iconFadePercent() {
+			return Math.max(0, (6f - left) / 6f);
 		}
 		
 		public void reset(){
@@ -104,8 +103,6 @@ public class Swiftthistle extends Plant {
 		public void processTime(float time){
 			left -= time;
 			
-			BuffIndicator.refreshHero();
-			
 			if (left <= 0){
 				detach();
 			}
@@ -119,29 +116,30 @@ public class Swiftthistle extends Plant {
 		
 		private void triggerPresses(){
 			for (int cell : presses)
-				Dungeon.level.press(cell, null, true);
+				Dungeon.level.pressCell(cell);
 			
 			presses = new ArrayList<>();
 		}
 		
 		@Override
-		public boolean attachTo(Char target) {
-			if (Dungeon.level != null)
-				for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
-					mob.sprite.add(CharSprite.State.PARALYSED);
-			GameScene.freezeEmitters = true;
-			return super.attachTo(target);
-		}
-		
-		@Override
 		public void detach(){
-			for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
-				if (mob.paralysed <= 0) mob.sprite.remove(CharSprite.State.PARALYSED);
-			GameScene.freezeEmitters = false;
-			
 			super.detach();
 			triggerPresses();
 			target.next();
+		}
+
+		@Override
+		public void fx(boolean on) {
+			Emitter.freezeEmitters = on;
+			if (on){
+				for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
+					if (mob.sprite != null) mob.sprite.add(CharSprite.State.PARALYSED);
+				}
+			} else {
+				for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
+					if (mob.paralysed <= 0) mob.sprite.remove(CharSprite.State.PARALYSED);
+				}
+			}
 		}
 		
 		private static final String PRESSES = "presses";

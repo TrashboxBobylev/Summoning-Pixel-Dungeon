@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -36,7 +36,6 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.watabou.noosa.Image;
 
 public class Invisibility extends FlavourBuff {
 
@@ -71,10 +70,10 @@ public class Invisibility extends FlavourBuff {
 	public int icon() {
 		return BuffIndicator.INVISIBLE;
 	}
-	
+
 	@Override
-	public void tintIcon(Image icon) {
-		greyIcon(icon, 5f, cooldown());
+	public float iconFadePercent() {
+		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
 	}
 
 	@Override
@@ -94,9 +93,8 @@ public class Invisibility extends FlavourBuff {
 	}
 
 	public static void dispel() {
-		Invisibility buff = Dungeon.hero.buff( Invisibility.class );
-		if (buff != null) {
-			buff.detach();
+		for ( Buff invis : Dungeon.hero.buffs( Invisibility.class )){
+			invis.detach();
 		}
 		CloakOfShadows.cloakStealth cloakBuff = Dungeon.hero.buff( CloakOfShadows.cloakStealth.class );
 		if (cloakBuff != null) {

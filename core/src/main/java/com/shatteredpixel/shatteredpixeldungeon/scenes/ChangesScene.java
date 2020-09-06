@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,18 +24,20 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.*;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.NinePatch;
-import com.watabou.noosa.RenderedText;
+import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.ui.Component;
 
 import java.util.ArrayList;
@@ -48,13 +50,17 @@ public class ChangesScene extends PixelScene {
 	public void create() {
 		super.create();
 
+		Music.INSTANCE.play( Assets.Music.THEME, true );
+
 		int w = Camera.main.width;
 		int h = Camera.main.height;
 
-		RenderedText title = PixelScene.renderText( Messages.get(this, "title"), 9 );
+		RenderedTextBlock title = PixelScene.renderTextBlock( Messages.get(this, "title"), 9 );
 		title.hardlight(Window.TITLE_COLOR);
-		title.x = (w - title.width()) / 2f;
-		title.y = (20 - title.baseLine()) / 2f;
+		title.setPos(
+				(w - title.width()) / 2f,
+				(20 - title.height()) / 2f
+		);
 		align(title);
 		add(title);
 
@@ -69,7 +75,7 @@ public class ChangesScene extends PixelScene {
 
 		panel.size( pw, ph );
 		panel.x = (w - pw) / 2f;
-		panel.y = title.y + title.height();
+		panel.y = title.bottom() + 4;
 		align( panel );
 		add( panel );
 		
@@ -80,6 +86,7 @@ public class ChangesScene extends PixelScene {
                 SummPDChanges.addAllChanges(changeInfos);
 				break;
 			case 1:
+				v0_8_X_Changes.addAllChanges(changeInfos);
                 v0_7_X_Changes.addAllChanges(changeInfos);
 				v0_6_X_Changes.addAllChanges(changeInfos);
 				v0_5_X_Changes.addAllChanges(changeInfos);

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,10 +24,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
 public class WndOptions extends Window {
@@ -41,40 +40,48 @@ public class WndOptions extends Window {
 	public WndOptions( String title, String message, String... options ) {
 		super();
 
-		int width = SPDSettings.landscape() ? WIDTH_L : WIDTH_P;
+		int width = PixelScene.landscape() ? WIDTH_L : WIDTH_P;
 
-		RenderedTextMultiline tfTitle = PixelScene.renderMultiline( title, 9 );
-		tfTitle.hardlight( TITLE_COLOR );
-		tfTitle.setPos(MARGIN, MARGIN);
-		tfTitle.maxWidth(width - MARGIN * 2);
-		add( tfTitle );
+		float pos = MARGIN;
+		if (title != null) {
+			RenderedTextBlock tfTitle = PixelScene.renderTextBlock(title, 9);
+			tfTitle.hardlight(TITLE_COLOR);
+			tfTitle.setPos(MARGIN, pos);
+			tfTitle.maxWidth(width - MARGIN * 2);
+			add(tfTitle);
+
+			pos = tfTitle.bottom() + 3*MARGIN;
+		}
 		
-		RenderedTextMultiline tfMesage = PixelScene.renderMultiline( 6 );
+		RenderedTextBlock tfMesage = PixelScene.renderTextBlock( 6 );
 		tfMesage.text(message, width - MARGIN * 2);
-		tfMesage.setPos( MARGIN, tfTitle.top() + tfTitle.height() + MARGIN );
+		tfMesage.setPos( MARGIN, pos );
 		add( tfMesage );
 		
-		float pos = tfMesage.bottom() + MARGIN;
+		pos = tfMesage.bottom() + 2*MARGIN;
 		
 		for (int i=0; i < options.length; i++) {
 			final int index = i;
-			if (!options[i].isEmpty()) {
-                RedButton btn = new RedButton(options[i]) {
-                    @Override
-                    protected void onClick() {
-                        hide();
-                        onSelect(index);
-                    }
-                };
-                btn.setRect(MARGIN, pos, width - MARGIN * 2, BUTTON_HEIGHT);
-                add(btn);
-
-                pos += BUTTON_HEIGHT + MARGIN;
-            }
+			RedButton btn = new RedButton( options[i] ) {
+				@Override
+				protected void onClick() {
+					hide();
+					onSelect( index );
+				}
+			};
+			btn.enable(enabled(i));
+			btn.setRect( MARGIN, pos, width - MARGIN * 2, BUTTON_HEIGHT );
+			add( btn );
+			
+			pos += BUTTON_HEIGHT + MARGIN;
 		}
 		
 		resize( width, (int)pos );
 	}
-	
-	protected void onSelect( int index ) {};
+
+	protected boolean enabled( int index ){
+		return true;
+	}
+
+	protected void onSelect( int index ) {}
 }

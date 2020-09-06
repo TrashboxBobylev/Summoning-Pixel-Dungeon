@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,6 +24,9 @@
 
 package com.watabou.utils;
 
+import com.watabou.noosa.Game;
+
+import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -31,19 +34,38 @@ import java.util.List;
 
 public class Random {
 
-	private static java.util.Random rand = new java.util.Random();
-
-	public static void seed( ){
-		rand = new java.util.Random();
+	//we store a stack of random number generators, which may be seeded deliberately or randomly.
+	//top of the stack is what is currently being used to generate new numbers.
+	//the base generator is always created with no seed, and cannot be popped.
+	private static ArrayDeque<java.util.Random> generators;
+	static {
+		resetGenerators();
 	}
 
-	public static void seed( long seed ){
-		rand.setSeed(seed);
+	public static void resetGenerators(){
+		generators = new ArrayDeque<>();
+		generators.push(new java.util.Random());
+	}
+
+	public static void pushGenerator(){
+		generators.push( new java.util.Random() );
+	}
+
+	public static void pushGenerator( long seed ){
+		generators.push( new java.util.Random( seed ) );
+	}
+
+	public static void popGenerator(){
+		if (generators.size() == 1){
+			Game.reportException( new RuntimeException("tried to pop the last random number generator!"));
+		} else {
+			generators.pop();
+		}
 	}
 
 	//returns a uniformly distributed float in the range [0, 1)
 	public static float Float() {
-		return rand.nextFloat();
+		return generators.peek().nextFloat();
 	}
 
 	//returns a uniformly distributed float in the range [0, max)
@@ -63,7 +85,7 @@ public class Random {
 
 	//returns a uniformly distributed int in the range [0, max)
 	public static int Int( int max ) {
-		return max > 0 ? rand.nextInt(max) : 0;
+		return max > 0 ? generators.peek().nextInt(max) : 0;
 	}
 
 	//returns a uniformly distributed int in the range [min, max)
@@ -83,7 +105,7 @@ public class Random {
 
 	//returns a uniformly distributed long in the range [-2^63, 2^63)
 	public static long Long() {
-		return rand.nextLong();
+		return generators.peek().nextLong();
 	}
 
 	//returns a uniformly distributed long in the range [0, max)
@@ -172,7 +194,7 @@ public class Random {
 	}
 
 	public static<T> void shuffle( List<?extends T> list){
-		Collections.shuffle(list, rand);
+		Collections.shuffle(list, generators.peek());
 	}
 	
 	public static<T> void shuffle( T[] array ) {

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -26,18 +26,17 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBadge;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Button;
@@ -52,7 +51,7 @@ public class BadgesScene extends PixelScene {
 
 		super.create();
 
-		Music.INSTANCE.play( Assets.THEME, true );
+		Music.INSTANCE.play( Assets.Music.THEME, true );
 
 		uiCamera.visible = false;
 
@@ -66,10 +65,12 @@ public class BadgesScene extends PixelScene {
 		float left = 5;
 		float top = 20;
 
-		RenderedText title = PixelScene.renderText( Messages.get(this, "title"), 9 );
+		RenderedTextBlock title = PixelScene.renderTextBlock( Messages.get(this, "title"), 9 );
 		title.hardlight(Window.TITLE_COLOR);
-		title.x = (w - title.width()) / 2f;
-		title.y = (top - title.baseLine()) / 2f;
+		title.setPos(
+				(w - title.width()) / 2f,
+				(top - title.height()) / 2f
+		);
 		align(title);
 		add(title);
 
@@ -84,8 +85,8 @@ public class BadgesScene extends PixelScene {
 		blankBadges = Math.max(0, blankBadges);
 
 		//guarantees a max of 5 rows in landscape, and 8 in portrait, assuming a max of 40 buttons
-		int nCols = SPDSettings.landscape() ? 7 : 4;
-		if (badges.size() + blankBadges > 32 && !SPDSettings.landscape())	nCols++;
+		int nCols = landscape() ? 7 : 4;
+		if (badges.size() + blankBadges > 32 && !landscape())	nCols++;
 
 		int nRows = 1 + (blankBadges + badges.size())/nCols;
 
@@ -136,7 +137,7 @@ public class BadgesScene extends PixelScene {
 			this.badge = badge;
 			active = (badge != null);
 
-			icon = active ? BadgeBanner.image(badge.image) : new Image( Assets.LOCKED );
+			icon = active ? BadgeBanner.image(badge.image) : new Image( Assets.Interfaces.LOCKED );
 			add(icon);
 
 			setSize( icon.width(), icon.height() );
@@ -161,7 +162,7 @@ public class BadgesScene extends PixelScene {
 
 		@Override
 		protected void onClick() {
-			Sample.INSTANCE.play( Assets.SND_CLICK, 0.7f, 0.7f, 1.2f );
+			Sample.INSTANCE.play( Assets.Sounds.CLICK, 0.7f, 0.7f, 1.2f );
 			Game.scene().add( new WndBadge( badge ) );
 		}
 	}

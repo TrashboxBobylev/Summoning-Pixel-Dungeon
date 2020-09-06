@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -43,7 +43,7 @@ public class ShockingTrap extends Trap {
 	public void activate() {
 		
 		if (Dungeon.level.heroFOV[pos]){
-			Sample.INSTANCE.play( Assets.SND_LIGHTNING );
+			Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
 		}
 		
 		for( int i : PathFinder.NEIGHBOURS9) {

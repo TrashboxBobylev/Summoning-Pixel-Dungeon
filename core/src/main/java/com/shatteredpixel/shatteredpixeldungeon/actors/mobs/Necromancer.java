@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,17 +28,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Empowered;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.NecromancerSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SkeletonSprite;
@@ -53,14 +49,14 @@ public class Necromancer extends Mob {
 	{
 		spriteClass = NecromancerSprite.class;
 		
-		HP = HT = 40;
-		defenseSkill = 11;
+		HP = HT = 35;
+		defenseSkill = 13;
 		
 		EXP = 7;
 		maxLvl = 14;
-
-        loot = Generator.Category.STAFFS;
-        lootChance = 0.125f;
+		
+		loot = new PotionOfHealing();
+		lootChance = 0.2f; //see createloot
 		
 		properties.add(Property.UNDEAD);
 		
@@ -75,7 +71,16 @@ public class Necromancer extends Mob {
 	
 	private NecroSkeleton mySkeleton;
 	private int storedSkeletonID = -1;
-	
+
+	@Override
+	protected boolean act() {
+		if (summoning && state != HUNTING){
+			summoning = false;
+			updateSpriteState();
+		}
+		return super.act();
+	}
+
 	@Override
 	public void updateSpriteState() {
 		super.updateSpriteState();
@@ -84,6 +89,9 @@ public class Necromancer extends Mob {
 			summoningEmitter = CellEmitter.get( summoningPos );
 			summoningEmitter.pour(Speck.factory(Speck.RATTLE), 0.2f);
 			sprite.zap( summoningPos );
+		} else if (!summoning && summoningEmitter != null){
+			summoningEmitter.on = false;
+			summoningEmitter = null;
 		}
 	}
 	
@@ -91,17 +99,18 @@ public class Necromancer extends Mob {
 	public int drRoll() {
 		return Random.NormalIntRange(0, 5);
 	}
-
-    @Override
-    protected Item createLoot() {
-        Staff loot;
-        do {
-            loot = Generator.randomStaff();
-            //50% chance of re-rolling tier 4 or 5 melee weapons
-        } while (loot.tier >= 4 && Random.Int(2) == 0);
-        loot.level(0);
-        return loot;
-    }
+	
+	@Override
+	public void rollToDropLoot() {
+		lootChance *= ((6f - Dungeon.LimitedDrops.NECRO_HP.count) / 6f);
+		super.rollToDropLoot();
+	}
+	
+	@Override
+	protected Item createLoot(){
+		Dungeon.LimitedDrops.NECRO_HP.count++;
+		return super.createLoot();
+	}
 	
 	@Override
 	public void die(Object cause) {
@@ -118,7 +127,7 @@ public class Necromancer extends Mob {
 		}
 		
 		if (summoningEmitter != null){
-			summoningEmitter.killAndErase();
+			summoningEmitter.on = false;
 			summoningEmitter = null;
 		}
 		
@@ -157,28 +166,31 @@ public class Necromancer extends Mob {
 	}
 	
 	public void onZapComplete(){
-		if (mySkeleton == null){
+		if (mySkeleton == null || mySkeleton.sprite == null || !mySkeleton.isAlive()){
 			return;
 		}
 		
 		//heal skeleton first
 		if (mySkeleton.HP < mySkeleton.HT){
+
+			if (sprite.visible || mySkeleton.sprite.visible) {
+				sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
+			}
 			
-			sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
-            Sample.INSTANCE.play( Assets.SND_RAY );
-			
-			mySkeleton.HP = Math.min(mySkeleton.HP + 8, mySkeleton.HT);
+			mySkeleton.HP = Math.min(mySkeleton.HP + 5, mySkeleton.HT);
 			mySkeleton.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
 			
 			//otherwise give it adrenaline
 		} else if (mySkeleton.buff(Adrenaline.class) == null) {
+
+			if (sprite.visible || mySkeleton.sprite.visible) {
+				sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
+			}
 			
-			sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
-            Sample.INSTANCE.play( Assets.SND_RAY );
-			
-			Buff.affect(mySkeleton, Adrenaline.class, 4f);
-            Buff.affect(mySkeleton, Empowered.class, 4f);
+			Buff.affect(mySkeleton, Adrenaline.class, 3f);
 		}
+		
+		next();
 	}
 	
 	private class Hunting extends Mob.Hunting{
@@ -228,7 +240,7 @@ public class Necromancer extends Mob {
 				mySkeleton.pos = summoningPos;
 				GameScene.add( mySkeleton );
 				Dungeon.level.occupyCell( mySkeleton );
-				Sample.INSTANCE.play(Assets.SND_BONES);
+				Sample.INSTANCE.play(Assets.Sounds.BONES);
 				summoningEmitter.burst( Speck.factory( Speck.RATTLE ), 5 );
 				sprite.idle();
 				
@@ -279,6 +291,7 @@ public class Necromancer extends Mob {
 			} else if (enemySeen && mySkeleton != null){
 				
 				target = enemy.pos;
+				spend(TICK);
 				
 				if (!fieldOfView[mySkeleton.pos]){
 					
@@ -296,24 +309,36 @@ public class Necromancer extends Mob {
 						}
 						
 						if (telePos != -1){
-							sprite.zap(telePos);
+							
 							ScrollOfTeleportation.appear(mySkeleton, telePos);
 							mySkeleton.teleportSpend();
+							
+							if (sprite != null && sprite.visible){
+								sprite.zap(telePos);
+								return false;
+							} else {
+								onZapComplete();
+							}
 						}
 					}
+					
+					return true;
 					
 				} else {
 					
 					//zap skeleton
 					if (mySkeleton.HP < mySkeleton.HT || mySkeleton.buff(Adrenaline.class) == null) {
-						sprite.zap(mySkeleton.pos);
+						if (sprite != null && sprite.visible){
+							sprite.zap(mySkeleton.pos);
+							return false;
+						} else {
+							onZapComplete();
+						}
 					}
 					
 				}
 				
-				spend(TICK);
 				return true;
-				
 				
 			//otherwise, default to regular hunting behaviour
 			} else {
@@ -332,10 +357,15 @@ public class Necromancer extends Mob {
 			//no loot or exp
 			maxLvl = -5;
 			
-			//15/25 health to start
-			HP = 15;
+			//20/25 health to start
+			HP = 20;
 		}
-		
+
+		@Override
+		public float spawningWeight() {
+			return 0;
+		}
+
 		private void teleportSpend(){
 			spend(TICK);
 		}

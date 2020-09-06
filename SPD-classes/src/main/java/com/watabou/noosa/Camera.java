@@ -3,10 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
- *
- * Summoning Pixel Dungeon
- * Copyright (C) 2019-2020 TrashboxBobylev
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +30,7 @@ import java.util.ArrayList;
 
 public class Camera extends Gizmo {
 
-	private static ArrayList<Camera> all = new ArrayList<Camera>();
+	private static ArrayList<Camera> all = new ArrayList<>();
 	
 	protected static float invW2;
 	protected static float invH2;
@@ -129,125 +126,125 @@ public class Camera extends Gizmo {
 		matrix = new float[16];
 		Matrix.setIdentity( matrix );
 	}
-
-    @Override
-    public void destroy() {
-        panIntensity = 0f;
-    }
-
-    public void zoom( float value ) {
-        zoom( value,
-                scroll.x + width / 2,
-                scroll.y + height / 2 );
-    }
-
-    public void zoom( float value, float fx, float fy ) {
-
-        zoom = value;
-        width = (int)(screenWidth / zoom);
-        height = (int)(screenHeight / zoom);
-
-        snapTo( fx, fy );
-    }
-
-    public void resize( int width, int height ) {
-        this.width = width;
-        this.height = height;
-        screenWidth = (int)(width * zoom);
-        screenHeight = (int)(height * zoom);
-    }
-
-    Visual followTarget = null;
-    PointF panTarget;
-    //camera moves at a speed such that it will pan to its current target in 1/intensity seconds
-    //keep in mind though that this speed is constantly decreasing, so actual pan time is higher
-    float panIntensity = 0f;
-
-    @Override
-    public void update() {
-        super.update();
-
-        if (followTarget != null){
-            panTarget = followTarget.center();
-        }
-
-        if (panIntensity > 0f){
-            PointF panMove = new PointF();
-            panMove.x = panTarget.x - (scroll.x + width/2f);
-            panMove.y = panTarget.y - (scroll.y + height/2f);
-
-            panMove.scale(Game.elapsed * panIntensity);
-
-            scroll.offset(panMove);
-        }
-
-        if ((shakeTime -= Game.elapsed) > 0) {
-            float damping = shakeTime / shakeDuration;
-            shakeX = Random.Float( -shakeMagX, +shakeMagX ) * damping;
-            shakeY = Random.Float( -shakeMagY, +shakeMagY ) * damping;
-        } else {
-            shakeX = 0;
-            shakeY = 0;
-        }
-
-        updateMatrix();
-    }
-
-    public PointF center() {
-        return new PointF( width / 2, height / 2 );
-    }
-
-    public boolean hitTest( float x, float y ) {
-        return x >= this.x && y >= this.y && x < this.x + screenWidth && y < this.y + screenHeight;
-    }
-
-    public void shift( PointF point ){
-        scroll.offset(point);
-        panIntensity = 0f;
-    }
-
-    public void snapTo(float x, float y ) {
-        scroll.set( x - width / 2, y - height / 2 );
-        panIntensity = 0f;
-        followTarget = null;
-    }
-
-    public void snapTo(PointF point ) {
-        snapTo( point.x, point.y );
-    }
-
-    public void panTo( PointF dst, float intensity ){
-        panTarget = dst;
-        panIntensity = intensity;
-        followTarget = null;
-    }
-
-    public void panFollow(Visual target, float intensity ){
-        followTarget = target;
-        panIntensity = intensity;
-    }
-
-    public PointF screenToCamera( int x, int y ) {
-        return new PointF(
-                (x - this.x) / zoom + scroll.x,
-                (y - this.y) / zoom + scroll.y );
-    }
-
-    public Point cameraToScreen( float x, float y ) {
-        return new Point(
-                (int)((x - scroll.x) * zoom + this.x),
-                (int)((y - scroll.y) * zoom + this.y));
-    }
-
-    public float screenWidth() {
-        return width * zoom;
-    }
-
-    public float screenHeight() {
-        return height * zoom;
-    }
-
-    protected void updateMatrix() {
+	
+	@Override
+	public void destroy() {
+		panIntensity = 0f;
+	}
+	
+	public void zoom( float value ) {
+		zoom( value,
+			scroll.x + width / 2,
+			scroll.y + height / 2 );
+	}
+	
+	public void zoom( float value, float fx, float fy ) {
+		
+		zoom = value;
+		width = (int)(screenWidth / zoom);
+		height = (int)(screenHeight / zoom);
+		
+		snapTo( fx, fy );
+	}
+	
+	public void resize( int width, int height ) {
+		this.width = width;
+		this.height = height;
+		screenWidth = (int)(width * zoom);
+		screenHeight = (int)(height * zoom);
+	}
+	
+	Visual followTarget = null;
+	PointF panTarget;
+	//camera moves at a speed such that it will pan to its current target in 1/intensity seconds
+	//keep in mind though that this speed is constantly decreasing, so actual pan time is higher
+	float panIntensity = 0f;
+	
+	@Override
+	public void update() {
+		super.update();
+		
+		if (followTarget != null){
+			panTarget = followTarget.center();
+		}
+		
+		if (panIntensity > 0f){
+			PointF panMove = new PointF();
+			panMove.x = panTarget.x - (scroll.x + width/2f);
+			panMove.y = panTarget.y - (scroll.y + height/2f);
+			
+			panMove.scale(Math.min(1f, Game.elapsed * panIntensity));
+			
+			scroll.offset(panMove);
+		}
+		
+		if ((shakeTime -= Game.elapsed) > 0) {
+			float damping = shakeTime / shakeDuration;
+			shakeX = Random.Float( -shakeMagX, +shakeMagX ) * damping;
+			shakeY = Random.Float( -shakeMagY, +shakeMagY ) * damping;
+		} else {
+			shakeX = 0;
+			shakeY = 0;
+		}
+		
+		updateMatrix();
+	}
+	
+	public PointF center() {
+		return new PointF( width / 2, height / 2 );
+	}
+	
+	public boolean hitTest( float x, float y ) {
+		return x >= this.x && y >= this.y && x < this.x + screenWidth && y < this.y + screenHeight;
+	}
+	
+	public void shift( PointF point ){
+		scroll.offset(point);
+		panIntensity = 0f;
+	}
+	
+	public void snapTo(float x, float y ) {
+		scroll.set( x - width / 2, y - height / 2 );
+		panIntensity = 0f;
+		followTarget = null;
+	}
+	
+	public void snapTo(PointF point ) {
+		snapTo( point.x, point.y );
+	}
+	
+	public void panTo( PointF dst, float intensity ){
+		panTarget = dst;
+		panIntensity = intensity;
+		followTarget = null;
+	}
+	
+	public void panFollow(Visual target, float intensity ){
+		followTarget = target;
+		panIntensity = intensity;
+	}
+	
+	public PointF screenToCamera( int x, int y ) {
+		return new PointF(
+			(x - this.x) / zoom + scroll.x,
+			(y - this.y) / zoom + scroll.y );
+	}
+	
+	public Point cameraToScreen( float x, float y ) {
+		return new Point(
+			(int)((x - scroll.x) * zoom + this.x),
+			(int)((y - scroll.y) * zoom + this.y));
+	}
+	
+	public float screenWidth() {
+		return width * zoom;
+	}
+	
+	public float screenHeight() {
+		return height * zoom;
+	}
+	
+	protected void updateMatrix() {
 
 	/*	Matrix.setIdentity( matrix );
 		Matrix.translate( matrix, -1, +1 );
@@ -255,17 +252,17 @@ public class Camera extends Gizmo {
 		Matrix.translate( matrix, x, y );
 		Matrix.scale( matrix, zoom, zoom );
 		Matrix.translate( matrix, scroll.x, scroll.y );*/
-
-        matrix[0] = +zoom * invW2;
-        matrix[5] = -zoom * invH2;
-
-        matrix[12] = -1 + x * invW2 - (scroll.x + shakeX) * matrix[0];
-        matrix[13] = +1 - y * invH2 - (scroll.y + shakeY) * matrix[5];
-
-    }
-
-    public void shake( float magnitude, float duration ) {
-        shakeMagX = shakeMagY = magnitude;
-        shakeTime = shakeDuration = duration;
-    }
+		
+		matrix[0] = +zoom * invW2;
+		matrix[5] = -zoom * invH2;
+		
+		matrix[12] = -1 + x * invW2 - (scroll.x + shakeX) * matrix[0];
+		matrix[13] = +1 - y * invH2 - (scroll.y + shakeY) * matrix[5];
+		
+	}
+	
+	public void shake( float magnitude, float duration ) {
+		shakeMagX = shakeMagY = magnitude;
+		shakeTime = shakeDuration = duration;
+	}
 }

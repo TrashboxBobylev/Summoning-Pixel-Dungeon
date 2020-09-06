@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -25,10 +25,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 
@@ -46,12 +46,6 @@ public abstract class ConnectionRoom extends Room {
 	public int minConnections(int direction) {
 		if (direction == ALL)   return 2;
 		else                    return 0;
-	}
-	
-	@Override
-	public int maxConnections(int direction) {
-		if (direction == ALL)   return 16;
-		else                    return 4;
 	}
 	
 	@Override
@@ -77,7 +71,7 @@ public abstract class ConnectionRoom extends Room {
 	static {
 		chances[1] =  new float[]{20, 1,    0, 2,       2, 1};
 		chances[4] =  chances[3] = chances[2] = chances[1];
-		chances[5] =  new float[]{18, 0,    0, 0,       7, 0};
+		chances[5] =  new float[]{20, 0,    0, 0,       0, 0};
 		
 		chances[6] =  new float[]{0, 0,     22, 3,      0, 0};
 		chances[10] = chances[9] = chances[8] = chances[7] = chances[6];
@@ -95,11 +89,6 @@ public abstract class ConnectionRoom extends Room {
 	}
 	
 	public static ConnectionRoom createRoom(){
-		try {
-			return rooms.get(Random.chances(chances[Dungeon.depth])).newInstance();
-		} catch (Exception e) {
-			ShatteredPixelDungeon.reportException(e);
-			return null;
-		}
+		return Reflection.newInstance(rooms.get(Random.chances(chances[Dungeon.depth])));
 	}
 }

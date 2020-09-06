@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -63,8 +63,8 @@ public class ChangeButton extends Component {
 	protected void layout() {
 		super.layout();
 		
-		icon.x = x + (width - icon.width) / 2f;
-		icon.y = y + (height - icon.height) / 2f;
+		icon.x = x + (width - icon.width()) / 2f;
+		icon.y = y + (height - icon.height()) / 2f;
 		PixelScene.align(icon);
 	}
 }

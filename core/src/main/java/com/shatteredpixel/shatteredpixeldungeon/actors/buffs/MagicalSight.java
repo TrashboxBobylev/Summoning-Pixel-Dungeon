@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -45,10 +45,15 @@ public class MagicalSight extends FlavourBuff {
 	public int icon() {
 		return BuffIndicator.MIND_VISION;
 	}
-	
+
 	@Override
 	public void tintIcon(Image icon) {
-		greyIcon(icon, 5f, cooldown());
+		icon.hardlight(1f, 1.67f, 1f);
+	}
+
+	@Override
+	public float iconFadePercent() {
+		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
 	}
 	
 	@Override

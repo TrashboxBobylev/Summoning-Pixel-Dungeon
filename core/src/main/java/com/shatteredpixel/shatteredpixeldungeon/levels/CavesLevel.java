@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BurningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ConfusionTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CorrosionTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FrostTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrippingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GuardianTrap;
@@ -59,8 +58,6 @@ public class CavesLevel extends RegularLevel {
 	{
 		color1 = 0x534f3e;
 		color2 = 0xb9d661;
-
-		viewDistance = Math.min(6, viewDistance);
 	}
 	
 	@Override
@@ -91,28 +88,28 @@ public class CavesLevel extends RegularLevel {
 	
 	@Override
 	public String tilesTex() {
-		return Assets.TILES_CAVES;
+		return Assets.Environment.TILES_CAVES;
 	}
 	
 	@Override
 	public String waterTex() {
-		return Assets.WATER_CAVES;
+		return Assets.Environment.WATER_CAVES;
 	}
 	
 	@Override
 	protected Class<?>[] trapClasses() {
-		return new Class[]{ BurningTrap.class, PoisonDartTrap.class, FrostTrap.class, StormTrap.class, CorrosionTrap.class,
-				GrippingTrap.class, ExplosiveTrap.class, RockfallTrap.class,  GuardianTrap.class,
-				ConfusionTrap.class, SummoningTrap.class, WarpingTrap.class,
-				PitfallTrap.class };
+		return new Class[]{
+				BurningTrap.class, PoisonDartTrap.class, FrostTrap.class, StormTrap.class, CorrosionTrap.class,
+				GrippingTrap.class, RockfallTrap.class,  GuardianTrap.class,
+				ConfusionTrap.class, SummoningTrap.class, WarpingTrap.class, PitfallTrap.class };
 	}
 
 	@Override
 	protected float[] trapChances() {
-		return new float[]{ 8, 8, 8, 8, 8,
-				4, 4, 4, 4,
+		return new float[]{
+				4, 4, 4, 4, 4,
 				2, 2, 2,
-				1 };
+				1, 1, 1, 1};
 	}
 	
 	@Override

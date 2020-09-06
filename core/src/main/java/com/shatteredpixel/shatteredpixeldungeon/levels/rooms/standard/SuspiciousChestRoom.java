@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -59,7 +60,7 @@ public class SuspiciousChestRoom extends EmptyRoom {
 		Painter.set(level, center, Terrain.PEDESTAL);
 
 		if (Random.Int(3) == 0) {
-			level.drop(i, center).type = Heap.Type.MIMIC;
+			level.mobs.add(Mimic.spawnAt(center, i));
 		} else {
 			level.drop(i, center).type = Heap.Type.CHEST;
 		}

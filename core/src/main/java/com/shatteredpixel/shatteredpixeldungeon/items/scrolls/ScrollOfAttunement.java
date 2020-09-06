@@ -32,21 +32,22 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 
 public class ScrollOfAttunement extends Scroll {
 
 	{
-		initials = 9;
+		icon = ItemSpriteSheet.Icons.RING_TENACITY;
 	}
 
 	@Override
 	public void doRead() {
 		
 		new Flare( 5, 32 ).color( 0xFFFFFF, true ).show( curUser.sprite, 2f );
-		Sample.INSTANCE.play( Assets.SND_READ );
-        Sample.INSTANCE.play( Assets.SND_LULLABY );
+		Sample.INSTANCE.play( Assets.Sounds.READ );
+        Sample.INSTANCE.play( Assets.Sounds.LULLABY );
         GameScene.flash( 0xFFFFFF );
 		Invisibility.dispel();
 		
@@ -82,7 +83,7 @@ public class ScrollOfAttunement extends Scroll {
 	}
 	
 	@Override
-	public int price() {
-		return isKnown() ? 50 * quantity : super.price();
+	public int value() {
+		return isKnown() ? 50 * quantity : super.value();
 	}
 }

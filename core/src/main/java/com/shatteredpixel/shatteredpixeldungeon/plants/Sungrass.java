@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -27,7 +27,6 @@ package com.shatteredpixel.shatteredpixeldungeon.plants;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Healing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -37,13 +36,13 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShaftParticle;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 
 public class Sungrass extends Plant {
 	
 	{
 		image = 3;
+		seedClass = Seed.class;
 	}
 	
 	@Override
@@ -110,8 +109,6 @@ public class Sungrass extends Plant {
 			
 			if (level <= 0) {
 				detach();
-			} else {
-				BuffIndicator.refreshHero();
 			}
 			spend( STEP );
 			return true;
@@ -126,10 +123,10 @@ public class Sungrass extends Plant {
 		public int icon() {
 			return BuffIndicator.HERB_HEALING;
 		}
-		
+
 		@Override
-		public void tintIcon(Image icon) {
-			FlavourBuff.greyIcon(icon, target.HT/4f, level);
+		public float iconFadePercent() {
+			return Math.max(0, (target.HT - level) / (float)target.HT);
 		}
 		
 		@Override

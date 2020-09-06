@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -38,6 +38,7 @@ public class Rotberry extends Plant {
 
 	{
 		image = 0;
+		seedClass = Seed.class;
 	}
 
 	@Override
@@ -65,10 +66,12 @@ public class Rotberry extends Plant {
 			image = ItemSpriteSheet.SEED_ROTBERRY;
 
 			plantClass = Rotberry.class;
+
+			unique = true;
 		}
 		
 		@Override
-		public int price() {
+		public int value() {
 			return 45 * quantity;
 		}
 	}

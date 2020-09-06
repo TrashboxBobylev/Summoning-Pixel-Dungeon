@@ -3,10 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
- *
- * Summoning Pixel Dungeon
- * Copyright (C) 2019-2020 TrashboxBobylev
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,9 +26,18 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.PerfumeGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
@@ -43,10 +49,9 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrimTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.BurningFistSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.FistSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.LarvaSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.RottingFistSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.YogSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -62,9 +67,9 @@ public class Yog extends Mob {
 	{
 		spriteClass = YogSprite.class;
 		
-		HP = HT = 500;
+		HP = HT = 300;
 		
-		EXP = 0;
+		EXP = 50;
 		
 		state = PASSIVE;
 
@@ -95,7 +100,7 @@ public class Yog extends Mob {
 	@Override
 	protected boolean act() {
 		//heals 1 health per turn
-		HP = Math.min( HT, HP+5 );
+		HP = Math.min( HT, HP+1 );
 
 		return super.act();
 	}
@@ -164,7 +169,6 @@ public class Yog extends Mob {
 		GameScene.bossSlain();
 		Dungeon.level.drop( new SkeletonKey( Dungeon.depth ), pos ).sprite.drop();
 		super.die( cause );
-        Dungeon.hero.earnExp( Dungeon.hero.maxExp(), getClass() );
 		
 		yell( Messages.get(this, "defeated") );
 	}
@@ -177,7 +181,6 @@ public class Yog extends Mob {
 			yell(Messages.get(this, "notice"));
 			for (Char ch : Actor.chars()){
 				if (ch instanceof DriedRose.GhostHero){
-					GLog.negative("\n");
 					((DriedRose.GhostHero) ch).sayBoss();
 				}
 			}
@@ -209,16 +212,16 @@ public class Yog extends Mob {
 		private static final int REGENERATION	= 4;
 		
 		{
-			spriteClass = RottingFistSprite.class;
+			spriteClass = FistSprite.Rotting.class;
 			
-			HP = HT = 500;
+			HP = HT = 300;
 			defenseSkill = 25;
 			
 			EXP = 0;
 			
 			state = WANDERING;
 
-			properties.add(Property.BOSS);
+			properties.add(Property.MINIBOSS);
 			properties.add(Property.DEMONIC);
 			properties.add(Property.ACIDIC);
 		}
@@ -230,7 +233,7 @@ public class Yog extends Mob {
 		
 		@Override
 		public int damageRoll() {
-			return Random.NormalIntRange( 20, 55 );
+			return Random.NormalIntRange( 20, 50 );
 		}
 		
 		@Override
@@ -243,7 +246,7 @@ public class Yog extends Mob {
 			damage = super.attackProc( enemy, damage );
 			
 			if (Random.Int( 3 ) == 0) {
-				Buff.affect( enemy, Ooze.class ).set( 20f );
+				Buff.affect( enemy, Ooze.class ).set( Ooze.DURATION );
 				enemy.sprite.burst( 0xFF000000, 5 );
 			}
 			
@@ -281,16 +284,16 @@ public class Yog extends Mob {
 	public static class BurningFist extends Mob {
 		
 		{
-			spriteClass = BurningFistSprite.class;
+			spriteClass = FistSprite.Burning.class;
 			
-			HP = HT = 300;
+			HP = HT = 200;
 			defenseSkill = 25;
 			
 			EXP = 0;
 			
 			state = WANDERING;
 
-			properties.add(Property.BOSS);
+			properties.add(Property.MINIBOSS);
 			properties.add(Property.DEMONIC);
 			properties.add(Property.FIERY);
 		}
@@ -302,7 +305,7 @@ public class Yog extends Mob {
 		
 		@Override
 		public int damageRoll() {
-			return Random.NormalIntRange( 28, 36 );
+			return Random.NormalIntRange( 26, 32 );
 		}
 		
 		@Override
@@ -317,38 +320,49 @@ public class Yog extends Mob {
 		
 		//used so resistances can differentiate between melee and magical attacks
 		public static class DarkBolt{}
-		
-		@Override
-		public boolean attack( Char enemy ) {
-			
-			if (!Dungeon.level.adjacent( pos, enemy.pos )) {
-				spend( attackDelay() );
-				
-				if (hit( this, enemy, true )) {
-					
-					int dmg =  damageRoll();
-                    if (buff(Shrink.class) != null) dmg *= 0.75f;
-					enemy.damage( dmg, new DarkBolt() );
-					
-					enemy.sprite.bloodBurstA( sprite.center(), dmg );
-					enemy.sprite.flash();
-					
-					if (!enemy.isAlive() && enemy == Dungeon.hero) {
-						Dungeon.fail( getClass() );
-						GLog.negative( Messages.get(Char.class, "kill", getName()) );
-					}
-					return true;
-					
-				} else {
-					
-					enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
-					return false;
-				}
+
+		protected boolean doAttack( Char enemy ) {
+
+			if (Dungeon.level.adjacent( pos, enemy.pos )) {
+
+				return super.doAttack( enemy );
+
 			} else {
-				return super.attack( enemy );
+
+				if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
+					sprite.zap( enemy.pos );
+					return false;
+				} else {
+					zap();
+					return true;
+				}
 			}
 		}
-		
+
+		private void zap() {
+			spend( 1f );
+
+			if (hit( this, enemy, true )) {
+
+				int dmg = damageRoll();
+				enemy.damage( dmg, new DarkBolt() );
+
+				if (!enemy.isAlive() && enemy == Dungeon.hero) {
+					Dungeon.fail( getClass() );
+					GLog.negative( Messages.get(Char.class, "kill", name()) );
+				}
+
+			} else {
+
+				enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
+			}
+		}
+
+		public void onZapComplete() {
+			zap();
+			next();
+		}
+
 		@Override
 		public boolean act() {
 			
@@ -379,7 +393,7 @@ public class Yog extends Mob {
 		{
 			spriteClass = LarvaSprite.class;
 			
-			HP = HT = 35;
+			HP = HT = 25;
 			defenseSkill = 20;
 			
 			EXP = 0;
@@ -388,7 +402,6 @@ public class Yog extends Mob {
 			state = HUNTING;
 
 			properties.add(Property.DEMONIC);
-			immunities.add(PerfumeGas.Affection.class);
 		}
 		
 		@Override
@@ -398,7 +411,7 @@ public class Yog extends Mob {
 		
 		@Override
 		public int damageRoll() {
-			return Random.NormalIntRange( 22, 34 );
+			return Random.NormalIntRange( 22, 30 );
 		}
 		
 		@Override

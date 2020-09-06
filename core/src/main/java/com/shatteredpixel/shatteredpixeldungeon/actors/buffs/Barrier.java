@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -62,7 +62,7 @@ public class Barrier extends ShieldBuff {
 	
 	@Override
 	public void tintIcon(Image icon) {
-		icon.tint(0, 0.5f, 1, 0.5f);
+		icon.hardlight(0.5f, 1f, 2f);
 	}
 	
 	@Override

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -36,11 +36,14 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.StartScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Game;
-import com.watabou.noosa.RenderedText;
+import com.watabou.noosa.ui.Button;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.FileUtils;
 
+import java.io.IOException;
 import java.util.Locale;
 
 public class WndGameInProgress extends Window {
@@ -48,7 +51,7 @@ public class WndGameInProgress extends Window {
 	private static final int WIDTH    = 120;
 	private static final int HEIGHT   = 120;
 	
-	private int GAP	  = 5;
+	private int GAP	  = 6;
 	
 	private float pos;
 	
@@ -69,6 +72,23 @@ public class WndGameInProgress extends Window {
 		title.color(Window.SHPX_COLOR);
 		title.setRect( 0, 0, WIDTH, 0 );
 		add(title);
+		
+		//manually produces debug information about a run, mainly useful for levelgen errors
+		Button debug = new Button(){
+			@Override
+			protected boolean onLongClick() {
+				try {
+					Bundle bundle = FileUtils.bundleFromFile(GamesInProgress.gameFile(slot));
+					ShatteredPixelDungeon.scene().addToFront(new WndMessage("_Debug Info:_\n\n" +
+							"Version: " + Game.version + " (" + Game.versionCode + ")\n" +
+							"Seed: " + bundle.getLong("seed") + "\n" +
+							"Challenge Mask: " + info.challenges));
+				} catch (IOException ignored) { }
+				return true;
+			}
+		};
+		debug.setRect(0, 0, title.imIcon.width(), title.imIcon.height);
+		add(debug);
 		
 		if (info.challenges > 0) GAP -= 2;
 		
@@ -148,17 +168,16 @@ public class WndGameInProgress extends Window {
 	
 	private void statSlot( String label, String value ) {
 		
-		RenderedText txt = PixelScene.renderText( label, 8 );
-		txt.y = pos;
+		RenderedTextBlock txt = PixelScene.renderTextBlock( label, 8 );
+		txt.setPos(0, pos);
 		add( txt );
 		
-		txt = PixelScene.renderText( value, 8 );
-		txt.x = WIDTH * 0.6f;
-		txt.y = pos;
+		txt = PixelScene.renderTextBlock( value, 8 );
+		txt.setPos(WIDTH * 0.6f, pos);
 		PixelScene.align(txt);
 		add( txt );
 		
-		pos += GAP + txt.baseLine();
+		pos += GAP + txt.height();
 	}
 	
 	private void statSlot( String label, int value ) {

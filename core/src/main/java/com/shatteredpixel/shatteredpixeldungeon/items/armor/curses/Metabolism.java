@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor.Glyph;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Random;
 
 public class Metabolism extends Glyph {
@@ -53,7 +52,7 @@ public class Metabolism extends Glyph {
 				
 				Hunger hunger = Buff.affect(defender, Hunger.class);
 				
-				if (hunger != null && !hunger.isStarving()) {
+				if (!hunger.isStarving()) {
 					
 					hunger.adjustHunger( healing * -10 );
 					BuffIndicator.refreshHero();

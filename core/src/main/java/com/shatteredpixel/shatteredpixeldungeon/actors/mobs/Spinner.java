@@ -166,7 +166,7 @@ public class Spinner extends Mob {
                             @Override
                             public void call() {
                                 int cell = path.collisionPos;
-                                Sample.INSTANCE.play(Assets.SND_PUFF);
+                                Sample.INSTANCE.play(Assets.Sounds.PUFF);
                                 sprite.zap(cell);
                                 for (int i : PathFinder.NEIGHBOURS8) {
                                     if (Dungeon.level.passable[cell + i]) GameScene.add(Blob.seed(cell + i, Random.Int(5, 10), Web.class));
@@ -176,7 +176,7 @@ public class Spinner extends Mob {
 
                             }
                         } );
-                Sample.INSTANCE.play(Assets.SND_BADGE);
+                Sample.INSTANCE.play(Assets.Sounds.BADGE);
                 next();
             }
         }

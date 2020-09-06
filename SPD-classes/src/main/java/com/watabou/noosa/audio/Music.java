@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -25,6 +25,7 @@
 package com.watabou.noosa.audio;
 
 import com.badlogic.gdx.Gdx;
+import com.watabou.noosa.Game;
 
 public enum Music {
 	
@@ -53,10 +54,15 @@ public enum Music {
 			return;
 		}
 		
-		player = Gdx.audio.newMusic(Gdx.files.internal(assetName));
-		player.setLooping(looping);
-		player.setVolume(volume);
-		player.play();
+		try {
+			player = Gdx.audio.newMusic(Gdx.files.internal(assetName));
+			player.setLooping(looping);
+			player.setVolume(volume);
+			player.play();
+		} catch (Exception e){
+			Game.reportException(e);
+			player = null;
+		}
 		
 	}
 	

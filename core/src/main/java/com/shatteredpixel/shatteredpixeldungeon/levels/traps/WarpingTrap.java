@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -51,7 +51,7 @@ public class WarpingTrap extends Trap {
 	@Override
 	public void activate() {
 		CellEmitter.get(pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
-		Sample.INSTANCE.play(Assets.SND_TELEPORT);
+		Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 		
 		Char ch = Actor.findChar(pos);
 		if (ch != null && !ch.flying) {
@@ -66,7 +66,7 @@ public class WarpingTrap extends Trap {
 				int count = 10;
 				int pos;
 				do {
-					pos = Dungeon.level.randomRespawnCell();
+					pos = Dungeon.level.randomRespawnCell( ch );
 					if (count-- <= 0) {
 						break;
 					}
@@ -92,7 +92,7 @@ public class WarpingTrap extends Trap {
 		Heap heap = Dungeon.level.heaps.get(pos);
 		
 		if (heap != null){
-			int cell = Dungeon.level.randomRespawnCell();
+			int cell = Dungeon.level.randomRespawnCell( null );
 			
 			Item item = heap.pickUp();
 			

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -55,7 +55,7 @@ public abstract class TargetedSpell extends Spell {
 				curUser.sprite,
 				bolt.collisionPos,
 				callback);
-		Sample.INSTANCE.play( Assets.SND_ZAP );
+		Sample.INSTANCE.play( Assets.Sounds.ZAP );
 	}
 	
 	private  static CellSelector.Listener targeter = new  CellSelector.Listener(){
@@ -86,13 +86,13 @@ public abstract class TargetedSpell extends Spell {
 					QuickSlotButton.target(Actor.findChar(cell));
 				
 				curUser.busy();
-				Invisibility.dispel();
 				
 				curSpell.fx(shot, new Callback() {
 					public void call() {
 						curSpell.affectTarget(shot, curUser);
 						curSpell.detach( curUser.belongings.backpack );
-						updateQuickslot();
+						Invisibility.dispel();
+						curSpell.updateQuickslot();
 						curUser.spendAndNext( 1f );
 					}
 				});

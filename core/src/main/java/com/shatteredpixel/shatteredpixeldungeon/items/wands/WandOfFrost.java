@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -86,15 +86,16 @@ public class WandOfFrost extends DamageWand {
 				return; //do nothing, can't affect a frozen target
 			}
 			if (ch.buff(Chill.class) != null && !freeze){
-				//7.5% less damage per turn of chill remaining
-				float chill = ch.buff(Chill.class).cooldown();
-				damage = (int)Math.round(damage * Math.pow(0.9f, chill));
+				//6.67% less damage per turn of chill remaining, to a max of 10 turns (50% dmg)
+				float chillturns = Math.min(10, ch.buff(Chill.class).cooldown());
+				damage = (int)Math.round(damage * Math.pow(0.9633f, chillturns));
 			} else if (freeze){
-				ch.sprite.burst( 0xFF99CCFF, level() * 2 );
+				ch.sprite.burst( 0xFF99CCFF, buffedLvl() * 2 );
                 Buff.affect(ch, Frost.class, freezeDuration());
 			}
 
 			processSoulMark(ch, chargesPerCast());
+			Sample.INSTANCE.play( Assets.Sounds.HIT_MAGIC, 1, 1.1f * Random.Float(0.87f, 1.15f) );
 			if (!freeze) {
 			    ch.damage(damage, this);
             }
@@ -106,7 +107,7 @@ public class WandOfFrost extends DamageWand {
                     Buff.affect( ch, FrostBurn.class ).reignite( ch, 4f );
 			}
 		} else {
-			Dungeon.level.press(bolt.collisionPos, null, true);
+			Dungeon.level.pressCell(bolt.collisionPos);
 		}
 	}
 
@@ -125,18 +126,18 @@ public class WandOfFrost extends DamageWand {
 				curUser.sprite,
 				bolt.collisionPos,
 				callback);
-		Sample.INSTANCE.play(Assets.SND_ZAP);
+		Sample.INSTANCE.play(Assets.Sounds.ZAP);
 	}
 
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
 		Chill chill = defender.buff(Chill.class);
-		if (chill != null && Random.IntRange(2, 10) <= chill.cooldown()){
+		if (chill != null && chill.cooldown() >= Chill.DURATION){
 			//need to delay this through an actor so that the freezing isn't broken by taking damage from the staff hit.
 			new FlavourBuff(){
 				{actPriority = VFX_PRIO;}
 				public boolean act() {
-					Buff.affect(target, Frost.class, Frost.duration(target) * Random.Float(1f, 2f));
+					Buff.affect(target, Frost.class, Frost.DURATION);
 					return super.act();
 				}
 			}.attachTo(defender);

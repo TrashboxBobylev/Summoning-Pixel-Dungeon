@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -127,22 +127,22 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.BlasterSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class Generator {
 
 	public enum Category {
-		WEAPON	( 7,    MeleeWeapon.class),
+		WEAPON	( 4,    MeleeWeapon.class),
 		WEP_T1	( 0,    MeleeWeapon.class),
 		WEP_T2	( 0,    MeleeWeapon.class),
 		WEP_T3	( 0,    MeleeWeapon.class),
 		WEP_T4	( 0,    MeleeWeapon.class),
 		WEP_T5	( 0,    MeleeWeapon.class),
 		
-		ARMOR	( 5,    Armor.class ),
+		ARMOR	( 3,    Armor.class ),
 		
 		MISSILE ( 5,    MissileWeapon.class ),
 		MIS_T1  ( 0,    MissileWeapon.class ),
@@ -157,26 +157,32 @@ public class Generator {
         STF_T3  ( 0,    Staff.class ),
         STF_T4  ( 0,    Staff.class ),
         STF_T5  ( 0,    Staff.class ),
-		
-		WAND	( 4,    Wand.class ),
-		RING	( 2,    Ring.class ),
-		ARTIFACT( 2,    Artifact.class),
+
+		WAND	( 2,    Wand.class ),
+		RING	( 1,    Ring.class ),
+		ARTIFACT( 1,    Artifact.class),
 		
 		FOOD	( 0,    Food.class ),
 		
-		POTION	( 20,   Potion.class ),
-        EXOTIC_POTION	( 0,   ExoticPotion.class ),
-		SEED	( 0,    Plant.Seed.class ), //dropped by grass
+		POTION	( 16,   Potion.class ),
+		EXOTIC_POTION	( 0,   ExoticPotion.class ),
+		SEED	( 2,    Plant.Seed.class ),
 		
-		SCROLL	( 20,   Scroll.class ),
-        EXOTIC_SCROLL	( 0,   ExoticScroll.class ),
-		STONE   ( 3,    Runestone.class),
+		SCROLL	( 16,   Scroll.class ),
+		EXOTIC_SCROLL	( 0,   ExoticScroll.class ),
+		STONE   ( 2,    Runestone.class),
 		
-		GOLD	( 12,   Gold.class );
+		GOLD	( 20,   Gold.class );
 		
 		public Class<?>[] classes;
+
+		//some item types use a deck-based system, where the probs decrement as items are picked
+		// until they are all 0, and then they reset. Those generator classes should define
+		// defaultProbs. If defaultProbs is null then a deck system isn't used.
+		//Artifacts in particular don't reset, no duplicates!
 		public float[] probs;
-		
+		public float[] defaultProbs = null;
+
 		public float prob;
 		public Class<? extends Item> superClass;
 		
@@ -194,9 +200,7 @@ public class Generator {
 			
 			return item instanceof Bag ? Integer.MAX_VALUE : Integer.MAX_VALUE - 1;
 		}
-		
-		private static final float[] INITIAL_ARTIFACT_PROBS = new float[]{ 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1};
-		
+
 		static {
 			GOLD.classes = new Class<?>[]{
 					Gold.class };
@@ -215,6 +219,8 @@ public class Generator {
 					PotionOfParalyticGas.class,
 					PotionOfPurity.class,
 					PotionOfExperience.class};
+			POTION.defaultProbs = new float[]{ 0, 6, 4, 3, 3, 3, 2, 2, 2, 2, 2, 1 };
+			POTION.probs = POTION.defaultProbs.clone();
             EXOTIC_POTION.classes = new Class<?>[]{
                     PotionOfAdrenalineSurge.class, //2 drop every chapter, see Dungeon.posNeeded()
                     PotionOfShielding.class,
@@ -228,23 +234,24 @@ public class Generator {
                     PotionOfEarthenArmor.class,
                     PotionOfCleansing.class,
                     PotionOfHolyFuror.class};
-			POTION.probs = new float[]{ 0, 6, 4, 3, 3, 3, 2, 2, 2, 2, 2, 1 };
-			EXOTIC_POTION.probs = POTION.probs;
-			
+            EXOTIC_POTION.defaultProbs = POTION.defaultProbs.clone();
+			EXOTIC_POTION.probs = POTION.probs.clone();
+
 			SEED.classes = new Class<?>[]{
 					Rotberry.Seed.class, //quest item
-					Blindweed.Seed.class,
-					Dreamfoil.Seed.class,
-					Earthroot.Seed.class,
-					Fadeleaf.Seed.class,
-					Firebloom.Seed.class,
-					Icecap.Seed.class,
-					Sorrowmoss.Seed.class,
-					Stormvine.Seed.class,
 					Sungrass.Seed.class,
+					Fadeleaf.Seed.class,
+					Icecap.Seed.class,
+					Firebloom.Seed.class,
+					Sorrowmoss.Seed.class,
 					Swiftthistle.Seed.class,
+					Blindweed.Seed.class,
+					Stormvine.Seed.class,
+					Earthroot.Seed.class,
+					Dreamfoil.Seed.class,
 					Starflower.Seed.class};
-			SEED.probs = new float[]{ 0, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 1 };
+			SEED.defaultProbs = new float[]{ 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 2 };
+			SEED.probs = SEED.defaultProbs.clone();
 			
 			SCROLL.classes = new Class<?>[]{
 					ScrollOfUpgrade.class, //3 drop every chapter, see Dungeon.souNeeded()
@@ -260,6 +267,8 @@ public class Generator {
 					ScrollOfAttunement.class,
 					ScrollOfTransmutation.class
 			};
+			SCROLL.defaultProbs = new float[]{ 0, 6, 4, 3, 3, 3, 2, 2, 2, 2, 2, 1 };
+			SCROLL.probs = SCROLL.defaultProbs.clone();
             EXOTIC_SCROLL.classes = new Class<?>[]{
                     ScrollOfEnchantment.class, //3 drop every chapter, see Dungeon.souNeeded()
                     ScrollOfDivination.class,
@@ -274,9 +283,9 @@ public class Generator {
                     ScrollOfSoulEnergy.class,
                     ScrollOfPolymorph.class
             };
-			SCROLL.probs = new float[]{ 0, 5, 4, 3, 3, 3, 2, 2, 2, 2, 3, 1 };
-			EXOTIC_SCROLL.probs = SCROLL.probs;
-			
+			EXOTIC_SCROLL.probs = SCROLL.probs.clone();
+			EXOTIC_SCROLL.defaultProbs = SCROLL.probs.clone();
+
 			STONE.classes = new Class<?>[]{
 					StoneOfEnchantment.class,   //1 is guaranteed to drop on floors 6-19
 					StoneOfAugmentation.class,  //1 is sold in each shop
@@ -291,7 +300,8 @@ public class Generator {
 					StoneOfFlock.class,
 					StoneOfShock.class
 			};
-			STONE.probs = new float[]{ 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+			STONE.defaultProbs = new float[]{ 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0 };
+			STONE.probs = STONE.defaultProbs.clone();
 
 			WAND.classes = new Class<?>[]{
 					WandOfMagicMissile.class,
@@ -450,7 +460,7 @@ public class Generator {
                     HacatuStaff.class
             };
             STF_T5.probs = new float[]{ 5, 4, 4, 4 };
-			
+
 			FOOD.classes = new Class<?>[]{
 					Food.class,
 					Pasty.class,
@@ -486,30 +496,42 @@ public class Generator {
 					LloydsBeacon.class,
 					EtherealChains.class
 			};
-			ARTIFACT.probs = INITIAL_ARTIFACT_PROBS.clone();
+			ARTIFACT.defaultProbs = new float[]{ 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1};
+			ARTIFACT.probs = ARTIFACT.defaultProbs.clone();
 		}
 	}
 
 	private static final float[][] floorSetTierProbs = new float[][] {
 			{0, 70, 20,  8,  2},
 			{0, 25, 50, 20,  5},
-			{0, 10, 40, 40, 10},
-			{0,  5, 20, 50, 25},
-			{0,  2,  8, 20, 70}
+			{0,  0, 40, 50, 10},
+			{0,  0, 20, 40, 40},
+			{0,  0,  0, 20, 80}
 	};
 	
 	private static HashMap<Category,Float> categoryProbs = new LinkedHashMap<>();
-	
-	public static void reset() {
+
+	public static void fullReset() {
+		generalReset();
+		for (Category cat : Category.values()) {
+			reset(cat);
+		}
+	}
+
+	public static void generalReset(){
 		for (Category cat : Category.values()) {
 			categoryProbs.put( cat, cat.prob );
 		}
 	}
-	
+
+	public static void reset(Category cat){
+		if (cat.defaultProbs != null) cat.probs = cat.defaultProbs.clone();
+	}
+
 	public static Item random() {
 		Category cat = Random.chances( categoryProbs );
 		if (cat == null){
-			reset();
+			generalReset();
 			cat = Random.chances( categoryProbs );
 		}
 		categoryProbs.put( cat, categoryProbs.get( cat ) - 1);
@@ -517,9 +539,7 @@ public class Generator {
 	}
 	
 	public static Item random( Category cat ) {
-		try {
-			
-			switch (cat) {
+		switch (cat) {
 			case ARMOR:
 				return randomArmor();
 			case WEAPON:
@@ -533,28 +553,27 @@ public class Generator {
 				//if we're out of artifacts, return a ring instead.
 				return item != null ? item : random(Category.RING);
 			default:
-				return ((Item)cat.classes[Random.chances( cat.probs )].newInstance()).random();
-			}
-			
-		} catch (Exception e) {
+				int i = Random.chances(cat.probs);
+				if (i == -1) {
+					reset(cat);
+					i = Random.chances(cat.probs);
+				}
+				if (cat.defaultProbs != null) cat.probs[i]--;
+				return ((Item) Reflection.newInstance(cat.classes[i])).random();
+		}
+	}
 
-			ShatteredPixelDungeon.reportException(e);
-			return null;
-			
+	//overrides any deck systems and always uses default probs
+	public static Item randomUsingDefaults( Category cat ){
+		if (cat.defaultProbs == null) {
+			return random(cat); //currently covers weapons/armor/missiles
+		} else {
+			return ((Item) Reflection.newInstance(cat.classes[Random.chances(cat.defaultProbs)])).random();
 		}
 	}
 	
 	public static Item random( Class<? extends Item> cl ) {
-		try {
-			
-			return ((Item)cl.newInstance()).random();
-			
-		} catch (Exception e) {
-
-			ShatteredPixelDungeon.reportException(e);
-			return null;
-			
-		}
+		return Reflection.newInstance(cl).random();
 	}
 
 	public static Armor randomArmor(){
@@ -565,14 +584,9 @@ public class Generator {
 
 		floorSet = (int)GameMath.gate(0, floorSet, floorSetTierProbs.length-1);
 
-		try {
-			Armor a = (Armor)Category.ARMOR.classes[Random.chances(floorSetTierProbs[floorSet])].newInstance();
-			a.random();
-			return a;
-		} catch (Exception e) {
-			ShatteredPixelDungeon.reportException(e);
-			return null;
-		}
+		Armor a = (Armor)Reflection.newInstance(Category.ARMOR.classes[Random.chances(floorSetTierProbs[floorSet])]);
+		a.random();
+		return a;
 	}
 
 	public static final Category[] wepTiers = new Category[]{
@@ -591,15 +605,10 @@ public class Generator {
 
 		floorSet = (int)GameMath.gate(0, floorSet, floorSetTierProbs.length-1);
 
-		try {
-			Category c = wepTiers[Random.chances(floorSetTierProbs[floorSet])];
-			MeleeWeapon w = (MeleeWeapon)c.classes[Random.chances(c.probs)].newInstance();
-			w.random();
-			return w;
-		} catch (Exception e) {
-			ShatteredPixelDungeon.reportException(e);
-			return null;
-		}
+		Category c = wepTiers[Random.chances(floorSetTierProbs[floorSet])];
+		MeleeWeapon w = (MeleeWeapon)Reflection.newInstance(c.classes[Random.chances(c.probs)]);
+		w.random();
+		return w;
 	}
 	
 	public static final Category[] misTiers = new Category[]{
@@ -618,15 +627,10 @@ public class Generator {
 		
 		floorSet = (int)GameMath.gate(0, floorSet, floorSetTierProbs.length-1);
 		
-		try {
-			Category c = misTiers[Random.chances(floorSetTierProbs[floorSet])];
-			MissileWeapon w = (MissileWeapon)c.classes[Random.chances(c.probs)].newInstance();
-			w.random();
-			return w;
-		} catch (Exception e) {
-			ShatteredPixelDungeon.reportException(e);
-			return null;
-		}
+		Category c = misTiers[Random.chances(floorSetTierProbs[floorSet])];
+		MissileWeapon w = (MissileWeapon)Reflection.newInstance(c.classes[Random.chances(c.probs)]);
+		w.random();
+		return w;
 	}
 
     public static final Category[] stfTiers = new Category[]{
@@ -659,61 +663,32 @@ public class Generator {
 	//enforces uniqueness of artifacts throughout a run.
 	public static Artifact randomArtifact() {
 
-		try {
-			Category cat = Category.ARTIFACT;
-			int i = Random.chances( cat.probs );
+		Category cat = Category.ARTIFACT;
+		int i = Random.chances( cat.probs );
 
-			//if no artifacts are left, return null
-			if (i == -1){
-				return null;
-			}
-			
-			Class<?extends Artifact> art = (Class<? extends Artifact>) cat.classes[i];
-
-			if (removeArtifact(art)) {
-				Artifact artifact = art.newInstance();
-				
-				artifact.random();
-				
-				return artifact;
-			} else {
-				return null;
-			}
-
-		} catch (Exception e) {
-			ShatteredPixelDungeon.reportException(e);
+		//if no artifacts are left, return null
+		if (i == -1){
 			return null;
 		}
+
+		cat.probs[i]--;
+		return (Artifact) Reflection.newInstance((Class<? extends Artifact>) cat.classes[i]).random();
+
 	}
 
 	public static boolean removeArtifact(Class<?extends Artifact> artifact) {
-		if (spawnedArtifacts.contains(artifact))
-			return false;
-
 		Category cat = Category.ARTIFACT;
-		for (int i = 0; i < cat.classes.length; i++)
+		for (int i = 0; i < cat.classes.length; i++){
 			if (cat.classes[i].equals(artifact)) {
-				if (cat.probs[i] == 1){
-					cat.probs[i] = 0;
-					spawnedArtifacts.add(artifact);
-					return true;
-				} else
-					return false;
+				cat.probs[i] = 0;
+				return true;
 			}
-
+		}
 		return false;
 	}
 
-	//resets artifact probabilities, for new dungeons
-	public static void initArtifacts() {
-		Category.ARTIFACT.probs = Category.INITIAL_ARTIFACT_PROBS.clone();
-		spawnedArtifacts = new ArrayList<>();
-	}
-
-	private static ArrayList<Class<?extends Artifact>> spawnedArtifacts = new ArrayList<>();
-	
 	private static final String GENERAL_PROBS = "general_probs";
-	private static final String SPAWNED_ARTIFACTS = "spawned_artifacts";
+	private static final String CATEGORY_PROBS = "_probs";
 	
 	public static void storeInBundle(Bundle bundle) {
 		Float[] genProbs = categoryProbs.values().toArray(new Float[0]);
@@ -722,24 +697,52 @@ public class Generator {
 			storeProbs[i] = genProbs[i];
 		}
 		bundle.put( GENERAL_PROBS, storeProbs);
-		
-		bundle.put( SPAWNED_ARTIFACTS, spawnedArtifacts.toArray(new Class[0]));
+
+		for (Category cat : Category.values()){
+			if (cat.defaultProbs == null) continue;
+			boolean needsStore = false;
+			for (int i = 0; i < cat.probs.length; i++){
+				if (cat.probs[i] != cat.defaultProbs[i]){
+					needsStore = true;
+					break;
+				}
+			}
+
+			if (needsStore){
+				bundle.put(cat.name().toLowerCase() + CATEGORY_PROBS, cat.probs);
+			}
+		}
 	}
 
 	public static void restoreFromBundle(Bundle bundle) {
+		fullReset();
+
 		if (bundle.contains(GENERAL_PROBS)){
 			float[] probs = bundle.getFloatArray(GENERAL_PROBS);
 			for (int i = 0; i < probs.length; i++){
 				categoryProbs.put(Category.values()[i], probs[i]);
 			}
-		} else {
-			reset();
 		}
-		
-		initArtifacts();
-		
-		for ( Class<?extends Artifact> artifact : bundle.getClassArray(SPAWNED_ARTIFACTS) ){
-			removeArtifact(artifact);
+
+		for (Category cat : Category.values()){
+			if (bundle.contains(cat.name().toLowerCase() + CATEGORY_PROBS)){
+				float[] probs = bundle.getFloatArray(cat.name().toLowerCase() + CATEGORY_PROBS);
+				if (cat.defaultProbs != null && probs.length == cat.defaultProbs.length){
+					cat.probs = probs;
+				}
+			}
+		}
+
+		//pre-0.8.1
+		if (bundle.contains("spawned_artifacts")) {
+			for (Class<? extends Artifact> artifact : bundle.getClassArray("spawned_artifacts")) {
+				Category cat = Category.ARTIFACT;
+				for (int i = 0; i < cat.classes.length; i++) {
+					if (cat.classes[i].equals(artifact)) {
+						cat.probs[i] = 0;
+					}
+				}
+			}
 		}
 		
 	}

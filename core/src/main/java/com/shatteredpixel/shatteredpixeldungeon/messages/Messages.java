@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,19 +24,20 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.messages;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.I18NBundle;
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IllegalFormatException;
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 /*
-	Simple wrapper class for java resource bundles.
+	Simple wrapper class for libGDX I18NBundles.
 
 	The core idea here is that each string resource's key is a combination of the class definition and a local value.
 	An object or static method would usually call this with an object/class reference (usually its own) and a local key.
@@ -44,14 +45,7 @@ import java.util.ResourceBundle;
  */
 public class Messages {
 
-	/*
-		use hashmap for two reasons. Firstly because android 2.2 doesn't support resourcebundle.containskey(),
-		secondly so I can read in and combine multiple properties files,
-		resulting in a more clean structure for organizing all the strings, instead of one big file.
-
-		..Yes R.string would do this for me, but that's not multiplatform
-	 */
-	private static HashMap<String, String> strings;
+	private static ArrayList<I18NBundle> bundles;
 	private static Languages lang;
 
 	public static Languages lang(){
@@ -65,15 +59,15 @@ public class Messages {
 	 */
 
 	private static String[] prop_files = new String[]{
-			"com.shatteredpixel.shatteredpixeldungeon.messages.actors.actors",
-			"com.shatteredpixel.shatteredpixeldungeon.messages.items.items",
-			"com.shatteredpixel.shatteredpixeldungeon.messages.journal.journal",
-			"com.shatteredpixel.shatteredpixeldungeon.messages.levels.levels",
-			"com.shatteredpixel.shatteredpixeldungeon.messages.plants.plants",
-			"com.shatteredpixel.shatteredpixeldungeon.messages.scenes.scenes",
-			"com.shatteredpixel.shatteredpixeldungeon.messages.ui.ui",
-			"com.shatteredpixel.shatteredpixeldungeon.messages.windows.windows",
-			"com.shatteredpixel.shatteredpixeldungeon.messages.misc.misc"
+			Assets.Messages.ACTORS,
+			Assets.Messages.ITEMS,
+			Assets.Messages.JOURNAL,
+			Assets.Messages.LEVELS,
+			Assets.Messages.MISC,
+			Assets.Messages.PLANTS,
+			Assets.Messages.SCENES,
+			Assets.Messages.UI,
+			Assets.Messages.WINDOWS
 	};
 
 	static{
@@ -81,19 +75,15 @@ public class Messages {
 	}
 
 	public static void setup( Languages lang ){
-		strings = new HashMap<>();
+		//seeing as missing keys are part of our process, this is faster than throwing an exception
+		I18NBundle.setExceptionOnMissingKey(false);
+
+		bundles = new ArrayList<>();
 		Messages.lang = lang;
 		Locale locale = new Locale(lang.code());
 
 		for (String file : prop_files) {
-			ResourceBundle bundle = ResourceBundle.getBundle( file, locale);
-			Enumeration<String> keys = bundle.getKeys();
-			while (keys.hasMoreElements()) {
-				String key = keys.nextElement();
-				String value = bundle.getString(key);
-
-				strings.put(key, value);
-			}
+			bundles.add(I18NBundle.createBundle(Gdx.files.internal(file), locale));
 		}
 	}
 
@@ -119,9 +109,10 @@ public class Messages {
 		} else
 			key = k;
 
-		if (strings.containsKey(key.toLowerCase(Locale.ENGLISH))){
-			if (args.length > 0) return format(strings.get(key.toLowerCase(Locale.ENGLISH)), args);
-			else return strings.get(key.toLowerCase(Locale.ENGLISH));
+		String value = getFromBundle(key.toLowerCase(Locale.ENGLISH));
+		if (value != null){
+			if (args.length > 0) return format(value, args);
+			else return value;
 		} else {
 			//this is so child classes can inherit properties from their parents.
 			//in cases where text is commonly grabbed as a utility from classes that aren't mean to be instantiated
@@ -132,6 +123,18 @@ public class Messages {
 				return "This text is missing, ask Bobby for fix. Name: "+key;
 			}
 		}
+	}
+
+	private static String getFromBundle(String key){
+		String result;
+		for (I18NBundle b : bundles){
+			result = b.get(key);
+			//if it isn't the return string for no key found, return it
+			if (result.length() != key.length()+6 || !result.contains(key)){
+				return result;
+			}
+		}
+		return null;
 	}
 
 

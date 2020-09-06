@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -25,13 +25,20 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.Emitter.Factory;
 import com.watabou.noosa.particles.PixelParticle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class GooSprite extends MobSprite {
 	
@@ -39,11 +46,12 @@ public class GooSprite extends MobSprite {
 	private Animation pumpAttack;
 
 	private Emitter spray;
+	private ArrayList<Emitter> pumpUpEmitters = new ArrayList<>();
 
 	public GooSprite() {
 		super();
 		
-		texture( Assets.GOO );
+		texture( Assets.Sprites.GOO );
 		
 		TextureFilm frames = new TextureFilm( texture, 20, 14 );
 		
@@ -80,11 +88,37 @@ public class GooSprite extends MobSprite {
 			spray(true);
 	}
 
-	public void pumpUp() {
-		play( pump );
+	public void pumpUp( int warnDist ) {
+		if (warnDist == 0){
+			for (Emitter e : pumpUpEmitters){
+				e.on = false;
+			}
+			pumpUpEmitters.clear();
+		} else {
+			play(pump);
+			PathFinder.buildDistanceMap(ch.pos, BArray.not(Dungeon.level.solid, null), 2);
+			for (int i = 0; i < PathFinder.distance.length; i++) {
+				if (PathFinder.distance[i] <= warnDist) {
+					Emitter e = CellEmitter.get(i);
+					e.pour(GooParticle.FACTORY, 0.04f);
+					pumpUpEmitters.add(e);
+				}
+			}
+		}
 	}
 
 	public void pumpAttack() { play(pumpAttack); }
+
+	@Override
+	public void play(Animation anim) {
+		if (anim != pump && anim != pumpAttack){
+			for (Emitter e : pumpUpEmitters){
+				e.on = false;
+			}
+			pumpUpEmitters.clear();
+		}
+		super.play(anim);
+	}
 
 	@Override
 	public int blood() {
@@ -145,6 +179,11 @@ public class GooSprite extends MobSprite {
 		super.onComplete(anim);
 
 		if (anim == pumpAttack) {
+
+			for (Emitter e : pumpUpEmitters){
+				e.burst(ElmoParticle.FACTORY, 10);
+			}
+			pumpUpEmitters.clear();
 
 			idle();
 			ch.onAttackComplete();

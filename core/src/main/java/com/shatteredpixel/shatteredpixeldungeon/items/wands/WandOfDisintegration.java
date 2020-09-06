@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -27,6 +27,8 @@ package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Web;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle;
@@ -63,11 +65,13 @@ public class WandOfDisintegration extends DamageWand {
 		
 		boolean terrainAffected = false;
 		
-		int level = level();
+		int level = buffedLvl();
 		
 		int maxDistance = Math.min(distance(), beam.dist);
 		
 		ArrayList<Char> chars = new ArrayList<>();
+
+		Blob web = Dungeon.level.blobs.get(Web.class);
 
 		int terrainPassed = 2, terrainBonus = 0;
 		for (int c : beam.subPath(1, maxDistance)) {
@@ -83,6 +87,11 @@ public class WandOfDisintegration extends DamageWand {
 				chars.add( ch );
 			}
 
+			if (Dungeon.level.solid[c]) {
+				terrainPassed++;
+				if (web != null) web.clear(c);
+			}
+
 			if (Dungeon.level.flamable[c]) {
 
 				Dungeon.level.destroy( c );
@@ -90,9 +99,6 @@ public class WandOfDisintegration extends DamageWand {
 				terrainAffected = true;
 				
 			}
-
-			if (Dungeon.level.solid[c])
-				terrainPassed++;
 			
 			CellEmitter.center( c ).burst( PurpleParticle.BURST, Random.IntRange( 1, 2 ) );
 		}
@@ -116,7 +122,7 @@ public class WandOfDisintegration extends DamageWand {
 	}
 
 	private int distance() {
-		return level()*2 + 4;
+		return buffedLvl()*2 + 6;
 	}
 	
 	@Override

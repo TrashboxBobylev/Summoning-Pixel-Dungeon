@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -61,6 +61,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfEnc
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.BeaconOfReturning;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAugmentation;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.DamageWand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
@@ -76,11 +77,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Tipp
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ShopRoom extends SpecialRoom {
 
@@ -88,14 +89,17 @@ public class ShopRoom extends SpecialRoom {
 	
 	@Override
 	public int minWidth() {
-		if (itemsToSpawn == null) itemsToSpawn = generateItems();
-		return Math.max(7, (int)(Math.sqrt(itemsToSpawn.size())+3));
+		return Math.max(7, (int)(Math.sqrt(itemCount())+3));
 	}
 	
 	@Override
 	public int minHeight() {
+		return Math.max(7, (int)(Math.sqrt(itemCount())+3));
+	}
+
+	public int itemCount(){
 		if (itemsToSpawn == null) itemsToSpawn = generateItems();
-		return Math.max(7, (int)(Math.sqrt(itemsToSpawn.size())+3));
+		return itemsToSpawn.size();
 	}
 	
 	public void paint( Level level ) {
@@ -125,8 +129,9 @@ public class ShopRoom extends SpecialRoom {
 
 	protected void placeItems( Level level ){
 
-		if (itemsToSpawn == null)
+		if (itemsToSpawn == null){
 			itemsToSpawn = generateItems();
+		}
 
 		Point itemPlacement = new Point(entrance());
 		if (itemPlacement.y == top){
@@ -221,7 +226,7 @@ public class ShopRoom extends SpecialRoom {
 		if (Random.Float() < 0.6) itemsToSpawn.add(ChooseShopWeapon());
 
 		itemsToSpawn.add(new CleanWater());
-		
+
 		itemsToSpawn.add( TippedDart.randomTipped(2) );
 
 		itemsToSpawn.add( new MerchantsBeacon() );
@@ -254,8 +259,8 @@ public class ShopRoom extends SpecialRoom {
 
 		for (int i=0; i < 4; i++)
 			itemsToSpawn.add( Random.Int(2) == 0 ?
-					Generator.random( Generator.Category.POTION ) :
-					Generator.random( Generator.Category.SCROLL ) );
+					Generator.randomUsingDefaults( Generator.Category.POTION ) :
+					Generator.randomUsingDefaults( Generator.Category.SCROLL ) );
 
 
 		itemsToSpawn.add( new SmallRation() );
@@ -289,7 +294,7 @@ public class ShopRoom extends SpecialRoom {
 					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.25f ); break;
 				case 16:
 					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.50f ); break;
-				case 21:
+				case 20: case 21:
 					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.80f ); break;
 			}
 
@@ -382,48 +387,46 @@ public class ShopRoom extends SpecialRoom {
     }
 
 	protected static Bag ChooseBag(Belongings pack){
-	
-		//0=pouch, 1=holder, 2=bandolier, 3=holster
-		int[] bagItems = new int[4];
+
+		//generate a hashmap of all valid bags.
+		HashMap<Bag, Integer> bags = new HashMap<>();
+		if (!Dungeon.LimitedDrops.VELVET_POUCH.dropped()) bags.put(new VelvetPouch(), 1);
+		if (!Dungeon.LimitedDrops.SCROLL_HOLDER.dropped()) bags.put(new ScrollHolder(), 0);
+		if (!Dungeon.LimitedDrops.POTION_BANDOLIER.dropped()) bags.put(new PotionBandolier(), 0);
+		if (!Dungeon.LimitedDrops.MAGICAL_HOLSTER.dropped()) bags.put(new MagicalHolster(), 0);
+
+		if (bags.isEmpty()) return null;
 
 		//count up items in the main bag
 		for (Item item : pack.backpack.items) {
-			if (item instanceof Plant.Seed || item instanceof Runestone)    bagItems[0]++;
-			if (item instanceof Scroll)                                     bagItems[1]++;
-			if (item instanceof Potion)                                     bagItems[2]++;
-			if (item instanceof Wand || item instanceof MissileWeapon)      bagItems[3]++;
-		}
-		
-		//disqualify bags that have already been dropped
-		if (Dungeon.LimitedDrops.VELVET_POUCH.dropped())                    bagItems[0] = -1;
-		if (Dungeon.LimitedDrops.SCROLL_HOLDER.dropped())                   bagItems[1] = -1;
-		if (Dungeon.LimitedDrops.POTION_BANDOLIER.dropped())                bagItems[2] = -1;
-		if (Dungeon.LimitedDrops.MAGICAL_HOLSTER.dropped())                 bagItems[3] = -1;
-		
-		//find the best bag to drop. This does give a preference to later bags, if counts are equal
-		int bestBagIdx = 0;
-		for (int i = 1; i <= 3; i++){
-			if (bagItems[bestBagIdx] <= bagItems[i]){
-				bestBagIdx = i;
+			for (Bag bag : bags.keySet()){
+				if (bag.canHold(item)){
+					bags.put(bag, bags.get(bag)+1);
+				}
 			}
 		}
-		
-		//drop it, or return nothing if no bag works
-		if (bagItems[bestBagIdx] == -1) return null;
-		switch (bestBagIdx){
-			case 0: default:
-				Dungeon.LimitedDrops.VELVET_POUCH.drop();
-				return new VelvetPouch();
-			case 1:
-				Dungeon.LimitedDrops.SCROLL_HOLDER.drop();
-				return new ScrollHolder();
-			case 2:
-				Dungeon.LimitedDrops.POTION_BANDOLIER.drop();
-				return new PotionBandolier();
-			case 3:
-				Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
-				return new MagicalHolster();
+
+		//find which bag will result in most inventory savings, drop that.
+		Bag bestBag = null;
+		for (Bag bag : bags.keySet()){
+			if (bestBag == null){
+				bestBag = bag;
+			} else if (bags.get(bag) > bags.get(bestBag)){
+				bestBag = bag;
+			}
 		}
+
+		if (bestBag instanceof VelvetPouch){
+			Dungeon.LimitedDrops.VELVET_POUCH.drop();
+		} else if (bestBag instanceof ScrollHolder){
+			Dungeon.LimitedDrops.SCROLL_HOLDER.drop();
+		} else if (bestBag instanceof PotionBandolier){
+			Dungeon.LimitedDrops.POTION_BANDOLIER.drop();
+		} else if (bestBag instanceof MagicalHolster){
+			Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
+		}
+
+		return bestBag;
 
 	}
 

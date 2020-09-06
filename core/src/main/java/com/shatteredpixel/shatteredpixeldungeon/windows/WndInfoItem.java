@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,49 +24,44 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
 public class WndInfoItem extends Window {
 	
 	private static final float GAP	= 2;
-	
-	private static final int WIDTH_P = 120;
-	private static final int WIDTH_L = 144;
+
+	private static final int WIDTH_MIN = 120;
+	private static final int WIDTH_MAX = 220;
 	
 	public WndInfoItem( Heap heap ) {
 		
 		super();
-		
-		if (heap.type == Heap.Type.HEAP || heap.type == Heap.Type.FOR_SALE) {
-			
-			Item item = heap.peek();
-			
-			int color = TITLE_COLOR;
-			if (item.levelKnown && item.level() > 0) {
-				color = ItemSlot.UPGRADED;
-			} else if (item.levelKnown && item.level() < 0) {
-				color = ItemSlot.DEGRADED;
-			}
-			fillFields( item.image(), item.glowing(), color, item.toString(), item.info() );
-			
-		} else {
 
-			fillFields( heap.image(), heap.glowing(), TITLE_COLOR, heap.toString(), heap.info() );
-			
-		}
+		fillFields( heap );
 	}
 	
 	public WndInfoItem( Item item ) {
-		
 		super();
+		
+		fillFields( item );
+	}
+	
+	private void fillFields( Heap heap ) {
+		
+		IconTitle titlebar = new IconTitle( heap );
+		titlebar.color( TITLE_COLOR );
+		
+		RenderedTextBlock txtInfo = PixelScene.renderTextBlock( heap.info(), 6 );
+
+		layoutFields(titlebar, txtInfo);
+	}
+	
+	private void fillFields( Item item ) {
 		
 		int color = TITLE_COLOR;
 		if (item.levelKnown && item.level() > 0) {
@@ -74,25 +69,34 @@ public class WndInfoItem extends Window {
 		} else if (item.levelKnown && item.level() < 0) {
 			color = ItemSlot.DEGRADED;
 		}
+
+		IconTitle titlebar = new IconTitle( item );
+		titlebar.color( color );
 		
-		fillFields( item.image(), item.glowing(), color, item.toString(), item.info() );
+		RenderedTextBlock txtInfo = PixelScene.renderTextBlock( item.info(), 6 );
+		
+		layoutFields(titlebar, txtInfo);
 	}
-	
-	private void fillFields( int image, ItemSprite.Glowing glowing, int titleColor, String title, String info ) {
 
-		int width = SPDSettings.landscape() ? WIDTH_L : WIDTH_P;
+	private void layoutFields(IconTitle title, RenderedTextBlock info){
+		int width = WIDTH_MIN;
 
-		IconTitle titlebar = new IconTitle();
-		titlebar.icon( new ItemSprite( image, glowing ) );
-		titlebar.label( Messages.titleCase( title ), titleColor );
-		titlebar.setRect( 0, 0, width, 0 );
-		add( titlebar );
-		
-		RenderedTextMultiline txtInfo = PixelScene.renderMultiline( info, 6 );
-		txtInfo.maxWidth(width);
-		txtInfo.setPos(titlebar.left(), titlebar.bottom() + GAP);
-		add( txtInfo );
-		
-		resize( width, (int)(txtInfo.top() + txtInfo.height()) );
+		info.maxWidth(width);
+
+		//window can go out of the screen on landscape, so widen it as appropriate
+		while (PixelScene.landscape()
+				&& info.height() > 100
+				&& width < WIDTH_MAX){
+			width += 20;
+			info.maxWidth(width);
+		}
+
+		title.setRect( 0, 0, width, 0 );
+		add( title );
+
+		info.setPos(title.left(), title.bottom() + GAP);
+		add( info );
+
+		resize( width, (int)(info.bottom() + 2) );
 	}
 }

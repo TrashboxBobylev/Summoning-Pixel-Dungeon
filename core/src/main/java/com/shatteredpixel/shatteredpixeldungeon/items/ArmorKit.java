@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -108,7 +108,7 @@ public class ArmorKit extends Item {
 		}
 		
 		curUser.sprite.operate( curUser.pos );
-		Sample.INSTANCE.play( Assets.SND_EVOKE );
+		Sample.INSTANCE.play( Assets.Sounds.EVOKE );
 	}
 	
 	private final WndBag.Listener itemSelector = new WndBag.Listener() {

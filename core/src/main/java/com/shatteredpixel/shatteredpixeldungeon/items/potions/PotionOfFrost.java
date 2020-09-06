@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -29,13 +29,14 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 
 public class PotionOfFrost extends Potion {
 
 	{
-		initials = 1;
+		icon = ItemSpriteSheet.Icons.POTION_FROST;
 	}
 	
 	@Override
@@ -45,7 +46,7 @@ public class PotionOfFrost extends Potion {
 			setKnown();
 			
 			splash( cell );
-			Sample.INSTANCE.play( Assets.SND_SHATTER );
+			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 		}
 		
 		for (int offset : PathFinder.NEIGHBOURS9){
@@ -59,7 +60,7 @@ public class PotionOfFrost extends Potion {
 	}
 	
 	@Override
-	public int price() {
-		return isKnown() ? 40 * quantity : super.price();
+	public int value() {
+		return isKnown() ? 40 * quantity : super.value();
 	}
 }

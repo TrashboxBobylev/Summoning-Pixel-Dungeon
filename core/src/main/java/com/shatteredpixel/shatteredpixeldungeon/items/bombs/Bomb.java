@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -60,6 +60,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -143,7 +144,7 @@ public class Bomb extends Item {
 		//We're blowing up, so no need for a fuse anymore.
 		this.fuse = null;
 
-		Sample.INSTANCE.play( Assets.SND_BLAST );
+		Sample.INSTANCE.play( Assets.Sounds.BLAST );
 
 		if (explodesDestructively()) {
 			
@@ -180,6 +181,12 @@ public class Bomb extends Item {
 			}
 			
 			for (Char ch : affected){
+
+				//if they have already been killed by another bomb
+				if(!ch.isAlive()){
+					continue;
+				}
+
 				int dmg = Random.NormalIntRange(5 + Dungeon.depth, 10 + Dungeon.depth*2);
 
 				//those not at the center of the blast take less damage
@@ -230,7 +237,7 @@ public class Bomb extends Item {
 	}
 
 	@Override
-	public int price() {
+	public int value(){
 		return 35 * quantity;
 	}
 	

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -26,8 +26,10 @@ package com.watabou.noosa.audio;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.watabou.noosa.Game;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 public enum Sample {
 
@@ -38,42 +40,48 @@ public enum Sample {
 	private boolean enabled = true;
 	private float globalVolume = 1f;
 
-	public void reset() {
+	public synchronized void reset() {
 
 		for (Sound sound : ids.values()){
 			sound.dispose();
 		}
 		
 		ids.clear();
+		delayedSFX.clear();
 
 	}
 
-	public void pause() {
+	public synchronized void pause() {
 		for (Sound sound : ids.values()) {
 			sound.pause();
 		}
 	}
 
-	public void resume() {
+	public synchronized void resume() {
 		for (Sound sound : ids.values()) {
 			sound.resume();
 		}
 	}
 
-	public void load( String... assets ) {
+	public void load( final String... assets ) {
 
-		//FIXME there used to be a queue here so that assets were loaded async.
-		//This was to prevent hanging on specific android versions (implement in vanilla v1.7.5)
-		//Maybe LibGDX already handles this?
-		for (String asset : assets){
-			if (!ids.containsKey(asset)){
-				ids.put(asset, Gdx.audio.newSound(Gdx.files.internal(asset)));
+		//load in a separate thread to prevent this blocking the UI
+		new Thread(){
+			@Override
+			public void run() {
+				synchronized (Sample.class) {
+					for (String asset : assets) {
+						if (!ids.containsKey(asset)) {
+							ids.put(asset, Gdx.audio.newSound(Gdx.files.internal(asset)));
+						}
+					}
+				}
 			}
-		}
+		}.start();
 		
 	}
 
-	public void unload( Object src ) {
+	public synchronized void unload( Object src ) {
 		if (ids.containsKey( src )) {
 			ids.get( src ).dispose();
 			ids.remove( src );
@@ -92,13 +100,65 @@ public enum Sample {
 		return play( id, volume, volume, pitch );
 	}
 	
-	public long play( Object id, float leftVolume, float rightVolume, float pitch ) {
+	public synchronized long play( Object id, float leftVolume, float rightVolume, float pitch ) {
 		float volume = Math.max(leftVolume, rightVolume);
 		float pan = rightVolume - leftVolume;
 		if (enabled && ids.containsKey( id )) {
 			return ids.get(id).play( globalVolume*volume, pitch, pan );
 		} else {
 			return -1;
+		}
+	}
+
+	private class DelayedSoundEffect{
+		Object id;
+		float delay;
+
+		float leftVol;
+		float rightVol;
+		float pitch;
+	}
+
+	private static final HashSet<DelayedSoundEffect> delayedSFX = new HashSet<>();
+
+	public void playDelayed( Object id, float delay ){
+		playDelayed( id, delay, 1 );
+	}
+
+	public void playDelayed( Object id, float delay, float volume ) {
+		playDelayed( id, delay, volume, volume, 1 );
+	}
+
+	public void playDelayed( Object id, float delay, float volume, float pitch ) {
+		playDelayed( id, delay, volume, volume, pitch );
+	}
+
+	public void playDelayed( Object id, float delay, float leftVolume, float rightVolume, float pitch ) {
+		if (delay <= 0) {
+			play(id, leftVolume, rightVolume, pitch);
+			return;
+		}
+		DelayedSoundEffect sfx = new DelayedSoundEffect();
+		sfx.id = id;
+		sfx.delay = delay;
+		sfx.leftVol = leftVolume;
+		sfx.rightVol = rightVolume;
+		sfx.pitch = pitch;
+		synchronized (delayedSFX) {
+			delayedSFX.add(sfx);
+		}
+	}
+
+	public void update(){
+		synchronized (delayedSFX) {
+			if (delayedSFX.isEmpty()) return;
+			for (DelayedSoundEffect sfx : delayedSFX.toArray(new DelayedSoundEffect[0])) {
+				sfx.delay -= Game.elapsed;
+				if (sfx.delay <= 0) {
+					delayedSFX.remove(sfx);
+					play(sfx.id, sfx.leftVol, sfx.rightVol, sfx.pitch);
+				}
+			}
 		}
 	}
 

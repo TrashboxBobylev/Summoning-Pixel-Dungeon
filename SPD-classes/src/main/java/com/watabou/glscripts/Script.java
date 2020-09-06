@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -26,14 +26,14 @@ package com.watabou.glscripts;
 
 import com.watabou.glwrap.Program;
 import com.watabou.glwrap.Shader;
-import com.watabou.noosa.Game;
+import com.watabou.utils.Reflection;
 
 import java.util.HashMap;
 
 public class Script extends Program {
 
 	private static final HashMap<Class<? extends Script>,Script> all =
-		new HashMap<Class<? extends Script>, Script>();
+			new HashMap<>();
 	
 	private static Script curScript = null;
 	private static Class<? extends Script> curScriptClass = null;
@@ -45,11 +45,7 @@ public class Script extends Program {
 			
 			Script script = all.get( c );
 			if (script == null) {
-				try {
-					script = c.newInstance();
-				} catch (Exception e) {
-					Game.reportException(e);
-				}
+				script = Reflection.newInstance( c );
 				all.put( c, script );
 			}
 			

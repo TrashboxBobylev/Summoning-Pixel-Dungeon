@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -71,11 +70,12 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndItem;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndUseItem;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -89,8 +89,6 @@ public class Potion extends Item {
 	public static final String AC_CHOOSE = "CHOOSE";
 
 	private static final float TIME_TO_DRINK = 1f;
-
-	protected Integer initials;
 
 	private static final Class<?>[] potions = {
 			PotionOfHealing.class,
@@ -251,7 +249,7 @@ public class Potion extends Item {
 		
 		if (action.equals( AC_CHOOSE )){
 			
-			GameScene.show(new WndItem(null, this, true) );
+			GameScene.show(new WndUseItem(null, this) );
 			
 		} else if (action.equals( AC_DRINK )) {
 			
@@ -266,7 +264,7 @@ public class Potion extends Item {
 								if (index == 0) {
 									drink( hero );
 								}
-							};
+							}
 						}
 					);
 					
@@ -293,7 +291,7 @@ public class Potion extends Item {
 						if (index == 0) {
 							Potion.super.doThrow( hero );
 						}
-					};
+					}
 				}
 			);
 			
@@ -310,7 +308,7 @@ public class Potion extends Item {
 		hero.busy();
 		apply( hero );
 		
-		Sample.INSTANCE.play( Assets.SND_DRINK );
+		Sample.INSTANCE.play( Assets.Sounds.DRINK );
 		
 		hero.sprite.operate( hero.pos );
 	}
@@ -323,7 +321,7 @@ public class Potion extends Item {
 			
 		} else  {
 
-			Dungeon.level.press( cell, null, true );
+			Dungeon.level.pressCell( cell );
 			shatter( cell );
 			
 		}
@@ -336,7 +334,7 @@ public class Potion extends Item {
 	public void shatter( int cell ) {
 		if (Dungeon.level.heroFOV[cell]) {
 			GLog.i( Messages.get(Potion.class, "shatter") );
-			Sample.INSTANCE.play( Assets.SND_SHATTER );
+			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 			splash( cell );
 		}
 	}
@@ -385,10 +383,6 @@ public class Potion extends Item {
 	public String info() {
 		return isKnown() ? desc() : Messages.get(this, "unknown_desc");
 	}
-
-	public Integer initials(){
-		return isKnown() ? initials : null;
-	}
 	
 	@Override
 	public boolean isIdentified() {
@@ -425,7 +419,7 @@ public class Potion extends Item {
 		final int color = splashColor();
 
 		Char ch = Actor.findChar(cell);
-		if (ch != null) {
+		if (ch != null && ch.alignment == Char.Alignment.ALLY) {
 			Buff.detach(ch, Burning.class);
 			Buff.detach(ch, Ooze.class);
 			Splash.at( ch.sprite.center(), color, 5 );
@@ -435,7 +429,7 @@ public class Potion extends Item {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		return 40 * quantity;
 	}
 	
@@ -516,24 +510,22 @@ public class Potion extends Item {
 			if ( (seeds.size() == 2 && Random.Int(4) == 0)
 					|| (seeds.size() == 3 && Random.Int(2) == 0)) {
 				
-				result = Generator.random( Generator.Category.POTION );
+				result = Generator.randomUsingDefaults( Generator.Category.POTION );
 				
 			} else {
-				
-				Class<? extends Potion> itemClass = types.get(Random.element(ingredients).getClass());
-				try {
-					result = itemClass.newInstance();
-				} catch (Exception e) {
-					ShatteredPixelDungeon.reportException(e);
-					result = Generator.random( Generator.Category.POTION );
-				}
-				
+				result = Reflection.newInstance(types.get(Random.element(ingredients).getClass()));
+
 			}
-			
+
+			if (seeds.size() == 1){
+				result.identify();
+			}
+
 			while (result instanceof PotionOfHealing
 					&& (Dungeon.isChallenged(Challenges.NO_HEALING)
 					|| Random.Int(10) < Dungeon.LimitedDrops.COOKING_HP.count)) {
-				result = Generator.random(Generator.Category.POTION);
+
+				result = Generator.randomUsingDefaults(Generator.Category.POTION);
 			}
 			
 			if (result instanceof PotionOfHealing) {
@@ -549,8 +541,10 @@ public class Potion extends Item {
 		@Override
 		public Item sampleOutput(ArrayList<Item> ingredients) {
 			return new WndBag.Placeholder(ItemSpriteSheet.POTION_HOLDER){
-				{
-					name = Messages.get(SeedToPotion.class, "name");
+
+				@Override
+				public String name() {
+					return Messages.get(Potion.SeedToPotion.class, "name");
 				}
 				
 				@Override

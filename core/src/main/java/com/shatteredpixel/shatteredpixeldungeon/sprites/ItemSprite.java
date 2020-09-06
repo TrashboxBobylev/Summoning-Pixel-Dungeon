@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -78,10 +78,14 @@ public class ItemSprite extends MovieClip {
 		this( ItemSpriteSheet.SOMETHING, null );
 	}
 	
+	public ItemSprite( Heap heap ){
+		super(Assets.Sprites.ITEMS);
+		view( heap );
+	}
+	
 	public ItemSprite( Item item ) {
-		super(Assets.ITEMS);
-
-		view (item);
+		super(Assets.Sprites.ITEMS);
+		view( item );
 	}
 	
 	public ItemSprite( int image ){
@@ -89,7 +93,7 @@ public class ItemSprite extends MovieClip {
 	}
 	
 	public ItemSprite( int image, Glowing glowing ) {
-		super( Assets.ITEMS );
+		super( Assets.Sprites.ITEMS );
 		
 		view(image, glowing);
 	}
@@ -104,7 +108,7 @@ public class ItemSprite extends MovieClip {
 	
 	public void link( Heap heap ) {
 		this.heap = heap;
-		view( heap.image(), heap.glowing() );
+		view(heap);
 		renderShadow = true;
 		place(heap.pos);
 	}
@@ -166,7 +170,7 @@ public class ItemSprite extends MovieClip {
 		
 		if (heap != null && heap.seen && heap.peek() instanceof Gold) {
 			CellEmitter.center( heap.pos ).burst( Speck.factory( Speck.COIN ), 5 );
-			Sample.INSTANCE.play( Assets.SND_GOLD, 1, 1, Random.Float( 0.9f, 1.1f ) );
+			Sample.INSTANCE.play( Assets.Sounds.GOLD, 1, 1, Random.Float( 0.9f, 1.1f ) );
 		}
 	}
 	
@@ -186,7 +190,7 @@ public class ItemSprite extends MovieClip {
 		}
 	}
 
-	public ItemSprite view(Item item){
+	public ItemSprite view( Item item ){
 		view(item.image(), item.glowing());
 		Emitter emitter = item.emitter();
 		if (emitter != null && parent != null) {
@@ -195,6 +199,32 @@ public class ItemSprite extends MovieClip {
 			this.emitter = emitter;
 		}
 		return this;
+	}
+	
+	public ItemSprite view( Heap heap ){
+		if (heap.size() <= 0 || heap.items == null){
+			return view( 0, null );
+		}
+		
+		switch (heap.type) {
+			case HEAP: case FOR_SALE:
+				return view( heap.peek() );
+			case CHEST:
+			case MIMIC:
+				return view( ItemSpriteSheet.CHEST, null );
+			case LOCKED_CHEST:
+				return view( ItemSpriteSheet.LOCKED_CHEST, null );
+			case CRYSTAL_CHEST:
+				return view( ItemSpriteSheet.CRYSTAL_CHEST, null );
+			case TOMB:
+				return view( ItemSpriteSheet.TOMB, null );
+			case SKELETON:
+				return view( ItemSpriteSheet.BONES, null );
+			case REMAINS:
+				return view( ItemSpriteSheet.REMAINS, null );
+			default:
+				return view( 0, null );
+		}
 	}
 	
 	public ItemSprite view( int image, Glowing glowing ) {
@@ -281,6 +311,10 @@ public class ItemSprite extends MovieClip {
 
 		visible = (heap == null || heap.seen);
 
+		if (emitter != null){
+			emitter.visible = visible;
+		}
+
 		if (dropInterval > 0){
 			shadowOffset -= speed.y * Game.elapsed * 0.8f;
 
@@ -292,17 +326,23 @@ public class ItemSprite extends MovieClip {
 				place(heap.pos);
 
 				if (visible) {
-					boolean water = Dungeon.level.water[heap.pos];
 
-					if (water) {
+					if (Dungeon.level.water[heap.pos]) {
 						GameScene.ripple(heap.pos);
-					} else {
-						int cell = Dungeon.level.map[heap.pos];
-						water = (cell == Terrain.WELL || cell == Terrain.ALCHEMY);
 					}
 
-					if (!(heap.peek() instanceof Gold)) {
-						Sample.INSTANCE.play(water ? Assets.SND_WATER : Assets.SND_STEP, 0.8f, 0.8f, 1.2f);
+					if (Dungeon.level.water[heap.pos]) {
+						Sample.INSTANCE.play( Assets.Sounds.WATER, 0.8f, Random.Float( 1f, 1.45f ) );
+					} else if (Dungeon.level.map[heap.pos] == Terrain.EMPTY_SP) {
+						Sample.INSTANCE.play( Assets.Sounds.STURDY, 0.8f, Random.Float( 1.16f, 1.25f ) );
+					} else if (Dungeon.level.map[heap.pos] == Terrain.GRASS
+							|| Dungeon.level.map[heap.pos] == Terrain.EMBERS
+							|| Dungeon.level.map[heap.pos] == Terrain.FURROWED_GRASS){
+						Sample.INSTANCE.play( Assets.Sounds.GRASS, 0.8f, Random.Float( 1.16f, 1.25f ) );
+					} else if (Dungeon.level.map[heap.pos] == Terrain.HIGH_GRASS) {
+						Sample.INSTANCE.play( Assets.Sounds.STEP, 0.8f, Random.Float( 1.16f, 1.25f ) );
+					} else {
+						Sample.INSTANCE.play( Assets.Sounds.STEP, 0.8f, Random.Float( 1.16f, 1.25f ));
 					}
 				}
 			}
@@ -337,7 +377,7 @@ public class ItemSprite extends MovieClip {
 	}
 
 	public static int pick( int index, int x, int y ) {
-		SmartTexture tx = TextureCache.get( Assets.ITEMS );
+		SmartTexture tx = TextureCache.get( Assets.Sprites.ITEMS );
 		int rows = tx.width / SIZE;
 		int row = index / rows;
 		int col = index % rows;

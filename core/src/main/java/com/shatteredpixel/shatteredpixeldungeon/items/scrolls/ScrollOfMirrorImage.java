@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -29,10 +29,10 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MirrorImage;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
@@ -43,7 +43,7 @@ import java.util.ArrayList;
 public class ScrollOfMirrorImage extends Scroll {
 
 	{
-		initials = 3;
+		icon = ItemSpriteSheet.Icons.SCROLL_MIRRORIMG;
 	}
 
 	private static final int NIMAGES	= 2;
@@ -56,29 +56,15 @@ public class ScrollOfMirrorImage extends Scroll {
 			setKnown();
 		}
 		
-		Sample.INSTANCE.play( Assets.SND_READ );
-		Invisibility.dispel();
+		Sample.INSTANCE.play( Assets.Sounds.READ );
 		
 		readAnimation();
 	}
-	
-	@Override
-	public void empoweredRead() {
-		//spawns 2 images right away, delays 3 of them, 5 total.
-		new DelayedImageSpawner(5 - spawnImages(curUser, 2), 1, 2).attachTo(curUser);
-		
-		setKnown();
-		
-		Sample.INSTANCE.play( Assets.SND_READ );
-		Invisibility.dispel();
-	
-		readAnimation();
-	}
-	
+
 	//returns the number of images spawned
 	public static int spawnImages( Hero hero, int nImages ){
 		
-		ArrayList<Integer> respawnPoints = new ArrayList<Integer>();
+		ArrayList<Integer> respawnPoints = new ArrayList<>();
 		
 		for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
 			int p = hero.pos + PathFinder.NEIGHBOURS8[i];
@@ -169,7 +155,7 @@ public class ScrollOfMirrorImage extends Scroll {
 	}
 
 	@Override
-	public int price() {
-		return isKnown() ? 45 * quantity : super.price();
+	public int value() {
+		return isKnown() ? 45 * quantity : super.value();
 	}
 }

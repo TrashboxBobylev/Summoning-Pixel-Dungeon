@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -33,7 +33,7 @@ public class ShadowBox extends NinePatch {
 	public static final float SIZE	= 16;
 	
 	public ShadowBox() {
-		super( Assets.SHADOW, 1 );
+		super( Assets.Interfaces.SHADOW, 1 );
 
 		//If this is the first time the texture is generated, set the filtering
 		if (texture.id == -1)

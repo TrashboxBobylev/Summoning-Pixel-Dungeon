@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -143,11 +143,11 @@ public class ArcaneBomb extends Bomb {
         Dungeon.level.buildFlagMaps();
         Dungeon.level.cleanWalls();
         Dungeon.observe();
-        Sample.INSTANCE.play( Assets.SND_BLAST, 18 );
+        Sample.INSTANCE.play( Assets.Sounds.BLAST, 18 );
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		//prices of ingredients
 		return quantity * (35 + 50);
 	}

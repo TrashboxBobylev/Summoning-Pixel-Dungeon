@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -26,14 +26,19 @@ package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 import java.text.DecimalFormat;
 
 public class RingOfSharpshooting extends Ring {
-	
+
+	{
+		icon = ItemSpriteSheet.Icons.RING_SHARPSHOOT;
+	}
+
 	public String statsInfo() {
 		if (isIdentified()){
-			return Messages.get(this, "stats", soloBonus(), new DecimalFormat("#.##").format(100f * (Math.pow(1.2, soloBonus()) - 1f)));
+			return Messages.get(this, "stats", soloBuffedBonus(), new DecimalFormat("#.##").format(100f * (Math.pow(1.2, soloBonus()) - 1f)));
 		} else {
 			return Messages.get(this, "typical_stats", 1, new DecimalFormat("#.##").format(20f));
 		}
@@ -45,7 +50,7 @@ public class RingOfSharpshooting extends Ring {
 	}
 	
 	public static int levelDamageBonus( Char target ){
-		return getBonus(target, RingOfSharpshooting.Aim.class);
+		return getBuffedBonus(target, RingOfSharpshooting.Aim.class);
 	}
 	
 	public static float durabilityMultiplier( Char target ){

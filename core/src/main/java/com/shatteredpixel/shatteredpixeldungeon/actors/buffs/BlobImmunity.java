@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -27,7 +27,6 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.*;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.watabou.noosa.Image;
 
 public class BlobImmunity extends FlavourBuff {
 	
@@ -41,10 +40,10 @@ public class BlobImmunity extends FlavourBuff {
 	public int icon() {
 		return BuffIndicator.IMMUNITY;
 	}
-	
+
 	@Override
-	public void tintIcon(Image icon) {
-		greyIcon(icon, 5f, cooldown());
+	public float iconFadePercent() {
+		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
 	}
 	
 	@Override
@@ -69,6 +68,9 @@ public class BlobImmunity extends FlavourBuff {
 		immunities.add( StormCloud.class );
 		immunities.add( ToxicGas.class );
 		immunities.add( Web.class );
+
+		immunities.add(NewTengu.FireAbility.FireBlob.class);
+		immunities.add(NewTengu.BombAbility.BombBlob.class);
 	}
 
 	@Override

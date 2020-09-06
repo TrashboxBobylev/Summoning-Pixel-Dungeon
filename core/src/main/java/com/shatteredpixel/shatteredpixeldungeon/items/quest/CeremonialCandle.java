@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -29,7 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewbornElemental;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
@@ -99,8 +99,8 @@ public class CeremonialCandle extends Item {
 				heapRight.pickUp();
 				heapBottom.pickUp();
 				heapLeft.pickUp();
-
-				NewbornElemental elemental = new NewbornElemental();
+				
+				Elemental.NewbornFireElemental elemental = new Elemental.NewbornFireElemental();
 				Char ch = Actor.findChar( ritualPos );
 				if (ch != null) {
 					ArrayList<Integer> candidates = new ArrayList<>();
@@ -124,7 +124,7 @@ public class CeremonialCandle extends Item {
 				for (int i : PathFinder.NEIGHBOURS9){
 					CellEmitter.get(ritualPos+i).burst(ElmoParticle.FACTORY, 10);
 				}
-				Sample.INSTANCE.play(Assets.SND_BURNING);
+				Sample.INSTANCE.play(Assets.Sounds.BURNING);
 			}
 		}
 

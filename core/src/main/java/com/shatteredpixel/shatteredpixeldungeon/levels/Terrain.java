@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -99,14 +99,14 @@ public class Terrain {
 		flags[EMPTY_DECO]	= flags[EMPTY];
 		flags[LOCKED_EXIT]	= SOLID;
 		flags[UNLOCKED_EXIT]= PASSABLE;
-		flags[SIGN]			= PASSABLE | FLAMABLE;
+		flags[SIGN]			= SOLID; //Currently these are unused except for visual tile overrides where we want terrain to be solid with no other properties
 		flags[WELL]			= AVOID;
 		flags[STATUE]		= SOLID;
 		flags[STATUE_SP]	= flags[STATUE];
 		flags[BOOKSHELF]	= flags[BARRICADE];
 		flags[ALCHEMY]		= SOLID;
 
-	};
+	}
 
 	public static int discover( int terr ) {
 		switch (terr) {

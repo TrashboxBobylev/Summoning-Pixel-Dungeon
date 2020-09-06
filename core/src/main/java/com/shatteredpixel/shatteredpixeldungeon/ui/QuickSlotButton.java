@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -34,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.watabou.input.GameAction;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Button;
 import com.watabou.utils.PathFinder;
@@ -95,20 +97,25 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 					item.execute( Dungeon.hero );
 				}
 			}
+			
+			@Override
+			public GameAction keyAction() {
+				return QuickSlotButton.this.keyAction();
+			}
 			@Override
 			protected boolean onLongClick() {
 				return QuickSlotButton.this.onLongClick();
 			}
 			@Override
 			protected void onPointerDown() {
-				icon.lightness( 0.7f );
+				sprite.lightness( 0.7f );
 			}
 			@Override
 			protected void onPointerUp() {
-				icon.resetColor();
+				sprite.resetColor();
 			}
 		};
-		slot.showParams( true, false, true );
+		slot.showExtraInfo( false );
 		add( slot );
 		
 		crossB = Icons.TARGET.get();
@@ -128,6 +135,30 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 		crossB.x = x + (width - crossB.width) / 2;
 		crossB.y = y + (height - crossB.height) / 2;
 		PixelScene.align(crossB);
+	}
+
+	@Override
+	public void update() {
+		super.update();
+		if (targeting && lastTarget != null && lastTarget.sprite != null){
+			crossM.point(lastTarget.sprite.center(crossM));
+		}
+	}
+
+	@Override
+	public GameAction keyAction() {
+		switch (slotNum){
+			case 0:
+				return SPDAction.QUICKSLOT_1;
+			case 1:
+				return SPDAction.QUICKSLOT_2;
+			case 2:
+				return SPDAction.QUICKSLOT_3;
+			case 3:
+				return SPDAction.QUICKSLOT_4;
+			default:
+				return super.keyAction();
+		}
 	}
 	
 	@Override
@@ -184,7 +215,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 			sprite.parent.addToFront( crossM );
 			crossM.point(sprite.center(crossM));
 
-			crossB.point(slot.icon.center(crossB));
+			crossB.point(slot.sprite.center(crossB));
 			crossB.visible = true;
 
 		} else {

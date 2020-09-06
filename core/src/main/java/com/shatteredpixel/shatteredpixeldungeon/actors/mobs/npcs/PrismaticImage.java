@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -197,7 +197,7 @@ public class PrismaticImage extends NPC {
 		//TODO improve this when I have proper damage source logic
 		if (hero.belongings.armor != null && hero.belongings.armor.hasGlyph(AntiMagic.class, this)
 				&& AntiMagic.RESISTS.contains(src.getClass())){
-			dmg -= AntiMagic.drRoll(hero.belongings.armor.level());
+			dmg -= AntiMagic.drRoll(hero.belongings.armor.buffedLvl());
 		}
 		
 		super.damage(dmg, src);
@@ -260,7 +260,7 @@ public class PrismaticImage extends NPC {
 				destroy();
 				CellEmitter.get(pos).start( Speck.factory(Speck.LIGHT), 0.2f, 3 );
 				sprite.die();
-				Sample.INSTANCE.play( Assets.SND_TELEPORT );
+				Sample.INSTANCE.play( Assets.Sounds.TELEPORT );
 				return true;
 			} else {
 				return super.act(enemyInFOV, justAlerted);

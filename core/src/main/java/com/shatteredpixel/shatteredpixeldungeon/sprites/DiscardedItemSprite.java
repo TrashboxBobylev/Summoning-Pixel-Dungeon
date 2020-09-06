@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,23 +24,19 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.Game;
 
 public class DiscardedItemSprite extends ItemSprite {
-	
-	public DiscardedItemSprite() {
-		
-		super();
-		
-		originToCenter();
-		angularSpeed = 720;
-	}
 	
 	@Override
 	public void drop() {
 		scale.set( 1 );
 		am = 1;
 		if (emitter != null) emitter.killAndErase();
+
+		origin.set( width/2, height - DungeonTilemap.SIZE/2);
+		angularSpeed = 720;
 	}
 	
 	@Override
@@ -48,7 +44,8 @@ public class DiscardedItemSprite extends ItemSprite {
 		
 		super.update();
 		
-		scale.set( scale.x * 0.9f );
+		scale.set( scale.x -= Game.elapsed );
+		y += 12 * Game.elapsed;
 		if ((am -= Game.elapsed) <= 0) {
 			remove();
 		}

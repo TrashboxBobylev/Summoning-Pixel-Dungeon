@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
-import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Button;
 
@@ -37,7 +36,7 @@ import com.watabou.noosa.ui.Button;
 public class StyledButton extends Button {
 	
 	protected NinePatch bg;
-	protected RenderedText text;
+	protected RenderedTextBlock text;
 	protected Image icon;
 	
 	public StyledButton(Chrome.Type type, String label ) {
@@ -50,7 +49,7 @@ public class StyledButton extends Button {
 		bg = Chrome.get( type );
 		addToBack( bg );
 		
-		text = PixelScene.renderText( size );
+		text = PixelScene.renderTextBlock( size );
 		text.text( label );
 		add( text );
 	}
@@ -71,8 +70,10 @@ public class StyledButton extends Button {
 		if (text != null && !text.text().equals("")){
 			componentWidth += text.width() + 2;
 			
-			text.x = x + (width() + componentWidth)/2f - text.width() - 1;
-			text.y = y + (height() - text.baseLine()) / 2f;
+			text.setPos(
+					x + (width() + componentWidth)/2f - text.width() - 1,
+					y + (height() - text.height()) / 2f
+			);
 			PixelScene.align(text);
 			
 		}
@@ -89,7 +90,7 @@ public class StyledButton extends Button {
 	@Override
 	protected void onPointerDown() {
 		bg.brightness( 1.2f );
-		Sample.INSTANCE.play( Assets.SND_CLICK );
+		Sample.INSTANCE.play( Assets.Sounds.CLICK );
 	}
 	
 	@Override
@@ -105,6 +106,10 @@ public class StyledButton extends Button {
 	public void text( String value ) {
 		text.text( value );
 		layout();
+	}
+
+	public String text(){
+		return text.text();
 	}
 	
 	public void textColor( int value ) {
@@ -125,6 +130,12 @@ public class StyledButton extends Button {
 	public Image icon(){
 		return icon;
 	}
+
+	public void alpha(float value){
+		if (icon != null) icon.alpha(value);
+		if (bg != null)   bg.alpha(value);
+		if (text != null) text.alpha(value);
+	}
 	
 	public float reqWidth() {
 		float reqWidth = 0;
@@ -143,7 +154,7 @@ public class StyledButton extends Button {
 			reqHeight = Math.max(icon.height() + 4, reqHeight);
 		}
 		if (text != null && !text.text().equals("")){
-			reqHeight = Math.max(text.baseLine() + 4, reqHeight);
+			reqHeight = Math.max(text.height() + 4, reqHeight);
 		}
 		return reqHeight;
 	}

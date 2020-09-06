@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -28,7 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ChaliceOfBlood;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LoveHolder;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 
 public class Regeneration extends Buff {
 	
@@ -38,7 +38,7 @@ public class Regeneration extends Buff {
 		actPriority = HERO_PRIO - 1;
 	}
 	
-	private static final float REGENERATION_DELAY = 16;
+	private static final float REGENERATION_DELAY = 10;
 	
 	@Override
 	public boolean act() {
@@ -54,20 +54,18 @@ public class Regeneration extends Buff {
 				}
 			}
 
-            LoveHolder.lul lul = target.buff(LoveHolder.lul.class);
-
 			ChaliceOfBlood.chaliceRegen regenBuff = Dungeon.hero.buff( ChaliceOfBlood.chaliceRegen.class);
 
-			float tick = REGENERATION_DELAY;
-			if (Dungeon.depth == 21) tick /= 10;
-
-			if (regenBuff != null)
-				if (regenBuff.isCursed())
-					tick *= 1.5f;
-				else
-					tick -= regenBuff.itemLevel()*0.9f;
-
-				spend( tick );
+			float delay = REGENERATION_DELAY;
+			if (regenBuff != null) {
+				if (regenBuff.isCursed()) {
+					delay *= 1.5f;
+				} else {
+					delay -= regenBuff.itemLevel()*0.9f;
+					delay /= RingOfEnergy.artifactChargeMultiplier(target);
+				}
+			}
+			spend( delay );
 			
 		} else {
 			

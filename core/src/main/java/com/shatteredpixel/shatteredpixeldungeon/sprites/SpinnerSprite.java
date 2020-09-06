@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -39,7 +39,7 @@ public class SpinnerSprite extends MobSprite {
 
 		perspectiveRaise = 0f;
 
-		texture( Assets.SPINNER );
+		texture( Assets.Sprites.SPINNER );
 		
 		TextureFilm frames = new TextureFilm( texture, 16, 16 );
 		
@@ -51,9 +51,9 @@ public class SpinnerSprite extends MobSprite {
 		
 		attack = new Animation( 12, false );
 		attack.frames( frames, 0, 4, 5, 0 );
-
-		zap = attack.clone();
 		
+		zap = attack.clone();
+
 		die = new Animation( 12, false );
 		die.frames( frames, 6, 7, 8, 9 );
 		

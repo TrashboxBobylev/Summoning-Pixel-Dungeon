@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -84,7 +84,6 @@ public class CapeOfThorns extends Artifact {
 			if (cooldown > 0) {
 				cooldown--;
 				if (cooldown == 0) {
-					BuffIndicator.refreshHero();
 					GLog.warning( Messages.get(this, "inert") );
 				}
 				updateQuickslot();
@@ -100,7 +99,6 @@ public class CapeOfThorns extends Artifact {
 					charge = 0;
 					cooldown = 10+level();
 					GLog.positive( Messages.get(this, "radiating") );
-					BuffIndicator.refreshHero();
 				}
 			}
 

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -92,7 +92,7 @@ public class CleanWater extends Item {
         hero.busy();
         apply( hero );
 
-        Sample.INSTANCE.play( Assets.SND_DRINK );
+        Sample.INSTANCE.play( Assets.Sounds.DRINK );
 
         hero.sprite.operate( hero.pos );
     }
@@ -130,7 +130,7 @@ public class CleanWater extends Item {
     public void shatter( int cell ) {
         if (Dungeon.level.heroFOV[cell]) {
             GLog.i( Messages.get(Potion.class, "shatter") );
-            Sample.INSTANCE.play( Assets.SND_SHATTER );
+            Sample.INSTANCE.play( Assets.Sounds.SHATTER );
             splash( cell );
         }
     }
@@ -160,7 +160,7 @@ public class CleanWater extends Item {
     }
 
     @Override
-	public int price() {
+	public int value() {
         int i = 100 * quantity;
         if (Dungeon.isChallenged(Challenges.NO_HEALING)) i *= 1.2f;
         return i;

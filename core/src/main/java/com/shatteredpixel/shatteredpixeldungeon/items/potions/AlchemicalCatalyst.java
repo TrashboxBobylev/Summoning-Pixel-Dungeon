@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,7 +24,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions;
 
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
@@ -32,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,25 +60,17 @@ public class AlchemicalCatalyst extends Potion {
 	
 	@Override
 	public void apply(Hero hero) {
-		try {
-			Potion p = Random.chances(potionChances).newInstance();
-			p.anonymize();
-			p.apply(hero);
-		} catch (Exception e) {
-			ShatteredPixelDungeon.reportException(e);
-		}
+		Potion p = Reflection.newInstance(Random.chances(potionChances));
+		p.anonymize();
+		p.apply(hero);
 	}
 	
 	@Override
 	public void shatter(int cell) {
-		try {
-			Potion p = Random.chances(potionChances).newInstance();
-			p.anonymize();
-			curItem = p;
-			p.shatter(cell);
-		} catch (Exception e) {
-			ShatteredPixelDungeon.reportException(e);
-		}
+		Potion p = Reflection.newInstance(Random.chances(potionChances));
+		p.anonymize();
+		curItem = p;
+		p.shatter(cell);
 	}
 	
 	@Override
@@ -87,7 +79,7 @@ public class AlchemicalCatalyst extends Potion {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		return 40 * quantity;
 	}
 	

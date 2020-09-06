@@ -3,7 +3,7 @@
  *  Copyright (C) 2012-2015 Oleg Dolya
  *
  *  Shattered Pixel Dungeon
- *  Copyright (C) 2014-2019 Evan Debenham
+ *  Copyright (C) 2014-2021 Evan Debenham
  *
  *  Summoning Pixel Dungeon
  *  Copyright (C) 2019-2020 TrashboxBobylev
@@ -83,7 +83,7 @@ public class HateOccult extends Buff implements Hero.Doom{
             target.sprite.emitter().burst(ShadowParticle.UP, 8);
             if (lostPower > 0) target.sprite.showStatus(CharSprite.DEFAULT, "-%s HATE", lostPower);
 
-            Sample.INSTANCE.play(Assets.SND_TOMB);
+            Sample.INSTANCE.play(Assets.Sounds.TOMB);
 
             if (power <= 0){
                 detach();

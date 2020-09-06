@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -49,7 +49,7 @@ public class Annoying extends Weapon.Enchantment {
 				mob.beckon(attacker.pos);
 			}
 			attacker.sprite.centerEmitter().start(Speck.factory(Speck.SCREAM), 0.3f, 3);
-			Sample.INSTANCE.play(Assets.SND_MIMIC);
+			Sample.INSTANCE.play(Assets.Sounds.MIMIC);
 			Invisibility.dispel();
 			GLog.negative(Messages.get(this, "msg_" + (Random.Int(5)+1)));
 		}

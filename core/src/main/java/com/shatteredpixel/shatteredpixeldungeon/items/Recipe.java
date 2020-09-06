@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Broadsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 
@@ -72,15 +73,10 @@ public abstract class Recipe {
 		//gets a simple list of items based on inputs
 		public ArrayList<Item> getIngredients() {
 			ArrayList<Item> result = new ArrayList<>();
-			try {
-				for (int i = 0; i < inputs.length; i++) {
-					Item ingredient = inputs[i].newInstance();
-					ingredient.quantity(inQuantity[i]);
-					result.add(ingredient);
-				}
-			} catch (Exception e){
-				ShatteredPixelDungeon.reportException( e );
-				return null;
+			for (int i = 0; i < inputs.length; i++) {
+				Item ingredient = Reflection.newInstance(inputs[i]);
+				ingredient.quantity(inQuantity[i]);
+				result.add(ingredient);
 			}
 			return result;
 		}
@@ -89,8 +85,7 @@ public abstract class Recipe {
 		public final boolean testIngredients(ArrayList<Item> ingredients) {
 			
 			int[] needed = inQuantity.clone();
-			
-			//TODO is this right?
+
 			for (Item ingredient : ingredients){
 				if (!ingredient.isIdentified()) return false;
 				for (int i = 0; i < inputs.length; i++){
@@ -141,7 +136,7 @@ public abstract class Recipe {
 		//ingredients are ignored, as output doesn't vary
 		public final Item sampleOutput(ArrayList<Item> ingredients){
 			try {
-				Item result = output.newInstance();
+				Item result = Reflection.newInstance(output);
 				result.quantity(outQuantity);
 				return result;
 			} catch (Exception e) {
@@ -202,7 +197,7 @@ public abstract class Recipe {
 	    int summarCost = 0;
 	    for (int i = 0; i < recipe.inputs.length; i++){
             try {
-                summarCost += recipe.inputs[i].newInstance().quantity(recipe.inQuantity[i]).price();
+                summarCost += recipe.inputs[i].newInstance().quantity(recipe.inQuantity[i]).value();
             }  catch (Throwable e) {
                 ShatteredPixelDungeon.reportException(e);
                 return 0;
@@ -210,7 +205,7 @@ public abstract class Recipe {
         }
 	    return summarCost / recipe.outQuantity;
     }
-	
+
 	private static Recipe[] threeIngredientRecipes = new Recipe[]{
 		new Potion.SeedToPotion(),
 		new ExoticPotion.PotionToExotic(),
@@ -255,7 +250,7 @@ public abstract class Recipe {
 	
 	public static boolean usableInRecipe(Item item){
 		return !item.cursed
-				&& (item instanceof WornShortsword || !(item instanceof EquipableItem) || item instanceof Dart || item instanceof AlchemistsToolkit)
+				&& (item instanceof WornShortsword || !(item instanceof EquipableItem) || (item instanceof AlchemistsToolkit && item.isIdentified()))
 				&& !(item instanceof Wand);
 	}
 }

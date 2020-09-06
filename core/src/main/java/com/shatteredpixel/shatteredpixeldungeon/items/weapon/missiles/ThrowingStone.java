@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,12 +24,15 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class ThrowingStone extends MissileWeapon {
 	
 	{
 		image = ItemSpriteSheet.THROWING_STONE;
+		hitSound = Assets.Sounds.HIT;
+		hitSoundPitch = 1.1f;
 		
 		bones = false;
 		
@@ -39,7 +42,7 @@ public class ThrowingStone extends MissileWeapon {
 	}
 	
 	@Override
-	public int price() {
-		return super.price()/2; //half normal value
+	public int value() {
+		return super.value()/2; //half normal value
 	}
 }

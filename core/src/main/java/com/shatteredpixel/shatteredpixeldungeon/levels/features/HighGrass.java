@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,11 +24,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.features;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -40,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SandalsOfNature;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
 public class HighGrass {
@@ -48,12 +51,12 @@ public class HighGrass {
 	//yes this is a bit ugly, oh well.
 	private static boolean freezeTrample = false;
 
-    public static void trample( Level level, int pos ) {
-
-        if (freezeTrample) return;
-
-        Char ch = Actor.findChar(pos);
+	public static void trample( Level level, int pos ) {
 		
+		if (freezeTrample) return;
+		
+		Char ch = Actor.findChar(pos);
+
 		if (level.map[pos] == Terrain.FURROWED_GRASS){
 			if (ch instanceof Hero && ((Hero) ch).heroClass == HeroClass.HUNTRESS){
 				//Do nothing
@@ -85,8 +88,8 @@ public class HighGrass {
 			}
 			
 			if (naturalismLevel >= 0) {
-				// Seed, scales from 1/20 to 1/4
-				if (Random.Int(20 - (naturalismLevel * 4)) == 0) {
+				// Seed, scales from 1/25 to 1/5
+				if (Random.Int(25 - (naturalismLevel * 5)) == 0) {
 					level.drop(Generator.random(Generator.Category.SEED), pos).sprite.drop();
 				}
 				
@@ -102,7 +105,8 @@ public class HighGrass {
 				//Camouflage
 				//FIXME doesn't work with sad ghost
 				if (hero.belongings.armor != null && hero.belongings.armor.hasGlyph(Camouflage.class, hero)) {
-					Buff.affect(hero, Camouflage.Camo.class).set(3 + hero.belongings.armor.level());
+					Buff.prolong(hero, Invisibility.class, 3 + hero.belongings.armor.buffedLvl()/2);
+					Sample.INSTANCE.play( Assets.Sounds.MELD );
 				}
 			}
 			

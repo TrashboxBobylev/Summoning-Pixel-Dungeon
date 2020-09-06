@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -34,7 +34,7 @@ import java.util.Collection;
 
 public class PinCushion extends Buff {
 
-	private ArrayList<MissileWeapon> items = new ArrayList<MissileWeapon>();
+	private ArrayList<MissileWeapon> items = new ArrayList<>();
 
 	public void stick(MissileWeapon projectile){
 		for (Item item : items){
@@ -63,7 +63,7 @@ public class PinCushion extends Buff {
 
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
-		items = new ArrayList<>((Collection<MissileWeapon>)((Collection<?>)bundle.getCollection( ITEMS )));
+		items = new ArrayList<>((Collection<MissileWeapon>) ((Collection<?>) bundle.getCollection(ITEMS)));
 		super.restoreFromBundle( bundle );
 	}
 }

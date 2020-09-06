@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -32,6 +32,7 @@ public class Chrome {
 		TOAST,
 		TOAST_TR,
 		WINDOW,
+		WINDOW_SILVER,
 		RED_BUTTON,
 		GREY_BUTTON,
 		GREY_BUTTON_TR,
@@ -41,13 +42,15 @@ public class Chrome {
 		TAB_SET,
 		TAB_SELECTED,
 		TAB_UNSELECTED
-	};
+	}
 	
 	public static NinePatch get( Type type ) {
-		String Asset = Assets.CHROME;
+		String Asset = Assets.Interfaces.CHROME;
 		switch (type) {
 		case WINDOW:
 			return new NinePatch( Asset, 0, 0, 20, 20, 6 );
+		case WINDOW_SILVER:
+			return new NinePatch( Asset, 86, 0, 22, 22, 7 );
 		case TOAST:
 			return new NinePatch( Asset, 22, 0, 18, 18, 5 );
 		case TOAST_TR:

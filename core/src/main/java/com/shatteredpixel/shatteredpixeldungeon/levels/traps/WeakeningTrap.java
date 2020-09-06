@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -51,7 +51,7 @@ public class WeakeningTrap extends Trap{
 				|| ch.properties().contains(Char.Property.MINIBOSS)){
 				Buff.prolong( ch, Weakness.class, Weakness.DURATION/2f );
 			}
-			Buff.prolong( ch, Weakness.class, Weakness.DURATION*2f );
+			Buff.prolong( ch, Weakness.class, Weakness.DURATION*3f );
 		}
 	}
 }

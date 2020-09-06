@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -43,7 +43,6 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.MovieClip;
 import com.watabou.noosa.NoosaScript;
-import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.tweeners.AlphaTweener;
@@ -62,7 +61,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	public static final int WARNING		= 0xFF8800;
 	public static final int NEUTRAL		= 0xFFFF00;
 	
-	private static final float MOVE_INTERVAL	= 0.1f;
+	public static final float DEFAULT_MOVE_INTERVAL = 0.1f;
+	private static float moveInterval = DEFAULT_MOVE_INTERVAL;
 	private static final float FLASH_INTERVAL	= 0.05f;
 
 	//the amount the sprite is raised from flat when viewed in a raised perspective
@@ -165,8 +165,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		final int csize = DungeonTilemap.SIZE;
 		
 		return new PointF(
-			PixelScene.align(Camera.main, ((cell % Dungeon.level.width()) + 0.5f) * csize - width * 0.5f),
-			PixelScene.align(Camera.main, ((cell / Dungeon.level.width()) + 1.0f) * csize - height - csize * perspectiveRaise)
+			PixelScene.align(Camera.main, ((cell % Dungeon.level.width()) + 0.5f) * csize - width() * 0.5f),
+			PixelScene.align(Camera.main, ((cell / Dungeon.level.width()) + 1.0f) * csize - height() - csize * perspectiveRaise)
 		);
 	}
 	
@@ -179,10 +179,12 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 			if (args.length > 0) {
 				text = Messages.format( text, args );
 			}
+			float x = destinationCenter().x;
+			float y = destinationCenter().y - height()/2f;
 			if (ch != null) {
-				FloatingText.show( x + width * 0.5f, y, ch.pos, text, color );
+				FloatingText.show( x, y, ch.pos, text, color );
 			} else {
-				FloatingText.show( x + width * 0.5f, y, text, color );
+				FloatingText.show( x, y, text, color );
 			}
 		}
 	}
@@ -196,7 +198,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 
 		play( run );
 		
-		motion = new PosTweener( this, worldToCamera( to ), MOVE_INTERVAL );
+		motion = new PosTweener( this, worldToCamera( to ), moveInterval );
 		motion.listener = this;
 		parent.add( motion );
 
@@ -208,8 +210,13 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 
 	}
 	
+	public static void setMoveInterval( float interval){
+		moveInterval = interval;
+	}
+	
 	//returns where the center of this sprite will be after it completes any motion in progress
 	public PointF destinationCenter(){
+		PosTweener motion = this.motion;
 		if (motion != null){
 			return new PointF(motion.end.x + width()/2f, motion.end.y + height()/2f);
 		} else {
@@ -266,10 +273,14 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	}
 
 	public void jump( int from, int to, Callback callback ) {
+		float distance = Dungeon.level.trueDistance( from, to );
+		jump( from, to, callback, distance * 2, distance * 0.1f );
+	}
+
+	public void jump( int from, int to, Callback callback, float height, float duration ) {
 		jumpCallback = callback;
 
-		int distance = Dungeon.level.distance( from, to );
-		jumpTweener = new JumpTweener( this, worldToCamera( to ), distance * 4, distance * 0.1f );
+		jumpTweener = new JumpTweener( this, worldToCamera( to ), height, duration );
 		jumpTweener.listener = this;
 		parent.add( jumpTweener );
 
@@ -279,10 +290,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	public void die() {
 		sleeping = false;
 		play( die );
-		
-		if (emo != null) {
-			emo.killAndErase();
-		}
+
+		hideEmo();
 		
 		if (health != null){
 			health.killAndErase();
@@ -336,28 +345,28 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				burning = emitter();
 				burning.pour( FlameParticle.FACTORY, 0.06f );
 				if (visible) {
-					Sample.INSTANCE.play( Assets.SND_BURNING );
+					Sample.INSTANCE.play( Assets.Sounds.BURNING );
 				}
 				break;
             case SPIRIT:
                 spirit = emitter();
                 spirit.pour(MagicMissile.ForceParticle.FACTORY, 0.06f );
                 if (visible) {
-                    Sample.INSTANCE.play( Assets.SND_BURNING );
+                    Sample.INSTANCE.play( Assets.Sounds.BURNING );
                 }
                 break;
             case ALLURED:
                 allured = emitter();
                 allured.pour(Speck.factory(Speck.HEART), 0.08f );
                 if (visible) {
-                    Sample.INSTANCE.play( Assets.SND_CHARMS );
+                    Sample.INSTANCE.play( Assets.Sounds.CHARMS );
                 }
                 break;
             case FROSTBURNING:
                 frostburning = emitter();
                 frostburning.pour( FrostfireParticle.FACTORY, 0.06f );
                 if (visible) {
-                    Sample.INSTANCE.play( Assets.SND_BURNING );
+                    Sample.INSTANCE.play( Assets.Sounds.BURNING );
                 }
                 break;
 			case LEVITATING:
@@ -500,8 +509,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	}
 	
 	@Override
-	//syncronized due to EmoIcon handling
-	public synchronized void update() {
+	public void update() {
 		
 		super.update();
 		
@@ -539,8 +547,10 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		} else {
 			hideSleep();
 		}
-		if (emo != null && emo.alive) {
-			emo.visible = visible;
+		synchronized (EmoIcon.class) {
+			if (emo != null && emo.alive) {
+				emo.visible = visible;
+			}
 		}
 	}
 	
@@ -552,61 +562,76 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		}
 	}
 	
-	public synchronized void showSleep() {
-		if (emo instanceof EmoIcon.Sleep) {
-			
-		} else {
-			if (emo != null) {
-				emo.killAndErase();
+	public void showSleep() {
+		synchronized (EmoIcon.class) {
+			if (!(emo instanceof EmoIcon.Sleep)) {
+				if (emo != null) {
+					emo.killAndErase();
+				}
+				emo = new EmoIcon.Sleep(this);
+				emo.visible = visible;
 			}
-			emo = new EmoIcon.Sleep( this );
-			emo.visible = visible;
 		}
 		idle();
 	}
 	
-	public synchronized void hideSleep() {
-		if (emo instanceof EmoIcon.Sleep) {
-			emo.killAndErase();
-			emo = null;
+	public void hideSleep() {
+		synchronized (EmoIcon.class) {
+			if (emo instanceof EmoIcon.Sleep) {
+				emo.killAndErase();
+				emo = null;
+			}
 		}
 	}
 	
-	public synchronized void showAlert() {
-		if (emo instanceof EmoIcon.Alert) {
-			
-		} else {
+	public void showAlert() {
+		synchronized (EmoIcon.class) {
+			if (!(emo instanceof EmoIcon.Alert)) {
+				if (emo != null) {
+					emo.killAndErase();
+				}
+				emo = new EmoIcon.Alert(this);
+				emo.visible = visible;
+			}
+		}
+	}
+	
+	public void hideAlert() {
+		synchronized (EmoIcon.class) {
+			if (emo instanceof EmoIcon.Alert) {
+				emo.killAndErase();
+				emo = null;
+			}
+		}
+	}
+	
+	public void showLost() {
+		synchronized (EmoIcon.class) {
+			if (!(emo instanceof EmoIcon.Lost)) {
+				if (emo != null) {
+					emo.killAndErase();
+				}
+				emo = new EmoIcon.Lost(this);
+				emo.visible = visible;
+			}
+		}
+	}
+	
+	public void hideLost() {
+		synchronized (EmoIcon.class) {
+			if (emo instanceof EmoIcon.Lost) {
+				emo.killAndErase();
+				emo = null;
+			}
+		}
+	}
+
+	public void hideEmo(){
+		synchronized (EmoIcon.class) {
 			if (emo != null) {
 				emo.killAndErase();
+				emo = null;
 			}
-			emo = new EmoIcon.Alert( this );
-			emo.visible = visible;
-		}
-	}
-	
-	public synchronized void hideAlert() {
-		if (emo instanceof EmoIcon.Alert) {
-			emo.killAndErase();
-			emo = null;
-		}
-	}
-	
-	public synchronized void showLost() {
-		if (emo instanceof EmoIcon.Lost) {
-		
-		} else {
-			if (emo != null) {
-				emo.killAndErase();
-			}
-			emo = new EmoIcon.Lost( this );
-			emo.visible = visible;
-		}
-	}
-	
-	public synchronized void hideLost() {
-		if (emo instanceof EmoIcon.Lost) {
-			emo.killAndErase();
-			emo = null;
 		}
 	}
 	
@@ -614,9 +639,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	public void kill() {
 		super.kill();
 		
-		if (emo != null) {
-			emo.killAndErase();
-		}
+		hideEmo();
 		
 		for( State s : State.values()){
 			remove(s);
@@ -634,8 +657,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		super.updateMatrix();
 		Matrix.copy(matrix, shadowMatrix);
 		Matrix.translate(shadowMatrix,
-				(width() * (1f - shadowWidth)) / 2f,
-				(height() * (1f - shadowHeight)) + shadowOffset);
+				(width * (1f - shadowWidth)) / 2f,
+				(height * (1f - shadowHeight)) + shadowOffset);
 		Matrix.scale(shadowMatrix, shadowWidth, shadowHeight);
 	}
 
@@ -727,14 +750,14 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 
 	private static class JumpTweener extends Tweener {
 
-		public Visual visual;
+		public CharSprite visual;
 
 		public PointF start;
 		public PointF end;
 
 		public float height;
 
-		public JumpTweener( Visual visual, PointF pos, float height, float time ) {
+		public JumpTweener( CharSprite visual, PointF pos, float height, float time ) {
 			super( visual, time );
 
 			this.visual = visual;
@@ -746,7 +769,9 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 
 		@Override
 		protected void updateValues( float progress ) {
-			visual.point( PointF.inter( start, end, progress ).offset( 0, -height * 4 * progress * (1 - progress) ) );
+			float hVal = -height * 4 * progress * (1 - progress);
+			visual.point( PointF.inter( start, end, progress ).offset( 0, hVal ) );
+			visual.shadowOffset = 0.25f - hVal*0.8f;
 		}
 	}
 }

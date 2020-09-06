@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -34,7 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
@@ -55,14 +55,14 @@ public class AmuletScene extends PixelScene {
 	public void create() {
 		super.create();
 		
-		RenderedTextMultiline text = null;
+		RenderedTextBlock text = null;
 		if (!noText) {
-			text = renderMultiline( Messages.get(this, "text"), 8 );
+			text = renderTextBlock( Messages.get(this, "text"), 8 );
 			text.maxWidth(WIDTH);
 			add( text );
 		}
 		
-		amulet = new Image( Assets.AMULET );
+		amulet = new Image( Assets.Sprites.AMULET );
 		add( amulet );
 		
 		RedButton btnExit = new RedButton( Messages.get(this, "exit") ) {

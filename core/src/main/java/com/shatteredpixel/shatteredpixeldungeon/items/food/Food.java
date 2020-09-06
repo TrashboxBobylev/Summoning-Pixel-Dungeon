@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -82,22 +82,18 @@ public class Food extends Item {
 			satisfy(hero);
 			GLog.i( message );
 
-			
+
 			foodProc( hero );
 			
 			hero.sprite.operate( hero.pos );
 			hero.busy();
 			SpellSprite.show( hero, SpellSprite.FOOD );
-			Sample.INSTANCE.play( Assets.SND_EAT );
+			Sample.INSTANCE.play( Assets.Sounds.EAT );
 			
 			hero.spend( TIME_TO_EAT );
 			
 			Statistics.foodEaten++;
 			Badges.validateFoodEaten();
-//			Buff.prolong(hero, Invisibility.class, 100f);
-//
-//			InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
-//			Game.switchScene(InterlevelScene.class);
 			
 		}
 	}
@@ -141,7 +137,7 @@ public class Food extends Item {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		return 20 * quantity;
 	}
 

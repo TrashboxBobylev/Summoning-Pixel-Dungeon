@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -31,6 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -38,8 +39,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.PushbackInputStream;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -49,8 +48,10 @@ import java.util.zip.GZIPOutputStream;
 public class Bundle {
 
 	private static final String CLASS_NAME = "__className";
+
+	public static final String DEFAULT_KEY = "key";
 	
-	private static HashMap<String,String> aliases = new HashMap<String, String>();
+	private static HashMap<String,String> aliases = new HashMap<>();
 	
 	private JSONObject data;
 	
@@ -95,18 +96,13 @@ public class Bundle {
 	}
 
 	public Class getClass( String key ) {
-		String clName =  getString(key).replace("class ", "");;
+		String clName =  getString(key).replace("class ", "");
 		if (!clName.equals("")){
 			if (aliases.containsKey( clName )) {
 				clName = aliases.get( clName );
 			}
-			try {
-				Class cl = Class.forName( clName );
-				return cl;
-			} catch (ClassNotFoundException e) {
-				Game.reportException(e);
-				return null;
-			}
+			
+			return Reflection.forName( clName );
 		}
 		return null;
 	}
@@ -117,30 +113,24 @@ public class Bundle {
 	
 	private Bundlable get() {
 		if (data == null) return null;
-		try {
-			String clName = getString( CLASS_NAME );
-			if (aliases.containsKey( clName )) {
-				clName = aliases.get( clName );
-			}
-			
-			Class<?> cl = Class.forName( clName );
-			if (cl != null && (!cl.isMemberClass() || Modifier.isStatic(cl.getModifiers()))) {
-				Bundlable object = (Bundlable)cl.newInstance();
-				object.restoreFromBundle( this );
-				return object;
-			} else {
-				return null;
-			}
-		} catch (ClassNotFoundException e ) {
-			Game.reportException(e);
-			return null;
-		} catch (InstantiationException e ) {
-			Game.reportException(e);
-			return null;
-		} catch (IllegalAccessException e ) {
-			Game.reportException(e);
-			return null;
+		
+		String clName = getString( CLASS_NAME );
+		if (aliases.containsKey( clName )) {
+			clName = aliases.get( clName );
 		}
+		
+		Class<?> cl = Reflection.forName( clName );
+		//Skip none-static inner classes as they can't be instantiated through bundle restoring
+		//Classes which make use of none-static inner classes must manage instantiation manually
+		if (cl != null && (!Reflection.isMemberClass(cl) || Reflection.isStatic(cl))) {
+			Bundlable object = (Bundlable) Reflection.newInstance(cl);
+			if (object != null) {
+				object.restoreFromBundle(this);
+				return object;
+			}
+		}
+		
+		return null;
 	}
 	
 	public Bundlable get( String key ) {
@@ -229,13 +219,27 @@ public class Bundle {
 				if (aliases.containsKey( clName )) {
 					clName = aliases.get( clName );
 				}
-				try {
-					Class cl = Class.forName( clName );
-					result[i] = cl;
-				} catch (ClassNotFoundException e) {
-					Game.reportException(e);
-					result[i] = null;
-				}
+				Class cl = Reflection.forName( clName );
+				result[i] = cl;
+			}
+			return result;
+		} catch (JSONException e) {
+			Game.reportException(e);
+			return null;
+		}
+	}
+
+	public Bundle[] getBundleArray(){
+		return getBundleArray( DEFAULT_KEY );
+	}
+
+	public Bundle[] getBundleArray( String key ){
+		try {
+			JSONArray array = data.getJSONArray( key );
+			int length = array.length();
+			Bundle[] result = new Bundle[length];
+			for (int i=0; i < length; i++) {
+				result[i] = new Bundle( array.getJSONObject( i ) );
 			}
 			return result;
 		} catch (JSONException e) {
@@ -246,7 +250,7 @@ public class Bundle {
 	
 	public Collection<Bundlable> getCollection( String key ) {
 		
-		ArrayList<Bundlable> list = new ArrayList<Bundlable>();
+		ArrayList<Bundlable> list = new ArrayList<>();
 		
 		try {
 			JSONArray array = data.getJSONArray( key );
@@ -392,7 +396,7 @@ public class Bundle {
 		try {
 			JSONArray jsonArray = new JSONArray();
 			for (int i=0; i < array.length; i++) {
-				jsonArray.put( i, array[i] );
+				jsonArray.put( i, array[i].getName() );
 			}
 			data.put( key, jsonArray );
 		} catch (JSONException e) {
@@ -407,7 +411,7 @@ public class Bundle {
 			//Classes which make use of none-static inner classes must manage instantiation manually
 			if (object != null) {
 				Class cl = object.getClass();
-				if (!cl.isMemberClass() || Modifier.isStatic(cl.getModifiers())) {
+				if ((!Reflection.isMemberClass(cl) || Reflection.isStatic(cl))) {
 					Bundle bundle = new Bundle();
 					bundle.put(CLASS_NAME, cl.getName());
 					object.storeInBundle(bundle);
@@ -430,22 +434,32 @@ public class Bundle {
 	public static Bundle read( InputStream stream ) throws IOException {
 
 		try {
-			BufferedReader reader;
+			if (!stream.markSupported()){
+				stream = new BufferedInputStream( stream, 2 );
+			}
 
 			//determines if we're reading a regular, or compressed file
-			PushbackInputStream pb = new PushbackInputStream( stream, 2 );
+			stream.mark( 2 );
 			byte[] header = new byte[2];
-			pb.unread(header, 0, pb.read(header));
+			stream.read( header );
+			stream.reset();
+			
 			//GZIP header is 0x1f8b
-			if( header[ 0 ] == (byte) 0x1f && header[ 1 ] == (byte) 0x8b )
-				reader = new BufferedReader( new InputStreamReader( new GZIPInputStream( pb, GZIP_BUFFER ) ) );
-			else
-				reader = new BufferedReader( new InputStreamReader( pb ) );
+			if( header[ 0 ] == (byte) 0x1f && header[ 1 ] == (byte) 0x8b ) {
+				stream = new GZIPInputStream( stream, GZIP_BUFFER );
+			}
 
-			JSONObject json = (JSONObject)new JSONTokener( reader.readLine() ).nextValue();
+			//cannot just tokenize the stream directly as that constructor doesn't exist on Android
+			BufferedReader reader = new BufferedReader( new InputStreamReader( stream ));
+			Object json = new JSONTokener( reader.readLine() ).nextValue();
 			reader.close();
 
-			return new Bundle( json );
+			//if the data is an array, put it in a fresh object with the default key
+			if (json instanceof JSONArray){
+				json = new JSONObject().put( DEFAULT_KEY, json );
+			}
+
+			return new Bundle( (JSONObject) json );
 		} catch (Exception e) {
 			Game.reportException(e);
 			throw new IOException();

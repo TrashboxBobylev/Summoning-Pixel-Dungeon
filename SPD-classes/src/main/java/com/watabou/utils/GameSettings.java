@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,27 +24,25 @@
 
 package com.watabou.utils;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
 public class GameSettings {
 	
-	//TODO might want to rename this file. this is the auto-generated name for android atm
-	public static final String PREFS_FILE = "ShatteredPixelDungeon";
+	public static final String DEFAULT_PREFS_FILE = "settings.xml";
 	
 	private static Preferences prefs;
 	
 	private static Preferences get() {
 		if (prefs == null) {
-			prefs = Gdx.app.getPreferences(PREFS_FILE);
+			prefs = Gdx.app.getPreferences( DEFAULT_PREFS_FILE );
 		}
 		return prefs;
 	}
 	
-	//allows setting up of preferences without Gdx.app being initialized
-	public static void setPrefsFromInstance (Application instance){
-		prefs = instance.getPreferences(PREFS_FILE);
+	//allows setting up of preferences directly during game initialization
+	public static void set( Preferences prefs ){
+		GameSettings.prefs = prefs;
 	}
 	
 	public static boolean contains( String key ){
@@ -60,6 +58,27 @@ public class GameSettings {
 			int i = get().getInteger( key, defValue );
 			if (i < min || i > max){
 				int val = (int)GameMath.gate(min, i, max);
+				put(key, val);
+				return val;
+			} else {
+				return i;
+			}
+		} catch (ClassCastException e) {
+			//ShatteredPixelDungeon.reportException(e);
+			put(key, defValue);
+			return defValue;
+		}
+	}
+
+	public static long getLong( String key, long defValue ) {
+		return getLong(key, defValue, Long.MIN_VALUE, Long.MAX_VALUE);
+	}
+
+	public static long getLong( String key, long defValue, long min, long max ) {
+		try {
+			long i = get().getLong( key, defValue );
+			if (i < min || i > max){
+				long val = (long)GameMath.gate(min, i, max);
 				put(key, val);
 				return val;
 			} else {
@@ -104,6 +123,11 @@ public class GameSettings {
 	
 	public static void put( String key, int value ) {
 		get().putInteger(key, value);
+		get().flush();
+	}
+
+	public static void put( String key, long value ) {
+		get().putLong(key, value);
 		get().flush();
 	}
 	

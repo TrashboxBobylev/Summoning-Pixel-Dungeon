@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -108,10 +108,10 @@ public class CorpseDust extends Item {
 				do{
 					pos = Random.Int(Dungeon.level.length());
 					tries --;
-				} while (tries > 0 && (!Dungeon.level.heroFOV[pos] || !Dungeon.level.passable[pos] || Actor.findChar( pos ) != null));
+				} while (tries > 0 && (!Dungeon.level.heroFOV[pos] || Dungeon.level.solid[pos] || Actor.findChar( pos ) != null));
 				if (tries > 0) {
 					Wraith.spawnAt(pos);
-					Sample.INSTANCE.play(Assets.SND_CURSED);
+					Sample.INSTANCE.play(Assets.Sounds.CURSED);
 				}
 			}
 

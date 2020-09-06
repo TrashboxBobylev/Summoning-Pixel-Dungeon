@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -70,12 +70,13 @@ public class FlockTrap extends Trap {
 								t.reveal();
 								t.activate();
 							}
-                            Dungeon.level.occupyCell(sheep);
+							Dungeon.level.occupyCell(sheep);
 
 						}
 					}
 				}
-				Sample.INSTANCE.play(Assets.SND_PUFF);
+				Sample.INSTANCE.play(Assets.Sounds.PUFF);
+				Sample.INSTANCE.play(Assets.Sounds.SHEEP);
 				Actor.remove(this);
 				return true;
 			}

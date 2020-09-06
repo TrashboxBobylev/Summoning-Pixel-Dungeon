@@ -3,7 +3,7 @@
  *  Copyright (C) 2012-2015 Oleg Dolya
  *
  *  Shattered Pixel Dungeon
- *  Copyright (C) 2014-2019 Evan Debenham
+ *  Copyright (C) 2014-2021 Evan Debenham
  *
  *  Summoning Pixel Dungeon
  *  Copyright (C) 2019-2020 TrashboxBobylev
@@ -66,7 +66,7 @@ public class Contain extends TargetedSpell {
                 mob.state = mob.PASSIVE;
                 containedMob = mob;
                 TargetHealthIndicator.instance.target(null);
-                for (int i = 0; i < 5; i++) Sample.INSTANCE.play(Assets.SND_HIT);
+                for (int i = 0; i < 5; i++) Sample.INSTANCE.play(Assets.Sounds.HIT);
                 updateQuickslot();
             } else {
                 mob.damage(Math.round(mob.HP * 0.5f), hero);
@@ -82,14 +82,14 @@ public class Contain extends TargetedSpell {
             mb.state = mb.WANDERING;
             Actor.fixTime();
             Buff.affect(mb, Amok.class, 6f);
-            for (int i= 0; i < 5; i++) Sample.INSTANCE.play(Assets.SND_MIMIC);
+            for (int i= 0; i < 5; i++) Sample.INSTANCE.play(Assets.Sounds.MIMIC);
         } else {
             GLog.i(Messages.get(CursedWand.class, "nothing"));
         }
     }
 
     @Override
-    public int price() {
+    public int value() {
         return com.shatteredpixel.shatteredpixeldungeon.items.Recipe.calculatePrice(new Recipe()) * quantity;
     }
 

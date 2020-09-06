@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -32,8 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
@@ -46,6 +44,7 @@ public class DisintegrationTrap extends Trap {
 	{
 		color = VIOLET;
 		shape = CROSSHAIR;
+
 		canBeHidden = false;
 	}
 
@@ -55,11 +54,14 @@ public class DisintegrationTrap extends Trap {
 		
 		//find the closest char that can be aimed at
 		if (target == null){
+			float closestDist = Float.MAX_VALUE;
 			for (Char ch : Actor.chars()){
+				float curDist = Dungeon.level.trueDistance(pos, ch.pos);
+				if (ch.invisible > 0) curDist += 1000;
 				Ballistica bolt = new Ballistica(pos, ch.pos, Ballistica.PROJECTILE);
-				if (bolt.collisionPos == ch.pos &&
-						(target == null || Dungeon.level.trueDistance(pos, ch.pos) < Dungeon.level.trueDistance(pos, target.pos))){
+				if (bolt.collisionPos == ch.pos && curDist < closestDist){
 					target = ch;
+					closestDist = curDist;
 				}
 			}
 		}
@@ -69,7 +71,7 @@ public class DisintegrationTrap extends Trap {
 		
 		if (target != null) {
 			if (Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[target.pos]) {
-				Sample.INSTANCE.play(Assets.SND_RAY);
+				Sample.INSTANCE.play(Assets.Sounds.RAY);
 				ShatteredPixelDungeon.scene().add(new Beam.DeathRay(DungeonTilemap.tileCenterToWorld(pos), target.sprite.center()));
 			}
 			target.damage( Random.NormalIntRange(30, 50) + Dungeon.depth, this );
@@ -78,24 +80,6 @@ public class DisintegrationTrap extends Trap {
 				if (!hero.isAlive()){
 					Dungeon.fail( getClass() );
 					GLog.negative( Messages.get(this, "ondeath") );
-				} else {
-					Item item = hero.belongings.randomUnequipped();
-					Bag bag = hero.belongings.backpack;
-					//bags do not protect against this trap
-					if (item instanceof Bag){
-						bag = (Bag)item;
-						item = Random.element(bag.items);
-					}
-					if (item == null || item.level() > 0 || item.unique) return;
-					if (!item.stackable){
-						item.detachAll(bag);
-						GLog.warning( Messages.get(this, "one", item.name()) );
-					} else {
-						int n = Random.NormalIntRange(1, (item.quantity()+1)/2);
-						for(int i = 1; i <= n; i++)
-							item.detach(bag);
-						GLog.warning( Messages.get(this, "some", item.name()) );
-					}
 				}
 			}
 		}

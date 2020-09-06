@@ -4,7 +4,7 @@
  *  * Copyright (C) 2012-2015 Oleg Dolya
  *  *
  *  * Shattered Pixel Dungeon
- *  * Copyright (C) 2014-2019 Evan Debenham
+ *  * Copyright (C) 2014-2021 Evan Debenham
  *  *
  *  * Summoning Pixel Dungeon
  *  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -155,7 +155,7 @@ public class ConjurerArmor extends ClassArmor {
         curUser.spend( 2f );
         curUser.busy();
         GameScene.flash(0xFFFFFF);
-        Sample.INSTANCE.play( Assets.SND_EVOKE );
+        Sample.INSTANCE.play( Assets.Sounds.EVOKE );
     }
 
     @Override
@@ -180,7 +180,7 @@ public class ConjurerArmor extends ClassArmor {
 		curUser.busy();
 		
 		curUser.sprite.centerEmitter().start( ElmoParticle.FACTORY, 0.15f, 4 );
-		Sample.INSTANCE.play( Assets.SND_LULLABY );
+		Sample.INSTANCE.play( Assets.Sounds.LULLABY );
 	}
 
     @Override
@@ -303,7 +303,7 @@ public class ConjurerArmor extends ClassArmor {
 
             if (corruptingPower > enemyResist) {
                 WandOfCorruption.corruptEnemy(new WandOfCorruption(), (Mob) target);
-                Sample.INSTANCE.play(Assets.SND_CURSED);
+                Sample.INSTANCE.play(Assets.Sounds.CURSED);
                 //recover some hate
                 hateHolder.gainHate((corruptingPower - enemyResist)*0.5f);
                 BuffIndicator.refreshHero();

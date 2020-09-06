@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -29,12 +29,13 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 
 public class ScrollOfRetribution extends Scroll {
 
 	{
-		initials = 4;
+		icon = ItemSpriteSheet.Icons.SCROLL_RETRIB;
 	}
 	
 	@Override
@@ -46,8 +47,7 @@ public class ScrollOfRetribution extends Scroll {
 		float hpPercent = (curUser.HT - curUser.HP)/(float)(curUser.HT);
 		float power = Math.min( 4f, 4.45f*hpPercent);
 		
-		Sample.INSTANCE.play( Assets.SND_BLAST );
-		Invisibility.dispel();
+		Sample.INSTANCE.play( Assets.Sounds.BLAST );
 		
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 			if (Dungeon.level.heroFOV[mob.pos]) {
@@ -60,8 +60,8 @@ public class ScrollOfRetribution extends Scroll {
 			}
 		}
 		
-		Buff.prolong(curUser, Weakness.class, Weakness.DURATION/2f);
-		Buff.prolong(curUser, Blindness.class, Math.round(6 + power));
+		Buff.prolong(curUser, Weakness.class, Weakness.DURATION);
+		Buff.prolong(curUser, Blindness.class, Blindness.DURATION);
 		Dungeon.observe();
 		
 		setKnown();
@@ -71,29 +71,7 @@ public class ScrollOfRetribution extends Scroll {
 	}
 	
 	@Override
-	public void empoweredRead() {
-		GameScene.flash( 0xFFFFFF );
-		
-		Sample.INSTANCE.play( Assets.SND_BLAST );
-		Invisibility.dispel();
-		
-		//scales from 3x to 5x power, maxing at ~20% HP
-		float hpPercent = (curUser.HT - curUser.HP)/(float)(curUser.HT);
-		float power = Math.min( 5f, 3f + 2.5f*hpPercent);
-		
-		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-			if (Dungeon.level.heroFOV[mob.pos]) {
-				mob.damage(Math.round(mob.HP * power/5f), this);
-			}
-		}
-		
-		setKnown();
-		
-		readAnimation();
-	}
-	
-	@Override
-	public int price() {
-		return isKnown() ? 65 * quantity : super.price();
+	public int value() {
+		return isKnown() ? 65 * quantity : super.value();
 	}
 }

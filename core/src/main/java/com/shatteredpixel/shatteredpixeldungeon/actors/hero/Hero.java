@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -85,6 +85,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
@@ -105,6 +106,7 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -166,17 +168,16 @@ public class Hero extends Char {
 	//This list is maintained so that some logic checks can be skipped
 	// for enemies we know we aren't seeing normally, resultign in better performance
 	public ArrayList<Mob> mindVisionEnemies = new ArrayList<>();
-	
+
 	public Hero() {
 		super();
-		name = Messages.get(this, "name");
-		
+
 		HP = HT = 20;
 		STR = STARTING_STR;
 		
 		belongings = new Belongings( this );
 		
-		visibleEnemies = new ArrayList<Mob>();
+		visibleEnemies = new ArrayList<>();
 	}
 	
 	public void updateHT( boolean boostHP ){
@@ -193,7 +194,7 @@ public class Hero extends Char {
 			HT += buff(ElixirOfMight.HTBoost.class).boost();
 		}
 		Item.updateQuickslot();
-		
+
 		if (boostHP){
 			HP += Math.max(HT - curHT, 0);
 		}
@@ -210,7 +211,7 @@ public class Hero extends Char {
 			STR += buff.boost();
 		}
 
-		return (buff(Weakness.class) != null) ? STR - 2 : STR;
+		return STR;
 	}
 
 	private static final String ATTACK		= "attackSkill";
@@ -221,7 +222,7 @@ public class Hero extends Char {
 	private static final String HTBOOST     = "htboost";
     private static final String ATTUNEMENT		= "attunement";
     private static final String USED_ATTUNEMENT		= "used_attunement";
-	
+
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 
@@ -261,7 +262,7 @@ public class Hero extends Char {
 		exp = bundle.getInt( EXPERIENCE );
 		attunement = bundle.getFloat(ATTUNEMENT);
         usedAttunement = bundle.getFloat(USED_ATTUNEMENT);
-		
+
 		HTBoost = bundle.getInt(HTBOOST);
 		
 		belongings.restoreFromBundle( bundle );
@@ -283,10 +284,32 @@ public class Hero extends Char {
 		return subClass == null || subClass == HeroSubClass.NONE ? heroClass.title() : subClass.title();
 	}
 
-	public String givenName(){
-		return getName().equals(Messages.get(this, "name")) ? className() : getName();
+	@Override
+	public String name(){
+		return className();
 	}
-	
+
+	@Override
+	public void hitSound(float pitch) {
+		if ( belongings.weapon != null ){
+			belongings.weapon.hitSound(pitch);
+		} else if (RingOfForce.getBuffedBonus(this, RingOfForce.Force.class) > 0) {
+			//pitch deepens by 2.5% (additive) per point of strength, down to 75%
+			super.hitSound( pitch * GameMath.gate( 0.75f, 1.25f - 0.025f*STR(), 1f) );
+		} else {
+			super.hitSound(pitch * 1.1f);
+		}
+	}
+
+	@Override
+	public boolean blockSound(float pitch) {
+		if ( belongings.weapon != null && belongings.weapon.defenseFactor(this) >= 4 ){
+			Sample.INSTANCE.play( Assets.Sounds.HIT_PARRY, 1, pitch);
+			return true;
+		}
+		return super.blockSound(pitch);
+	}
+
 	public void live() {
 		Buff.affect( this, Regeneration.class );
 		Buff.affect( this, Hunger.class );
@@ -299,12 +322,13 @@ public class Hero extends Char {
 	public boolean shoot( Char enemy, MissileWeapon wep ) {
 
 		//temporarily set the hero's weapon to the missile weapon being used
-		KindOfWeapon equipped = belongings.weapon;
+		belongings.stashedWeapon = belongings.weapon;
 		belongings.weapon = wep;
 		boolean hit = attack( enemy );
 		Invisibility.dispel();
-		belongings.weapon = equipped;
-
+		belongings.weapon = belongings.stashedWeapon;
+		belongings.stashedWeapon = null;
+		
 		if (subClass == HeroSubClass.GLADIATOR){
 			if (hit) {
 				Buff.affect( this, Combo.class ).hit( enemy );
@@ -331,7 +355,7 @@ public class Hero extends Char {
 
         return hit;
     }
-	
+
 	@Override
 	public int attackSkill( Char target ) {
 		KindOfWeapon wep = belongings.weapon;
@@ -357,7 +381,7 @@ public class Hero extends Char {
 	public int getAttackSkill(){
 	    return attackSkill;
     }
-	
+
 	@Override
 	public int defenseSkill( Char enemy ) {
 		
@@ -421,7 +445,7 @@ public class Hero extends Char {
 
 		if (buff(SoulWeakness.class) != null) dmg /= 4;
 		if (subClass == HeroSubClass.SOUL_REAVER) dmg *= 0.75f;
-		
+
 		return buff( Fury.class ) != null ? (int)(dmg * 1.5f) : dmg;
 	}
 	
@@ -530,9 +554,7 @@ public class Hero extends Char {
 		}
 		
 		checkVisibleMobs();
-		if (buff(FlavourBuff.class) != null) {
-			BuffIndicator.refreshHero();
-		}
+		BuffIndicator.refreshHero();
 		
 		if (paralysed > 0) {
 			
@@ -607,7 +629,7 @@ public class Hero extends Char {
             }
             else if (buff(Attunement.class) != null) buff(Attunement.class).detach();
         }
-		
+
 		return actResult;
 	}
 	
@@ -633,6 +655,7 @@ public class Hero extends Char {
 			lastAction = curAction;
 		}
 		curAction = null;
+		GameScene.resetKeyHold();
 	}
 	
 	public void resume() {
@@ -641,15 +664,10 @@ public class Hero extends Char {
 		damageInterrupt = false;
 		next();
 	}
-	
-	//FIXME this is a fairly crude way to track this, really it would be nice to have a short
-	//history of hero actions
-	public boolean justMoved = false;
-	
+
 	private boolean actMove( HeroAction.Move action ) {
 
 		if (getCloser( action.dst )) {
-			justMoved = true;
 			Hunger.adjustHunger(-1*speed());
 			return true;
 
@@ -667,7 +685,7 @@ public class Hero extends Char {
 			
 			ready();
 			sprite.turnTo( pos, ch.pos );
-			return ch.interact();
+			return ch.interact(this);
 			
 		} else {
 			
@@ -685,13 +703,18 @@ public class Hero extends Char {
 	
 	private boolean actBuy( HeroAction.Buy action ) {
 		int dst = action.dst;
-		if (pos == dst || Dungeon.level.adjacent( pos, dst )) {
+		if (pos == dst) {
 
 			ready();
 			
 			Heap heap = Dungeon.level.heaps.get( dst );
 			if (heap != null && heap.type == Type.FOR_SALE && heap.size() == 1) {
-				GameScene.show( new WndTradeItem( heap, true ) );
+				Game.runOnRenderThread(new Callback() {
+					@Override
+					public void call() {
+						GameScene.show( new WndTradeItem( heap ) );
+					}
+				});
 			}
 
 			return false;
@@ -754,9 +777,9 @@ public class Hero extends Char {
 						//Do Nothing
 					} else {
 
-						boolean important =
-								(item instanceof ScrollOfUpgrade && ((Scroll)item).isKnown()) ||
-								(item instanceof PotionOfStrength && ((Potion)item).isKnown());
+						//TODO make all unique items important? or just POS / SOU?
+						boolean important = item.unique && item.isIdentified() &&
+								(item instanceof Scroll || item instanceof Potion);
 						if (important) {
 							GLog.positive( Messages.get(this, "you_now_have", item.name()) );
 						} else {
@@ -766,6 +789,20 @@ public class Hero extends Char {
 
 					curAction = null;
 				} else {
+
+					if (item instanceof Dewdrop
+							|| item instanceof TimekeepersHourglass.sandBag
+							|| item instanceof DriedRose.Petal
+							|| item instanceof Key) {
+						//Do Nothing
+					} else {
+						//TODO temporary until 0.8.0a, when all languages will get this phrase
+						if (Messages.lang() == Languages.ENGLISH) {
+							GLog.newLine();
+							GLog.negative(Messages.get(this, "you_cant_have", item.name()));
+						}
+					}
+
 					heap.sprite.drop();
 					ready();
 				}
@@ -803,14 +840,14 @@ public class Hero extends Char {
 				
 				switch (heap.type) {
 				case TOMB:
-					Sample.INSTANCE.play( Assets.SND_TOMB );
+					Sample.INSTANCE.play( Assets.Sounds.TOMB );
 					Camera.main.shake( 1, 0.5f );
 					break;
 				case SKELETON:
 				case REMAINS:
 					break;
 				default:
-					Sample.INSTANCE.play( Assets.SND_UNLOCK );
+					Sample.INSTANCE.play( Assets.Sounds.UNLOCK );
 				}
 				
 				sprite.operate( dst );
@@ -854,7 +891,7 @@ public class Hero extends Char {
 				
 				sprite.operate( doorCell );
 				
-				Sample.INSTANCE.play( Assets.SND_UNLOCK );
+				Sample.INSTANCE.play( Assets.Sounds.UNLOCK );
 				
 			} else {
 				GLog.warning( Messages.get(this, "locked_door") );
@@ -875,7 +912,14 @@ public class Hero extends Char {
 	
 	private boolean actDescend( HeroAction.Descend action ) {
 		int stairs = action.dst;
-		if (pos == stairs) {
+
+		if (rooted) {
+			Camera.main.shake(1, 1f);
+			ready();
+			return false;
+		//there can be multiple exit tiles, so descend on any of them
+		//TODO this is slightly brittle, it assumes there are no disjointed sets of exit tiles
+		} else if ((Dungeon.level.map[pos] == Terrain.EXIT || Dungeon.level.map[pos] == Terrain.UNLOCKED_EXIT)) {
 			
 			curAction = null;
 			Hunger.adjustHunger(-20);
@@ -902,12 +946,25 @@ public class Hero extends Char {
 	
 	private boolean actAscend( HeroAction.Ascend action ) {
 		int stairs = action.dst;
-		if (pos == stairs) {
+
+
+		if (rooted){
+			Camera.main.shake( 1, 1f );
+			ready();
+			return false;
+		//there can be multiple entrance tiles, so descend on any of them
+		//TODO this is slightly brittle, it assumes there are no disjointed sets of entrance tiles
+		} else if (Dungeon.level.map[pos] == Terrain.ENTRANCE) {
 			
 			if (Dungeon.depth == 1) {
 				
-				if (belongings.getItem( Amulet.class ) == null || Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) {
-					GameScene.show( new WndMessage( Messages.get(this, "leave") ) );
+				if (belongings.getItem( Amulet.class ) == null) {
+					Game.runOnRenderThread(new Callback() {
+						@Override
+						public void call() {
+							GameScene.show( new WndMessage( Messages.get(Hero.this, "leave") ) );
+						}
+					});
 					ready();
 				} else {
 					Badges.silentValidateHappyEnd();
@@ -981,6 +1038,8 @@ public class Hero extends Char {
 	
 	@Override
 	public int attackProc( final Char enemy, int damage ) {
+		damage = super.attackProc( enemy, damage );
+
 		KindOfWeapon wep = belongings.weapon;
 
 		if (wep != null) {
@@ -1000,7 +1059,7 @@ public class Hero extends Char {
 					@Override
 					protected boolean act() {
 						if (enemy.isAlive()) {
-							Buff.prolong(Hero.this, SnipersMark.class, 2f).object = enemy.id();
+							Buff.prolong(Hero.this, SnipersMark.class, SnipersMark.DURATION).object = enemy.id();
 						}
 						Actor.remove(this);
 						return true;
@@ -1020,7 +1079,7 @@ public class Hero extends Char {
 	public int defenseProc( Char enemy, int damage ) {
 
 	    int initialDamage = damage;
-		
+
 		if (damage > 0 && subClass == HeroSubClass.BERSERKER){
 			Berserk berserk = Buff.affect(this, Berserk.class);
 			berserk.damage(damage);
@@ -1034,7 +1093,7 @@ public class Hero extends Char {
 		    damage *= 0.6f;
             Buff.affect( enemy, Bleeding.class).set( damage / 2 );
         }
-		
+
 		Earthroot.Armor armor = buff( Earthroot.Armor.class );
 		if (armor != null) {
 			damage = armor.absorb( damage );
@@ -1048,7 +1107,7 @@ public class Hero extends Char {
 		if (subClass == HeroSubClass.SOUL_REAVER && (initialDamage / 2 >= damage)){
             Buff.affect(this, SoulReaver.class, 20f).type = SoulReaver.Type.DEFENSE;
         }
-		
+
 		return damage;
 	}
 	
@@ -1077,10 +1136,31 @@ public class Hero extends Char {
 		//TODO improve this when I have proper damage source logic
 		if (belongings.armor != null && belongings.armor.hasGlyph(AntiMagic.class, this)
 				&& AntiMagic.RESISTS.contains(src.getClass())){
-			dmg -= AntiMagic.drRoll(belongings.armor.level());
+			dmg -= AntiMagic.drRoll(belongings.armor.buffedLvl());
 		}
 
+		int preHP = HP + shielding();
 		super.damage( dmg, src );
+		int postHP = HP + shielding();
+		int effectiveDamage = preHP - postHP;
+
+		//flash red when hit for serious damage.
+		float percentDMG = effectiveDamage / (float)preHP; //percent of current HP that was taken
+		float percentHP = 1 - ((HT - postHP) / (float)HT); //percent health after damage was taken
+		// The flash intensity increases primarily based on damage taken and secondarily on missing HP.
+		float flashIntensity = 0.25f * (percentDMG * percentDMG) / percentHP;
+		//if the intensity is very low don't flash at all
+		if (flashIntensity >= 0.05f){
+			flashIntensity = Math.min(1/3f, flashIntensity); //cap intensity at 1/3
+			GameScene.flash( (int)(0xFF*flashIntensity) << 16 );
+			if (isAlive()) {
+				if (flashIntensity >= 1/6f) {
+					Sample.INSTANCE.play(Assets.Sounds.HEALTH_CRITICAL, 1/3f + flashIntensity * 2f);
+				} else {
+					Sample.INSTANCE.play(Assets.Sounds.HEALTH_WARN, 1/3f + flashIntensity * 4f);
+				}
+			}
+		}
 	}
 	
 	public void checkVisibleMobs() {
@@ -1116,7 +1196,10 @@ public class Hero extends Char {
 		
 		if (newMob) {
 			interrupt();
-			resting = false;
+			if (resting){
+				Dungeon.observe();
+				resting = false;
+			}
 		}
 
 		visibleEnemies = visible;
@@ -1132,6 +1215,10 @@ public class Hero extends Char {
 	
 	private boolean walkingToVisibleTrapInFog = false;
 	
+	//FIXME this is a fairly crude way to track this, really it would be nice to have a short
+	//history of hero actions
+	public boolean justMoved = false;
+
 	private boolean getCloser( final int target ) {
 
 		if (target == pos)
@@ -1176,15 +1263,8 @@ public class Hero extends Char {
 			else if (path.getLast() != target)
 				newPath = true;
 			else {
-				//looks ahead for path validity, up to length-1 or 2.
-				//Note that this is shorter than for mobs, so that mobs usually yield to the hero
-				int lookAhead = (int) GameMath.gate(0, path.size()-1, 2);
-				for (int i = 0; i < lookAhead; i++){
-					int cell = path.get(i);
-					if (!Dungeon.level.passable[cell] || (fieldOfView[cell] && Actor.findChar(cell) != null)) {
-						newPath = true;
-						break;
-					}
+				if (!Dungeon.level.passable[path.get(0)] || Actor.findChar(path.get(0)) != null) {
+					newPath = true;
 				}
 			}
 
@@ -1199,7 +1279,12 @@ public class Hero extends Char {
 					passable[i] = p[i] && (v[i] || m[i]);
 				}
 
-				path = Dungeon.findPath(this, pos, target, passable, fieldOfView);
+				PathFinder.Path newpath = Dungeon.findPath(this, target, passable, fieldOfView, true);
+				if (newpath != null && path != null && newpath.size() > 2*path.size()){
+					path = null;
+				} else {
+					path = newpath;
+				}
 			}
 
 			if (path == null) return false;
@@ -1215,7 +1300,8 @@ public class Hero extends Char {
 			move(step);
 
 			spend( 1 / speed );
-			
+			justMoved = true;
+
 			search(false);
 			
 			if (subClass == HeroSubClass.FREERUNNER){
@@ -1267,7 +1353,7 @@ public class Hero extends Char {
 				curAction = new HeroAction.PickUp( cell );
 				break;
 			case FOR_SALE:
-				curAction = heap.size() == 1 && heap.peek().price() > 0 ?
+				curAction = heap.size() == 1 && heap.peek().value() > 0 ?
 					new HeroAction.Buy( cell ) :
 					new HeroAction.PickUp( cell );
 				break;
@@ -1358,21 +1444,24 @@ public class Hero extends Char {
 				Item.updateQuickslot();
 
 			} else {
-				Buff.prolong(this, Bless.class, 30f);
+				Buff.prolong(this, Bless.class, Bless.DURATION);
 				this.exp = 0;
 
 				GLog.positive( Messages.get(this, "level_cap"));
-				Sample.INSTANCE.play( Assets.SND_LEVELUP );
+				Sample.INSTANCE.play( Assets.Sounds.LEVELUP );
 			}
 			
 		}
 		
 		if (levelUp) {
 			
-			GLog.positive( Messages.get(this, "new_level"), lvl );
-			sprite.showStatus( CharSprite.POSITIVE, Messages.get(Hero.class, "level_up") );
-			Sample.INSTANCE.play( Assets.SND_LEVELUP );
-			
+			if (sprite != null) {
+				GLog.newLine();
+				GLog.positive( Messages.get(this, "new_level"), lvl );
+				sprite.showStatus( CharSprite.POSITIVE, Messages.get(Hero.class, "level_up") );
+				Sample.INSTANCE.play( Assets.Sounds.LEVELUP );
+			}
+
 			Item.updateQuickslot();
 			
 			Badges.validateLevelReached();
@@ -1461,7 +1550,7 @@ public class Hero extends Char {
 
 			ankh.detach(belongings.backpack);
 
-			Sample.INSTANCE.play( Assets.SND_TELEPORT );
+			Sample.INSTANCE.play( Assets.Sounds.TELEPORT );
 			GLog.warning( Messages.get(this, "revive") );
 			Statistics.ankhsUsed++;
 			
@@ -1485,7 +1574,13 @@ public class Hero extends Char {
 		} else {
 			
 			Dungeon.deleteGame( GamesInProgress.curSlot, false );
-			GameScene.show( new WndResurrect( ankh, cause ) );
+			final Ankh finalAnkh = ankh;
+			Game.runOnRenderThread(new Callback() {
+				@Override
+				public void call() {
+					GameScene.show( new WndResurrect( finalAnkh, cause ) );
+				}
+			});
 			
 		}
 	}
@@ -1519,7 +1614,7 @@ public class Hero extends Char {
 
 		int pos = Dungeon.hero.pos;
 
-		ArrayList<Integer> passable = new ArrayList<Integer>();
+		ArrayList<Integer> passable = new ArrayList<>();
 		for (Integer ofs : PathFinder.NEIGHBOURS8) {
 			int cell = pos + ofs;
 			if ((Dungeon.level.passable[cell] || Dungeon.level.avoid[cell]) && Dungeon.level.heaps.get( cell ) == null) {
@@ -1528,7 +1623,7 @@ public class Hero extends Char {
 		}
 		Collections.shuffle( passable );
 
-		ArrayList<Item> items = new ArrayList<Item>( Dungeon.hero.belongings.backpack.items );
+		ArrayList<Item> items = new ArrayList<>(Dungeon.hero.belongings.backpack.items);
 		for (Integer cell : passable) {
 			if (items.isEmpty()) {
 				break;
@@ -1567,13 +1662,25 @@ public class Hero extends Char {
 
 	@Override
 	public void move( int step ) {
+		boolean wasHighGrass = Dungeon.level.map[step] == Terrain.HIGH_GRASS;
+
 		super.move( step );
 		
 		if (!flying) {
 			if (Dungeon.level.water[pos]) {
-				Sample.INSTANCE.play( Assets.SND_WATER, 1, 1, Random.Float( 0.8f, 1.25f ) );
+				Sample.INSTANCE.play( Assets.Sounds.WATER, 1, Random.Float( 0.8f, 1.25f ) );
+			} else if (Dungeon.level.map[pos] == Terrain.EMPTY_SP) {
+				Sample.INSTANCE.play( Assets.Sounds.STURDY, 1, Random.Float( 0.96f, 1.05f ) );
+			} else if (Dungeon.level.map[pos] == Terrain.GRASS
+					|| Dungeon.level.map[pos] == Terrain.EMBERS
+					|| Dungeon.level.map[pos] == Terrain.FURROWED_GRASS){
+				if (step == pos && wasHighGrass) {
+					Sample.INSTANCE.play(Assets.Sounds.TRAMPLE, 1, Random.Float( 0.96f, 1.05f ) );
+				} else {
+					Sample.INSTANCE.play( Assets.Sounds.GRASS, 1, Random.Float( 0.96f, 1.05f ) );
+				}
 			} else {
-				Sample.INSTANCE.play( Assets.SND_STEP );
+				Sample.INSTANCE.play( Assets.Sounds.STEP, 1, Random.Float( 0.96f, 1.05f ) );
 			}
 		}
 	}
@@ -1603,6 +1710,11 @@ public class Hero extends Char {
 		super.onAttackComplete();
 	}
 	
+	@Override
+	public void onMotionComplete() {
+		GameScene.checkKeyHold();
+	}
+
 	@Override
     public void onOperateComplete() {
 
@@ -1637,7 +1749,7 @@ public class Hero extends Char {
             if (Dungeon.level.adjacent(pos, heap.pos) || pos == heap.pos){
                 boolean hasKey = true;
                 if (heap.type == Type.SKELETON || heap.type == Type.REMAINS) {
-                    Sample.INSTANCE.play( Assets.SND_BONES );
+                    Sample.INSTANCE.play( Assets.Sounds.BONES );
                 } else if (heap.type == Type.LOCKED_CHEST){
                     hasKey = Notes.remove(new GoldenKey(Dungeon.depth));
                 } else if (heap.type == Type.CRYSTAL_CHEST){
@@ -1708,7 +1820,7 @@ public class Hero extends Char {
 				if (fieldOfView[p] && p != pos) {
 					
 					if (intentional) {
-						sprite.parent.addToBack( new CheckedCell( p ) );
+						GameScene.effectOverFog(new CheckedCell(p, pos));
 					}
 					
 					if (Dungeon.level.secret[p]){
@@ -1717,20 +1829,26 @@ public class Hero extends Char {
                         if (trap != null && !trap.canBeSearched){
                             continue;
                         }
-						
+
+						Trap trap = Dungeon.level.traps.get( p );
 						float chance;
-						//intentional searches always succeed
-						if (intentional){
+
+						//searches aided by foresight always succeed, even if trap isn't searchable
+						if (foresight){
+							chance = 1f;
+
+						//otherwise if the trap isn't searchable, searching always fails
+						} else if (trap != null && !trap.canBeSearched){
+							chance = 0f;
+
+						//intentional searches always succeed against regular traps and doors
+						} else if (intentional){
 							chance = 1f;
 						
 						//unintentional searches always fail with a cursed talisman
 						} else if (cursed) {
 							chance = 0f;
-							
-						//..and always succeed when affected by foresight buff
-						} else if (foresight){
-							chance = 1f;
-							
+
 						//unintentional trap detection scales from 40% at floor 0 to 30% at floor 25
 						} else if (Dungeon.level.map[p] == Terrain.SECRET_TRAP) {
 							chance = 0.4f - (Dungeon.depth / 250f);
@@ -1752,8 +1870,13 @@ public class Hero extends Char {
 							
 							smthFound = true;
 	
-							if (talisman != null && !talisman.isCursed())
-								talisman.charge();
+							if (talisman != null){
+								if (oldValue == Terrain.SECRET_TRAP){
+									talisman.charge(2);
+								} else if (oldValue == Terrain.SECRET_DOOR){
+									talisman.charge(10);
+								}
+							}
 						}
 					}
 				}
@@ -1778,7 +1901,7 @@ public class Hero extends Char {
 		
 		if (smthFound) {
 			GLog.warning( Messages.get(this, "noticed_smth") );
-			Sample.INSTANCE.play( Assets.SND_SECRET );
+			Sample.INSTANCE.play( Assets.Sounds.SECRET );
 			interrupt();
 		}
 		

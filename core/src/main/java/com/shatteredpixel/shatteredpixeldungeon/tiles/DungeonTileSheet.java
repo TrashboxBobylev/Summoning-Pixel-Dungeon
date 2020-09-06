@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -395,11 +395,14 @@ public class DungeonTileSheet {
 	public static byte[] tileVariance;
 
 	public static void setupVariance(int size, long seed){
-		Random.seed( seed );
-		tileVariance = new byte[size];
-		for (int i = 0; i < tileVariance.length; i++)
-			tileVariance[i] = (byte)Random.Int(100);
-		Random.seed();
+		Random.pushGenerator( seed );
+
+			tileVariance = new byte[size];
+			for (int i = 0; i < tileVariance.length; i++) {
+				tileVariance[i] = (byte) Random.Int(100);
+			}
+
+		Random.popGenerator();
 	}
 
 	//These alt visuals will trigger 50% of the time (45% of the time if a rare alt is also present)

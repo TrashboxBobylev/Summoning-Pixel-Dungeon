@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -29,13 +29,16 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.StewedMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ScorpioSprite;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 public class Scorpio extends Mob {
 	
@@ -49,8 +52,8 @@ public class Scorpio extends Mob {
 		EXP = 16;
 		maxLvl = 28;
 		
-		loot = new PotionOfHealing();
-		lootChance = 0.2f;
+		loot = Generator.Category.POTION;
+		lootChance = 0.5f;
 
 		properties.add(Property.DEMONIC);
 	}
@@ -97,13 +100,12 @@ public class Scorpio extends Mob {
 	
 	@Override
 	protected Item createLoot() {
-		//(9-count) / 9 chance of getting healing, otherwise mystery meat
-		if (Random.Float() < ((9f - Dungeon.LimitedDrops.SCORPIO_HP.count) / 9f)) {
-			Dungeon.LimitedDrops.SCORPIO_HP.count++;
-			return (Item)loot;
-		} else {
-			return new StewedMeat();
-		}
+		Class<?extends Potion> loot;
+		do{
+			loot = (Class<? extends Potion>) Random.oneOf(Generator.Category.POTION.classes);
+		} while (loot == PotionOfHealing.class || loot == PotionOfStrength.class);
+
+		return Reflection.newInstance(loot);
 	}
 	
 }

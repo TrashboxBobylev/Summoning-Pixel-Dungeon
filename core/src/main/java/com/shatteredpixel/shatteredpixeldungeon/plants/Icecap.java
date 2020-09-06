@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -40,13 +40,14 @@ public class Icecap extends Plant {
 	
 	{
 		image = 4;
+		seedClass = Seed.class;
 	}
 	
 	@Override
 	public void activate( Char ch ) {
 		
 		if (ch instanceof Hero && ((Hero) ch).subClass == HeroSubClass.WARDEN){
-			Buff.affect(ch, FrostImbue.class, 15f);
+			Buff.affect(ch, FrostImbue.class, FrostImbue.DURATION*0.3f);
 		}
 		
 		PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.losBlocking, null ), 1 );

@@ -3,10 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
- *
- * Summoning Pixel Dungeon
- * Copyright (C) 2019-2020 TrashboxBobylev
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,11 +43,11 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TenguSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
+//Exists to support pre-0.7.5 saves
 public class OldTengu extends Mob {
 	
 	{
@@ -238,7 +235,7 @@ public class OldTengu extends Mob {
 		move( newPos );
 		
 		if (level.heroFOV[newPos]) CellEmitter.get( newPos ).burst( Speck.factory( Speck.WOOL ), 6 );
-		Sample.INSTANCE.play( Assets.SND_PUFF );
+		Sample.INSTANCE.play( Assets.Sounds.PUFF );
 		
 		spend( 1 / speed() );
 	}
@@ -250,15 +247,14 @@ public class OldTengu extends Mob {
 			BossHealthBar.assignBoss(this);
 			if (HP <= HT/2) BossHealthBar.bleed(true);
 			if (HP == HT) {
-				yell(Messages.get(this, "notice_mine", Dungeon.hero.givenName()));
+				yell(Messages.get(this, "notice_mine", Dungeon.hero.name()));
 				for (Char ch : Actor.chars()){
 					if (ch instanceof DriedRose.GhostHero){
-						GLog.negative("\n");
 						((DriedRose.GhostHero) ch).sayBoss();
 					}
 				}
 			} else {
-				yell(Messages.get(this, "notice_face", Dungeon.hero.givenName()));
+				yell(Messages.get(this, "notice_face", Dungeon.hero.name()));
 			}
 		}
 	}

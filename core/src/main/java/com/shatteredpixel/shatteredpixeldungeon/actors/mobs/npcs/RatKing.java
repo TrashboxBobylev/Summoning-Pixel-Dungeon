@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -40,7 +40,7 @@ public class RatKing extends NPC {
 	
 	@Override
 	public int defenseSkill( Char enemy ) {
-		return 100_000_000;
+		return INFINITE_EVASION;
 	}
 	
 	@Override
@@ -65,10 +65,47 @@ public class RatKing extends NPC {
 	public boolean reset() {
 		return true;
 	}
-	
+
+	//***This functionality is for when rat king may be summoned by a distortion trap
+
 	@Override
-	public boolean interact() {
-		sprite.turnTo( pos, Dungeon.hero.pos );
+	protected void onAdd() {
+		super.onAdd();
+		if (Dungeon.depth != 5){
+			yell(Messages.get(this, "confused"));
+		}
+	}
+
+	@Override
+	protected boolean act() {
+		if (Dungeon.depth < 5){
+			if (pos == Dungeon.level.exit){
+				destroy();
+				sprite.killAndErase();
+			} else {
+				target = Dungeon.level.exit;
+			}
+		} else if (Dungeon.depth > 5){
+			if (pos == Dungeon.level.entrance){
+				destroy();
+				sprite.killAndErase();
+			} else {
+				target = Dungeon.level.entrance;
+			}
+		}
+		return super.act();
+	}
+
+	//***
+
+	@Override
+	public boolean interact(Char c) {
+		sprite.turnTo( pos, c.pos );
+
+		if (c != Dungeon.hero){
+			return super.interact(c);
+		}
+
 		if (state == SLEEPING) {
 			notice();
 			yell( Messages.get(this, "not_sleeping") );

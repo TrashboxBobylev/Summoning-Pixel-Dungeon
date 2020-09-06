@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -36,8 +36,14 @@ public class GLog {
 	public static final String NEGATIVE		= "-- ";
 	public static final String WARNING		= "** ";
 	public static final String HIGHLIGHT	= "@@ ";
+
+	public static final String NEW_LINE	    = "\n";
 	
-	public static Signal<String> update = new Signal<String>();
+	public static Signal<String> update = new Signal<>();
+
+	public static void newLine(){
+		update.dispatch( NEW_LINE );
+	}
 	
 	public static void i( String text, Object... args ) {
 		

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -42,6 +42,10 @@ public class Bleeding extends Buff {
 	}
 	
 	protected float level;
+
+	public float level(){
+		return level;
+	}
 	
 	private static final String LEVEL	= "level";
 	

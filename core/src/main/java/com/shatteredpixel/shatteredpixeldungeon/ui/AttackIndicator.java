@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -25,13 +25,15 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.watabou.input.GameAction;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 
@@ -46,8 +48,8 @@ public class AttackIndicator extends Tag {
 	
 	private CharSprite sprite = null;
 	
-	private static Mob lastTarget;
-	private ArrayList<Mob> candidates = new ArrayList<Mob>();
+	private Mob lastTarget;
+	private ArrayList<Mob> candidates = new ArrayList<>();
 	
 	public AttackIndicator() {
 		super( DangerIndicator.COLOR );
@@ -61,6 +63,11 @@ public class AttackIndicator extends Tag {
 	}
 	
 	@Override
+	public GameAction keyAction() {
+		return SPDAction.TAG_ATTACK;
+	}
+	
+	@Override
 	protected void createChildren() {
 		super.createChildren();
 	}
@@ -70,7 +77,7 @@ public class AttackIndicator extends Tag {
 		super.layout();
 		
 		if (sprite != null) {
-			sprite.x = x + (width - sprite.width()) / 2;
+			sprite.x = x + (width - sprite.width()) / 2 + 1;
 			sprite.y = y + (height - sprite.height()) / 2;
 			PixelScene.align(sprite);
 		}
@@ -137,21 +144,14 @@ public class AttackIndicator extends Tag {
 			sprite = null;
 		}
 		
-		try {
-			sprite = lastTarget.spriteClass.newInstance();
-			active = true;
-			sprite.linkVisuals(lastTarget);
-			sprite.idle();
-			sprite.paused = true;
-			add( sprite );
+		sprite = Reflection.newInstance(lastTarget.spriteClass);
+		active = true;
+		sprite.linkVisuals(lastTarget);
+		sprite.idle();
+		sprite.paused = true;
+		add( sprite );
 
-			sprite.x = x + (width - sprite.width()) / 2 + 1;
-			sprite.y = y + (height - sprite.height()) / 2;
-			PixelScene.align(sprite);
-			
-		} catch (Exception e) {
-			ShatteredPixelDungeon.reportException(e);
-		}
+		layout();
 	}
 	
 	private boolean enabled = true;
@@ -179,10 +179,12 @@ public class AttackIndicator extends Tag {
 	}
 	
 	public static void target( Char target ) {
-		lastTarget = (Mob)target;
-		instance.updateImage();
-		
-		TargetHealthIndicator.instance.target( target );
+		synchronized (instance) {
+			instance.lastTarget = (Mob) target;
+			instance.updateImage();
+
+			TargetHealthIndicator.instance.target(target);
+		}
 	}
 	
 	public static void updateState() {

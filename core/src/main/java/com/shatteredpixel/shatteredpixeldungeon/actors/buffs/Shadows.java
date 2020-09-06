@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,13 +24,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.watabou.noosa.Image;
-import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 
 public class Shadows extends Invisibility {
@@ -59,7 +56,6 @@ public class Shadows extends Invisibility {
 	@Override
 	public boolean attachTo( Char target ) {
 		if (super.attachTo( target )) {
-			Sample.INSTANCE.play( Assets.SND_MELD );
 			if (Dungeon.level != null)
 				Dungeon.observe();
 			return true;
@@ -101,10 +97,10 @@ public class Shadows extends Invisibility {
 	public int icon() {
 		return BuffIndicator.SHADOWS;
 	}
-	
+
 	@Override
-	public void tintIcon(Image icon) {
-		icon.resetColor();
+	public float iconFadePercent() {
+		return 0;
 	}
 	
 	@Override

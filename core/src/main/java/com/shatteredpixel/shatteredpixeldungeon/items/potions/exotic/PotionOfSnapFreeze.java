@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -32,13 +32,14 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 
 public class PotionOfSnapFreeze extends ExoticPotion {
 	
 	{
-		initials = 1;
+		icon = ItemSpriteSheet.Icons.POTION_SNAPFREEZ;
 	}
 	
 	@Override
@@ -48,7 +49,7 @@ public class PotionOfSnapFreeze extends ExoticPotion {
 			setKnown();
 			
 			splash( cell );
-			Sample.INSTANCE.play( Assets.SND_SHATTER );
+			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 		}
 		
 		Fire fire = (Fire)Dungeon.level.blobs.get( Fire.class );
@@ -60,7 +61,7 @@ public class PotionOfSnapFreeze extends ExoticPotion {
 				
 				Char ch = Actor.findChar( cell + offset);
 				if (ch != null){
-					Buff.affect(ch, Roots.class, 10f);
+					Buff.affect(ch, Roots.class, Roots.DURATION*2f);
 				}
 				
 			}

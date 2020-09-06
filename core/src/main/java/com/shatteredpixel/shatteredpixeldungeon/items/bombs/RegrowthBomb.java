@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -96,7 +96,7 @@ public class RegrowthBomb extends Bomb {
 		for (int i = 0; i < plants; i++) {
 			Integer plantPos = Random.element(plantCandidates);
 			if (plantPos != null) {
-				Dungeon.level.plant((Plant.Seed) Generator.random(Generator.Category.SEED), plantPos);
+				Dungeon.level.plant((Plant.Seed) Generator.randomUsingDefaults(Generator.Category.SEED), plantPos);
 				plantCandidates.remove(plantPos);
 			}
 		}
@@ -120,7 +120,7 @@ public class RegrowthBomb extends Bomb {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		//prices of ingredients
 		return quantity * (35 + 40);
 	}

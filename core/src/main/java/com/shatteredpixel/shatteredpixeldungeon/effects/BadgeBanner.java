@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -35,7 +35,7 @@ public class BadgeBanner extends Image {
 
 	private enum State {
 		FADE_IN, STATIC, FADE_OUT
-	};
+	}
 	private State state;
 	
 	private static final float DEFAULT_SCALE	= 3;
@@ -53,7 +53,7 @@ public class BadgeBanner extends Image {
 	
 	private BadgeBanner( int index ) {
 		
-		super( Assets.BADGES );
+		super( Assets.Interfaces.BADGES );
 		
 		if (atlas == null) {
 			atlas = new TextureFilm( texture, 16, 16 );
@@ -70,7 +70,7 @@ public class BadgeBanner extends Image {
 		state = State.FADE_IN;
 		time = FADE_IN_TIME;
 		
-		Sample.INSTANCE.play( Assets.SND_BADGE );
+		Sample.INSTANCE.play( Assets.Sounds.BADGE );
 	}
 	
 	@Override
@@ -284,7 +284,7 @@ public class BadgeBanner extends Image {
 	}
 	
 	public static Image image( int index ) {
-		Image image = new Image( Assets.BADGES );
+		Image image = new Image( Assets.Interfaces.BADGES );
 		if (atlas == null) {
 			atlas = new TextureFilm( image.texture, 16, 16 );
 		}

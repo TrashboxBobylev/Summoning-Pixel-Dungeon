@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -106,11 +107,8 @@ public abstract class SecretRoom extends SpecialRoom {
 			int newidx = Random.Int( runSecrets.size() );
 			if (newidx < index) index = newidx;
 		}
-		try {
-			r = runSecrets.get( index ).newInstance();
-		} catch (Exception e) {
-			ShatteredPixelDungeon.reportException(e);
-		}
+		
+		r = Reflection.newInstance(runSecrets.get( index ));
 		
 		runSecrets.add(runSecrets.remove(index));
 		

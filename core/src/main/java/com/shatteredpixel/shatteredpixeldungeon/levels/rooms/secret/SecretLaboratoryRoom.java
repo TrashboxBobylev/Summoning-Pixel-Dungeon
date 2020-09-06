@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,7 +24,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret;
 
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Alchemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
@@ -44,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.HashMap;
 
@@ -84,14 +84,9 @@ public class SecretLaboratoryRoom extends SecretRoom {
 				pos = level.pointToCell(random());
 			} while (level.map[pos] != Terrain.EMPTY_SP || level.heaps.get( pos ) != null);
 			
-			try{
-				Class<?extends Potion> potionCls = Random.chances(chances);
-				chances.put(potionCls, 0f);
-				level.drop( potionCls.newInstance(), pos );
-			} catch (Exception e){
-				ShatteredPixelDungeon.reportException(e);
-			}
-			
+			Class<?extends Potion> potionCls = Random.chances(chances);
+			chances.put(potionCls, 0f);
+			level.drop( Reflection.newInstance(potionCls), pos );
 		}
 		
 	}

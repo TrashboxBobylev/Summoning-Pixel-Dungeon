@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulWeakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SpeedyShots;
@@ -62,7 +63,7 @@ abstract public class MissileWeapon extends Weapon {
 	
 	protected boolean sticky = true;
     protected boolean sneaky = false;
-	
+
 	protected static final float MAX_DURABILITY = 100;
 	protected float durability = MAX_DURABILITY;
 	protected float baseUses = 10;
@@ -76,7 +77,7 @@ abstract public class MissileWeapon extends Weapon {
 	
 	@Override
 	public int min() {
-		return Math.max(0, min( level() + RingOfSharpshooting.levelDamageBonus(Dungeon.hero) ));
+		return Math.max(0, min( buffedLvl() + RingOfSharpshooting.levelDamageBonus(Dungeon.hero) ));
 	}
 	
 	@Override
@@ -87,7 +88,7 @@ abstract public class MissileWeapon extends Weapon {
 	
 	@Override
 	public int max() {
-		return Math.max(0, max( level() + RingOfSharpshooting.levelDamageBonus(Dungeon.hero) ));
+		return Math.max(0, max( buffedLvl() + RingOfSharpshooting.levelDamageBonus(Dungeon.hero) ));
 	}
 	
 	@Override
@@ -106,6 +107,7 @@ abstract public class MissileWeapon extends Weapon {
 	//FIXME some logic here assumes the items are in the player's inventory. Might need to adjust
 	public Item upgrade() {
 		if (!bundleRestoring) {
+			durability = MAX_DURABILITY;
 			if (quantity > 1) {
 				MissileWeapon upgraded = (MissileWeapon) split(1);
 				upgraded.parent = null;
@@ -119,7 +121,6 @@ abstract public class MissileWeapon extends Weapon {
 				updateQuickslot();
 				return upgraded;
 			} else {
-				durability = MAX_DURABILITY;
 				super.upgrade();
 				
 				Item similar = Dungeon.hero.belongings.getSimilar(this);
@@ -211,7 +212,7 @@ abstract public class MissileWeapon extends Weapon {
 		decrementDurability(enemy);
 		if (durability > 0){
 			//attempt to stick the missile weapon to the enemy, just drop it if we can't.
-			if (enemy != null && enemy.isAlive() && sticky) {
+			if (sticky && enemy != null && enemy.isAlive() && enemy.buff(Corruption.class) == null){
 				PinCushion p = Buff.affect(enemy, PinCushion.class);
 				if (p.target == enemy){
 					p.stick(this);
@@ -376,7 +377,7 @@ abstract public class MissileWeapon extends Weapon {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		return 7 * tier * quantity * (level() + 1);
 	}
 	

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,8 +24,8 @@
 
 package com.watabou.noosa;
 
-import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 
@@ -36,11 +36,9 @@ public class Group extends Gizmo {
 	// Accessing it is a little faster,
 	// than calling members.getSize()
 	public int length;
-
-	public static boolean freezeEmitters = false;
 	
 	public Group() {
-		members = new ArrayList<Gizmo>();
+		members = new ArrayList<>();
 		length = 0;
 	}
 	
@@ -65,10 +63,7 @@ public class Group extends Gizmo {
 	public synchronized void update() {
 		for (int i=0; i < length; i++) {
 			Gizmo g = members.get( i );
-			if (g != null && g.exists && g.active
-					//functionality for the freezing of emitters(particle effects), effects are given a second
-					//from load to get started so they aren't frozen before anything is generated.
-					&& !(freezeEmitters && Game.timeTotal > 1f && g instanceof Emitter)) {
+			if (g != null && g.exists && g.active) {
 				g.update();
 			}
 		}
@@ -193,11 +188,11 @@ public class Group extends Gizmo {
 			
 		} else {
 			
-			try {
-				return add( c.newInstance() );
-			} catch (Exception e) {
-				Game.reportException(e);
+			g = Reflection.newInstance(c);
+			if (g != null) {
+				return add(g);
 			}
+			
 		}
 		
 		return null;

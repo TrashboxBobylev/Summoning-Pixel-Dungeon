@@ -3,7 +3,7 @@
  *  Copyright (C) 2012-2015 Oleg Dolya
  *
  *  Shattered Pixel Dungeon
- *  Copyright (C) 2014-2019 Evan Debenham
+ *  Copyright (C) 2014-2021 Evan Debenham
  *
  *  Summoning Pixel Dungeon
  *  Copyright (C) 2019-2020 TrashboxBobylev
@@ -87,7 +87,7 @@ public class GooMinion extends Minion {
                 if (PathFinder.distance[i] < Integer.MAX_VALUE)
                     CellEmitter.get(i).burst(ElmoParticle.FACTORY, 10);
             }
-            Sample.INSTANCE.play( Assets.SND_BURNING );
+            Sample.INSTANCE.play( Assets.Sounds.BURNING );
             float multiplier = 1f;
             if (Dungeon.hero.buff(Attunement.class) != null) multiplier *= Attunement.empowering();
             return Random.NormalIntRange((int) (Math.round(min*2.5f) * multiplier), (int) (Math.round(max*2.5f) * multiplier));

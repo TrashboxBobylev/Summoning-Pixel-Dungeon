@@ -18,7 +18,7 @@ public class WardSprite extends MobSprite {
 	public WardSprite(){
 		super();
 
-		texture(Assets.WARDS);
+		texture(Assets.Sprites.WARDS);
 
 		tierIdles[1] = new Animation( 1, true );
 		tierIdles[1].frames(texture.uvRect(0, 0, 9, 10));
@@ -50,7 +50,7 @@ public class WardSprite extends MobSprite {
 		} else {
 			parent.add(new Beam.DeathRay(center(), DungeonTilemap.raisedTileCenterToWorld(pos)));
 		}
-        Sample.INSTANCE.play( Assets.SND_RAY );
+        Sample.INSTANCE.play( Assets.Sounds.RAY );
 		((WandOfWarding.Ward)ch).onZapComplete();
 	}
 	
@@ -73,8 +73,19 @@ public class WardSprite extends MobSprite {
 			}
 		} );
 	}
-	
-	public void linkVisuals( Char ch ){
+
+	@Override
+	public void resetColor() {
+		super.resetColor();
+		if (ch instanceof WandOfWarding.Ward){
+			WandOfWarding.Ward ward = (WandOfWarding.Ward) ch;
+			if (ward.tier <= 3){
+				brightness(Math.max(0.2f, 1f - (ward.totalZaps / (float)(2*ward.tier-1))));
+			}
+		}
+	}
+
+	public void linkVisuals(Char ch ){
 		
 		if (ch == null) return;
 		
@@ -94,6 +105,8 @@ public class WardSprite extends MobSprite {
 			parent.sendToBack(this);
 		}
 
+		resetColor();
+		if (ch != null) place(ch.pos);
 		idle();
 
 		if (tier <= 3){

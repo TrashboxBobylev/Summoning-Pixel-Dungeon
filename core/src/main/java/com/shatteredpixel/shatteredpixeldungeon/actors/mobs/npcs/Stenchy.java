@@ -3,7 +3,7 @@
  *  Copyright (C) 2012-2015 Oleg Dolya
  *
  *  Shattered Pixel Dungeon
- *  Copyright (C) 2014-2019 Evan Debenham
+ *  Copyright (C) 2014-2021 Evan Debenham
  *
  *  Summoning Pixel Dungeon
  *  Copyright (C) 2019-2020 TrashboxBobylev
@@ -100,7 +100,7 @@ public class Stenchy extends NPC {
                 destroy();
                 CellEmitter.get(pos).start( Speck.factory(Speck.STENCH_WAND), 0.02f, 20 );
                 sprite.die();
-                Sample.INSTANCE.play( Assets.SND_BLAST );
+                Sample.INSTANCE.play( Assets.Sounds.BLAST );
                 return true;
             } else {
                 return super.act(enemyInFOV, justAlerted);
@@ -117,7 +117,7 @@ public class Stenchy extends NPC {
         sprite.die();
         CellEmitter.get(pos).start( Speck.factory(Speck.STENCH_WAND), 0.02f, 20 );
         GameScene.add(Blob.seed(pos, 50, WandOfStenchGas.class));
-        Sample.INSTANCE.play( Assets.SND_BLAST );
+        Sample.INSTANCE.play( Assets.Sounds.BLAST );
 
         return damage;
     }

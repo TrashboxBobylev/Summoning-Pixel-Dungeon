@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -52,11 +52,11 @@ public class StoneOfAffection extends Runestone {
 			Char ch = Actor.findChar( cell + i );
 			
 			if (ch != null && ch.alignment == Char.Alignment.ENEMY){
-				Buff.prolong(ch, Charm.class, 10f).object = curUser.id();
+				Buff.prolong(ch, Charm.class, Charm.DURATION).object = curUser.id();
 			}
 		}
 		
-		Sample.INSTANCE.play( Assets.SND_CHARMS );
+		Sample.INSTANCE.play( Assets.Sounds.CHARMS );
 		
 	}
 	

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -31,7 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.plants.BlandfruitBush;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Starflower;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -48,8 +47,8 @@ public class Overgrowth extends Armor.Glyph {
 			
 			Plant.Seed s;
 			do{
-				s = (Plant.Seed) Generator.random(Generator.Category.SEED);
-			} while (s instanceof BlandfruitBush.Seed || s instanceof Starflower.Seed);
+				s = (Plant.Seed) Generator.randomUsingDefaults(Generator.Category.SEED);
+			} while (s instanceof Starflower.Seed);
 			
 			Plant p = s.couch(defender.pos, null);
 			

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -43,35 +43,39 @@ public class PoisonDartTrap extends Trap {
 	{
 		color = GREEN;
 		shape = CROSSHAIR;
-        canBeHidden = false;
-    }
 
-    protected int poisonAmount(){
-        return 8 + Math.round(2*Dungeon.depth / 3f);
-    }
+		canBeHidden = false;
+	}
 
-    protected boolean canTarget( Char ch ){
-        return true;
-    }
+	protected int poisonAmount(){
+		return 8 + Math.round(2*Dungeon.depth / 3f);
+	}
 
-    @Override
-    public void activate() {
-        Char target = Actor.findChar(pos);
+	protected boolean canTarget( Char ch ){
+		return true;
+	}
 
-        if (target != null && !canTarget(target)){
-            target = null;
-        }
+	@Override
+	public void activate() {
+		Char target = Actor.findChar(pos);
 
-        //find the closest char that can be aimed at
-        if (target == null){
-            for (Char ch : Actor.chars()){
-                Ballistica bolt = new Ballistica(pos, ch.pos, Ballistica.PROJECTILE);
-                if (canTarget(ch) && bolt.collisionPos == ch.pos &&
-                        (target == null || Dungeon.level.trueDistance(pos, ch.pos) < Dungeon.level.trueDistance(pos, target.pos))){
-                    target = ch;
-                }
-            }
-        }
+		if (target != null && !canTarget(target)){
+			target = null;
+		}
+
+		//find the closest char that can be aimed at
+		if (target == null){
+			float closestDist = Float.MAX_VALUE;
+			for (Char ch : Actor.chars()){
+				float curDist = Dungeon.level.trueDistance(pos, ch.pos);
+				if (ch.invisible > 0) curDist += 1000;
+				Ballistica bolt = new Ballistica(pos, ch.pos, Ballistica.PROJECTILE);
+				if (canTarget(ch) && bolt.collisionPos == ch.pos && curDist < closestDist){
+					target = ch;
+					closestDist = curDist;
+				}
+			}
+		}
 		if (target != null) {
 			final Char finalTarget = target;
 			final PoisonDartTrap trap = this;
@@ -90,14 +94,13 @@ public class PoisonDartTrap extends Trap {
 							reset(pos, finalTarget.sprite, new PoisonDart(), new Callback() {
 								@Override
 								public void call() {
-									int dmg = Random.NormalIntRange(1, 4) - finalTarget.drRoll();
+									int dmg = Random.NormalIntRange(4, 8) - finalTarget.drRoll();
 									finalTarget.damage(dmg, trap);
 									if (finalTarget == Dungeon.hero && !finalTarget.isAlive()){
 										Dungeon.fail( trap.getClass() );
 									}
-									Buff.affect( finalTarget, Poison.class )
-											.set( poisonAmount() );
-									Sample.INSTANCE.play(Assets.SND_HIT, 1, 1, Random.Float(0.8f, 1.25f));
+									Buff.affect( finalTarget, Poison.class ).set( poisonAmount() );
+									Sample.INSTANCE.play(Assets.Sounds.HIT, 1, 1, Random.Float(0.8f, 1.25f));
 									finalTarget.sprite.bloodBurstA(finalTarget.sprite.center(), dmg);
 									finalTarget.sprite.flash();
 									Actor.remove(toRemove);
@@ -108,9 +111,8 @@ public class PoisonDartTrap extends Trap {
 					}
 				});
 			} else {
-				finalTarget.damage(Random.NormalIntRange(1, 4) - finalTarget.drRoll(), trap);
-				Buff.affect( finalTarget, Poison.class )
-						.set( 8 + Math.round(2*Dungeon.depth / 3f) );
+				finalTarget.damage(Random.NormalIntRange(4, 8) - finalTarget.drRoll(), trap);
+				Buff.affect( finalTarget, Poison.class ).set( poisonAmount() );
 			}
 		}
 	}

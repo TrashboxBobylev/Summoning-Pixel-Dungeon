@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -27,13 +27,19 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PitfallParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 
 public class PitfallTrap extends Trap {
 
@@ -49,27 +55,90 @@ public class PitfallTrap extends Trap {
 			GLog.warning(Messages.get(this, "no_pit"));
 			return;
 		}
-		
-		Heap heap = Dungeon.level.heaps.get( pos );
 
-		if (heap != null){
-			for (Item item : heap.items){
-				Dungeon.dropToChasm(item);
-			}
-			heap.sprite.kill();
-			GameScene.discard(heap);
-			Dungeon.level.heaps.remove( pos );
-		}
+		DelayedPit p = Buff.affect(Dungeon.hero, DelayedPit.class, 1);
+		p.depth = Dungeon.depth;
+		p.pos = pos;
 
-		Char ch = Actor.findChar( pos );
-
-		if (ch != null && !ch.flying) {
-			if (ch == Dungeon.hero) {
-				Chasm.heroFall(pos);
-			} else {
-				Chasm.mobFall((Mob) ch);
+		for (int i : PathFinder.NEIGHBOURS9){
+			if (!Dungeon.level.solid[pos+i] || Dungeon.level.passable[pos+i]){
+				CellEmitter.floor(pos+i).burst(PitfallParticle.FACTORY4, 8);
 			}
 		}
+
+		if (pos == Dungeon.hero.pos){
+			GLog.negative(Messages.get(this, "triggered_hero"));
+		} else if (Dungeon.level.heroFOV[pos]){
+			GLog.negative(Messages.get(this, "triggered"));
+		}
+
+	}
+
+	public static class DelayedPit extends FlavourBuff {
+
+		int pos;
+		int depth;
+
+		@Override
+		public boolean act() {
+			if (depth == Dungeon.depth) {
+				for (int i : PathFinder.NEIGHBOURS9) {
+
+					int cell = pos + i;
+
+					if (Dungeon.level.solid[pos+i] && !Dungeon.level.passable[pos+i]){
+						continue;
+					}
+
+					CellEmitter.floor(pos+i).burst(PitfallParticle.FACTORY8, 12);
+
+					Heap heap = Dungeon.level.heaps.get(cell);
+
+					if (heap != null) {
+						for (Item item : heap.items) {
+							Dungeon.dropToChasm(item);
+						}
+						heap.sprite.kill();
+						GameScene.discard(heap);
+						Dungeon.level.heaps.remove(cell);
+					}
+
+					Char ch = Actor.findChar(cell);
+
+					//don't trigger on flying chars, or immovable neutral chars
+					if (ch != null && !ch.flying
+						&& !(ch.alignment == Char.Alignment.NEUTRAL && Char.hasProp(ch, Char.Property.IMMOVABLE))) {
+						if (ch == Dungeon.hero) {
+							Chasm.heroFall(cell);
+						} else {
+							Chasm.mobFall((Mob) ch);
+						}
+					}
+
+				}
+			}
+
+			detach();
+			return true;
+		}
+
+		private static final String POS = "pos";
+		private static final String DEPTH = "depth";
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(POS, pos);
+			bundle.put(DEPTH, depth);
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			pos = bundle.getInt(POS);
+			depth = bundle.getInt(DEPTH);
+		}
+
 	}
 
 	//TODO these used to become chasms when disarmed, but the functionality was problematic

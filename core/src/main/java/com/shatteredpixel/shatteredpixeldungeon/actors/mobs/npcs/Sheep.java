@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,14 +24,14 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SheepSprite;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
 public class Sheep extends NPC {
@@ -63,17 +63,7 @@ public class Sheep extends NPC {
 
 	@Override
 	public int defenseSkill(Char enemy) {
-		return 100_000_000;
-	}
-	
-	//FIXME translate this
-	@Override
-	public String defenseVerb() {
-		if (SPDSettings.language() == Languages.ENGLISH){
-			return "Absorbed";
-		} else {
-			return super.defenseVerb();
-		}
+		return INFINITE_EVASION;
 	}
 	
 	@Override
@@ -85,9 +75,12 @@ public class Sheep extends NPC {
 	}
 
 	@Override
-	public boolean interact() {
+	public boolean interact(Char c) {
 		sprite.showStatus( CharSprite.NEUTRAL, Messages.get(this, Random.element( LINE_KEYS )) );
-		Dungeon.hero.spendAndNext(1f);
-		return false;
+		if (c == Dungeon.hero) {
+			Dungeon.hero.spendAndNext(1f);
+			Sample.INSTANCE.play(Assets.Sounds.SHEEP, 1, Random.Float(0.91f, 1.1f));
+		}
+		return true;
 	}
 }

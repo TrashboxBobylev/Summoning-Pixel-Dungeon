@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -89,10 +89,9 @@ public class LoopBuilder extends RegularBuilder {
 		ArrayList<Room> loop = new ArrayList<>();
 		int roomsOnLoop = (int)(multiConnections.size()*pathLength) + Random.chances(pathLenJitterChances);
 		roomsOnLoop = Math.min(roomsOnLoop, multiConnections.size());
-		roomsOnLoop++;
 		
 		float[] pathTunnels = pathTunnelChances.clone();
-		for (int i = 0; i < roomsOnLoop; i++){
+		for (int i = 0; i <= roomsOnLoop; i++){
 			if (i == 0)
 				loop.add(entrance);
 			else
@@ -140,14 +139,6 @@ public class LoopBuilder extends RegularBuilder {
 			prev = c;
 		}
 		
-		loopCenter = new PointF();
-		for (Room r : loop){
-			loopCenter.x += (r.left + r.right)/2f;
-			loopCenter.y += (r.top + r.bottom)/2f;
-		}
-		loopCenter.x /= loop.size();
-		loopCenter.y /= loop.size();
-		
 		if (shop != null) {
 			float angle;
 			int tries = 10;
@@ -157,6 +148,14 @@ public class LoopBuilder extends RegularBuilder {
 			} while (angle == -1 && tries >= 0);
 			if (angle == -1) return null;
 		}
+		
+		loopCenter = new PointF();
+		for (Room r : loop){
+			loopCenter.x += (r.left + r.right)/2f;
+			loopCenter.y += (r.top + r.bottom)/2f;
+		}
+		loopCenter.x /= loop.size();
+		loopCenter.y /= loop.size();
 		
 		ArrayList<Room> branchable = new ArrayList<>(loop);
 		

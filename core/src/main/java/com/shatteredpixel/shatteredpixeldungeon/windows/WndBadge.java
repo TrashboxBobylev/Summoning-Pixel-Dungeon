@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -27,7 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Image;
 
@@ -44,9 +44,9 @@ public class WndBadge extends Window {
 		icon.scale.set( 2 );
 		add( icon );
 
-		//TODO: this used to be centered, should probably figure that out.
-		RenderedTextMultiline info = PixelScene.renderMultiline( badge.desc(), 8 );
+		RenderedTextBlock info = PixelScene.renderTextBlock( badge.desc(), 8 );
 		info.maxWidth(WIDTH - MARGIN * 2);
+		info.align(RenderedTextBlock.CENTER_ALIGN);
 		PixelScene.align(info);
 		add(info);
 		

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,17 +24,16 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Component;
 
 public class WndTitledMessage extends Window {
 
-	protected static final int WIDTH_P    = 120;
-	protected static final int WIDTH_L    = 160;
+	protected static final int WIDTH_MIN    = 120;
+	protected static final int WIDTH_MAX    = 220;
 	protected static final int GAP	= 2;
 
 	public WndTitledMessage( Image icon, String title, String message ) {
@@ -47,16 +46,23 @@ public class WndTitledMessage extends Window {
 
 		super();
 
-		int width = SPDSettings.landscape() ? WIDTH_L : WIDTH_P;
+		int width = WIDTH_MIN;
 
 		titlebar.setRect( 0, 0, width, 0 );
 		add(titlebar);
 
-		RenderedTextMultiline text = PixelScene.renderMultiline( 6 );
+		RenderedTextBlock text = PixelScene.renderTextBlock( 6 );
 		text.text( message, width );
-		text.setPos( titlebar.left(), titlebar.bottom() + GAP );
+		text.setPos( titlebar.left(), titlebar.bottom() + 2*GAP );
 		add( text );
 
-		resize( width, (int)text.bottom() );
+		while (PixelScene.landscape()
+				&& text.bottom() > (PixelScene.MIN_HEIGHT_L - 10)
+				&& width < WIDTH_MAX){
+			width += 20;
+			text.maxWidth(width);
+		}
+
+		resize( width, (int)text.bottom() + 2 );
 	}
 }

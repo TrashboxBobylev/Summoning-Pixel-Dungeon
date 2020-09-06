@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -25,7 +25,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.armor.curses;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
@@ -42,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 
@@ -71,39 +71,49 @@ public class Multiplicity extends Armor.Glyph {
 
 				} else {
 					//FIXME should probably have a mob property for this
-					if (attacker.properties().contains(Char.Property.BOSS) || attacker.properties().contains(Char.Property.MINIBOSS)
+					if (!(attacker instanceof Mob)
+							|| attacker.properties().contains(Char.Property.BOSS) || attacker.properties().contains(Char.Property.MINIBOSS)
 							|| attacker instanceof Mimic || attacker instanceof Statue){
 						m = Dungeon.level.createMob();
 					} else {
-						try {
-							Actor.fixTime();
+						Actor.fixTime();
+						
+						m = (Mob)Reflection.newInstance(attacker.getClass());
+						
+						if (m != null) {
 							
-							m = (Mob)attacker.getClass().newInstance();
 							Bundle store = new Bundle();
 							attacker.storeInBundle(store);
 							m.restoreFromBundle(store);
 							m.pos = 0;
 							m.HP = m.HT;
-							if (m.buff(PinCushion.class) != null){
+							if (m.buff(PinCushion.class) != null) {
 								m.remove(m.buff(PinCushion.class));
 							}
-
+							
 							//If a thief has stolen an item, that item is not duplicated.
-							if (m instanceof Thief){
+							if (m instanceof Thief) {
 								((Thief) m).item = null;
 							}
-
-						} catch (Exception e) {
-							ShatteredPixelDungeon.reportException(e);
-							m = null;
 						}
 					}
-
 				}
 
 				if (m != null) {
-					GameScene.add(m);
-					ScrollOfTeleportation.appear(m, Random.element(spawnPoints));
+
+					if (Char.hasProp(m, Char.Property.LARGE)){
+						for ( int i : spawnPoints.toArray(new Integer[0])){
+							if (!Dungeon.level.openSpace[i]){
+								//remove the value, not at the index
+								spawnPoints.remove((Integer) i);
+							}
+						}
+					}
+
+					if (!spawnPoints.isEmpty()) {
+						GameScene.add(m);
+						ScrollOfTeleportation.appear(m, Random.element(spawnPoints));
+					}
 				}
 
 			}

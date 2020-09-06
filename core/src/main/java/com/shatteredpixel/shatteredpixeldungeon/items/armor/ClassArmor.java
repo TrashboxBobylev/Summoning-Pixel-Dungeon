@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,7 +24,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
@@ -47,6 +46,8 @@ abstract public class ClassArmor extends Armor {
 	}
 
 	protected int armorTier;
+
+	protected float charge = 0;
 	
 	public ClassArmor() {
 		super( 6 );
@@ -85,23 +86,31 @@ abstract public class ClassArmor extends Armor {
 		classArmor.cursed = armor.cursed;
 		classArmor.curseInfusionBonus = armor.curseInfusionBonus;
 		classArmor.identify();
-		
+
+		classArmor.charge = 0;
+		if (owner.lvl > 18){
+			classArmor.charge += (owner.lvl-18)*25;
+			if (classArmor.charge > 100) classArmor.charge = 100;
+		}
+
 		return classArmor;
 	}
 
 	private static final String ARMOR_TIER	= "armortier";
+	private static final String CHARGE	    = "charge";
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
 		bundle.put( ARMOR_TIER, armorTier );
+		bundle.put( CHARGE, charge );
 	}
 
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
-		
 		armorTier = bundle.getInt( ARMOR_TIER );
+		charge = bundle.getFloat(CHARGE);
 	}
 	
 	@Override
@@ -112,7 +121,12 @@ abstract public class ClassArmor extends Armor {
 		}
 		return actions;
 	}
-	
+
+	@Override
+	public String status() {
+		return Messages.format( "%.0f%%", charge );
+	}
+
 	@Override
 	public void execute( Hero hero, String action ) {
 
@@ -120,18 +134,24 @@ abstract public class ClassArmor extends Armor {
 
 		if (action.equals(AC_SPECIAL)) {
 			
-			if (hero.HP < 3 ||
-                    (hero.heroClass == HeroClass.CONJURER && hero.HP <= 5)) {
-				GLog.warning( Messages.get(this, "low_hp") );
-			} else if (!isEquipped( hero )) {
+			if (!isEquipped( hero )) {
 				GLog.warning( Messages.get(this, "not_equipped") );
-			} else {
+			} else if (charge < 35) {
+				GLog.warning( Messages.get(this, "low_charge") );
+			} else  {
 				curUser = hero;
-				Invisibility.dispel();
 				doSpecial();
 			}
 			
 		}
+	}
+
+	@Override
+	public void onHeroGainExp(float levelPercent, Hero hero) {
+		super.onHeroGainExp(levelPercent, hero);
+		charge += 50 * levelPercent;
+		if (charge > 100) charge = 100;
+		updateQuickslot();
 	}
 
 	abstract public void doSpecial();
@@ -160,7 +180,7 @@ abstract public class ClassArmor extends Armor {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		return 0;
 	}
 

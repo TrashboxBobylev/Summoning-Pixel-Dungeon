@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,13 +24,15 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Sai extends MeleeWeapon {
 
 	{
 		image = ItemSpriteSheet.SAI;
+		hitSound = Assets.Sounds.HIT_STAB;
+		hitSoundPitch = 1.3f;
 
 		tier = 3;
 		DLY = 0.5f; //2x speed
@@ -42,8 +44,4 @@ public class Sai extends MeleeWeapon {
 				lvl*Math.round(0.5f*(tier+1));  //+2 per level, down from +4
 	}
 
-	@Override
-	public int defenseFactor( Char owner ) {
-		return 3;	//3 extra defence
-	}
 }

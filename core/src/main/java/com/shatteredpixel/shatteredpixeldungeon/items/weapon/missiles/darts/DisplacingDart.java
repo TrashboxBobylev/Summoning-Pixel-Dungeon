@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -54,6 +54,7 @@ public class DisplacingDart extends TippedDart {
 			for (int pos = 0; pos < Dungeon.level.length(); pos++){
 				if (Dungeon.level.heroFOV[pos]
 						&& Dungeon.level.passable[pos]
+						&& (!Char.hasProp(defender, Char.Property.LARGE) || Dungeon.level.openSpace[pos])
 						&& Actor.findChar(pos) == null){
 					
 					int dist = Dungeon.level.distance(attacker.pos, pos);
@@ -80,7 +81,7 @@ public class DisplacingDart extends TippedDart {
 			if (chosenDist != -1){
 				int pos = positions.get(chosenDist).get(Random.index(positions.get(chosenDist)));
 				ScrollOfTeleportation.appear( defender, pos );
-				Dungeon.level.occupyCell( defender );
+				Dungeon.level.occupyCell(defender );
 			}
 		
 		}

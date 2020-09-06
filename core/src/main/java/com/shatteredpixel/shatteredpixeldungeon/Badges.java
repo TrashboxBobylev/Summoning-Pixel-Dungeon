@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -39,7 +39,6 @@ import com.watabou.utils.FileUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -171,7 +170,7 @@ public class Badges {
 	}
 	
 	private static HashSet<Badge> global;
-	private static HashSet<Badge> local = new HashSet<Badges.Badge>();
+	private static HashSet<Badge> local = new HashSet<>();
 	
 	private static boolean saveNeeded = false;
 
@@ -185,15 +184,12 @@ public class Badges {
 	
 	private static final HashSet<String> removedBadges = new HashSet<>();
 	static{
-		//removed in 0.6.5
-		removedBadges.addAll(Arrays.asList("RARE_ALBINO", "RARE_BANDIT", "RARE_SHIELDED",
-				"RARE_SENIOR", "RARE_ACIDIC", "RARE", "TUTORIAL_WARRIOR", "TUTORIAL_MAGE"));
+		//no recently removed badges
 	}
 
 	private static final HashMap<String, String> renamedBadges = new HashMap<>();
 	static{
-		//0.6.5
-		renamedBadges.put("CHAMPION", "CHAMPION_1");
+		//no recently renamed badges
 	}
 
 	public static HashSet<Badge> restore( Bundle bundle ) {
@@ -242,7 +238,7 @@ public class Badges {
 				global = restore( bundle );
 				
 			} catch (IOException e) {
-				global = new HashSet<Badge>();
+				global = new HashSet<>();
 			}
 		}
 	}
@@ -887,7 +883,7 @@ public class Badges {
 	
 	public static List<Badge> filtered( boolean global ) {
 		
-		HashSet<Badge> filtered = new HashSet<Badge>( global ? Badges.global : Badges.local );
+		HashSet<Badge> filtered = new HashSet<>(global ? Badges.global : Badges.local);
 
 		Iterator<Badge> iterator = filtered.iterator();
 		while (iterator.hasNext()) {
@@ -921,7 +917,7 @@ public class Badges {
 		leaveBest( filtered, Badge.GAMES_PLAYED_1, Badge.GAMES_PLAYED_2, Badge.GAMES_PLAYED_3, Badge.GAMES_PLAYED_4 );
 		leaveBest( filtered, Badge.CHAMPION_1, Badge.CHAMPION_2, Badge.CHAMPION_3 );
 		
-		ArrayList<Badge> list = new ArrayList<Badge>( filtered );
+		ArrayList<Badge> list = new ArrayList<>(filtered);
 		Collections.sort( list );
 		
 		return list;

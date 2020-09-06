@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -28,18 +28,18 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 
 public class ScrollOfPsionicBlast extends ExoticScroll {
 	
 	{
-		initials = 4;
+		icon = ItemSpriteSheet.Icons.SCROLL_PSIBLAST;
 	}
 	
 	@Override
@@ -47,8 +47,7 @@ public class ScrollOfPsionicBlast extends ExoticScroll {
 		
 		GameScene.flash( 0xFFFFFF );
 		
-		Sample.INSTANCE.play( Assets.SND_BLAST );
-		Invisibility.dispel();
+		Sample.INSTANCE.play( Assets.Sounds.BLAST );
 		
 		int targets = 0;
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
@@ -56,15 +55,15 @@ public class ScrollOfPsionicBlast extends ExoticScroll {
 				targets ++;
 				mob.damage(Math.round(mob.HT/2f + mob.HP/2f), this);
 				if (mob.isAlive()) {
-					Buff.prolong(mob, Blindness.class, 10);
+					Buff.prolong(mob, Blindness.class, Blindness.DURATION);
 				}
 			}
 		}
 		
 		curUser.damage(Math.max(0, Math.round(curUser.HT*(0.5f * (float)Math.pow(0.9, targets)))), this);
 		if (curUser.isAlive()) {
-			Buff.prolong(curUser, Blindness.class, 10);
-			Buff.prolong(curUser, Weakness.class, 100);
+			Buff.prolong(curUser, Blindness.class, Blindness.DURATION);
+			Buff.prolong(curUser, Weakness.class, Weakness.DURATION*5f);
 			Dungeon.observe();
 			readAnimation();
 		} else {

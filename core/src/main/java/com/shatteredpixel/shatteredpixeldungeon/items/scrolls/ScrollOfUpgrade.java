@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
@@ -36,20 +37,25 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 
 public class ScrollOfUpgrade extends InventoryScroll {
 	
 	{
-		initials = 11;
+		icon = ItemSpriteSheet.Icons.SCROLL_UPGRADE;
 		mode = WndBag.Mode.UPGRADEABLE;
+
+		unique = true;
 	}
 	
 	@Override
 	protected void onItemSelected( Item item ) {
 
 		upgrade( curUser );
+
+		Degrade.detach( curUser, Degrade.class );
 
 		//logic for telling the user when item properties change from upgrades
 		//...yes this is rather messy
@@ -120,12 +126,7 @@ public class ScrollOfUpgrade extends InventoryScroll {
 	}
 	
 	@Override
-	public void empoweredRead() {
-		//does nothing for now, this should never happen.
-	}
-	
-	@Override
-	public int price() {
-		return isKnown() ? 100 * quantity : super.price();
+	public int value() {
+		return isKnown() ? 100 * quantity : super.value();
 	}
 }

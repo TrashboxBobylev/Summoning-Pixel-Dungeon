@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -36,7 +36,7 @@ public class Toast extends Component {
 
 	protected NinePatch bg;
 	protected SimpleButton close;
-	protected RenderedTextMultiline text;
+	protected RenderedTextBlock text;
 
 	public Toast( String text ) {
 		super();
@@ -56,11 +56,11 @@ public class Toast extends Component {
 		close = new SimpleButton( Icons.get( Icons.CLOSE ) ) {
 			protected void onClick() {
 				onClose();
-			};
+			}
 		};
 		add( close );
 
-		text = PixelScene.renderMultiline(8);
+		text = PixelScene.renderTextBlock(8);
 		add( text );
 	}
 	
@@ -85,5 +85,5 @@ public class Toast extends Component {
 		text.text( txt );
 	}
 	
-	protected void onClose() {};
+	protected void onClose() {}
 }

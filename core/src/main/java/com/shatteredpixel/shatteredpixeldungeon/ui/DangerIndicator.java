@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -25,8 +25,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.watabou.input.GameAction;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Image;
@@ -50,6 +52,11 @@ public class DangerIndicator extends Tag {
 		visible = false;
 	}
 	
+	@Override
+	public GameAction keyAction() {
+		return SPDAction.TAG_DANGER;
+	}
+
 	@Override
 	protected void createChildren() {
 		super.createChildren();
@@ -103,13 +110,12 @@ public class DangerIndicator extends Tag {
 	protected void onClick() {
 		if (Dungeon.hero.visibleEnemies() > 0) {
 
-			Mob target = Dungeon.hero.visibleEnemy(enemyIndex++);
+			Mob target = Dungeon.hero.visibleEnemy(++enemyIndex);
 
-			TargetHealthIndicator.instance.target(target == TargetHealthIndicator.instance.target() ? null : target);
+			QuickSlotButton.target(target);
+			if (Dungeon.hero.canAttack(target)) AttackIndicator.target(target);
 
-            if (Dungeon.hero.curAction == null) {
-                Camera.main.panTo(target.sprite.center(), 5f);
-            }
+			if (Dungeon.hero.curAction == null) Camera.main.panTo(target.sprite.center(), 5f);
 		}
 	}
 }

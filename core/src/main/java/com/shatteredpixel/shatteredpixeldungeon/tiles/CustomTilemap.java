@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -86,13 +86,13 @@ public abstract class CustomTilemap implements Bundlable {
 	
 	public Tilemap create(){
 		if (vis != null && vis.alive) vis.killAndErase();
-        vis = new Tilemap(texture, new TextureFilm( texture, SIZE, SIZE )){
-            @Override
-            protected NoosaScript script() {
-                //allow lighting for custom tilemaps
-                return NoosaScript.get();
-            }
-        };
+		vis = new Tilemap(texture, new TextureFilm( texture, SIZE, SIZE )){
+			@Override
+			protected NoosaScript script() {
+				//allow lighting for custom tilemaps
+				return NoosaScript.get();
+			}
+		};
 		vis.x = tileX*SIZE;
 		vis.y = tileY*SIZE;
 		return vis;

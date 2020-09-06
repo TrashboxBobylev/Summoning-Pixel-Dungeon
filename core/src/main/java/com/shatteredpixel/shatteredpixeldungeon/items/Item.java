@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -27,10 +27,10 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
@@ -48,6 +48,7 @@ import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,14 +68,15 @@ public class Item implements Bundlable {
 	
 	public String defaultAction;
 	public boolean usesTargeting;
-	
-	protected String name = Messages.get(this, "name");
+
+	//TODO should these be private and accessed through methods?
 	public int image = 0;
-	
+	public int icon = -1; //used as an identifier for items with randomized images
+
 	public boolean stackable = false;
 	protected int quantity = 1;
     public boolean dropsDownHeap = false;
-	
+
 	private int level = 0;
 
 	public boolean levelKnown = false;
@@ -96,7 +98,7 @@ public class Item implements Bundlable {
 	};
 	
 	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = new ArrayList<String>();
+		ArrayList<String> actions = new ArrayList<>();
 		actions.add( AC_DROP );
 		actions.add( AC_THROW );
 		return actions;
@@ -106,7 +108,7 @@ public class Item implements Bundlable {
 		if (collect( hero.belongings.backpack )) {
 			
 			GameScene.pickUp( this, hero.pos );
-			Sample.INSTANCE.play( Assets.SND_ITEM );
+			Sample.INSTANCE.play( Assets.Sounds.ITEM );
             Hunger.adjustHunger(-1);
 			hero.spendAndNext( TIME_TO_PICK_UP );
 			return true;
@@ -118,21 +120,20 @@ public class Item implements Bundlable {
 	
 	public void doDrop( Hero hero ) {
 		hero.spendAndNext(TIME_TO_DROP);
-		Dungeon.level.drop(detachAll(hero.belongings.backpack), hero.pos).sprite.drop(hero.pos);
+		int pos = hero.pos;
+		Dungeon.level.drop(detachAll(hero.belongings.backpack), pos).sprite.drop(pos);
 	}
 
 	//resets an item's properties, to ensure consistency between runs
-	public void reset(){
-		//resets the name incase the language has changed.
-		name = Messages.get(this, "name");
-	}
+	public void reset(){}
 
 	public void doThrow( Hero hero ) {
 		GameScene.selectCell(thrower);
 	}
 	
 	public void execute( Hero hero, String action ) {
-		
+
+		GameScene.cancel();
 		curUser = hero;
 		curItem = this;
 		
@@ -172,19 +173,30 @@ public class Item implements Bundlable {
 	}
 	
 	public boolean collect( Bag container ) {
-		
+
+		if (quantity <= 0){
+			return true;
+		}
+
 		ArrayList<Item> items = container.items;
-		
+
+		for (Item item:items) {
+			if (item instanceof Bag && ((Bag)item).canHold( this )) {
+				if (collect( (Bag)item )){
+					return true;
+				}
+			}
+		}
+
+		if (!container.canHold(this)){
+			GLog.negative( Messages.get(Item.class, "pack_full", container.name()) );
+			return false;
+		}
+
 		if (items.contains( this )) {
 			return true;
 		}
-		
-		for (Item item:items) {
-			if (item instanceof Bag && ((Bag)item).grab( this )) {
-				return collect( (Bag)item );
-			}
-		}
-		
+
 		if (stackable) {
 			for (Item item:items) {
 				if (isSimilar( item )) {
@@ -194,25 +206,17 @@ public class Item implements Bundlable {
 				}
 			}
 		}
-		
-		if (items.size() < container.size) {
-			
-			if (Dungeon.hero != null && Dungeon.hero.isAlive()) {
-				Badges.validateItemLevelAquired( this );
-			}
-			
-			items.add( this );
-			Dungeon.quickslot.replacePlaceholder(this);
-			updateQuickslot();
-			Collections.sort( items, itemComparator );
-			return true;
-			
-		} else {
-			
-			GLog.negative( Messages.get(Item.class, "pack_full", name()) );
-			return false;
-			
+
+		if (Dungeon.hero != null && Dungeon.hero.isAlive()) {
+			Badges.validateItemLevelAquired( this );
 		}
+
+		items.add( this );
+		Dungeon.quickslot.replacePlaceholder(this);
+		updateQuickslot();
+		Collections.sort( items, itemComparator );
+		return true;
+
 	}
 	
 	public boolean collect() {
@@ -224,21 +228,20 @@ public class Item implements Bundlable {
 		if (amount <= 0 || amount >= quantity()) {
 			return null;
 		} else {
-			try {
-				
-				//pssh, who needs copy constructors?
-				Item split = getClass().newInstance();
-				Bundle copy = new Bundle();
-				this.storeInBundle(copy);
-				split.restoreFromBundle(copy);
-				split.quantity(amount);
-				quantity -= amount;
-				
-				return split;
-			} catch (Exception e){
-				ShatteredPixelDungeon.reportException(e);
+			//pssh, who needs copy constructors?
+			Item split = Reflection.newInstance(getClass());
+
+			if (split == null){
 				return null;
 			}
+
+			Bundle copy = new Bundle();
+			this.storeInBundle(copy);
+			split.restoreFromBundle(copy);
+			split.quantity(amount);
+			quantity -= amount;
+
+			return split;
 		}
 	}
 	
@@ -276,6 +279,7 @@ public class Item implements Bundlable {
 			if (item == this) {
 				container.items.remove(this);
 				item.onDetach();
+				container.grabItems(); //try to put more items into the bag as it now has free space
 				return this;
 			} else if (item instanceof Bag) {
 				Bag bag = (Bag)item;
@@ -294,8 +298,19 @@ public class Item implements Bundlable {
 
 	protected void onDetach(){}
 
+	//returns the true level of the item, only affected by modifiers which are persistent (e.g. curse infusion)
 	public int level(){
 		return level;
+	}
+
+	//returns the level of the item, after it may have been modified by temporary boosts/reductions
+	//note that not all item properties should care about buffs/debuffs! (e.g. str requirement)
+	public int buffedLvl(){
+		if (Dungeon.hero.buff( Degrade.class ) != null) {
+			return Degrade.reduceLevel(level());
+		} else {
+			return level();
+		}
 	}
 
 	public void level( int value ){
@@ -339,7 +354,11 @@ public class Item implements Bundlable {
 	public int visiblyUpgraded() {
 		return levelKnown ? level() : 0;
 	}
-	
+
+	public int buffedVisiblyUpgraded() {
+		return levelKnown ? buffedLvl() : 0;
+	}
+
 	public boolean visiblyCursed() {
 		return cursed && cursedKnown;
 	}
@@ -392,11 +411,11 @@ public class Item implements Bundlable {
 	}
 	
 	public String name() {
-		return name;
+		return trueName();
 	}
 	
 	public final String trueName() {
-		return name;
+		return Messages.get(this, "name");
 	}
 	
 	public int image() {
@@ -426,22 +445,17 @@ public class Item implements Bundlable {
 		return this;
 	}
 	
-	public int price() {
+	public int value() {
 		return 0;
 	}
 	
 	public Item virtual(){
-		try {
-			
-			Item item = getClass().newInstance();
-			item.quantity = 0;
-			item.level = level;
-			return item;
-			
-		} catch (Exception e) {
-			ShatteredPixelDungeon.reportException(e);
-			return null;
-		}
+		Item item = Reflection.newInstance(getClass());
+		if (item == null) return null;
+
+		item.quantity = 0;
+		item.level = level;
+		return item;
 	}
 	
 	public Item random() {
@@ -502,7 +516,11 @@ public class Item implements Bundlable {
 	public int throwPos( Hero user, int dst){
 		return new Ballistica( user.pos, dst, Ballistica.PROJECTILE ).collisionPos;
 	}
-	
+
+	public void throwSound(){
+		Sample.INSTANCE.play(Assets.Sounds.MISS, 0.6f, 0.6f, 1.5f);
+	}
+
 	public void cast( final Hero user, final int dst ) {
 		
 		final int cell = throwPos( user, dst );
@@ -510,7 +528,7 @@ public class Item implements Bundlable {
 		user.busy();
         Hunger.adjustHunger(-2);
 
-		Sample.INSTANCE.play( Assets.SND_MISS, 0.6f, 0.6f, 1.5f );
+		throwSound();
 
 		Char enemy = Actor.findChar( cell );
 		QuickSlotButton.target(enemy);

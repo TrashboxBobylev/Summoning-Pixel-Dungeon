@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.noosa.Image;
 
 public enum Icons {
@@ -41,7 +42,10 @@ public enum Icons {
 	EXIT,
 	CLOSE,
 	ARROW,
-	
+	DISPLAY,
+	DATA,
+	AUDIO,
+
 	//ingame UI icons
 	SKULL,
 	BUSY,
@@ -63,12 +67,13 @@ public enum Icons {
 	ROGUE,
 	HUNTRESS,
     CONJURER,
-	
+
 	//main menu icons
 	ENTER,
 	GOLD,
 	RANKINGS,
 	BADGES,
+	NEWS,
 	CHANGES,
 	SHPX,
 	
@@ -76,14 +81,21 @@ public enum Icons {
 	LIBGDX,
 	WATA,
     TRASHBOXBOBYLEV,
-	WARNING;
+	WARNING,
+
+	//32x32 icons for credits
+	ALEKS,
+	CHARLIE,
+	CUBE_CODE,
+	PURIGRO,
+	ARCNOR;
 
 	public Image get() {
 		return get( this );
 	}
 	
 	public static Image get( Icons type ) {
-		Image icon = new Image( Assets.ICONS );
+		Image icon = new Image( Assets.Interfaces.ICONS );
 		switch (type) {
 		case CHECKED:
 			icon.frame( icon.texture.uvRect( 0, 0, 12, 12 ) );
@@ -101,13 +113,13 @@ public enum Icons {
 			icon.frame( icon.texture.uvRect( 64, 0, 78, 12 ) );
 			break;
 		case PREFS:
-			icon.frame( icon.texture.uvRect( 80, 0, 92, 12 ) );
+			icon.frame( icon.texture.uvRect( 80, 0, 94, 14 ) );
 			break;
 		case LANGS:
-			icon.frame( icon.texture.uvRect( 96, 0, 108, 9 ) );
+			icon.frame( icon.texture.uvRect( 96, 0, 110, 11 ) );
 			break;
 		case EXIT:
-			icon.frame( icon.texture.uvRect( 112, 0, 125, 9 ) );
+			icon.frame( icon.texture.uvRect( 112, 0, 127, 11 ) );
 			break;
 		case CLOSE:
 			icon.frame( icon.texture.uvRect( 0, 16, 11, 27 ) );
@@ -115,7 +127,16 @@ public enum Icons {
 		case ARROW:
 			icon.frame( icon.texture.uvRect( 16, 16, 27, 27 ) );
 			break;
-			
+		case DISPLAY:
+			icon.frame( icon.texture.uvRect( 32, 16, 45, 32 ) );
+			break;
+		//TODO UI icon?
+		case DATA:
+			icon.frame( icon.texture.uvRect( 48, 16, 64, 31 ) );
+			break;
+		case AUDIO:
+			icon.frame( icon.texture.uvRect( 64, 16, 78, 30 ) );
+			break;
 		case SKULL:
 			icon.frame( icon.texture.uvRect( 0, 32, 8, 40 ) );
 			break;
@@ -171,24 +192,27 @@ public enum Icons {
             case CONJURER:
                 icon.frame( icon.texture.uvRect( 80, 48, 96, 64 ) );
                 break;
-		
+
 		case ENTER:
-			icon.frame( icon.texture.uvRect( 0, 64, 17, 81 ) );
+			icon.frame( icon.texture.uvRect( 0, 64, 16, 80 ) );
 			break;
 		case RANKINGS:
-			icon.frame( icon.texture.uvRect( 17, 64, 34, 81 ) );
+			icon.frame( icon.texture.uvRect( 17, 64, 34, 80 ) );
 			break;
 		case BADGES:
-			icon.frame( icon.texture.uvRect( 34, 64, 51, 81 ) );
+			icon.frame( icon.texture.uvRect( 34, 64, 50, 80 ) );
+			break;
+		case NEWS:
+			icon.frame( icon.texture.uvRect( 51, 64, 67, 79 ) );
 			break;
 		case CHANGES:
-			icon.frame( icon.texture.uvRect( 51, 64, 68, 79 ) );
+			icon.frame( icon.texture.uvRect( 68, 64, 83, 79 ) );
 			break;
 		case SHPX:
-			icon.frame( icon.texture.uvRect( 68, 64, 84, 80 ) );
+			icon.frame( icon.texture.uvRect( 85, 64, 101, 80 ) );
 			break;
 		case GOLD:
-			icon.frame( icon.texture.uvRect( 85, 64, 102, 80 ) );
+			icon.frame( icon.texture.uvRect( 102, 64, 119, 80 ) );
 			break;
 		
 		case LIBGDX:
@@ -203,6 +227,29 @@ public enum Icons {
 		case WARNING:
 			icon.frame( icon.texture.uvRect( 34, 81, 48, 95 ) );
 			break;
+
+		//32*32 icons are scaled down to match game's size
+		case ALEKS:
+			icon.frame( icon.texture.uvRect( 0, 96, 32, 128 ) );
+			icon.scale.set(PixelScene.align(0.49f));
+			break;
+		case CHARLIE:
+			icon.frame( icon.texture.uvRect( 32, 96, 64, 128 ) );
+			icon.scale.set(PixelScene.align(0.49f));
+			break;
+		case ARCNOR:
+			icon.frame( icon.texture.uvRect( 64, 96, 96, 128 ) );
+			icon.scale.set(PixelScene.align(0.49f));
+			break;
+		case PURIGRO:
+			icon.frame( icon.texture.uvRect( 96, 96, 128, 128 ) );
+			icon.scale.set(PixelScene.align(0.49f));
+			break;
+		case CUBE_CODE:
+			icon.frame( icon.texture.uvRect( 101, 32, 128, 62 ) );
+			icon.scale.set(PixelScene.align(0.49f));
+			break;
+
 		}
 		return icon;
 	}

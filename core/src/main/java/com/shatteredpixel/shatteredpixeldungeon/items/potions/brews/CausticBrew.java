@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -50,7 +50,7 @@ public class CausticBrew extends Brew {
 		
 		if (Dungeon.level.heroFOV[cell]) {
 			splash( cell );
-			Sample.INSTANCE.play( Assets.SND_SHATTER );
+			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 		}
 		
 		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 3 );
@@ -60,14 +60,14 @@ public class CausticBrew extends Brew {
 				Char ch = Actor.findChar(i);
 				
 				if (ch != null){
-					Buff.affect(ch, Ooze.class).set( 20f );
+					Buff.affect(ch, Ooze.class).set( Ooze.DURATION );
 				}
 			}
 		}
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		//prices of ingredients
 		return quantity * (30 + 50);
 	}

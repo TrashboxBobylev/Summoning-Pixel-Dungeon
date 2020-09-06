@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -29,13 +29,14 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.HallsPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.DemonSpawnerRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BlazingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CorrosionTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CursingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisarmingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DistortionTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FlashingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FrostTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrimTrap;
@@ -55,6 +56,8 @@ import com.watabou.noosa.particles.PixelParticle;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
+
 public class HallsLevel extends RegularLevel {
 
 	{
@@ -64,7 +67,22 @@ public class HallsLevel extends RegularLevel {
 		color1 = 0x801500;
 		color2 = 0xa68521;
 	}
-	
+
+	@Override
+	protected ArrayList<Room> initRooms() {
+		ArrayList<Room> rooms = super.initRooms();
+
+		rooms.add(new DemonSpawnerRoom());
+
+		return rooms;
+	}
+
+	@Override
+	public int nMobs() {
+		//remove one mob to account for ripper demon spawners
+		return super.nMobs()-1;
+	}
+
 	@Override
 	protected int standardRooms() {
 		//8 to 10, average 8.67
@@ -88,33 +106,34 @@ public class HallsLevel extends RegularLevel {
 	@Override
 	public void create() {
 		addItemToSpawn( new Torch() );
+		addItemToSpawn( new Torch() );
 		super.create();
 	}
 	
 	@Override
 	public String tilesTex() {
-		return Assets.TILES_HALLS;
+		return Assets.Environment.TILES_HALLS;
 	}
 	
 	@Override
 	public String waterTex() {
-		return Assets.WATER_HALLS;
+		return Assets.Environment.WATER_HALLS;
 	}
 	
 	@Override
 	protected Class<?>[] trapClasses() {
-		return new Class[]{ FrostTrap.class, StormTrap.class, CorrosionTrap.class, BlazingTrap.class, DisintegrationTrap.class,
-				ExplosiveTrap.class, RockfallTrap.class, FlashingTrap.class, GuardianTrap.class, WeakeningTrap.class,
-				SummoningTrap.class, WarpingTrap.class, CursingTrap.class, GrimTrap.class,
-				PitfallTrap.class, DisarmingTrap.class, DistortionTrap.class };
+		return new Class[]{
+				FrostTrap.class, StormTrap.class, CorrosionTrap.class, BlazingTrap.class, DisintegrationTrap.class,
+				RockfallTrap.class, FlashingTrap.class, GuardianTrap.class, WeakeningTrap.class,
+				DisarmingTrap.class, SummoningTrap.class, WarpingTrap.class, CursingTrap.class, GrimTrap.class, PitfallTrap.class, DistortionTrap.class };
 	}
 
 	@Override
 	protected float[] trapChances() {
-		return new float[]{ 8, 8, 8, 8, 8,
+		return new float[]{
 				4, 4, 4, 4, 4,
 				2, 2, 2, 2,
-				1, 1, 1 };
+				1, 1, 1, 1, 1, 1, 1 };
 	}
 	
 	@Override
@@ -180,6 +199,11 @@ public class HallsLevel extends RegularLevel {
 		
 		@Override
 		public void update() {
+
+			if (!Dungeon.level.water[pos]){
+				killAndErase();
+				return;
+			}
 			
 			if (visible = (pos < Dungeon.level.heroFOV.length && Dungeon.level.heroFOV[pos])) {
 				

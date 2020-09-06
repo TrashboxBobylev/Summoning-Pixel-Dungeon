@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -201,7 +201,7 @@ public class WardingWraith extends Mob implements Callback {
 
         if (!enraged) {
             enraged = true;
-            Sample.INSTANCE.play(Assets.SND_DEGRADE);
+            Sample.INSTANCE.play(Assets.Sounds.DEGRADE);
             if (Dungeon.level.heroFOV[pos]) {
                 sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Brute.class, "enraged"));
             }
@@ -209,7 +209,7 @@ public class WardingWraith extends Mob implements Callback {
         else if (alignment == Alignment.ALLY){
             Dungeon.hero.damage(dmg / 2, src);
         }
-        Sample.INSTANCE.play(Assets.SND_GHOST);
+        Sample.INSTANCE.play(Assets.Sounds.GHOST);
 
         super.damage( dmg, src );
     }

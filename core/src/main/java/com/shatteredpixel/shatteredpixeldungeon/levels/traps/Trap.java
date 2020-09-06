@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -78,20 +78,20 @@ public abstract class Trap implements Bundlable {
         return this;
     }
 
-    public Trap hide() {
-        if (canBeHidden) {
-            visible = false;
-            GameScene.updateMap(pos);
-            return this;
-        } else {
-            return reveal();
-        }
-    }
+	public Trap hide() {
+		if (canBeHidden) {
+			visible = false;
+			GameScene.updateMap(pos);
+			return this;
+		} else {
+			return reveal();
+		}
+	}
 
 	public void trigger() {
 		if (active) {
 			if (Dungeon.level.heroFOV[pos]) {
-				Sample.INSTANCE.play(Assets.SND_TRAP);
+				Sample.INSTANCE.play(Assets.Sounds.TRAP);
 			}
 			disarm();
 			reveal();

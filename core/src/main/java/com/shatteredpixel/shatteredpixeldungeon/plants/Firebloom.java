@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -41,13 +41,14 @@ public class Firebloom extends Plant {
 	
 	{
 		image = 1;
+		seedClass = Seed.class;
 	}
 	
 	@Override
 	public void activate( Char ch ) {
 		
 		if (ch instanceof Hero && ((Hero) ch).subClass == HeroSubClass.WARDEN){
-			Buff.affect(ch, FireImbue.class).set(15f);
+			Buff.affect(ch, FireImbue.class).set( FireImbue.DURATION*0.3f );
 		}
 		
 		GameScene.add( Blob.seed( pos, 2, Fire.class ) );

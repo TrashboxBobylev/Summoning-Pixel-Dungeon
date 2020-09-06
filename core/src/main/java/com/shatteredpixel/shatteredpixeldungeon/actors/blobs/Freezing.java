@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -35,7 +35,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SnowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.watabou.utils.Random;
 
 public class Freezing extends Blob {
 	
@@ -76,8 +75,8 @@ public class Freezing extends Blob {
 			} else {
 				Buff.affect(ch, Chill.class, Dungeon.level.water[cell] ? 5f : 3f);
 				Chill chill = ch.buff(Chill.class);
-				if (chill != null && chill.cooldown() >= 10f){
-					Buff.affect(ch, Frost.class, 5f);
+				if (chill != null && chill.cooldown() >= Chill.DURATION){
+					Buff.affect(ch, Frost.class, Frost.DURATION);
 				}
 			}
 		}
@@ -103,9 +102,9 @@ public class Freezing extends Blob {
 		Char ch = Actor.findChar( cell );
 		if (ch != null) {
 			if (Dungeon.level.water[ch.pos]){
-				Buff.prolong(ch, Frost.class, Frost.duration(ch) * Random.Float(5f, 7.5f));
+				Buff.prolong(ch, Frost.class, Frost.DURATION * 3);
 			} else {
-				Buff.prolong(ch, Frost.class, Frost.duration(ch) * Random.Float(1.0f, 1.5f));
+				Buff.prolong(ch, Frost.class, Frost.DURATION);
 			}
 		}
 		

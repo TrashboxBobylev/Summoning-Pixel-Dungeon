@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -27,10 +27,27 @@ package com.shatteredpixel.shatteredpixeldungeon.messages;
 import java.util.Locale;
 
 public enum Languages {
-	ENGLISH("english",      "",   Status.REVIEWED,   null, null);
-	
-//    RUSSIAN("русский",      "ru", Status.REVIEWED, new String[]{"ConsideredHamster", "Inevielle", "yarikonline"}, new String[]{"AttHawk46", "HerrGotlieb", "HoloTheWise", "JleHuBbluKoT", "MrXantar", "Raymundo", "Shamahan", "apxwn", "roman.yagodin", "un_logic", "Вoвa", "TrashboxBobylev"}),
-//	CHINESE("中文",         "zh", Status.INCOMPLETE, new String[]{"Jinkeloid(zdx00793)"}, new String[]{"931451545", "HoofBumpBlurryface", "Lery", "Lyn-0401", "ShatteredFlameBlast", "endlesssolitude", "hmdzl001", "tempest102"});
+	ENGLISH("english",      "",   Status.REVIEWED,   null, null),
+	RUSSIAN("русский",      "ru", Status.REVIEWED,   new String[]{"ConsideredHamster", "Inevielle", "apxwn", "yarikonline" }, new String[]{"AttHawk46", "BlueberryShortcake", "HerrGotlieb", "HoloTheWise", "Ilbko", "JleHuBbluKoT", "MrXantar", "Nikets", "Originalej0name", "Raymundo", "Shamahan", "kirusyaga", "perefrazz", "roman.yagodin", "un_logic", "Вoвa"}),
+	KOREAN("한국어",          "ko", Status.UNREVIEWED, new String[]{"Cocoa", "Flameblast12", "GameConqueror", "Korean2017"}, new String[]{"WondarRabb1t", "ddojin0115", "eeeei", "enjuxx", "hancyel", "linterpreteur", "lsiebnie"}),
+	CHINESE("中文",         "zh", Status.UNREVIEWED, new String[]{"Jinkeloid(zdx00793)", "endlesssolitude"}, new String[]{"931451545", "Fatir", "Fishbone", "HoofBumpBlurryface", "Lery", "Lyn_0401", "ShatteredFlameBlast", "hmdzl001", "tempest102"}),
+	POLISH("polski",        "pl", Status.REVIEWED,   new String[]{"Deksippos", "MrKukurykpl", "kuadziw", "szymex73"}, new String[]{"Chasseur", "Darden", "DarkKnightComes", "KarixDaii", "MJedi", "Odiihinia", "Peperos", "Scharnvirk", "VasteelXolotl", "bvader95", "dusakus", "michaub", "ozziezombie", "szczoteczka22", "transportowiec96"}),
+	SPANISH("español",      "es", Status.UNREVIEWED, new String[]{"Kiroto", "Kohru", "airman12", "grayscales"}, new String[]{"AdventurerKilly", "Alesxanderk", "CorvosUtopy", "Dewstend", "Dyrran", "Fervoreking", "Illyatwo2", "JPCHZ", "LastCry", "Marquezo_577_284", "STKmonoqui", "Sh4rkill3r", "alfongad", "benzarr410", "chepe567.jc", "ctrijueque", "damc0616", "dhg121", "javifs", "jonismack1", "magmax", "tres.14159"}),
+	GERMAN("deutsch",       "de", Status.REVIEWED,   new String[]{"Dallukas", "KrystalCroft", "Wuzzy", "Zap0", "apxwn", "bernhardreiter", "davedude"}, new String[]{"Abracadabra", "Ceeee", "DarkPixel", "ErichME", "Faquarl", "LenzB", "Ordoviz", "Sarius", "SirEddi", "Sorpl3x", "ThunfischGott", "Topicranger", "azrdev", "carrageen", "gekko303", "jeinzi", "johannes.schobel", "karoshi42", "koryphea", "luciocarreras", "niemand", "oragothen", "spixi"}),
+	FRENCH("français",      "fr", Status.UNREVIEWED, new String[]{"Emether", "TheKappaDuWeb", "Xalofar", "canc42", "kultissim", "minikrob"}, new String[]{"Alsydis", "Axce", "Az_zahr", "Bastien72", "Basttee", "Dekadisk", "Draal", "Martin.Bellet", "Neopolitan", "Nyrnx", "Petit_Chat", "RomTheMareep", "RunningColours", "SpeagleZNT", "Tronche2Cake", "VRad", "Ygdrazil", "_nim_", "antoine9298", "clexanis", "go11um", "hydrasho", "levilbatard", "linterpreteur", "maeltur70", "marmous", "mluzarreta", "solthaar", "speagle", "vavavoum", "zM_"}),
+	PORTUGUESE("português", "pt", Status.UNREVIEWED, new String[]{"Chacal.Ex", "TDF2001", "matheus208"}, new String[]{"Bigode935", "ChainedFreaK", "Helen0903", "JST", "MadHorus", "MarkusCoisa", "Matie", "Tio_P_(Krampus)", "ancientorange", "danypr23", "denis.gnl", "ismael.henriques12", "mfcord", "owenreilly", "rafazago", "try31"}),
+	ITALIAN("italiano",		"it", Status.UNREVIEWED, new String[]{"bizzolino", "funnydwarf"}, new String[]{"4est", "DaniMare", "Danzl", "Guiller124", "andrearubbino00", "nessunluogo", "righi.a", "umby000"}),
+	CZECH("čeština",        "cs", Status.REVIEWED,   new String[]{"ObisMike"}, new String[]{"AshenShugar", "Autony", "Buba237", "JStrange", "RealBrofessor", "chuckjirka"}),
+	FINNISH("suomi", 		"fi", Status.INCOMPLETE, new String[]{"TenguTheKnight"}, new String[]{"Sautari"} ),
+	TURKISH("türkçe",       "tr", Status.UNREVIEWED, new String[]{"LokiofMillenium", "emrebnk"}, new String[]{"AGORAAA", "AcuriousPotato", "alikeremozfidan", "alpekin98", "denizakalin", "erdemozdemir98", "hasantahsin160", "immortalsamuraicn", "kayikyaki", "melezorus34", "mitux"}),
+	HUNGARIAN("magyar",     "hu", Status.UNREVIEWED, new String[]{"dorheim", "szalaik"}, new String[]{"Navetelen", "acszoltan111", "clarovani", "dhialub", "nanometer", "nardomaa", "savarall"}),
+	JAPANESE("日本語",      "ja", Status.INCOMPLETE, null, new String[]{"Gosamaru", "amama", "librada", "mocklike"}),
+	INDONESIAN("indonésien","in", Status.INCOMPLETE, new String[]{"rakapratama"}, new String[]{"ZangieF347", "esprogarap"}),
+	UKRANIAN("українська",  "uk", Status.REVIEWED,   new String[]{"Oster"}, new String[]{"Sadsaltan1", "TheGuyBill", "Volkov", "ZverWolf", "ingvarfed", "oliolioxinfree", "romanokurg", "vlisivka"}),
+	CATALAN("català",       "ca", Status.REVIEWED,   new String[]{"Illyatwo2"}, new String[]{"Elosy", "n1ngu"}),
+	BASQUE("euskara",       "eu", Status.INCOMPLETE, new String[]{"Deathrevenge", "Osoitz"}, null),
+	ESPERANTO("esperanto",  "eo", Status.REVIEWED,   new String[]{"Verdulo"}, new String[]{"Raizin"});
+
 	public enum Status{
 		//below 80% complete languages are not added.
 		INCOMPLETE, //80-99% complete

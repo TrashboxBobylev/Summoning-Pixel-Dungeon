@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -36,16 +36,27 @@ public class MagicalHolster extends Bag {
 
 	{
 		image = ItemSpriteSheet.HOLSTER;
-		
-		size = 20;
 	}
 
 	public static final float HOLSTER_SCALE_FACTOR = 0.85f;
 	public static final float HOLSTER_DURABILITY_FACTOR = 1.2f;
 	
 	@Override
+<<<<<<< HEAD
 	public boolean grab( Item item ) {
 		return item instanceof Wand || item instanceof MissileWeapon || item instanceof Bomb || item instanceof Staff;
+=======
+	public boolean canHold( Item item ) {
+		if (item instanceof Wand || item instanceof MissileWeapon || item instanceof Bomb){
+			return super.canHold(item);
+		} else {
+			return false;
+		}
+	}
+
+	public int capacity(){
+		return 19;
+>>>>>>> remotes/ShPD/master
 	}
 	
 	@Override
@@ -85,7 +96,7 @@ public class MagicalHolster extends Bag {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		return 60;
 	}
 

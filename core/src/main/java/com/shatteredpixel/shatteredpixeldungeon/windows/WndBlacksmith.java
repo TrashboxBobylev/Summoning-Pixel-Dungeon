@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -34,7 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.audio.Sample;
@@ -63,7 +63,7 @@ public class WndBlacksmith extends Window {
 		titlebar.setRect( 0, 0, WIDTH, 0 );
 		add( titlebar );
 		
-		RenderedTextMultiline message = PixelScene.renderMultiline( Messages.get(this, "prompt"), 6 );
+		RenderedTextBlock message = PixelScene.renderTextBlock( Messages.get(this, "prompt"), 6 );
 		message.maxWidth( WIDTH);
 		message.setPos(0, titlebar.bottom() + GAP);
 		add( message );
@@ -106,7 +106,7 @@ public class WndBlacksmith extends Window {
 	protected WndBag.Listener itemSelector = new WndBag.Listener() {
 		@Override
 		public void onSelect( Item item ) {
-			if (item != null) {
+			if (item != null && btnPressed.parent != null) {
 				btnPressed.item( item );
 				
 				if (btnItem1.item != null && btnItem2.item != null) {
@@ -140,8 +140,8 @@ public class WndBlacksmith extends Window {
 				@Override
 				protected void onPointerDown() {
 					bg.brightness( 1.2f );
-					Sample.INSTANCE.play( Assets.SND_CLICK );
-				};
+					Sample.INSTANCE.play( Assets.Sounds.CLICK );
+				}
 				@Override
 				protected void onPointerUp() {
 					bg.resetColor();
@@ -155,7 +155,7 @@ public class WndBlacksmith extends Window {
 			add( slot );
 		}
 		
-		protected void onClick() {};
+		protected void onClick() {}
 		
 		@Override
 		protected void layout() {
@@ -166,7 +166,7 @@ public class WndBlacksmith extends Window {
 			bg.size( width, height );
 			
 			slot.setRect( x + 2, y + 2, width - 4, height - 4 );
-		};
+		}
 		
 		public void item( Item item ) {
 			slot.item( this.item = item );

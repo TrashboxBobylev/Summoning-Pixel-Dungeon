@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -41,12 +41,12 @@ public class Chilling extends Weapon.Enchantment {
 	
 	@Override
 	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
-		// lvl 0 - 33%
-		// lvl 1 - 50%
-		// lvl 2 - 60%
-		int level = Math.max( 0, weapon.level() );
-		
-		if (Random.Int( level + 3 ) >= 2) {
+		// lvl 0 - 25%
+		// lvl 1 - 40%
+		// lvl 2 - 50%
+		int level = Math.max( 0, weapon.buffedLvl() );
+
+		if (Random.Int( level + 4 ) >= 3) {
 			
 			//adds 3 turns of chill per proc, with a cap of 6 turns
 			float durationToAdd = 3f;

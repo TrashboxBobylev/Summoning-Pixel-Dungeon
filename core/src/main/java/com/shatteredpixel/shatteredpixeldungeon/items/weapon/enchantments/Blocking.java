@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -43,7 +43,7 @@ public class Blocking extends Weapon.Enchantment {
 	@Override
 	public int proc(Weapon weapon, Char attacker, Char defender, int damage) {
 		
-		int level = Math.max( 0, weapon.level() );
+		int level = Math.max( 0, weapon.buffedLvl() );
 		
 		Buff.prolong(attacker, BlockBuff.class, 2 + level/2).setBlocking(level + 1);
 		
@@ -84,7 +84,12 @@ public class Blocking extends Weapon.Enchantment {
 		
 		@Override
 		public void tintIcon(Image icon) {
-			icon.tint(0, 0.5f, 1, 0.5f);
+			icon.hardlight(0.5f, 1f, 2f);
+		}
+
+		@Override
+		public float iconFadePercent() {
+			return Math.max(0, (5f - visualcooldown()) / 5f);
 		}
 		
 		@Override

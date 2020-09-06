@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWea
 import com.watabou.utils.Bundle;
 import com.watabou.utils.FileUtils;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -74,7 +75,7 @@ public class Bones {
 	private static Item pickItem(Hero hero){
 		Item item = null;
 		if (Random.Int(3) != 0) {
-			switch (Random.Int(6)) {
+			switch (Random.Int(7)) {
 				case 0:
 					item = hero.belongings.weapon;
 					break;
@@ -82,12 +83,15 @@ public class Bones {
 					item = hero.belongings.armor;
 					break;
 				case 2:
-					item = hero.belongings.misc1;
+					item = hero.belongings.artifact;
 					break;
 				case 3:
-					item = hero.belongings.misc2;
+					item = hero.belongings.misc;
 					break;
-				case 4: case 5:
+				case 4:
+					item = hero.belongings.ring;
+					break;
+				case 5: case 6:
 					item = Dungeon.quickslot.randomNonePlaceholder();
 					break;
 			}
@@ -98,7 +102,7 @@ public class Bones {
 
 			Iterator<Item> iterator = hero.belongings.backpack.iterator();
 			Item curItem;
-			ArrayList<Item> items = new ArrayList<Item>();
+			ArrayList<Item> items = new ArrayList<>();
 			while (iterator.hasNext()){
 				curItem = iterator.next();
 				if (curItem.bones)
@@ -148,20 +152,21 @@ public class Bones {
 				//Enforces artifact uniqueness
 				if (item instanceof Artifact){
 					if (Generator.removeArtifact(((Artifact)item).getClass())) {
-						try {
-							//generates a new artifact of the same type, always +0
-							Artifact artifact = (Artifact)item.getClass().newInstance();
-
-							artifact.cursed = true;
-							artifact.cursedKnown = true;
-
-							return artifact;
-						} catch (Exception e) {
-							ShatteredPixelDungeon.reportException(e);
-							return new Gold(item.price());
+						
+						//generates a new artifact of the same type, always +0
+						Artifact artifact = Reflection.newInstance(((Artifact)item).getClass());
+						
+						if (artifact == null){
+							return new Gold(item.value());
 						}
+
+						artifact.cursed = true;
+						artifact.cursedKnown = true;
+
+						return artifact;
+						
 					} else {
-						return new Gold(item.price());
+						return new Gold(item.value());
 					}
 				}
 				

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -56,26 +56,32 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 	private Callback callback;
 	
 	public void reset( int from, int to, Item item, Callback listener ) {
-		reset( DungeonTilemap.tileToWorld( from ), DungeonTilemap.tileToWorld( to ), item, listener);
-	}
-
-	public void reset( Visual from, Visual to, Item item, Callback listener ) {
-		reset(from.center(this), to.center(this), item, listener );
+		reset(Dungeon.level.solid[from] ? DungeonTilemap.raisedTileCenterToWorld(from) : DungeonTilemap.raisedTileCenterToWorld(from),
+				Dungeon.level.solid[to] ? DungeonTilemap.raisedTileCenterToWorld(to) : DungeonTilemap.raisedTileCenterToWorld(to),
+				item, listener);
 	}
 
 	public void reset( Visual from, int to, Item item, Callback listener ) {
-		reset(from.center(this), DungeonTilemap.tileToWorld( to ), item, listener );
+		reset(from.center(),
+				Dungeon.level.solid[to] ? DungeonTilemap.raisedTileCenterToWorld(to) : DungeonTilemap.raisedTileCenterToWorld(to),
+				item, listener );
 	}
-	
+
 	public void reset( int from, Visual to, Item item, Callback listener ) {
-		reset(DungeonTilemap.tileToWorld( from ), to.center(this), item, listener );
+		reset(Dungeon.level.solid[from] ? DungeonTilemap.raisedTileCenterToWorld(from) : DungeonTilemap.raisedTileCenterToWorld(from),
+				to.center(),
+				item, listener );
+	}
+
+	public void reset( Visual from, Visual to, Item item, Callback listener ) {
+		reset(from.center(), to.center(), item, listener );
 	}
 
 	public void reset( PointF from, PointF to, Item item, Callback listener) {
 		revive();
 
 		if (item == null)   view(0, null);
-		else                view(item.image(), item.glowing());
+		else                view( item );
 
 		setup( from,
 				to,
@@ -114,6 +120,12 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 	private void setup( PointF from, PointF to, Item item, Callback listener ){
 
 		originToCenter();
+
+		//adjust points so they work with the center of the missile sprite, not the corner
+		from.x -= width()/2;
+		to.x -= width()/2;
+		from.y -= height()/2;
+		to.y -= height()/2;
 
 		this.callback = listener;
 

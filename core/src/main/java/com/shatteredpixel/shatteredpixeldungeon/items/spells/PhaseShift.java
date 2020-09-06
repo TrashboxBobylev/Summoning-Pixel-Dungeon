@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -51,7 +51,7 @@ public class PhaseShift extends TargetedSpell {
 			int count = 10;
 			int pos;
 			do {
-				pos = Dungeon.level.randomRespawnCell();
+				pos = Dungeon.level.randomRespawnCell( hero );
 				if (count-- <= 0) {
 					break;
 				}
@@ -79,7 +79,7 @@ public class PhaseShift extends TargetedSpell {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		//prices of ingredients, divided by output quantity
 		return com.shatteredpixel.shatteredpixeldungeon.items.Recipe.calculatePrice(new Recipe()) * quantity;
 	}

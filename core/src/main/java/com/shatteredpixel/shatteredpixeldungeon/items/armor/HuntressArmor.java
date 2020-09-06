@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
@@ -48,7 +49,10 @@ public class HuntressArmor extends ClassArmor {
 	
 	@Override
 	public void doSpecial() {
-		
+
+		charge -= 35;
+		updateQuickslot();
+
 		Item proto = new Shuriken();
 		
 		for (Mob mob : Dungeon.level.mobs) {
@@ -62,13 +66,14 @@ public class HuntressArmor extends ClassArmor {
 						curUser.attack( targets.get( this ) );
 						targets.remove( this );
 						if (targets.isEmpty()) {
+							Invisibility.dispel();
 							curUser.spendAndNext( curUser.attackDelay() );
 						}
 					}
 				};
 				
 				((MissileSprite)curUser.sprite.parent.recycle( MissileSprite.class )).
-					reset( curUser.pos, mob.pos, proto, callback );
+					reset( curUser.sprite, mob.pos, proto, callback );
 				
 				targets.put( callback, mob );
 			}
@@ -78,9 +83,7 @@ public class HuntressArmor extends ClassArmor {
 			GLog.warning( Messages.get(this, "no_enemies") );
 			return;
 		}
-		
-		curUser.HP -= (curUser.HP / 3);
-		
+
 		curUser.sprite.zap( curUser.pos );
 		curUser.busy();
 	}

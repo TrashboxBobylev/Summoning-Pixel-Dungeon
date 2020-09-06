@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,20 +24,21 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Shrink;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.WarlockSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
@@ -55,14 +56,14 @@ public class Warlock extends Mob implements Callback {
 		maxLvl = 21;
 		
 		loot = Generator.Category.POTION;
-		lootChance = 0.83f;
+		lootChance = 0.5f;
 
 		properties.add(Property.UNDEAD);
 	}
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 16, 22 );
+		return Random.NormalIntRange( 12, 18 );
 	}
 	
 	@Override
@@ -88,14 +89,13 @@ public class Warlock extends Mob implements Callback {
 			
 		} else {
 			
-			boolean visible = fieldOfView[pos] || fieldOfView[enemy.pos];
-			if (visible) {
+			if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
 				sprite.zap( enemy.pos );
+				return false;
 			} else {
 				zap();
+				return true;
 			}
-			
-			return !visible;
 		}
 	}
 	
@@ -106,15 +106,17 @@ public class Warlock extends Mob implements Callback {
 		spend( TIME_TO_ZAP );
 		
 		if (hit( this, enemy, true )) {
+			//TODO would be nice for this to work on ghost/statues too
 			if (enemy == Dungeon.hero && Random.Int( 2 ) == 0) {
-				Buff.prolong( enemy, Weakness.class, Weakness.DURATION );
+				Buff.prolong( enemy, Degrade.class, Degrade.DURATION );
+				Sample.INSTANCE.play( Assets.Sounds.DEBUFF );
 			}
 			
-			int dmg = Random.Int( 12, 18 );
+			int dmg = Random.NormalIntRange( 12, 18 );
             if (buff(Shrink.class) != null) dmg *= 0.75f;
 			enemy.damage( dmg, new DarkBolt() );
 			
-			if (!enemy.isAlive() && enemy == Dungeon.hero) {
+			if (enemy == Dungeon.hero && !enemy.isAlive()) {
 				Dungeon.fail( getClass() );
 				GLog.negative( Messages.get(this, "bolt_kill") );
 			}
@@ -135,23 +137,30 @@ public class Warlock extends Mob implements Callback {
 
 	@Override
 	public Item createLoot(){
-		Item loot = super.createLoot();
 
-		if (loot instanceof PotionOfHealing){
-
-			//count/10 chance of not dropping potion
-			if (Random.Float() < ((8f - Dungeon.LimitedDrops.WARLOCK_HP.count) / 8f)){
-				Dungeon.LimitedDrops.WARLOCK_HP.count++;
-			} else {
-				return null;
+		// 1/6 chance for healing, scaling to 0 over 8 drops
+		if (Random.Int(2) == 0 && Random.Int(8) > Dungeon.LimitedDrops.WARLOCK_HP.count ){
+			Dungeon.LimitedDrops.WARLOCK_HP.drop();
+			return new PotionOfHealing();
+		} else {
+			Item i = Generator.random(Generator.Category.POTION);
+			int healingTried = 0;
+			while (i instanceof PotionOfHealing){
+				healingTried++;
+				i = Generator.random(Generator.Category.POTION);
 			}
 
+			//return the attempted healing potion drops to the pool
+			if (healingTried > 0){
+				for (int j = 0; j < Generator.Category.POTION.classes.length; j++){
+					if (Generator.Category.POTION.classes[j] == PotionOfHealing.class){
+						Generator.Category.POTION.probs[j] += healingTried;
+					}
+				}
+			}
+
+			return i;
 		}
 
-		return loot;
-	}
-
-	{
-		resistances.add( Grim.class );
 	}
 }

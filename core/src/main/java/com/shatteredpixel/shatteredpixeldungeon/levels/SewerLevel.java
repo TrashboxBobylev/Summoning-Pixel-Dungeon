@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -83,19 +83,20 @@ public class SewerLevel extends RegularLevel {
 	
 	@Override
 	public String tilesTex() {
-		return Assets.TILES_SEWERS;
+		return Assets.Environment.TILES_SEWERS;
 	}
 	
 	@Override
 	public String waterTex() {
-		return Assets.WATER_SEWERS;
+		return Assets.Environment.WATER_SEWERS;
 	}
 	
 	@Override
 	protected Class<?>[] trapClasses() {
 		return Dungeon.depth == 1 ?
 				new Class<?>[]{ WornDartTrap.class } :
-				new Class<?>[]{ ChillingTrap.class, ShockingTrap.class, ToxicTrap.class, WornDartTrap.class,
+				new Class<?>[]{
+						ChillingTrap.class, ShockingTrap.class, ToxicTrap.class, WornDartTrap.class,
 						AlarmTrap.class, OozeTrap.class,
 						ConfusionTrap.class, FlockTrap.class, SummoningTrap.class, TeleportationTrap.class };
 }
@@ -104,9 +105,10 @@ public class SewerLevel extends RegularLevel {
 	protected float[] trapChances() {
 		return Dungeon.depth == 1 ?
 				new float[]{1} :
-				new float[]{8, 8, 8, 8,
-						4, 4,
-						2, 2, 2, 2};
+				new float[]{
+						4, 4, 4, 4,
+						2, 2,
+						1, 1, 1, 1};
 	}
 	
 	@Override
@@ -189,7 +191,7 @@ public class SewerLevel extends RegularLevel {
 				
 				super.update();
 				
-				if ((rippleDelay -= Game.elapsed) <= 0) {
+				if (!isFrozen() && (rippleDelay -= Game.elapsed) <= 0) {
 					Ripple ripple = GameScene.ripple( pos + Dungeon.level.width() );
 					if (ripple != null) {
 						ripple.y -= DungeonTilemap.SIZE / 2;

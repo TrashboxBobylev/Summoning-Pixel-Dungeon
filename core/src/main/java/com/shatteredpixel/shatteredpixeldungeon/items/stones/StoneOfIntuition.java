@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.stones;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Identification;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
@@ -62,12 +63,13 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.noosa.Image;
+import com.watabou.utils.Reflection;
 
 import java.util.HashSet;
 
@@ -128,11 +130,11 @@ public class StoneOfIntuition extends InventoryStone {
 			
 			IconTitle titlebar = new IconTitle();
 			titlebar.icon( new ItemSprite(ItemSpriteSheet.STONE_INTUITION, null) );
-			titlebar.label( Messages.get(StoneOfIntuition.class, "name") );
+			titlebar.label( Messages.titleCase(Messages.get(StoneOfIntuition.class, "name")) );
 			titlebar.setRect( 0, 0, WIDTH, 0 );
 			add( titlebar );
 			
-			RenderedTextMultiline text = PixelScene.renderMultiline(6);
+			RenderedTextBlock text = PixelScene.renderTextBlock(6);
 			text.text( Messages.get(this, "text") );
 			text.setPos(0, titlebar.bottom());
 			text.maxWidth( WIDTH );
@@ -166,17 +168,15 @@ public class StoneOfIntuition extends InventoryStone {
 			int placed = 0;
 			
 			HashSet<Class<?extends Item>> unIDed = new HashSet<>();
-			final Class[] all;
-			
-			final int row;
+			final Class<?extends Item>[] all;
+
 			if (item.isIdentified()){
 				hide();
 				return;
 			} else if (item instanceof Potion){
 				unIDed.addAll(Potion.getUnknown());
-				all = potions.clone();
+				all = (Class<? extends Item>[]) Generator.Category.POTION.classes.clone();
 				if (item instanceof ExoticPotion){
-					row = 8;
 					for (int i = 0; i < all.length; i++){
 						all[i] = ExoticPotion.regToExo.get(all[i]);
 					}
@@ -185,24 +185,19 @@ public class StoneOfIntuition extends InventoryStone {
 						exoUID.add(ExoticPotion.regToExo.get(i));
 					}
 					unIDed = exoUID;
-				} else {
-					row = 0;
 				}
 			} else if (item instanceof Scroll){
 				unIDed.addAll(Scroll.getUnknown());
-				all = scrolls.clone();
-				if (item instanceof ExoticScroll){
-					row = 24;
-					for (int i = 0; i < all.length; i++){
+				all = (Class<? extends Item>[]) Generator.Category.SCROLL.classes.clone();
+				if (item instanceof ExoticScroll) {
+					for (int i = 0; i < all.length; i++) {
 						all[i] = ExoticScroll.regToExo.get(all[i]);
 					}
-					HashSet<Class<?extends Item>> exoUID = new HashSet<>();
-					for (Class<?extends Item> i : unIDed){
+					HashSet<Class<? extends Item>> exoUID = new HashSet<>();
+					for (Class<? extends Item> i : unIDed) {
 						exoUID.add(ExoticScroll.regToExo.get(i));
 					}
 					unIDed = exoUID;
-				} else {
-					row = 16;
 				}
 			} else {
 				hide();
@@ -229,12 +224,13 @@ public class StoneOfIntuition extends InventoryStone {
 					protected void onClick() {
 						curGuess = all[j];
 						guess.visible = true;
-						guess.text( Messages.get(curGuess, "name") );
+						guess.text( Messages.titleCase(Messages.get(curGuess, "name")) );
 						guess.enable(true);
 						super.onClick();
 					}
 				};
-				Image im = new Image(Assets.CONS_ICONS, 7*i, row, 7, 8);
+				Image im = new Image(Assets.Sprites.ITEM_ICONS);
+				im.frame(ItemSpriteSheet.Icons.film.get(Reflection.newInstance(all[i]).icon));
 				im.scale.set(2f);
 				btn.icon(im);
 				btn.setRect(left + placed*BTN_SIZE, top, BTN_SIZE, BTN_SIZE);

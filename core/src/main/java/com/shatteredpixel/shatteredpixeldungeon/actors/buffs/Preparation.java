@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -28,7 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroAction;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Effects;
@@ -56,36 +56,37 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 	}
 	
 	public enum AttackLevel{
-		LVL_1( 1,  0.1f, 0.0f, 1, 0),
-		LVL_2( 3,  0.2f, 0.0f, 1, 1),
-		LVL_3( 6,  0.3f, 0.0f, 2, 3),
-		LVL_4( 11, 0.4f, 0.6f, 2, 5),
-		LVL_5( 16, 0.5f, 1.0f, 3, 7);
+		LVL_1( 1,  0.15f, 0.05f, 1, 1),
+		LVL_2( 3,  0.30f, 0.15f, 1, 3),
+		LVL_3( 6,  0.45f, 0.30f, 2, 5),
+		LVL_4( 11, 0.60f, 0.50f, 3, 7);
 		
 		final int turnsReq;
-		final float baseDmgBonus, missingHPBonus;
+		final float baseDmgBonus, KOThreshold;
 		final int damageRolls, blinkDistance;
 		
-		AttackLevel( int turns, float base, float missing, int rolls, int dist){
+		AttackLevel( int turns, float base, float threshold, int rolls, int dist){
 			turnsReq = turns;
-			baseDmgBonus = base; missingHPBonus = missing;
-			damageRolls =rolls; blinkDistance = dist;
+			baseDmgBonus = base; KOThreshold = threshold;
+			damageRolls = rolls; blinkDistance = dist;
 		}
 		
-		public boolean canInstakill(Char defender){
-			return this == LVL_5
-					&& !defender.properties().contains(Char.Property.MINIBOSS)
-					&& !defender.properties().contains(Char.Property.BOSS);
+		public boolean canKO(Char defender){
+			if (defender.properties().contains(Char.Property.MINIBOSS)
+					|| defender.properties().contains(Char.Property.BOSS)){
+				return (defender.HP/(float)defender.HT) < (KOThreshold/5f);
+			} else {
+				return (defender.HP/(float)defender.HT) < KOThreshold;
+			}
 		}
 		
-		public int damageRoll( Char attacker, Char defender){
+		public int damageRoll( Char attacker ){
 			int dmg = attacker.damageRoll();
 			for( int i = 1; i < damageRolls; i++){
 				int newDmg = attacker.damageRoll();
 				if (newDmg > dmg) dmg = newDmg;
 			}
-			float defenderHPPercent = 1f - (defender.HP / (float)defender.HT);
-			return Math.round(dmg * (1f + baseDmgBonus + (missingHPBonus * defenderHPPercent)));
+			return Math.round(dmg * (1f + baseDmgBonus));
 		}
 		
 		public static AttackLevel getLvl(int turnsInvis){
@@ -109,7 +110,6 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 			if (AttackLevel.getLvl(turnsInvis).blinkDistance > 0 && target == Dungeon.hero){
 				ActionIndicator.setAction(this);
 			}
-			BuffIndicator.refreshHero();
 			spend(TICK);
 		} else {
 			detach();
@@ -123,16 +123,12 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 		ActionIndicator.clearAction(this);
 	}
 	
-	public int damageRoll(Char attacker, Char defender ){
-		AttackLevel lvl = AttackLevel.getLvl(turnsInvis);
-		if (lvl.canInstakill(defender)){
-			int dmg = lvl.damageRoll(attacker, defender);
-			defender.damage( Math.max(defender.HT, dmg), attacker );
-			//even though the defender is dead, other effects should still proc (enchants, etc.)
-			return Math.max( defender.HT, dmg);
-		} else {
-			return lvl.damageRoll(attacker, defender);
-		}
+	public int damageRoll( Char attacker ){
+		return AttackLevel.getLvl(turnsInvis).damageRoll(attacker);
+	}
+
+	public boolean canKO( Char defender ){
+		return AttackLevel.getLvl(turnsInvis).canKO(defender);
 	}
 	
 	@Override
@@ -144,23 +140,34 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 	public void tintIcon(Image icon) {
 		switch (AttackLevel.getLvl(turnsInvis)){
 			case LVL_1:
-				icon.hardlight(1f, 1f, 1f);
-				break;
-			case LVL_2:
 				icon.hardlight(0f, 1f, 0f);
 				break;
-			case LVL_3:
+			case LVL_2:
 				icon.hardlight(1f, 1f, 0f);
 				break;
-			case LVL_4:
+			case LVL_3:
 				icon.hardlight(1f, 0.6f, 0f);
 				break;
-			case LVL_5:
+			case LVL_4:
 				icon.hardlight(1f, 0f, 0f);
 				break;
 		}
 	}
-	
+
+	@Override
+	public float iconFadePercent() {
+		AttackLevel level = AttackLevel.getLvl(turnsInvis);
+		if (level == AttackLevel.LVL_4){
+			return 0;
+		} else {
+			float turnsForCur = level.turnsReq;
+			float turnsForNext = AttackLevel.values()[level.ordinal()+1].turnsReq;
+			turnsForNext -= turnsForCur;
+			float turnsToNext = turnsInvis - turnsForCur;
+			return Math.min(1, (turnsForNext - turnsToNext)/(turnsForNext));
+		}
+	}
+
 	@Override
 	public String toString() {
 		return Messages.get(this, "name");
@@ -171,18 +178,11 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 		String desc = Messages.get(this, "desc");
 		
 		AttackLevel lvl = AttackLevel.getLvl(turnsInvis);
-		
-		if (lvl.canInstakill(new Rat())){
-			desc += "\n\n" + Messages.get(this, "desc_dmg_instakill",
-					(int)(lvl.baseDmgBonus*100),
-					(int)(lvl.baseDmgBonus*100 + lvl.missingHPBonus*100));
-		} else if (lvl.missingHPBonus > 0){
-			desc += "\n\n" + Messages.get(this, "desc_dmg_scale",
-					(int)(lvl.baseDmgBonus*100),
-					(int)(lvl.baseDmgBonus*100 + lvl.missingHPBonus*100));
-		} else {
-			desc += "\n\n" + Messages.get(this, "desc_dmg", (int)(lvl.baseDmgBonus*100));
-		}
+
+		desc += "\n\n" + Messages.get(this, "desc_dmg",
+				(int)(lvl.baseDmgBonus*100),
+				(int)(lvl.KOThreshold*100),
+				(int)(lvl.KOThreshold*20));
 		
 		if (lvl.damageRolls > 1){
 			desc += " " + Messages.get(this, "desc_dmg_likely");
@@ -243,9 +243,8 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 				
 				//just attack them then!
 				if (Dungeon.hero.canAttack(enemy)){
-					if (Dungeon.hero.handle( cell )) {
-						Dungeon.hero.next();
-					}
+					Dungeon.hero.curAction = new HeroAction.Attack( enemy );
+					Dungeon.hero.next();
 					return;
 				}
 				
@@ -276,7 +275,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 				}
 				
 				Dungeon.hero.pos = attackPos;
-				Dungeon.level.press(Dungeon.hero.pos, Dungeon.hero);
+				Dungeon.level.occupyCell(Dungeon.hero);
 				//prevents the hero from being interrupted by seeing new enemies
 				Dungeon.observe();
 				Dungeon.hero.checkVisibleMobs();
@@ -284,11 +283,10 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 				Dungeon.hero.sprite.place( Dungeon.hero.pos );
 				Dungeon.hero.sprite.turnTo( Dungeon.hero.pos, cell);
 				CellEmitter.get( Dungeon.hero.pos ).burst( Speck.factory( Speck.WOOL ), 6 );
-				Sample.INSTANCE.play( Assets.SND_PUFF );
-				
-				if (Dungeon.hero.handle( cell )) {
-					Dungeon.hero.next();
-				}
+				Sample.INSTANCE.play( Assets.Sounds.PUFF );
+
+				Dungeon.hero.curAction = new HeroAction.Attack( enemy );
+				Dungeon.hero.next();
 			}
 		}
 		

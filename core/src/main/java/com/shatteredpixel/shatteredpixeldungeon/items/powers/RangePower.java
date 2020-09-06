@@ -3,7 +3,7 @@
  *  Copyright (C) 2012-2015 Oleg Dolya
  *
  *  Shattered Pixel Dungeon
- *  Copyright (C) 2014-2019 Evan Debenham
+ *  Copyright (C) 2014-2021 Evan Debenham
  *
  *  Summoning Pixel Dungeon
  *  Copyright (C) 2019-2020 TrashboxBobylev
@@ -63,7 +63,7 @@ public class RangePower extends Power {
 
     @Override
     protected void affectDungeon() {
-        Sample.INSTANCE.play(Assets.SND_BLAST);
+        Sample.INSTANCE.play(Assets.Sounds.BLAST);
         WandOfBlastWave.BlastWave.blast(Dungeon.hero.pos);
         //throws other chars around the center.
         for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {

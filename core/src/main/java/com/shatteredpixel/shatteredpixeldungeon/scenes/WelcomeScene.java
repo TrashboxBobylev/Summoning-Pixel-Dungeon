@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,29 +24,27 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
+import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Fireball;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndStartGame;
 import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.utils.FileUtils;
 
+import java.util.ArrayList;
+
 public class WelcomeScene extends PixelScene {
 
-	private static int LATEST_UPDATE = 381;
+	private static final int LATEST_UPDATE = ShatteredPixelDungeon.v0_8_2;
 
 	@Override
 	public void create() {
@@ -54,7 +52,7 @@ public class WelcomeScene extends PixelScene {
 
 		final int previousVersion = SPDSettings.version();
 
-		if (ShatteredPixelDungeon.versionCode == previousVersion) {
+		if (ShatteredPixelDungeon.versionCode == previousVersion && !SPDSettings.intro()) {
 			ShatteredPixelDungeon.switchNoFade(TitleScene.class);
 			return;
 		}
@@ -67,15 +65,11 @@ public class WelcomeScene extends PixelScene {
 		Image title = BannerSprites.get( BannerSprites.Type.PIXEL_DUNGEON );
 		title.brightness(0.6f);
 		add( title );
-		
-		float topRegion = Math.max(title.height, h*0.45f);
-		
+
+		float topRegion = Math.max(title.height - 6, h*0.45f);
+
 		title.x = (w - title.width()) / 2f;
-		if (SPDSettings.landscape()) {
-			title.y = (topRegion - title.height()) / 2f;
-		} else {
-			title.y = 20 + (topRegion - title.height() - 20) / 2f;
-		}
+		title.y = 2 + (topRegion - title.height()) / 2f;
 
 		align(title);
 
@@ -102,9 +96,11 @@ public class WelcomeScene extends PixelScene {
 			@Override
 			protected void onClick() {
 				super.onClick();
-				if (previousVersion == 0){
+				if (previousVersion == 0 || SPDSettings.intro()){
 					SPDSettings.version(ShatteredPixelDungeon.versionCode);
-					WelcomeScene.this.add(new WndStartGame(1));
+					GamesInProgress.selectedClass = null;
+					GamesInProgress.curSlot = 1;
+					ShatteredPixelDungeon.switchScene(HeroSelectScene.class);
 				} else {
 					updateVersion(previousVersion);
 					ShatteredPixelDungeon.switchScene(TitleScene.class);
@@ -112,8 +108,9 @@ public class WelcomeScene extends PixelScene {
 			}
 		};
 
-		//FIXME these buttons are very low on 18:9 devices
-		if (previousVersion != 0){
+		float buttonY = Math.min(topRegion + (PixelScene.landscape() ? 60 : 120), h - 24);
+
+		if (previousVersion != 0 && !SPDSettings.intro()){
 			StyledButton changes = new StyledButton(Chrome.Type.GREY_BUTTON_TR, Messages.get(TitleScene.class, "changes")){
 				@Override
 				protected void onClick() {
@@ -122,22 +119,22 @@ public class WelcomeScene extends PixelScene {
 					ShatteredPixelDungeon.switchScene(ChangesScene.class);
 				}
 			};
-			okay.setRect(title.x, h-25, (title.width()/2)-2, 21);
+			okay.setRect(title.x, buttonY, (title.width()/2)-2, 20);
 			add(okay);
 
-			changes.setRect(okay.right()+2, h-25, (title.width()/2)-2, 21);
+			changes.setRect(okay.right()+2, buttonY, (title.width()/2)-2, 20);
 			changes.icon(Icons.get(Icons.CHANGES));
 			add(changes);
 		} else {
 			okay.text(Messages.get(TitleScene.class, "enter"));
-			okay.setRect(title.x, h-25, title.width(), 21);
+			okay.setRect(title.x, buttonY, title.width(), 20);
 			okay.icon(Icons.get(Icons.ENTER));
 			add(okay);
 		}
 
-		RenderedTextMultiline text = PixelScene.renderMultiline(6);
+		RenderedTextBlock text = PixelScene.renderTextBlock(6);
 		String message;
-		if (previousVersion == 0) {
+		if (previousVersion == 0 || SPDSettings.intro()) {
 			message = Messages.get(this, "welcome_msg");
 		} else if (previousVersion <= ShatteredPixelDungeon.versionCode) {
 				//TODO: change the messages here in accordance with the type of patch.
@@ -146,8 +143,8 @@ public class WelcomeScene extends PixelScene {
 			message = Messages.get(this, "what_msg");
 		}
 		text.text(message, w-20);
-		float textSpace = h - title.y - (title.height() - 10) - okay.height() - 2;
-		text.setPos((w - text.width()) / 2f, title.y+(title.height() - 10) + ((textSpace - text.height()) / 2));
+		float textSpace = okay.top() - topRegion - 4;
+		text.setPos((w - text.width()) / 2f, (topRegion + 2) + (textSpace - text.height())/2);
 		add(text);
 
 	}
@@ -158,39 +155,25 @@ public class WelcomeScene extends PixelScene {
 		if (previousVersion < LATEST_UPDATE){
 			try {
 				Rankings.INSTANCE.load();
+				for (Rankings.Record rec : Rankings.INSTANCE.records.toArray(new Rankings.Record[0])){
+					try {
+						Rankings.INSTANCE.loadGameData(rec);
+						Rankings.INSTANCE.saveGameData(rec);
+					} catch (Exception e) {
+						//if we encounter a fatal per-record error, then clear that record
+						Rankings.INSTANCE.records.remove(rec);
+						ShatteredPixelDungeon.reportException(e);
+					}
+				}
 				Rankings.INSTANCE.save();
 			} catch (Exception e) {
 				//if we encounter a fatal error, then just clear the rankings
 				FileUtils.deleteFile( Rankings.RANKINGS_FILE );
+				ShatteredPixelDungeon.reportException(e);
 			}
-		}
-		
-		//give classes to people with saves that have previously unlocked them
-		if (previousVersion <= ShatteredPixelDungeon.v0_7_0c){
-			Badges.loadGlobal();
-			Badges.addGlobal(Badges.Badge.UNLOCK_MAGE);
-			Badges.addGlobal(Badges.Badge.UNLOCK_ROGUE);
-			if (Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_3)){
-				Badges.addGlobal(Badges.Badge.UNLOCK_HUNTRESS);
-			}
-			Badges.saveGlobal();
-		}
-		
-		if (previousVersion <= ShatteredPixelDungeon.v0_6_5c){
-			Journal.loadGlobal();
-			Document.ALCHEMY_GUIDE.addPage("Potions");
-			Document.ALCHEMY_GUIDE.addPage("Stones");
-			Document.ALCHEMY_GUIDE.addPage("Energy_Food");
-			Journal.saveGlobal();
 		}
 		
 		SPDSettings.version(ShatteredPixelDungeon.versionCode);
-	}
-
-	private void placeTorch( float x, float y ) {
-		Fireball fb = new Fireball();
-		fb.setPos( x, y );
-		add( fb );
 	}
 	
 }

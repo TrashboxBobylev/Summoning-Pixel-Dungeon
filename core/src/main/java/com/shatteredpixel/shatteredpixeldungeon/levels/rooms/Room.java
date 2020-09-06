@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -38,8 +38,8 @@ import java.util.LinkedHashMap;
 
 public abstract class Room extends Rect implements Graph.Node, Bundlable {
 	
-	public ArrayList<Room> neigbours = new ArrayList<Room>();
-	public LinkedHashMap<Room, Door> connected = new LinkedHashMap<Room, Door>();
+	public ArrayList<Room> neigbours = new ArrayList<>();
+	public LinkedHashMap<Room, Door> connected = new LinkedHashMap<>();
 	
 	public int distance;
 	public int price = 1;
@@ -159,8 +159,10 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 	public static final int RIGHT   = 3;
 	public static final int BOTTOM  = 4;
 	
-	//TODO make abstract
-	public int minConnections(int direction){ return -1; }
+	public int minConnections(int direction){
+		if (direction == ALL)   return 1;
+		else                    return 0;
+	}
 	
 	public int curConnections(int direction){
 		if (direction == ALL) {
@@ -184,8 +186,10 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 		else return maxConnections(direction) - curConnections(direction);
 	}
 	
-	//TODO make abstract
-	public int maxConnections(int direction){ return -1; }
+	public int maxConnections(int direction){
+		if (direction == ALL)   return 16;
+		else                    return 4;
+	}
 	
 	//only considers point-specific limits, not direction limits
 	public boolean canConnect(Point p){
@@ -260,8 +264,7 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 	
 	// **** Painter Logic ****
 	
-	//TODO make abstract
-	public void paint(Level level){}
+	public abstract void paint(Level level);
 	
 	//whether or not a painter can make its own modifications to a specific point
 	public boolean canPlaceWater(Point p){
@@ -340,7 +343,7 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 	}
 	
 	@Override
-	public int price() {
+	public int value() {
 		return price;
 	}
 

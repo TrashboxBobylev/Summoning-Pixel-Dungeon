@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -25,7 +25,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.blobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -47,6 +46,7 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Notes.Landmark;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 public class WaterOfTransmutation extends WellWater {
 	
@@ -122,12 +122,7 @@ public class WaterOfTransmutation extends WellWater {
 		Category c = Generator.wepTiers[w.tier-1];
 
 		do {
-			try {
-				n = (MeleeWeapon)c.classes[Random.chances(c.probs)].newInstance();
-			} catch (Exception e) {
-				ShatteredPixelDungeon.reportException(e);
-				return null;
-			}
+			n = (MeleeWeapon)Reflection.newInstance(c.classes[Random.chances(c.probs)]);
 		} while (Challenges.isItemBlocked(n) || n.getClass() == w.getClass());
 
 		int level = w.level();

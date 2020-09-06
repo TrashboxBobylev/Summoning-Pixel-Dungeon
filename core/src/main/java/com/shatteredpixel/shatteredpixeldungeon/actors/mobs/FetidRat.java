@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -64,7 +64,7 @@ public class FetidRat extends Rat {
 	public int attackProc( Char enemy, int damage ) {
 		damage = super.attackProc( enemy, damage );
 		if (Random.Int(3) == 0) {
-			Buff.affect(enemy, Ooze.class).set( 20f );
+			Buff.affect(enemy, Ooze.class).set( Ooze.DURATION );
 		}
 
 		return damage;

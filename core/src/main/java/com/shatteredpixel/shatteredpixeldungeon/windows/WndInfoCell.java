@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTerrainTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Image;
 
@@ -106,22 +106,24 @@ public class WndInfoCell extends Window {
 		titlebar.setRect(0, 0, WIDTH, 0);
 		add(titlebar);
 
-		RenderedTextMultiline info = PixelScene.renderMultiline(6);
+		RenderedTextBlock info = PixelScene.renderTextBlock(6);
 		add(info);
 
-		for (Blob blob:Dungeon.level.blobs.values()) {
-			if (blob.volume > 0 && blob.cur[cell] > 0 && blob.tileDesc() != null) {
-				if (desc.length() > 0) {
-					desc += "\n\n";
+		if (Dungeon.level.heroFOV[cell]) {
+			for (Blob blob : Dungeon.level.blobs.values()) {
+				if (blob.volume > 0 && blob.cur[cell] > 0 && blob.tileDesc() != null) {
+					if (desc.length() > 0) {
+						desc += "\n\n";
+					}
+					desc += blob.tileDesc();
 				}
-				desc += blob.tileDesc();
 			}
 		}
 		
 		info.text( desc.length() == 0 ? Messages.get(this, "nothing") : desc );
 		info.maxWidth(WIDTH);
-		info.setPos(titlebar.left(), titlebar.bottom() + GAP);
+		info.setPos(titlebar.left(), titlebar.bottom() + 2*GAP);
 		
-		resize( WIDTH, (int)(info.top() + info.height()) );
+		resize( WIDTH, (int)info.bottom()+2 );
 	}
 }

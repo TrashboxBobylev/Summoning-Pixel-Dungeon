@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -24,9 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Pasty;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SeniorSprite;
 import com.watabou.utils.Random;
 
@@ -34,20 +32,22 @@ public class Senior extends Monk {
 
 	{
 		spriteClass = SeniorSprite.class;
+
+		loot = new Pasty();
+		lootChance = 1f;
+	}
+	
+	@Override
+	public void move( int step ) {
+		// on top of the existing move bonus, senior monks get a further 1.66 cooldown reduction
+		// for a total of 3.33, double the normal 1.67 for regular monks
+		focusCooldown -= 1.66f;
+		super.move( step );
 	}
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 16, 24 );
-	}
-	
-	@Override
-	public int attackProc( Char enemy, int damage ) {
-		damage = super.attackProc( enemy, damage );
-		if (Random.Int( 10 ) == 0) {
-			Buff.prolong( enemy, Paralysis.class, 1.1f );
-		}
-		return super.attackProc( enemy, damage );
+		return Random.NormalIntRange( 16, 25 );
 	}
 	
 }

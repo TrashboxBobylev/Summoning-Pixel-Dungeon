@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2021 Evan Debenham
  *
  * Summoning Pixel Dungeon
  * Copyright (C) 2019-2020 TrashboxBobylev
@@ -26,10 +26,11 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.AcidicSprite;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.watabou.utils.Random;
 
 public class Acidic extends Scorpio {
 
@@ -37,21 +38,26 @@ public class Acidic extends Scorpio {
 		spriteClass = AcidicSprite.class;
 		
 		properties.add(Property.ACIDIC);
+
+		loot = new PotionOfExperience();
+		lootChance = 1f;
 	}
-	
+	@Override
+	public int attackProc(Char enemy, int damage) {
+		Buff.affect(enemy, Ooze.class).set( Ooze.DURATION );
+		return super.attackProc(enemy, damage);
+	}
+
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
-		
-		int dmg = Random.IntRange( 0, damage );
-		if (dmg > 0) {
-			enemy.damage( dmg, this );
-			if (!enemy.isAlive() && enemy == Dungeon.hero) {
-				Dungeon.fail(getClass());
-				GLog.negative(Messages.capitalize(Messages.get(Char.class, "kill", getName())));
-			}
+		if (Dungeon.level.adjacent(pos, enemy.pos)){
+			Buff.affect(enemy, Ooze.class).set( Ooze.DURATION );
 		}
-		
 		return super.defenseProc( enemy, damage );
 	}
-	
+
+	@Override
+	protected Item createLoot() {
+		return new PotionOfExperience();
+	}
 }
