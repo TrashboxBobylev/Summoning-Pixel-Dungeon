@@ -38,7 +38,7 @@ public class SheepStaff extends Staff {
         tier = 2;
         isTanky = true;
         chargeTurns = 500;
-        minionClass = Minion.MinionClass.DEFENSE;
+        setClass(Minion.MinionClass.DEFENSE);
         table = MinionBalanceTable.SHEEP;
     }
 }

@@ -35,7 +35,7 @@ public class HacatuStaff extends Staff{
         image = ItemSpriteSheet.HACATU_STAFF;
         minionType = Hacatu.class;
         tier = 5;
-        minionClass = Minion.MinionClass.RANGE;
+        setClass(Minion.MinionClass.RANGE);
         table = MinionBalanceTable.HACATU;
     }
 

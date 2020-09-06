@@ -367,6 +367,13 @@ public class HeroSelectScene extends PixelScene {
 							new Image(Assets.Environment.TILES_SEWERS, 112, 96, 16, 16 )
 					};
 					break;
+				case CONJURER:
+					tabIcons = new Image[]{
+							new ItemSprite(ItemSpriteSheet.ARTIFACT_LOVE1, null),
+							new ItemSprite(ItemSpriteSheet.ARMOR_CONJURER, null),
+							new Image(Assets.Interfaces.BUFFS_LARGE, 112, 32, 16, 16)
+					};
+					break;
 			}
 
 			tab = new IconTab( tabIcons[0] ){

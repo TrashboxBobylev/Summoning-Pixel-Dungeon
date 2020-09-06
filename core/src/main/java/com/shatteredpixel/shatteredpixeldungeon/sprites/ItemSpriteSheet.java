@@ -822,8 +822,19 @@ public class ItemSpriteSheet {
 			assignIconRect( RING_TENACITY,      6, 6 );
 			assignIconRect( RING_WEALTH,        7, 6 );
 		}
-
-		                                                                                //16 free slots
+		private static final int CLASSES = xy(1, 2);
+		public static final int CLASS_DEFENSE = CLASSES+0;
+		public static final int CLASS_MELEE = CLASSES+1;
+		public static final int CLASS_MAGIC = CLASSES+2;
+		public static final int CLASS_RANGED = CLASSES+3;
+		public static final int CLASS_SUPPORT = CLASSES+4;
+		static {
+			assignIconRect(CLASS_DEFENSE, 5, 5);
+			assignIconRect(CLASS_MELEE, 5, 5);
+			assignIconRect(CLASS_MAGIC, 5, 5);
+			assignIconRect(CLASS_RANGED, 5, 5);
+			assignIconRect(CLASS_SUPPORT, 5, 5);
+		}
 
 		private static final int SCROLLS        =                            xy(1, 3);  //16 slots
 		public static final int SCROLL_UPGRADE  = SCROLLS+0;
@@ -877,7 +888,7 @@ public class ItemSpriteSheet {
 			assignIconRect( SCROLL_FORESIGHT,   7, 5 );
 			assignIconRect( SCROLL_CONFUSION,   7, 7 );
 			assignIconRect( SCROLL_PSIBLAST,    5, 6 );
-			assignIconRect( SCROLL_PETRIF,      7, 5 );
+			assignIconRect( SCROLL_PETRIF,      7, 6 );
 			assignIconRect( SCROLL_POLYMORPH,   7, 6 );
 		}
 

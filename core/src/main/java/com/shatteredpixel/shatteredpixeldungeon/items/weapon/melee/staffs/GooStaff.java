@@ -34,7 +34,7 @@ public class GooStaff extends Staff {
         image = ItemSpriteSheet.GOO_STAFF;
         minionType = GooMinion.class;
         tier = 5;
-        minionClass = Minion.MinionClass.MELEE;
+        setClass(Minion.MinionClass.MELEE);
         table = MinionBalanceTable.GOO;
     }
 

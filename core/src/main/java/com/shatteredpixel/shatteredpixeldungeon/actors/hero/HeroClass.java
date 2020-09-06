@@ -273,6 +273,8 @@ public enum HeroClass {
 				return Assets.Sprites.ROGUE;
 			case HUNTRESS:
 				return Assets.Sprites.HUNTRESS;
+			case CONJURER:
+				return Assets.Sprites.CONJURER;
 		}
 	}
 
@@ -286,6 +288,8 @@ public enum HeroClass {
 				return Assets.Splashes.ROGUE;
 			case HUNTRESS:
 				return Assets.Splashes.HUNTRESS;
+			case CONJURER:
+				return Assets.Splashes.CONJURER;
 		}
 	}
 	

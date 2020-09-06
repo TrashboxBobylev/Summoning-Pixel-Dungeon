@@ -36,7 +36,7 @@ public class GreyRatStaff extends Staff {
         image = ItemSpriteSheet.GREY_RAT_STAFF;
         minionType = GrayRat.class;
         tier = 2;
-        minionClass = Minion.MinionClass.MELEE;
+        setClass(Minion.MinionClass.MELEE);
         table = MinionBalanceTable.GREY_RAT;
     }
 }

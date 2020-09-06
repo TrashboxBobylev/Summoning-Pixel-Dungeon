@@ -36,7 +36,7 @@ public class WizardStaff extends Staff{
         image = ItemSpriteSheet.WIZARD_STAFF;
         minionType = Wizard.class;
         tier = 4;
-        minionClass = Minion.MinionClass.SUPPORT;
+        setClass(Minion.MinionClass.SUPPORT);
         table = MinionBalanceTable.WIZARD;
         chargeTurns = 500;
     }

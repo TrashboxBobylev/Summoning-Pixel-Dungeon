@@ -36,7 +36,7 @@ public class SlimeStaff extends Staff {
         image = ItemSpriteSheet.SLIME_STAFF;
         minionType = Slime.class;
         tier = 2;
-        minionClass = Minion.MinionClass.SUPPORT;
+        setClass(Minion.MinionClass.SUPPORT);
         table = MinionBalanceTable.SLIME;
     }
 }

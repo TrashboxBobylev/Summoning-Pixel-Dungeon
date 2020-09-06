@@ -35,7 +35,7 @@ public class ImpQueenStaff extends Staff {
         tier = 5;
         isTanky = true;
         chargeTurns = 750;
-        minionClass = Minion.MinionClass.MAGIC;
+        setClass(Minion.MinionClass.MAGIC);
         table = MinionBalanceTable.IMP_QUEEN;
     }
 

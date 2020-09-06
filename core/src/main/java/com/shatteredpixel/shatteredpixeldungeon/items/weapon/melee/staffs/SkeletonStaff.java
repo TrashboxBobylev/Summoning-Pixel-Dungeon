@@ -37,7 +37,7 @@ public class SkeletonStaff extends Staff {
         minionType = Skele.class;
         tier = 3;
         chargeTurns = 520;
-        minionClass = Minion.MinionClass.DEFENSE;
+        setClass(Minion.MinionClass.DEFENSE);
         table = MinionBalanceTable.SKELETON;
     }
 }

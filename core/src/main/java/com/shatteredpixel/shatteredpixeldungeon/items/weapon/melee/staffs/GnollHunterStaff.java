@@ -36,7 +36,7 @@ public class GnollHunterStaff extends Staff{
         image = ItemSpriteSheet.GNOLL_HUNTER_STAFF;
         minionType = GnollHunter.class;
         tier = 3;
-        minionClass = Minion.MinionClass.RANGE;
+        setClass(Minion.MinionClass.RANGE);
         table = MinionBalanceTable.GNOLL_HUNTER;
     }
 }

@@ -36,7 +36,7 @@ public class MagicMissileStaff extends StationaryStaff {
         image = ItemSpriteSheet.MAGIC_MISSILE_STAFF;
         minionType = MagicMissileMinion.class;
         tier = 3;
-        minionClass = Minion.MinionClass.RANGE;
+        setClass(Minion.MinionClass.RANGE);
         table = MinionBalanceTable.MAGIC_MISSILE;
     }
 }

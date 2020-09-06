@@ -36,7 +36,7 @@ public class ChickenStaff extends Staff {
         minionType = Chicken.class;
         tier = 3;
         chargeTurns = 90;
-        minionClass = Minion.MinionClass.SUPPORT;
+        setClass(Minion.MinionClass.SUPPORT);
         table = MinionBalanceTable.CHICKEN;
     }
 

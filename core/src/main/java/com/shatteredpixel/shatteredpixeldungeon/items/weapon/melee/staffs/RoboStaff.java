@@ -38,7 +38,7 @@ public class RoboStaff extends Staff {
         tier = 4;
         isTanky = true;
         chargeTurns = 675;
-        minionClass = Minion.MinionClass.DEFENSE;
+        setClass(Minion.MinionClass.DEFENSE);
         table = MinionBalanceTable.ROBOT;
     }
 

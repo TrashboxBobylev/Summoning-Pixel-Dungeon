@@ -52,7 +52,7 @@ import java.util.ArrayList;
 public class ScrollOfSoulEnergy extends ExoticScroll {
 
     {
-        icon = ItemSpriteSheet.Icons.SCROLL_CONFUSION;
+        icon = ItemSpriteSheet.Icons.SCROLL_PETRIF;
     }
 
     @Override

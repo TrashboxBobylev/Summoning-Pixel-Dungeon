@@ -48,8 +48,10 @@ import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -245,6 +247,22 @@ public class Staff extends Weapon {
 
     public float requiredAttunement(){
         return 1;
+    }
+
+    public void setClass(Minion.MinionClass minionClass){
+        this.minionClass = minionClass;
+        switch (this.minionClass){
+            case DEFENSE:
+                icon = ItemSpriteSheet.Icons.CLASS_DEFENSE;break;
+            case MELEE:
+                icon = ItemSpriteSheet.Icons.CLASS_MELEE;break;
+            case MAGIC:
+                icon = ItemSpriteSheet.Icons.CLASS_MAGIC;break;
+            case RANGE:
+                icon = ItemSpriteSheet.Icons.CLASS_RANGED;break;
+            case SUPPORT:
+                icon = ItemSpriteSheet.Icons.CLASS_SUPPORT;break;
+        }
     }
 
     //you can use staff only while equipped

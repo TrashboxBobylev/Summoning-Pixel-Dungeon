@@ -27,6 +27,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Froggit;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class FroggitStaff extends Staff {
@@ -36,6 +37,7 @@ public class FroggitStaff extends Staff {
         tier = 1;
         chargeTurns = 200;
         table = MinionBalanceTable.FROGGIT;
+        setClass(Minion.MinionClass.MELEE);
     }
 
 }

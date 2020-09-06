@@ -36,7 +36,7 @@ public class RoseStaff extends StationaryStaff {
         image = ItemSpriteSheet.ROSE_STAFF;
         minionType = RoseWraith.class;
         tier = 4;
-        minionClass = Minion.MinionClass.MAGIC;
+        setClass(Minion.MinionClass.MAGIC);
         table = MinionBalanceTable.DARK_ROSE;
     }
 }

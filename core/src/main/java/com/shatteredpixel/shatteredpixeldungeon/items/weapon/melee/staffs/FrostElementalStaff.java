@@ -36,7 +36,7 @@ public class FrostElementalStaff extends Staff {
         image = ItemSpriteSheet.FROST_ELEMENTAL_STAFF;
         minionType = FrostElemental.class;
         tier = 4;
-        minionClass = Minion.MinionClass.MELEE;
+        setClass(Minion.MinionClass.MELEE);
         table = MinionBalanceTable.FROST_ELEMENTAL;
     }
 

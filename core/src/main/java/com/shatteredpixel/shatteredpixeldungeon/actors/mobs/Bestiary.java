@@ -61,8 +61,7 @@ public class Bestiary {
 			case 1: default:
 				//3x rat, 1x snake
 				return new ArrayList<>(Arrays.asList(
-                         Rat.class, Rat.class, Rat.class,
-                        Snake.class));
+                         Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class));
 			case 2:
 				//2x rat, 3x gnoll, 2x dogs
 				return new ArrayList<>(Arrays.asList(Rat.class, Rat.class,

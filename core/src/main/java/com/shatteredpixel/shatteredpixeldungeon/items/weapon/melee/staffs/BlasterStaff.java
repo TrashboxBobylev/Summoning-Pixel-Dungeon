@@ -36,7 +36,7 @@ public class BlasterStaff extends StationaryStaff {
         image = ItemSpriteSheet.GASTER_STAFF;
         minionType = GasterBlaster.class;
         tier = 5;
-        minionClass = Minion.MinionClass.MAGIC;
+        setClass(Minion.MinionClass.MAGIC);
         table = MinionBalanceTable.GASTER_BLASTER;
     }
 
