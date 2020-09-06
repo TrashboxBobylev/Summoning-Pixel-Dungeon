@@ -318,6 +318,8 @@ public class WndJournal extends WndTabbed {
 						return new ItemSprite( ItemSpriteSheet.CRYSTAL_KEY );
 					case "Magic":
 						return new ItemSprite( ItemSpriteSheet.WAND_LIGHTNING );
+					case "Summoning":
+						return new ItemSprite( ItemSpriteSheet.GREY_RAT_STAFF);
 				}
 			}
 			
