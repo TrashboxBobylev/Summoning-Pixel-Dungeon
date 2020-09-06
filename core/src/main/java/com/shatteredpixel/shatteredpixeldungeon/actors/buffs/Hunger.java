@@ -88,55 +88,37 @@ public class Hunger extends Buff implements Hero.Doom {
 
 	//directly interacts with hunger, no checks.
 	public static void adjustHunger(float energy ) {
-//		if (level < 0) {
-//			level = 0;
-//		} else if (level > STARVING) {
-//			float excess = level - STARVING;
-//			level = STARVING;
-//			partialDamage += excess * (target.HT/1000f);
-//		}
-//
-//		BuffIndicator.refreshHero();
         Hunger hunger = Buff.affect(Dungeon.hero, Hunger.class);
         Char target = hunger.target;
         if (Dungeon.level.locked || target.buff(WellFed.class) != null || Dungeon.depth == 21){
             return;
         }
-        float newLevel = Math.max(hunger.level - energy, 0);
-        if (!hunger.isStarving() && newLevel - 1 < STARVING) {
+		hunger.level = Math.max(hunger.level - energy, 0);
+		switchHungerLevel(energy, hunger, target);
+		BuffIndicator.refreshHero();
+	}
 
-            boolean statusUpdated = false;
-            if (newLevel >= STARVING) {
+	private static void switchHungerLevel(float energy, Hunger hunger, Char target) {
+		if (hunger.level + 1 >= HUNGRY){
+			GLog.warning(Messages.get(hunger, "onhungry"));
+			hunger.level = HUNGRY;
+			return;
+		}
+		if (hunger.level + 1 >= STARVING){
 
-                GLog.negative(Messages.get(hunger, "onstarving"));
-                Dungeon.hero.resting = false;
-                Dungeon.hero.damage(1, hunger);
-                statusUpdated = true;
-
-                Dungeon.hero.interrupt();
-
-            } else if (newLevel >= HUNGRY && hunger.level < HUNGRY) {
-
-                GLog.warning(Messages.get(hunger, "onhungry"));
-                statusUpdated = true;
-
-            }
-            hunger.level = newLevel;
-
-            if (statusUpdated) {
-                BuffIndicator.refreshHero();
-            }
-        } else {
-            hunger.partialDamage += Math.abs(energy) * target.HT/25f;
-
-            if (hunger.partialDamage > 1){
-                target.damage( (int)Math.abs(hunger.partialDamage), target);
-                hunger.partialDamage -= (int)hunger.partialDamage;
-            }
-        }
-
-
-    }
+			GLog.negative(Messages.get(hunger, "onstarving"));
+			Dungeon.hero.resting = false;
+			Dungeon.hero.damage(1, hunger);
+			Dungeon.hero.interrupt();
+			hunger.level = STARVING;
+		} else {
+			hunger.partialDamage += Math.abs(energy) * target.HT/25f;
+			if (hunger.partialDamage > 1){
+				target.damage( (int)Math.abs(hunger.partialDamage), target);
+				hunger.partialDamage -= (int)hunger.partialDamage;
+			}
+		}
+	}
 
 	public boolean isStarving() {
 		return level >= STARVING;
