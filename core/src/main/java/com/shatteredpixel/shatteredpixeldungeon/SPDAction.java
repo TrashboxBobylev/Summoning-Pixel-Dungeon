@@ -59,6 +59,7 @@ public class SPDAction extends GameAction {
 	public static final GameAction TAG_ACTION  = new SPDAction("tag_action");
 	public static final GameAction TAG_LOOT    = new SPDAction("tag_loot");
 	public static final GameAction TAG_RESUME  = new SPDAction("tag_resume");
+	public static final GameAction TAG_WARRIOR = new SPDAction("tag_warrior");
 
 	public static final GameAction ZOOM_IN     = new SPDAction("zoom_in");
 	public static final GameAction ZOOM_OUT    = new SPDAction("zoom_out");
@@ -95,6 +96,7 @@ public class SPDAction extends GameAction {
 		defaultBindings.put( Input.Keys.D,           SPDAction.TAG_ACTION );
 		defaultBindings.put( Input.Keys.ENTER,       SPDAction.TAG_LOOT );
 		defaultBindings.put( Input.Keys.T,           SPDAction.TAG_RESUME );
+		defaultBindings.put( Input.Keys.U,           SPDAction.TAG_WARRIOR);
 
 		defaultBindings.put( Input.Keys.PLUS,        SPDAction.ZOOM_IN );
 		defaultBindings.put( Input.Keys.EQUALS,      SPDAction.ZOOM_IN );

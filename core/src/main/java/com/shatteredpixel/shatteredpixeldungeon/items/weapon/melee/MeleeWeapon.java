@@ -139,4 +139,8 @@ public class MeleeWeapon extends Weapon {
 		return price;
 	}
 
+	public int warriorAttack(int damage, Char enemy){
+		return damage;
+	}
+
 }
