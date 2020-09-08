@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -106,6 +107,7 @@ public class WarriorAbilityButton extends Tag {
     @Override
     public synchronized void update() {
         super.update();
+        lightness = 0.6f;
 
         if (!Dungeon.hero.ready){
             if (sprite != null) sprite.alpha(0.5f);
@@ -113,32 +115,42 @@ public class WarriorAbilityButton extends Tag {
             if (sprite != null) sprite.alpha(1f);
         }
         Hunger hunger = Dungeon.hero.buff(Hunger.class);
+        if (hunger == null) return;
 
-        if (!visible && hunger != null && !hunger.isHungry() && Dungeon.hero.heroClass == HeroClass.WARRIOR){
-            visible = true;
-            if (instance != null){
-                synchronized (instance) {
+        if (Dungeon.hero.heroClass == HeroClass.WARRIOR) {
+            if (!hunger.isHungry()) {
+                visible(true);
+                enable(true);
+                if (instance != null) {
+                    synchronized (instance) {
                         if (instance.sprite != null) {
                             instance.sprite.killAndErase();
                             instance.sprite = null;
                         }
-                        if (Dungeon.hero.belongings.weapon != null){
+                        if (Dungeon.hero.belongings.weapon != null) {
                             instance.sprite = new ItemSprite(Dungeon.hero.belongings.weapon.image, null);
                         } else {
-                            instance.sprite = new ItemSprite(new Item(){ {image = ItemSpriteSheet.WEAPON_HOLDER; }});
+                            instance.sprite = new ItemSprite(new Item() {
+                                {
+                                    image = ItemSpriteSheet.WEAPON_HOLDER;
+                                }
+                            });
                         }
                         instance.needsLayout = true;
+                    }
                 }
             }
-            flash();
-        } else {
-            visible = hunger != null && !hunger.isHungry();
         }
 
         if (needsLayout){
             layout();
             needsLayout = false;
         }
+    }
+
+    @Override
+    protected void onClick() {
+        GameScene.selectCell(attack);
     }
 
     private CellSelector.Listener attack = new CellSelector.Listener(){
@@ -158,7 +170,7 @@ public class WarriorAbilityButton extends Tag {
                     public void call() {
                         doAttack(enemy);
                         Dungeon.hero.spendAndNext(Dungeon.hero.attackDelay()*1.5f);
-                        Hunger.adjustHunger(50);
+                        Hunger.adjustHunger(-50);
                     }
                 });
             }
@@ -176,8 +188,13 @@ public class WarriorAbilityButton extends Tag {
                 Sample.INSTANCE.play(Assets.Sounds.MISS);
                 return;
             }
-
-            int dmg = ((MeleeWeapon)Dungeon.hero.belongings.weapon).warriorAttack(Dungeon.hero.damageRoll(), enemy);
+            int dmg;
+            if (Dungeon.hero.belongings.weapon == null){
+                dmg = Dungeon.hero.damageRoll();
+            }
+            else {
+                dmg = ((MeleeWeapon)Dungeon.hero.belongings.weapon).warriorAttack(Dungeon.hero.damageRoll(), enemy);
+            }
             dmg = enemy.defenseProc(Dungeon.hero, dmg);
             dmg -= enemy.drRoll();
             if ( enemy.buff( Vulnerable.class ) != null){
@@ -206,6 +223,4 @@ public class WarriorAbilityButton extends Tag {
             return Messages.get(WarriorAbilityButton.class, "prompt");
         }
     };
-
-
 }

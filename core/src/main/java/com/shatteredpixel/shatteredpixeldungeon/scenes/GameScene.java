@@ -655,13 +655,13 @@ public class GameScene extends PixelScene {
 		if (scene.tagWarriorBool){
 			scene.warriorTag.setPos(tagLeft, pos - scene.warriorTag.height());
 			scene.warriorTag.flip(tagLeft == 0);
-			pos = scene.loot.top();
+			pos = scene.warriorTag.top();
 		}
 
 		if (scene.tagAction) {
 			scene.action.setPos( tagLeft, pos - scene.action.height() );
 			scene.action.flip(tagLeft == 0);
-			pos = scene.warriorTag.top();
+			pos = scene.action.top();
 		}
 
 		if (scene.tagResume) {

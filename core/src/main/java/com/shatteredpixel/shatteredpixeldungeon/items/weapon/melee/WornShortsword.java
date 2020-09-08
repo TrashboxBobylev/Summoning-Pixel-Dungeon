@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class WornShortsword extends MeleeWeapon {
@@ -39,4 +40,8 @@ public class WornShortsword extends MeleeWeapon {
 		bones = false;
 	}
 
+	@Override
+	public int warriorAttack(int damage, Char enemy) {
+		return (int) (damage * 1.5f);
+	}
 }
