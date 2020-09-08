@@ -139,6 +139,9 @@ public class WarriorAbilityButton extends Tag {
                         instance.needsLayout = true;
                     }
                 }
+            } else {
+                visible(false);
+                enable(false);
             }
         }
 
