@@ -172,8 +172,7 @@ public class WarriorAbilityButton extends Tag {
                     @Override
                     public void call() {
                         doAttack(enemy);
-                        Dungeon.hero.spendAndNext(Dungeon.hero.attackDelay()*1.5f);
-                        Hunger.adjustHunger(-50);
+
                     }
                 });
             }
@@ -191,12 +190,15 @@ public class WarriorAbilityButton extends Tag {
                 Sample.INSTANCE.play(Assets.Sounds.MISS);
                 return;
             }
-            int dmg;
+            Hunger.adjustHunger(-50);
+            int dmg; float delay;
             if (Dungeon.hero.belongings.weapon == null){
                 dmg = Dungeon.hero.damageRoll();
+                delay = 1.5f;
             }
             else {
                 dmg = ((MeleeWeapon)Dungeon.hero.belongings.weapon).warriorAttack(Dungeon.hero.damageRoll(), enemy);
+                delay = ((MeleeWeapon)Dungeon.hero.belongings.weapon).warriorDelay(((MeleeWeapon) Dungeon.hero.belongings.weapon).DLY, enemy);
             }
             dmg = enemy.defenseProc(Dungeon.hero, dmg);
             dmg -= enemy.drRoll();
@@ -216,6 +218,7 @@ public class WarriorAbilityButton extends Tag {
             Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
             enemy.sprite.bloodBurstA( Dungeon.hero.sprite.center(), dmg );
             enemy.sprite.flash();
+            Dungeon.hero.spendAndNext(delay);
             if (!enemy.isAlive()){
                 GLog.i( Messages.capitalize(Messages.get(Char.class, "defeat", enemy.getName())) );
             }
