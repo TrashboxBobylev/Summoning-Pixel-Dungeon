@@ -26,13 +26,19 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.GuaranteedEnchant;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Annoying;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Displacing;
@@ -58,7 +64,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vampir
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Cleaver;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -68,6 +76,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 abstract public class Weapon extends KindOfWeapon {
+
+	protected static final String AC_DETACH       = "DETACH";
 
 	public float    ACC = 1f;	// Accuracy modifier
 	public float	DLY	= 1f;	// Speed modifier
@@ -103,6 +113,8 @@ abstract public class Weapon extends KindOfWeapon {
 	
 	public Enchantment enchantment;
 	public boolean curseInfusionBonus = false;
+
+	public BrokenSeal seal;
 	
 	@Override
 	public int proc( Char attacker, Char defender, int damage ) {
@@ -136,6 +148,7 @@ abstract public class Weapon extends KindOfWeapon {
 	private static final String ENCHANTMENT	    = "enchantment";
 	private static final String CURSE_INFUSION_BONUS = "curse_infusion_bonus";
 	private static final String AUGMENT	        = "augment";
+	private static final String SEAL            = "seal";
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -145,6 +158,7 @@ abstract public class Weapon extends KindOfWeapon {
 		bundle.put( ENCHANTMENT, enchantment );
 		bundle.put( CURSE_INFUSION_BONUS, curseInfusionBonus );
 		bundle.put( AUGMENT, augment );
+		bundle.put( SEAL, seal);
 	}
 	
 	@Override
@@ -156,6 +170,7 @@ abstract public class Weapon extends KindOfWeapon {
 		curseInfusionBonus = bundle.getBoolean( CURSE_INFUSION_BONUS );
 
 		augment = bundle.getEnum(AUGMENT, Augment.class);
+		seal = (BrokenSeal)bundle.get(SEAL);
 	}
 	
 	@Override
@@ -163,6 +178,47 @@ abstract public class Weapon extends KindOfWeapon {
 		super.reset();
 		usesLeftToID = USES_TO_ID;
 		availableUsesToID = USES_TO_ID/2f;
+		seal = null;
+	}
+
+	@Override
+	public ArrayList<String> actions(Hero hero) {
+		ArrayList<String> actions = super.actions(hero);
+		if (seal != null) actions.add(AC_DETACH);
+		return actions;
+	}
+
+	@Override
+	public void execute(Hero hero, String action) {
+
+		super.execute(hero, action);
+
+		if (action.equals(AC_DETACH) && seal != null){
+			if (seal.level() > 0){
+				degrade();
+			}
+			GLog.i( Messages.get(Armor.class, "detach_seal") );
+			hero.sprite.operate(hero.pos);
+			if (!seal.collect()){
+				Dungeon.level.drop(seal, hero.pos);
+			}
+			seal = null;
+			Statistics.clothArmorForWarrior = false;
+		}
+	}
+
+	public void affixSeal(BrokenSeal seal){
+		this.seal = seal;
+		if (seal.level() > 0){
+			//doesn't trigger upgrading logic such as affecting curses/glyphs
+			level(level()+1);
+			Badges.validateItemLevelAquired(this);
+		}
+	}
+
+
+	public BrokenSeal checkSeal(){
+		return seal;
 	}
 	
 	@Override
@@ -243,6 +299,9 @@ abstract public class Weapon extends KindOfWeapon {
 		}
 		
 		cursed = false;
+
+		if (seal != null && seal.level() == 0)
+			seal.upgrade();
 		
 		return super.upgrade();
 	}
@@ -250,6 +309,16 @@ abstract public class Weapon extends KindOfWeapon {
 	@Override
 	public String name() {
 		return enchantment != null && (cursedKnown || !enchantment.curse()) ? enchantment.name( super.name() ) : super.name();
+	}
+
+	@Override
+	public Emitter emitter() {
+		if (seal == null) return super.emitter();
+		Emitter emitter = new Emitter();
+		emitter.pos(ItemSpriteSheet.film.width(image)/16f*2f, ItemSpriteSheet.film.height(image)/16f*14f);
+		emitter.fillTarget = false;
+		emitter.pour(Speck.factory( Speck.RED_LIGHT ), 0.6f);
+		return emitter;
 	}
 	
 	@Override

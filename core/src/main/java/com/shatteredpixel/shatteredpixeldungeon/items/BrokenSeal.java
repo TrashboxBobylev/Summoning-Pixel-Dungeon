@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ShieldBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -70,14 +71,14 @@ public class BrokenSeal extends Item {
 
 		if (action.equals(AC_AFFIX)){
 			curItem = this;
-			GameScene.selectItem(armorSelector, WndBag.Mode.ARMOR, Messages.get(this, "prompt"));
+			GameScene.selectItem(armorSelector, WndBag.Mode.WEAPON, Messages.get(this, "prompt"));
 		} else if (action.equals(AC_INFO)) {
 			GameScene.show(new WndUseItem(null, this));
 		}
 	}
 
 	@Override
-	//scroll of upgrade can be used directly once, same as upgrading armor the seal is affixed to then removing it.
+	//scroll of upgrade can be used directly once, same as upgrading weapon the seal is affixed to then removing it.
 	public boolean isUpgradable() {
 		return level() == 0;
 	}
@@ -85,17 +86,17 @@ public class BrokenSeal extends Item {
 	protected static WndBag.Listener armorSelector = new WndBag.Listener() {
 		@Override
 		public void onSelect( Item item ) {
-			if (item != null && item instanceof Armor) {
-				Armor armor = (Armor)item;
-				if (!armor.levelKnown){
+			if (item instanceof Weapon) {
+				Weapon wep = (Weapon) item;
+				if (!wep.levelKnown){
 					GLog.warning(Messages.get(BrokenSeal.class, "unknown_armor"));
-				} else if (armor.cursed || armor.level() < 0){
+				} else if (wep.cursed || wep.level() < 0){
 					GLog.warning(Messages.get(BrokenSeal.class, "degraded_armor"));
 				} else {
 					GLog.positive(Messages.get(BrokenSeal.class, "affix"));
 					Dungeon.hero.sprite.operate(Dungeon.hero.pos);
 					Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
-					armor.affixSeal((BrokenSeal)curItem);
+					wep.affixSeal((BrokenSeal)curItem);
 					curItem.detach(Dungeon.hero.belongings.backpack);
 				}
 			}

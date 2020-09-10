@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
@@ -118,7 +119,7 @@ public class WarriorAbilityButton extends Tag {
         if (hunger == null) return;
 
         if (Dungeon.hero.heroClass == HeroClass.WARRIOR) {
-            if (!hunger.isHungry()) {
+            if (!hunger.isHungry() && Dungeon.hero.belongings.weapon != null && ((Weapon)Dungeon.hero.belongings.weapon).seal != null) {
                 visible(true);
                 enable(true);
                 if (instance != null) {
@@ -127,14 +128,8 @@ public class WarriorAbilityButton extends Tag {
                             instance.sprite.killAndErase();
                             instance.sprite = null;
                         }
-                        if (Dungeon.hero.belongings.weapon != null) {
+                        if (Dungeon.hero.belongings.weapon != null && ((Weapon)Dungeon.hero.belongings.weapon).seal != null) {
                             instance.sprite = new ItemSprite(Dungeon.hero.belongings.weapon.image, null);
-                        } else {
-                            instance.sprite = new ItemSprite(new Item() {
-                                {
-                                    image = ItemSpriteSheet.WEAPON_HOLDER;
-                                }
-                            });
                         }
                         instance.needsLayout = true;
                     }

@@ -108,7 +108,7 @@ public class Armor extends EquipableItem {
 	public Glyph glyph;
 	public boolean curseInfusionBonus = false;
 	
-	private BrokenSeal seal;
+
 	
 	public int tier;
 	
@@ -124,7 +124,6 @@ public class Armor extends EquipableItem {
 	private static final String AVAILABLE_USES  = "available_uses";
 	private static final String GLYPH			= "glyph";
 	private static final String CURSE_INFUSION_BONUS = "curse_infusion_bonus";
-	private static final String SEAL            = "seal";
 	private static final String AUGMENT			= "augment";
 
 	@Override
@@ -134,7 +133,6 @@ public class Armor extends EquipableItem {
 		bundle.put( AVAILABLE_USES, availableUsesToID );
 		bundle.put( GLYPH, glyph );
 		bundle.put( CURSE_INFUSION_BONUS, curseInfusionBonus );
-		bundle.put( SEAL, seal);
 		bundle.put( AUGMENT, augment);
 	}
 
@@ -145,7 +143,7 @@ public class Armor extends EquipableItem {
 		availableUsesToID = bundle.getInt( AVAILABLE_USES );
 		inscribe((Glyph) bundle.get(GLYPH));
 		curseInfusionBonus = bundle.getBoolean( CURSE_INFUSION_BONUS );
-		seal = (BrokenSeal)bundle.get(SEAL);
+
 
 		augment = bundle.getEnum(AUGMENT, Augment.class);
 	}
@@ -155,38 +153,13 @@ public class Armor extends EquipableItem {
 		super.reset();
 		usesLeftToID = USES_TO_ID;
 		availableUsesToID = USES_TO_ID/2f;
-		//armor can be kept in bones between runs, the seal cannot.
-		seal = null;
 	}
 
 	@Override
 	public ArrayList<String> actions(Hero hero) {
 		ArrayList<String> actions = super.actions(hero);
-		if (seal != null) actions.add(AC_DETACH);
 		if (hero.heroClass == HeroClass.CONJURER) actions.remove(AC_EQUIP);
 		return actions;
-	}
-
-	@Override
-	public void execute(Hero hero, String action) {
-
-		super.execute(hero, action);
-
-		if (action.equals(AC_DETACH) && seal != null){
-			BrokenSeal.WarriorShield sealBuff = hero.buff(BrokenSeal.WarriorShield.class);
-			if (sealBuff != null) sealBuff.setArmor(null);
-
-			if (seal.level() > 0){
-				degrade();
-			}
-			GLog.i( Messages.get(Armor.class, "detach_seal") );
-			hero.sprite.operate(hero.pos);
-			if (!seal.collect()){
-				Dungeon.level.drop(seal, hero.pos);
-			}
-			seal = null;
-			Statistics.clothArmorForWarrior = false;
-		}
 	}
 
 	@Override
@@ -219,26 +192,6 @@ public class Armor extends EquipableItem {
 		}
 	}
 
-	@Override
-	public void activate(Char ch) {
-		if (seal != null) Buff.affect(ch, BrokenSeal.WarriorShield.class).setArmor(this);
-	}
-
-	public void affixSeal(BrokenSeal seal){
-		this.seal = seal;
-		if (seal.level() > 0){
-			//doesn't trigger upgrading logic such as affecting curses/glyphs
-			level(level()+1);
-			Badges.validateItemLevelAquired(this);
-		}
-		if (isEquipped(Dungeon.hero)){
-			Buff.affect(Dungeon.hero, BrokenSeal.WarriorShield.class).setArmor(this);
-		}
-	}
-
-	public BrokenSeal checkSeal(){
-		return seal;
-	}
 
 	@Override
 	protected float time2equip( Hero hero ) {
@@ -252,9 +205,6 @@ public class Armor extends EquipableItem {
 			hero.belongings.armor = null;
 			((HeroSprite)hero.sprite).updateArmor();
             Statistics.clothArmorForWarrior = false;
-
-			BrokenSeal.WarriorShield sealBuff = hero.buff(BrokenSeal.WarriorShield.class);
-			if (sealBuff != null) sealBuff.setArmor(null);
 			Hunger.adjustHunger(-10);
 
 			return true;
@@ -386,9 +336,6 @@ public class Armor extends EquipableItem {
 		
 		cursed = false;
 
-		if (seal != null && seal.level() == 0)
-			seal.upgrade();
-
 		return super.upgrade();
 	}
 	
@@ -461,23 +408,11 @@ public class Armor extends EquipableItem {
 			info += "\n\n" + Messages.get(Armor.class, "cursed_worn");
 		} else if (cursedKnown && cursed) {
 			info += "\n\n" + Messages.get(Armor.class, "cursed");
-		} else if (seal != null) {
-			info += "\n\n" + Messages.get(Armor.class, "seal_attached");
 		} else if (!isIdentified() && cursedKnown){
 			info += "\n\n" + Messages.get(Armor.class, "not_cursed");
 		}
 		
 		return info;
-	}
-
-	@Override
-	public Emitter emitter() {
-		if (seal == null) return super.emitter();
-		Emitter emitter = new Emitter();
-		emitter.pos(ItemSpriteSheet.film.width(image)/2f + 2f, ItemSpriteSheet.film.height(image)/3f);
-		emitter.fillTarget = false;
-		emitter.pour(Speck.factory( Speck.RED_LIGHT ), 0.6f);
-		return emitter;
 	}
 
 	@Override
@@ -520,7 +455,7 @@ public class Armor extends EquipableItem {
 	
 	@Override
 	public int value() {
-		if (seal != null) return 0;
+
 
 		int price = 30 * tier;
 		if (hasGoodGlyph()) {

@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Random;
@@ -113,7 +114,9 @@ public class MeleeWeapon extends Weapon {
 			info += "\n\n" + Messages.get(Weapon.class, "cursed_worn");
 		} else if (cursedKnown && cursed) {
 			info += "\n\n" + Messages.get(Weapon.class, "cursed");
-		} else if (!isIdentified() && cursedKnown){
+		}  else if (seal != null) {
+			info += "\n\n" + Messages.get(Weapon.class, "seal_attached");
+		}else if (!isIdentified() && cursedKnown){
 			info += "\n\n" + Messages.get(Weapon.class, "not_cursed");
 		}
 		
@@ -126,6 +129,7 @@ public class MeleeWeapon extends Weapon {
 	
 	@Override
 	public int value() {
+		if (seal != null) return 0;
 		int price = 30 * tier;
 		if (hasGoodEnchant()) {
 			price *= 1.5;

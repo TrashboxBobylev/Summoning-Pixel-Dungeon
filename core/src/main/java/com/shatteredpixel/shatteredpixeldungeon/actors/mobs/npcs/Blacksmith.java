@@ -221,8 +221,8 @@ public class Blacksmith extends NPC {
 		}
 		second.detach( Dungeon.hero.belongings.backpack );
 
-		if (second instanceof Armor){
-			BrokenSeal seal = ((Armor) second).checkSeal();
+		if (second instanceof Weapon){
+			BrokenSeal seal = ((Weapon) second).checkSeal();
 			if (seal != null){
 				Dungeon.level.drop( seal, Dungeon.hero.pos );
 			}
