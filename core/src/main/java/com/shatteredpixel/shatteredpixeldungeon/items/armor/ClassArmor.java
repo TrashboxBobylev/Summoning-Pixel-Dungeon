@@ -60,10 +60,6 @@ abstract public class ClassArmor extends Armor {
 		switch (owner.heroClass) {
 		case WARRIOR:
 			classArmor = new WarriorArmor();
-			BrokenSeal seal = armor.checkSeal();
-			if (seal != null) {
-				classArmor.affixSeal(seal);
-			}
 			break;
 		case ROGUE:
 			classArmor = new RogueArmor();

@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -108,7 +109,7 @@ public class Shopkeeper extends NPC {
 	public static boolean willBuyItem( Item item ){
 		if (item.value() < 0)                                               return false;
 		if (item.unique && !item.stackable)                                 return false;
-		if (item instanceof Armor && ((Armor) item).checkSeal() != null)    return false;
+		if (item instanceof Weapon && ((Weapon) item).checkSeal() != null)    return false;
 		if (item.isEquipped(Dungeon.hero) && item.cursed)                   return false;
 		return true;
 	}

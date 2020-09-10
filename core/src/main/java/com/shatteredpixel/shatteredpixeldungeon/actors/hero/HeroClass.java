@@ -163,8 +163,8 @@ public enum HeroClass {
 		stones.identify().collect();
 		Dungeon.quickslot.setSlot(0, stones);
 
-		if (hero.belongings.armor != null){
-			hero.belongings.armor.affixSeal(new BrokenSeal());
+		if (hero.belongings.weapon != null){
+			((Weapon)hero.belongings.weapon).affixSeal(new BrokenSeal());
 		}
 
 		new PotionBandolier().collect();

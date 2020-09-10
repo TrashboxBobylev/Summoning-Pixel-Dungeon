@@ -48,6 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -267,7 +268,7 @@ public class Heap implements Bundlable {
 			for (Item item : items.toArray( new Item[0] )) {
 
 				//unique items aren't affect by explosions
-				if (item.unique || (item instanceof Armor && ((Armor) item).checkSeal() != null)){
+				if (item.unique || (item instanceof Weapon && ((Weapon) item).checkSeal() != null)){
 					continue;
 				}
 
