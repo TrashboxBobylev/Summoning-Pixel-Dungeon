@@ -40,63 +40,14 @@ import java.io.StringWriter;
 public class ShatteredPixelDungeon extends Game {
 
 	//variable constants for specific older versions of shattered, used for data conversion
-	//versions older than v0.7.3b are no longer supported, and data from them is ignored
+	//versions older than v1.1.5 are no longer supported, and data from them is ignored
+	public static final int v1_1_5 = 390;
 	public static final int v0_7_3b = 349;
 	public static final int v0_7_4c = 362;
 	public static final int v0_7_5e = 382;
-
-	public static final int v0_8_0  = 412;
-	public static final int v0_8_1a = 422;
-	public static final int v0_8_2  = 447;
 	
 	public ShatteredPixelDungeon( PlatformSupport platform ) {
 		super( sceneClass == null ? TitleScene.class : sceneClass, platform );
-		
-		//v0.7.0
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.Bomb" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBlast" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMight.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.sewerboss.SewerBossEntranceRoom.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.SewerBossEntranceRoom" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.OldPrisonBossLevel.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.OldTengu.class,
-				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu" );
-
-		//v0.8.0
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ArmoredBrute.class,
-				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shielded");
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM100.class,
-				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shaman");
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental.FireElemental.class,
-				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental");
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental.NewbornFireElemental.class,
-				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewbornElemental");
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.OldDM300.class,
-				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM300");
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.OldCavesBossLevel.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.OldCityBossLevel.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.OldHallsBossLevel.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.HallsBossLevel" );
 
 	}
 	
