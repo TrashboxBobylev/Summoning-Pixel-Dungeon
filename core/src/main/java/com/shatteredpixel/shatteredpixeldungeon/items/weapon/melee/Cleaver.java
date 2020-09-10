@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -73,10 +74,17 @@ public class Cleaver extends MeleeWeapon {
             if (enemy instanceof Mob && Random.Float() < chance && !(enemy.isImmune(Grim.class))) {
                 hero.spendAndNext(Actor.TICK*2);
                 enemy.oneShottedByCleaver = true;
-                if (!enemy.isResist(Grim.class) || (enemy instanceof Warlock && chance > 0.5f) || (enemy instanceof Eye && chance > 0.75f)) return enemy.HT + dmg;
+                if (!enemy.isResist(Grim.class)) return enemy.HT + dmg;
                 else return Math.round(dmg*2.5f);
             }
         }
         return super.damageRoll(owner);
+    }
+
+    @Override
+    public int warriorAttack(int damage, Char enemy) {
+	    damage = new Grim().proc(this, Dungeon.hero, enemy, damage);
+	    damage = new Grim().proc(this, Dungeon.hero, enemy, damage);
+        return 0;
     }
 }

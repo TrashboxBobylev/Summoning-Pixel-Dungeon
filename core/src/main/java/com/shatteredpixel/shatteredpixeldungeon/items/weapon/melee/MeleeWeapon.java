@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Random;
@@ -90,6 +91,8 @@ public class MeleeWeapon extends Weapon {
 
 		String statsInfo = statsInfo();
 		if (!statsInfo.equals("")) info += "\n\n" + statsInfo;
+
+		if (Dungeon.hero.heroClass == HeroClass.WARRIOR && !Messages.get(this, "warrior_spec").equals("")) info += "\n\n" + Messages.get(MeleeWeapon.class, "warrior") + Messages.get(this, "warrior_spec");
 
 		switch (augment) {
 			case SPEED:

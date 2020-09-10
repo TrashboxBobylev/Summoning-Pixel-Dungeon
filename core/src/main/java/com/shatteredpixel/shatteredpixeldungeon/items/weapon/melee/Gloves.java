@@ -25,7 +25,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.utils.Random;
 
 public class Gloves extends MeleeWeapon {
 
@@ -46,4 +49,15 @@ public class Gloves extends MeleeWeapon {
 				lvl*tier;               //+1 per level, down from +2
 	}
 
+	@Override
+	public int warriorAttack(int damage, Char enemy) {
+		int hits = Random.Int(2, 6);
+		for (int i = 0; i < hits; i++) Dungeon.hero.attack(enemy);
+		return super.warriorAttack(damage, enemy);
+	}
+
+	@Override
+	public float warriorDelay(float delay, Char enemy) {
+		return super.warriorDelay(delay, enemy)*2f;
+	}
 }

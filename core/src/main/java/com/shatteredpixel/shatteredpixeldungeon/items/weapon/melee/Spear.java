@@ -25,7 +25,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.noosa.audio.Sample;
 
 public class Spear extends MeleeWeapon {
 
@@ -45,4 +49,20 @@ public class Spear extends MeleeWeapon {
 				lvl*Math.round(1.33f*(tier+1)); //+4 per level, up from +3
 	}
 
+	@Override
+	public int warriorAttack(int damage, Char enemy) {
+		if (Dungeon.hero.lastMovPos != -1 &&
+				Dungeon.level.distance(Dungeon.hero.lastMovPos, enemy.pos) >
+						Dungeon.level.distance(Dungeon.hero.pos, enemy.pos)){
+			Dungeon.hero.lastMovPos = -1;
+			Sample.INSTANCE.play(Assets.Sounds.HEALTH_WARN);
+			return damage*2;
+		}
+		return damage;
+	}
+
+	@Override
+	public float warriorDelay(float delay, Char enemy) {
+		return super.warriorDelay(delay, enemy);
+	}
 }

@@ -25,6 +25,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Sword extends MeleeWeapon {
@@ -37,4 +40,11 @@ public class Sword extends MeleeWeapon {
 		tier = 3;
 	}
 
+	@Override
+	public int warriorAttack(int damage, Char enemy) {
+		if (enchantment != null && Dungeon.hero.buff(MagicImmune.class) == null) {
+			damage = enchantment.proc( this, Dungeon.hero, enemy, damage );
+		}
+		return super.warriorAttack(damage, enemy);
+	}
 }

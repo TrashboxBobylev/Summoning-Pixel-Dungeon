@@ -42,6 +42,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Projecting;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
@@ -209,23 +211,30 @@ abstract public class MissileWeapon extends Weapon {
 	}
 	
 	public void rangedHit( Char enemy, int cell ){
-		decrementDurability(enemy);
-		if (durability > 0){
-			//attempt to stick the missile weapon to the enemy, just drop it if we can't.
-			if (sticky && enemy != null && enemy.isAlive() && enemy.buff(Corruption.class) == null){
-				PinCushion p = Buff.affect(enemy, PinCushion.class);
-				if (p.target == enemy){
-					p.stick(this);
-					return;
+		if (Dungeon.hero.buff(Crossbow.DartSpent.class) == null || !(this instanceof Dart)) {
+			decrementDurability(enemy);
+			if (durability > 0) {
+				//attempt to stick the missile weapon to the enemy, just drop it if we can't.
+				if (sticky && enemy != null && enemy.isAlive() && enemy.buff(Corruption.class) == null) {
+					PinCushion p = Buff.affect(enemy, PinCushion.class);
+					if (p.target == enemy) {
+						p.stick(this);
+						return;
+					}
 				}
+				Dungeon.level.drop(this, cell).sprite.drop();
 			}
-			Dungeon.level.drop( this, cell ).sprite.drop();
+		} else if (Dungeon.hero.buff(Crossbow.DartSpent.class) != null){
+			Dungeon.hero.buff(Crossbow.DartSpent.class).detach();
 		}
 	}
 	
 	public void rangedMiss( int cell ) {
 		parent = null;
-		super.onThrow(cell);
+		if (Dungeon.hero.buff(Crossbow.DartSpent.class) == null || !(this instanceof Dart)) super.onThrow(cell);
+		else if (Dungeon.hero.buff(Crossbow.DartSpent.class) != null){
+			Dungeon.hero.buff(Crossbow.DartSpent.class).detach();
+		}
 	}
 	
 	protected float durabilityPerUse(){

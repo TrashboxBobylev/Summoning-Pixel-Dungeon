@@ -25,6 +25,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class BattleAxe extends MeleeWeapon {
@@ -44,4 +47,9 @@ public class BattleAxe extends MeleeWeapon {
 				lvl*(tier+1);   //scaling unchanged
 	}
 
+	@Override
+	public int warriorAttack(int damage, Char enemy) {
+		Buff.affect(enemy, Bleeding.class).set(Buff.affect(enemy, Bleeding.class).level()+damage/4f);
+		return damage*4/3;
+	}
 }

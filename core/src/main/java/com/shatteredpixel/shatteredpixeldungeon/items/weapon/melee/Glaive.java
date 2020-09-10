@@ -25,6 +25,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Glaive extends MeleeWeapon {
@@ -45,4 +49,14 @@ public class Glaive extends MeleeWeapon {
 				lvl*Math.round(1.33f*(tier+1)); //+8 per level, up from +6
 	}
 
+	@Override
+	public int warriorAttack(int damage, Char enemy) {
+		Buff.affect(enemy, StoneOfAggression.Aggression.class, StoneOfAggression.Aggression.DURATION / 5);
+		return super.warriorAttack(damage, enemy);
+	}
+
+	@Override
+	public float warriorDelay(float delay, Char enemy) {
+		return speedFactor(Dungeon.hero)*1.1f;
+	}
 }

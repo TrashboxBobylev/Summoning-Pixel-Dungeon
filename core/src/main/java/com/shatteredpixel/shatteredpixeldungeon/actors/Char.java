@@ -360,6 +360,8 @@ public abstract class Char extends Actor {
 
 				//TODO enemy.defenseSound? currently miss plays for monks/crab even when the parry
 				Sample.INSTANCE.play(Assets.Sounds.MISS);
+
+				if (enemy.buff(Block.class)!=null) enemy.buff(Block.class).detach();
 			}
 			
 			return false;

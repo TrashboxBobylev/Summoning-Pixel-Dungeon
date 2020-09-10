@@ -24,11 +24,16 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.shop;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+
+import java.util.ArrayList;
 
 public class Pike extends MeleeWeapon {
     {
@@ -48,5 +53,23 @@ public class Pike extends MeleeWeapon {
     public int proc(Char attacker, Char defender, int damage) {
         Buff.prolong(defender, Cripple.class, damage / 9);
         return super.proc(attacker, defender, damage);
+    }
+
+    @Override
+    public int warriorAttack(int damage, Char enemy) {
+        Ballistica tray = new Ballistica(Dungeon.hero.pos, enemy.pos, Ballistica.STOP_TERRAIN);
+        ArrayList<Char> affectedChars = new ArrayList<>();
+        for (int cell : tray.subPath(1, Integer.MAX_VALUE)){
+            Char ch = Actor.findChar(cell);
+            if (ch != null) affectedChars.add(ch);
+        }
+        for (int i = 0; i < affectedChars.size(); i++){
+            int dmg = Math.round(damage * (10 - i) * 0.1f);
+            dmg -= affectedChars.get(i).drRoll();
+            dmg = affectedChars.get(i).defenseProc(Dungeon.hero, dmg);
+            dmg = Dungeon.hero.attackProc(affectedChars.get(i), dmg);
+            affectedChars.get(i).damage(dmg, Dungeon.hero);
+        }
+        return 0;
     }
 }

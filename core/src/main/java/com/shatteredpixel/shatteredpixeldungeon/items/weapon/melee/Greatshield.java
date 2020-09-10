@@ -24,7 +24,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArcaneArmor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
@@ -53,5 +56,16 @@ public class Greatshield extends MeleeWeapon {
 		} else {
 			return Messages.get(this, "typical_stats_desc", 6);
 		}
+	}
+
+	@Override
+	public int warriorAttack(int damage, Char enemy) {
+		Buff.affect(Dungeon.hero, ArcaneArmor.class).set(damage/4*3, 40);
+		return super.warriorAttack(damage, enemy)*3/2;
+	}
+
+	@Override
+	public float warriorDelay(float delay, Char enemy) {
+		return super.warriorDelay(delay, enemy)*2;
 	}
 }

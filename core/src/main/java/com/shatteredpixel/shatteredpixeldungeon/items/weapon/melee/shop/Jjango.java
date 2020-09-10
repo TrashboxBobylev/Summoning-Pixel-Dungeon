@@ -24,11 +24,16 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.shop;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.utils.Random;
 
 public class Jjango extends MeleeWeapon {
     {
@@ -46,5 +51,25 @@ public class Jjango extends MeleeWeapon {
     public int proc(Char attacker, Char defender, int damage) {
         Buff.affect( defender, Bleeding.class ).set( Math.round(damage*0.85f) );
         return super.proc(attacker, defender, damage);
+    }
+
+    @Override
+    public int warriorAttack(int damage, Char enemy) {
+        //steal health, if char is bleeding
+        if (enemy.buff(Bleeding.class) != null){
+            Bleeding blood = enemy.buff(Bleeding.class);
+            float bloodAmount = 0;
+            while (Math.round(blood.level()) > 0){
+                float amt = Random.NormalFloat(blood.level() / 2, blood.level());
+                blood.set(amt);
+                bloodAmount += amt;
+            }
+            blood.detach();
+            Dungeon.hero.HP += bloodAmount;
+            Dungeon.hero.sprite.emitter().start( Speck.factory( Speck.HEALING ), 0.4f, 1 );
+            Dungeon.hero.sprite.showStatus( CharSprite.POSITIVE, Integer.toString((int) bloodAmount) );
+            enemy.damage((int) Random.NormalFloat(bloodAmount / 2, bloodAmount), Dungeon.hero);
+        }
+        return 0;
     }
 }

@@ -25,7 +25,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.utils.Callback;
+import com.watabou.utils.Random;
 
 public class Whip extends MeleeWeapon {
 
@@ -44,4 +48,24 @@ public class Whip extends MeleeWeapon {
 				lvl*(tier);     //+3 per level, down from +4
 	}
 
+	static int numberOfHits = 0;
+
+	@Override
+	public int warriorAttack(int damage, Char enemy) {
+		numberOfHits = Random.Int(4, 10);
+		for (int i = 0; i < numberOfHits; i++) Dungeon.hero.sprite.attack(enemy.pos, new Callback() {
+			@Override
+			public void call() {
+				Dungeon.hero.damage(damage / 2, Dungeon.hero);
+			}
+		});
+		return 0;
+	}
+
+	@Override
+	public float warriorDelay(float delay, Char enemy) {
+		int hits = numberOfHits;
+		numberOfHits = 0;
+		return speedFactor(Dungeon.hero)*hits;
+	}
 }

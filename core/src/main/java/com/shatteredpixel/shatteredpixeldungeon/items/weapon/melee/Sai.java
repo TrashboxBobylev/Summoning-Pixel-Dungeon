@@ -25,7 +25,12 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.DefenseDebuff;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.utils.Random;
 
 public class Sai extends MeleeWeapon {
 
@@ -44,4 +49,14 @@ public class Sai extends MeleeWeapon {
 				lvl*Math.round(0.5f*(tier+1));  //+2 per level, down from +4
 	}
 
+	@Override
+	public int warriorAttack(int damage, Char enemy) {
+		Buff.prolong(enemy, DefenseDebuff.class, damage);
+		return 0;
+	}
+
+	@Override
+	public float warriorDelay(float delay, Char enemy) {
+		return speedFactor(Dungeon.hero)*2;
+	}
 }

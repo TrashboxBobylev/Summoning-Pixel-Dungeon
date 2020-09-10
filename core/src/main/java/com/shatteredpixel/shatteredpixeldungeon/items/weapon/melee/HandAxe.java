@@ -25,6 +25,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class HandAxe extends MeleeWeapon {
@@ -44,4 +46,9 @@ public class HandAxe extends MeleeWeapon {
 				lvl*(tier+1);   //scaling unchanged
 	}
 
+	@Override
+	public int warriorAttack(int damage, Char enemy) {
+		//deals more damage depending on hero's HP
+		return damage + damage * (1 - (Dungeon.hero.HP / Dungeon.hero.HT));
+	}
 }

@@ -25,7 +25,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Quarterstaff extends MeleeWeapon {
@@ -47,5 +50,11 @@ public class Quarterstaff extends MeleeWeapon {
 	@Override
 	public int defenseFactor( Char owner ) {
 		return 2;	//2 extra defence
+	}
+
+	@Override
+	public int warriorAttack(int damage, Char enemy) {
+		Buff.affect(Dungeon.hero, Barrier.class).setShield(damage / 2 + 1 + Dungeon.hero.drRoll()/2);
+		return 0;
 	}
 }

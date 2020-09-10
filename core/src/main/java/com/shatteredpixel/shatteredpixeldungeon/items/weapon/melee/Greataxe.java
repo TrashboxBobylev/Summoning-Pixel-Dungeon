@@ -25,7 +25,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
 
 public class Greataxe extends MeleeWeapon {
 
@@ -50,4 +54,13 @@ public class Greataxe extends MeleeWeapon {
 		return (10 + tier * 2) - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
 	}
 
+	@Override
+	public int warriorAttack(int damage, Char enemy) {
+		int lvl = Math.max(0, Dungeon.hero.STR() - STRReq());
+		if (Random.Int(lvl + 12) >= 10) {
+			Sample.INSTANCE.play(Assets.Sounds.HIT_MAGIC);
+			return damage*2;
+		}
+		return damage;
+	}
 }

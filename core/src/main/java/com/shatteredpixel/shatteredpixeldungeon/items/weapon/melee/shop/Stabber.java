@@ -25,8 +25,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.shop;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
@@ -81,5 +83,13 @@ public class Stabber extends MeleeWeapon {
             }
         }
         return super.damageRoll(owner);
+    }
+
+    @Override
+    public int warriorAttack(int damage, Char enemy) {
+        //steal satiety
+        Hunger.adjustHunger((damage * 1f / enemy.HT * 1f));
+        SpellSprite.show(enemy, SpellSprite.FOOD);
+        return super.warriorAttack(damage, enemy);
     }
 }

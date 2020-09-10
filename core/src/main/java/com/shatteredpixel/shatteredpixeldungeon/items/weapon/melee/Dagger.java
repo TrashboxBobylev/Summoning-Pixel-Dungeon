@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -70,4 +71,13 @@ public class Dagger extends MeleeWeapon {
 		return super.damageRoll(owner);
 	}
 
+	@Override
+	public int warriorAttack(int damage, Char enemy) {
+		if (enemy instanceof Mob && ((Mob) enemy).surprisedBy(Dungeon.hero)){
+			//doing same damage as YAPD's dagger
+			// 7.2-21.6 (+2.4/+4.8)
+			return Random.NormalIntRange(Math.round(7.2f + buffedLvl()*2.4f), Math.round(21.6f + buffedLvl() * 4.8f));
+		}
+		return super.warriorAttack(damage, enemy);
+	}
 }

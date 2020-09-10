@@ -25,9 +25,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.shop;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -64,5 +66,21 @@ public class StoneHammer extends MeleeWeapon {
         Sample.INSTANCE.play( Assets.Sounds.EVOKE );
         Camera.main.shake( 5, 0.7f );
         return super.proc(attacker, defender, damage);
+    }
+
+    @Override
+    public int warriorAttack(int damage, Char enemy) {
+        if (!enemy.properties().contains(Char.Property.BOSS)
+                && !enemy.properties().contains(Char.Property.MINIBOSS)){
+            ((Mob)enemy).EXP = 0;
+            enemy.alignment = Char.Alignment.ALLY;
+            enemy.die(Dungeon.hero);
+        }
+        return 0;
+    }
+
+    @Override
+    public float warriorDelay(float delay, Char enemy) {
+        return super.warriorDelay(delay, enemy);
     }
 }

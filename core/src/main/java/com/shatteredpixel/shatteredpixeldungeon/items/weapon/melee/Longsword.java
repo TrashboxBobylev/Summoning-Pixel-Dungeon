@@ -25,7 +25,23 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.WarriorArmor;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.noosa.Camera;
+import com.watabou.utils.Callback;
+import com.watabou.utils.PathFinder;
 
 public class Longsword extends MeleeWeapon {
 	
@@ -37,4 +53,50 @@ public class Longsword extends MeleeWeapon {
 		tier = 4;
 	}
 
+	@Override
+	public int warriorAttack(int damage, Char enemy) {
+		GameScene.selectCell(leaper);
+		return damageRoll(Dungeon.hero)/2;
+	}
+
+	@Override
+	public float warriorDelay(float delay, Char enemy) {
+		return 0;
+	}
+
+	protected CellSelector.Listener leaper = new  CellSelector.Listener() {
+
+		@Override
+		public void onSelect( Integer target ) {
+			if (target != null && target != curUser.pos) {
+
+				Ballistica route = new Ballistica(curUser.pos, target, Ballistica.PROJECTILE);
+				int cell = route.collisionPos;
+
+				//can't occupy the same cell as another char, so move back one.
+				if (Actor.findChar( cell ) != null && cell != curUser.pos)
+					cell = route.path.get(route.dist-1);
+
+				final int dest = cell;
+				Dungeon.hero.busy();
+				curUser.sprite.jump(Dungeon.hero.pos, cell, new Callback() {
+					@Override
+					public void call() {
+						Dungeon.hero.move(dest);
+						Dungeon.level.occupyCell(Dungeon.hero);
+						Dungeon.observe();
+						GameScene.updateFog();
+
+						Invisibility.dispel();
+						curUser.spendAndNext(speedFactor(Dungeon.hero)*2);
+					}
+				});
+			}
+		}
+
+		@Override
+		public String prompt() {
+			return Messages.get(WarriorArmor.class, "prompt");
+		}
+	};
 }

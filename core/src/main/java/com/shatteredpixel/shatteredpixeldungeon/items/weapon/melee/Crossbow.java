@@ -25,7 +25,13 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.DummyBuff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class Crossbow extends MeleeWeapon {
 	
@@ -43,5 +49,23 @@ public class Crossbow extends MeleeWeapon {
 	public int max(int lvl) {
 		return  4*(tier+1) +    //20 base, down from 25
 				lvl*(tier);     //+4 per level, down from +5
+	}
+
+	@Override
+	public int warriorAttack(int damage, Char enemy) {
+		Buff.affect(Dungeon.hero, DartSpent.class, 15f);
+		return super.warriorAttack(damage, enemy);
+	}
+
+	public static class DartSpent extends DummyBuff{
+		@Override
+		public int icon() {
+			return BuffIndicator.MARK;
+		}
+
+		@Override
+		public float iconFadePercent() {
+			return ((15 - cooldown()) / 15);
+		}
 	}
 }

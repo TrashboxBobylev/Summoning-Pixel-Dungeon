@@ -25,6 +25,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class WarHammer extends MeleeWeapon {
@@ -44,4 +48,10 @@ public class WarHammer extends MeleeWeapon {
 				lvl*(tier+1);   //scaling unchanged
 	}
 
+	@Override
+	public int warriorAttack(int damage, Char enemy) {
+		Buff.affect(enemy, Viscosity.DeferedDamage.class).prolong(damage*2);
+		Buff.affect(enemy, Paralysis.class, 3.5f);
+		return super.warriorAttack(damage, enemy);
+	}
 }

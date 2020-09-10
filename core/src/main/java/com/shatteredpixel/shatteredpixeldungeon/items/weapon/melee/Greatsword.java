@@ -25,6 +25,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Kinetic;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Greatsword extends MeleeWeapon {
@@ -37,4 +41,25 @@ public class Greatsword extends MeleeWeapon {
 		tier=5;
 	}
 
+	@Override
+	public int warriorAttack(int damage, Char enemy) {
+		int conservedDamage = 0;
+		if (Dungeon.hero.buff(Kinetic.ConservedDamage.class) != null) {
+			conservedDamage = Dungeon.hero.buff(Kinetic.ConservedDamage.class).damageBonus();
+			Dungeon.hero.buff(Kinetic.ConservedDamage.class).detach();
+		}
+
+		if (damage > enemy.HP){
+			int extraDamage = (damage - enemy.HP)*2;
+
+			Buff.affect(Dungeon.hero, Kinetic.ConservedDamage.class).setBonus(extraDamage);
+		}
+
+		return damage + conservedDamage;
+	}
+
+	@Override
+	public float warriorDelay(float delay, Char enemy) {
+		return speedFactor(Dungeon.hero);
+	}
 }

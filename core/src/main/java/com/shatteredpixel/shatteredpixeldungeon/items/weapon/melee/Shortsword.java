@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Shortsword extends MeleeWeapon {
@@ -37,4 +38,13 @@ public class Shortsword extends MeleeWeapon {
 		tier = 2;
 	}
 
+	@Override
+	public int warriorAttack(int damage, Char enemy) {
+		return damage;
+	}
+
+	@Override
+	public float warriorDelay(float delay, Char enemy) {
+		return 0f;
+	}
 }

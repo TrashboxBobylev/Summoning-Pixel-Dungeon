@@ -25,7 +25,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -68,4 +72,17 @@ public class AssassinsBlade extends MeleeWeapon {
 		return super.damageRoll(owner);
 	}
 
+	@Override
+	public int warriorAttack(int damage, Char enemy) {
+		if (enemy instanceof Mob && ((Mob) enemy).surprisedBy(Dungeon.hero)){
+			Buff.prolong(enemy, Blindness.class, 4f);
+			Buff.prolong(enemy, Cripple.class, 4f);
+		}
+		return super.warriorAttack(damage, enemy);
+	}
+
+	@Override
+	public float warriorDelay(float delay, Char enemy) {
+		return speedFactor(Dungeon.hero);
+	}
 }

@@ -162,6 +162,8 @@ public class Hero extends Char {
 	public int exp = 0;
 	
 	public int HTBoost = 0;
+
+	public int lastMovPos = -1;
 	
 	private ArrayList<Mob> visibleEnemies;
 
@@ -222,7 +224,7 @@ public class Hero extends Char {
 	private static final String HTBOOST     = "htboost";
     private static final String ATTUNEMENT		= "attunement";
     private static final String USED_ATTUNEMENT		= "used_attunement";
-
+	private static final String LASTMOVE = "last_move";
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 
@@ -242,6 +244,7 @@ public class Hero extends Char {
 		bundle.put( EXPERIENCE, exp );
 		
 		bundle.put( HTBOOST, HTBoost );
+		bundle.put( LASTMOVE, lastMovPos);
 
 		belongings.storeInBundle( bundle );
 	}
@@ -264,6 +267,8 @@ public class Hero extends Char {
         usedAttunement = bundle.getFloat(USED_ATTUNEMENT);
 
 		HTBoost = bundle.getInt(HTBOOST);
+
+		lastMovPos = bundle.getInt(LASTMOVE);
 		
 		belongings.restoreFromBundle( bundle );
 	}
@@ -303,7 +308,7 @@ public class Hero extends Char {
 
 	@Override
 	public boolean blockSound(float pitch) {
-		if ( belongings.weapon != null && belongings.weapon.defenseFactor(this) >= 4 ){
+		if ( (belongings.weapon != null && belongings.weapon.defenseFactor(this) >= 4) || buff(Block.class) != null){
 			Sample.INSTANCE.play( Assets.Sounds.HIT_PARRY, 1, pitch);
 			return true;
 		}
@@ -397,9 +402,17 @@ public class Hero extends Char {
 			evasion = belongings.armor.evasionFactor(this, evasion);
 		}
 
+		if (buff(Block.class) != null) return INFINITE_EVASION;
+
 		return Math.round(evasion);
 	}
-	
+
+	@Override
+	public String defenseVerb() {
+		if (buff(Block.class) != null) return Messages.get(this, "absorbed");
+		return super.defenseVerb();
+	}
+
 	@Override
 	public int drRoll() {
 		int dr = 0;
@@ -923,6 +936,7 @@ public class Hero extends Char {
 			
 			curAction = null;
 			Hunger.adjustHunger(-20);
+			lastMovPos = -1;
 
 			Buff buff = buff(TimekeepersHourglass.timeFreeze.class);
 			if (buff != null) buff.detach();
@@ -977,6 +991,7 @@ public class Hero extends Char {
 				
 				curAction = null;
 				Hunger.adjustHunger(-20);
+				lastMovPos = -1;
 
 				Buff buff = buff(TimekeepersHourglass.timeFreeze.class);
 				if (buff != null) buff.detach();
@@ -1295,12 +1310,14 @@ public class Hero extends Char {
 		if (step != -1) {
 			
 			float speed = speed();
-			
+
+			lastMovPos = pos;
 			sprite.move(pos, step);
 			move(step);
 
 			spend( 1 / speed );
 			justMoved = true;
+
 
 			search(false);
 			

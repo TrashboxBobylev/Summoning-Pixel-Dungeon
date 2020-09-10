@@ -25,7 +25,13 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.utils.Random;
 
 public class Mace extends MeleeWeapon {
 
@@ -44,4 +50,17 @@ public class Mace extends MeleeWeapon {
 				lvl*(tier+1);   //scaling unchanged
 	}
 
+	@Override
+	public int warriorAttack(int damage, Char enemy) {
+		if (enemy.isAlive()){
+			//trace a ballistica to our target (which will also extend past them
+			Ballistica trajectory = new Ballistica(enemy.pos, enemy.pos, Ballistica.STOP_TARGET);
+			//trim it to just be the part that goes past them
+			trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size()-1), Ballistica.PROJECTILE);
+			//knock them back along that ballistica
+			WandOfBlastWave.throwChar(enemy, trajectory, 2, true, false);
+			Buff.prolong(enemy, Vertigo.class, Random.NormalIntRange(1, 4));
+		}
+		return 0;
+	}
 }

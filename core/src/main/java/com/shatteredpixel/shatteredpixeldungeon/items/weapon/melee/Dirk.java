@@ -25,9 +25,13 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 
@@ -68,4 +72,14 @@ public class Dirk extends MeleeWeapon {
 		return super.damageRoll(owner);
 	}
 
+	@Override
+	public int warriorAttack(int damage, Char enemy) {
+		Buff.affect(enemy, Bleeding.class).set(damage);
+		return 0;
+	}
+
+	@Override
+	public float warriorDelay(float delay, Char enemy) {
+		return speedFactor(Dungeon.hero)*2f;
+	}
 }

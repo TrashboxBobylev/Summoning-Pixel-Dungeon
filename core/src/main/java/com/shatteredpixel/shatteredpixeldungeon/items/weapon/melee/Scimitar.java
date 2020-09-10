@@ -24,11 +24,21 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.TenguDartTrap;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
+
+import java.util.ArrayList;
 
 public class Scimitar extends MeleeWeapon {
 
@@ -75,5 +85,33 @@ public class Scimitar extends MeleeWeapon {
         }
 
         return super.proc(attacker, defender, damage);
+    }
+
+    static int targetNum = 0;
+
+    @Override
+    public int warriorAttack(int damage, Char enemy) {
+        ArrayList<Char> targets = new ArrayList<>();
+
+        for (int i : PathFinder.NEIGHBOURS8){
+            if (Actor.findChar(Dungeon.hero.pos + i) != null) targets.add(Actor.findChar(Dungeon.hero.pos + i));
+        }
+
+        for (Char target : targets){
+            Dungeon.hero.attack(target);
+        }
+        targetNum = targets.size();
+
+        Dungeon.hero.sprite.centerEmitter().start( Speck.factory( Speck.KIT ), 0.03f, 8 );
+        Sample.INSTANCE.play(Assets.Sounds.CHAINS, 3);
+
+        return 0;
+    }
+
+    @Override
+    public float warriorDelay(float delay, Char enemy) {
+        int tries = targetNum;
+        targetNum = 0;
+        return speedFactor(Dungeon.hero) * tries;
     }
 }

@@ -25,9 +25,17 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Block;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.DummyBuff;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.noosa.audio.Sample;
 
 public class RoundShield extends MeleeWeapon {
 
@@ -57,5 +65,25 @@ public class RoundShield extends MeleeWeapon {
 		} else {
 			return Messages.get(this, "typical_stats_desc", 4);
 		}
+	}
+
+	@Override
+	public int warriorAttack(int damage, Char enemy) {
+		if (Dungeon.hero.lastMovPos != -1 &&
+				Dungeon.level.distance(Dungeon.hero.lastMovPos, enemy.pos) >
+						Dungeon.level.distance(Dungeon.hero.pos, enemy.pos) && Dungeon.hero.buff(Block.class) == null){
+			Dungeon.hero.lastMovPos = -1;
+			//knock out target and get blocking
+			Ballistica trajectory = new Ballistica(Dungeon.hero.pos, enemy.pos, Ballistica.STOP_TARGET);
+			trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size()-1), Ballistica.PROJECTILE);
+			WandOfBlastWave.throwChar(enemy, trajectory, 1, true);
+			Buff.affect(Dungeon.hero, Block.class, 8f);
+		}
+		return 0;
+	}
+
+	@Override
+	public float warriorDelay(float delay, Char enemy) {
+		return 0;
 	}
 }

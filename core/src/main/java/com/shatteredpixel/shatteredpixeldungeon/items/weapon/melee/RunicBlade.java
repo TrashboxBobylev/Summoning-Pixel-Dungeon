@@ -31,14 +31,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
-import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.RunicParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.*;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
@@ -362,5 +358,25 @@ public class RunicBlade extends MeleeWeapon {
         {
             image = ItemSpriteSheet.RUNIC_SHOT;
         }
+    }
+
+    @Override
+    public int warriorAttack(int damage, Char enemy) {
+        //reapply runic's recharge to half it
+        RunicCooldown cooldown = Dungeon.hero.buff(RunicCooldown.class);
+        if (cooldown != null){
+            float cooldownNum = cooldown.cooldown();
+            //de hacquie: to not cause any effects, use detach from Buff.java
+            if (cooldown.target.sprite != null) cooldown.fx( false );
+            cooldown.target.remove( cooldown );
+            cooldownNum = Math.min(0, cooldownNum - 20*speedFactor(Dungeon.hero));
+            Buff.affect(curUser, RunicCooldown.class, cooldownNum);
+        }
+        return super.warriorAttack(damage, enemy);
+    }
+
+    @Override
+    public float warriorDelay(float delay, Char enemy) {
+        return speedFactor(Dungeon.hero)*1.25f;
     }
 }
