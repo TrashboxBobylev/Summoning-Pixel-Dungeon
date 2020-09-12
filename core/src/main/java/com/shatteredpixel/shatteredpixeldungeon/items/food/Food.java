@@ -100,12 +100,8 @@ public class Food extends Item {
 	
 	protected void satisfy( Hero hero ){
 		Buff.affect(hero, Hunger.class).satisfy( energy );
-        if (regen != 0) {
-            FoodRegen foodRegen = Buff.affect(hero, FoodRegen.class);
-            foodRegen.leftHP = regen;
-            foodRegen.fullHP = regen;
-            foodRegen.reset();
-        }
+		if (regen > 0) Buff.affect(hero, FoodRegen.class).fullHP = regen;
+		if (regen < 0) Buff.affect(hero, FoodDebuff.class).fullHP = -regen;
 	}
 	
 	public static void foodProc( Hero hero ){

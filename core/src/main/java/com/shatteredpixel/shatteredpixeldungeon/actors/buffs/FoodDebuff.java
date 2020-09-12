@@ -29,10 +29,10 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
 
-public class FoodRegen extends Buff {
+public class FoodDebuff extends Buff {
 	
 	{
-		type = buffType.POSITIVE;
+		type = buffType.NEGATIVE;
 		announced = true;
 		actPriority = HERO_PRIO - 1;
 	}
@@ -51,18 +51,23 @@ public class FoodRegen extends Buff {
 		} else {
 			partialHP += fullHP / 50f;
 			while (partialHP > 1){
-				target.HP = Math.max(target.HP + 1, target.HT);
+				target.HP = Math.max(target.HP - 1, 0);
 				partialHP--;
+				if (!target.isAlive()){
+					Dungeon.hero.die(Dungeon.hero.buff(Hunger.class));
+					spend(TICK);
+					return true;
+				}
 			}
 		}
-		
+
 		spend(TICK);
 		return true;
 	}
 	
 	@Override
 	public int icon() {
-		return BuffIndicator.FOOD_REGEN;
+		return BuffIndicator.FOOD_DEBUFF;
 	}
 	
 	@Override
@@ -72,7 +77,7 @@ public class FoodRegen extends Buff {
 	
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", fullHP, 51 - left);
+		return Messages.get(this, "desc", fullHP, 51 - left );
 	}
 
 	@Override
@@ -81,7 +86,6 @@ public class FoodRegen extends Buff {
 	}
 
 	private static final String LEFT = "left";
-	private static final String HP = "hp";
 	private static final String FULLHP = "fullHP";
 	
 	@Override
@@ -96,12 +100,5 @@ public class FoodRegen extends Buff {
 		super.restoreFromBundle(bundle);
 		left = bundle.getInt(LEFT);
 		fullHP = bundle.getInt(FULLHP);
-		//if bundle includes negative leftHP, turn into debuff
-		if (bundle.contains(HP)){
-			if (bundle.getInt(HP) < 0){
-				detach();
-				Buff.affect(target, FoodDebuff.class).fullHP = -bundle.getInt(HP);
-			}
-		}
 	}
 }

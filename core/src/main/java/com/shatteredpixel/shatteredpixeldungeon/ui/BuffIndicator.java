@@ -108,6 +108,7 @@ public class BuffIndicator extends Component {
 	public static final int VULNERABLE  = 57;
 	public static final int HEX         = 58;
 	public static final int DEGRADE     = 59;
+	public static final int FOOD_DEBUFF = 60;
 
 	public static final int SIZE	= 7;
 	
