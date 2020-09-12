@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -90,9 +91,10 @@ public class Hunger extends Buff implements Hero.Doom {
 	public static void adjustHunger(float energy ) {
         Hunger hunger = Buff.affect(Dungeon.hero, Hunger.class);
         Char target = hunger.target;
-        if (Dungeon.level.locked || target.buff(WellFed.class) != null || Dungeon.depth == 21){
+        if (Dungeon.level.locked || target.buff(WellFed.class) != null){
             return;
         }
+        if (Dungeon.hero.heroClass == HeroClass.WARRIOR) energy *= 0.75f;
 		hunger.level = Math.max(hunger.level - energy, 0);
 		switchHungerLevel(energy, hunger, target);
 		BuffIndicator.refreshHero();
