@@ -31,7 +31,7 @@ public class ChargrilledMeat extends Food {
 
 	{
 		image = ItemSpriteSheet.STEAK;
-		energy = 240;
+		energy = 200;
 		regen = -15;
 	}
 	

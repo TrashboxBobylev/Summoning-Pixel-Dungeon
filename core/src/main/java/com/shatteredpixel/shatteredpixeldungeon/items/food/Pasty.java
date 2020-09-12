@@ -76,7 +76,7 @@ public class Pasty extends Food {
 	{
 		reset();
 
-		energy = 700;
+		energy = 850;
 
 		regen = 25;
 

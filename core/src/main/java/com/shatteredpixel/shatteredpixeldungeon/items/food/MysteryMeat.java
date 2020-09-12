@@ -41,8 +41,8 @@ public class MysteryMeat extends Food {
 
 	{
 		image = ItemSpriteSheet.MEAT;
-		energy = 100;
-		regen = -30;
+		energy = 80;
+		regen = -25;
 	}
 	
 	@Override
