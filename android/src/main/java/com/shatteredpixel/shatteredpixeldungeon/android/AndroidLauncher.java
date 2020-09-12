@@ -28,6 +28,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.widget.TextView;
@@ -48,7 +49,6 @@ import com.badlogic.gdx.utils.GdxNativesLoader;
 public class AndroidLauncher extends Activity {
 
 	public static AndroidApplication instance;
-	protected static GLSurfaceView view;
 	public boolean googlePlay;
 
 	@SuppressLint("SetTextI18n")
