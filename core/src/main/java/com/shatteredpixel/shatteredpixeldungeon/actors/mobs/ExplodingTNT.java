@@ -60,7 +60,7 @@ public class ExplodingTNT extends Mob {
     public boolean attack = true;
     @Override
     public int damageRoll() {
-        return Random.NormalIntRange( 1, 4 );
+        return Random.NormalIntRange( 8, 13 );
     }
 
     @Override
