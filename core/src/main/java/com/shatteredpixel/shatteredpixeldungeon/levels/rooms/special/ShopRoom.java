@@ -202,7 +202,7 @@ public class ShopRoom extends SpecialRoom {
             itemsToSpawn.add(new CleanWater());
 			break;
 			
-		case 21:
+		case 20:
 		    itemsToSpawn.add(new ScrollOfEnchantment());
 			itemsToSpawn.add( new BeaconOfReturning().quantity(2));
             itemsToSpawn.add(Generator.random(Generator.Category.EXOTIC_POTION));
@@ -294,7 +294,7 @@ public class ShopRoom extends SpecialRoom {
 					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.25f ); break;
 				case 16:
 					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.50f ); break;
-				case 20: case 21:
+				case 20:
 					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.80f ); break;
 			}
 

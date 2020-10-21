@@ -1385,7 +1385,7 @@ public class Hero extends Char {
         } else if ((cell == Dungeon.level.exit || Dungeon.level.map[cell] == Terrain.EXIT || Dungeon.level.map[cell] == Terrain.UNLOCKED_EXIT)
                 && Dungeon.depth < 26) {
 		        boolean canDo = true;
-                if ((Dungeon.depth > 21) && (Dungeon.depth < 25))
+                if ((Dungeon.depth > 20) && (Dungeon.depth < 25))
                 if (!Dungeon.level.checkForFroggits()) {
                     canDo = false;
                 }

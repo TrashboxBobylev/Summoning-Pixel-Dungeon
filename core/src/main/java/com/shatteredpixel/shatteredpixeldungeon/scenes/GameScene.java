@@ -368,7 +368,7 @@ public class GameScene extends PixelScene {
 			case 16:
 				WndStory.showChapter( WndStory.ID_CITY );
 				break;
-			case 21:
+			case 20:
 				WndStory.showChapter( WndStory.ID_HALLS );
 				break;
 			}

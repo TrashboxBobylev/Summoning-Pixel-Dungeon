@@ -288,20 +288,6 @@ public class Dungeon {
 			level = new NewCityBossLevel();
 			break;
 		case 21:
-			//logic for old city boss levels, need to spawn a shop on floor 21
-			try {
-				Bundle bundle = FileUtils.bundleFromFile(GamesInProgress.depthFile(GamesInProgress.curSlot, 20));
-				Class cls = bundle.getBundle(LEVEL).getClass("__className");
-				if (cls == NewCityBossLevel.class) {
-					level = new HallsLevel();
-				} else {
-					level = new LastShopLevel();
-				}
-			} catch (Exception e) {
-				ShatteredPixelDungeon.reportException(e);
-				level = new HallsLevel();
-			}
-			break;
 		case 22:
 		case 23:
 		case 24:
