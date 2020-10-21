@@ -87,7 +87,7 @@ public class Slime extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange(2, 4);
+		return Random.NormalIntRange(18, 23);
 	}
 
     @Override
@@ -118,9 +118,7 @@ public class Slime extends Mob {
 				
 				Slime clone = split();
                 HP = HT;
-                GLog.i("Old HP: " + HT);
 				HT *= 0.8f;
-				GLog.i("New HP: " + HT);
 				clone.HT = clone.HP = HT;
 				clone.pos = Random.element( candidates );
 				clone.state = clone.HUNTING;
