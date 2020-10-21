@@ -38,12 +38,12 @@ import com.watabou.utils.GameMath;
 
 public class Stacks extends Buff {
 
-	public float damage = 1;
+	public float damage = 0;
 
 	private static final String DAMAGE	= "damage";
 
 	{
-		type = buffType.NEGATIVE;
+		type = buffType.POSITIVE;
 		announced = true;
 	}
 
@@ -60,8 +60,8 @@ public class Stacks extends Buff {
 	}
 
 	public void add(int stack) {
-		if (this.damage < 30) damage = GameMath.gate(0, damage + stack, 30);
-		if (damage == 10 || damage == 20 || damage == 30) {
+		if (this.damage < 30) damage = GameMath.gate(0, damage + stack + 1, 31);
+		if (damage == 11 || damage == 21 || damage == 31) {
 			target.sprite.emitter().burst(SacrificialParticle.FACTORY, 15);
 			Sample.INSTANCE.play(Assets.Sounds.BURNING);
 		}
@@ -83,6 +83,11 @@ public class Stacks extends Buff {
 	}
 
 	@Override
+	public float iconFadePercent() {
+		return Math.max(0, (30 - damage) / 30);
+	}
+
+	@Override
 	public String desc() {
 		return Messages.get(this, "desc", (int)damage);
 	}
@@ -94,6 +99,7 @@ public class Stacks extends Buff {
 			if (damage < 0){
 				detach();
 			}
+			spend(TICK);
 		} else {
 			detach();
 		}

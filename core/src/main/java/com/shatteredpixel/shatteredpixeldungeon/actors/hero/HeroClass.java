@@ -172,6 +172,8 @@ public enum HeroClass {
 
 		new PotionOfHealing().identify();
 		new ScrollOfRage().identify();
+
+		new TomeOfMastery().collect();
 	}
 
 	private static void initMage( Hero hero ) {
