@@ -206,13 +206,10 @@ public class RunicBlade extends MeleeWeapon {
                                                     if (Char.hit(curUser, enemy, true)) {
                                                         int dmg = curBlade.damageRoll(curUser);
                                                         enemy.damage(dmg, curBlade);
-                                                        if (curUser.subClass == HeroSubClass.GLADIATOR) Buff.affect( curUser, Combo.class ).hit( enemy );
                                                         curBlade.proc(curUser, enemy, dmg);
                                                         Sample.INSTANCE.play(Assets.Sounds.HIT);
                                                     } else {
                                                         enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
-                                                        Combo combo = curUser.buff(Combo.class);
-                                                        if (combo != null) combo.miss( enemy );
                                                     }
                                                 } else {
                                                     Dungeon.level.pressCell(cell);
