@@ -106,10 +106,6 @@ public class Food extends Item {
 	
 	public static void foodProc( Hero hero ){
 		switch (hero.heroClass) {
-			case WARRIOR:
-			case ROGUE:
-			case HUNTRESS:
-				break;
 			case MAGE:
 				//1 charge
 				Buff.affect( hero, Recharging.class, 4f );
