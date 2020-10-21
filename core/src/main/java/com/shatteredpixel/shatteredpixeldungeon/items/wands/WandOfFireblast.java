@@ -55,8 +55,12 @@ public class WandOfFireblast extends DamageWand {
 	{
 		image = ItemSpriteSheet.WAND_FIREBOLT;
 
+		chakraGain = 7;
+
 		collisionProperties = Ballistica.STOP_TERRAIN | Ballistica.IGNORE_DOORS;
 	}
+
+
 
 	//1x/2x/3x damage
 	public int min(int lvl){

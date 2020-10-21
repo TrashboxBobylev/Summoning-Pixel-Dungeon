@@ -61,6 +61,8 @@ public class WandOfRegrowth extends Wand {
 	{
 		image = ItemSpriteSheet.WAND_REGROWTH;
 
+		chakraGain = 7;
+
 		collisionProperties = Ballistica.STOP_TERRAIN;
 	}
 	

@@ -55,6 +55,8 @@ public class WandOfBounceBeams extends DamageWand{
     {
         image = ItemSpriteSheet.WAND_DISINTEGRATION;
 
+        chakraGain = 7;
+
         collisionProperties = Ballistica.MAGIC_BOLT;
     }
 

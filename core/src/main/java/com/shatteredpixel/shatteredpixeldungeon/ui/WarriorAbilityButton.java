@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
@@ -119,7 +120,9 @@ public class WarriorAbilityButton extends Tag {
         if (hunger == null) return;
 
         if (Dungeon.hero.heroClass == HeroClass.WARRIOR) {
-            if (!hunger.isHungry() && Dungeon.hero.belongings.weapon != null && ((Weapon)Dungeon.hero.belongings.weapon).seal != null) {
+            if (Dungeon.hero.belongings.weapon != null && (
+                    (Dungeon.hero.subClass == HeroSubClass.GLADIATOR && Dungeon.hero.buff(Stacks.class) != null && Dungeon.hero.buff(Stacks.class).damage >= 9)
+                    || (!hunger.isHungry() && ((Weapon)Dungeon.hero.belongings.weapon).seal != null))) {
                 visible(true);
                 enable(true);
                 if (instance != null) {
@@ -185,7 +188,10 @@ public class WarriorAbilityButton extends Tag {
                 Sample.INSTANCE.play(Assets.Sounds.MISS);
                 return;
             }
-            Hunger.adjustHunger(-50);
+            if (Dungeon.hero.subClass == HeroSubClass.GLADIATOR){
+                Dungeon.hero.buff(Stacks.class).detach();
+            } else Hunger.adjustHunger(-50);
+
             int dmg; float delay;
             if (Dungeon.hero.belongings.weapon == null){
                 dmg = Dungeon.hero.damageRoll();

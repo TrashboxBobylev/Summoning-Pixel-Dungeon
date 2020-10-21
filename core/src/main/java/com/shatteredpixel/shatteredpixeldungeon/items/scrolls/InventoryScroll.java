@@ -25,6 +25,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Stacks;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -86,6 +89,9 @@ public abstract class InventoryScroll extends Scroll {
 				
 				((InventoryScroll)curItem).onItemSelected( item );
 				((InventoryScroll)curItem).readAnimation();
+				if (curUser.subClass == HeroSubClass.GLADIATOR){
+					Buff.affect(curUser, Stacks.class).add(6);
+				}
 				
 				Sample.INSTANCE.play( Assets.Sounds.READ );
 				
@@ -96,6 +102,7 @@ public abstract class InventoryScroll extends Scroll {
 			} else if (!((Scroll)curItem).anonymous) {
 				
 				curItem.collect( curUser.belongings.backpack );
+
 				
 			}
 		}

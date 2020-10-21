@@ -30,12 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulMark;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.EnergyOverload;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulReaver;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulWeakness;
@@ -72,6 +67,8 @@ public abstract class Wand extends Item {
 	public int maxCharges = initialCharges();
 	public int curCharges = maxCharges;
 	public float partialCharge = 0f;
+
+	protected int chakraGain = 5;
 	
 	protected Charger charger;
 	
@@ -358,6 +355,10 @@ public abstract class Wand extends Item {
 
 		if (curUser.heroClass == HeroClass.MAGE) levelKnown = true;
 		updateQuickslot();
+
+		if (curUser.subClass == HeroSubClass.GLADIATOR){
+			Buff.affect(curUser, Stacks.class).add(chakraGain);
+		}
 
 		curUser.spendAndNext( TIME_TO_ZAP );
 	}

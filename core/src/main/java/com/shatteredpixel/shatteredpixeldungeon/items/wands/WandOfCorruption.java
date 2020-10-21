@@ -83,6 +83,8 @@ public class WandOfCorruption extends Wand {
 
 	{
 		image = ItemSpriteSheet.WAND_CORRUPTION;
+
+		chakraGain = 4;
 	}
 	
 	//Note that some debuffs here have a 0% chance to be applied.

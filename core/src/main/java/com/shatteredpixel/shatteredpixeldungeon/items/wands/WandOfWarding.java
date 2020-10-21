@@ -29,6 +29,8 @@ public class WandOfWarding extends Wand {
 
 	{
 		image = ItemSpriteSheet.WAND_WARDING;
+
+		chakraGain = 4;
 	}
 
 	@Override
