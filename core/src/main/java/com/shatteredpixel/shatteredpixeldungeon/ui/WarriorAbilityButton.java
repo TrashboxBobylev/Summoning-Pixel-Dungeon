@@ -170,59 +170,8 @@ public class WarriorAbilityButton extends Tag {
                     @Override
                     public void call() {
                         doAttack(enemy);
-
                     }
                 });
-            }
-        }
-
-        private void doAttack(final Char enemy){
-            AttackIndicator.target(enemy);
-
-            if (enemy.defenseSkill(Dungeon.hero) >= Char.INFINITE_EVASION){
-                enemy.sprite.showStatus( CharSprite.NEUTRAL, enemy.defenseVerb() );
-                Sample.INSTANCE.play(Assets.Sounds.MISS);
-                return;
-            } else if (enemy.isInvulnerable(Dungeon.hero.getClass())){
-                enemy.sprite.showStatus( CharSprite.POSITIVE, Messages.get(Char.class, "invulnerable") );
-                Sample.INSTANCE.play(Assets.Sounds.MISS);
-                return;
-            }
-            if (Dungeon.hero.subClass == HeroSubClass.GLADIATOR){
-                Dungeon.hero.buff(Stacks.class).damage -= 10;
-                if (Dungeon.hero.buff(Stacks.class).damage <= 0) Dungeon.hero.buff(Stacks.class).detach();
-            } else Hunger.adjustHunger(-50);
-
-            int dmg; float delay;
-            if (Dungeon.hero.belongings.weapon == null){
-                dmg = Dungeon.hero.damageRoll();
-                delay = 1.5f;
-            }
-            else {
-                dmg = ((MeleeWeapon)Dungeon.hero.belongings.weapon).warriorAttack(Dungeon.hero.damageRoll(), enemy);
-                delay = ((MeleeWeapon)Dungeon.hero.belongings.weapon).warriorDelay(Dungeon.hero.belongings.weapon.speedFactor(Dungeon.hero), enemy);
-            }
-            dmg = enemy.defenseProc(Dungeon.hero, dmg);
-            dmg -= enemy.drRoll();
-            if ( enemy.buff( Vulnerable.class ) != null){
-                dmg *= 1.33f;
-            }
-
-            dmg = Dungeon.hero.attackProc(enemy, dmg);
-            enemy.damage( dmg, this );
-            if (Dungeon.hero.buff(FireImbue.class) != null)
-                Dungeon.hero.buff(FireImbue.class).proc(enemy);
-            if (Dungeon.hero.buff(EarthImbue.class) != null)
-                Dungeon.hero.buff(EarthImbue.class).proc(enemy);
-            if (Dungeon.hero.buff(FrostImbue.class) != null)
-                Dungeon.hero.buff(FrostImbue.class).proc(enemy);
-            Dungeon.hero.hitSound(Random.Float(0.87f, 1.15f));
-            Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
-            enemy.sprite.bloodBurstA( Dungeon.hero.sprite.center(), dmg );
-            enemy.sprite.flash();
-            if (delay > 0) Dungeon.hero.spendAndNext(delay);
-            if (!enemy.isAlive()){
-                GLog.i( Messages.capitalize(Messages.get(Char.class, "defeat", enemy.getName())) );
             }
         }
 
@@ -231,4 +180,60 @@ public class WarriorAbilityButton extends Tag {
             return Messages.get(WarriorAbilityButton.class, "prompt");
         }
     };
+
+    public static void doAttack(final Char enemy){
+        AttackIndicator.target(enemy);
+
+        if (enemy.defenseSkill(Dungeon.hero) >= Char.INFINITE_EVASION){
+            enemy.sprite.showStatus( CharSprite.NEUTRAL, enemy.defenseVerb() );
+            Sample.INSTANCE.play(Assets.Sounds.MISS);
+            return;
+        } else if (enemy.isInvulnerable(Dungeon.hero.getClass())){
+            enemy.sprite.showStatus( CharSprite.POSITIVE, Messages.get(Char.class, "invulnerable") );
+            Sample.INSTANCE.play(Assets.Sounds.MISS);
+            return;
+        }
+
+        int hungerCost = -50;
+        if (Dungeon.hero.subClass == HeroSubClass.BERSERKER && Dungeon.level.adjacent(Dungeon.hero.pos, enemy.pos)){
+            hungerCost = -100;
+        }
+
+        if (Dungeon.hero.subClass == HeroSubClass.GLADIATOR){
+            Dungeon.hero.buff(Stacks.class).damage -= 10;
+            if (Dungeon.hero.buff(Stacks.class).damage <= 0) Dungeon.hero.buff(Stacks.class).detach();
+        } else Hunger.adjustHunger(hungerCost);
+
+        int dmg; float delay;
+        if (Dungeon.hero.belongings.weapon == null){
+            dmg = Dungeon.hero.damageRoll();
+            delay = 1.5f;
+        }
+        else {
+            dmg = ((MeleeWeapon)Dungeon.hero.belongings.weapon).warriorAttack(Dungeon.hero.damageRoll(), enemy);
+            delay = ((MeleeWeapon)Dungeon.hero.belongings.weapon).warriorDelay(Dungeon.hero.belongings.weapon.speedFactor(Dungeon.hero), enemy);
+        }
+        dmg = enemy.defenseProc(Dungeon.hero, dmg);
+        dmg -= enemy.drRoll();
+        if ( enemy.buff( Vulnerable.class ) != null){
+            dmg *= 1.33f;
+        }
+
+        dmg = Dungeon.hero.attackProc(enemy, dmg);
+        enemy.damage( dmg, Dungeon.hero );
+        if (Dungeon.hero.buff(FireImbue.class) != null)
+            Dungeon.hero.buff(FireImbue.class).proc(enemy);
+        if (Dungeon.hero.buff(EarthImbue.class) != null)
+            Dungeon.hero.buff(EarthImbue.class).proc(enemy);
+        if (Dungeon.hero.buff(FrostImbue.class) != null)
+            Dungeon.hero.buff(FrostImbue.class).proc(enemy);
+        Dungeon.hero.hitSound(Random.Float(0.87f, 1.15f));
+        Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
+        enemy.sprite.bloodBurstA( Dungeon.hero.sprite.center(), dmg );
+        enemy.sprite.flash();
+        if (delay > 0) Dungeon.hero.spendAndNext(delay);
+        if (!enemy.isAlive()){
+            GLog.i( Messages.capitalize(Messages.get(Char.class, "defeat", enemy.getName())) );
+        }
+    }
 }
