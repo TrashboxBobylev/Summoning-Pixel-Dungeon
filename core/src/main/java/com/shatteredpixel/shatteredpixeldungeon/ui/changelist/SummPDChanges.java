@@ -193,6 +193,7 @@ public class SummPDChanges {
                 "_-_ Released November 2th, 2020\n" +
                         "_-_ 96 days after 1.1.4\n\n" +
                         "It was a long ago, isn't it?"));
+        changes = ChangesScene.createChangeInfo(changeInfos, "Changes", false, Window.SHPX_COLOR);
 
         changes.addButton( new ChangeButton(new Image(Assets.Sprites.WARRIOR, 0, 15, 12, 15), "Warrior Rework!",
                 "The big boy rework for sure.\n\n" +
