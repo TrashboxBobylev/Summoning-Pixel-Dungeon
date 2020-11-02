@@ -86,6 +86,7 @@ public class ChangesScene extends PixelScene {
                 SummPDChanges.addAllChanges(changeInfos);
 				break;
 			case 1:
+				v0_9_X_Changes.add_v0_9_0_Changes(changeInfos);
 				v0_8_X_Changes.addAllChanges(changeInfos);
                 v0_7_X_Changes.addAllChanges(changeInfos);
 				v0_6_X_Changes.addAllChanges(changeInfos);
