@@ -57,7 +57,7 @@ public class WandOfFireblast extends DamageWand {
 
 		chakraGain = 7;
 
-		collisionProperties = Ballistica.STOP_TERRAIN | Ballistica.IGNORE_DOORS;
+		collisionProperties = Ballistica.STOP_SOLID | Ballistica.IGNORE_SOFT_SOLID;
 	}
 
 

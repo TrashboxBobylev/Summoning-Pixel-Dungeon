@@ -34,6 +34,7 @@ import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Blending;
 import com.watabou.glwrap.Vertexbuffer;
 import com.watabou.input.InputHandler;
+import com.watabou.input.PointerEvent;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
@@ -157,6 +158,8 @@ public class Game implements ApplicationListener {
 	@Override
 	public void pause() {
 		paused = true;
+
+		PointerEvent.clearPointerEvents();
 		
 		if (scene != null) {
 			scene.onPause();

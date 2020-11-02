@@ -195,11 +195,7 @@ public abstract class Level implements Bundlable {
 		
 		if (!(Dungeon.bossLevel())) {
 
-			if (Dungeon.isChallenged(Challenges.NO_FOOD)){
-				addItemToSpawn( new SmallRation() );
-			} else {
-			    if (Random.Float() < 0.5f) addItemToSpawn(Generator.random(Generator.Category.FOOD));
-			}
+			if (Random.Float() < 0.5f) addItemToSpawn(Generator.random(Generator.Category.FOOD));
 
 			if (Dungeon.isChallenged(Challenges.DARKNESS)){
 				addItemToSpawn( new Torch() );
@@ -688,6 +684,7 @@ public abstract class Level implements Bundlable {
 		if (w != null && w.volume > 0){
 			for (int i=0; i < length(); i++) {
 				solid[i] = solid[i] || w.cur[i] > 0;
+				flamable[i] = flamable[i] || w.cur[i] > 0;
 			}
 		}
 
@@ -726,7 +723,16 @@ public abstract class Level implements Bundlable {
 	}
 
 	public void destroy( int pos ) {
-		set( pos, Terrain.EMBERS );
+		//if raw tile type is flammable or empty
+		int terr = map[pos];
+		if (terr == Terrain.EMPTY || terr == Terrain.EMPTY_SP
+				|| (Terrain.flags[map[pos]] & Terrain.FLAMABLE) != 0) {
+			set(pos, Terrain.EMBERS);
+		}
+		Blob web = blobs.get(Web.class);
+		if (web != null){
+			web.clear(pos);
+		}
 	}
 
 	public void cleanWalls() {
@@ -1007,7 +1013,7 @@ public abstract class Level implements Bundlable {
 		case Terrain.SECRET_TRAP:
 			if (hard) {
 				trap = traps.get( cell );
-				GLog.i(Messages.get(Level.class, "hidden_trap", trap.name));
+				GLog.i(Messages.get(Level.class, "hidden_trap", trap.name()));
 			}
 			break;
 

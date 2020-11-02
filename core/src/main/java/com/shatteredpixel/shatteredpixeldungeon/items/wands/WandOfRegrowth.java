@@ -63,7 +63,7 @@ public class WandOfRegrowth extends Wand {
 
 		chakraGain = 7;
 
-		collisionProperties = Ballistica.STOP_TERRAIN;
+		collisionProperties = Ballistica.STOP_SOLID;
 	}
 	
 	private int totChrgUsed = 0;

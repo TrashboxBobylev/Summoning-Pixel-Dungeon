@@ -76,6 +76,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndUseItem;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
@@ -375,8 +376,7 @@ public class Potion extends Item {
 	
 	@Override
 	public Item identify() {
-
-		setKnown();
+			setKnown();
 		return super.identify();
 	}
 	

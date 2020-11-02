@@ -117,6 +117,14 @@ public class Spinner extends Mob {
 		}
 		super.move(step);
 	}
+	
+	private int left(int direction){
+		return direction == 0 ? 7 : direction-1;
+	}
+	
+	private int right(int direction){
+		return direction == 7 ? 0 : direction+1;
+	}
 
 	{
 		resistances.add(Poison.class);

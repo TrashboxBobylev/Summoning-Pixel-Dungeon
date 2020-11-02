@@ -24,12 +24,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.food;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Statistics;
+import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.HellBat;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
@@ -99,9 +99,15 @@ public class Food extends Item {
 	}
 	
 	protected void satisfy( Hero hero ){
-		Buff.affect(hero, Hunger.class).satisfy( energy );
-		if (regen > 0) Buff.affect(hero, FoodRegen.class).fullHP = regen;
-		if (regen < 0) Buff.affect(hero, FoodDebuff.class).fullHP = -regen;
+		if (Dungeon.isChallenged(Challenges.NO_FOOD)) {
+			Buff.affect(hero, Hunger.class).satisfy(energy/3f);
+			if (regen > 0) Buff.affect(hero, FoodRegen.class).fullHP = regen/3;
+			if (regen < 0) Buff.affect(hero, FoodDebuff.class).fullHP = -regen/3;
+		} else {
+			Buff.affect(hero, Hunger.class).satisfy( energy );
+			if (regen > 0) Buff.affect(hero, FoodRegen.class).fullHP = regen;
+			if (regen < 0) Buff.affect(hero, FoodDebuff.class).fullHP = -regen;
+		}
 	}
 	
 	public static void foodProc( Hero hero ){
@@ -139,9 +145,13 @@ public class Food extends Item {
     public String desc() {
         String desc = super.desc();
         if (regen != 0) {
-            desc += Messages.get(Food.class, "stats", Math.round(energy / 10), regen);
+        	if (Dungeon.isChallenged(Challenges.NO_FOOD))
+            desc += Messages.get(Food.class, "stats", Math.round(energy / 30), regen/3);
+        	else desc += Messages.get(Food.class, "stats", Math.round(energy / 10), regen);
         } else {
-            desc += Messages.get(Food.class, "stats_regular", Math.round(energy / 10));
+			if (Dungeon.isChallenged(Challenges.NO_FOOD))
+				desc += Messages.get(Food.class, "stats_regular", Math.round(energy / 30));
+			else desc += Messages.get(Food.class, "stats_regular", Math.round(energy / 10));
         }
 
         return desc;

@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.FetidRat;
@@ -44,6 +45,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScaleArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Shortsword;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.GreyRatStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.GreyRatStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
@@ -293,40 +296,17 @@ public class Ghost extends NPC {
 				depth = Dungeon.depth;
 
 				//50%:tier2, 30%:tier3, 15%:tier4, 5%:tier5
-				float itemTierRoll = Random.Float();
-				int wepTier;
-
-				if (itemTierRoll < 0.5f) {
-					wepTier = 2;
-					armor = new LeatherArmor();
-				} else if (itemTierRoll < 0.8f) {
-					wepTier = 3;
-					armor = new MailArmor();
-				} else if (itemTierRoll < 0.95f) {
-					wepTier = 4;
-					armor = new ScaleArmor();
-				} else {
-					wepTier = 5;
-					armor = new PlateArmor();
-				}
-
+				int wepTier = Random.chances(new float[]{0, 0, 10, 6, 3, 1});
+				Generator.Category c = Generator.wepTiers[wepTier - 1];
+				weapon = (MeleeWeapon) Reflection.newInstance(c.classes[Random.chances(c.probs)]);
 				try {
 					do {
-						weapon = (Weapon) Generator.wepTiers[wepTier - 1].classes[Random.chances(Generator.wepTiers[wepTier - 1].probs)].newInstance();
-					} while (!(weapon instanceof MeleeWeapon));
+						staff = (Staff) Generator.stfTiers[wepTier - 1].classes[Random.chances(Generator.stfTiers[wepTier - 1].probs)].newInstance();
+					} while (staff.cursed);
 				} catch (Exception e){
 					ShatteredPixelDungeon.reportException(e);
-					weapon = new Shortsword();
+					staff = new GreyRatStaff();
 				}
-                try {
-                    do {
-                        staff = (Staff) Generator.stfTiers[wepTier - 1].classes[Random.chances(Generator.stfTiers[wepTier - 1].probs)].newInstance();
-                    } while (staff.cursed);
-                } catch (Exception e){
-                    ShatteredPixelDungeon.reportException(e);
-                    weapon = new GreyRatStaff();
-                }
-
 				//50%:+0, 30%:+1, 15%:+2, 5%:+3
 				float itemLevelRoll = Random.Float();
 				int itemLevel;

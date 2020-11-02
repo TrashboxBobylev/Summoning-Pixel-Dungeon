@@ -39,7 +39,7 @@ public class MobSprite extends CharSprite {
 	
 	@Override
 	public void update() {
-		sleeping = ch != null && ((Mob)ch).state == ((Mob)ch).SLEEPING;
+		sleeping = ch != null && ch.isAlive() && ((Mob)ch).state == ((Mob)ch).SLEEPING;
 		super.update();
 	}
 	
@@ -48,7 +48,7 @@ public class MobSprite extends CharSprite {
 		
 		super.onComplete( anim );
 		
-		if (anim == die) {
+		if (anim == die && parent != null) {
 			parent.add( new AlphaTweener( this, 0, FADE_TIME ) {
 				@Override
 				protected void onComplete() {

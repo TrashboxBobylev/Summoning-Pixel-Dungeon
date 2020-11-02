@@ -686,15 +686,6 @@ public class Dungeon {
 
 		hero.belongings.identify();
 
-		int chCount = 0;
-		for (int ch : Challenges.MASKS){
-			if ((challenges & ch) != 0) chCount++;
-		}
-		
-		if (chCount != 0) {
-			Badges.validateChampion(chCount);
-		}
-
 		Rankings.INSTANCE.submit( true, cause );
 	}
 
@@ -820,7 +811,7 @@ public class Dungeon {
 			System.arraycopy( pass, 0, passable, 0, Dungeon.level.length() );
 		}
 
-		if (Char.hasProp(ch, Char.Property.LARGE)){
+		if (chars && Char.hasProp(ch, Char.Property.LARGE)){
 			BArray.and( pass, Dungeon.level.openSpace, passable );
 		}
 

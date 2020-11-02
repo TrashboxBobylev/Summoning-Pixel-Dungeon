@@ -132,10 +132,6 @@ public enum HeroClass {
 		i = new Food();
 		if (!Challenges.isItemBlocked(i)) i.collect();
 
-		if (Dungeon.isChallenged(Challenges.NO_FOOD)){
-			new SmallRation().collect();
-		}
-
 		hero.attunement = 0;
 
 		new ScrollOfIdentify().identify();
@@ -172,8 +168,6 @@ public enum HeroClass {
 
 		new PotionOfHealing().identify();
 		new ScrollOfRage().identify();
-
-		new TomeOfMastery().collect();
 	}
 
 	private static void initMage( Hero hero ) {

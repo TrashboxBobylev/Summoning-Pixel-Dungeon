@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Blending;
 import com.watabou.input.PointerEvent;
 import com.watabou.noosa.BitmapText;
@@ -43,7 +44,7 @@ import com.watabou.noosa.Gizmo;
 import com.watabou.noosa.Scene;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.ui.Component;
-import com.watabou.utils.BitmapCache;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
@@ -90,13 +91,7 @@ public class PixelScene extends Scene {
 		defaultZoom = SPDSettings.scale();
 
 		if (defaultZoom < Math.ceil( Game.density * 2 ) || defaultZoom > maxDefaultZoom){
-			defaultZoom = (int)Math.ceil( Game.density * 2.5 );
-			while ((
-				Game.width / defaultZoom < minWidth ||
-				Game.height / defaultZoom < minHeight
-			) && defaultZoom > 1) {
-				defaultZoom--;
-			}
+			defaultZoom = (int)GameMath.gate(2, (int)Math.ceil( Game.density * 2.5 ), maxDefaultZoom);
 		}
 
 		minZoom = 1;
@@ -112,7 +107,7 @@ public class PixelScene extends Scene {
 
 			// 3x5 (6)
 			pixelFont = Font.colorMarked(
-				BitmapCache.get( Assets.Fonts.PIXELFONT), 0x00000000, BitmapText.Font.LATIN_FULL );
+				TextureCache.get( Assets.Fonts.PIXELFONT), 0x00000000, BitmapText.Font.LATIN_FULL );
 			pixelFont.baseLine = 6;
 			pixelFont.tracking = -1;
 			

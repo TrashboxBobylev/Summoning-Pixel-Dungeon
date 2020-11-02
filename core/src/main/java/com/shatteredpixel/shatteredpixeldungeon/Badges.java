@@ -39,6 +39,7 @@ import com.watabou.utils.FileUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -209,11 +210,15 @@ public class Badges {
 				ShatteredPixelDungeon.reportException(e);
 			}
 		}
+
+		addReplacedBadges(badges);
 	
 		return badges;
 	}
 	
 	public static void store( Bundle bundle, HashSet<Badge> badges ) {
+		addReplacedBadges(badges);
+
 		int count = 0;
 		String names[] = new String[badges.size()];
 		
@@ -236,7 +241,7 @@ public class Badges {
 			try {
 				Bundle bundle = FileUtils.bundleFromFile( BADGES_FILE );
 				global = restore( bundle );
-				
+
 			} catch (IOException e) {
 				global = new HashSet<>();
 			}
@@ -820,14 +825,23 @@ public class Badges {
 	}
 
 	public static void validateChampion( int challenges ) {
+		if (challenges == 0) return;
 		Badge badge = null;
 		if (challenges >= 1) {
 			badge = Badge.CHAMPION_1;
 		}
 		if (challenges >= 3){
+			if (!global.contains(badge)){
+				global.add(badge);
+				saveNeeded = true;
+			}
 			badge = Badge.CHAMPION_2;
 		}
 		if (challenges >= 6){
+			if (!global.contains(badge)){
+				global.add(badge);
+				saveNeeded = true;
+			}
 			badge = Badge.CHAMPION_3;
 		}
 		displayBadge( badge );
@@ -880,12 +894,12 @@ public class Badges {
 			saveNeeded = true;
 		}
 	}
-	
-	public static List<Badge> filtered( boolean global ) {
-		
-		HashSet<Badge> filtered = new HashSet<>(global ? Badges.global : Badges.local);
 
-		Iterator<Badge> iterator = filtered.iterator();
+	public static List<Badge> filterReplacedBadges( boolean global ) {
+
+		ArrayList<Badge> badges = new ArrayList<>(global ? Badges.global : Badges.local);
+
+		Iterator<Badge> iterator = badges.iterator();
 		while (iterator.hasNext()) {
 			Badge badge = iterator.next();
 			if ((!global && badge.meta) || badge.image == -1) {
@@ -893,41 +907,117 @@ public class Badges {
 			}
 		}
 
-		leaveBest( filtered, Badge.MONSTERS_SLAIN_1, Badge.MONSTERS_SLAIN_2, Badge.MONSTERS_SLAIN_3, Badge.MONSTERS_SLAIN_4 );
-		leaveBest( filtered, Badge.GOLD_COLLECTED_1, Badge.GOLD_COLLECTED_2, Badge.GOLD_COLLECTED_3, Badge.GOLD_COLLECTED_4 );
-		leaveBest( filtered, Badge.BOSS_SLAIN_1, Badge.BOSS_SLAIN_2, Badge.BOSS_SLAIN_3, Badge.BOSS_SLAIN_4 );
-		leaveBest( filtered, Badge.LEVEL_REACHED_1, Badge.LEVEL_REACHED_2, Badge.LEVEL_REACHED_3, Badge.LEVEL_REACHED_4 );
-		leaveBest( filtered, Badge.STRENGTH_ATTAINED_1, Badge.STRENGTH_ATTAINED_2, Badge.STRENGTH_ATTAINED_3, Badge.STRENGTH_ATTAINED_4 );
-		leaveBest( filtered, Badge.FOOD_EATEN_1, Badge.FOOD_EATEN_2, Badge.FOOD_EATEN_3, Badge.FOOD_EATEN_4 );
-		leaveBest( filtered, Badge.ITEM_LEVEL_1, Badge.ITEM_LEVEL_2, Badge.ITEM_LEVEL_3, Badge.ITEM_LEVEL_4 );
-		leaveBest( filtered, Badge.POTIONS_COOKED_1, Badge.POTIONS_COOKED_2, Badge.POTIONS_COOKED_3, Badge.POTIONS_COOKED_4 );
-		leaveBest( filtered, Badge.DEATH_FROM_FIRE, Badge.YASD );
-		leaveBest( filtered, Badge.DEATH_FROM_GAS, Badge.YASD );
-		leaveBest( filtered, Badge.DEATH_FROM_HUNGER, Badge.YASD );
-		leaveBest( filtered, Badge.DEATH_FROM_POISON, Badge.YASD );
-		leaveBest( filtered, Badge.DEATH_FROM_GLYPH, Badge.YASD );
-		leaveBest( filtered, Badge.DEATH_FROM_FALLING, Badge.YASD );
-		leaveBest( filtered, Badge.ALL_WEAPONS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED );
-		leaveBest( filtered, Badge.ALL_ARMOR_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED );
-		leaveBest( filtered, Badge.ALL_WANDS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED );
-		leaveBest( filtered, Badge.ALL_RINGS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED );
-		leaveBest( filtered, Badge.ALL_ARTIFACTS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED );
-		leaveBest( filtered, Badge.ALL_POTIONS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED );
-		leaveBest( filtered, Badge.ALL_SCROLLS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED );
-		leaveBest( filtered, Badge.GAMES_PLAYED_1, Badge.GAMES_PLAYED_2, Badge.GAMES_PLAYED_3, Badge.GAMES_PLAYED_4 );
-		leaveBest( filtered, Badge.CHAMPION_1, Badge.CHAMPION_2, Badge.CHAMPION_3 );
+		Collections.sort(badges);
+
+		return filterReplacedBadges(badges);
+
+	}
+
+	private static final Badge[][] tierBadgeReplacements = new Badge[][]{
+			{Badge.MONSTERS_SLAIN_1, Badge.MONSTERS_SLAIN_2, Badge.MONSTERS_SLAIN_3, Badge.MONSTERS_SLAIN_4},
+			{Badge.GOLD_COLLECTED_1, Badge.GOLD_COLLECTED_2, Badge.GOLD_COLLECTED_3, Badge.GOLD_COLLECTED_4},
+			{Badge.ITEM_LEVEL_1, Badge.ITEM_LEVEL_2, Badge.ITEM_LEVEL_3, Badge.ITEM_LEVEL_4},
+			{Badge.LEVEL_REACHED_1, Badge.LEVEL_REACHED_2, Badge.LEVEL_REACHED_3, Badge.LEVEL_REACHED_4},
+			{Badge.STRENGTH_ATTAINED_1, Badge.STRENGTH_ATTAINED_2, Badge.STRENGTH_ATTAINED_3, Badge.STRENGTH_ATTAINED_4},
+			{Badge.FOOD_EATEN_1, Badge.FOOD_EATEN_2, Badge.FOOD_EATEN_3, Badge.FOOD_EATEN_4},
+			{Badge.POTIONS_COOKED_1, Badge.POTIONS_COOKED_2, Badge.POTIONS_COOKED_3, Badge.POTIONS_COOKED_4 },
+			{Badge.BOSS_SLAIN_1, Badge.BOSS_SLAIN_2, Badge.BOSS_SLAIN_3, Badge.BOSS_SLAIN_4},
+			{Badge.GAMES_PLAYED_1, Badge.GAMES_PLAYED_2, Badge.GAMES_PLAYED_3, Badge.GAMES_PLAYED_4},
+			{Badge.CHAMPION_1, Badge.CHAMPION_2, Badge.CHAMPION_3}
+	};
+
+	private static final Badge[][] metaBadgeReplacements = new Badge[][]{
+			{Badge.DEATH_FROM_FIRE, Badge.YASD},
+			{Badge.DEATH_FROM_GAS, Badge.YASD},
+			{Badge.DEATH_FROM_HUNGER, Badge.YASD},
+			{Badge.DEATH_FROM_POISON, Badge.YASD},
+			{Badge.DEATH_FROM_GLYPH, Badge.YASD},
+			{Badge.DEATH_FROM_FALLING, Badge.YASD },
+
+			{Badge.ALL_WEAPONS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED},
+			{Badge.ALL_ARMOR_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED},
+			{Badge.ALL_WANDS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED},
+			{Badge.ALL_RINGS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED},
+			{Badge.ALL_ARTIFACTS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED},
+			{Badge.ALL_POTIONS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED},
+			{Badge.ALL_SCROLLS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED}
+	};
+	
+	public static List<Badge> filterReplacedBadges( List<Badge> badges ) {
+
+		leaveBest( badges, Badge.MONSTERS_SLAIN_1, Badge.MONSTERS_SLAIN_2, Badge.MONSTERS_SLAIN_3, Badge.MONSTERS_SLAIN_4 );
+		leaveBest( badges, Badge.GOLD_COLLECTED_1, Badge.GOLD_COLLECTED_2, Badge.GOLD_COLLECTED_3, Badge.GOLD_COLLECTED_4 );
+		leaveBest( badges, Badge.BOSS_SLAIN_1, Badge.BOSS_SLAIN_2, Badge.BOSS_SLAIN_3, Badge.BOSS_SLAIN_4 );
+		leaveBest( badges, Badge.LEVEL_REACHED_1, Badge.LEVEL_REACHED_2, Badge.LEVEL_REACHED_3, Badge.LEVEL_REACHED_4 );
+		leaveBest( badges, Badge.STRENGTH_ATTAINED_1, Badge.STRENGTH_ATTAINED_2, Badge.STRENGTH_ATTAINED_3, Badge.STRENGTH_ATTAINED_4 );
+		leaveBest( badges, Badge.FOOD_EATEN_1, Badge.FOOD_EATEN_2, Badge.FOOD_EATEN_3, Badge.FOOD_EATEN_4 );
+		leaveBest( badges, Badge.ITEM_LEVEL_1, Badge.ITEM_LEVEL_2, Badge.ITEM_LEVEL_3, Badge.ITEM_LEVEL_4 );
+		leaveBest( badges, Badge.POTIONS_COOKED_1, Badge.POTIONS_COOKED_2, Badge.POTIONS_COOKED_3, Badge.POTIONS_COOKED_4 );
+		leaveBest( badges, Badge.GAMES_PLAYED_1, Badge.GAMES_PLAYED_2, Badge.GAMES_PLAYED_3, Badge.GAMES_PLAYED_4 );
+		leaveBest( badges, Badge.CHAMPION_1, Badge.CHAMPION_2, Badge.CHAMPION_3 );
+
+		for (Badge[] tierReplace : tierBadgeReplacements){
+			leaveBest( badges, tierReplace );
+		}
+
+		for (Badge[] metaReplace : metaBadgeReplacements){
+			leaveBest( badges, metaReplace );
+		}
 		
-		ArrayList<Badge> list = new ArrayList<>(filtered);
-		Collections.sort( list );
-		
-		return list;
+		return badges;
 	}
 	
-	private static void leaveBest( HashSet<Badge> list, Badge...badges ) {
+	private static void leaveBest( Collection<Badge> list, Badge...badges ) {
 		for (int i=badges.length-1; i > 0; i--) {
 			if (list.contains( badges[i])) {
 				for (int j=0; j < i; j++) {
 					list.remove( badges[j] );
+				}
+				break;
+			}
+		}
+	}
+
+	public static List<Badge> filterHigherIncrementalBadges(List<Badges.Badge> badges ) {
+
+		for (Badge[] tierReplace : tierBadgeReplacements){
+			leaveWorst( badges, tierReplace );
+		}
+
+		Collections.sort( badges );
+
+		return badges;
+	}
+
+	private static void leaveWorst( Collection<Badge> list, Badge...badges ) {
+		for (int i=0; i < badges.length; i++) {
+			if (list.contains( badges[i])) {
+				for (int j=i+1; j < badges.length; j++) {
+					list.remove( badges[j] );
+				}
+				break;
+			}
+		}
+	}
+
+	public static Collection<Badge> addReplacedBadges(Collection<Badges.Badge> badges ) {
+
+		for (Badge[] tierReplace : tierBadgeReplacements){
+			addLower( badges, tierReplace );
+		}
+
+		for (Badge[] metaReplace : metaBadgeReplacements){
+			addLower( badges, metaReplace );
+		}
+
+		return badges;
+	}
+
+	private static void addLower( Collection<Badge> list, Badge...badges ) {
+		for (int i=badges.length-1; i > 0; i--) {
+			if (list.contains( badges[i])) {
+				for (int j=0; j < i; j++) {
+					list.add( badges[j] );
 				}
 				break;
 			}
