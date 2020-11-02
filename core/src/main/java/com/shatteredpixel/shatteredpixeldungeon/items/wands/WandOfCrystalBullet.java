@@ -54,7 +54,7 @@ public class WandOfCrystalBullet extends DamageWand {
 	{
 		image = ItemSpriteSheet.CRYSTAL_WAND;
 
-        collisionProperties = Ballistica.STOP_TARGET | Ballistica.STOP_TERRAIN;
+        collisionProperties = Ballistica.STOP_TARGET | Ballistica.STOP_SOLID;
 	}
 
 	public ArrayList<Integer> shardPositions = new ArrayList<>();

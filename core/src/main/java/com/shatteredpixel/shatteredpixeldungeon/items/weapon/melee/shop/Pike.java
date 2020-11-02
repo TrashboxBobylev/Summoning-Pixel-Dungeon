@@ -57,7 +57,7 @@ public class Pike extends MeleeWeapon {
 
     @Override
     public int warriorAttack(int damage, Char enemy) {
-        Ballistica tray = new Ballistica(Dungeon.hero.pos, enemy.pos, Ballistica.STOP_TERRAIN);
+        Ballistica tray = new Ballistica(Dungeon.hero.pos, enemy.pos, Ballistica.STOP_SOLID);
         ArrayList<Char> affectedChars = new ArrayList<>();
         for (int cell : tray.subPath(1, Integer.MAX_VALUE)){
             Char ch = Actor.findChar(cell);

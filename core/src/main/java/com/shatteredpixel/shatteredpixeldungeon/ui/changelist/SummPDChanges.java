@@ -181,6 +181,47 @@ public class SummPDChanges {
 //                        "_-_ Added the article about allies into Adventurer Guide\n"+
 //                        "We are almost finished. If nothing major will happen with this damn sleepy minions, I will publish the release."));
 //    }
+    public static void add_1_1_5_Changes(ArrayList<ChangeInfo> changeInfos) {
+
+        ChangeInfo changes = new ChangeInfo("1.1.5", true, "");
+        changes.hardlight(Window.TITLE_COLOR);
+        changeInfos.add(changes);
+
+        changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
+        changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
+                "_-_ Released November 2th, 2020\n" +
+                        "_-_ 96 days after 1.1.4\n\n" +
+                        "It was a long ago, isn't it?"));
+
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.WARRIOR, 0, 15, 12, 15), "Warrior Rework!",
+                "The big boy rework for sure.\n\n" +
+                        "_-_ The new mechanic: special attacks! With spending a bit of satiety, Warrior can unleash unique attacks on enemies!\n" +
+                        "Each weapon has one, so don't be afraid to experiment.\n\n" +
+                        "_-_ Broken Seal now is used for weapons and enables ability to do the special attack with sealed weapon.\n\n" +
+                        "_-_ Warrior lost all food related abilities, but his satiety deplets slower."));
+
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.WARRIOR, 0, 90, 12, 15), "Warrior Subclass Rework!",
+                "Warrior have completely new subclasses!\n\n" +
+                        "_Monk_ is replacement for Gladiator and promotes aggressive style with juggling various items during the run. Any usable item gives energy to Monk, which can be used for special attacks.\n\n" +
+                        "_Robinson_ is replacement for Berserker and gives player a tactical way to use his specials. Slingshot can use special attacks as ranger ability, but Robinson needs more satiety to use attacks in melee."));
+
+        changes.addButton(new ChangeButton(Icons.get(Icons.SHPX), "Shattered PD Port",
+                "_-_ Ported practically everything from Shattered PD 0.8.X.\n" +
+                        "_-_ Ported QoL changes and bugfixes from Shattered PD 0.9.X.\n\n" +
+                        "I want to wait for 0.9.1 before porting talents and other stuff."));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RATION, null), "Food",
+                "Food now is more powerful and every bug is fixed."
+        ));
+
+        changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+                "_-_ Floor crashes should be fixed with ShPD 0.8 port.\n" +
+                        "_-_ Nerfed ExplodingTNT reference; now it uses bomb only once.\n" +
+                        "_-_ Conjurer gets healed from food.\n\n" +
+                        "_-_ As this is fairly big update, all saves before it have been deprecated. Sorry about that."));
+
+    }
+
 
     public static void add_1_1_4_Changes(ArrayList<ChangeInfo> changeInfos) {
 

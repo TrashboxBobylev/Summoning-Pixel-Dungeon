@@ -49,7 +49,7 @@ public class GasterBlaster extends StationaryMinion {
 
     @Override
     protected boolean canAttack( Char enemy ) {
-        Ballistica ballistica = new Ballistica(pos, enemy.pos, Ballistica.STOP_TERRAIN);
+        Ballistica ballistica = new Ballistica(pos, enemy.pos, Ballistica.STOP_SOLID);
         if (ballistica.subPath(1, ballistica.dist).contains(enemy.pos)) return true;
         return false;
     }
@@ -65,7 +65,7 @@ public class GasterBlaster extends StationaryMinion {
     protected boolean doAttack(Char enemy) {
         spend(attackDelay());
         boolean rayVisible = false;
-        Ballistica ballistica = new Ballistica(pos, enemy.pos, Ballistica.STOP_TERRAIN);
+        Ballistica ballistica = new Ballistica(pos, enemy.pos, Ballistica.STOP_SOLID);
         for (int c : ballistica.subPath(1, Integer.MAX_VALUE)) {
             if (Dungeon.level.heroFOV[c]) rayVisible = true;
         }
@@ -80,7 +80,7 @@ public class GasterBlaster extends StationaryMinion {
 
 
     public void attock(int posision) {
-        Ballistica ballistica = new Ballistica(pos, posision, Ballistica.STOP_TERRAIN);
+        Ballistica ballistica = new Ballistica(pos, posision, Ballistica.STOP_SOLID);
         for (int c : ballistica.subPath(1, ballistica.dist)) {
             Char ch = Actor.findChar(c);
             if (ch == null) continue;

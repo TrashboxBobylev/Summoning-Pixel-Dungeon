@@ -299,7 +299,7 @@ public class SpiritBow extends Weapon {
 		
 		@Override
 		public void cast(final Hero user, final int dst) {
-            final Ballistica ballistica = new Ballistica( user.pos, dst, Ballistica.STOP_TERRAIN );
+            final Ballistica ballistica = new Ballistica( user.pos, dst, Ballistica.STOP_SOLID );
 			final int cell = SpiritBow.this.augment == Augment.DAMAGE ?  ballistica.collisionPos : throwPos( user, dst );
             SpiritBow.this.targetPos = cell;
             if (sniperSpecial) {

@@ -153,7 +153,7 @@ public class Thief extends Mob {
 
 			GLog.warning( Messages.get(Thief.class, "stole", item.name()) );
 			if (!item.stackable) {
-				Dungeon.quickslot.convertToPlaceholder(toSteal);
+				Dungeon.quickslot.convertToPlaceholder(item);
 			}
 			item.updateQuickslot();
 
