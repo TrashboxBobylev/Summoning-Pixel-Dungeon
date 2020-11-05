@@ -86,7 +86,6 @@ public class ScrollOfSoulEnergy extends ExoticScroll {
                     SoulFlame.adjustMinDamage(curUser.lvl),
                     SoulFlame.adjustMaxDamage(curUser.lvl));
             Statistics.summonedMinions++;
-            Badges.validateConjurerUnlock();
             minion.strength = curUser.STR;
             minion.setMaxHP(SoulFlame.adjustHP((int) minion.attunement));
         }

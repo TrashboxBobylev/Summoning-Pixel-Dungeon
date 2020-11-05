@@ -593,7 +593,6 @@ public abstract class Mob extends Char {
 		
 		if (surprisedBy(enemy)) {
 			Statistics.sneakAttacks++;
-			Badges.validateRogueUnlock();
 			//TODO this is somewhat messy, it would be nicer to not have to manually handle delays here
 			// playing the strong hit sound might work best as another property of weapon?
 			if (Dungeon.hero.belongings.weapon instanceof SpiritBow.SpiritArrow
@@ -695,7 +694,6 @@ public abstract class Mob extends Char {
 
 		if (hitWithRanged){
 			Statistics.thrownAssists++;
-			Badges.validateHuntressUnlock();
 		}
 		
 		if (cause == Chasm.class){

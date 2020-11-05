@@ -170,7 +170,6 @@ public class StationaryStaff extends Staff {
                     Math.round(minionMin(level())* RingOfAttunement.damageMultiplier(owner)),
                     Math.round(minionMax(level()) * RingOfAttunement.damageMultiplier(owner)));
             Statistics.summonedMinions++;
-            Badges.validateConjurerUnlock();
             minion.strength = STRReq();
             this.customizeMinion(minion);
 

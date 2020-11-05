@@ -386,7 +386,6 @@ public class Staff extends Weapon {
                     minionmin(),
                     minionmax());
             Statistics.summonedMinions++;
-            Badges.validateConjurerUnlock();
             minion.strength = STRReq();
             this.customizeMinion(minion);
             minion.enchantment = enchantment;
