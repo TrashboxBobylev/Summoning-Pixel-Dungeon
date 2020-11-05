@@ -184,11 +184,11 @@ public class SummPDChanges {
 //    }
     public static void add_1_1_5_Changes(ArrayList<ChangeInfo> changeInfos) {
 
-        ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "v1.1.5a", false, Window.WHITE);
+        ChangeInfo changes = new ChangeInfo("1.1.5", true, "");
+        changes.hardlight(Window.TITLE_COLOR);
+        changeInfos.add(changes);
 
-        changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
-                "_-_ Released November 5th, 2020\n" +
-                        "_-_ 3 days after 1.1.5"));
+        changes = ChangesScene.createChangeInfo(changeInfos, "v1.1.5a", false, Window.WHITE);
 
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.BOMB, null), "Bomb changes",
                 "_-_ Explosion damage have been significantly increased across all game stages to be fatal for most of enemies in radius.\n\n" +
@@ -200,12 +200,9 @@ public class SummPDChanges {
         changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
                 "_-_ Fixed crash with Sad Ghost quest.\n" +
                         "_-_ Removed class unlocks. You still need to beat the game for challenges.\n" +
-                        "_-_ Fixed critical issue with text on Android version."));
+                        "_-_ Fixed critical issue with text on Android version.\n" +
+                        "_-_ Fixed issue with beam sounds being unintentionally more loud."));
 
-
-        changes = new ChangeInfo("1.1.5", true, "");
-        changes.hardlight(Window.TITLE_COLOR);
-        changeInfos.add(changes);
 
         changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
         changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
