@@ -184,7 +184,26 @@ public class SummPDChanges {
 //    }
     public static void add_1_1_5_Changes(ArrayList<ChangeInfo> changeInfos) {
 
-        ChangeInfo changes = new ChangeInfo("1.1.5", true, "");
+        ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "v1.1.5a", false, Window.WHITE);
+
+        changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
+                "_-_ Released November 5th, 2020\n" +
+                        "_-_ 3 days after 1.1.5"));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.BOMB, null), "Bomb changes",
+                "_-_ Explosion damage have been significantly increased across all game stages to be fatal for most of enemies in radius.\n\n" +
+                        "_-_ Most of enchanced bombs now explode instantly.\n\n" +
+                        "_-_ Added two new enchanced bomb: Supply Station (the stationary healing potion) and Webbomb (7x7 web spread, great stalling tool).\n\n" +
+                        "_-_ Bombs are encountered in more places, also there is 1/15 chance to encounter enhanced bomb instead of regular one."
+        ));
+
+        changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+                "_-_ Fixed crash with Sad Ghost quest.\n" +
+                        "_-_ Removed class unlocks. You still need to beat the game for challenges.\n" +
+                        "_-_ Fixed critical issue with text on Android version."));
+
+
+        changes = new ChangeInfo("1.1.5", true, "");
         changes.hardlight(Window.TITLE_COLOR);
         changeInfos.add(changes);
 

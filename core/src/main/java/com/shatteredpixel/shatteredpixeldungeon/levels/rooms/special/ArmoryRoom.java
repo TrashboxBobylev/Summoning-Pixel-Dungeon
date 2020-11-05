@@ -65,6 +65,13 @@ public class ArmoryRoom extends SpecialRoom {
 			} while (level.map[pos] != Terrain.EMPTY || level.heaps.get( pos ) != null);
 			level.drop( prize( level ), pos );
 		}
+
+		int itemPos;
+		do {
+			itemPos = level.pointToCell(random());
+		} while (level.heaps.get(itemPos) != null);
+
+		level.drop(new Bomb().random(), itemPos);
 		
 		entrance.set( Door.Type.LOCKED );
 		level.addItemToSpawn( new IronKey( Dungeon.depth ) );

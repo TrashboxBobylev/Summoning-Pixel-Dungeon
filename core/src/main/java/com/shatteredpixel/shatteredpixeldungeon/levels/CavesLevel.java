@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.CavesPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
@@ -125,7 +126,14 @@ public class CavesLevel extends RegularLevel {
 				return super.tileName( tile );
 		}
 	}
-	
+
+	@Override
+	protected void createItems() {
+		itemsToSpawn.add( new Bomb().random());
+
+		super.createItems();
+	}
+
 	@Override
 	public String tileDesc( int tile ) {
 		switch (tile) {
@@ -150,8 +158,8 @@ public class CavesLevel extends RegularLevel {
 		addCavesVisuals( this, visuals );
 		return visuals;
 	}
-	
-	public static void addCavesVisuals( Level level, Group group ) {
+
+	public static void addCavesVisuals(Level level, Group group ) {
 		for (int i=0; i < level.length(); i++) {
 			if (level.map[i] == Terrain.WALL_DECO) {
 				group.add( new Vein( i ) );

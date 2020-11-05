@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -56,6 +57,13 @@ public class StorageRoom extends SpecialRoom {
 			} else
 				level.drop( prize( level ), pos );
 		}
+
+		int itemPos;
+		do {
+			itemPos = level.pointToCell(random());
+		} while (level.heaps.get(itemPos) != null);
+
+		level.drop(new Bomb().random(), itemPos);
 		
 		entrance().set( Door.Type.BARRICADE );
 		level.addItemToSpawn( new PotionOfLiquidFlame() );

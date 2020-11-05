@@ -232,12 +232,27 @@ public class Bomb extends Item {
 	public boolean isIdentified() {
 		return true;
 	}
+
+	private Class<? extends Bomb>[] enhancedBombs = new Class[] {
+			Firebomb.class,
+			FrostBomb.class,
+			SupplyBomb.class,
+			RegrowthBomb.class,
+			WoollyBomb.class,
+			HolyBomb.class,
+			Webbomb.class,
+			Flashbang.class,
+			Noisemaker.class,
+			ShockBomb.class
+	};
 	
 	@Override
 	public Item random() {
-		switch(Random.Int( 3 )){
-			case 0:
+		switch(Random.Int( 15 )){
+			case 0: case 1: case 2: case 3: case 4:
 				return new DoubleBomb();
+			case 14:
+				return Reflection.newInstance(Random.element(enhancedBombs));
 			default:
 				return this;
 		}
