@@ -74,7 +74,7 @@ public class HolyBomb extends Bomb {
 		}
 		
 		for (Char ch : affected){
-            int damage = Math.round(Random.NormalIntRange( Dungeon.depth+5, 10 + Dungeon.depth * 2 ) * 0.8f);
+            int damage = Math.round(damageRoll() * 0.8f);
 			if (ch.properties().contains(Char.Property.UNDEAD) || ch.properties().contains(Char.Property.DEMONIC)){
 				ch.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
 				

@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulWeakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
@@ -58,7 +59,12 @@ public class WandOfStars extends DamageWand {
 		collisionProperties = Ballistica.STOP_TARGET | Ballistica.STOP_SOLID;
 	}
 
-	private boolean detonation = false;
+    @Override
+    protected int initialCharges() {
+        return 3;
+    }
+
+    private boolean detonation = false;
 
     @Override
     public void execute(Hero hero, String action) {
@@ -90,8 +96,36 @@ public class WandOfStars extends DamageWand {
             }
 
             if (!effect) GLog.warning( Messages.get(CursedWand.class, "nothing"));
+        }
+    }
 
-            hero.spendAndNext(1f);
+    @Override
+    public boolean tryToZap( Hero owner, int target ){
+
+        if (owner.buff(MagicImmune.class) != null){
+            GLog.warning( Messages.get(this, "no_magic") );
+            return false;
+        }
+        if (owner.buff(SoulWeakness.class) != null){
+            GLog.warning(Messages.get(this, "fizzles"));
+            return false;
+        }
+
+        if (Dungeon.level.numberOfStars() > 0 && curCharges == 0){
+                Heap heap = Dungeon.level.heaps.get(target);
+                if (heap != null) {
+                    for (Item item : heap.items) {
+                        if (item instanceof Star) return true;
+                    }
+                }
+            GLog.warning(Messages.get(this, "star_fizzles"));
+            return false;
+        }
+        else if ( curCharges >= (cursed ? 1 : chargesPerCast())){
+            return true;
+        } else {
+            GLog.warning(Messages.get(this, "fizzles"));
+            return false;
         }
     }
 
@@ -99,14 +133,14 @@ public class WandOfStars extends DamageWand {
 	    if (Dungeon.level == null) return (3+lvl);
 	    int num = Dungeon.level.numberOfStars();
 	    if (num < 3) num = 0;
-		return (int) ((3+lvl) * (Math.pow(0.9f, Math.max(0, num - 2))));
+		return (int) ((3+lvl) * (Math.pow(0.93f, Math.max(0, num - 2))));
 	}
 
 	public int max(int lvl){
         if (Dungeon.level == null) return (8+lvl*3);
         int num = Dungeon.level.numberOfStars();
         if (num < 3) num = 0;
-        return (int) ((8+lvl*3) * (Math.pow(0.9f, Math.max(0, num - 2))));
+        return (int) ((9+lvl*4) * (Math.pow(0.93f, Math.max(0, num - 2))));
 	}
 
     @Override

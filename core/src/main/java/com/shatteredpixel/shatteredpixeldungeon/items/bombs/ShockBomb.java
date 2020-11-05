@@ -226,7 +226,7 @@ public class ShockBomb extends Bomb {
             float multipler = 0.4f + (0.6f/affected.size());
             //if the main target is in water, all affected take full damage
             if (Dungeon.level.water[cell]) multipler = 1f;
-            int dmg = Math.round(Random.NormalIntRange(14, 24) * charge * multipler);
+            int dmg = Math.round(damageRoll() * 0.6f * charge * multipler);
 
             target.damage(dmg, new WandOfLightning());
             if (target == Dungeon.hero) Camera.main.shake( 2, 0.3f );

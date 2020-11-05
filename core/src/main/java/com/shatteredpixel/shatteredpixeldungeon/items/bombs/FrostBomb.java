@@ -52,7 +52,7 @@ public class FrostBomb extends Bomb {
 	{
 		image = ItemSpriteSheet.FROST_BOMB;
 		harmless = true;
-		fuseDelay = 1;
+		fuseDelay = 0;
 	}
 	
 	@Override

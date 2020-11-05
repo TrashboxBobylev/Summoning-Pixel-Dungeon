@@ -185,6 +185,8 @@ public enum HeroClass {
 
 		new ScrollOfUpgrade().identify();
 		new PotionOfLiquidFlame().identify();
+		new SupplyBomb().quantity(5).collect();
+		new Webbomb().quantity(5).collect();
 	}
 
 	private static void initRogue( Hero hero ) {

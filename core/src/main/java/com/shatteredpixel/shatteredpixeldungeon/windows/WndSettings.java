@@ -134,35 +134,8 @@ public class WndSettings extends WndTabbed {
 			}
 		});
 
-		langs = new LangsTab();
-		langs.setSize(width, 0);
-		height = Math.max(height, langs.height());
-		add( langs );
 
 
-		IconTab langsTab = new IconTab(Icons.get(Icons.LANGS)){
-			@Override
-			protected void select(boolean value) {
-				super.select(value);
-				langs.visible = langs.active = value;
-				if (value) last_index = 4;
-			}
-
-			@Override
-			protected void createChildren() {
-				super.createChildren();
-				switch(Messages.lang().status()){
-					case INCOMPLETE:
-						icon.hardlight(1.5f, 0, 0);
-						break;
-					case UNREVIEWED:
-						icon.hardlight(1.5f, 0.75f, 0f);
-						break;
-				}
-			}
-
-		};
-		add( langsTab );
 
 		resize(width, (int)Math.ceil(height));
 

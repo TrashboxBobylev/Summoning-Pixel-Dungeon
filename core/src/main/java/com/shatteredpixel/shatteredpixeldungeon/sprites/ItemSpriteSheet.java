@@ -184,6 +184,8 @@ public class ItemSpriteSheet {
 	public static final int NOISEMAKER      = BOMBS+9;
 	public static final int ARCANE_BOMB     = BOMBS+10;
 	public static final int SHRAPNEL_BOMB   = BOMBS+11;
+	public static final int WEB_BOMB        = BOMBS+12;
+	public static final int SUPPLY_BOMB        = BOMBS+13;
 	
 	static{
 		assignItemRect(BOMB,            10, 13);
@@ -198,6 +200,8 @@ public class ItemSpriteSheet {
 		assignItemRect(NOISEMAKER,      9, 15);
 		assignItemRect(ARCANE_BOMB,     10, 13);
 		assignItemRect(SHRAPNEL_BOMB,   10, 13);
+		assignItemRect(WEB_BOMB,   14, 15);
+		assignItemRect(SUPPLY_BOMB,      9, 15);
 	}
 
 	

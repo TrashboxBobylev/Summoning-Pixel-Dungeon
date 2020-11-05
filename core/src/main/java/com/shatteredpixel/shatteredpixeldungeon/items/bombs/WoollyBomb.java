@@ -48,9 +48,8 @@ public class WoollyBomb extends Bomb {
 	{
 		image = ItemSpriteSheet.WOOLY_BOMB;
 		harmless = true;
-		fuseDelay = 1;
+		fuseDelay = 0;
 	}
-
 
 
 	@Override
@@ -70,7 +69,6 @@ public class WoollyBomb extends Bomb {
         }
 		
 		Sample.INSTANCE.play(Assets.Sounds.PUFF);
-		Sample.INSTANCE.play(Assets.Sounds.SHEEP);
 		
 	}
 	

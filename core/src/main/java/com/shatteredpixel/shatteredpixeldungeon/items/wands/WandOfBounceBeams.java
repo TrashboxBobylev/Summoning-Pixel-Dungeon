@@ -63,8 +63,7 @@ public class WandOfBounceBeams extends DamageWand{
     private Ballistica collisionPos;
 
     public int bounceCount(int lvl){
-        int count = 2 + lvl*2;
-        return count;
+        return 2 + lvl*2;
     }
 
     public int min(int lvl){

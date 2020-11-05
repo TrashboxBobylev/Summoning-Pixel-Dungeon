@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SmokeParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
@@ -48,6 +49,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMirrorImag
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRage;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfConfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPassage;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -78,7 +80,7 @@ public class Bomb extends Item {
 	}
 
 	public Fuse fuse;
-    public int fuseDelay = 2;
+    public int fuseDelay = 1;
     public boolean harmless = false;
 
 	//FIXME using a static variable for this is kinda gross, should be a better way
@@ -92,7 +94,7 @@ public class Bomb extends Item {
 	}
 	
 	public boolean explodesDestructively(){
-		return true;
+		return !harmless;
 	}
 
 	@Override
@@ -118,7 +120,8 @@ public class Bomb extends Item {
 	protected void onThrow( int cell ) {
 		if (!Dungeon.level.pit[ cell ] && lightingFuse) {
 			Actor.addDelayed(fuse = new Fuse().ignite(this), fuseDelay);
-			if (this instanceof Noisemaker) Buff.affect(Dungeon.hero, Noisemaker.Trigger.class).set(cell);;
+			if (this instanceof Noisemaker) Buff.affect(Dungeon.hero, Noisemaker.Trigger.class).set(cell);
+			if (this instanceof SupplyBomb) Buff.affect(Dungeon.hero, SupplyBomb.Trigger.class).set(cell);
 		}
 		if (Actor.findChar( cell ) != null && !(Actor.findChar( cell ) instanceof Hero) ){
 			ArrayList<Integer> candidates = new ArrayList<>();
@@ -135,7 +138,7 @@ public class Bomb extends Item {
 	public boolean doPickUp(Hero hero) {
 		if (fuse != null) {
 			GLog.warning( Messages.get(this, "snuff_fuse") );
-			fuse = null;
+			return false;
 		}
 		return super.doPickUp(hero);
 	}
@@ -146,13 +149,13 @@ public class Bomb extends Item {
 
 		Sample.INSTANCE.play( Assets.Sounds.BLAST );
 
+		if (Dungeon.level.heroFOV[cell]) {
+			CellEmitter.center(cell).burst(BlastParticle.FACTORY, 30);
+		}
+
 		if (explodesDestructively()) {
 			
 			ArrayList<Char> affected = new ArrayList<>();
-			
-			if (Dungeon.level.heroFOV[cell]) {
-				CellEmitter.center(cell).burst(BlastParticle.FACTORY, 30);
-			}
 			
 			boolean terrainAffected = false;
 			for (int n : PathFinder.NEIGHBOURS9) {
@@ -187,11 +190,11 @@ public class Bomb extends Item {
 					continue;
 				}
 
-				int dmg = Random.NormalIntRange(5 + Dungeon.depth, 10 + Dungeon.depth*2);
+				int dmg = damageRoll();
 
 				//those not at the center of the blast take less damage
 				if (ch.pos != cell){
-					dmg = Math.round(dmg*0.67f);
+					dmg = Math.round(dmg*0.8f);
 				}
 
 				dmg -= ch.drRoll();
@@ -210,6 +213,15 @@ public class Bomb extends Item {
 			}
 		}
 	}
+
+	public static int damageRoll(){
+		//sewers: 8-20
+		//prison: 23-42
+		//caves: 38-72
+		//city: 43-102
+		//halls: 68-112
+		return Random.NormalIntRange(8 + ((Dungeon.depth / 5))*15, 12 + ((Dungeon.depth / 5))*30);
+	}
 	
 	@Override
 	public boolean isUpgradable() {
@@ -223,7 +235,7 @@ public class Bomb extends Item {
 	
 	@Override
 	public Item random() {
-		switch(Random.Int( 4 )){
+		switch(Random.Int( 3 )){
 			case 0:
 				return new DoubleBomb();
 			default:
@@ -351,6 +363,9 @@ public class Bomb extends Item {
 			
 			validIngredients.put(GooBlob.class,                 ArcaneBomb.class);
 			validIngredients.put(MetalShard.class,              ShrapnelBomb.class);
+
+			validIngredients.put(ScrollOfConfusion.class,       Webbomb.class);
+			validIngredients.put(Food.class,       SupplyBomb.class);
 		}
 		
 		private static final HashMap<Class<?extends Bomb>, Integer> bombCosts = new HashMap<>();
@@ -369,6 +384,9 @@ public class Bomb extends Item {
 			
 			bombCosts.put(ArcaneBomb.class,     15);
 			bombCosts.put(ShrapnelBomb.class,   10);
+
+			bombCosts.put(Webbomb.class,        7);
+			bombCosts.put(SupplyBomb.class, 6);
 		}
 		
 		@Override

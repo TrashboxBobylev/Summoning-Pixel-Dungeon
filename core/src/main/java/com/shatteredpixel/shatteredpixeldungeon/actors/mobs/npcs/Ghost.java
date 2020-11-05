@@ -299,6 +299,7 @@ public class Ghost extends NPC {
 				int wepTier = Random.chances(new float[]{0, 0, 10, 6, 3, 1});
 				Generator.Category c = Generator.wepTiers[wepTier - 1];
 				weapon = (MeleeWeapon) Reflection.newInstance(c.classes[Random.chances(c.probs)]);
+				armor = (Armor)Reflection.newInstance(Generator.Category.ARMOR.classes[Random.chances(c.probs)]);
 				try {
 					do {
 						staff = (Staff) Generator.stfTiers[wepTier - 1].classes[Random.chances(Generator.stfTiers[wepTier - 1].probs)].newInstance();

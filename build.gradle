@@ -8,7 +8,7 @@ buildscript {
     dependencies {
         //FIXME the version of R8 coming with gradle plugin 4.0.0 causes serious problems
         //noinspection GradleDependency
-        classpath 'com.android.tools.build:gradle:3.6.4'
+        classpath 'com.android.tools.build:gradle:4.1.0'
     }
 }
 
@@ -18,7 +18,7 @@ allprojects {
         appName = 'Summoning Pixel Dungeon'
         appPackageName = 'com.trashboxbobylev.shatteredpixeldungeon'
 
-        appVersionCode = 391
+        appVersionCode = 392
         appVersionName = '1.1.5'
 
         appAndroidCompileSDK = 28
