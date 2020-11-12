@@ -188,6 +188,12 @@ public class SummPDChanges {
         changes.hardlight(Window.TITLE_COLOR);
         changeInfos.add(changes);
 
+        changes = ChangesScene.createChangeInfo(changeInfos, "v1.1.5b", false, Window.WHITE);
+
+        changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+                "_-_ Fixed crash on Dwarf King.\n\n" +
+                        "_-_ Removed ShPD support prompt."));
+
         changes = ChangesScene.createChangeInfo(changeInfos, "v1.1.5a", false, Window.WHITE);
 
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.BOMB, null), "Bomb changes",
