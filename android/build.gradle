@@ -81,7 +81,6 @@ dependencies {
     natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
     implementation "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
     implementation "com.badlogicgames.gdx:gdx-controllers-android:$gdxVersion"
-    implementation "com.github.RohitSurwase.UCE-Handler:uce_handler:1.4"
     natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi"
     natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi-v7a"
     natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-arm64-v8a"

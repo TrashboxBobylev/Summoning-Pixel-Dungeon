@@ -37,7 +37,6 @@ import android.telephony.TelephonyManager;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.rohitss.uceh.UCEHandler;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.watabou.noosa.Game;
@@ -59,13 +58,6 @@ public class AndroidLauncher extends Activity {
 		try {
 			GdxNativesLoader.load();
 			FreeType.initFreeType();
-
-			String installer = getPackageManager().getInstallerPackageName("com.trashboxbobylev.shatteredpixeldungeon");
-
-			//if we not from GP, activate crash handler
-			if (installer == null) {
-				new UCEHandler.Builder(this).addCommaSeparatedEmailAddresses("trashboxbobylev@gmail.com").build();
-			}
 
 			Intent intent = new Intent(this, AndroidGame.class);
 			startActivity(intent);
