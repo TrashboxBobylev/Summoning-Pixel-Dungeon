@@ -26,11 +26,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.FroggitSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.RatSprite;
-import com.watabou.utils.Random;
 
 public class Froggit extends Minion {
 

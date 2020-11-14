@@ -32,7 +32,6 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.view.View;
 import android.view.WindowManager;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;

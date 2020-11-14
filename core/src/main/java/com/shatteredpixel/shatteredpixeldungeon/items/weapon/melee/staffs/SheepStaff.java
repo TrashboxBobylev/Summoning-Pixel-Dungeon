@@ -28,7 +28,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Sheep;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Skele;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class SheepStaff extends Staff {

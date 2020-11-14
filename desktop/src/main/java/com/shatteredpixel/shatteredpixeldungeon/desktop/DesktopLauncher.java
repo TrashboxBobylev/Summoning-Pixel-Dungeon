@@ -38,7 +38,6 @@ import com.shatteredpixel.shatteredpixeldungeon.services.updates.Updates;
 import com.watabou.noosa.Game;
 import com.watabou.utils.FileUtils;
 import com.watabou.utils.Point;
-
 import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
 import java.io.PrintWriter;

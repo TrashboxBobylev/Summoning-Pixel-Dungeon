@@ -26,7 +26,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.GnollHunter;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Wizard;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;

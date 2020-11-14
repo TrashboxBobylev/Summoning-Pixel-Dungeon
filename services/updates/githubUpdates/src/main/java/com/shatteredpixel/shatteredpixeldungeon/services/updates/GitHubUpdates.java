@@ -28,10 +28,9 @@ import com.watabou.noosa.Game;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.DeviceCompat;
 
+import javax.net.ssl.SSLProtocolException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.net.ssl.SSLProtocolException;
 
 public class GitHubUpdates extends UpdateService {
 

@@ -26,11 +26,7 @@ package com.watabou.utils;
 
 import com.watabou.noosa.Game;
 
-import java.util.ArrayDeque;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Random {
 

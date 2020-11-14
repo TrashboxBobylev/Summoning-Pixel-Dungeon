@@ -32,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LoveHolder;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ChaosSaberSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;

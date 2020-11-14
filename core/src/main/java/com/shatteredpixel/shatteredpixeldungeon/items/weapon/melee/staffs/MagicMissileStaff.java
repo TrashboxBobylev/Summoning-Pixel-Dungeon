@@ -27,7 +27,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Sheep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.stationary.MagicMissileMinion;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 

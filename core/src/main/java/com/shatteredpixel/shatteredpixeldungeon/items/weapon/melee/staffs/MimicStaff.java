@@ -27,7 +27,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Mimic;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Skele;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class MimicStaff extends Staff {

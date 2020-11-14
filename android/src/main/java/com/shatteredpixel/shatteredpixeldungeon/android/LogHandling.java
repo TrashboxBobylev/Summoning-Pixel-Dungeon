@@ -24,19 +24,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.android;
 
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.Environment;
 import com.badlogic.gdx.backends.android.AndroidClipboard;
-import com.watabou.noosa.Game;
 
-import java.io.*;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class LogHandling {
     public static boolean extractLogToFile(){

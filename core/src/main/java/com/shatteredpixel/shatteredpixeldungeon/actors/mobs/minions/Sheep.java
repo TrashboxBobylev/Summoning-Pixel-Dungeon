@@ -26,9 +26,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions;
 
-import com.shatteredpixel.shatteredpixeldungeon.sprites.FroggitSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SheepTankSprite;
-import com.watabou.utils.Random;
 
 public class Sheep extends Minion{
     {

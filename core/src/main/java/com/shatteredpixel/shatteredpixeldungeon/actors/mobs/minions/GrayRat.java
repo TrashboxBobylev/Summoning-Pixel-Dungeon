@@ -26,12 +26,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.FroggitSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GrayRatSprite;
-import com.watabou.utils.Random;
 
 public class GrayRat extends Minion {
     {
