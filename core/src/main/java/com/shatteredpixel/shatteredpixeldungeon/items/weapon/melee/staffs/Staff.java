@@ -198,8 +198,8 @@ public class Staff extends Weapon {
 
     public int STRReq(int lvl){
         lvl = Math.max(0, lvl);
-        //strength req doesn't decreases
-        return (7 + tier * 2);
+        //strength req increases with tiers
+        return (7 + tier * 2) + level();
     }
 
     @Override
