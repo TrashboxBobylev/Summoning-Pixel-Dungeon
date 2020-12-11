@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.GreyRatStaff;
@@ -50,6 +51,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSadGhost;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.ScrollArea;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
@@ -287,19 +289,14 @@ public class Ghost extends NPC {
 				processed = false;
 				depth = Dungeon.depth;
 
-				//50%:tier2, 30%:tier3, 15%:tier4, 5%:tier5
-				int wepTier = Random.chances(new float[]{0, 0, 10, 6, 3, 1});
-				Generator.Category c = Generator.wepTiers[wepTier - 1];
-				weapon = (MeleeWeapon) Reflection.newInstance(c.classes[Random.chances(c.probs)]);
-				armor = (Armor)Reflection.newInstance(Generator.Category.ARMOR.classes[Random.chances(c.probs)]);
-				try {
-					do {
-						staff = (Staff) Generator.stfTiers[wepTier - 1].classes[Random.chances(Generator.stfTiers[wepTier - 1].probs)].newInstance();
-					} while (staff.cursed);
-				} catch (Exception e){
-					ShatteredPixelDungeon.reportException(e);
-					staff = new GreyRatStaff();
-				}
+				weapon = Generator.randomWeapon();
+				armor = Generator.randomArmor();
+				staff = Generator.randomStaff();
+				weapon.identify();
+				armor.identify();
+				staff.identify();
+				ScrollOfRemoveCurse.uncurse(null, weapon, armor, staff);
+
 				//50%:+0, 30%:+1, 15%:+2, 5%:+3
 				float itemLevelRoll = Random.Float();
 				int itemLevel;
@@ -312,9 +309,10 @@ public class Ghost extends NPC {
 				} else {
 					itemLevel = 3;
 				}
-				weapon.upgrade(itemLevel);
-				armor.upgrade(itemLevel);
-				staff.upgrade(itemLevel);
+				weapon.level(itemLevel);
+				armor.level(itemLevel);
+				staff.level(itemLevel);
+
 
 				//10% to be enchanted
 				if (Random.Int(10) == 0){
