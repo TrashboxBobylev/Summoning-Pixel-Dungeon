@@ -47,10 +47,16 @@ public class Slime extends Minion {
     @Override
     public int attackProc(Char enemy, int damage) {
         damage = super.attackProc( enemy, damage );
-        if (Random.Int( 1 + lvl ) == 0) {
-            Buff.affect( enemy, Paralysis.class, lvl*2 );
+        int chance = 0;
+        int duration = 0;
+        switch (lvl){
+            case 0: chance = 0; duration = 1; break;
+            case 1: chance = 45; duration = 3; break;
+            case 2: chance = 60; duration = 3; break;
+        }
+        if (Random.Int(100) >= chance) {
+            Buff.affect( enemy, Paralysis.class, duration );
             if (buff(SupportPower.class) != null) Buff.prolong(enemy, Paralysis.class, lvl*5);
-            damage /= 2;
         }
         return damage;
     }

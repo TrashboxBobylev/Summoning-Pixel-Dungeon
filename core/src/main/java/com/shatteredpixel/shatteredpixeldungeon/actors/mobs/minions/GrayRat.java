@@ -48,5 +48,13 @@ public class GrayRat extends Minion {
         immunities.add( ToxicGas.class );
     }
 
-
+    @Override
+    public int drRoll() {
+        switch (lvl){
+            case 0: baseMaxDR = 2; break;
+            case 1: baseMaxDR = 4; baseMinDR = 1; break;
+            case 2: baseMaxDR = 8; baseMinDR = 2; break;
+        }
+        return super.drRoll();
+    }
 }
