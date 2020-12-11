@@ -60,6 +60,7 @@ public class ItemSlot extends Button {
 	protected BitmapText extra;
 	protected Image      itemIcon;
 	protected BitmapText level;
+	protected BitmapText staffStr;
 	
 	private static final String TXT_STRENGTH	= ":%d";
 	private static final String TXT_TYPICAL_STR	= "%d?";
@@ -113,6 +114,9 @@ public class ItemSlot extends Button {
 		
 		level = new BitmapText( PixelScene.pixelFont);
 		add(level);
+
+		staffStr = new BitmapText( PixelScene.pixelFont);
+		add(staffStr);
 	}
 	
 	@Override
@@ -151,6 +155,12 @@ public class ItemSlot extends Button {
 			level.x = x + (width - level.width());
 			level.y = y + (height - level.baseLine() - 1);
 			PixelScene.align(level);
+		}
+
+		if (staffStr != null){
+			staffStr.x = x;
+			staffStr.y = y + (height - staffStr.baseLine() - 1);
+			PixelScene.align(staffStr);
 		}
 
 	}
@@ -192,10 +202,10 @@ public class ItemSlot extends Button {
 		}
 
 		if (item == null){
-			status.visible = extra.visible = level.visible = false;
+			status.visible = extra.visible = level.visible = staffStr.visible = false;
 			return;
 		} else {
-			status.visible = extra.visible = level.visible = true;
+			status.visible = extra.visible = level.visible = staffStr.visible = true;
 		}
 
 		status.text( item.status() );
@@ -257,6 +267,15 @@ public class ItemSlot extends Button {
 					level.text("III"); break;
 			}
 			level.measure();
+			int str = ((Weapon)item).STRReq();
+			staffStr.text( Messages.format( TXT_STRENGTH, str ) );
+			if (str > Dungeon.hero.STR()) {
+				staffStr.hardlight( DEGRADED );
+			} else {
+				staffStr.resetColor();
+			}
+		} else {
+			staffStr.text(null);
 		}
 
 		layout();
@@ -271,6 +290,7 @@ public class ItemSlot extends Button {
 		status.alpha( alpha );
 		extra.alpha( alpha );
 		level.alpha( alpha );
+		staffStr.alpha( alpha );
 		if (itemIcon != null) itemIcon.alpha( alpha );
 	}
 
@@ -278,8 +298,10 @@ public class ItemSlot extends Button {
 
 		if (show){
 			add(extra);
+			add(staffStr);
 		} else {
 			remove(extra);
+			remove(staffStr);
 		}
 
 	}
