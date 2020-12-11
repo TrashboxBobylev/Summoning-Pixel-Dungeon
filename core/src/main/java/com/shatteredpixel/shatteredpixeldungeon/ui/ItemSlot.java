@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -45,6 +46,10 @@ public class ItemSlot extends Button {
 	public static final int FADED       = 0x999999;
 	public static final int WARNING		= 0xFF8800;
 	public static final int ENHANCED	= 0x3399FF;
+
+	public static final int BRONZE      = 0xFF8C44;
+	public static final int SILVER      = 0xC6C6C6;
+	public static final int GOLD        = 0xE8D906;
 
 	private static final float ENABLED	= 1.0f;
 	private static final float DISABLED	= 0.3f;
@@ -202,7 +207,7 @@ public class ItemSlot extends Button {
 			itemIcon.frame(ItemSpriteSheet.Icons.film.get(item.icon));
 			add(itemIcon);
 
-		} else if (item instanceof Weapon || item instanceof Armor) {
+		}  else if (item instanceof Weapon || item instanceof Armor) {
 
 			if (item.levelKnown){
 				int str = item instanceof Weapon ? ((Weapon)item).STRReq() : ((Armor)item).STRReq();
@@ -238,6 +243,20 @@ public class ItemSlot extends Button {
 			}
 		} else {
 			level.text( null );
+		}
+		if (item instanceof Staff){
+			switch (item.level()){
+				case 0:
+					level.hardlight(BRONZE);
+					level.text("I"); break;
+				case 1:
+					level.hardlight(SILVER);
+					level.text("II"); break;
+				case 2:
+					level.hardlight(GOLD);
+					level.text("III"); break;
+			}
+			level.measure();
 		}
 
 		layout();

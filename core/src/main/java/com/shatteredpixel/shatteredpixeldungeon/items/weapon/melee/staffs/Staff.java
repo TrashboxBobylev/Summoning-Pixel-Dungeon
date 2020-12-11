@@ -231,7 +231,7 @@ public class Staff extends Weapon {
 
     @Override
     public boolean isUpgradable() {
-        return level() < 3;
+        return level() < 2;
     }
 
     @Override
