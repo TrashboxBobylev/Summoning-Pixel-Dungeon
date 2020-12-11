@@ -1422,8 +1422,8 @@ public class Hero extends Char {
 				attackSkill++;
 				defenseSkill++;
                 if (heroClass == HeroClass.CONJURER) {
-                    if (lvl % 6 == 0) {
-                        attunement++;
+                    if (lvl % 3 == 0) {
+                        attunement += 0.5;
                     }
                 } else if (lvl == 6){
                     attunement++;

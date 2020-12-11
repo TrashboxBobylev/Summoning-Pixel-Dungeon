@@ -205,10 +205,15 @@ public enum HeroClass {
 
         new MagicalHolster().collect();
 
-        FroggitStaff staff = new FroggitStaff();
-        staff.identify().collect();
+        FroggitStaff staff1 = new FroggitStaff();
+        staff1.identify().collect();
+		FroggitStaff staff2 = new FroggitStaff();
+		staff2.identify().upgrade(1).collect();
+		FroggitStaff staff3 = new FroggitStaff();
+		staff3.identify().upgrade(2).collect();
 
-       Dungeon.quickslot.setSlot(1, staff);
+
+       Dungeon.quickslot.setSlot(1, staff1);
 
 
         hero.belongings.armor = ClassArmor.upgrade(hero, (Armor)(new ClothArmor().identify()));

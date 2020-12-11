@@ -206,7 +206,12 @@ public class Staff extends Weapon {
     }
 
     public int hp(int lvl){
-        return table.hp + table.hp_grow*lvl;
+        switch (level()) {
+            case 0: return table.hp1;
+            case 1: return table.hp2;
+            case 2: return table.hp3;
+        }
+        return 0;
     }
 
     //but they have additional stat: minion damage
@@ -218,7 +223,12 @@ public class Staff extends Weapon {
     }
 
     public int minionMin(int lvl) {
-        return table.min + table.min_grow*lvl;
+        switch (level()) {
+            case 0: return table.min1;
+            case 1: return table.min2;
+            case 2: return table.min3;
+        }
+        return 0;
     }
 
     public int minionmax() {
@@ -226,7 +236,12 @@ public class Staff extends Weapon {
     }
 
     public int minionMax(int lvl) {
-        return table.max + table.max_grow*lvl;
+        switch (level()) {
+            case 0: return table.max1;
+            case 1: return table.max2;
+            case 2: return table.max3;
+        }
+        return 0;
     }
 
     @Override
@@ -245,7 +260,12 @@ public class Staff extends Weapon {
     }
 
     public float requiredAttunement(){
-        return 1;
+        switch (level()) {
+            case 0: return table.att1;
+            case 1: return table.att2;
+            case 2: return table.att3;
+        }
+        return 0;
     }
 
     public void setClass(Minion.MinionClass minionClass){
@@ -579,13 +599,13 @@ public class Staff extends Weapon {
                     robeBonus = 1f + Dungeon.hero.belongings.armor.level() * 0.1f;
                 }
             }
-            info += "\n\n" + Messages.get(Staff.class, "stats_known", tier,
-                    augment.damageFactor(min()),
-                    augment.damageFactor(max()),
+            info += "\n\n" + Messages.get(Staff.class, "stats_known",
+                    tier,
                     STRReq(),
                     minionmin(),
                     minionmax(),
-                    (int)(hp(level()) * robeBonus));
+                    (int)(hp(level()) * robeBonus),
+                    requiredAttunement());
             if (STRReq() > Dungeon.hero.STR()) {
                 info += " " + Messages.get(Staff.class, "too_heavy_uh");
             }

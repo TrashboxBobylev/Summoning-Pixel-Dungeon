@@ -25,7 +25,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs;
 
 public enum MinionBalanceTable {
-    FROGGIT(10, 4, 4, 2,10, 3),
+    FROGGIT(10, 4, 10, 1.0f,
+            16, 6, 14, 1.5f,
+            21, 9, 18, 2.0f),
     GREY_RAT(28, 4, 3, 1, 13, 2),
     SLIME(25, 4, 2, 1, 8, 3),
     SHEEP(50, 10, 0, 0, 1, 0),
@@ -42,18 +44,28 @@ public enum MinionBalanceTable {
     IMP_QUEEN(120, 5, 5, 2, 30, 5),
     HACATU(50, 8, 5, 3, 29, 4);
 
-    public int hp;
-    public int hp_grow;
-    public int min;
-    public int min_grow;
-    public int max;
-    public int max_grow;
+    public int hp1;
+    public int hp2;
+    public int hp3;
+    public int min1;
+    public int min2;
+    public int min3;
+    public int max1;
+    public int max2;
+    public int max3;
+    public float att1;
+    public float att2;
+    public float att3;
+    MinionBalanceTable(int hp1, int min1, int max1, float att1,
+                        int hp2, int min2, int max2, float att2,
+                         int hp3, int min3, int max3, float att3){
+        this.hp1 = hp1; this.min1 = min1; this.max1 = max1; this.att1 = att1;
+        this.hp2 = hp2; this.min2 = min2; this.max2 = max2; this.att2 = att2;
+        this.hp3 = hp3; this.min3 = min3; this.max3 = max3; this.att3 = att3;
+    }
     MinionBalanceTable(int hp, int hp_grow, int min, int min_grow, int max, int max_grow){
-        this.hp = hp;
-        this.hp_grow = hp_grow;
-        this.min = min;
-        this.max = max;
-        this.min_grow = min_grow;
-        this.max_grow = max_grow;
+        this.hp1 = hp; this.min1 = min; this.max1 = max; this.att1 = 1;
+        this.hp2 = hp + hp_grow; this.min2 = min + min_grow; this.max2 = max; this.att2 = 2;
+        this.hp3 = hp + hp_grow * 2; this.min3 = min + min_grow * 2; this.max3 = max + max_grow * 2; this.att3 = 3;
     }
 }
