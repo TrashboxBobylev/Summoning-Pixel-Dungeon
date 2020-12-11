@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Enchanting;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
@@ -77,6 +78,7 @@ public class Staff extends Weapon {
     public static final String AC_SUMMON = "SUMMON";
     public static final String AC_ZAP = "ZAP";
     public static final String AC_ENHANCE = "ENHANCE";
+    public static final String AC_DOWNGRADE = "DOWNGRADE";
 
     public int curCharges = 1;
     public float partialCharge = 0f;
@@ -296,6 +298,7 @@ public class Staff extends Weapon {
             actions.add(AC_ENHANCE);
         }
         actions.remove( AC_EQUIP);
+        if (level() > 0) actions.add(AC_DOWNGRADE);
         return actions;
     }
 
@@ -322,6 +325,11 @@ public class Staff extends Weapon {
             curUser = hero;
             curItem = this;
             GameScene.selectCell( zapper );
+        } else if (action.equals(AC_DOWNGRADE)){
+            GameScene.flash(0xFFFFFF);
+            Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
+            level(level()-1);
+            GLog.warning( Messages.get(Staff.class, "lower_tier"));
         }
     }
 
@@ -650,6 +658,23 @@ public class Staff extends Weapon {
     }
 
     @Override
+    public String toString() {
+
+        String name = name();
+        String tier = "";
+        switch (level()){
+            case 0: tier = "I"; break;
+            case 1: tier = "II"; break;
+            case 2: tier = "III"; break;
+        }
+
+        name = Messages.format( "%s %s", name, tier  );
+
+        return name;
+
+    }
+
+    @Override
     public int value() {
         int price = 30 * tier;
         if (hasGoodEnchant()) {
@@ -659,7 +684,7 @@ public class Staff extends Weapon {
             price /= 2;
         }
         if (levelKnown && level() > 0) {
-            price *= (level() + 1);
+            price *= Math.pow(2, level());
         }
         if (price < 1) {
             price = 1;

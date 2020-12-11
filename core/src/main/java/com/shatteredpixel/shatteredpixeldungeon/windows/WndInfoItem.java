@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
@@ -70,10 +71,18 @@ public class WndInfoItem extends Window {
 	private void fillFields( Item item ) {
 		
 		int color = TITLE_COLOR;
-		if (item.levelKnown && item.level() > 0) {
-			color = ItemSlot.UPGRADED;
-		} else if (item.levelKnown && item.level() < 0) {
-			color = ItemSlot.DEGRADED;
+		if (!(item instanceof Staff)) {
+			if (item.levelKnown && item.level() > 0) {
+				color = ItemSlot.UPGRADED;
+			} else if (item.levelKnown && item.level() < 0) {
+				color = ItemSlot.DEGRADED;
+			}
+		} else {
+			switch (item.level()){
+				case 0: color = ItemSlot.BRONZE; break;
+				case 1: color = ItemSlot.SILVER; break;
+				case 2: color = ItemSlot.GOLD; break;
+			}
 		}
 
 		IconTitle titlebar = new IconTitle( item );
