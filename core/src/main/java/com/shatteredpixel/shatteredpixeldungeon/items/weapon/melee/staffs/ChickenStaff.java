@@ -40,9 +40,13 @@ public class ChickenStaff extends Staff {
         table = MinionBalanceTable.CHICKEN;
     }
 
-    //cheap minion
     @Override
-    public float requiredAttunement() {
-        return 0.5f;
+    public int getChargeTurns() {
+        switch (level()){
+            case 0: return 90;
+            case 1: return 45;
+            case 2: return 20;
+        }
+        return 0;
     }
 }

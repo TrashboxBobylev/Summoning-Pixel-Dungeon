@@ -27,12 +27,16 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.stationary;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Attunement;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MagicMissileSprite;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class MagicMissileMinion extends StationaryMinion {
     {
@@ -68,9 +72,19 @@ public class MagicMissileMinion extends StationaryMinion {
         if (hit( this, enemy, false )) {
             int dmg = Random.NormalIntRange(minDamage, maxDamage);
             if (Dungeon.hero.buff(Attunement.class) != null) dmg *= Attunement.empowering();
-            enemy.damage(dmg, this);
+            ArrayList<Char> affectedChars = new ArrayList<>();
+            affectedChars.add(enemy);
+            if (lvl > 0){
+                for (int i : PathFinder.NEIGHBOURS8){
+                    Char ch = Actor.findChar(enemy.pos + i);
+                    if (ch != null){
+                        affectedChars.add(ch);
+                    }
+                }
+            }
+            for (Char ch : affectedChars) ch.damage(dmg, this);
 
-            damage(2, this);
+            damage(lvl == 2 ? 1 : 2, this);
         } else {
             enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
         }
