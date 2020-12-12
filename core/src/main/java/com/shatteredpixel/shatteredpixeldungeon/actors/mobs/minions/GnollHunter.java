@@ -61,7 +61,7 @@ public class GnollHunter extends Minion {
         switch (lvl){
             case 0: mod = 1; break;
             case 1: mod = 0.66f; break;
-            case 2: mod = 0.33f; break;
+            case 2: mod = 0.30f; break;
         }
         return super.attackDelay() * mod;
     }
