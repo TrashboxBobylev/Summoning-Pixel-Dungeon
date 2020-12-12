@@ -29,6 +29,9 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SkeletonSprite;
 import com.watabou.noosa.audio.Sample;
@@ -56,28 +59,22 @@ public class Skele extends Minion {
             Char ch = findChar( pos + PathFinder.NEIGHBOURS8[i] );
             //do not hurt allies or hero
             if (ch != null && ch.isAlive() && ch.alignment == Alignment.ENEMY && ch != Dungeon.hero) {
-                int minDamage, maxDamage;
+                float bleed;
                 switch (lvl){
                     case 0: default:
-                        minDamage = 3;
-                        maxDamage = 20;
+                        bleed = 0;
                         break;
                     case 1:
-                        minDamage = 6;
-                        maxDamage = 35;
+                        bleed = 0.50f;
                         break;
                     case 2:
-                        minDamage = 9;
-                        maxDamage = 50;
-                        break;
-                    case 3:
-                        minDamage = 13;
-                        maxDamage = 75;
+                        bleed = 0.95f;
                         break;
                 }
-                int damage = Random.NormalIntRange(minDamage, maxDamage);
-                damage = Math.max( 0,  damage - (ch.drRoll() + ch.drRoll()) );
-                ch.damage( damage, this );
+                int damage = Bomb.damageRoll();
+                damage = Math.max( 0,  damage - (ch.drRoll()) );
+                ch.damage(Math.round(damage * (1 - bleed)), this );
+                Buff.affect(ch, Bleeding.class).set(damage*bleed/2);
             }
         }
 

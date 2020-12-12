@@ -50,6 +50,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.FroggitStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.GreyRatStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.SheepStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.SlimeStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
@@ -211,6 +214,13 @@ public enum HeroClass {
 		staff2.identify().upgrade(1).collect();
 		FroggitStaff staff3 = new FroggitStaff();
 		staff3.identify().upgrade(2).collect();
+
+		new SheepStaff().identify().collect();
+		new SheepStaff().identify().upgrade(1).collect();
+		new SheepStaff().identify().upgrade(2).collect();
+		new GreyRatStaff().identify().collect();
+		new GreyRatStaff().identify().upgrade(1).collect();
+		new GreyRatStaff().identify().upgrade(2).collect();
 
 
        Dungeon.quickslot.setSlot(1, staff1);

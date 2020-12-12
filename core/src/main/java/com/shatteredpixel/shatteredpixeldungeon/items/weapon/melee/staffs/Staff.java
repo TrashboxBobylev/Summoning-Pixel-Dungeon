@@ -548,7 +548,7 @@ public class Staff extends Weapon {
 
             LockedFloor lock = target.buff(LockedFloor.class);
             if (lock == null || lock.regenOn())
-                partialCharge += (1f / chargeTurns) * (Dungeon.hero.heroClass == HeroClass.CONJURER ? 1 : 0.9);
+                partialCharge += (1f / getChargeTurns()) * (Dungeon.hero.heroClass == HeroClass.CONJURER ? 1 : 0.9);
             updateQuickslot();
 
             for (Recharging bonus : target.buffs(Recharging.class)){

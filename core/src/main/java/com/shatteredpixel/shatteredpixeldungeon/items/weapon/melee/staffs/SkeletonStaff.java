@@ -39,4 +39,14 @@ public class SkeletonStaff extends Staff {
         setClass(Minion.MinionClass.DEFENSE);
         table = MinionBalanceTable.SKELETON;
     }
+
+    @Override
+    public int getChargeTurns() {
+        switch (level()){
+            case 0: return 600;
+            case 1: return 300;
+            case 2: return 125;
+        }
+        return 0;
+    }
 }
