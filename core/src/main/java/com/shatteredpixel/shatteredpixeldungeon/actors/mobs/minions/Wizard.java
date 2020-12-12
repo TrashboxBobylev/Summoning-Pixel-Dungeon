@@ -98,8 +98,13 @@ public class Wizard extends Minion implements Callback {
 				Buff.prolong( enemy, buff, 4 );
 				if (buff(SupportPower.class) != null) Buff.prolong(enemy, buff, 4);
 			}
+			int minDamage = -1, maxDamage = -1;
+			switch (lvl){
+				case 1: minDamage = 1; maxDamage = 4; break;
+				case 2: minDamage = 2; maxDamage = 6; break;
+			}
 			
-			int dmg = Random.Int( -1, -1 );
+			int dmg = Random.Int( minDamage, maxDamage );
 			enemy.damage( dmg, new DarkBolt() );
 		} else {
 			enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
@@ -118,5 +123,16 @@ public class Wizard extends Minion implements Callback {
 
 	{
 		resistances.add( Grim.class );
+	}
+
+	@Override
+	protected float attackDelay() {
+		float mod = 0;
+		switch (lvl){
+			case 0: mod = 1; break;
+			case 1: mod = 0.75f; break;
+			case 2: mod = 0.66f; break;
+		}
+		return super.attackDelay() * mod;
 	}
 }
