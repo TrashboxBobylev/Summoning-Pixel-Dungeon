@@ -418,6 +418,7 @@ public class Staff extends Weapon {
             minion.enchantment = enchantment;
             minion.lvl = level();
             minion.minionClass = minionClass;
+            minion.attunement = requiredAttunement();
 
             //if we have upgraded robe, increase hp
             float robeBonus = 1f;
