@@ -36,10 +36,4 @@ public class GooStaff extends Staff {
         setClass(Minion.MinionClass.MELEE);
         table = MinionBalanceTable.GOO;
     }
-
-    //heavy minion
-    @Override
-    public float requiredAttunement() {
-        return 2f;
-    }
 }

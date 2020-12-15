@@ -60,9 +60,13 @@ public class RoseWraith extends StationaryMinion {
 
         Timer timer = buff(Timer.class);
         if (timer == null){
-            int timing = Random.IntRange(4, 8);
+            int timing = 6;
+            switch (lvl){
+                case 1: timing = 5; break;
+                case 2: timing = 0; break;
+            }
             if (buff(MagicPower.class) != null) timing /= 3;
-            Buff.affect(this, Timer.class, timing*attackDelay());
+            if (timing != 0) Buff.affect(this, Timer.class, timing*attackDelay());
             Wraith.summonAt(this);
             this.damage(1, this);
         }

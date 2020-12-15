@@ -32,14 +32,19 @@ public class Robo extends Minion{
     {
         spriteClass = DM150Sprite.class;
         isTanky = true;
-        attunement = 1.5f;
-        baseMinDR = 10 + lvl*2;
-        baseMaxDR = 18 + lvl*4;
+        baseMinDR = 10;
+        baseMaxDR = 18;
     }
 
     @Override
     protected float attackDelay() {
-        return super.attackDelay()*3f;
+        float mod = 0;
+        switch (lvl){
+            case 0: mod = 3; break;
+            case 1: mod = 2f; break;
+            case 2: mod = 1f; break;
+        }
+        return super.attackDelay() * mod;
     }
 
     @Override

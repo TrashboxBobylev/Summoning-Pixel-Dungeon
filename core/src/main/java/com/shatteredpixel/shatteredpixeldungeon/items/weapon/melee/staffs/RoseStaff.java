@@ -38,4 +38,14 @@ public class RoseStaff extends StationaryStaff {
         setClass(Minion.MinionClass.MAGIC);
         table = MinionBalanceTable.DARK_ROSE;
     }
+
+    @Override
+    public int getChargeTurns() {
+        switch (level()){
+            case 0: return 400;
+            case 1: return 800;
+            case 2: return 150;
+        }
+        return 0;
+    }
 }

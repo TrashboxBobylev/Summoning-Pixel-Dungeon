@@ -36,14 +36,17 @@ public class RoboStaff extends Staff {
         minionType = Robo.class;
         tier = 4;
         isTanky = true;
-        chargeTurns = 675;
         setClass(Minion.MinionClass.DEFENSE);
         table = MinionBalanceTable.ROBOT;
     }
 
-    //heavy minion
     @Override
-    public float requiredAttunement() {
-        return 1.5f;
+    public int getChargeTurns() {
+        switch (level()){
+            case 0: return 675;
+            case 1: return 875;
+            case 2: return 1175;
+        }
+        return 0;
     }
 }

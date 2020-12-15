@@ -55,8 +55,8 @@ public class GooMinion extends Minion {
         properties.add(Property.DEMONIC);
         properties.add(Property.ACIDIC);
 
-        baseMinDR = 5;
-        baseMaxDR = 8;
+        baseMinDR = 5 + lvl*4;
+        baseMaxDR = 8 + lvl*5;
     }
 
     private int pumpedUp = 0;
@@ -73,24 +73,45 @@ public class GooMinion extends Minion {
         return (int)(super.defenseSkill(enemy) * ((HP*2 <= HT)? 1.5 : 1));
     }
 
+    private int chargeTurns(){
+        switch (lvl){
+            case 1: return 4;
+            case 2: return 6;
+        }
+        return 2;
+    }
+
     @Override
     public int damageRoll() {
         int min = minDamage;
-        int max = Math.round((HP*2 <= HT) ? maxDamage*1.25f : maxDamage);
+        int max = maxDamage;
         if (pumpedUp > 0) {
             pumpedUp = 0;
-            PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.solid, null ), 2 );
+            PathFinder.buildDistanceMap(pos, BArray.not(Dungeon.level.solid, null), 2);
             for (int i = 0; i < PathFinder.distance.length; i++) {
                 if (PathFinder.distance[i] < Integer.MAX_VALUE)
                     CellEmitter.get(i).burst(ElmoParticle.FACTORY, 10);
             }
-            Sample.INSTANCE.play( Assets.Sounds.BURNING );
+            switch (lvl) {
+                case 0:
+                    min = 20;
+                    max = 87;
+                    break;
+                case 1:
+                    min = 40;
+                    max = 112;
+                    break;
+                case 2:
+                    min = 70;
+                    max = 135;
+                    break;
+            }
+            Sample.INSTANCE.play(Assets.Sounds.BURNING);
             float multiplier = 1f;
             if (Dungeon.hero.buff(Attunement.class) != null) multiplier *= Attunement.empowering();
-            return Random.NormalIntRange((int) (Math.round(min*2.5f) * multiplier), (int) (Math.round(max*2.5f) * multiplier));
-        } else {
-            return Random.NormalIntRange( min, max );
+            min *= multiplier; max *= multiplier;
         }
+        return Random.NormalIntRange( min, max );
     }
 
     @Override
@@ -141,12 +162,12 @@ public class GooMinion extends Minion {
             spend( attackDelay() );
 
             return true;
-        } else if (pumpedUp >= 2 || Random.Int( (HP*2 <= HT) ? 2 : 5 ) > 0) {
+        } else if (pumpedUp >= chargeTurns() || Random.Int( (HP*2 <= HT) ? 2 : 5 ) > 0) {
 
             boolean visible = Dungeon.level.heroFOV[pos];
 
             if (visible) {
-                if (pumpedUp >= 2) {
+                if (pumpedUp >= chargeTurns()) {
                     ((GooMinionSprite) sprite).pumpAttack();
                 }
                 else
