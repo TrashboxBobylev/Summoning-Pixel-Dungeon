@@ -168,6 +168,7 @@ public class StationaryStaff extends Staff {
                     Math.round(minionMax(level()) * RingOfAttunement.damageMultiplier(owner)));
             Statistics.summonedMinions++;
             minion.strength = STRReq();
+            minion.attunement = requiredAttunement();
             this.customizeMinion(minion);
 
             //if we have upgraded robe, increase hp
