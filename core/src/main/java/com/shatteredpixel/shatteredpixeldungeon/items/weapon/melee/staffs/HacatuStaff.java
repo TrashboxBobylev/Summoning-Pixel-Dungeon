@@ -38,4 +38,14 @@ public class HacatuStaff extends Staff{
         setClass(Minion.MinionClass.RANGE);
         table = MinionBalanceTable.HACATU;
     }
+
+    @Override
+    public int getChargeTurns() {
+        switch (level()){
+            case 0: return 400;
+            case 1: return 625;
+            case 2: return 1400;
+        }
+        return 0;
+    }
 }
