@@ -207,17 +207,6 @@ public enum HeroClass {
 
         FroggitStaff staff1 = new FroggitStaff();
         staff1.identify().collect();
-		FroggitStaff staff2 = new FroggitStaff();
-		staff2.identify().upgrade(1).collect();
-		FroggitStaff staff3 = new FroggitStaff();
-		staff3.identify().upgrade(2).collect();
-
-		new WizardStaff().identify().collect();
-		new WizardStaff().identify().upgrade(1).collect();
-		new WizardStaff().identify().upgrade(2).collect();
-		new GnollHunterStaff().identify().collect();
-		new GnollHunterStaff().identify().upgrade(1).collect();
-		new GnollHunterStaff().identify().upgrade(2).collect();
 
         Dungeon.quickslot.setSlot(1, staff1);
 
