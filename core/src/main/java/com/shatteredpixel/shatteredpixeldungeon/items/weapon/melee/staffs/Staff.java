@@ -157,6 +157,7 @@ public class Staff extends Weapon {
         curCharges = Math.min( curCharges + 1, 1);
         updateQuickslot();
 
+
         return this;
     }
 
@@ -333,7 +334,30 @@ public class Staff extends Weapon {
         }
     }
 
-    public boolean tryToZap( Hero owner, int target ){
+    @Override
+    public Item random() {
+        //I: 75% (3/4)
+        //II: 25% (1/4)
+        int n = 0;
+        if (Random.Int(4) == 0) {
+            n++;
+        }
+        level(n);
+
+        //30% chance to be cursed
+        //25% chance to be enchanted
+        float effectRoll = Random.Float();
+        if (effectRoll < 0.3f) {
+            enchant(Enchantment.randomCurse());
+            cursed = true;
+        } else if (effectRoll >= 0.75f){
+            enchant();
+        }
+
+        return this;
+    }
+
+    public boolean tryToZap(Hero owner, int target ){
 
         if (owner.buff(MagicImmune.class) != null){
             GLog.warning( Messages.get(Wand.class, "no_magic") );
