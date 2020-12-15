@@ -166,7 +166,6 @@ public abstract class Recipe {
 		new ElixirOfDragonsBlood.Recipe(),
 		new ElixirOfIcyTouch.Recipe(),
 		new ElixirOfMight.Recipe(),
-        new ElixirOfAttunement.Recipe(),
 		new ElixirOfHoneyedHealing.Recipe(),
 		new ElixirOfToxicEssence.Recipe(),
 		new BlizzardBrew.Recipe(),
