@@ -42,7 +42,6 @@ import com.watabou.utils.Random;
 public class GasterBlaster extends StationaryMinion {
     {
         spriteClass = BlasterSprite.class;
-        attunement = 2f;
         baseMinDR = 9;
         baseMaxDR = 11;
     }
@@ -56,6 +55,12 @@ public class GasterBlaster extends StationaryMinion {
 
     @Override
     protected float attackDelay() {
+        float mod = 0;
+        switch (lvl){
+            case 0: mod = 2; break;
+            case 1: mod = 1.25f; break;
+            case 2: mod = 0.75f; break;
+        }
         float v = super.attackDelay() * 2f;
         if (buff(MagicPower.class) != null) v *= 1.75;
         return v;
@@ -103,6 +108,14 @@ public class GasterBlaster extends StationaryMinion {
                 ch.sprite.showStatus(CharSprite.NEUTRAL, ch.defenseVerb());
             }
         }
-        damage(5, this);
+        damage(decay(), this);
+    }
+
+    private int decay(){
+        switch (lvl){
+            case 1: return 6;
+            case 2: return 8;
+        }
+        return 4;
     }
 }

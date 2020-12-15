@@ -64,9 +64,15 @@ public enum MinionBalanceTable {
     GOO(70, 8, 35, 2.0f,
             80, 4, 26, 2.0f,
             0, 1, 17, 2.25f),
-    GASTER_BLASTER(80, 12, 15, 5, 50, 15),
-    IMP_QUEEN(120, 5, 5, 2, 30, 5),
-    HACATU(50, 8, 5, 3, 29, 4);
+    GASTER_BLASTER(80, 15, 60, 2,
+            90, 12, 40, 2.25f,
+            100, 10, 34, 2.75f),
+    IMP_QUEEN(120, 5, 30, 3.0f,
+            60, 2, 23, 2.0f,
+            20, 1, 8, 1.0f),
+    HACATU(50, 6, 30, 2.0f,
+            90, 12, 60, 4.0f,
+            125, 24, 120, 8.0f);
 
     public int hp1;
     public int hp2;

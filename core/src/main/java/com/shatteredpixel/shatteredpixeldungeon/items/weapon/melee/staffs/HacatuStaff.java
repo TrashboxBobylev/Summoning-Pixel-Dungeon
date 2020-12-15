@@ -38,9 +38,4 @@ public class HacatuStaff extends Staff{
         setClass(Minion.MinionClass.RANGE);
         table = MinionBalanceTable.HACATU;
     }
-
-    @Override
-    public float requiredAttunement() {
-        return 2f;
-    }
 }

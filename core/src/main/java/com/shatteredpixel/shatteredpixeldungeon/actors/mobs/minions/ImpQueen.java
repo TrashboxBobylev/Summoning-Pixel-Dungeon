@@ -111,7 +111,11 @@ public class ImpQueen extends Minion {
         if (hit( this, enemy, true ) &&
                 (!enemy.properties().contains(Char.Property.BOSS)
                 && !enemy.properties().contains(Char.Property.MINIBOSS))) {
-            float duration = 250f - 30f * lvl;
+            float duration = 250f;
+            switch (lvl){
+                case 1: duration = 150f; break;
+                case 2: duration = 75f; break;
+            }
             if (buff(MagicPower.class) != null) duration += 100f;
             Buff.append(this, MorphTimer.class, duration);
             int impPosition = enemy.pos;
@@ -134,11 +138,21 @@ public class ImpQueen extends Minion {
             GameScene.add(imp);
             ScrollOfTeleportation.appear(imp, impPosition);
             CellEmitter.center( impPosition ).burst( MagicMissile.WardParticle.UP, Random.IntRange( 8, 15 ) );
+            float impMod = 2.5f;
+            switch (lvl){
+                case 1: impMod = 150f; break;
+                case 2: impMod = 75f; break;
+            }
             imp.setDamage(
-                   Math.round(minDamage*2.5f),
-                    Math.round(maxDamage*2.5f));
+                   Math.round(minDamage*impMod),
+                    Math.round(maxDamage*impMod));
             imp.strength = strength;
-            imp.setMaxHP(HT / 6 + lvl);
+            switch (lvl){
+                case 0: impMod = 20; break;
+                case 1: impMod = 8; break;
+                case 2: impMod = 3; break;
+            }
+            imp.setMaxHP((int) impMod);
         } else {
             enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
         }
