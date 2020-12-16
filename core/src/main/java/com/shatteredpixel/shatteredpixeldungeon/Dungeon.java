@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
@@ -342,6 +343,8 @@ public class Dungeon {
 		level.addRespawner();
 
 		hero.pos = pos;
+
+		hero.usedAttunement = 0;
 		
 		for(Mob m : level.mobs){
 			if (m.pos == hero.pos){
@@ -352,6 +355,9 @@ public class Dungeon {
 						break;
 					}
 				}
+			}
+			if (m instanceof Minion){
+				hero.usedAttunement += ((Minion) m).attunement;
 			}
 		}
 		
