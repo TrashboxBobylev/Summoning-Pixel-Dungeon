@@ -251,8 +251,8 @@ public class LoveHolder extends Artifact {
                 else
                     QuickSlotButton.target(Actor.findChar(cell));
 
-                if (charge >= str) {
-                    charge -= str;
+                if (Dungeon.hero.mana >= str) {
+                    Dungeon.hero.mana -= str;
                     updateQuickslot();
                     curUser.busy();
                     Invisibility.dispel();
@@ -278,7 +278,7 @@ public class LoveHolder extends Artifact {
                                         int wastedHealing = (ch.HP + healing) - ch.HT;
                                         if (wastedHealing > 0){
                                             healing -= wastedHealing;
-                                            if (soultype < 2) charge += wastedHealing / 2; //some of unnecessary soul will return
+                                            if (soultype < 2) Dungeon.hero.mana += wastedHealing / 2; //some of unnecessary soul will return
                                         }
                                         updateQuickslot();
 
@@ -295,7 +295,7 @@ public class LoveHolder extends Artifact {
                                             ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healing);
                                         } else if (soultype == 2){
                                             healing *= 2;
-                                            charge -= str;
+                                            Dungeon.hero.mana -= str;
                                             //searching for neighbours
                                             ArrayList<Minion> neighbours = new ArrayList<>();
 

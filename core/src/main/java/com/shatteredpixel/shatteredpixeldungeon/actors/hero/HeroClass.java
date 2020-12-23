@@ -222,7 +222,7 @@ public enum HeroClass {
         hero.attunement = 1;
         hero.HP = hero.HT = 15;
 
-        hero.mana = 20;
+        hero.mana = 0;
         hero.maxMana = 20;
 
         new PotionOfStrength().identify();
