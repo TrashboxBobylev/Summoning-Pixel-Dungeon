@@ -568,9 +568,11 @@ public class Staff extends Weapon {
                         partialCharge = 0;
                     }
 
-                    spend( TICK );
+
                 }
             }
+
+            spend( TICK );
 
             return true;
         }
