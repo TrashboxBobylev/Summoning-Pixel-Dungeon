@@ -39,4 +39,14 @@ public class WizardStaff extends Staff{
         table = MinionBalanceTable.WIZARD;
         chargeTurns = 500;
     }
+
+    @Override
+    public int getChargeTurns() {
+        switch (level()){
+            case 0: return 500;
+            case 1: return 900;
+            case 2: return 1400;
+        }
+        return 0;
+    }
 }
