@@ -50,7 +50,7 @@ public class FoodRegen extends Buff {
 		} else {
 			partialHP += fullHP / 50f;
 			while (partialHP > 1){
-				target.HP = Math.max(target.HP + 1, target.HT);
+				target.HP = Math.min(target.HP + 1, target.HT);
 				partialHP--;
 			}
 		}

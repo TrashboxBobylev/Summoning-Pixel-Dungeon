@@ -701,7 +701,7 @@ public abstract class Mob extends Char {
         if (((cause instanceof Minion) || (cause instanceof Hero && ((Hero) cause).subClass != HeroSubClass.OCCULTIST && buff(Knife.SoulGain.class) != null)) && buff != null){
             int gain = EXP*2;
             //if (Dungeon.hero.subClass == HeroSubClass.OCCULTIST) gain *= 1.5f;
-			Dungeon.hero.mana = Math.max(Dungeon.hero.mana + gain, Dungeon.hero.maxMana);
+			Dungeon.hero.mana = Math.min(Dungeon.hero.mana + gain, Dungeon.hero.maxMana);
             if (gain == 0 || Dungeon.hero.mana == Dungeon.hero.maxMana) sprite.showStatus(CharSprite.DEFAULT, "+%dM", gain);
         }
 
