@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Enchanting;
@@ -552,19 +553,24 @@ public class Staff extends Weapon {
 
         @Override
         public boolean act() {
-            if (curCharges < 1)
-                recharge();
 
-            while (partialCharge >= 1 && curCharges < 1) {
-                partialCharge--;
-                curCharges++;
+            for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+                if (mob instanceof Minion && !(mob.alignment == Char.Alignment.ALLY && mob.getClass() == minionType)) {
+                    if (curCharges < 1)
+                        recharge();
+
+                    while (partialCharge >= 1 && curCharges < 1) {
+                        partialCharge--;
+                        curCharges++;
+                    }
+
+                    if (curCharges == 1){
+                        partialCharge = 0;
+                    }
+
+                    spend( TICK );
+                }
             }
-
-            if (curCharges == 1){
-                partialCharge = 0;
-            }
-
-            spend( TICK );
 
             return true;
         }
