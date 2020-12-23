@@ -525,7 +525,25 @@ public class ItemSpriteSheet {
         assignItemRect(ARTIFACT_LOVE3,      14, 14);
 	}
 
-	                                                                                    //16 free slots
+	private static final int C_SPELLS = xy(1, 18);
+	public static final int STARS             = C_SPELLS +0;
+	public static final int HEAL            = C_SPELLS +1;
+	public static final int ZAP             = C_SPELLS +2;
+	public static final int SHIELD          = C_SPELLS +3;
+	public static final int SHOCKER         = C_SPELLS +4;
+	public static final int CAMOUFLAGE      = C_SPELLS +5;
+	public static final int CLONE           = C_SPELLS +6;
+	public static final int GONER           = C_SPELLS +7;
+	static {
+		assignItemRect(STARS, 11, 11);
+		assignItemRect(HEAL, 10, 10);
+		assignItemRect(ZAP, 10, 7);
+		assignItemRect(SHIELD, 11, 11);
+		assignItemRect(SHOCKER, 13, 15);
+		assignItemRect(CAMOUFLAGE, 14, 14);
+		assignItemRect(CLONE, 14, 13);
+		assignItemRect(GONER, 16, 16);
+	}
 
 	private static final int SCROLLS        =                               xy(1, 19);  //16 slots
 	public static final int SCROLL_KAUNAN   = SCROLLS+0;
@@ -671,20 +689,20 @@ public class ItemSpriteSheet {
 	                                                                                    //16 free slots
 	
 	private static final int SPELLS         =                               xy(1, 27);  //16 slots
-	public static final int MAGIC_PORTER    = SPELLS+0;
-	public static final int PHASE_SHIFT     = SPELLS+1;
-	public static final int WILD_ENERGY = SPELLS+2;
-	public static final int RETURN_BEACON   = SPELLS+3;
+	public static final int MAGIC_PORTER    = C_SPELLS +0;
+	public static final int PHASE_SHIFT     = C_SPELLS +1;
+	public static final int WILD_ENERGY = C_SPELLS +2;
+	public static final int RETURN_BEACON   = C_SPELLS +3;
 	
-	public static final int AQUA_BLAST      = SPELLS+5;
-	public static final int FEATHER_FALL    = SPELLS+6;
-	public static final int RECLAIM_TRAP    = SPELLS+7;
-    public static final int ENRAGE    = SPELLS+8;
+	public static final int AQUA_BLAST      = C_SPELLS +5;
+	public static final int FEATHER_FALL    = C_SPELLS +6;
+	public static final int RECLAIM_TRAP    = C_SPELLS +7;
+    public static final int ENRAGE    = C_SPELLS +8;
 
-	public static final int CURSE_INFUSE    = SPELLS+9;
-	public static final int MAGIC_INFUSE    = SPELLS+10;
-	public static final int ALCHEMIZE       = SPELLS+11;
-	public static final int RECYCLE         = SPELLS+12;
+	public static final int CURSE_INFUSE    = C_SPELLS +9;
+	public static final int MAGIC_INFUSE    = C_SPELLS +10;
+	public static final int ALCHEMIZE       = C_SPELLS +11;
+	public static final int RECYCLE         = C_SPELLS +12;
 	static{
 		assignItemRect(MAGIC_PORTER,    12, 11);
 		assignItemRect(PHASE_SHIFT,     12, 11);
