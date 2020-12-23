@@ -167,8 +167,8 @@ public class Hero extends Char {
 	public void updateHT( boolean boostHP ){
 		int curHT = HT;
 
-		float adjustHT = heroClass == HeroClass.CONJURER ? 15 : 20;
-        float adjustScaling = heroClass == HeroClass.CONJURER ? 4 : 5;
+		float adjustHT = heroClass == HeroClass.CONJURER ? 10 : 20;
+        float adjustScaling = heroClass == HeroClass.CONJURER ? 2 : 5;
 
 		HT = (int) ((adjustHT + adjustScaling*(lvl-1)) + HTBoost);
 		float multiplier = RingOfMight.HTMultiplier(this);
@@ -1436,6 +1436,7 @@ public class Hero extends Char {
                     if (lvl % 3 == 0) {
                         attunement += 0.5;
                     }
+                    maxMana += 5;
                 } else if (lvl == 6){
                     attunement++;
                 }

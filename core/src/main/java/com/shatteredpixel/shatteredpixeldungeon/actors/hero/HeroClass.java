@@ -220,7 +220,7 @@ public enum HeroClass {
         Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
 
         hero.attunement = 1;
-        hero.HP = hero.HT = 15;
+        hero.HP = hero.HT = 10;
 
         hero.mana = 0;
         hero.maxMana = 20;
