@@ -55,7 +55,9 @@ public class StatusPane extends Component {
 	private Image rawShielding;
 	private Image shieldedHP;
 	private Image hp;
+	private Image mp;
 	private BitmapText hpText;
+	private BitmapText mpText;
 
 	private Image exp;
 
@@ -122,6 +124,13 @@ public class StatusPane extends Component {
 		hpText.alpha(0.6f);
 		add(hpText);
 
+		mp = new Image( Assets.Interfaces.MP_BAR );
+		add( mp );
+
+		mpText = new BitmapText(PixelScene.pixelFont);
+		mpText.alpha(0.6f);
+		add(mpText);
+
 		exp = new Image( Assets.Interfaces.XP_BAR );
 		add( exp );
 
@@ -174,6 +183,15 @@ public class StatusPane extends Component {
 		hpText.y -= 0.001f; //prefer to be slightly higher
 		PixelScene.align(hpText);
 
+		mp.x = hp.width() + 16;
+		mp.y = 4;
+
+		mpText.scale.set(PixelScene.align(0.5f));
+		mpText.x = mp.x + 10;
+		mpText.y = mp.y + 4 + (mp.height - (mpText.baseLine()+mpText.scale.y))/2f;
+		mpText.y -= 0.001f; //prefer to be slightly higher
+		PixelScene.align(mpText);
+
 		bossHP.setPos( 6 + (width - bossHP.width())/2, 20);
 
 		depth.x = width - 35.5f - depth.width() / 2f;
@@ -223,6 +241,16 @@ public class StatusPane extends Component {
 			hpText.text(health + "/" + max);
 		} else {
 			hpText.text(health + "+" + shield +  "/" + max);
+		}
+
+		int mana = Dungeon.hero.mana;
+		int maxMana = Dungeon.hero.maxMana;
+		if (maxMana > 0) {
+			mp.scale.x = Math.max(0, (mana) / (float) maxMana);
+			mpText.text(mana + "/" + maxMana);
+		} else {
+			mp.scale.x = 0;
+			mpText.text("");
 		}
 
 		exp.scale.x = (width / exp.width) * Dungeon.hero.exp / Dungeon.hero.maxExp();

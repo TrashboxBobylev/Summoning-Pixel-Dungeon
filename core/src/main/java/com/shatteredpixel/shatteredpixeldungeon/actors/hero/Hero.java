@@ -133,6 +133,9 @@ public class Hero extends Char {
 	public float attunement = 1;
 	public float usedAttunement;
 
+	public int mana = 0;
+	public int maxMana = 0;
+
 	public float attunement(){
 	    return attunement + RingOfAttunement.attunementMultiplier(this) + (subClass == HeroSubClass.SOUL_REAVER ? 1 : 0);
     }
@@ -204,6 +207,8 @@ public class Hero extends Char {
     private static final String ATTUNEMENT		= "attunement";
     private static final String USED_ATTUNEMENT		= "used_attunement";
 	private static final String LASTMOVE = "last_move";
+	private static final String MANA = "mana";
+	private static final String MAX_MANA = "max_mana";
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 
@@ -224,6 +229,9 @@ public class Hero extends Char {
 		
 		bundle.put( HTBOOST, HTBoost );
 		bundle.put( LASTMOVE, lastMovPos);
+
+		bundle.put( MANA, mana);
+		bundle.put( MAX_MANA, maxMana);
 
 		belongings.storeInBundle( bundle );
 	}
@@ -248,6 +256,9 @@ public class Hero extends Char {
 		HTBoost = bundle.getInt(HTBOOST);
 
 		lastMovPos = bundle.getInt(LASTMOVE);
+
+		mana = bundle.getInt(MANA);
+		maxMana = bundle.getInt(MAX_MANA);
 		
 		belongings.restoreFromBundle( bundle );
 	}

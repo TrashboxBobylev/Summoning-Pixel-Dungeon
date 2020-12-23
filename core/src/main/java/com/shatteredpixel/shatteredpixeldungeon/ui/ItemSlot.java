@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.magic.ConjurerSpell;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff;
@@ -254,7 +255,7 @@ public class ItemSlot extends Button {
 		} else {
 			level.text( null );
 		}
-		if (item instanceof Staff){
+		if (item instanceof Staff || item instanceof ConjurerSpell){
 			switch (item.level()){
 				case 0:
 					level.hardlight(BRONZE);
@@ -267,12 +268,14 @@ public class ItemSlot extends Button {
 					level.text("III"); break;
 			}
 			level.measure();
-			int str = ((Weapon)item).STRReq();
-			staffStr.text( Messages.format( TXT_STRENGTH, str ) );
-			if (str > Dungeon.hero.STR()) {
-				staffStr.hardlight( DEGRADED );
-			} else {
-				staffStr.resetColor();
+			if (item instanceof Staff) {
+				int str = ((Weapon)item).STRReq();
+				staffStr.text( Messages.format( TXT_STRENGTH, str ) );
+				if (str > Dungeon.hero.STR()) {
+					staffStr.hardlight( DEGRADED );
+				} else {
+					staffStr.resetColor();
+				}
 			}
 		} else {
 			staffStr.text(null);
