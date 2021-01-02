@@ -35,10 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LoveHolder;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.SupplyBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Webbomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
@@ -203,7 +200,7 @@ public enum HeroClass {
 
         (hero.belongings.weapon = new Knife()).identify();
 
-        new MagicalHolster().collect();
+        new ConjurerBook().collect();
 
         FroggitStaff staff1 = new FroggitStaff();
         staff1.identify().collect();
@@ -212,12 +209,10 @@ public enum HeroClass {
 
         hero.belongings.armor = ClassArmor.upgrade(hero, (Armor)(new ClothArmor().identify()));
 
-        LoveHolder cloak = new LoveHolder();
-        (hero.belongings.artifact = cloak).identify();
-        hero.belongings.artifact.activate( hero );
-        Dungeon.quickslot.setSlot(0, hero.belongings.artifact);
-
-        Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
+//        LoveHolder cloak = new LoveHolder();
+//        (hero.belongings.artifact = cloak).identify();
+//        hero.belongings.artifact.activate( hero );
+//        Dungeon.quickslot.setSlot(0, hero.belongings.artifact);
 
         hero.attunement = 1;
         hero.HP = hero.HT = 10;
