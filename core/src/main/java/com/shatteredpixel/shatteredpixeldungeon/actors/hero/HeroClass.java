@@ -225,6 +225,8 @@ public enum HeroClass {
         hero.mana = 0;
         hero.maxMana = 20;
 
+        new ScrollOfUpgrade().quantity(3).identify().collect();
+
         new PotionOfStrength().identify();
         new ScrollOfAttunement().identify();
 

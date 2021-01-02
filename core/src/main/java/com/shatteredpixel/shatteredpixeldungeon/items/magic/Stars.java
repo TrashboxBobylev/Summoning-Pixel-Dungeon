@@ -55,6 +55,7 @@ public class Stars extends ConjurerSpell {
                             Sample.INSTANCE.play( Assets.Sounds.HIT_MAGIC, 1, Random.Float(0.87f, 1.15f) );
 
                             ch.sprite.burst(0xFFFFFFFF, buffedLvl() / 2 + 2);
+                            curUser.spendAndNext( 1f );
                         }
                     } );
         }
@@ -92,5 +93,10 @@ public class Stars extends ConjurerSpell {
     @Override
     public String desc() {
         return Messages.get(this, "desc", min(), max(), manaCost());
+    }
+
+    @Override
+    protected void fx(Ballistica bolt, Callback callback) {
+        Sample.INSTANCE.play( Assets.Sounds.ZAP );
     }
 }
