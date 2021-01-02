@@ -47,17 +47,10 @@ public class Stars extends ConjurerSpell {
     public void effect(Ballistica trajectory) {
         Char ch = Actor.findChar(trajectory.collisionPos);
         if (ch != null){
-            ((MissileSprite) Dungeon.hero.sprite.parent.recycle( MissileSprite.class )).
-                    reset( Dungeon.hero.sprite, ch.sprite, new Stars(), new Callback() {
-                        @Override
-                        public void call() {
-                            ch.damage(damageRoll(), this);
-                            Sample.INSTANCE.play( Assets.Sounds.HIT_MAGIC, 1, Random.Float(0.87f, 1.15f) );
+            ch.damage(damageRoll(), this);
+            Sample.INSTANCE.play( Assets.Sounds.HIT_MAGIC, 1, Random.Float(0.87f, 1.15f) );
 
-                            ch.sprite.burst(0xFFFFFFFF, buffedLvl() / 2 + 2);
-                            curUser.spendAndNext( 1f );
-                        }
-                    } );
+            ch.sprite.burst(0xFFFFFFFF, buffedLvl() / 2 + 2);
         }
     }
 
@@ -97,6 +90,8 @@ public class Stars extends ConjurerSpell {
 
     @Override
     protected void fx(Ballistica bolt, Callback callback) {
+        ((MissileSprite) Dungeon.hero.sprite.parent.recycle( MissileSprite.class )).
+                reset( Dungeon.hero.sprite, bolt.collisionPos, new Stars(), callback);
         Sample.INSTANCE.play( Assets.Sounds.ZAP );
     }
 }
