@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.SupplyBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Webbomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
+import com.shatteredpixel.shatteredpixeldungeon.items.magic.Heal;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Stars;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
@@ -221,6 +222,9 @@ public enum HeroClass {
         Stars star = new Stars();
         star.collect();
 		Dungeon.quickslot.setSlot(2, star);
+		Heal heal = new Heal();
+		heal.collect();
+		Dungeon.quickslot.setSlot(0, heal);
 
         hero.mana = 0;
         hero.maxMana = 20;
