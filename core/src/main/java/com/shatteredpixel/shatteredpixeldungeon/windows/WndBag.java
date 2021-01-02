@@ -99,8 +99,8 @@ public class WndBag extends WndTabbed {
 		NOT_EQUIPPED
 	}
 
-	protected static final int COLS_P    = 4;
-	protected static final int COLS_L    = 6;
+	protected static final int COLS_P    = 5;
+	protected static final int COLS_L    = 5;
 	
 	protected static int SLOT_WIDTH_P   = 28;
 	protected static int SLOT_WIDTH_L   = 28;
@@ -178,7 +178,8 @@ public class WndBag extends WndTabbed {
 			stuff.getItem( VelvetPouch.class ),
 			stuff.getItem( ScrollHolder.class ),
 			stuff.getItem( PotionBandolier.class ),
-			stuff.getItem( MagicalHolster.class )};
+			stuff.getItem( MagicalHolster.class ),
+			stuff.getItem( ConjurerBook.class )};
 
 		for (Bag b : bags) {
 			if (b != null) {
@@ -333,6 +334,8 @@ public class WndBag extends WndTabbed {
 			return Icons.get( Icons.WAND_HOLSTER );
 		} else if (bag instanceof PotionBandolier) {
 			return Icons.get( Icons.POTION_BANDOLIER );
+		} else if (bag instanceof ConjurerBook) {
+			return Icons.get( Icons.CONJURER_BOOK );
 		} else {
 			return Icons.get( Icons.BACKPACK );
 		}

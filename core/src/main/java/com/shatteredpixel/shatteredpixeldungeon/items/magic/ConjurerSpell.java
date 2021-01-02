@@ -33,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulWeakness
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.spells.TargetedSpell;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -52,6 +51,10 @@ public abstract class ConjurerSpell extends Item {
     public static final String AC_DOWNGRADE = "DOWNGRADE";
 
     public int manaCost;
+
+    {
+        defaultAction = AC_ZAP;
+    }
 
     @Override
     public boolean isIdentified() {
@@ -77,9 +80,9 @@ public abstract class ConjurerSpell extends Item {
 
     @Override
     public ArrayList<String> actions(Hero hero ) {
-        ArrayList<String> actions = super.actions( hero );
-            actions.add( AC_ZAP );
-            actions.add( AC_DOWNGRADE );
+        ArrayList<String> actions = new ArrayList<>();
+        actions.add( AC_ZAP );
+        actions.add( AC_DOWNGRADE );
 
         return actions;
     }
@@ -91,7 +94,7 @@ public abstract class ConjurerSpell extends Item {
     @Override
     public void execute( final Hero hero, String action ) {
 
-        super.execute( hero, action );
+        GameScene.cancel();
 
         if (action.equals( AC_ZAP )) {
 
@@ -191,7 +194,7 @@ public abstract class ConjurerSpell extends Item {
 
         @Override
         public String prompt() {
-            return Messages.get(TargetedSpell.class, "prompt");
+            return Messages.get(ConjurerSpell.class, "prompt");
         }
     };
 }

@@ -59,6 +59,7 @@ public enum Icons {
 	SCROLL_HOLDER,
 	POTION_BANDOLIER,
 	WAND_HOLSTER,
+	CONJURER_BOOK,
 	
 	//hero & rankings icons
 	DEPTH,
@@ -172,6 +173,9 @@ public enum Icons {
 			break;
 		case POTION_BANDOLIER:
 			icon.frame( icon.texture.uvRect( 88, 32, 98, 42 ) );
+			break;
+		case CONJURER_BOOK:
+			icon.frame( icon.texture.uvRect( 98, 32, 108, 42 ) );
 			break;
 			
 		case DEPTH:
