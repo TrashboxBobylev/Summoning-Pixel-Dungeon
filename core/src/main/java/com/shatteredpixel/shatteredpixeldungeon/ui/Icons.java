@@ -175,7 +175,7 @@ public enum Icons {
 			icon.frame( icon.texture.uvRect( 88, 32, 98, 42 ) );
 			break;
 		case CONJURER_BOOK:
-			icon.frame( icon.texture.uvRect( 98, 32, 108, 42 ) );
+			icon.frame( icon.texture.uvRect( 88, 22, 98, 32 ) );
 			break;
 			
 		case DEPTH:

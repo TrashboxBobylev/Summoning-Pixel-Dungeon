@@ -91,6 +91,6 @@ public class Stars extends ConjurerSpell {
 
     @Override
     public String desc() {
-        return Messages.get(this, "stats_desc", min(), max(), manaCost());
+        return Messages.get(this, "desc", min(), max(), manaCost());
     }
 }
