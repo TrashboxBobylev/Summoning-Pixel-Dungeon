@@ -789,12 +789,14 @@ public class ItemSpriteSheet {
 	public static final int HOLDER      = BAGS+2;
 	public static final int BANDOLIER   = BAGS+3;
 	public static final int HOLSTER     = BAGS+4;
+	public static final int BOOK        = BAGS+5;
 	static{
 		assignItemRect(VIAL,        12, 12);
 		assignItemRect(POUCH,       14, 15);
 		assignItemRect(HOLDER,      16, 16);
 		assignItemRect(BANDOLIER,   15, 16);
 		assignItemRect(HOLSTER,     15, 16);
+		assignItemRect(BOOK,        16, 13);
 	}
 
 	                                                                                    //16 free slots
