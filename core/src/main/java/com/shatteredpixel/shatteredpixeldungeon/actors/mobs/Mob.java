@@ -697,8 +697,7 @@ public abstract class Mob extends Char {
 			EXP /= 2;
 		}
 
-        LoveHolder.lul buff = Dungeon.hero.buff(LoveHolder.lul.class);
-        if (((cause instanceof Minion) || (cause instanceof Hero && ((Hero) cause).subClass != HeroSubClass.OCCULTIST && buff(Knife.SoulGain.class) != null)) && buff != null){
+        if (((cause instanceof Minion) || (cause instanceof Hero && ((Hero) cause).subClass != HeroSubClass.OCCULTIST && buff(Knife.SoulGain.class) != null))){
             int gain = EXP*2;
             //if (Dungeon.hero.subClass == HeroSubClass.OCCULTIST) gain *= 1.5f;
 			Dungeon.hero.mana = Math.min(Dungeon.hero.mana + gain, Dungeon.hero.maxMana);
