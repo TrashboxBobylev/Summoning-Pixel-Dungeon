@@ -84,6 +84,10 @@ public abstract class ConjurerSpell extends Item {
         return actions;
     }
 
+    public int manaCost(){
+        return manaCost;
+    }
+
     @Override
     public void execute( final Hero hero, String action ) {
 
@@ -116,7 +120,7 @@ public abstract class ConjurerSpell extends Item {
             return false;
         }
 
-        if ( manaCost >= (cursed ? 1 : Dungeon.hero.maxMana)){
+        if ( manaCost() >= (cursed ? 1 : Dungeon.hero.maxMana)){
             return true;
         } else {
             GLog.warning(Messages.get(this, "fizzles"));
@@ -170,7 +174,7 @@ public abstract class ConjurerSpell extends Item {
 
                 curUser.busy();
 
-                curUser.mana -= curSpell.manaCost;
+                curUser.mana -= curSpell.manaCost();
 
                 curSpell.fx(shot, new Callback() {
                     public void call() {

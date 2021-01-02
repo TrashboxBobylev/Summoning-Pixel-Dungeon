@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.SupplyBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Webbomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
+import com.shatteredpixel.shatteredpixeldungeon.items.magic.Stars;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
@@ -216,6 +217,10 @@ public enum HeroClass {
 
         hero.attunement = 1;
         hero.HP = hero.HT = 10;
+
+        Stars star = new Stars();
+        star.collect();
+		Dungeon.quickslot.setSlot(2, star);
 
         hero.mana = 0;
         hero.maxMana = 20;
