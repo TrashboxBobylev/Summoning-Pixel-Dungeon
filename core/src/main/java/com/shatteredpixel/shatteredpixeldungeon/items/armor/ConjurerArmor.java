@@ -79,7 +79,7 @@ public class ConjurerArmor extends ClassArmor {
         actions.remove(AC_DROP);
         actions.remove(AC_THROW);
         actions.remove(AC_SPECIAL);
-        if (tier == 6) actions.add(AC_SPECIAL);
+        if (armorTier == 6) actions.add(AC_SPECIAL);
         return actions;
     }
 
