@@ -70,99 +70,17 @@ public class ConjurerArmor extends ClassArmor {
 	
 	{
 		image = ItemSpriteSheet.ARMOR_CONJURER;
-		defaultAction = AC_SPECIAL;
 	}
-
-    private static final String AC_IMBUE = "IMBUE";
-    private static final String AC_CHAOS = "CHAOS";
-    //private static final String AC_OFFENSE = "OFFENSE";
 
     @Override
     public ArrayList<String> actions(Hero hero ) {
         ArrayList<String> actions = super.actions( hero );
-        if (!cursed) actions.add( AC_IMBUE );
         actions.remove(AC_UNEQUIP);
         actions.remove(AC_DROP);
         actions.remove(AC_THROW);
-        if (hero.subClass != HeroSubClass.NONE) {
-            actions.add(AC_CHAOS);
-        }
+        actions.remove(AC_SPECIAL);
+        if (tier == 6) actions.add(AC_SPECIAL);
         return actions;
-    }
-
-    @Override
-    public void execute(Hero hero, String action) {
-        super.execute(hero, action);
-
-        if (action.equals(AC_IMBUE)) {
-            curUser = hero;
-            GameScene.selectItem(itemSelector, WndBag.Mode.ARMOR_FOR_IMBUE, Messages.get(this, "prompt"));
-        } else if (action.equals(AC_CHAOS)) {
-            if (hero.HP < 3 ||
-                    (hero.heroClass == HeroClass.CONJURER && hero.HP < (hero.HT / 3))) {
-                GLog.warning(Messages.get(this, "low_hp"));
-            } else if (!isEquipped(hero)) {
-                GLog.warning(Messages.get(this, "not_equipped"));
-            } else {
-                curUser = hero;
-                Invisibility.dispel();
-                ArrayList<Integer> spawnPoints = Level.getSpawningPoints(hero.pos);
-                if (spawnPoints.size() > 1){
-                    for (int i = 0; i < 2; i++) {
-                        int index = Random.index( spawnPoints );
-
-                        ChaosSaber mob = new ChaosSaber();
-                        mob.duplicate( hero.HT / 6 );
-                        GameScene.add( mob );
-                        ScrollOfTeleportation.appear( mob, spawnPoints.get( index ) );
-
-                        spawnPoints.remove( index );
-                    }
-                    curUser.HP -= (curUser.HT / 3);
-                    curUser.spendAndNext( Actor.TICK );
-                }
-            }
-        }
-    }
-
-    private final WndBag.Listener itemSelector = new WndBag.Listener() {
-        @Override
-        public void onSelect( Item item ) {
-            if (item != null && item.isIdentified()) {
-                upgrade( (Armor)item );
-            }
-        }
-    };
-
-    private void upgrade(Armor armor){
-        GLog.warning( Messages.get(ConjurerArmor.class, "upgraded", armor.name()) );
-
-//        //syncs the level of the two items.
-//        int targetLevel = Math.max(this.level() - (curseInfusionBonus ? 1 : 0), armor.level());
-//
-//        //if the robe's level is being overridden by the armor, preserve 1 upgrade
-//        if (armor.level() >= this.level() && this.level() > (curseInfusionBonus ? 1 : 0)) targetLevel++;
-
-//        level(targetLevel);
-        updateQuickslot();
-        this.armorTier = armor.tier;
-        if (this.glyph == null) this.inscribe( armor.glyph );
-        this.cursed = armor.cursed;
-        this.curseInfusionBonus = armor.curseInfusionBonus;
-        curUser.belongings.armor = this;
-        ((HeroSprite)curUser.sprite).updateArmor();
-        this.activate(curUser);
-        armor.detach( curUser.belongings.backpack );
-        curUser.sprite.operate( curUser.pos );
-        curUser.spend( 2f );
-        curUser.busy();
-        GameScene.flash(0xFFFFFF);
-        Sample.INSTANCE.play( Assets.Sounds.EVOKE );
-    }
-
-    @Override
-    public int level() {
-        return (int) ( (Dungeon.hero == null ? 1 : Dungeon.hero.attunement()) - 1);
     }
 
     @Override
@@ -175,7 +93,7 @@ public class ConjurerArmor extends ClassArmor {
 			}
 		}
 
-		charge -= 50;
+		charge -= 75;
 		
 		curUser.spend( Actor.TICK );
 		curUser.sprite.operate( curUser.pos );
@@ -200,117 +118,7 @@ public class ConjurerArmor extends ClassArmor {
 
     @Override
     public int DRMax(int lvl){
-        //only 80% as effective
-        int max = (int) ((armorTier * (2 + lvl) + augment.defenseFactor(lvl)));
-        if (lvl > max){
-            return ((lvl - max)+1)/2;
-        } else {
-            return max;
-        }
-    }
-
-    //offensive option
-    protected CellSelector.Listener zapper = new CellSelector.Listener() {
-        @Override
-        public void onSelect(Integer target) {
-            if (target != null){
-                final Ballistica shot = new Ballistica( curUser.pos, target, Ballistica.MAGIC_BOLT);
-                int cell = shot.collisionPos;
-
-                if (target == curUser.pos || cell == curUser.pos) {
-                    GLog.i( Messages.get(Wand.class, "self_target") );
-                    return;
-                }
-
-                curUser.sprite.zap(cell);
-
-                //attempts to target the cell aimed at if something is there, otherwise targets the collision pos.
-                if (Actor.findChar(target) != null)
-                    QuickSlotButton.target(Actor.findChar(target));
-                else
-                    QuickSlotButton.target(Actor.findChar(cell));
-
-                LoveHolder artifact = null;
-                if (curUser.belongings.artifact instanceof LoveHolder) artifact = (LoveHolder) curUser.belongings.artifact;
-                else if (curUser.belongings.misc instanceof LoveHolder) artifact = (LoveHolder) curUser.belongings.misc;
-
-                if (artifact == null){
-                    GLog.i( Messages.get(Artifact.class, "need_to_equip") );
-                    return;
-                } else {
-                    final int str = artifact.str;
-                    if (artifact.charge >= str || curUser.subClass == HeroSubClass.OCCULTIST){
-                        if (curUser.subClass == HeroSubClass.SOUL_REAVER) artifact.charge -= str*2;
-                        updateQuickslot();
-                        curUser.busy();
-                        Invisibility.dispel();
-                        MagicMissile.boltFromChar(curUser.sprite.parent,
-                                MagicMissile.BEACON,
-                                curUser.sprite,
-                                shot.collisionPos,
-                                new Callback() {
-                                    @Override
-                                    public void call() {
-                                        Char ch = Actor.findChar(shot.collisionPos);
-
-                                        if (ch != null){
-                                            switch (curUser.subClass){
-                                                case SOUL_REAVER:
-                                                    doAsSoulReaver(ch, str, curUser);
-                                                case OCCULTIST:
-                                                    doAsOccultist(ch, str, curUser);
-                                            }
-                                        }
-                                        curUser.spendAndNext(Actor.TICK);
-                                    }
-                                });
-                    } else {
-                        GLog.i(Messages.get(LoveHolder.class, "not_enough"));
-                    }
-                }
-            }
-        }
-
-        @Override
-        public String prompt() {
-            return Messages.get(Wand.class, "prompt");
-        }
-    };
-
-    public void doAsSoulReaver(Char target, int strength, Hero owner){
-        //every charge adds +10% damage, initial is 0-hero level
-        int damageRoll = Random.NormalIntRange(0, (int) (owner.lvl*Math.pow(1.25f, strength)));
-        target.damage(damageRoll, this);
-
-        target.sprite.burst(0xFFFFFFFF, strength*2);
-    }
-
-    public void doAsOccultist(Char target, int strength, Hero owner){
-        HateOccult hateHolder = owner.buff(HateOccult.class);
-        if (hateHolder != null) {
-            //every charge consumes 2 hate and adds corruption power
-            float corruptingPower = GameMath.gate(hateHolder.power, strength * 2f, 20f);
-            if (strength == 0) corruptingPower = hateHolder.power;
-            float enemyResist = WandOfCorruption.getEnemyResist(target, (Mob) target);
-
-            //100% health: 3x resist   75%: 2.1x resist   50%: 1.5x resist   25%: 1.1x resist
-            enemyResist *= 1 + 2 * Math.pow(target.HP / (float) target.HT, 2);
-
-            hateHolder.power -= strength*2f;
-            if (hateHolder.power <= 0f){
-                hateHolder.detach();
-            }
-            if (strength > 0) owner.sprite.showStatus(CharSprite.DEFAULT, "-%s HATE", strength);
-            BuffIndicator.refreshHero();
-
-            if (corruptingPower > enemyResist) {
-                WandOfCorruption.corruptEnemy(new WandOfCorruption(), (Mob) target);
-                Sample.INSTANCE.play(Assets.Sounds.CURSED);
-                //recover some hate
-                hateHolder.gainHate((corruptingPower - enemyResist)*0.5f);
-                BuffIndicator.refreshHero();
-            }
-        }
+        return 2;
     }
 
 }
