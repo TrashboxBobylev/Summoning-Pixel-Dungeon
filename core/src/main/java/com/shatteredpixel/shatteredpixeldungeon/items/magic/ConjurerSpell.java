@@ -24,13 +24,25 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.magic;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulWeakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.TargetedSpell;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Callback;
 
 import java.util.ArrayList;
 
@@ -53,6 +65,14 @@ public abstract class ConjurerSpell extends Item {
 
     public abstract void effect(Ballistica trajectory);
 
+    protected void fx( Ballistica bolt, Callback callback ) {
+        MagicMissile.boltFromChar( curUser.sprite.parent,
+                MagicMissile.MAGIC_MISSILE,
+                curUser.sprite,
+                bolt.collisionPos,
+                callback);
+        Sample.INSTANCE.play( Assets.Sounds.ZAP );
+    }
 
 
     @Override
@@ -64,7 +84,28 @@ public abstract class ConjurerSpell extends Item {
         return actions;
     }
 
-    public boolean tryToZap( Hero owner, int target ){
+    @Override
+    public void execute( final Hero hero, String action ) {
+
+        super.execute( hero, action );
+
+        if (action.equals( AC_ZAP )) {
+
+            if (tryToZap(Dungeon.hero)) {
+                curUser = Dungeon.hero;
+                curItem = this;
+                GameScene.selectCell(targeter);
+            }
+
+        } else if (action.equals(AC_DOWNGRADE)){
+            GameScene.flash(0xFFFFFF);
+            Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
+            level(level()-1);
+            GLog.warning( Messages.get(ConjurerSpell.class, "lower_tier"));
+        }
+    }
+
+    public boolean tryToZap( Hero owner){
 
         if (owner.buff(MagicImmune.class) != null){
             GLog.warning( Messages.get(this, "no_magic") );
@@ -75,7 +116,7 @@ public abstract class ConjurerSpell extends Item {
             return false;
         }
 
-        if ( manaCost >= (cursed ? 1 : 1)){
+        if ( manaCost >= (cursed ? 1 : Dungeon.hero.maxMana)){
             return true;
         } else {
             GLog.warning(Messages.get(this, "fizzles"));
@@ -99,4 +140,54 @@ public abstract class ConjurerSpell extends Item {
         return name;
 
     }
+
+    private  static CellSelector.Listener targeter = new  CellSelector.Listener(){
+
+        @Override
+        public void onSelect( Integer target ) {
+
+            if (target != null) {
+
+                //FIXME this safety check shouldn't be necessary
+                //it would be better to eliminate the curItem static variable.
+                final ConjurerSpell curSpell;
+                if (curItem instanceof ConjurerSpell) {
+                    curSpell = (ConjurerSpell)curItem;
+                } else {
+                    return;
+                }
+
+                final Ballistica shot = new Ballistica( curUser.pos, target, Ballistica.PROJECTILE);
+                int cell = shot.collisionPos;
+
+                curUser.sprite.zap(cell);
+
+                //attempts to target the cell aimed at if something is there, otherwise targets the collision pos.
+                if (Actor.findChar(target) != null)
+                    QuickSlotButton.target(Actor.findChar(target));
+                else
+                    QuickSlotButton.target(Actor.findChar(cell));
+
+                curUser.busy();
+
+                curUser.mana -= curSpell.manaCost;
+
+                curSpell.fx(shot, new Callback() {
+                    public void call() {
+                        curSpell.effect(shot);
+                        Invisibility.dispel();
+                        curSpell.updateQuickslot();
+                        curUser.spendAndNext( 1f );
+                    }
+                });
+
+            }
+
+        }
+
+        @Override
+        public String prompt() {
+            return Messages.get(TargetedSpell.class, "prompt");
+        }
+    };
 }
