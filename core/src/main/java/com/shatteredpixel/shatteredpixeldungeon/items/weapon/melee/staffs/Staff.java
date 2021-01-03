@@ -295,7 +295,6 @@ public class Staff extends Weapon {
         if (curCharges > 0) {
             actions.add( AC_SUMMON );
         }
-        actions.add( AC_ZAP );
         if (hero.subClass == HeroSubClass.SOUL_REAVER && hero.buff(SoulReaver.class) != null){
             actions.add(AC_ENHANCE);
         }
