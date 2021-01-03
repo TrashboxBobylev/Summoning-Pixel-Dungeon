@@ -31,6 +31,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
+import com.watabou.noosa.Game;
+import com.watabou.utils.Callback;
 
 public class StationaryMinion extends Minion {
     {
@@ -53,17 +55,23 @@ public class StationaryMinion extends Minion {
 
     @Override
     public boolean interact(Char ch) {
-        GameScene.show(new WndOptions( Messages.get(this, "dismiss_title"),
-                Messages.get(this, "dismiss_body"),
-                Messages.get(this, "dismiss_confirm"),
-                Messages.get(this, "dismiss_cancel") ){
+        Game.runOnRenderThread(new Callback() {
             @Override
-            protected void onSelect(int index) {
-                if (index == 0){
-                    die(null);
-                }
+            public void call() {
+                GameScene.show(new WndOptions(Messages.get(this, "dismiss_title"),
+                        Messages.get(this, "dismiss_body"),
+                        Messages.get(this, "dismiss_confirm"),
+                        Messages.get(this, "dismiss_cancel")) {
+                    @Override
+                    protected void onSelect(int index) {
+                        if (index == 0) {
+                            die(null);
+                        }
+                    }
+                });
             }
         });
+
         return true;
     }
 

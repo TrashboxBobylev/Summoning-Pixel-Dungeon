@@ -179,6 +179,19 @@ public class SummPDChanges {
 //                        "_-_ Added the article about allies into Adventurer Guide\n"+
 //                        "We are almost finished. If nothing major will happen with this damn sleepy minions, I will publish the release."));
 //    }
+    public static void add_1_1_7_Changes(ArrayList<ChangeInfo> changeInfos) {
+
+        ChangeInfo changes = new ChangeInfo("1.1.6-BETA", true, "");
+        changes.hardlight(Window.TITLE_COLOR);
+        changeInfos.add(changes);
+        changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+                "_-_ Fixed rare crash on Sad Ghost.\n" +
+                        "_-_ Fixed options screen having empty choices.\n" +
+                        "_-_ Fixed overfilling HP with Saturation buff.\n" +
+                        "_-_ Fixed crash related to Soul Reaver's powers.\n" +
+                        "_-_ Fixed crash with stationary minion interactions."));
+    }
+
     public static void add_1_1_5_Changes(ArrayList<ChangeInfo> changeInfos) {
 
         ChangeInfo changes = new ChangeInfo("1.1.5", true, "");
