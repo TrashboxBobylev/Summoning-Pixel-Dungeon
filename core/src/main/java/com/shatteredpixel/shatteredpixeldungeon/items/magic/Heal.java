@@ -70,7 +70,7 @@ public class Heal extends ConjurerSpell {
     public int manaCost() {
         switch (level()){
             case 1: return 3;
-            case 2: return 10;
+            case 2: return 8;
         }
         return 1;
     }
@@ -78,7 +78,7 @@ public class Heal extends ConjurerSpell {
     private int heal(Char ch){
         switch (level()){
             case 1: return 6 + ch.HT / 8;
-            case 2: return 8 + ch.HT / 4;
+            case 2: return 8 + ch.HT / 3;
         }
         return 3 + ch.HT / 20;
     }
