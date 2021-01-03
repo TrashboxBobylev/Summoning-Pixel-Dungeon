@@ -184,12 +184,31 @@ public class SummPDChanges {
         ChangeInfo changes = new ChangeInfo("1.1.6-BETA", true, "");
         changes.hardlight(Window.TITLE_COLOR);
         changeInfos.add(changes);
+
         changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
                 "_-_ Fixed rare crash on Sad Ghost.\n" +
                         "_-_ Fixed options screen having empty choices.\n" +
                         "_-_ Fixed overfilling HP with Saturation buff.\n" +
                         "_-_ Fixed crash related to Soul Reaver's powers.\n" +
-                        "_-_ Fixed crash with stationary minion interactions."));
+                        "_-_ Fixed crash with stationary minion interactions.\n" +
+                        "_-_ Staffs no longer recharge, if respective minion is present.\n" +
+                        "_-_ No more stray attunement usage!"));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.FROGGIT_STAFF, null), "Staves rework",
+                "_-_ Introducing ranking system! Use SoUs on your weapons to change their stats and abilities. Not all of them are direct upgrades, so beware (you can downgrade staff if you don't like its current rank!).\n\n" +
+                        "_-_ Base state of most staves is buffed to be viable at regular stages.\n\n" +
+                        "_-_ The things are subjective to change during beta test."
+        ));
+
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.CONJURER, 0, 90, 12, 15), "Conjurer",
+                "The rework for goat boy:\n\n" +
+                        "_-_ Love Holder is removed, its abilities will be partially restored during beta.\n\n" +
+                        "_-_ Added Conjurer's Book as holder for new items.\n\n" +
+                        "_-_ Introducing conjurer's mana spells! They can be obtained by leveling up. At start you have 3 base spells.\n\n" +
+                        "_-_ Spells also have rankings with different use cases!\n" +
+                        "_(This beta implements only three spells at the moment.)_\n\n" +
+                        "_-_ As results of big buff, Conjurer's HP is reduced to 10 (+2), and his deltarune robe now works like cloth all time."));
+
     }
 
     public static void add_1_1_5_Changes(ArrayList<ChangeInfo> changeInfos) {
