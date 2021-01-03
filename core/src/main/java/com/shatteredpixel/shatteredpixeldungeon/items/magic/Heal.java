@@ -56,7 +56,7 @@ public class Heal extends ConjurerSpell {
                 ch instanceof WandOfWarding.Ward || (ch instanceof WardingWraith && ch.alignment == Char.Alignment.ALLY)){
             Sample.INSTANCE.play(Assets.Sounds.DRINK);
             int healing = heal(ch);
-            ch.HP = Math.max(ch.HP + healing, ch.HT);
+            ch.HP = Math.min(ch.HP + healing, ch.HT);
 
             ch.sprite.emitter().burst(Speck.factory(Speck.STEAM), 5);
 
