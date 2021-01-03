@@ -537,7 +537,7 @@ public class ItemSpriteSheet {
 	static {
 		assignItemRect(STARS, 11, 11);
 		assignItemRect(HEAL, 10, 10);
-		assignItemRect(ZAP, 10, 7);
+		assignItemRect(ZAP, 12, 8);
 		assignItemRect(SHIELD, 11, 11);
 		assignItemRect(SHOCKER, 13, 15);
 		assignItemRect(CAMOUFLAGE, 14, 14);
