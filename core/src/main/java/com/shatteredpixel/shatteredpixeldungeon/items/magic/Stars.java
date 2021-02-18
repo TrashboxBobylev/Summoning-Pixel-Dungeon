@@ -41,6 +41,7 @@ public class Stars extends ConjurerSpell {
 
     {
         image = ItemSpriteSheet.STARS;
+        usesTargeting = true;
     }
 
     @Override
