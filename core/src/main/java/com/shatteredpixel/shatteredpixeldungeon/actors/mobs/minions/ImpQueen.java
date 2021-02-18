@@ -140,8 +140,8 @@ public class ImpQueen extends Minion {
             CellEmitter.center( impPosition ).burst( MagicMissile.WardParticle.UP, Random.IntRange( 8, 15 ) );
             float impMod = 2.5f;
             switch (lvl){
-                case 1: impMod = 150f; break;
-                case 2: impMod = 75f; break;
+                case 1: impMod = 1.50f; break;
+                case 2: impMod = 0.75f; break;
             }
             imp.setDamage(
                    Math.round(minDamage*impMod),

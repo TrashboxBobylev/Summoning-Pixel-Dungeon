@@ -52,7 +52,7 @@ public class Slime extends Minion {
         switch (lvl){
             case 0: chance = 0; duration = 1; break;
             case 1: chance = 45; duration = 3; break;
-            case 2: chance = 60; duration = 3; break;
+            case 2: chance = 60; duration = 5; break;
         }
         if (Random.Int(100) >= chance) {
             Buff.affect( enemy, Paralysis.class, duration );

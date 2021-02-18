@@ -54,8 +54,13 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndTierInfo;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndUseItem;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
@@ -80,6 +85,7 @@ public class Staff extends Weapon {
     public static final String AC_ZAP = "ZAP";
     public static final String AC_ENHANCE = "ENHANCE";
     public static final String AC_DOWNGRADE = "DOWNGRADE";
+    public static final String AC_TIERINFO = "TIERINFO";
 
     public int curCharges = 1;
     public float partialCharge = 0f;
@@ -300,6 +306,7 @@ public class Staff extends Weapon {
         }
         actions.remove( AC_EQUIP);
         if (level() > 0) actions.add(AC_DOWNGRADE);
+        actions.add( AC_TIERINFO );
         return actions;
     }
 
@@ -331,6 +338,13 @@ public class Staff extends Weapon {
             Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
             level(level()-1);
             GLog.warning( Messages.get(Staff.class, "lower_tier"));
+        } else if (action.equals(AC_TIERINFO)){
+            ShatteredPixelDungeon.runOnRenderThread(new Callback() {
+                @Override
+                public void call() {
+                    Game.scene().addToFront(new WndTierInfo(Staff.this));
+                }
+            });
         }
     }
 
@@ -554,21 +568,22 @@ public class Staff extends Weapon {
         public boolean act() {
 
             for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-                if (mob instanceof Minion && !(mob.alignment == Char.Alignment.ALLY && mob.getClass() == minionType)) {
-                    if (curCharges < 1)
-                        recharge();
-
-                    while (partialCharge >= 1 && curCharges < 1) {
-                        partialCharge--;
-                        curCharges++;
-                    }
-
-                    if (curCharges == 1){
-                        partialCharge = 0;
-                    }
-
-
+                if (mob.getClass() == minionType) {
+                    spend( TICK );
+                    return true;
                 }
+            }
+
+            if (curCharges < 1)
+                recharge();
+
+            while (partialCharge >= 1 && curCharges < 1) {
+                partialCharge--;
+                curCharges++;
+            }
+
+            if (curCharges == 1){
+                partialCharge = 0;
             }
 
             spend( TICK );

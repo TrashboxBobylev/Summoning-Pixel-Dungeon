@@ -82,7 +82,7 @@ public abstract class ConjurerSpell extends Item {
     public ArrayList<String> actions(Hero hero ) {
         ArrayList<String> actions = new ArrayList<>();
         actions.add( AC_ZAP );
-        actions.add( AC_DOWNGRADE );
+        if (level() > 0) actions.add(AC_DOWNGRADE);
 
         return actions;
     }
