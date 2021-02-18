@@ -229,8 +229,6 @@ public enum HeroClass {
 		Dungeon.quickslot.setSlot(0, heal);
 		new Zap().collect();
 
-		new ScrollOfUpgrade().quantity(2).collect();
-
         hero.mana = 0;
         hero.maxMana = 20;
         new PotionOfStrength().identify();
