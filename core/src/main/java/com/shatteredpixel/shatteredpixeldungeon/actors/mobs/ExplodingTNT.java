@@ -83,7 +83,7 @@ public class ExplodingTNT extends Mob {
                 public void call() {
                     final Flashbang bomb = new Flashbang();
                     bomb.fuse  = new Bomb.Fuse().ignite(bomb);
-                    Actor.addDelayed( bomb.fuse, -1);
+                    Actor.addDelayed( bomb.fuse, 1);
                     Heap heap = Dungeon.level.drop( bomb, ballistica.collisionPos );
                     if (!heap.isEmpty()) {
                         heap.sprite.drop( ballistica.collisionPos );
@@ -96,7 +96,7 @@ public class ExplodingTNT extends Mob {
             ((MissileSprite)sprite.parent.recycle(MissileSprite.class)).reset(pos, enemy.pos, new Bomb(), call);
             attack = false;
 
-            Buff.affect(mouse, Timer.class, 30f);
+            Buff.affect(mouse, Timer.class, 10f);
 
             return !visible;
         }
