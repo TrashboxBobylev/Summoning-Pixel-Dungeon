@@ -207,7 +207,7 @@ public class SummPDChanges {
                         "_-_ Added Conjurer's Book as holder for new items.\n\n" +
                         "_-_ Introducing conjurer's mana spells! They can be obtained by leveling up. At start you have 3 base spells.\n\n" +
                         "_-_ Spells also have rankings with different use cases!\n" +
-                        "_(This beta implements only three spells at the moment.)_\n\n" +
+                        "_(This beta implements only five spells at the moment.)_\n\n" +
                         "_-_ As results of big buff, Conjurer's HP is reduced to 10 (+2), and his deltarune robe now works like cloth all time."));
 
     }

@@ -47,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Barrier;
+import com.shatteredpixel.shatteredpixeldungeon.items.magic.Wave;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
@@ -1439,6 +1440,7 @@ public class Hero extends Char {
                     }
                     maxMana += 5;
                     if (lvl == 5) new Barrier().identify().collect();
+                    if (lvl == 7) new Wave().identify().collect();
                 } else if (lvl == 6){
                     attunement++;
                 }

@@ -228,7 +228,6 @@ public enum HeroClass {
 		heal.collect();
 		Dungeon.quickslot.setSlot(0, heal);
 		new Zap().collect();
-		new Wave().collect();
 
 		new ScrollOfUpgrade().quantity(2).collect();
 
