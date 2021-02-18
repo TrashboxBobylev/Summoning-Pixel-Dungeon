@@ -123,7 +123,7 @@ public abstract class ConjurerSpell extends Item {
             return false;
         }
 
-        if ( manaCost() <= (cursed ? 1 : Dungeon.hero.maxMana)){
+        if ( manaCost() <= (Dungeon.hero.mana)){
             return true;
         } else {
             GLog.warning(Messages.get(this, "fizzles"));

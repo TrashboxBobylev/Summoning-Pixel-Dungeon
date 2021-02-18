@@ -80,7 +80,11 @@ public class Wave extends ConjurerSpell {
             }
         }
         for (Char ch : affectedChars){
-            WandOfBlastWave.throwChar(ch, new Ballistica(bolt.sourcePos, ch.pos, Ballistica.PROJECTILE), 2);
+            //trace a ballistica to our target (which will also extend past them
+            Ballistica trajectory = new Ballistica(Dungeon.hero.pos, ch.pos, Ballistica.STOP_TARGET);
+            //trim it to just be the part that goes past them
+            trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size()-1), Ballistica.PROJECTILE);
+            WandOfBlastWave.throwChar(ch, trajectory, 2 + level());
         }
         Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
         Camera.main.shake( 3, 0.7f );
@@ -91,18 +95,18 @@ public class Wave extends ConjurerSpell {
         //need to perform flame spread logic here so we can determine what cells to put flames in.
 
         // unlimited distance
-        int d = 3 + level();
+        int d = 4 + level()*2;
         int dist = Math.min(bolt.dist, d);
 
         cone = new ConeAOE( bolt,
                 d,
-                70,
-                Ballistica.MAGIC_BOLT);
+                90,
+                Ballistica.STOP_SOLID);
 
         //cast to cells at the tip, rather than all cells, better performance.
         for (Ballistica ray : cone.rays){
             ((MagicMissile)curUser.sprite.parent.recycle( MagicMissile.class )).reset(
-                    MagicMissile.MAGIC_MISSILE,
+                    MagicMissile.BEACON,
                     curUser.sprite,
                     ray.path.get(ray.dist),
                     null
@@ -119,18 +123,18 @@ public class Wave extends ConjurerSpell {
         Sample.INSTANCE.play( Assets.Sounds.ROCKS );
     }
 
-//    @Override
-//    public int manaCost() {
-//        switch (level()){
-//            case 1: return 12;
-//            case 2: return 15;
-//        }
-//        return 10;
-//    }
+    @Override
+    public int manaCost() {
+        switch (level()){
+            case 1: return 22;
+            case 2: return 40;
+        }
+        return 12;
+    }
 
     @Override
     public String desc() {
-        return Messages.get(this, "desc", 3 + level(), manaCost());
+        return Messages.get(this, "desc", 5 + level()*2, manaCost());
     }
 
 }

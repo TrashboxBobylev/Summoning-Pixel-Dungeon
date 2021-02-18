@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Webbomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Heal;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Stars;
+import com.shatteredpixel.shatteredpixeldungeon.items.magic.Wave;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Zap;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
@@ -227,6 +228,7 @@ public enum HeroClass {
 		heal.collect();
 		Dungeon.quickslot.setSlot(0, heal);
 		new Zap().collect();
+		new Wave().collect();
 
 		new ScrollOfUpgrade().quantity(2).collect();
 
