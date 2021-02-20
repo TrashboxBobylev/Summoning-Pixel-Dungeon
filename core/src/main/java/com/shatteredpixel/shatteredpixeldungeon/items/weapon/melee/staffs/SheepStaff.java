@@ -40,4 +40,10 @@ public class SheepStaff extends Staff {
         setClass(Minion.MinionClass.DEFENSE);
         table = MinionBalanceTable.SHEEP;
     }
+
+    @Override
+    public void customizeMinion(Minion minion) {
+        minion.baseMinDR = 1 + level();
+        minion.baseMaxDR = 6 + level()*7;
+    }
 }

@@ -33,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.GrayRatSprite;
 public class GrayRat extends Minion {
     {
         spriteClass = GrayRatSprite.class;
-        baseMaxDR = 2;
     }
 
     //his fur are invulnerable to common hazards
@@ -46,15 +45,5 @@ public class GrayRat extends Minion {
         immunities.add( Inferno.class );
         immunities.add( StenchGas.class );
         immunities.add( ToxicGas.class );
-    }
-
-    @Override
-    public int drRoll() {
-        switch (lvl){
-            case 0: baseMaxDR = 2; break;
-            case 1: baseMaxDR = 4; baseMinDR = 1; break;
-            case 2: baseMaxDR = 8; baseMinDR = 2; break;
-        }
-        return super.drRoll();
     }
 }

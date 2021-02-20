@@ -38,4 +38,13 @@ public class GreyRatStaff extends Staff {
         setClass(Minion.MinionClass.MELEE);
         table = MinionBalanceTable.GREY_RAT;
     }
+
+    @Override
+    public void customizeMinion(Minion minion) {
+        switch (level()){
+            case 0: minion.baseMaxDR = 2; break;
+            case 1: minion.baseMaxDR = 4; minion.baseMinDR = 1; break;
+            case 2: minion.baseMaxDR = 8; minion.baseMinDR = 2; break;
+        }
+    }
 }

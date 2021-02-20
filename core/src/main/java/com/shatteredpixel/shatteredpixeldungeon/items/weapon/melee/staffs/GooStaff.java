@@ -36,4 +36,10 @@ public class GooStaff extends Staff {
         setClass(Minion.MinionClass.MELEE);
         table = MinionBalanceTable.GOO;
     }
+
+    @Override
+    public void customizeMinion(Minion minion) {
+        minion.baseMinDR = 5 + level()*4;
+        minion.baseMaxDR = 8 + level()*5;
+    }
 }

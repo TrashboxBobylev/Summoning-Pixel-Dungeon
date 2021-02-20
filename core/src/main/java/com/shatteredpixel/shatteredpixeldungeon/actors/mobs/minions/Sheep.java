@@ -32,7 +32,5 @@ public class Sheep extends Minion{
     {
         spriteClass = SheepTankSprite.class;
         isTanky = true;
-        baseMinDR = 1 + lvl;
-        baseMaxDR = 6 + lvl*7;
     }
 }

@@ -55,8 +55,7 @@ public class GooMinion extends Minion {
         properties.add(Property.DEMONIC);
         properties.add(Property.ACIDIC);
 
-        baseMinDR = 5 + lvl*4;
-        baseMaxDR = 8 + lvl*5;
+
     }
 
     private int pumpedUp = 0;
