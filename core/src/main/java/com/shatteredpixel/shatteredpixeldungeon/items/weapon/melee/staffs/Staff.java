@@ -649,17 +649,13 @@ public class Staff extends Weapon {
 
         if (isIdentified()) {
             float robeBonus = 1f;
-            if (Dungeon.hero.belongings.armor instanceof ConjurerArmor) {
-                if (Dungeon.hero.belongings.armor.level() > 0 && !(this instanceof ChickenStaff)) {
-                    robeBonus = 1f + Dungeon.hero.belongings.armor.level() * 0.1f;
-                }
-            }
+            if (Dungeon.hero.buff(Attunement.class) != null) robeBonus = Attunement.empowering();
             info += "\n\n" + Messages.get(Staff.class, "stats_known",
                     tier,
                     STRReq(),
-                    minionmin(),
-                    minionmax(),
-                    (int)(hp(level()) * robeBonus),
+                    Math.round(minionmin()*robeBonus),
+                    Math.round(minionmax()*robeBonus),
+                    (hp(level())),
                     requiredAttunement());
             if (STRReq() > Dungeon.hero.STR()) {
                 info += " " + Messages.get(Staff.class, "too_heavy_uh");

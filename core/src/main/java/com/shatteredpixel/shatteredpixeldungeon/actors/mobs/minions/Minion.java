@@ -289,7 +289,9 @@ public abstract class Minion extends Mob {
     @Override
     public String description() {
         String d = super.description();
-        return d + "\n\n" + Messages.get(Minion.class, "stats", minDamage, maxDamage, HP, HT, minDR + baseMinDR, maxDR + baseMaxDR);
+        float empowering = 1f;
+        if (Dungeon.hero.buff(Attunement.class) != null) empowering = Attunement.empowering();
+        return d + "\n\n" + Messages.get(Minion.class, "stats", minDamage*empowering, maxDamage*empowering, HP, HT, minDR + baseMinDR, maxDR + baseMaxDR);
     }
 
     public void destroy() {
