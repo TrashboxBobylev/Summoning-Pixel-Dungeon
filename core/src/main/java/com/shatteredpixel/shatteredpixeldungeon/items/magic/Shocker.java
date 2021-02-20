@@ -90,14 +90,14 @@ public class Shocker extends ConjurerSpell {
         return 0.5f;
     }
 
-//    @Override
-//    public int manaCost() {
-//        switch (level()){
-//            case 1: return 25;
-//            case 2: return 35;
-//        }
-//        return 15;
-//    }
+    @Override
+    public int manaCost() {
+        switch (level()){
+            case 1: return 25;
+            case 2: return 35;
+        }
+        return 15;
+    }
 
     private int noheal(){
         switch (level()){
