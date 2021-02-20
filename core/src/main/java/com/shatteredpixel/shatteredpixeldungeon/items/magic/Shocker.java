@@ -25,68 +25,103 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.magic;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.WardingWraith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
+import com.watabou.noosa.Camera;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Callback;
-import com.watabou.utils.Random;
+import com.watabou.utils.PathFinder;
 
-public class Heal extends ConjurerSpell {
+public class Shocker extends ConjurerSpell {
 
     {
-        image = ItemSpriteSheet.HEAL;
+        image = ItemSpriteSheet.SHOCKER;
+        manaCost = 0;
     }
 
     @Override
     public void effect(Ballistica trajectory) {
         Char ch = Actor.findChar(trajectory.collisionPos);
+        shock(ch);
+        if (level() == 2){
+            for (int i: PathFinder.NEIGHBOURS8){
+                ch = Actor.findChar(trajectory.collisionPos + i);
+                shock(ch);
+            }
+        }
+    }
+
+    private void shock(Char ch) {
         if (ch instanceof Minion || ch instanceof DriedRose.GhostHero || ch instanceof WandOfLivingEarth.EarthGuardian ||
                 ch instanceof WandOfWarding.Ward || (ch instanceof WardingWraith && ch.alignment == Char.Alignment.ALLY)){
-            Sample.INSTANCE.play(Assets.Sounds.DRINK);
-            int healing = heal(ch);
-            ch.HP = Math.min(ch.HP + healing, ch.HT);
-
-            ch.sprite.emitter().burst(Speck.factory(Speck.STEAM), 5);
-
-            ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healing);
+            Sample.INSTANCE.play(Assets.Sounds.ZAP);
+            Sample.INSTANCE.play(Assets.Sounds.HEALTH_WARN);
+            ch.damage((int) (ch.HT * dmg()), new Grim());
+            Camera.main.shake(4f, 0.4f);
+            GameScene.flash(0xFFFFFF);
+            Buff.affect(ch, Empowered.class, buff());
+            Buff.affect(ch, Haste.class, buff());
+            Buff.affect(ch, Adrenaline.class, buff());
+            Buff.affect(ch, Bless.class, buff());
+            Buff.affect(ch, NoHeal.class, noheal());
 
             ch.sprite.burst(0xFFFFFFFF, buffedLvl() / 2 + 2);
         }
     }
 
-    @Override
-    public int manaCost() {
+    private float dmg(){
         switch (level()){
-            case 1: return 3;
-            case 2: return 8;
+            case 1: return 0.25f;
+            case 2: return 0.5f;
         }
-        return 1;
+        return 0.5f;
     }
 
-    private int heal(Char ch){
-        if (ch.buff(Shocker.NoHeal.class) != null) return 0;
+//    @Override
+//    public int manaCost() {
+//        switch (level()){
+//            case 1: return 25;
+//            case 2: return 30;
+//        }
+//        return 15;
+//    }
+
+    private int noheal(){
         switch (level()){
-            case 1: return 6 + ch.HT / 8;
-            case 2: return 8 + ch.HT / 3;
+            case 1: return 30;
+            case 2: return 20;
         }
-        return 3 + ch.HT / 20;
+        return 50;
+    }
+
+    private int buff(){
+        switch (level()){
+            case 1: return 15;
+            case 2: return 5;
+        }
+        return 20;
     }
 
 
     @Override
     public String desc() {
         return Messages.get(this, "desc" + level());
+    }
+
+    public static class NoHeal extends FlavourBuff {
+
     }
 }
