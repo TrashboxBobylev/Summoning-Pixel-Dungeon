@@ -94,7 +94,7 @@ public class Shocker extends ConjurerSpell {
 //    public int manaCost() {
 //        switch (level()){
 //            case 1: return 25;
-//            case 2: return 30;
+//            case 2: return 35;
 //        }
 //        return 15;
 //    }
@@ -102,7 +102,7 @@ public class Shocker extends ConjurerSpell {
     private int noheal(){
         switch (level()){
             case 1: return 30;
-            case 2: return 20;
+            case 2: return 40;
         }
         return 50;
     }
@@ -110,7 +110,7 @@ public class Shocker extends ConjurerSpell {
     private int buff(){
         switch (level()){
             case 1: return 15;
-            case 2: return 5;
+            case 2: return 10;
         }
         return 20;
     }
