@@ -58,26 +58,26 @@ public class Stars extends ConjurerSpell {
     @Override
     public int manaCost() {
         switch (level()){
-            case 1: return 2;
-            case 2: return 4;
+            case 1: return 3;
+            case 2: return 7;
         }
         return 1;
     }
 
     private int min(){
         switch (level()){
-            case 1: return (int) (2 + Dungeon.hero.lvl/2.5f);
-            case 2: return (int) (6 + Dungeon.hero.lvl/2f);
+            case 1: return (int) (3 + Dungeon.hero.lvl/2f);
+            case 2: return (int) (6 + Dungeon.hero.lvl/1.5f);
         }
-        return (int) (1 + Dungeon.hero.lvl / 5f);
+        return (int) (2 + Dungeon.hero.lvl / 3.25f);
     }
 
     private int max(){
         switch (level()){
-            case 1: return (int) (8 + Dungeon.hero.lvl/1.2f);
-            case 2: return (int) (12 + Dungeon.hero.lvl/0.8f);
+            case 1: return (int) (9 + Dungeon.hero.lvl/1f);
+            case 2: return (int) (14 + Dungeon.hero.lvl/0.6f);
         }
-        return (int) (5 + Dungeon.hero.lvl / 2.5f);
+        return (int) (6 + Dungeon.hero.lvl / 2.125f);
     }
 
     private int damageRoll() {
