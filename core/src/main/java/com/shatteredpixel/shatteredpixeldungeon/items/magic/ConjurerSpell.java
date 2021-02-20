@@ -27,12 +27,15 @@ package com.shatteredpixel.shatteredpixeldungeon.items.magic;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulWeakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -170,9 +173,34 @@ public abstract class ConjurerSpell extends Item {
 
                 curUser.sprite.zap(cell);
                 if (curSpell.targetAllies){
-                    if (Actor.findChar(target) != null)
-                        QuickSlotButton.targetAlly(Actor.findChar(target));
-                    else
+                    ArrayList<Mob> visible = new ArrayList<>();
+
+                    boolean newMob = false;
+
+                    Mob targetMob = null;
+                    for (Mob m : Dungeon.level.mobs.toArray(new Mob[0])) {
+                        if (Dungeon.hero.fieldOfView[ m.pos ] && m.alignment == Char.Alignment.ALLY) {
+                            visible.add(m);
+                            if (!visible.contains( m )) {
+                                newMob = true;
+                            }
+
+                            if (!Dungeon.hero.mindVisionEnemies.contains(m) && QuickSlotButton.autoAim(m) != -1){
+                                if (targetMob == null){
+                                    targetMob = m;
+                                } else if (Dungeon.hero.distance(targetMob) > Dungeon.hero.distance(m)) {
+                                    targetMob = m;
+                                }
+                            }
+                        }
+                    }
+                    Char lastTarget = QuickSlotButton.lastTarget;
+                    if (targetMob != null && (lastTarget == null ||
+                            !lastTarget.isAlive() ||
+                            !Dungeon.hero.fieldOfView[lastTarget.pos])){
+                        QuickSlotButton.targetAlly(targetMob);
+                    }
+                    if (Actor.findChar(target) == null)
                         QuickSlotButton.targetAlly(Actor.findChar(cell));
                 } else {
 
