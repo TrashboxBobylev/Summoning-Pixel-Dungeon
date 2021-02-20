@@ -61,7 +61,7 @@ public class GasterBlaster extends StationaryMinion {
             case 1: mod = 1.25f; break;
             case 2: mod = 0.75f; break;
         }
-        float v = super.attackDelay() * 2f;
+        float v = super.attackDelay() * mod;
         if (buff(MagicPower.class) != null) v *= 1.75;
         return v;
     }
