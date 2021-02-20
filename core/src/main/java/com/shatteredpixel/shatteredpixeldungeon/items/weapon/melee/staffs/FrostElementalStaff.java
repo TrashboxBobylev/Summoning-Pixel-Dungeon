@@ -38,10 +38,4 @@ public class FrostElementalStaff extends Staff {
         setClass(Minion.MinionClass.MELEE);
         table = MinionBalanceTable.FROST_ELEMENTAL;
     }
-
-    //heavy minion
-    @Override
-    public float requiredAttunement() {
-        return 1.5f;
-    }
 }

@@ -38,10 +38,4 @@ public class ImpQueenStaff extends Staff {
         setClass(Minion.MinionClass.MAGIC);
         table = MinionBalanceTable.IMP_QUEEN;
     }
-
-    //very heavy minion
-    @Override
-    public float requiredAttunement() {
-        return 3f;
-    }
 }

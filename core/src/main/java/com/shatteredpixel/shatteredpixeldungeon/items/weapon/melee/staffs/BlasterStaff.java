@@ -38,9 +38,4 @@ public class BlasterStaff extends StationaryStaff {
         setClass(Minion.MinionClass.MAGIC);
         table = MinionBalanceTable.GASTER_BLASTER;
     }
-
-    @Override
-    public float requiredAttunement() {
-        return 2f;
-    }
 }
