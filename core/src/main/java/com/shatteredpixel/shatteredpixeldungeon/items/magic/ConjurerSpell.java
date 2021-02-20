@@ -51,6 +51,7 @@ public abstract class ConjurerSpell extends Item {
     public static final String AC_DOWNGRADE = "DOWNGRADE";
 
     public int manaCost;
+    public boolean targetAllies;
 
     {
         defaultAction = AC_ZAP;
@@ -168,12 +169,19 @@ public abstract class ConjurerSpell extends Item {
                 int cell = shot.collisionPos;
 
                 curUser.sprite.zap(cell);
+                if (curSpell.targetAllies){
+                    if (Actor.findChar(target) != null)
+                        QuickSlotButton.targetAlly(Actor.findChar(target));
+                    else
+                        QuickSlotButton.targetAlly(Actor.findChar(cell));
+                } else {
 
-                //attempts to target the cell aimed at if something is there, otherwise targets the collision pos.
-                if (Actor.findChar(target) != null)
-                    QuickSlotButton.target(Actor.findChar(target));
-                else
-                    QuickSlotButton.target(Actor.findChar(cell));
+                    //attempts to target the cell aimed at if something is there, otherwise targets the collision pos.
+                    if (Actor.findChar(target) != null)
+                        QuickSlotButton.target(Actor.findChar(target));
+                    else
+                        QuickSlotButton.target(Actor.findChar(cell));
+                }
 
                 curUser.busy();
 

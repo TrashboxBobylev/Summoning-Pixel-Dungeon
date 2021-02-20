@@ -47,6 +47,8 @@ public class Heal extends ConjurerSpell {
 
     {
         image = ItemSpriteSheet.HEAL;
+        usesTargeting = true;
+        targetAllies = true;
     }
 
     @Override

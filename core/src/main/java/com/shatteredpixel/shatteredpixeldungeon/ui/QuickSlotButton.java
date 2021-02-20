@@ -227,6 +227,8 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 
 	}
 
+
+
 	public static int autoAim(Char target){
 		//will use generic projectile logic if no item is specified
 		return autoAim(target, new Item());
@@ -264,6 +266,14 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 		if (target != null && target.alignment != Char.Alignment.ALLY) {
 			lastTarget = target;
 			
+			TargetHealthIndicator.instance.target( target );
+		}
+	}
+
+	public static void targetAlly( Char target ) {
+		if (target != null && target.alignment == Char.Alignment.ALLY) {
+			lastTarget = target;
+
 			TargetHealthIndicator.instance.target( target );
 		}
 	}
