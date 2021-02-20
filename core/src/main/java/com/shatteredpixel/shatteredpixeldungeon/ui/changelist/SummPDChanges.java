@@ -193,6 +193,7 @@ public class SummPDChanges {
                         "_-_ Fixed crash related to Soul Reaver's powers.\n" +
                         "_-_ Fixed crash with stationary minion interactions.\n" +
                         "_-_ Staffs no longer recharge, if respective minion is present.\n" +
+                        "_-_ Soul Sparking effect is visible in descriptions.\n"+
                         "_-_ No more stray attunement usage!"));
 
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.FROGGIT_STAFF, null), "Staves rework",
