@@ -128,7 +128,9 @@ public abstract class Minion extends Mob {
                 spend(TICK);
             } else {
                 destroy();
+                sprite.remove(CharSprite.State.SPIRIT);
                 sprite.die();
+
                 return true;
             }
         }
