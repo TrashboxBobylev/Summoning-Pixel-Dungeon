@@ -105,7 +105,7 @@ public class ConjurerArmor extends ClassArmor {
 
     @Override
     public boolean isUpgradable() {
-        return false;
+        return true;
     }
 
     @Override
