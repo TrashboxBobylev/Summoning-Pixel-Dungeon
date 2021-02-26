@@ -35,12 +35,15 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Piranha;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.stationary.StationaryMinion;
+import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfTargeting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -68,6 +71,7 @@ public abstract class Minion extends Mob {
     public boolean isTanky = false;
     public Weapon.Enchantment enchantment;
     public int lvl;
+    public int timer = -1;
 
     @Override
     public void storeInBundle(Bundle bundle) {
@@ -80,6 +84,7 @@ public abstract class Minion extends Mob {
         bundle.put("enchantment", enchantment);
         bundle.put("level", lvl);
         bundle.put("class", minionClass);
+        bundle.put("deathtimer", timer);
     }
 
     @Override
@@ -94,6 +99,7 @@ public abstract class Minion extends Mob {
         lvl = bundle.getInt("lvl");
         enchantment = (Weapon.Enchantment) bundle.get("enchantment");
         minionClass = bundle.getEnum("class", MinionClass.class);
+        timer = bundle.getInt("deathtimer");
     }
 
     public float attunement = 1;
@@ -110,6 +116,23 @@ public abstract class Minion extends Mob {
         actPriority = MOB_PRIO + 1;
 
         immunities.add(PerfumeGas.Affection.class);
+    }
+
+    @Override
+    protected boolean act() {
+        if (!isAlive()){
+            timer--;
+            if (timer > 0) {
+                sprite.emitter().burst(MagicMissile.WhiteParticle.FACTORY, 15);
+                sprite.add(CharSprite.State.SPIRIT);
+                spend(TICK);
+            } else {
+                destroy();
+                sprite.die();
+                return true;
+            }
+        }
+        return super.act();
     }
 
     @Override
@@ -188,6 +211,18 @@ public abstract class Minion extends Mob {
         }
 
         return null;
+    }
+
+    @Override
+    public void die(Object cause) {
+        if (timer == -1) {
+            if (cause == Chasm.class){
+                super.die( cause );
+            } else if (buff(NecromancyStat.class) != null){
+                timer = buff(NecromancyStat.class).level;
+                Buff.detach(this, NecromancyStat.class);
+            }
+        }
     }
 
     //same accuracy and dexterity as player
