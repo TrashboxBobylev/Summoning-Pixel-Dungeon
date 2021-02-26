@@ -42,9 +42,9 @@ public class GreyRatStaff extends Staff {
     @Override
     public void customizeMinion(Minion minion) {
         switch (level()){
-            case 0: minion.baseMaxDR = 2; break;
-            case 1: minion.baseMaxDR = 4; minion.baseMinDR = 1; break;
-            case 2: minion.baseMaxDR = 8; minion.baseMinDR = 2; break;
+            case 0: minion.baseMaxDR = 3; break;
+            case 1: minion.baseMaxDR = 5; minion.baseMinDR = 2; break;
+            case 2: minion.baseMaxDR = 10; minion.baseMinDR = 4; break;
         }
     }
 }
