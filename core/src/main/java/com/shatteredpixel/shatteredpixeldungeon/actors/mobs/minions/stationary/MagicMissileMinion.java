@@ -29,10 +29,17 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.stationary;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.FireKeeper;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Attunement;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MagicMissileSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
@@ -66,27 +73,31 @@ public class MagicMissileMinion extends StationaryMinion {
         return !visible;
     }
 
-    public void zap(){
-        spend( 1f );
+    public void zap() {
+        spend(1f);
 
-        if (hit( this, enemy, false )) {
+        if (hit(this, enemy, false)) {
             int dmg = Random.NormalIntRange(minDamage, maxDamage);
             if (Dungeon.hero.buff(Attunement.class) != null) dmg *= Attunement.empowering();
-            ArrayList<Char> affectedChars = new ArrayList<>();
-            affectedChars.add(enemy);
-            if (lvl > 0){
-                for (int i : PathFinder.NEIGHBOURS8){
-                    Char ch = Actor.findChar(enemy.pos + i);
-                    if (ch != null){
-                        affectedChars.add(ch);
+
+            if (lvl > 0) {
+                PathFinder.buildDistanceMap(enemy.pos, BArray.not(Dungeon.level.solid, null), lvl);
+                for (int i = 0; i < PathFinder.distance.length; i++) {
+                    if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+                        CellEmitter.get(i).burst(MagicMissile.MagicParticle.FACTORY, 8);
+                        if (Actor.findChar(i) != null) {
+                            Char ch = Actor.findChar(i);
+                            if (ch != Dungeon.hero) {
+                                ch.damage(damageRoll(), Dungeon.hero);
+                            }
+                        }
                     }
                 }
-            }
-            for (Char ch : affectedChars) ch.damage(dmg, this);
 
-            damage(lvl == 2 ? 1 : 2, this);
-        } else {
-            enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
+                damage(lvl == 2 ? 1 : 2, this);
+            } else {
+                enemy.sprite.showStatus(CharSprite.NEUTRAL, enemy.defenseVerb());
+            }
         }
     }
 }
