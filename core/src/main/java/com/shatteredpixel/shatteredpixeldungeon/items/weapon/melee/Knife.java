@@ -58,7 +58,7 @@ public class Knife extends MeleeWeapon {
 
     @Override
     public int proc(Char attacker, Char defender, int damage ) {
-	    int modifier = ranged ? 7 : 2;
+	    int modifier = ranged ? 7 : 4;
         Buff.prolong( defender, SoulGain.class, speedFactor(attacker) * modifier );
         WhiteWound.hit(defender);
         return super.proc( attacker, defender, damage );
@@ -66,18 +66,16 @@ public class Knife extends MeleeWeapon {
 
     @Override
     public void onThrow(int cell) {
-	    if (Dungeon.hero.subClass == HeroSubClass.OCCULTIST) {
-            Char enemy = Actor.findChar(cell);
-            if (enemy == null || enemy == curUser || curUser.buff(SoulWeakness.class) != null) {
+        Char enemy = Actor.findChar(cell);
+        if (enemy == null || enemy == curUser || curUser.buff(SoulWeakness.class) != null) {
+            super.onThrow(cell);
+        } else {
+            if (!curUser.shoot(enemy, this)) {
                 super.onThrow(cell);
             } else {
-                if (!curUser.shoot(enemy, this)) {
-                    super.onThrow(cell);
-                } else {
-                    Dungeon.level.drop( this, cell ).sprite.drop();
-                }
+                Dungeon.level.drop( this, cell ).sprite.drop();
             }
-        } else super.onThrow(cell);
+        }
     }
 
     @Override
