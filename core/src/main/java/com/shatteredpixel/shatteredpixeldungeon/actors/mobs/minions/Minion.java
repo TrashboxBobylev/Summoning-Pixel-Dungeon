@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.stationary.S
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
+import com.shatteredpixel.shatteredpixeldungeon.items.magic.Shocker;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfTargeting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
@@ -217,12 +218,16 @@ public abstract class Minion extends Mob {
 
     @Override
     public void die(Object cause) {
+        sprite.emitter().burst(MagicMissile.WhiteParticle.FACTORY, 15);
         if (timer == -1) {
             if (cause == Chasm.class){
                 super.die( cause );
             } else if (buff(NecromancyStat.class) != null){
                 timer = buff(NecromancyStat.class).level;
                 Buff.detach(this, NecromancyStat.class);
+                Buff.affect(this, Shocker.NoHeal.class, 9999f);
+            } else {
+                super.die( cause );
             }
         }
     }
