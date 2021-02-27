@@ -47,9 +47,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.magic.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Barrier;
-import com.shatteredpixel.shatteredpixeldungeon.items.magic.Shocker;
-import com.shatteredpixel.shatteredpixeldungeon.items.magic.Wave;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
@@ -1445,6 +1444,8 @@ public class Hero extends Char {
                     if (lvl == 5) new Barrier().identify().collect();
                     if (lvl == 7) new Wave().identify().collect();
                     if (lvl == 9) new Shocker().identify().collect();
+                    if (lvl == 11) new Necro().identify().collect();
+                    if (lvl == 15) new Field().identify().collect();
                 } else if (lvl == 6){
                     attunement++;
                 }
