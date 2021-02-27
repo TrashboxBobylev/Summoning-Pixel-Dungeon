@@ -79,8 +79,8 @@ public abstract class Minion extends Mob {
         super.storeInBundle(bundle);
         bundle.put("minDamage", minDamage);
         bundle.put("maxDamage", maxDamage);
-        bundle.put("minDR", minDR);
-        bundle.put("maxDR", maxDR);
+        bundle.put("minDR", baseMinDR);
+        bundle.put("maxDR", baseMaxDR);
         bundle.put("str", strength);
         bundle.put("enchantment", enchantment);
         bundle.put("level", lvl);
@@ -94,8 +94,8 @@ public abstract class Minion extends Mob {
 
         minDamage = bundle.getInt("minDamage");
         maxDamage = bundle.getInt("maxDamage");
-        minDR = bundle.getInt("minDR");
-        maxDR = bundle.getInt("maxDR");
+        baseMinDR = bundle.getInt("minDR");
+        baseMaxDR = bundle.getInt("maxDR");
         strength = bundle.getInt("str");
         lvl = bundle.getInt("lvl");
         enchantment = (Weapon.Enchantment) bundle.get("enchantment");
