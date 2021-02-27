@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.GooMinion;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.Emitter.Factory;
@@ -149,7 +150,7 @@ public class GooMinionSprite extends MobSprite {
 		if (anim == pumpAttack) {
 
 			idle();
-			ch.onAttackComplete();
+			((GooMinion)ch).elementalAttack();
 		} else if (anim == die) {
 			spray.killAndErase();
 		}

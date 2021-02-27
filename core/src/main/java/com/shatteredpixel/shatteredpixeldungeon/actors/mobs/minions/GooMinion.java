@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.GooWarn;
@@ -55,7 +56,6 @@ public class GooMinion extends Minion {
         properties.add(Property.DEMONIC);
         properties.add(Property.ACIDIC);
 
-
     }
 
     private int pumpedUp = 0;
@@ -78,39 +78,6 @@ public class GooMinion extends Minion {
             case 2: return 6;
         }
         return 2;
-    }
-
-    @Override
-    public int damageRoll() {
-        int min = minDamage;
-        int max = maxDamage;
-        if (pumpedUp > 0) {
-            pumpedUp = 0;
-            PathFinder.buildDistanceMap(pos, BArray.not(Dungeon.level.solid, null), 2);
-            for (int i = 0; i < PathFinder.distance.length; i++) {
-                if (PathFinder.distance[i] < Integer.MAX_VALUE)
-                    CellEmitter.get(i).burst(ElmoParticle.FACTORY, 10);
-            }
-            switch (lvl) {
-                case 0:
-                    min = 20;
-                    max = 87;
-                    break;
-                case 1:
-                    min = 40;
-                    max = 112;
-                    break;
-                case 2:
-                    min = 70;
-                    max = 135;
-                    break;
-            }
-            Sample.INSTANCE.play(Assets.Sounds.BURNING);
-            float multiplier = 1f;
-            if (Dungeon.hero.buff(Attunement.class) != null) multiplier *= Attunement.empowering();
-            min *= multiplier; max *= multiplier;
-        }
-        return Random.NormalIntRange( min, max );
     }
 
     @Override
@@ -172,6 +139,9 @@ public class GooMinion extends Minion {
                 else
                     sprite.attack( enemy.pos );
             } else {
+                if (pumpedUp >= chargeTurns()){
+                    elementalAttack();
+                }
                 attack( enemy );
             }
 
@@ -201,6 +171,39 @@ public class GooMinion extends Minion {
 
             return true;
         }
+    }
+
+    public void elementalAttack(){
+        pumpedUp = 0;
+        int min = 35, max = 115;
+        switch (lvl) {
+            case 1:
+                min = 60;
+                max = 108;
+                break;
+            case 2:
+                min = 90;
+                max = 100;
+                break;
+        }
+
+        float multiplier = 1f;
+        if (Dungeon.hero.buff(Attunement.class) != null) multiplier *= Attunement.empowering();
+
+        min *= multiplier; max *= multiplier;
+
+        PathFinder.buildDistanceMap(pos, BArray.not(Dungeon.level.solid, null), 2);
+        for (int i = 0; i < PathFinder.distance.length; i++) {
+
+            if (PathFinder.distance[i] < Integer.MAX_VALUE)
+                CellEmitter.get(i).burst(ElmoParticle.FACTORY, 10);
+
+            if (Actor.findChar(i) != null){
+                Actor.findChar(i).damage(Random.NormalIntRange(min, max), Dungeon.hero);
+            }
+        }
+        Sample.INSTANCE.play(Assets.Sounds.BURNING);
+
     }
 
     @Override
