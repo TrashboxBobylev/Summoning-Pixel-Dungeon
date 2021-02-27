@@ -59,7 +59,7 @@ public class Necro extends ConjurerSpell {
             Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);
             int healing = heal(ch);
             ch.sprite.emitter().burst(Speck.factory(Speck.STEAM), 20);
-            Buff.affect(ch, NecromancyStat.class, 900f).level = healing;
+            Buff.affect(ch, NecromancyStat.class, 1000f).level = healing;
             Buff.affect(Dungeon.hero, NecromancyCD.class, cd(ch));
 
             ch.sprite.burst(0xFFFFFFFF, buffedLvl() / 2 + 2);
