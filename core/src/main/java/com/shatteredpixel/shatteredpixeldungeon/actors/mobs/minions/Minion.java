@@ -125,11 +125,11 @@ public abstract class Minion extends Mob {
             timer--;
             if (timer > 0) {
                 sprite.emitter().burst(MagicMissile.WhiteParticle.FACTORY, 15);
-                sprite.add(CharSprite.State.SPIRIT);
-                spend(TICK);
+
+                return super.act();
             } else {
-                destroy();
                 sprite.remove(CharSprite.State.SPIRIT);
+                destroy();
                 sprite.die();
 
                 return true;
@@ -223,7 +223,8 @@ public abstract class Minion extends Mob {
             if (cause == Chasm.class){
                 super.die( cause );
             } else if (buff(NecromancyStat.class) != null){
-                timer = buff(NecromancyStat.class).level;
+                timer = buff(NecromancyStat.class).level+1;
+                sprite.add(CharSprite.State.SPIRIT);
                 Buff.detach(this, NecromancyStat.class);
                 Buff.affect(this, Shocker.NoHeal.class, 9999f);
             } else {
