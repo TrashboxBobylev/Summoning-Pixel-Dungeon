@@ -67,12 +67,12 @@ public class SoulCache extends Buff {
             while (health >= 1){
                 health -= 1;
                 target.HP = Math.min(target.HT, target.HP+1);
-                target.sprite.emitter().burst(Speck.factory(Speck.HEALING), 3);
+                target.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
             }
-            while (health >= 1){
-                health -= 1;
+            while (soul >= 1){
+                soul -= 1;
                 Dungeon.hero.mana = Math.min(Dungeon.hero.maxMana, Dungeon.hero.mana+1);
-                target.sprite.emitter().burst(Speck.factory(Speck.DUST), 6);
+                target.sprite.emitter().burst(Speck.factory(Speck.STEAM), 6);
             }
         }
 

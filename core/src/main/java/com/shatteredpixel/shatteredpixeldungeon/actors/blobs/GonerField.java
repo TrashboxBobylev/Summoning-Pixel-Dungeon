@@ -65,10 +65,10 @@ public class GonerField extends Blob {
 				if (cur[cell] > 0) {
 					Char ch = Actor.findChar( cell );
 					if (ch != null && !ch.isImmune(this.getClass())) {
-						Buff.affect( ch, SoulParalysis.class, 2f);
+						Buff.affect( ch, SoulParalysis.class, 1f);
 						if (cur[cell] % 2 == 1) {
 							ch.damage(Math.round(Random.Float(1 + Dungeon.depth / 10f)), this);
-							SoulCache.investHealth(1.5f);
+							SoulCache.investHealth(1f);
 							SoulCache.investSoul(1f);
 						}
 					}
@@ -86,7 +86,7 @@ public class GonerField extends Blob {
 	@Override
 	public void use( BlobEmitter emitter ) {
 		super.use( emitter );
-		emitter.start( MagicMissile.WhiteParticle.FACTORY, 0.05f, 2 );
+		emitter.pour( MagicMissile.ForceParticle.FACTORY, 0.0085f);
 	}
 	
 	@Override

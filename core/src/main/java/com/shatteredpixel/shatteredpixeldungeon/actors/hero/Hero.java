@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Alchemy;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.GonerField;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.PerfumeGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.FierySlash;
@@ -104,6 +105,7 @@ public class Hero extends Char {
 		alignment = Alignment.ALLY;
 
 		immunities.add(PerfumeGas.Affection.class);
+		immunities.add(GonerField.class);
 	}
 	
 	public static final int MAX_LEVEL = 30;

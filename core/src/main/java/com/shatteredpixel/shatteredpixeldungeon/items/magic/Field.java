@@ -51,7 +51,11 @@ public class Field extends ConjurerSpell {
             Sample.INSTANCE.play( Assets.Sounds.SHATTER );
             Sample.INSTANCE.play(Assets.Sounds.LIGHTNING);
         }
-        int resource = 250*level();
+        int resource = 250;
+        switch (level()){
+            case 1: resource = 333; break;
+            case 2: resource = 425; break;
+        }
         ArrayList<Integer> cells = new ArrayList<>();
         PathFinder.buildDistanceMap( trajectory.collisionPos, BArray.not( Dungeon.level.solid, null ), 3 );
             for (int i = 0; i < PathFinder.distance.length; i++) {
@@ -62,4 +66,13 @@ public class Field extends ConjurerSpell {
         for (int i: cells)
             GameScene.add(Blob.seed(i, resource / cells.size(), GonerField.class));
         }
+
+    @Override
+    public int manaCost() {
+        switch (level()){
+            case 1: return 60;
+            case 2: return 80;
+        }
+        return 40;
+    }
 }
