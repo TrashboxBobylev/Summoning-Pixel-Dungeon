@@ -59,6 +59,7 @@ public class GooMinion extends Minion {
     }
 
     private int pumpedUp = 0;
+    private boolean pumping = false;
 
     @Override
     public int attackSkill( Char target ) {
@@ -107,71 +108,99 @@ public class GooMinion extends Minion {
             enemy.sprite.burst( 0x000000, 5 );
         }
 
-        if (pumpedUp > 0) {
-            Camera.main.shake( 3, 0.2f );
-        }
-
         return damage;
     }
 
     @Override
-    protected boolean doAttack( Char enemy ) {
-        if (pumpedUp == 1) {
-            ((GooMinionSprite)sprite).pumpUp();
-            PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.solid, null ), 2 );
-            for (int i = 0; i < PathFinder.distance.length; i++) {
-                if (PathFinder.distance[i] < Integer.MAX_VALUE)
-                    GameScene.add(Blob.seed(i, 2, GooWarn.class));
+    protected boolean doAttack(Char enemy) {
+
+        if (pumping){
+            pumpedUp--;
+            if (pumpedUp == 0){
+                ((GooMinionSprite) sprite).pumpAttack();
+                pumping = false;
+                return false;
             }
-            pumpedUp++;
-
-            spend( attackDelay() );
-
-            return true;
-        } else if (pumpedUp >= chargeTurns() || Random.Int( (HP*2 <= HT) ? 2 : 5 ) > 0) {
-
-            boolean visible = Dungeon.level.heroFOV[pos];
-
-            if (visible) {
-                if (pumpedUp >= chargeTurns()) {
-                    ((GooMinionSprite) sprite).pumpAttack();
-                }
-                else
-                    sprite.attack( enemy.pos );
-            } else {
-                if (pumpedUp >= chargeTurns()){
-                    elementalAttack();
-                }
-                attack( enemy );
-            }
-
-            spend( attackDelay() );
-
-            return !visible;
-
-        } else {
-
-            pumpedUp++;
-
-            ((GooMinionSprite)sprite).pumpUp();
-
-            for (int i=0; i < PathFinder.NEIGHBOURS9.length; i++) {
-                int j = pos + PathFinder.NEIGHBOURS9[i];
-                if (!Dungeon.level.solid[j]) {
-                    GameScene.add(Blob.seed(j, 2, GooWarn.class));
-                }
-            }
-
-            if (Dungeon.level.heroFOV[pos]) {
-                sprite.showStatus( CharSprite.NEGATIVE, Messages.get(this, "!!!") );
-                GLog.negative( Messages.get(this, "pumpup") );
-            }
-
-            spend( attackDelay() );
-
+            spend(attackDelay());
             return true;
         }
+        else {
+            if (Random.Int(3) <= 1)
+                return super.doAttack(enemy);
+            else {
+                pumpedUp = chargeTurns();
+                pumping = true;
+                ((GooMinionSprite) sprite).pumpUp();
+                spend(attackDelay());
+                PathFinder.buildDistanceMap(pos, BArray.not(Dungeon.level.solid, null), 2);
+                for (int i = 0; i < PathFinder.distance.length; i++) {
+                    if (PathFinder.distance[i] < Integer.MAX_VALUE)
+                        GameScene.add(Blob.seed(i, chargeTurns()+1, GooWarn.class));
+                }
+
+                return true;
+            }
+        }
     }
+
+    //    @Override
+//    protected boolean doAttack( Char enemy ) {
+//        if (pumpedUp == chargeTurns() - 1) {
+//            ((GooMinionSprite)sprite).pumpUp();
+//            PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.solid, null ), 2 );
+//            for (int i = 0; i < PathFinder.distance.length; i++) {
+//                if (PathFinder.distance[i] < Integer.MAX_VALUE)
+//                    GameScene.add(Blob.seed(i, chargeTurns(), GooWarn.class));
+//            }
+//            pumpedUp++;
+//
+//            spend( attackDelay() );
+//
+//            return true;
+//        } else if (pumpedUp >= chargeTurns() || Random.Int( (HP*2 <= HT) ? 2 : 5 ) > 0) {
+//
+//            boolean visible = Dungeon.level.heroFOV[pos];
+//
+//            if (visible) {
+//                if (pumpedUp >= chargeTurns()) {
+//                    ((GooMinionSprite) sprite).pumpAttack();
+//                }
+//                else
+//                    sprite.attack( enemy.pos );
+//            } else {
+//                if (pumpedUp >= chargeTurns()){
+//                    elementalAttack();
+//                }
+//                attack( enemy );
+//            }
+//
+//            spend( attackDelay() );
+//
+//            return !visible;
+//
+//        } else {
+//
+//            pumpedUp++;
+//
+//            ((GooMinionSprite)sprite).pumpUp();
+//
+//            for (int i=0; i < PathFinder.NEIGHBOURS9.length; i++) {
+//                int j = pos + PathFinder.NEIGHBOURS9[i];
+//                if (!Dungeon.level.solid[j]) {
+//                    GameScene.add(Blob.seed(j, chargeTurns(), GooWarn.class));
+//                }
+//            }
+//
+//            if (Dungeon.level.heroFOV[pos]) {
+//                sprite.showStatus( CharSprite.NEGATIVE, Messages.get(this, "!!!") );
+//                GLog.negative( Messages.get(this, "pumpup") );
+//            }
+//
+//            spend( attackDelay() );
+//
+//            return true;
+//        }
+//    }
 
     public void elementalAttack(){
         pumpedUp = 0;
@@ -195,26 +224,32 @@ public class GooMinion extends Minion {
         PathFinder.buildDistanceMap(pos, BArray.not(Dungeon.level.solid, null), 2);
         for (int i = 0; i < PathFinder.distance.length; i++) {
 
-            if (PathFinder.distance[i] < Integer.MAX_VALUE)
+            if (PathFinder.distance[i] < Integer.MAX_VALUE) {
                 CellEmitter.get(i).burst(ElmoParticle.FACTORY, 10);
 
-            if (Actor.findChar(i) != null){
-                Actor.findChar(i).damage(Random.NormalIntRange(min, max), Dungeon.hero);
+                if (Actor.findChar(i) != null && Actor.findChar(i) != Dungeon.hero && Actor.findChar(i) != this) {
+                    Actor.findChar(i).damage(Random.NormalIntRange(min, max), Dungeon.hero);
+                }
             }
         }
-        Sample.INSTANCE.play(Assets.Sounds.BURNING);
 
+        Sample.INSTANCE.play(Assets.Sounds.BURNING);
+        Camera.main.shake(2f, 0.4f);
+        spend(attackDelay());
+        next();
     }
 
     @Override
     public boolean attack( Char enemy ) {
-        boolean result = super.attack( enemy );
+        if (pumping && pumpedUp != 0) return false;
+        boolean result = super.attack(enemy);
         pumpedUp = 0;
         return result;
     }
 
     @Override
     protected boolean getCloser( int target ) {
+        if (pumping) return false;
         pumpedUp = 0;
         return super.getCloser( target );
     }
@@ -231,6 +266,7 @@ public class GooMinion extends Minion {
     }
 
     private final String PUMPEDUP = "pumpedup";
+    private final String PUMPING = "pumping";
 
     @Override
     public void storeInBundle( Bundle bundle ) {
@@ -238,6 +274,7 @@ public class GooMinion extends Minion {
         super.storeInBundle( bundle );
 
         bundle.put( PUMPEDUP , pumpedUp );
+        bundle.put( PUMPING, pumping);
     }
 
     @Override
@@ -246,5 +283,6 @@ public class GooMinion extends Minion {
         super.restoreFromBundle( bundle );
 
         pumpedUp = bundle.getInt( PUMPEDUP );
+        pumping = bundle.getBoolean(PUMPING);
     }
 }
