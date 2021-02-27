@@ -225,7 +225,6 @@ public enum HeroClass {
 		heal.collect();
 		Dungeon.quickslot.setSlot(0, heal);
 		new Zap().collect();
-		new Necro().collect();
 
         hero.mana = 0;
         hero.maxMana = 20;
