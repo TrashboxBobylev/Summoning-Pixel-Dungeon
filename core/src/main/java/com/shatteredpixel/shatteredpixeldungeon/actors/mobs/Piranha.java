@@ -36,6 +36,8 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.PiranhaSprite;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
+
 public class Piranha extends Mob {
 	
 	{
@@ -136,20 +138,12 @@ public class Piranha extends Mob {
 		}
 	}
 
-    @Override
-    public Char chooseEnemy() {
-        Char enemy = super.chooseEnemy();
-
-        //will never attack minions, unless damaged
-        if (enemy != null
-                && Dungeon.level.mobs.contains(enemy)
-                && HP != HT
-                && enemy instanceof Minion){
-            return enemy;
-        }
-
-        return null;
-    }
+	@Override
+	public ArrayList<Class<? extends Char>> ignoreList() {
+		ArrayList<Class<? extends Char>> ignored = super.ignoreList();
+		if (HP == HT) ignored.add(Minion.class);
+		return ignored;
+	}
 
 	@Override
 	protected boolean getFurther( int target ) {

@@ -42,7 +42,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LoveHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.GoldToken;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
@@ -269,7 +268,7 @@ public abstract class Mob extends Char {
 				if (enemies.isEmpty()) {
 					//try to find ally mobs to attack second, ignoring the soul flame
 					for (Mob mob : Dungeon.level.mobs)
-						if (mob.alignment == Alignment.ALLY && mob != this && fieldOfView[mob.pos] && !(mob instanceof SoulFlame))
+						if (mob.alignment == Alignment.ALLY && mob != this && fieldOfView[mob.pos] && !canBeIgnored(mob))
 							enemies.add(mob);
 				}
 
@@ -286,7 +285,7 @@ public abstract class Mob extends Char {
 				//look for hostile mobs to attack
 				for (Mob mob : Dungeon.level.mobs)
 					if (mob.alignment == Alignment.ENEMY && fieldOfView[mob.pos]
-							&& mob.invisible <= 0 && !mob.isInvulnerable(getClass()))
+							&& mob.invisible <= 0 && !mob.isInvulnerable(getClass()) && !canBeIgnored(mob))
 						//intelligent allies do not target mobs which are passive, wandering, or asleep
 						if (!intelligentAlly ||
 								((mob.state != mob.SLEEPING && mob.state != mob.PASSIVE && mob.state != mob.WANDERING) || mob instanceof Yog)) {
@@ -297,7 +296,7 @@ public abstract class Mob extends Char {
 			} else if (alignment == Alignment.ENEMY) {
 				//look for ally mobs to attack, ignoring the soul flame
 				for (Mob mob : Dungeon.level.mobs)
-					if (mob.alignment == Alignment.ALLY && fieldOfView[mob.pos] && !(mob instanceof SoulFlame))
+					if (mob.alignment == Alignment.ALLY && fieldOfView[mob.pos] && !canBeIgnored(mob))
 						enemies.add(mob);
 
 
@@ -352,6 +351,20 @@ public abstract class Mob extends Char {
 			}
 		}
 		return closest;
+	}
+
+	public ArrayList<Class<? extends Char>> ignoreList(){
+		ArrayList<Class<? extends Char>> ignored = new ArrayList<>();
+		ignored.add(SoulFlame.class);
+		return ignored;
+	}
+
+	public boolean canBeIgnored(Char ch){
+		ArrayList<Class<? extends Char>> ignored = ignoreList();
+		for (Class<? extends Char> clazz : ignored){
+			if (ch.getClass().isAssignableFrom(clazz)) return true;
+		}
+		return false;
 	}
 
 	@Override

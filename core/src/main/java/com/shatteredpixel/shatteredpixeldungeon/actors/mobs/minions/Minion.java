@@ -49,6 +49,8 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
+
 public abstract class Minion extends Mob {
 
     public int independenceRange = 8;
@@ -285,7 +287,13 @@ public abstract class Minion extends Mob {
         return super.attackProc(enemy, damage);
     }
 
-
+    @Override
+    public boolean canBeIgnored(Char ch) {
+        if (ch instanceof Piranha){
+            return ch.HT == ch.HP;
+        }
+        return false;
+    }
 
     //ported from DriedRose.java
     //minions will always move towards hero if enemies not here
