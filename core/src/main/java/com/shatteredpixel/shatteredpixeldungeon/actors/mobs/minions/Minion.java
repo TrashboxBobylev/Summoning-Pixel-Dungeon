@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.PerfumeGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Attunement;
@@ -108,7 +109,7 @@ public abstract class Minion extends Mob {
     {
         //all minions are allies and kinda intelligent
         alignment = Alignment.ALLY;
-        intelligentAlly = true;
+        intelligentAlly = false;
 
         WANDERING = new Wandering();
         state = WANDERING;
@@ -200,8 +201,8 @@ public abstract class Minion extends Mob {
         Char enemy = super.chooseEnemy();
 
         int targetPos = defendingPos != -1 ? defendingPos : Dungeon.hero.pos;
-        int distance = this instanceof StationaryMinion ? Integer.MAX_VALUE : independenceRange;
-
+//        int distance = this instanceof StationaryMinion ? Integer.MAX_VALUE : independenceRange;
+        int distance = Integer.MAX_VALUE;
 
 
         //will never attack something far from their target
@@ -309,13 +310,12 @@ public abstract class Minion extends Mob {
                     defendingPos = defending.position;
                 } else defendingPos = -1;
 
+                Char toFollow = toFollow(Dungeon.hero);
                 int oldPos = pos;
-                target = defendingPos != -1 ? defendingPos : Dungeon.hero.pos;
-                //always move towards the hero when wandering
-                if (getCloser( target )) {
-                    //moves 2 tiles at a time when returning to the hero
-                    if (defendingPos == -1 && !Dungeon.level.adjacent(target, pos)){
-                        getCloser( target );
+                //always move towards the target when wandering
+                if (getCloser( target = toFollow.pos )) {
+                    if (!Dungeon.level.adjacent(toFollow.pos, pos) && Actor.findChar(pos) == null) {
+                        getCloser( target = toFollow.pos );
                     }
                     spend( 1 / speed() );
                     return moveSprite( oldPos, pos );

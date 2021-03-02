@@ -89,6 +89,7 @@ public abstract class Mob extends Char {
 	public AiState WANDERING	= new Wandering();
 	public AiState FLEEING		= new Fleeing();
 	public AiState PASSIVE		= new Passive();
+	public AiState FOLLOWING    = new Following();
 	public AiState state = SLEEPING;
 
 	public Class<? extends CharSprite> spriteClass;
@@ -126,6 +127,8 @@ public abstract class Mob extends Char {
 			bundle.put( STATE, Fleeing.TAG );
 		} else if (state == PASSIVE) {
 			bundle.put( STATE, Passive.TAG );
+		}else if (state == FOLLOWING) {
+			bundle.put( STATE, Following.TAG );
 		}
 		bundle.put( SEEN, enemySeen );
 		bundle.put( TARGET, target );
@@ -526,6 +529,29 @@ public abstract class Mob extends Char {
 		} else {
 			return false;
 		}
+	}
+
+	public boolean following(Char follow) {
+		if (alignment == follow.alignment) {
+			Char targetChar = Actor.findChar(this.target);
+			return targetChar == follow;
+		}
+		return false;
+
+	}
+
+	public Char toFollow(Char start) {
+		Char toFollow = start;
+		boolean[] passable = Dungeon.level.passable.clone();
+		PathFinder.buildDistanceMap(pos, passable, Integer.MAX_VALUE);//No limit on distance
+		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+			if (mob.alignment == alignment &&
+					PathFinder.distance[toFollow.pos] > PathFinder.distance[mob.pos] &&
+					mob.following(toFollow)) {
+				toFollow = toFollow(mob);
+			}
+		}
+		return toFollow;
 	}
 
 	@Override
@@ -1030,6 +1056,53 @@ public abstract class Mob extends Char {
 		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
 			enemySeen = enemyInFOV;
 			spend( TICK );
+			return true;
+		}
+	}
+
+	public class Following extends Wandering implements AiState {
+
+		private Char toFollow(Char start) {
+			Char toFollow = start;
+			boolean[] passable = Dungeon.level.passable;
+			PathFinder.buildDistanceMap(pos, passable, Integer.MAX_VALUE);//No limit on distance
+			for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+				if (mob.alignment == alignment && PathFinder.distance[toFollow.pos] > PathFinder.distance[mob.pos] && mob.following(toFollow)) {
+					toFollow = toFollow(mob);//If we find a mob already following the target, ensure there is not a mob already following them. This allows even massive chains of allies to traverse corridors correctly.
+				}
+			}
+			return toFollow;
+		}
+
+		@Override
+		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
+			if ( enemyInFOV) {
+
+				enemySeen = true;
+
+				notice();
+				alerted = true;
+
+				state = HUNTING;
+				target = enemy.pos;
+
+			} else {
+
+				enemySeen = false;
+				Char toFollow = toFollow(Dungeon.hero);
+				int oldPos = pos;
+				//always move towards the target when wandering
+				if (getCloser( target = toFollow.pos )) {
+					if (!Dungeon.level.adjacent(toFollow.pos, pos) && Actor.findChar(pos) == null) {
+						getCloser( target = toFollow.pos );
+					}
+					spend( 1 / speed() );
+					return moveSprite( oldPos, pos );
+				} else {
+					spend( TICK );
+				}
+
+			}
 			return true;
 		}
 	}
