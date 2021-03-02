@@ -27,18 +27,26 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Timer;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SmokeParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Flashbang;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ExplodingTNTSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class ExplodingTNT extends Mob {
 
@@ -81,10 +89,62 @@ public class ExplodingTNT extends Mob {
             Callback call = new Callback() {
                 @Override
                 public void call() {
-                    final Flashbang bomb = new Flashbang();
-                    bomb.fuse  = new Bomb.Fuse().ignite(bomb);
-                    Actor.addDelayed( bomb.fuse, 1);
-                    Heap heap = Dungeon.level.drop( bomb, ballistica.collisionPos );
+                    final Bomb bbbomb = new Bomb(){
+                        @Override
+                        public void explode(int cell) {
+                            this.fuse = null;
+                            ArrayList<Char> affected = new ArrayList<>();
+
+                            boolean terrainAffected = false;
+                            for (int n : PathFinder.NEIGHBOURS9) {
+                                int c = cell + n;
+                                if (c >= 0 && c < Dungeon.level.length()) {
+
+                                    Char ch = Actor.findChar(c);
+                                    if (ch != null) {
+                                        affected.add(ch);
+                                    }
+
+                                    for (Char cher : affected){
+
+                                        //if they have already been killed by another bomb
+                                        if(!cher.isAlive()){
+                                            continue;
+                                        }
+
+                                        int dmg = damageRoll() / 3;
+
+                                        dmg -= cher.drRoll();
+
+                                        if (dmg > 0) {
+                                            cher.damage(dmg, this);
+                                        }
+
+                                        if (cher == Dungeon.hero && !cher.isAlive()) {
+                                            Dungeon.fail(Bomb.class);
+                                        }
+
+                                        int power = 25 - 8*Dungeon.level.distance(cher.pos, cell);
+                                        if (power > 0){
+                                            if (cher instanceof Mob && !(cher instanceof ExplodingTNT)){
+                                                Buff.prolong(ch, Blindness.class, power);
+                                                Buff.prolong(ch, Cripple.class, power);
+                                                ((Mob) cher).enemy = null;
+                                                ((Mob) cher).enemySeen = false;
+                                                ((Mob) cher).state = ((Mob) cher).WANDERING;
+                                            }
+                                        }
+                                        if (cher == Dungeon.hero){
+                                            GameScene.flash(0xFFFFFF);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    };
+                    bbbomb.fuse  = new Bomb.Fuse().ignite(bbbomb);
+                    Actor.addDelayed( bbbomb.fuse, 1);
+                    Heap heap = Dungeon.level.drop( bbbomb, ballistica.collisionPos );
                     if (!heap.isEmpty()) {
                         heap.sprite.drop( ballistica.collisionPos );
                     }
