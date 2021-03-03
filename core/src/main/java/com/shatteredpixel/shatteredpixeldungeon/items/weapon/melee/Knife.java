@@ -47,6 +47,7 @@ public class Knife extends MeleeWeapon {
 		bones = false;
 
 		defaultAction = AC_THROW;
+		usesTargeting = true;
 
 	}
 

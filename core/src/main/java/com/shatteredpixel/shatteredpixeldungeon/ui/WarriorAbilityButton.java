@@ -116,7 +116,7 @@ public class WarriorAbilityButton extends Tag {
         Hunger hunger = Dungeon.hero.buff(Hunger.class);
         if (hunger == null) return;
 
-        if (Dungeon.hero.heroClass == HeroClass.WARRIOR) {
+        if (Dungeon.hero.heroClass == HeroClass.WARRIOR && enabled) {
             if (Dungeon.hero.belongings.weapon != null && (
                     (Dungeon.hero.subClass == HeroSubClass.GLADIATOR && Dungeon.hero.buff(Stacks.class) != null && Dungeon.hero.buff(Stacks.class).damage >= 9)
                     || (!hunger.isHungry() && ((Weapon)Dungeon.hero.belongings.weapon).seal != null) && Dungeon.hero.subClass != HeroSubClass.GLADIATOR)) {
