@@ -86,6 +86,7 @@ public abstract class Minion extends Mob {
         bundle.put("minDR", baseMinDR);
         bundle.put("maxDR", baseMaxDR);
         bundle.put("str", strength);
+        bundle.put("att", attunement);
         bundle.put("enchantment", enchantment);
         bundle.put("level", lvl);
         bundle.put("class", minionClass);
@@ -101,6 +102,7 @@ public abstract class Minion extends Mob {
         baseMinDR = bundle.getInt("minDR");
         baseMaxDR = bundle.getInt("maxDR");
         strength = bundle.getInt("str");
+        attunement = bundle.getInt("att");
         lvl = bundle.getInt("lvl");
         enchantment = (Weapon.Enchantment) bundle.get("enchantment");
         minionClass = bundle.getEnum("class", MinionClass.class);
@@ -291,10 +293,12 @@ public abstract class Minion extends Mob {
     public boolean canBeIgnored(Char ch) {
         if (ch instanceof Piranha){
             return ch.HT == ch.HP;
+        } else if (ch instanceof Yog){
+            return false;
         }
         else {
             Mob mob = (Mob) ch;
-            return (mob.state != mob.SLEEPING && mob.state != mob.PASSIVE && mob.state != mob.WANDERING) || mob instanceof Yog;
+            return (mob.state == mob.SLEEPING || mob.state == mob.PASSIVE || mob.state == mob.WANDERING);
         }
     }
 
@@ -305,7 +309,6 @@ public abstract class Minion extends Mob {
         @Override
         public boolean act( boolean enemyInFOV, boolean justAlerted ) {
             StoneOfTargeting.Defending defending = buff(StoneOfTargeting.Defending.class);
-            enemy = chooseEnemy();
             if ( enemyInFOV && defending == null ) {
 
                 enemySeen = true;
