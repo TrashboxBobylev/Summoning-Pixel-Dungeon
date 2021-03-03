@@ -464,6 +464,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				if (iceBlock != null) {
 					iceBlock.melt();
 					iceBlock = null;
+					paused = false;
 				}
 				break;
 			case ILLUMINATED:
