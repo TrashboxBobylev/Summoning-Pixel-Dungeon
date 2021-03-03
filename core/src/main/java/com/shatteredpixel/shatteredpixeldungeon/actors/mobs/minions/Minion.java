@@ -112,7 +112,7 @@ public abstract class Minion extends Mob {
     {
         //all minions are allies and kinda intelligent
         alignment = Alignment.ALLY;
-        intelligentAlly = false;
+        intelligentAlly = true;
 
         WANDERING = new Wandering();
         state = WANDERING;
@@ -204,8 +204,7 @@ public abstract class Minion extends Mob {
         Char enemy = super.chooseEnemy();
 
         int targetPos = defendingPos != -1 ? defendingPos : Dungeon.hero.pos;
-//        int distance = this instanceof StationaryMinion ? Integer.MAX_VALUE : independenceRange;
-        int distance = Integer.MAX_VALUE;
+        int distance = this instanceof StationaryMinion ? Integer.MAX_VALUE : independenceRange;
 
 
         //will never attack something far from their target
@@ -306,6 +305,7 @@ public abstract class Minion extends Mob {
         @Override
         public boolean act( boolean enemyInFOV, boolean justAlerted ) {
             StoneOfTargeting.Defending defending = buff(StoneOfTargeting.Defending.class);
+            enemy = chooseEnemy();
             if ( enemyInFOV && defending == null ) {
 
                 enemySeen = true;
