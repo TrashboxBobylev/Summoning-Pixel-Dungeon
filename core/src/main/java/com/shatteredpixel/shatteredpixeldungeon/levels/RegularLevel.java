@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.GuidePage;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
+import com.shatteredpixel.shatteredpixeldungeon.levels.builders.BranchesBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.FigureEightBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LoopBuilder;
@@ -144,12 +145,16 @@ public abstract class RegularLevel extends Level {
 	}
 	
 	protected Builder builder(){
-		if (Random.Int(2) == 0){
+		int tryn = Random.Int(2);
+		if (tryn == 0){
 			return new LoopBuilder()
 					.setLoopShape( 3 ,
 							Random.Float(0f, 0.85f),
 							Random.Float(0f, 0.65f));
-		} else {
+		} else if (tryn == 1) {
+			return new BranchesBuilder();
+		}
+		else {
 			return new FigureEightBuilder()
 					.setLoopShape( 3 ,
 							Random.Float(0.3f, 1.2f),

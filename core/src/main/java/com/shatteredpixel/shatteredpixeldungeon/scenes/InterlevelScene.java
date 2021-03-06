@@ -330,6 +330,8 @@ public class InterlevelScene extends PixelScene {
 								"Seed:" + Dungeon.seed + " depth:" + Dungeon.depth + " trace:" +
 								s)
 				);
+				Dungeon.depth--;
+				Game.resetScene();
 
 			}
 			break;

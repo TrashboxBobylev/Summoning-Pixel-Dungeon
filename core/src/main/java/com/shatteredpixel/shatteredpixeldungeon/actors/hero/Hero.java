@@ -1367,7 +1367,7 @@ public class Hero extends Char {
                 && Dungeon.depth < 26) {
 		        boolean canDo = true;
                 if ((Dungeon.depth > 20) && (Dungeon.depth < 25))
-                if (!Dungeon.level.checkForFroggits()) {
+                if (/*!*/Dungeon.level.checkForFroggits()) {
                     canDo = false;
                 }
 

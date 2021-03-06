@@ -55,8 +55,8 @@ public class StatuesRoom extends StandardRoom {
 		}
 
 
-		int rows = (width() + 1)/6;
-		int cols = (height() + 1)/6;
+		int rows = (width() + 1)/6 + 1;
+		int cols = (height() + 1)/6 + 1;
 
 		int w = (width() - 4 - (rows-1))/rows;
 		int h = (height() - 4 - (cols-1))/cols;
