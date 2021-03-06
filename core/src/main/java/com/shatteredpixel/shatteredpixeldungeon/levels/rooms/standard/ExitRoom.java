@@ -34,8 +34,6 @@ import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 public class ExitRoom extends StandardRoom {
-
-	//TODO maybe not joinable?
 	
 	@Override
 	public int minWidth() {
