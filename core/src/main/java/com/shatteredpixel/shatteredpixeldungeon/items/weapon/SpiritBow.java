@@ -148,6 +148,11 @@ public class SpiritBow extends Weapon {
 				+ 2*RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
 				+ (curseInfusionBonus ? 2 : 0);
 	}
+
+	@Override
+	public int targetingPos(Hero user, int dst) {
+		return knockArrow().targetingPos(user, dst);
+	}
 	
 	private int targetPos;
 	
@@ -270,7 +275,7 @@ public class SpiritBow extends Weapon {
 		public int STRReq(int lvl) {
 			return SpiritBow.this.STRReq(lvl);
 		}
-		
+
 		@Override
         public void onThrow(int cell) {
 			Char enemy = Actor.findChar( cell );
