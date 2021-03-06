@@ -146,13 +146,13 @@ public abstract class RegularLevel extends Level {
 	protected Builder builder(){
 		if (Random.Int(2) == 0){
 			return new LoopBuilder()
-					.setLoopShape( 2 ,
-							Random.Float(0f, 0.65f),
-							Random.Float(0f, 0.50f));
+					.setLoopShape( 3 ,
+							Random.Float(0f, 0.85f),
+							Random.Float(0f, 0.65f));
 		} else {
 			return new FigureEightBuilder()
-					.setLoopShape( 2 ,
-							Random.Float(0.3f, 0.8f),
+					.setLoopShape( 3 ,
+							Random.Float(0.3f, 1.2f),
 							0f);
 		}
 
