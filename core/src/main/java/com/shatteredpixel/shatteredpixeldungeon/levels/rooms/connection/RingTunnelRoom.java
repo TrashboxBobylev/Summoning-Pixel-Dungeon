@@ -35,12 +35,12 @@ public class RingTunnelRoom extends TunnelRoom {
 
 	@Override
 	public int minWidth() {
-		return Math.max(5, super.minWidth());
+		return Math.max(8, super.minWidth());
 	}
 
 	@Override
 	public int minHeight() {
-		return Math.max(5, super.minHeight());
+		return Math.max(8, super.minHeight());
 	}
 
 	@Override

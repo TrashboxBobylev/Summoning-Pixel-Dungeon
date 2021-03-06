@@ -37,12 +37,12 @@ public class CavesFissureRoom extends StandardRoom {
 
 	@Override
 	public int minWidth() {
-		return Math.max(7, super.minWidth());
+		return Math.max(8, super.minWidth());
 	}
 
 	@Override
 	public int minHeight() {
-		return Math.max(7, super.minHeight());
+		return Math.max(8, super.minHeight());
 	}
 
 	@Override

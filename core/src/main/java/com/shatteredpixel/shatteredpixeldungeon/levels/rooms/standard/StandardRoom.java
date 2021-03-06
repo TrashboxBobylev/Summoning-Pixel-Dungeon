@@ -39,9 +39,9 @@ public abstract class StandardRoom extends Room {
 	
 	public enum SizeCategory {
 		
-		NORMAL(4, 10, 1),
-		LARGE(10, 14, 2),
-		GIANT(14, 18, 3);
+		NORMAL(7, 15, 1),
+		LARGE(14, 20, 2),
+		GIANT(19, 30, 3);
 		
 		public final int minDim, maxDim;
 		public final int roomValue;

@@ -36,12 +36,12 @@ public class CirclePitRoom extends StandardRoom {
 
 	@Override
 	public int minWidth() {
-		return Math.max(8, super.minWidth());
+		return Math.max(10, super.minWidth());
 	}
 
 	@Override
 	public int minHeight() {
-		return Math.max(8, super.minHeight());
+		return Math.max(10, super.minHeight());
 	}
 
 	@Override

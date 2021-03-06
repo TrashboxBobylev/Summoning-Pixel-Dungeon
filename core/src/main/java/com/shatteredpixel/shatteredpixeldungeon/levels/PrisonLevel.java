@@ -58,9 +58,9 @@ public class PrisonLevel extends RegularLevel {
 	
 	@Override
 	protected int standardRooms(boolean forceMax) {
-		if (forceMax) return 11;
-		//8 to 10
-		return 8+Random.chances(new float[]{4, 2, 2});
+		if (forceMax) return 22;
+		//11 to 13
+		return 11+Random.chances(new float[]{4, 3, 2, 1});
 	}
 	
 	@Override

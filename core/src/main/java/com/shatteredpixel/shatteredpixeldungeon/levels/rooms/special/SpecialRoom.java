@@ -37,14 +37,14 @@ import java.util.Arrays;
 public abstract class SpecialRoom extends Room {
 	
 	@Override
-	public int minWidth() { return 5; }
-	public int maxWidth() { return 10; }
+	public int minWidth() { return 8; }
+	public int maxWidth() { return 12; }
 	
 	@Override
 	public int minHeight() {
-		return 5;
+		return 8;
 	}
-	public int maxHeight() { return 10; }
+	public int maxHeight() { return 12; }
 	
 	@Override
 	public int maxConnections(int direction) {

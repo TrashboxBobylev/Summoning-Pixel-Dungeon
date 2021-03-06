@@ -54,6 +54,6 @@ public class MazeConnectionRoom extends ConnectionRoom {
 	
 	@Override
 	public int maxConnections(int direction) {
-		return 2;
+		return 3;
 	}
 }

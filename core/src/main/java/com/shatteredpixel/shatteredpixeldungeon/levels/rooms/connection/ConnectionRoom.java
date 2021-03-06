@@ -35,12 +35,12 @@ import java.util.ArrayList;
 public abstract class ConnectionRoom extends Room {
 	
 	@Override
-	public int minWidth() { return 3; }
-	public int maxWidth() { return 10; }
+	public int minWidth() { return 5; }
+	public int maxWidth() { return 15; }
 	
 	@Override
-	public int minHeight() { return 3; }
-	public int maxHeight() { return 10; }
+	public int minHeight() { return 5; }
+	public int maxHeight() { return 15; }
 	
 	@Override
 	public int minConnections(int direction) {

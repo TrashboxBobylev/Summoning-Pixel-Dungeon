@@ -37,12 +37,12 @@ public class SuspiciousChestRoom extends StandardRoom {
 
 	@Override
 	public int minWidth() {
-		return Math.max(5, super.minWidth());
+		return Math.max(9, super.minWidth());
 	}
 
 	@Override
 	public int minHeight() {
-		return Math.max(5, super.minHeight());
+		return Math.max(9, super.minHeight());
 	}
 
 	@Override

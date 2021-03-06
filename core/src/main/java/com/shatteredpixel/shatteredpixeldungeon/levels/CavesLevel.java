@@ -58,9 +58,9 @@ public class CavesLevel extends RegularLevel {
 	
 	@Override
 	protected int standardRooms(boolean forceMax) {
-		if (forceMax) return 13;
-		//9 to 12
-		return 9+Random.chances(new float[]{2, 3, 3, 1, 1});
+		if (forceMax) return 26;
+		//13 to 18
+		return 13+Random.chances(new float[]{2, 3, 3, 1, 1, 1});
 	}
 	
 	@Override

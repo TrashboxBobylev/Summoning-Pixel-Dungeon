@@ -161,7 +161,7 @@ public abstract class RegularLevel extends Level {
 	protected abstract Painter painter();
 
 	protected int nTraps() {
-		return Random.NormalIntRange( 2, 3 + (Dungeon.depth/5) );
+		return Random.NormalIntRange( 4, 5 + (Dungeon.depth/3) );
 	}
 	
 	protected Class<?>[] trapClasses(){
@@ -172,21 +172,21 @@ public abstract class RegularLevel extends Level {
 		return new float[]{1};
 	}
 	
-//	@Override
-//	public int nMobs() {
-//		if (Dungeon.depth <= 1) return 0;
-//
-//		int mobs = 3 + Dungeon.depth % 5 + Random.Int(3);
-//		if (feeling == Feeling.LARGE){
-//			mobs = (int)Math.ceil(mobs * 1.33f);
-//		}
-//		return mobs;
-//	}
+	@Override
+	public int nMobs() {
+		if (Dungeon.depth <= 1) return 0;
+
+		int mobs = 6 + Dungeon.depth % 3 + Random.Int(7);
+		if (feeling == Feeling.LARGE){
+			mobs = (int)Math.ceil(mobs * 1.5f);
+		}
+		return mobs;
+	}
 	
 	@Override
 	protected void createMobs() {
 		//on floor 1, 8 pre-set mobs are created so the player can get level 2.
-		int mobsToSpawn = Dungeon.depth == 1 ? 8 : nMobs();
+		int mobsToSpawn = Dungeon.depth == 1 ? 12 : nMobs();
 
 		ArrayList<Room> stdRooms = new ArrayList<>();
 		for (Room room : rooms) {
@@ -208,7 +208,7 @@ public abstract class RegularLevel extends Level {
 			}
 			roomToSpawn = stdRoomIter.next();
 
-			int tries = 30;
+			int tries = 50;
 			do {
 				mob.pos = pointToCell(roomToSpawn.random());
 				tries--;
@@ -255,7 +255,7 @@ public abstract class RegularLevel extends Level {
 
 		while (true) {
 
-			if (++count > 30) {
+			if (++count > 50) {
 				return -1;
 			}
 
@@ -285,7 +285,7 @@ public abstract class RegularLevel extends Level {
 		
 		while (true) {
 			
-			if (++count > 30) {
+			if (++count > 50) {
 				return -1;
 			}
 			
@@ -305,11 +305,11 @@ public abstract class RegularLevel extends Level {
 	@Override
 	protected void createItems() {
 		
-		// drops 3/4/5 items 60%/30%/10% of the time
-		int nItems = 3 + Random.chances(new float[]{6, 3, 1});
+		// drops 7-13 items
+		int nItems = 7 + Random.chances(new float[]{6, 5, 4, 3, 2, 1});
 
 		if (feeling == Feeling.LARGE){
-			nItems += 2;
+			nItems += 6;
 		}
 
 		for (int i=0; i < nItems; i++) {
