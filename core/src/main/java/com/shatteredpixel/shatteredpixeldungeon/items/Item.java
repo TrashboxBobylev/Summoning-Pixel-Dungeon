@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knife;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -254,7 +255,7 @@ public class Item implements Bundlable {
 		} else
 		if (quantity == 1) {
 
-			if (stackable){
+			if (stackable || this instanceof Knife){
 				Dungeon.quickslot.convertToPlaceholder(this);
 			}
 

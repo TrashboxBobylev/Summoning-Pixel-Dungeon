@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knife;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ThiefSprite;
@@ -152,7 +153,7 @@ public class Thief extends Mob {
 		if (item != null && !item.unique && item.level() < 1 ) {
 
 			GLog.warning( Messages.get(Thief.class, "stole", item.name()) );
-			if (!item.stackable) {
+			if (!item.stackable || !(item instanceof Knife)) {
 				Dungeon.quickslot.convertToPlaceholder(item);
 			}
 			item.updateQuickslot();

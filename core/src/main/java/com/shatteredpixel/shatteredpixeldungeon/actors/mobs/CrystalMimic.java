@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knife;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MimicSprite;
@@ -155,7 +156,7 @@ public class CrystalMimic extends Mimic {
 		if (item != null && !item.unique && item.level() < 1 ) {
 
 			GLog.warning( Messages.get(this, "ate", item.name()) );
-			if (!item.stackable) {
+			if (!item.stackable || !(item instanceof Knife)) {
 				Dungeon.quickslot.convertToPlaceholder(item);
 			}
 			item.updateQuickslot();

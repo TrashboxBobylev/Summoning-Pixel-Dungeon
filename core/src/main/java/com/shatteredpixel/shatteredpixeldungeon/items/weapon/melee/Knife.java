@@ -67,6 +67,7 @@ public class Knife extends MeleeWeapon {
 
     @Override
     public void onThrow(int cell) {
+	    Dungeon.quickslot.convertToPlaceholder(this);
         Char enemy = Actor.findChar(cell);
         if (enemy == null || enemy == curUser || curUser.buff(SoulWeakness.class) != null) {
             super.onThrow(cell);

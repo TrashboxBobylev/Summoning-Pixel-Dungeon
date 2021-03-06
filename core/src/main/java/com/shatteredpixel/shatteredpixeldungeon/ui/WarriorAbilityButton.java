@@ -148,7 +148,7 @@ public class WarriorAbilityButton extends Tag {
 
     @Override
     protected void onClick() {
-        GameScene.selectCell(attack);
+        if (enabled) GameScene.selectCell(attack);
     }
 
     private CellSelector.Listener attack = new CellSelector.Listener(){
