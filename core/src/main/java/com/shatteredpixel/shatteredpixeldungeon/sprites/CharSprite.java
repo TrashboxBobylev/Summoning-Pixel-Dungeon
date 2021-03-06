@@ -510,12 +510,13 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	
 	@Override
 	public void update() {
+		if (paused && !looping() && ch != null && curAnim != null){
+			Animation cur = curAnim;
+			curAnim = null;
+			listener.onComplete(cur);
+		}
 		
 		super.update();
-		
-		if (paused && listener != null) {
-			listener.onComplete( curAnim );
-		}
 		
 		if (flashTime > 0 && (flashTime -= Game.elapsed) <= 0) {
 			resetColor();

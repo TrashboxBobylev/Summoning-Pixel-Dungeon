@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.FeatherFall;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
@@ -50,7 +51,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
-public class Chasm {
+public class Chasm implements Hero.Doom {
 
 	public static boolean jumpConfirmed = false;
 	
@@ -101,7 +102,15 @@ public class Chasm {
 			Dungeon.hero.sprite.visible = false;
 		}
 	}
-	
+
+	@Override
+	public void onDeath() {
+		Badges.validateDeathFromFalling();
+
+		Dungeon.fail( Chasm.class );
+		GLog.negative( Messages.get(Chasm.class, "ondeath") );
+	}
+
 	public static void heroLand() {
 		
 		Hero hero = Dungeon.hero;
@@ -109,7 +118,7 @@ public class Chasm {
 		FeatherFall.FeatherBuff b = hero.buff(FeatherFall.FeatherBuff.class);
 		
 		if (b != null){
-			//TODO visuals
+			hero.sprite.emitter().burst( Speck.factory( Speck.JET ), 20);
 			b.detach();
 			return;
 		}
@@ -122,15 +131,7 @@ public class Chasm {
 		//The lower the hero's HP, the more bleed and the less upfront damage.
 		//Hero has a 50% chance to bleed out at 66% HP, and begins to risk instant-death at 25%
 		Buff.affect( hero, FallBleed.class).set( Math.round(hero.HT / (6f + (6f*(hero.HP/(float)hero.HT)))));
-		hero.damage( Math.max( hero.HP / 2, Random.NormalIntRange( hero.HP / 2, hero.HT / 4 )), new Hero.Doom() {
-			@Override
-			public void onDeath() {
-				Badges.validateDeathFromFalling();
-				
-				Dungeon.fail( Chasm.class );
-				GLog.negative( Messages.get(Chasm.class, "ondeath") );
-			}
-		} );
+		hero.damage( Math.max( hero.HP / 2, Random.NormalIntRange( hero.HP / 2, hero.HT / 4 )), new Chasm() );
 	}
 
 	public static void mobFall( Mob mob ) {

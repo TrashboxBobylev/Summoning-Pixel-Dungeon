@@ -150,7 +150,7 @@ public class Hero extends Char {
 	public int HTBoost = 0;
 
 	public int lastMovPos = -1;
-	
+
 	private ArrayList<Mob> visibleEnemies;
 
 	//This list is maintained so that some logic checks can be skipped
@@ -251,7 +251,7 @@ public class Hero extends Char {
 		defenseSkill = bundle.getInt( DEFENSE );
 		
 		STR = bundle.getInt( STRENGTH );
-		
+
 		lvl = bundle.getInt( LEVEL );
 		exp = bundle.getInt( EXPERIENCE );
 		attunement = bundle.getFloat(ATTUNEMENT);
@@ -263,7 +263,7 @@ public class Hero extends Char {
 
 		mana = bundle.getInt(MANA);
 		maxMana = bundle.getInt(MAX_MANA);
-		
+
 		belongings.restoreFromBundle( bundle );
 	}
 	
@@ -740,7 +740,6 @@ public class Hero extends Char {
 			}
 			
 			Alchemy alch = (Alchemy) Dungeon.level.blobs.get(Alchemy.class);
-			//TODO logic for a well having dried up?
 			if (alch != null) {
 				alch.alchPos = dst;
 				AlchemyScene.setProvider( alch );
@@ -1071,7 +1070,7 @@ public class Hero extends Char {
 		}
 
 
-		
+
 		return damage;
 	}
 	
@@ -1310,10 +1309,7 @@ public class Hero extends Char {
 				Buff.affect(this, Momentum.class).gainStack();
 			}
 
-			//FIXME this is a fairly sloppy fix for a crash involving pitfall traps.
-			//really there should be a way for traps to specify whether action should continue or
-			//not when they are pressed.
-			return InterlevelScene.mode != InterlevelScene.Mode.FALL;
+			return true;
 
 		} else {
 
@@ -1815,7 +1811,7 @@ public class Hero extends Char {
 		
 		for (int y = ay; y <= by; y++) {
 			for (int x = ax, p = ax + y * Dungeon.level.width(); x <= bx; x++, p++) {
-				
+
 				if (fieldOfView[p] && p != pos) {
 					
 					if (intentional) {

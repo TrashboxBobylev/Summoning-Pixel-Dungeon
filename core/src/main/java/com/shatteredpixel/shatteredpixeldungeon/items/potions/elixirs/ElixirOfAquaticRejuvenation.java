@@ -42,7 +42,6 @@ import com.watabou.utils.Random;
 public class ElixirOfAquaticRejuvenation extends Elixir {
 	
 	{
-		//TODO finish visuals
 		image = ItemSpriteSheet.ELIXIR_AQUA;
 	}
 	

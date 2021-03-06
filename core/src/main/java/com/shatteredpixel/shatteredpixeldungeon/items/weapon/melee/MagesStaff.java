@@ -135,14 +135,11 @@ public class MagesStaff extends MeleeWeapon {
 
 	@Override
 	public int buffedLvl() {
-		int lvl = super.buffedLvl();
-		if (curUser != null && wand != null) {
-			WandOfMagicMissile.MagicCharge buff = curUser.buff(WandOfMagicMissile.MagicCharge.class);
-			if (buff != null && buff.level() > lvl){
-				return buff.level();
-			}
+		if (wand != null){
+			return Math.max(super.buffedLvl(), wand.buffedLvl());
+		} else {
+			return super.buffedLvl();
 		}
-		return lvl;
 	}
 
 	@Override
@@ -214,7 +211,7 @@ public class MagesStaff extends MeleeWeapon {
 
 		return this;
 	}
-	
+
 	public void gainCharge( float amt ){
 		if (wand != null){
 			wand.gainCharge(amt);
@@ -274,11 +271,7 @@ public class MagesStaff extends MeleeWeapon {
 	public String info() {
 		String info = super.info();
 
-		if (wand == null){
-			//FIXME this is removed because of journal stuff, and is generally unused.
-			//perhaps reword to fit in journal better
-			//info += "\n\n" + Messages.get(this, "no_wand");
-		} else {
+		if (wand != null){
 			info += "\n\n" + Messages.get(this, "has_wand", Messages.get(wand, "name")) + " " + wand.statsDesc();
 		}
 

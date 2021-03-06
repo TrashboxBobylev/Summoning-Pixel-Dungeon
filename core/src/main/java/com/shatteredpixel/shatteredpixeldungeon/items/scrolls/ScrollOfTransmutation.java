@@ -27,6 +27,8 @@ package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Transmuting;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -124,7 +126,8 @@ public class ScrollOfTransmutation extends InventoryScroll {
 			if (result.isIdentified()){
 				Catalog.setSeen(result.getClass());
 			}
-			//TODO visuals
+			Transmuting.show(curUser, item, result);
+			curUser.sprite.emitter().start(Speck.factory(Speck.CHANGE), 0.2f, 10);
 			GLog.positive( Messages.get(this, "morph") );
 		}
 		

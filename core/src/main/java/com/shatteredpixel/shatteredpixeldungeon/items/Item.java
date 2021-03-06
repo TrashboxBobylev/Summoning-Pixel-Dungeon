@@ -377,10 +377,10 @@ public class Item implements Bundlable {
 	}
 	
 	public Item identify() {
-		
+
 		levelKnown = true;
 		cursedKnown = true;
-		
+
 		if (Dungeon.hero != null && Dungeon.hero.isAlive()) {
 			Catalog.setSeen(getClass());
 		}
@@ -562,7 +562,8 @@ public class Item implements Bundlable {
 						@Override
 						public void call() {
 							curUser = user;
-							Item.this.detach(user.belongings.backpack).onThrow(cell);
+							Item i = Item.this.detach(user.belongings.backpack);
+							if (i != null) i.onThrow(cell);
 							user.spendAndNext(delay);
 						}
 					});

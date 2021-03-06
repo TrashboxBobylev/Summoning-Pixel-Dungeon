@@ -37,6 +37,7 @@ import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Button;
+import com.watabou.noosa.ui.Component;
 
 import java.util.Locale;
 
@@ -154,7 +155,7 @@ public class WndRanking extends WndTabbed {
 			super();
 
 			if (Dungeon.challenges > 0) GAP--;
-			
+
 			String heroClass = Dungeon.hero.className();
 			
 			IconTitle title = new IconTitle();
@@ -278,11 +279,15 @@ public class WndRanking extends WndTabbed {
 			super();
 			
 			camera = WndRanking.this.camera;
-			
-			ScrollPane list = new BadgesList( false );
-			add( list );
-			
-			list.setSize( WIDTH, HEIGHT );
+
+			Component badges;
+			if (Badges.unlocked(false) <= 7){
+				badges = new BadgesList(false);
+			} else {
+				badges = new BadgesGrid(false);
+			}
+			add(badges);
+			badges.setSize( WIDTH, HEIGHT );
 		}
 	}
 

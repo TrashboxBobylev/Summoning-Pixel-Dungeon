@@ -233,7 +233,7 @@ public class Badges {
 			try {
 				Bundle bundle = FileUtils.bundleFromFile( BADGES_FILE );
 				global = restore( bundle );
-				
+
 			} catch (IOException e) {
 				global = new HashSet<>();
 			}
@@ -253,6 +253,11 @@ public class Badges {
 				ShatteredPixelDungeon.reportException(e);
 			}
 		}
+	}
+
+	public static int unlocked(boolean global){
+		if (global) return Badges.global.size();
+		else        return Badges.local.size();
 	}
 
 	public static void validateMonstersSlain() {
@@ -802,6 +807,7 @@ public class Badges {
 		if (challenges >= 6){
 			badge = Badge.CHAMPION_3;
 		}
+		local.add(badge);
 		displayBadge( badge );
 	}
 	

@@ -47,7 +47,6 @@ import java.util.ArrayList;
 public class RegrowthBomb extends Bomb {
 	
 	{
-		//TODO visuals
 		image = ItemSpriteSheet.REGROWTH_BOMB;
 	}
 	

@@ -28,8 +28,20 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
-import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EarthParticle;
@@ -46,16 +58,24 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.DM300Sprite;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.*;
+import com.watabou.noosa.particles.Emitter;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.Point;
+import com.watabou.utils.Random;
+import com.watabou.utils.Rect;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NewDM300 extends Mob {
 
 	{
-		//TODO improved sprite
 		spriteClass = DM300Sprite.class;
 
 		HP = HT = 300;
@@ -135,8 +155,10 @@ public class NewDM300 extends Mob {
 
 	@Override
 	protected boolean act() {
-		GameScene.add(Blob.seed(pos, 0, FallingRocks.class));
-		GameScene.add(Blob.seed(pos, 0, ToxicGas.class));
+
+		if (paralysed > 0){
+			return super.act();
+		}
 
 		//ability logic only triggers if DM is not supercharged
 		if (!supercharged){
@@ -170,9 +192,9 @@ public class NewDM300 extends Mob {
 				}
 			} else {
 
-				if (enemy == null) enemy = Dungeon.hero;
+				if (enemy == null && Dungeon.hero.invisible <= 0) enemy = Dungeon.hero;
 
-				if (!canReach){
+				if (enemy != null && !canReach){
 
 					if (fieldOfView[enemy.pos] && turnsSinceLastAbility >= MIN_COOLDOWN){
 
@@ -192,7 +214,7 @@ public class NewDM300 extends Mob {
 
 					}
 
-				} else {
+				} else if (enemy != null && fieldOfView[enemy.pos]) {
 					if (turnsSinceLastAbility > abilityCooldown) {
 
 						if (lastAbility == NONE) {
@@ -245,7 +267,7 @@ public class NewDM300 extends Mob {
 				chargeAnnounced = true;
 			}
 
-			if (state == WANDERING && Dungeon.hero.invisible <= 0){
+			if (Dungeon.hero.invisible <= 0){
 				beckon(Dungeon.hero.pos);
 				state = HUNTING;
 				enemy = Dungeon.hero;
@@ -362,47 +384,33 @@ public class NewDM300 extends Mob {
 			rockCenter = target.pos;
 		}
 
-		//we handle this through an actor as it gives us fine-grainted control over when the blog acts vs. when the hero acts
-		//FIXME this is really messy to just get some fine-grained control. would be nice to build this into blob functionality, or just not use blobs for this at all
-		Actor a = new Actor() {
+		int safeCell;
+		do {
+			safeCell = rockCenter + PathFinder.NEIGHBOURS8[Random.Int(8)];
+		} while (safeCell == pos
+				|| (Dungeon.level.solid[safeCell] && Random.Int(2) == 0)
+				|| (Blob.volumeAt(safeCell, NewCavesBossLevel.PylonEnergy.class) > 0 && Random.Int(2) == 0));
 
-			{
-				actPriority = HERO_PRIO+1;
-			}
+		ArrayList<Integer> rockCells = new ArrayList<>();
 
-			@Override
-			protected boolean act() {
-
-				//pick an adjacent cell to the hero as a safe cell. This cell is less likely to be in a wall or containing hazards
-				int safeCell;
-				do {
-					safeCell = rockCenter + PathFinder.NEIGHBOURS8[Random.Int(8)];
-				} while (safeCell == pos
-						|| (Dungeon.level.solid[safeCell] && Random.Int(2) == 0)
-						|| (Blob.volumeAt(safeCell, NewCavesBossLevel.PylonEnergy.class) > 0 && Random.Int(2) == 0));
-
-				int start = rockCenter - Dungeon.level.width() * 3 - 3;
-				int pos;
-				for (int y = 0; y < 7; y++) {
-					pos = start + Dungeon.level.width() * y;
-					for (int x = 0; x < 7; x++) {
-						if (!Dungeon.level.insideMap(pos)) {
-							pos++;
-							continue;
-						}
-						//add rock cell to pos, if it is not solid, and isn't the safecell
-						if (!Dungeon.level.solid[pos] && pos != safeCell && Random.Int(Dungeon.level.distance(rockCenter, pos)) == 0) {
-							//don't want to overly punish players with slow move or attack speed
-							GameScene.add(Blob.seed(pos, 1, FallingRocks.class));
-						}
-						pos++;
-					}
+		int start = rockCenter - Dungeon.level.width() * 3 - 3;
+		int pos;
+		for (int y = 0; y < 7; y++) {
+			pos = start + Dungeon.level.width() * y;
+			for (int x = 0; x < 7; x++) {
+				if (!Dungeon.level.insideMap(pos)) {
+					pos++;
+					continue;
 				}
-				Actor.remove(this);
-				return true;
+				//add rock cell to pos, if it is not solid, and isn't the safecell
+				if (!Dungeon.level.solid[pos] && pos != safeCell && Random.Int(Dungeon.level.distance(rockCenter, pos)) == 0) {
+					//don't want to overly punish players with slow move or attack speed
+					rockCells.add(pos);
+				}
+				pos++;
 			}
-		};
-		Actor.addDelayed(a, Math.min(target.cooldown(), 3*TICK));
+		}
+		Buff.append(this, FallingRockBuff.class, Math.min(target.cooldown(), 3*TICK)).setRockPositions(rockCells);
 
 	}
 
@@ -505,26 +513,11 @@ public class NewDM300 extends Mob {
 			return true;
 		} else {
 
-			if (rooted || target == pos) {
+			if (!supercharged || rooted || target == pos || Dungeon.level.adjacent(pos, target)) {
 				return false;
 			}
 
 			int bestpos = pos;
-			for (int i : PathFinder.NEIGHBOURS8){
-				if (Dungeon.level.openSpace[pos+i] && Actor.findChar(pos+i) == null &&
-						Dungeon.level.distance(bestpos, target) > Dungeon.level.distance(pos+i, target)){
-					bestpos = pos+i;
-				}
-			}
-			if (bestpos != pos){
-				move( bestpos );
-				return true;
-			}
-
-			if (!supercharged || state != HUNTING || Dungeon.level.adjacent(pos, target)){
-				return false;
-			}
-
 			for (int i : PathFinder.NEIGHBOURS8){
 				if (Actor.findChar(pos+i) == null &&
 						Dungeon.level.trueDistance(bestpos, target) > Dungeon.level.trueDistance(pos+i, target)){
@@ -591,59 +584,67 @@ public class NewDM300 extends Mob {
 		resistances.add(Slow.class);
 	}
 
-	public static class FallingRocks extends Blob {
+	public static class FallingRockBuff extends FlavourBuff {
 
-		{
-			alwaysVisible = true;
+		private int[] rockPositions;
+		private ArrayList<Emitter> rockEmitters = new ArrayList<>();
+
+		public void setRockPositions( List<Integer> rockPositions ) {
+			this.rockPositions = new int[rockPositions.size()];
+			for (int i = 0; i < rockPositions.size(); i++){
+				this.rockPositions[i] = rockPositions.get(i);
+			}
+
+			fx(true);
 		}
 
 		@Override
-		protected void evolve() {
+		public boolean act() {
+			for (int i : rockPositions){
+				CellEmitter.get( i ).start( Speck.factory( Speck.ROCK ), 0.07f, 10 );
 
-			boolean rocksFell = false;
-
-			int cell;
-			for (int i = area.left; i < area.right; i++){
-				for (int j = area.top; j < area.bottom; j++){
-					cell = i + j* Dungeon.level.width();
-					off[cell] = cur[cell] > 0 ? cur[cell] - 1 : 0;
-
-					if (off[cell] > 0) {
-						volume += off[cell];
-					}
-
-					if (cur[cell] > 0 && off[cell] == 0){
-
-						CellEmitter.get( cell ).start( Speck.factory( Speck.ROCK ), 0.07f, 10 );
-
-						Char ch = Actor.findChar(cell);
-						if (ch != null && !(ch instanceof NewDM300)){
-							Buff.prolong( ch, Paralysis.class, 3 );
-						}
-
-						rocksFell = true;
-					}
+				Char ch = Actor.findChar(i);
+				if (ch != null && !(ch instanceof NewDM300)){
+					Buff.prolong( ch, Paralysis.class, 3 );
 				}
 			}
 
-			if (rocksFell){
-				Camera.main.shake( 3, 0.7f );
-				Sample.INSTANCE.play(Assets.Sounds.ROCKS);
+			Camera.main.shake( 3, 0.7f );
+			Sample.INSTANCE.play(Assets.Sounds.ROCKS);
+
+			detach();
+			return super.act();
+		}
+
+		@Override
+		public void fx(boolean on) {
+			if (on && rockPositions != null){
+				for (int i : this.rockPositions){
+					Emitter e = CellEmitter.get(i);
+					e.y -= DungeonTilemap.SIZE*0.2f;
+					e.height *= 0.4f;
+					e.pour(EarthParticle.FALLING, 0.1f);
+					rockEmitters.add(e);
+				}
+			} else {
+				for (Emitter e : rockEmitters){
+					e.on = false;
+				}
 			}
+		}
 
+		private static final String POSITIONS = "positions";
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(POSITIONS, rockPositions);
 		}
 
 		@Override
-		public void use(BlobEmitter emitter) {
-			super.use(emitter);
-
-			emitter.bound = new RectF(0, -0.2f, 1, 0.4f);
-			emitter.pour(EarthParticle.FALLING, 0.1f);
-		}
-
-		@Override
-		public String tileDesc() {
-			return Messages.get(this, "desc");
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			rockPositions = bundle.getIntArray(POSITIONS);
 		}
 	}
 }

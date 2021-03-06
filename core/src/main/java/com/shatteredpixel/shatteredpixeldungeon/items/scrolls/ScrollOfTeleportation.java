@@ -62,7 +62,9 @@ public class ScrollOfTeleportation extends Scroll {
 		teleportPreferringUnseen( curUser );
 		setKnown();
 
-		readAnimation();
+		if (!Dungeon.bossLevel()) {
+			readAnimation();
+		}
 	}
 
 	public static void teleportToLocation(Hero hero, int pos){

@@ -35,7 +35,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class ElixirOfIcyTouch extends Elixir {
 	
 	{
-		//TODO finish visuals
 		image = ItemSpriteSheet.ELIXIR_ICY;
 	}
 	
