@@ -147,7 +147,7 @@ public class BadgesScene extends PixelScene {
 
 			icon = BadgeBanner.image(badge.image);
 			if (!unlocked) {
-				icon.brightness(0.25f);
+				icon.brightness(0.2f);
 			}
 			add(icon);
 
