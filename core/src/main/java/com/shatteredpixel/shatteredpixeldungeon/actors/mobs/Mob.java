@@ -1008,9 +1008,11 @@ public abstract class Mob extends Char {
 				} else {
 
 					//if moving towards an enemy isn't possible, try to switch targets to another enemy that is closer
-					Char newEnemy = chooseEnemy();
-					if (newEnemy != null && enemy != newEnemy){
-						enemy = newEnemy;
+					Char oldEnemy = enemy;
+						enemy = null;
+						enemy = chooseEnemy();
+					if (enemy != null &&
+						enemy != oldEnemy) {
 						spend( TICK );
 						return true;
 					}

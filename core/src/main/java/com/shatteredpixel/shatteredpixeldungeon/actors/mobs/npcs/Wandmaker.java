@@ -193,6 +193,7 @@ public class Wandmaker extends NPC {
 			});
 
 			Quest.given = true;
+			Notes.add( Notes.Landmark.WANDMAKER );
 		}
 
 		return true;

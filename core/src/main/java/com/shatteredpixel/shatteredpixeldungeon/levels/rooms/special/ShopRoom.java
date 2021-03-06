@@ -271,7 +271,7 @@ public class ShopRoom extends SpecialRoom {
 		itemsToSpawn.add( new StoneOfAugmentation() );
 
 		TimekeepersHourglass hourglass = Dungeon.hero.belongings.getItem(TimekeepersHourglass.class);
-		if (hourglass != null){
+		if (hourglass != null && hourglass.isIdentified() && !hourglass.cursed){
 			int bags = 0;
 			//creates the given float percent of the remaining bags to be dropped.
 			//this way players who get the hourglass late can still max it, usually.
@@ -316,7 +316,11 @@ public class ShopRoom extends SpecialRoom {
 		if (itemsToSpawn.size() > 63)
 			throw new RuntimeException("Shop attempted to carry more than 63 items!");
 
-		Random.shuffle(itemsToSpawn);
+		//use a new generator here to prevent items in shop stock affecting levelgen RNG (e.g. sandbags)
+		Random.pushGenerator(Random.Long());
+			Random.shuffle(itemsToSpawn);
+		Random.popGenerator();
+
 		return itemsToSpawn;
 	}
 
