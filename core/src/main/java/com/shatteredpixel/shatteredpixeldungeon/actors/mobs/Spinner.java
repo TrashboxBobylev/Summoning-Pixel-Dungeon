@@ -67,7 +67,7 @@ public class Spinner extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange(6, 18);
+		return Random.NormalIntRange(5, 15);
 	}
 
 	@Override
@@ -115,7 +115,7 @@ public class Spinner extends Mob {
 		}
 		super.move(step);
 	}
-	
+
 	private int left(int direction){
 		return direction == 0 ? 7 : direction-1;
 	}
