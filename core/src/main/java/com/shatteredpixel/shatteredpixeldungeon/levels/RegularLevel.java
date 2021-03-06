@@ -172,16 +172,16 @@ public abstract class RegularLevel extends Level {
 		return new float[]{1};
 	}
 	
-	@Override
-	public int nMobs() {
-		if (Dungeon.depth <= 1) return 0;
-
-		int mobs = 3 + Dungeon.depth % 5 + Random.Int(3);
-		if (feeling == Feeling.LARGE){
-			mobs = (int)Math.ceil(mobs * 1.33f);
-		}
-		return mobs;
-	}
+//	@Override
+//	public int nMobs() {
+//		if (Dungeon.depth <= 1) return 0;
+//
+//		int mobs = 3 + Dungeon.depth % 5 + Random.Int(3);
+//		if (feeling == Feeling.LARGE){
+//			mobs = (int)Math.ceil(mobs * 1.33f);
+//		}
+//		return mobs;
+//	}
 	
 	@Override
 	protected void createMobs() {

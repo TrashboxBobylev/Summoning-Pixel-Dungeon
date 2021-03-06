@@ -227,6 +227,8 @@ public class Dungeon {
 				Statistics.completedWithNoKilling = false;
 			}
 		}
+
+		if (depth == 5 || depth == 10 || depth == 15 || depth == 20) depth++;
 		
 		Level level;
 		switch (depth) {
