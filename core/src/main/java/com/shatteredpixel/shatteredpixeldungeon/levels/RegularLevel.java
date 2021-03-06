@@ -149,15 +149,13 @@ public abstract class RegularLevel extends Level {
 		if (tryn == 0){
 			return new LoopBuilder()
 					.setLoopShape( 3 ,
-							Random.Float(0f, 0.85f),
-							Random.Float(0f, 0.65f));
-		} else if (tryn == 1) {
-			return new BranchesBuilder();
+							Random.Float(0f, 0.9f),
+							Random.Float(0f, 0.7f));
 		}
 		else {
 			return new FigureEightBuilder()
 					.setLoopShape( 3 ,
-							Random.Float(0.3f, 1.2f),
+							Random.Float(0.2f, 1.5f),
 							0f);
 		}
 
@@ -181,9 +179,9 @@ public abstract class RegularLevel extends Level {
 	public int nMobs() {
 		if (Dungeon.depth <= 1) return 0;
 
-		int mobs = 6 + Dungeon.depth % 3 + Random.Int(7);
+		int mobs = 8 + Dungeon.depth % 2 + Random.Int(11);
 		if (feeling == Feeling.LARGE){
-			mobs = (int)Math.ceil(mobs * 1.5f);
+			mobs = (int)Math.ceil(mobs * 2f);
 		}
 		return mobs;
 	}
@@ -310,8 +308,8 @@ public abstract class RegularLevel extends Level {
 	@Override
 	protected void createItems() {
 		
-		// drops 7-13 items
-		int nItems = 7 + Random.chances(new float[]{6, 5, 4, 3, 2, 1});
+		// drops 8-16 items
+		int nItems = 8 + Random.chances(new float[]{6, 5, 4, 3, 2, 1, 1, 1});
 
 		if (feeling == Feeling.LARGE){
 			nItems += 6;
