@@ -220,8 +220,6 @@ public class WarriorAbilityButton extends Tag {
         enemy.damage( dmg, Dungeon.hero );
         if (Dungeon.hero.buff(FireImbue.class) != null)
             Dungeon.hero.buff(FireImbue.class).proc(enemy);
-        if (Dungeon.hero.buff(EarthImbue.class) != null)
-            Dungeon.hero.buff(EarthImbue.class).proc(enemy);
         if (Dungeon.hero.buff(FrostImbue.class) != null)
             Dungeon.hero.buff(FrostImbue.class).proc(enemy);
         Dungeon.hero.hitSound(Random.Float(0.87f, 1.15f));
