@@ -69,7 +69,7 @@ public abstract class RegularLevel extends Level {
 	protected Room roomExit;
 	
 	public int secretDoors;
-	
+
 	@Override
 	protected boolean build() {
 		
@@ -94,8 +94,12 @@ public abstract class RegularLevel extends Level {
 		ArrayList<Room> initRooms = new ArrayList<>();
 		initRooms.add ( roomEntrance = new EntranceRoom());
 		initRooms.add( roomExit = new ExitRoom());
-		
-		int standards = standardRooms();
+
+		//force max standard rooms and multiple by 1.5x for large levels
+		int standards = standardRooms(feeling == Feeling.LARGE);
+		if (feeling == Feeling.LARGE){
+			standards = (int)Math.ceil(standards * 1.5f);
+		}
 		for (int i = 0; i < standards; i++) {
 			StandardRoom s;
 			do {
@@ -107,8 +111,12 @@ public abstract class RegularLevel extends Level {
 		
 		if (Dungeon.shopOnLevel() && !Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE))
 			initRooms.add(new ShopRoom());
-		
-		int specials = specialRooms();
+
+		//force max special rooms and add one more for large levels
+		int specials = specialRooms(feeling == Feeling.LARGE);
+		if (feeling == Feeling.LARGE){
+			specials++;
+		}
 		SpecialRoom.initForFloor();
 		for (int i = 0; i < specials; i++) {
 			SpecialRoom s = SpecialRoom.createRoom();
@@ -117,17 +125,20 @@ public abstract class RegularLevel extends Level {
 		}
 		
 		int secrets = SecretRoom.secretsForFloor(Dungeon.depth);
-		for (int i = 0; i < secrets; i++)
+		//one additional secret for secret levels
+		if (feeling == Feeling.SECRETS) secrets++;
+		for (int i = 0; i < secrets; i++) {
 			initRooms.add(SecretRoom.createRoom());
-		
+		}
+
 		return initRooms;
 	}
 	
-	protected int standardRooms(){
+	protected int standardRooms(boolean forceMax){
 		return 0;
 	}
 	
-	protected int specialRooms(){
+	protected int specialRooms(boolean forceMax){
 		return 0;
 	}
 	
@@ -154,14 +165,13 @@ public abstract class RegularLevel extends Level {
 	
 	@Override
 	public int nMobs() {
-	    int additional = Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE) ? 1 : 0;
-		switch(Dungeon.depth) {
-			case 1:
-				//mobs are not randomly spawned on floor 1.
-				return additional;
-			default:
-				return 3 + Dungeon.depth % 5 + Random.Int(3) + additional;
+		if (Dungeon.depth <= 1) return 0;
+
+		int mobs = 3 + Dungeon.depth % 5 + Random.Int(3);
+		if (feeling == Feeling.LARGE){
+			mobs = (int)Math.ceil(mobs * 1.33f);
 		}
+		return mobs;
 	}
 	
 	@Override
@@ -289,7 +299,9 @@ public abstract class RegularLevel extends Level {
 		// drops 3/4/5 items 60%/30%/10% of the time
 		int nItems = 3 + Random.chances(new float[]{6, 3, 1});
 
-		if (Dungeon.depth > 16 && Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) nItems -= 2;
+		if (feeling == Feeling.LARGE){
+			nItems += 2;
+		}
 
 		for (int i=0; i < nItems; i++) {
 

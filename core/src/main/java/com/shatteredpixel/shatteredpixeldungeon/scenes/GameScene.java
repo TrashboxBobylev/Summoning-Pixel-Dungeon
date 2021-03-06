@@ -55,6 +55,16 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.*;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.*;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag.Mode;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndGame;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndHero;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoCell;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoItem;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoMob;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoPlant;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoTrap;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
 import com.watabou.glwrap.Blending;
 import com.watabou.noosa.*;
 import com.watabou.noosa.audio.Music;
@@ -117,7 +127,7 @@ public class GameScene extends PixelScene {
 	private ActionIndicator action;
 	private ResumeIndicator resume;
 	private WarriorAbilityButton warriorTag;
-	
+
 	@Override
 	public void create() {
 		
@@ -379,17 +389,17 @@ public class GameScene extends PixelScene {
 
 		Dungeon.hero.next();
 
-        switch (InterlevelScene.mode){
-            case FALL: case DESCEND: case CONTINUE:
-                Camera.main.snapTo(hero.center().x, hero.center().y - DungeonTilemap.SIZE * (defaultZoom/Camera.main.zoom));
-                break;
-            case ASCEND:
-                Camera.main.snapTo(hero.center().x, hero.center().y + DungeonTilemap.SIZE * (defaultZoom/Camera.main.zoom));
-                break;
-            default:
-                Camera.main.snapTo(hero.center().x, hero.center().y);
-        }
-        Camera.main.panTo(hero.center(), 2.5f);
+		switch (InterlevelScene.mode){
+			case FALL: case DESCEND: case CONTINUE:
+				Camera.main.snapTo(hero.center().x, hero.center().y - DungeonTilemap.SIZE * (defaultZoom/Camera.main.zoom));
+				break;
+			case ASCEND:
+				Camera.main.snapTo(hero.center().x, hero.center().y + DungeonTilemap.SIZE * (defaultZoom/Camera.main.zoom));
+				break;
+			default:
+				Camera.main.snapTo(hero.center().x, hero.center().y);
+		}
+		Camera.main.panTo(hero.center(), 2.5f);
 
 		if (InterlevelScene.mode != InterlevelScene.Mode.NONE) {
 			if (Dungeon.depth == Statistics.deepestFloor
@@ -427,19 +437,13 @@ public class GameScene extends PixelScene {
 			}
 
 			switch (Dungeon.level.feeling) {
-				case CHASM:
-					GLog.warning(Messages.get(this, "chasm"));
-					break;
-				case WATER:
-					GLog.warning(Messages.get(this, "water"));
-					break;
-				case GRASS:
-					GLog.warning(Messages.get(this, "grass"));
-					break;
-				case DARK:
-					GLog.warning(Messages.get(this, "dark"));
-					break;
-				default:
+				case CHASM:     GLog.warning(Messages.get(this, "chasm"));    break;
+				case WATER:     GLog.warning(Messages.get(this, "water"));    break;
+				case GRASS:     GLog.warning(Messages.get(this, "grass"));    break;
+				case DARK:      GLog.warning(Messages.get(this, "dark"));     break;
+				case LARGE:     GLog.warning(Messages.get(this, "large"));    break;
+				case TRAPS:     GLog.warning(Messages.get(this, "traps"));    break;
+				case SECRETS:   GLog.warning(Messages.get(this, "secrets"));  break;
 			}
 			if (Dungeon.level instanceof RegularLevel &&
 					((RegularLevel) Dungeon.level).secretDoors > Random.IntRange(3, 4)) {
