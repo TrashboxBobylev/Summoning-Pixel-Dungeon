@@ -35,10 +35,15 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Blending;
 import com.watabou.input.PointerEvent;
-import com.watabou.noosa.*;
+import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.BitmapText.Font;
+import com.watabou.noosa.Camera;
+import com.watabou.noosa.ColorBlock;
+import com.watabou.noosa.Game;
+import com.watabou.noosa.Gizmo;
+import com.watabou.noosa.Scene;
+import com.watabou.noosa.Visual;
 import com.watabou.noosa.ui.Component;
-import com.watabou.utils.GameMath;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
@@ -85,7 +90,13 @@ public class PixelScene extends Scene {
 		defaultZoom = SPDSettings.scale();
 
 		if (defaultZoom < Math.ceil( Game.density * 2 ) || defaultZoom > maxDefaultZoom){
-			defaultZoom = (int)GameMath.gate(2, (int)Math.ceil( Game.density * 2.5 ), maxDefaultZoom);
+			defaultZoom = (int)Math.ceil( Game.density * 2.5 );
+			while ((
+				Game.width / defaultZoom < minWidth ||
+				Game.height / defaultZoom < minHeight
+			) && defaultZoom > 1) {
+				defaultZoom--;
+			}
 		}
 
 		minZoom = 1;
