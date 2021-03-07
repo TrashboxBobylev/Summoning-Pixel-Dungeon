@@ -159,7 +159,7 @@ public class ShopRoom extends SpecialRoom {
 		ArrayList<Item> itemsToSpawn = new ArrayList<>();
         Item[] powers = {new WarriorPower(), new RoguePower(), new MagePower(), new RangePower(), new ConjurerPower()};
 		switch (Dungeon.depth) {
-		case 6:
+		case 5: case 6:
             Item i;
             do {
                 i = Generator.random(Generator.Category.WAND);
@@ -169,7 +169,7 @@ public class ShopRoom extends SpecialRoom {
 			itemsToSpawn.add(i);
 			break;
 			
-		case 11:
+		case 10: case 11:
 			itemsToSpawn.add(new PotionOfExperience());
 			itemsToSpawn.add(new ScrollOfDivination());
 			i = Generator.random(Generator.Category.RING);
@@ -180,14 +180,14 @@ public class ShopRoom extends SpecialRoom {
             itemsToSpawn.add(Random.element(powers));
 			break;
 			
-		case 16:
+		case 15: case 16:
 			itemsToSpawn.add(new StoneOfEnchantment());
 			itemsToSpawn.add(Generator.random(Generator.Category.EXOTIC_POTION));
 			itemsToSpawn.add(Generator.random(Generator.Category.EXOTIC_SCROLL));
             itemsToSpawn.add(new CleanWater());
 			break;
 			
-		case 20:
+		case 24: case 20:
 		    itemsToSpawn.add(new ScrollOfEnchantment());
 			itemsToSpawn.add( new BeaconOfReturning().quantity(2));
             itemsToSpawn.add(Generator.random(Generator.Category.EXOTIC_POTION));
@@ -244,7 +244,7 @@ public class ShopRoom extends SpecialRoom {
 		itemsToSpawn.add( new ScrollOfMagicMapping() );
 		itemsToSpawn.add( Generator.random( Generator.Category.SCROLL ) );
 
-		for (int i=0; i < 4; i++)
+		for (int i=0; i < 7; i++)
 			itemsToSpawn.add( Random.Int(2) == 0 ?
 					Generator.randomUsingDefaults( Generator.Category.POTION ) :
 					Generator.randomUsingDefaults( Generator.Category.SCROLL ) );
@@ -252,6 +252,7 @@ public class ShopRoom extends SpecialRoom {
 
 		itemsToSpawn.add( new SmallRation() );
 		itemsToSpawn.add( new SmallRation() );
+		itemsToSpawn.add( new Bomb() );
 		
 		switch (Random.Int(4)){
 			case 0:
@@ -276,13 +277,13 @@ public class ShopRoom extends SpecialRoom {
 			//creates the given float percent of the remaining bags to be dropped.
 			//this way players who get the hourglass late can still max it, usually.
 			switch (Dungeon.depth) {
-				case 6:
+				case 6: case 5:
 					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.20f ); break;
-				case 11:
+				case 11: case 10:
 					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.25f ); break;
-				case 16:
+				case 16: case 15:
 					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.50f ); break;
-				case 20:
+				case 20: case 24:
 					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.80f ); break;
 			}
 

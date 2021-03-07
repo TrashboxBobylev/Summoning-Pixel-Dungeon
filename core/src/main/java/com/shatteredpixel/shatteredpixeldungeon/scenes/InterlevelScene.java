@@ -125,11 +125,11 @@ public class InterlevelScene extends PixelScene {
 				scrollSpeed = returnDepth > Dungeon.depth ? 15 : -15;
 				break;
 		}
-		if (loadingDepth <= 5)          loadingAsset = Assets.Interfaces.LOADING_SEWERS;
-		else if (loadingDepth <= 10)    loadingAsset = Assets.Interfaces.LOADING_PRISON;
-		else if (loadingDepth <= 15)    loadingAsset = Assets.Interfaces.LOADING_CAVES;
-		else if (loadingDepth <= 20)    loadingAsset = Assets.Interfaces.LOADING_CITY;
-		else if (loadingDepth <= 25)    loadingAsset = Assets.Interfaces.LOADING_HALLS;
+		if (loadingDepth <= Dungeon.chapterSize())          loadingAsset = Assets.Interfaces.LOADING_SEWERS;
+		else if (loadingDepth <= Dungeon.chapterSize()*2)    loadingAsset = Assets.Interfaces.LOADING_PRISON;
+		else if (loadingDepth <= Dungeon.chapterSize()*3)    loadingAsset = Assets.Interfaces.LOADING_CAVES;
+		else if (loadingDepth <= Dungeon.chapterSize()*4)    loadingAsset = Assets.Interfaces.LOADING_CITY;
+		else if (loadingDepth <= Dungeon.chapterSize()*5)    loadingAsset = Assets.Interfaces.LOADING_HALLS;
 		else                            loadingAsset = Assets.Interfaces.SHADOW;
 		
 		//slow down transition when displaying an install prompt

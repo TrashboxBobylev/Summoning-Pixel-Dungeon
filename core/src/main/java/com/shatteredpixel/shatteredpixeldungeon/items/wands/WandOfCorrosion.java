@@ -117,12 +117,4 @@ public class WandOfCorrosion extends Wand {
             return Messages.get(this, "stats_desc", 1 + level(), 50 + level()*10);
     }
 
-	@Override
-	public String statsDesc() {
-		if (levelKnown)
-			return Messages.get(this, "stats_desc", 2+buffedLvl());
-		else
-			return Messages.get(this, "stats_desc", 2);
-	}
-
 }

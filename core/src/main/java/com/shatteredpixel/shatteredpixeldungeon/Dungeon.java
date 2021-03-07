@@ -227,61 +227,122 @@ public class Dungeon {
 			}
 		}
 
-		if (depth == 5 || depth == 10 || depth == 15 || depth == 20) depth++;
+		if (depth == 6 || depth == 12 || depth == 18 || depth == 24) depth++;
 		
 		Level level;
-		switch (depth) {
-		case 1:
-		case 2:
-		case 3:
-		case 4:
-			level = new SewerLevel();
-			break;
-		case 5:
-			level = new SewerBossLevel();
-			break;
-		case 6:
-		case 7:
-		case 8:
-		case 9:
-			level = new PrisonLevel();
-			break;
-		case 10:
-			level = new NewPrisonBossLevel();
-			break;
-		case 11:
-		case 12:
-		case 13:
-		case 14:
-			level = new CavesLevel();
-			break;
-		case 15:
-			level = new NewCavesBossLevel();
-			break;
-		case 16:
-		case 17:
-		case 18:
-		case 19:
-			level = new CityLevel();
-			break;
-		case 20:
-			level = new NewCityBossLevel();
-			break;
-		case 21:
-		case 22:
-		case 23:
-		case 24:
-			level = new HallsLevel();
-			break;
-		case 25:
-			level = new NewHallsBossLevel();
-			break;
-		case 26:
-			level = new LastLevel();
-			break;
-		default:
-			level = new DeadEndLevel();
-			Statistics.deepestFloor--;
+		if (SPDSettings.bigdungeon()){
+			switch (depth) {
+				case 1:
+				case 2:
+				case 3:
+				case 4:
+				case 5:
+					level = new SewerLevel();
+					break;
+				case 6:
+					level = new SewerBossLevel();
+					break;
+				case 7:
+				case 8:
+				case 9:
+				case 10:
+				case 11:
+					level = new PrisonLevel();
+					break;
+				case 12:
+					level = new NewPrisonBossLevel();
+					break;
+				case 13:
+				case 14:
+				case 15:
+				case 16:
+				case 17:
+					level = new CavesLevel();
+					break;
+				case 18:
+					level = new NewCavesBossLevel();
+					break;
+				case 19:
+				case 20:
+				case 21:
+				case 22:
+				case 23:
+					level = new CityLevel();
+					break;
+				case 24:
+					level = new NewCityBossLevel();
+					break;
+				case 25:
+				case 26:
+				case 27:
+				case 28:
+				case 29:
+					level = new HallsLevel();
+					break;
+				case 30:
+					level = new NewHallsBossLevel();
+					break;
+				case 31:
+					level = new LastLevel();
+					break;
+				default:
+					level = new DeadEndLevel();
+					Statistics.deepestFloor--;
+			}
+		} else {
+			switch (depth) {
+				case 1:
+				case 2:
+				case 3:
+				case 4:
+					level = new SewerLevel();
+					break;
+				case 5:
+					level = new SewerBossLevel();
+					break;
+				case 6:
+				case 7:
+				case 8:
+				case 9:
+					level = new PrisonLevel();
+					break;
+				case 10:
+					level = new NewPrisonBossLevel();
+					break;
+				case 11:
+				case 12:
+				case 13:
+				case 14:
+					level = new CavesLevel();
+					break;
+				case 15:
+					level = new NewCavesBossLevel();
+					break;
+				case 16:
+				case 17:
+				case 18:
+				case 19:
+					level = new CityLevel();
+					break;
+				case 20:
+					level = new NewCityBossLevel();
+					break;
+				case 21:
+				case 22:
+				case 23:
+				case 24:
+					level = new HallsLevel();
+					break;
+				case 25:
+					level = new NewHallsBossLevel();
+					break;
+				case 26:
+					level = new LastLevel();
+					break;
+				default:
+					level = new DeadEndLevel();
+					Statistics.deepestFloor--;
+			}
 		}
 		
 		level.create();
@@ -316,15 +377,25 @@ public class Dungeon {
 	}
 	
 	public static boolean shopOnLevel() {
+		if (SPDSettings.bigdungeon()){
+			return depth == 5 || depth == 10 || depth == 15 || depth == 20;
+		}
 		return depth == 6 || depth == 11 || depth == 16;
 	}
 	
 	public static boolean bossLevel() {
 		return bossLevel( depth );
 	}
+
+	public static int chapterSize(){
+		return SPDSettings.bigdungeon() ? 6 : 5;
+	}
 	
 	public static boolean bossLevel( int depth ) {
+		if (SPDSettings.bigdungeon())
 		return depth == 5 || depth == 10 || depth == 15 || depth == 20 || depth == 25;
+		else
+			return depth == 6 || depth == 12 || depth == 18 || depth == 24 || depth == 30;
 	}
 
 	public static void switchLevel( final Level level, int pos ) {
@@ -341,7 +412,7 @@ public class Dungeon {
 		Mob.restoreAllies( level, pos );
 		Actor.init();
 
-		level.addRespawner();
+//		level.addRespawner();
 
 		hero.pos = pos;
 
@@ -404,11 +475,12 @@ public class Dungeon {
 	
 	public static boolean souNeeded() {
 		int souLeftThisSet;
+		int amount = SPDSettings.bigdungeon() ? 4 : 3;
 		//3 SOU each floor set, 1.5 (rounded) on forbidden runes challenge
 		if (isChallenged(Challenges.NO_SCROLLS)){
-			souLeftThisSet = Math.round(1.5f - (LimitedDrops.UPGRADE_SCROLLS.count - (depth / 5) * 1.5f));
+			souLeftThisSet = Math.round(amount / 2 - (LimitedDrops.UPGRADE_SCROLLS.count - (depth / 5) * (amount / 2)));
 		} else {
-			souLeftThisSet = 3 - (LimitedDrops.UPGRADE_SCROLLS.count - (depth / 5) * 3);
+			souLeftThisSet = amount - (LimitedDrops.UPGRADE_SCROLLS.count - (depth / 5) * amount);
 		}
 		if (souLeftThisSet <= 0) return false;
 

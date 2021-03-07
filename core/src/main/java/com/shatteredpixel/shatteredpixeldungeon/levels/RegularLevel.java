@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GoldenMimic;
@@ -98,7 +99,7 @@ public abstract class RegularLevel extends Level {
 		initRooms.add( roomExit = new ExitRoom());
 
 		//force max standard rooms and multiple by 1.5x for large levels
-		int standards = standardRooms(feeling == Feeling.LARGE);
+		int standards = standardRooms(feeling == Feeling.LARGE || SPDSettings.bigdungeon());
 		if (feeling == Feeling.LARGE){
 			standards = (int)Math.ceil(standards * 1.5f);
 		}
@@ -115,7 +116,7 @@ public abstract class RegularLevel extends Level {
 			initRooms.add(new ShopRoom());
 
 		//force max special rooms and add one more for large levels
-		int specials = specialRooms(feeling == Feeling.LARGE);
+		int specials = specialRooms(feeling == Feeling.LARGE || SPDSettings.bigdungeon());
 		if (feeling == Feeling.LARGE){
 			specials++;
 		}

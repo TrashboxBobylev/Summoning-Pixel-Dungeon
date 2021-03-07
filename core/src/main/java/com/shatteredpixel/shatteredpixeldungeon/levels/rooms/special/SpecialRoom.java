@@ -103,7 +103,7 @@ public abstract class SpecialRoom extends Room {
 		floorSpecials = (ArrayList<Class<?extends Room>>) runSpecials.clone();
 		
 		//laboratory rooms spawn at set intervals every chapter
-		if (Dungeon.depth%5 == (Dungeon.seed%3 + 2)){
+		if (Dungeon.depth%Dungeon.chapterSize() == (Dungeon.seed%3 + 2)){
 			floorSpecials.add(0, LaboratoryRoom.class);
 		}
 	}

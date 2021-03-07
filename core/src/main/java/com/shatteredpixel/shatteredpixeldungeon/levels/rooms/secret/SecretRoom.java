@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret;
 
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
@@ -75,13 +76,14 @@ public abstract class SecretRoom extends SpecialRoom {
 	}
 	
 	public static int secretsForFloor(int depth){
+		int constant = SPDSettings.bigdungeon() ? 6 : 5;
 		if (depth == 1) return 0;
-		if (depth == 20) return 0;
+		if (depth == (SPDSettings.bigdungeon() ? 24 : 20)) return 0;
 		
-		int region = depth/5;
-		int floor = depth%5;
+		int region = depth/constant;
+		int floor = depth%constant;
 		
-		int floorsLeft = 5 - floor;
+		int floorsLeft = constant - floor;
 		
 		float secrets;
 		if (floorsLeft == 0) {

@@ -57,7 +57,7 @@ public class ExitRoom extends StandardRoom {
 		level.exit = level.pointToCell(random( 2 ));
 		Painter.set( level, level.exit, Terrain.EXIT );
 
-        if (Dungeon.depth > 20) {
+        if (Dungeon.depth > Dungeon.chapterSize() * 4) {
             for (int i = 0; i < Random.IntRange(1, 5); i++) {
                 FinalFroggit npc = new FinalFroggit();
                 do {

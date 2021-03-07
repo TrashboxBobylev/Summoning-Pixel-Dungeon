@@ -211,6 +211,17 @@ public class SummPDChanges {
                         "_(This beta implements only five spells at the moment.)_\n\n" +
                         "_-_ As results of big buff, Conjurer's HP is reduced to 10 (+2), and his deltarune robe now works like cloth all time."));
 
+        changes.addButton(new ChangeButton(Icons.get(Icons.SHPX), "Shattered PD Port",
+                        "_-_ Ported QoL changes and bugfixes from Shattered PD 0.9.1 and 0.9.2.\n\n" +
+                        "Talents are gonna be introduced in 1.1.7 as exclusive for Rogue."));
+
+        changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_HALLS, 0, 64, 16, 16 ), "Enlargement",
+                "To make game longer and more challenging, the dungeon is significantly expanded.\n\n" +
+                        "_-_ The levels are approximately increased by 2x-3x." +
+                        "_-_ The amount of items and monsters are increased as well.\n\n" +
+                        "_-_ Also ported worldgen from 0.9.1, with some adjustments to work with bigger stages."));
+
+
     }
 
     public static void add_1_1_5_Changes(ArrayList<ChangeInfo> changeInfos) {

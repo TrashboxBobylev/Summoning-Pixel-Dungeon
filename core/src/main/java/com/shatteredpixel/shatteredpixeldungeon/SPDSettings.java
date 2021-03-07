@@ -57,6 +57,7 @@ public class SPDSettings extends GameSettings {
 	public static final String KEY_ZOOM			= "zoom";
 	public static final String KEY_BRIGHTNESS	= "brightness";
 	public static final String KEY_GRID 	    = "visual_grid";
+	public static final String KEY_BIGGER       = "big_dungeon";
 	
 	public static void fullscreen( boolean value ) {
 		put( KEY_FULLSCREEN, value );
@@ -111,6 +112,14 @@ public class SPDSettings extends GameSettings {
 	public static void brightness( int value ) {
 		put( KEY_BRIGHTNESS, value );
 		GameScene.updateFog();
+	}
+
+	public static void bigdungeon( boolean value ) {
+		put( KEY_BIGGER, value );
+	}
+
+	public static boolean bigdungeon() {
+		return getBoolean( KEY_BIGGER, false );
 	}
 	
 	public static int brightness() {

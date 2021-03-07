@@ -492,8 +492,7 @@ public class WndSettings extends WndTabbed {
 		RenderedTextBlock title;
 		ColorBlock sep1;
 		CheckBox chkNews;
-		CheckBox chkUpdates;
-		CheckBox chkWifi;
+		RenderedTextBlock txtDescription;
 
 		@Override
 		protected void createChildren() {
@@ -508,35 +507,15 @@ public class WndSettings extends WndTabbed {
 				@Override
 				protected void onClick() {
 					super.onClick();
-					SPDSettings.news(checked());
+					SPDSettings.bigdungeon(checked());
 					News.clearArticles();
 				}
 			};
-			chkNews.checked(SPDSettings.news());
+			chkNews.checked(SPDSettings.bigdungeon());
 			add(chkNews);
-
-			chkUpdates = new CheckBox(Messages.get(this, "updates")){
-				@Override
-				protected void onClick() {
-					super.onClick();
-					SPDSettings.updates(checked());
-					Updates.clearUpdate();
-				}
-			};
-			chkUpdates.checked(SPDSettings.updates());
-			add(chkUpdates);
-
-			if (!DeviceCompat.isDesktop()){
-				chkWifi = new CheckBox(Messages.get(this, "wifi")){
-					@Override
-					protected void onClick() {
-						super.onClick();
-						SPDSettings.WiFi(checked());
-					}
-				};
-				chkWifi.checked(SPDSettings.WiFi());
-				add(chkWifi);
-			}
+			txtDescription = PixelScene.renderTextBlock(6);
+			txtDescription.text(Messages.get(this, "bigdungeon"));
+			add(txtDescription);
 		}
 
 		@Override
@@ -547,17 +526,14 @@ public class WndSettings extends WndTabbed {
 
 			if (width > 200){
 				chkNews.setRect(0, sep1.y + 1 + GAP, width/2-1, BTN_HEIGHT);
-				chkUpdates.setRect(chkNews.right() + GAP, chkNews.top(), width/2-1, BTN_HEIGHT);
 			} else {
 				chkNews.setRect(0, sep1.y + 1 + GAP, width, BTN_HEIGHT);
-				chkUpdates.setRect(0, chkNews.bottom()+ GAP, width, BTN_HEIGHT);
 			}
 
-			float pos = chkUpdates.bottom();
-			if (chkWifi != null){
-				chkWifi.setRect(0, pos + GAP, width, BTN_HEIGHT);
-				pos = chkWifi.bottom();
-			}
+			float pos = chkNews.bottom();
+			txtDescription.setPos(0, pos);
+			txtDescription.maxWidth((int) width);
+			pos = txtDescription.bottom();
 
 			height = pos;
 

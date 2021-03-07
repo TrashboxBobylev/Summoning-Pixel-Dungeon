@@ -196,7 +196,7 @@ public class EtherealChains extends Artifact {
 
 		//don't pull if rooted
 		if (hero.rooted){
-			GLog.w( Messages.get(EtherealChains.class, "rooted") );
+			GLog.warning( Messages.get(EtherealChains.class, "rooted") );
 			return;
 		}
 

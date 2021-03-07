@@ -92,7 +92,7 @@ public class DistortionTrap extends Trap{
 			Mob mob;
 			switch (summoned){
 				case 1:
-					if (Dungeon.depth != 5 && Random.Int(100) == 0){
+					if (Dungeon.depth != Dungeon.chapterSize() && Random.Int(100) == 0){
 						mob = new RatKing();
 						break;
 					}

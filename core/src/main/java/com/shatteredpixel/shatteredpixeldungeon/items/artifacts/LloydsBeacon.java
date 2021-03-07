@@ -132,7 +132,7 @@ public class LloydsBeacon extends Artifact {
 		if (action == AC_ZAP ){
 
 			curUser = hero;
-			int chargesToUse = Dungeon.depth > 20 ? 2 : 1;
+			int chargesToUse = Dungeon.depth > Dungeon.chapterSize()*4 ? 2 : 1;
 
 			if (!isEquipped( hero )) {
 				GLog.i( Messages.get(Artifact.class, "need_to_equip") );
@@ -203,7 +203,7 @@ public class LloydsBeacon extends Artifact {
 			if (target == null) return;
 
 			Invisibility.dispel();
-			charge -= Dungeon.depth > 20 ? 2 : 1;
+			charge -= Dungeon.depth > Dungeon.chapterSize()*4 ? 2 : 1;
 			updateQuickslot();
 
 			if (Actor.findChar(target) == curUser){
