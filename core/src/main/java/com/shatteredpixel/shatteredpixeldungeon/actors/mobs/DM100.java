@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -46,6 +47,10 @@ public class DM100 extends Mob implements Callback {
 		
 		EXP = 6;
 		maxLvl = 13;
+		if (SPDSettings.bigdungeon()){
+			EXP = 9;
+			maxLvl = 16;
+		}
 		
 		loot = Generator.Category.SCROLL;
 		lootChance = 0.25f;

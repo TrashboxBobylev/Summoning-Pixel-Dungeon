@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollSprite;
@@ -39,6 +40,10 @@ public class Gnoll extends Mob {
 		
 		EXP = 2;
 		maxLvl = 6;
+		if (SPDSettings.bigdungeon()){
+			EXP = 2;
+			maxLvl = 7;
+		}
 
         loot = new Gold().goldFromEnemy();
 		lootChance = 0.5f;

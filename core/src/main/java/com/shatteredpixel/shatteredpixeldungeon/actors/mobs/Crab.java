@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CrabSprite;
@@ -40,6 +41,10 @@ public class Crab extends Mob {
 		
 		EXP = 4;
 		maxLvl = 6;
+		if (SPDSettings.bigdungeon()){
+			EXP = 5;
+			maxLvl = 10;
+		}
 		
 		loot = new MysteryMeat();
 		lootChance = 0.4f;

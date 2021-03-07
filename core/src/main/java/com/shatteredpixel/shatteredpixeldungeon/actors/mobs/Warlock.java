@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
@@ -54,6 +55,10 @@ public class Warlock extends Mob implements Callback {
 		
 		EXP = 11;
 		maxLvl = 21;
+		if (SPDSettings.bigdungeon()){
+			EXP = 23;
+			maxLvl = 38;
+		}
 		
 		loot = Generator.Category.POTION;
 		lootChance = 0.5f;

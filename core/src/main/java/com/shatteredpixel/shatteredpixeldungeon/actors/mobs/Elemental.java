@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
@@ -59,6 +60,10 @@ public abstract class Elemental extends Mob {
 		
 		EXP = 10;
 		maxLvl = 20;
+		if (SPDSettings.bigdungeon()){
+			EXP = 21;
+			maxLvl = 34;
+		}
 		
 		flying = true;
 	}

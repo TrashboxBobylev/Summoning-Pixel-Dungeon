@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
@@ -47,6 +48,10 @@ public class Monk extends Mob {
 		
 		EXP = 11;
 		maxLvl = 21;
+		if (SPDSettings.bigdungeon()){
+			EXP = 22;
+			maxLvl = 36;
+		}
 		
 		loot = new Food();
 		lootChance = 0.083f;

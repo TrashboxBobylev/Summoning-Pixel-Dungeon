@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
@@ -47,6 +48,10 @@ public class DemonSpawner extends Mob {
 
 		EXP = 25;
 		maxLvl = 29;
+		if (SPDSettings.bigdungeon()){
+			EXP = 60;
+			maxLvl = 100;
+		}
 
 		state = PASSIVE;
 

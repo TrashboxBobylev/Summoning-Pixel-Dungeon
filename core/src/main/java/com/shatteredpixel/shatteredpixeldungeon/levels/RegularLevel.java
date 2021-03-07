@@ -165,6 +165,8 @@ public abstract class RegularLevel extends Level {
 	protected abstract Painter painter();
 
 	protected int nTraps() {
+		if (SPDSettings.bigdungeon())
+			return Random.NormalIntRange( 7, 11 + (Dungeon.depth) );
 		return Random.NormalIntRange( 4, 5 + (Dungeon.depth/3) );
 	}
 	
@@ -315,6 +317,7 @@ public abstract class RegularLevel extends Level {
 		if (feeling == Feeling.LARGE){
 			nItems += 6;
 		}
+		if (SPDSettings.bigdungeon()) nItems *= 2;
 
 		for (int i=0; i < nItems; i++) {
 

@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -47,6 +48,10 @@ public class Ghoul extends Mob {
 		
 		EXP = 5;
 		maxLvl = 20;
+		if (SPDSettings.bigdungeon()){
+			EXP = 10;
+			maxLvl = 32;
+		}
 		
 		SLEEPING = new Sleeping();
 		WANDERING = new Wandering();

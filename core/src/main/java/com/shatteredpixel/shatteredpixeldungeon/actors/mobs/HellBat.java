@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Inferno;
@@ -45,6 +46,10 @@ public class HellBat extends Mob {
 		
 		EXP = 15;
 		maxLvl = 27;
+		if (SPDSettings.bigdungeon()){
+			EXP = 33;
+			maxLvl = 54;
+		}
 		
 		flying = true;
 		

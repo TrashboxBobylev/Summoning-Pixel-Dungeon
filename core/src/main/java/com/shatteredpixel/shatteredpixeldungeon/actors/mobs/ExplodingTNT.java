@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
@@ -58,6 +59,10 @@ public class ExplodingTNT extends Mob {
 		
 		maxLvl = 18;
 		EXP = 10;
+        if (SPDSettings.bigdungeon()){
+            EXP = 18;
+            maxLvl = 30;
+        }
 		FLEEING = new Fleeing();
 	}
 

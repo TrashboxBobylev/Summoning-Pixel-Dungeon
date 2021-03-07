@@ -106,7 +106,7 @@ public class Hero extends Char {
 		immunities.add(GonerField.class);
 	}
 	
-	public static final int MAX_LEVEL = 30;
+	public static int MAX_LEVEL = 30;
 
 	public static final int STARTING_STR = 10;
 	
@@ -1395,6 +1395,9 @@ public class Hero extends Char {
 	}
 	
 	public void earnExp( int exp, Class source ) {
+
+		if (SPDSettings.bigdungeon()) MAX_LEVEL = 100;
+		else MAX_LEVEL = 30;
 		
 		this.exp += exp;
 		float percent = exp/(float)maxExp();
