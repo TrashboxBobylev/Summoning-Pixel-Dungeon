@@ -225,8 +225,6 @@ public enum HeroClass {
 		heal.collect();
 		Dungeon.quickslot.setSlot(0, heal);
 		new Zap().collect();
-		new ScrollOfMagicMapping().quantity(25).collect();
-		new PotionOfMindVision().quantity(25).collect();
 
         hero.mana = 0;
         hero.maxMana = 20;
