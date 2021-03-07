@@ -78,7 +78,7 @@ public class Barkskin extends Buff {
 	public float iconFadePercent() {
 		if (target instanceof Hero){
 			float max = ((Hero) target).lvl + 5;
-			return (max-level)/max;
+			return Math.max(0, (max-level)/max);
 		}
 		return 0;
 	}

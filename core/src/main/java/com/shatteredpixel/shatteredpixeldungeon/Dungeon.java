@@ -189,8 +189,7 @@ public class Dungeon {
 		droppedItems = new SparseArray<>();
 		portedItems = new SparseArray<>();
 
-		for (LimitedDrops a : LimitedDrops.values())
-			a.count = 0;
+		LimitedDrops.reset();
 		
 		chapters = new HashSet<>();
 		

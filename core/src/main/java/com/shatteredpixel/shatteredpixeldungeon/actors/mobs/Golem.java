@@ -43,8 +43,8 @@ public class Golem extends Mob {
 	{
 		spriteClass = GolemSprite.class;
 		
-		HP = HT = 100;
-		defenseSkill = 12;
+		HP = HT = 120;
+		defenseSkill = 15;
 		
 		EXP = 12;
 		maxLvl = 22;
@@ -61,7 +61,7 @@ public class Golem extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 15, 35 );
+		return Random.NormalIntRange( 25, 30 );
 	}
 	
 	@Override

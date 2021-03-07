@@ -68,7 +68,7 @@ public class NewTengu extends Mob {
 	{
 		spriteClass = TenguSprite.class;
 		
-		HP = HT = 160;
+		HP = HT = 200;
 		EXP = 20;
 		defenseSkill = 15;
 		
@@ -99,9 +99,9 @@ public class NewTengu extends Mob {
 	@Override
 	public int attackSkill( Char target ) {
 		if (Dungeon.level.adjacent(pos, target.pos)){
-			return 12;
+			return 10;
 		} else {
-			return 18;
+			return 20;
 		}
 	}
 	
@@ -126,7 +126,7 @@ public class NewTengu extends Mob {
 
 		NewPrisonBossLevel.State state = ((NewPrisonBossLevel)Dungeon.level).state();
 		
-		int hpBracket = 20;
+		int hpBracket = HT / 8;
 		
 		int beforeHitHP = HP;
 		super.damage(dmg, src);

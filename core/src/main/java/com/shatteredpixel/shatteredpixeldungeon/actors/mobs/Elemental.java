@@ -65,7 +65,7 @@ public abstract class Elemental extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 16, 26 );
+		return Random.NormalIntRange( 20, 25 );
 	}
 	
 	@Override
