@@ -88,13 +88,13 @@ public class Game implements ApplicationListener {
 		instance = this;
 		this.platform = platform;
 	}
-	
+
 	private boolean paused;
 	
 	public boolean isPaused(){
 		return paused;
 	}
-	
+
 	@Override
 	public void create() {
 		density = Gdx.graphics.getDensity();
@@ -144,6 +144,12 @@ public class Game implements ApplicationListener {
 	
 	@Override
 	public void render() {
+		//prevents weird rare cases where the app is running twice
+		if (instance != this){
+			finish();
+			return;
+		}
+
 		NoosaScript.get().resetCamera();
 		NoosaScriptNoLighting.get().resetCamera();
 		Gdx.gl.glDisable(Gdx.gl.GL_SCISSOR_TEST);
