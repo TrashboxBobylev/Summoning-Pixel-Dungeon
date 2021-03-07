@@ -219,7 +219,8 @@ public class SummPDChanges {
                 "To make game longer and more challenging, the dungeon is significantly expanded.\n\n" +
                         "_-_ The levels are approximately increased by 2x-3x." +
                         "_-_ The amount of items and monsters are increased as well.\n\n" +
-                        "_-_ Also ported worldgen from 0.9.1, with some adjustments to work with bigger stages."));
+                        "_-_ Also ported worldgen from 0.9.1, with some adjustments to work with bigger stages.\n\n" +
+                        "_-_ Added \"Large Enlargement\" mode, which increases size and scale of dungeon even more!"));
 
 
     }
