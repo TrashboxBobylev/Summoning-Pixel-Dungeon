@@ -66,7 +66,14 @@ public class ExplodingTNT extends Mob {
 		FLEEING = new Fleeing();
 	}
 
-	//he doesn't attack in melee
+    public ExplodingTNT() {
+        if (SPDSettings.bigdungeon()){
+            EXP = 18;
+            maxLvl = 30;
+        }
+    }
+
+    //he doesn't attack in melee
     public boolean attack = true;
     @Override
     public int damageRoll() {

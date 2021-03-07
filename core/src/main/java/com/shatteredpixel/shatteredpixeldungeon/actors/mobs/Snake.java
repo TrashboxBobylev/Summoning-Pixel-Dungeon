@@ -54,7 +54,14 @@ public class Snake extends Mob {
 		lootChance = 0.90f;
 	}
 
-    {
+	public Snake() {
+		if (SPDSettings.bigdungeon()){
+			EXP = 16;
+			maxLvl = 28;
+		}
+	}
+
+	{
         resistances.addAll(RingOfElements.RESISTS);
     }
 	

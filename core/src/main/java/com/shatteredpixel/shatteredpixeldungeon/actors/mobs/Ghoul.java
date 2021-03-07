@@ -63,6 +63,13 @@ public class Ghoul extends Mob {
 		properties.add(Property.UNDEAD);
 	}
 
+	public Ghoul() {
+		if (SPDSettings.bigdungeon()){
+			EXP = 10;
+			maxLvl = 32;
+		}
+	}
+
 	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange( 16, 22 );

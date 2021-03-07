@@ -64,7 +64,14 @@ public class FinalFroggit extends Mob implements Callback {
 		properties.add(Property.UNDEAD);
 		properties.add(Property.DEMONIC);
 	}
-	
+
+	public FinalFroggit() {
+		if (SPDSettings.bigdungeon()){
+			EXP = 50;
+			maxLvl = 100;
+		}
+	}
+
 	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange( 18, 25 );

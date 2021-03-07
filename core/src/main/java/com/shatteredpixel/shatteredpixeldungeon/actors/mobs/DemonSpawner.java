@@ -63,6 +63,13 @@ public class DemonSpawner extends Mob {
 		properties.add(Property.DEMONIC);
 	}
 
+	public DemonSpawner() {
+		if (SPDSettings.bigdungeon()){
+			EXP = 60;
+			maxLvl = 100;
+		}
+	}
+
 	@Override
 	public int drRoll() {
 		return Random.NormalIntRange(0, 12);

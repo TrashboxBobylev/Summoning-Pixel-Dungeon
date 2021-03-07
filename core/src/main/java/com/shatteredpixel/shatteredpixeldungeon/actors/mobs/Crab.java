@@ -49,7 +49,14 @@ public class Crab extends Mob {
 		loot = new MysteryMeat();
 		lootChance = 0.4f;
 	}
-	
+
+	public Crab() {
+		if (SPDSettings.bigdungeon()){
+			EXP = 5;
+			maxLvl = 10;
+		}
+	}
+
 	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange( 2, 6 );

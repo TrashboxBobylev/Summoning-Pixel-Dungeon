@@ -49,7 +49,14 @@ public class Dog extends Mob {
 		loot = Generator.random();
 		lootChance = 0.1f;
 	}
-	
+
+	public Dog() {
+		if (SPDSettings.bigdungeon()){
+			EXP = 3;
+			maxLvl = 9;
+		}
+	}
+
 	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange( 1, 5 );

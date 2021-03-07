@@ -73,7 +73,14 @@ public class Succubus extends Mob {
 
 		properties.add(Property.DEMONIC);
 	}
-	
+
+	public Succubus() {
+		if (SPDSettings.bigdungeon()){
+			EXP = 29;
+			maxLvl = 48;
+		}
+	}
+
 	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange( 24, 34 );

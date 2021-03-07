@@ -58,7 +58,14 @@ public class Monk extends Mob {
 
 		properties.add(Property.UNDEAD);
 	}
-	
+
+	public Monk() {
+		if (SPDSettings.bigdungeon()){
+			EXP = 22;
+			maxLvl = 36;
+		}
+	}
+
 	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange( 12, 25 );

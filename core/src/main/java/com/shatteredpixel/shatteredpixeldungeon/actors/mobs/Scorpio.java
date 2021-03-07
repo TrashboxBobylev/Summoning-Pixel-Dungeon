@@ -61,7 +61,14 @@ public class Scorpio extends Mob {
 
 		properties.add(Property.DEMONIC);
 	}
-	
+
+	public Scorpio() {
+		if (SPDSettings.bigdungeon()){
+			EXP = 32;
+			maxLvl = 52;
+		}
+	}
+
 	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange( 30, 40 );

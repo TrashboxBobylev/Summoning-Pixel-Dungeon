@@ -67,7 +67,14 @@ public class Necromancer extends Mob {
 		
 		HUNTING = new Hunting();
 	}
-	
+
+	public Necromancer() {
+		if (SPDSettings.bigdungeon()){
+			EXP = 11;
+			maxLvl = 20;
+		}
+	}
+
 	public boolean summoning = false;
 	private Emitter summoningEmitter = null;
 	private int summoningPos = -1;

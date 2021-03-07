@@ -67,7 +67,14 @@ public abstract class Elemental extends Mob {
 		
 		flying = true;
 	}
-	
+
+	public Elemental() {
+		if (SPDSettings.bigdungeon()){
+			EXP = 21;
+			maxLvl = 34;
+		}
+	}
+
 	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange( 20, 25 );

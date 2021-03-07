@@ -65,7 +65,14 @@ public class Warlock extends Mob implements Callback {
 
 		properties.add(Property.UNDEAD);
 	}
-	
+
+	public Warlock() {
+		if (SPDSettings.bigdungeon()){
+			EXP = 23;
+			maxLvl = 38;
+		}
+	}
+
 	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange( 12, 18 );

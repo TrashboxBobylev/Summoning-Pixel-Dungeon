@@ -57,7 +57,14 @@ public class Brute extends Mob {
 		loot = new Gold().goldFromEnemy();
 		lootChance = 0.5f;
 	}
-	
+
+	public Brute() {
+		if (SPDSettings.bigdungeon()){
+			EXP = 14;
+			maxLvl = 24;
+		}
+	}
+
 	protected boolean hasRaged = false;
 	
 	@Override

@@ -69,6 +69,13 @@ public class Guard extends Mob {
 		HUNTING = new Hunting();
 	}
 
+	public Guard() {
+		if (SPDSettings.bigdungeon()){
+			EXP = 10;
+			maxLvl = 18;
+		}
+	}
+
 	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange(4, 12);

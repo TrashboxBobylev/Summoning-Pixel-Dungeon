@@ -70,6 +70,13 @@ public class Thief extends Mob {
 		properties.add(Property.UNDEAD);
 	}
 
+	public Thief() {
+		if (SPDSettings.bigdungeon()){
+			EXP = 8;
+			maxLvl = 14;
+		}
+	}
+
 	private static final String ITEM = "item";
 
 	@Override

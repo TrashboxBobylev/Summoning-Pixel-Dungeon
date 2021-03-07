@@ -48,7 +48,14 @@ public class Gnoll extends Mob {
         loot = new Gold().goldFromEnemy();
 		lootChance = 0.5f;
 	}
-	
+
+	public Gnoll() {
+		if (SPDSettings.bigdungeon()){
+			EXP = 2;
+			maxLvl = 7;
+		}
+	}
+
 	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange( 1, 6 );

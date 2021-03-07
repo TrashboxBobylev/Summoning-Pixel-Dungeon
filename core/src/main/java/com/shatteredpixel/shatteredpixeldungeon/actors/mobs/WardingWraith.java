@@ -73,8 +73,15 @@ public class WardingWraith extends Mob implements Callback {
 
 		intelligentAlly = true;
 	}
-	
-	@Override
+
+    public WardingWraith() {
+        if (SPDSettings.bigdungeon()){
+            EXP = 26;
+            maxLvl = 44;
+        }
+    }
+
+    @Override
 	public int attackSkill( Char target ) {
         int i = 30;
         if (alignment == Alignment.ALLY) i = 40;

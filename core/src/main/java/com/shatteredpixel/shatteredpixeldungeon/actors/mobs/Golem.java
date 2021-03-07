@@ -64,6 +64,13 @@ public class Golem extends Mob {
 		HUNTING = new Hunting();
 	}
 
+	public Golem() {
+		if (SPDSettings.bigdungeon()){
+			EXP = 24;
+			maxLvl = 40;
+		}
+	}
+
 	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange( 25, 30 );

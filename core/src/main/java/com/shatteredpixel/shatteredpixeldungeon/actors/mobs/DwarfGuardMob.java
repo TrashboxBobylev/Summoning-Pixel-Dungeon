@@ -71,6 +71,13 @@ public class DwarfGuardMob extends Mob {
 		HUNTING = new Hunting();
 	}
 
+	public DwarfGuardMob() {
+		if (SPDSettings.bigdungeon()){
+			EXP = 25;
+			maxLvl = 42;
+		}
+	}
+
 	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange(10, 18);

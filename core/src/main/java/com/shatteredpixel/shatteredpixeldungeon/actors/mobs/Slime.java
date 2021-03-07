@@ -66,7 +66,14 @@ public class Slime extends Mob {
 		properties.add(Property.DEMONIC);
 		properties.add(Property.INORGANIC);
 	}
-	
+
+	public Slime() {
+		if (SPDSettings.bigdungeon()){
+			EXP = 28;
+			maxLvl = 46;
+		}
+	}
+
 	private static final float SPLIT_DELAY	= 1f;
 	
 	int generation	= 0;

@@ -72,6 +72,13 @@ public class Eye extends Mob {
 		properties.add(Property.DEMONIC);
 	}
 
+	public Eye() {
+		if (SPDSettings.bigdungeon()){
+			EXP = 30;
+			maxLvl = 50;
+		}
+	}
+
 	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange(18, 33);

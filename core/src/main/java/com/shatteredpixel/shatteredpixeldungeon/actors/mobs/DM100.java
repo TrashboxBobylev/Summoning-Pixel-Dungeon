@@ -58,7 +58,14 @@ public class DM100 extends Mob implements Callback {
 		properties.add(Property.ELECTRIC);
 		properties.add(Property.INORGANIC);
 	}
-	
+
+	public DM100() {
+		if (SPDSettings.bigdungeon()){
+			EXP = 9;
+			maxLvl = 16;
+		}
+	}
+
 	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange( 2, 8 );

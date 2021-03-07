@@ -56,7 +56,14 @@ public class HellBat extends Mob {
 		loot = new PotionOfDragonsBreath();
 		lootChance = 0.5f;
 	}
-	
+
+	public HellBat() {
+		if (SPDSettings.bigdungeon()){
+			EXP = 33;
+			maxLvl = 54;
+		}
+	}
+
 	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange( 16, 17 );

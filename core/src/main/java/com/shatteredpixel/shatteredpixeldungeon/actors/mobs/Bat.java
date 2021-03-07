@@ -54,7 +54,14 @@ public class Bat extends Mob {
 		loot = new PotionOfHealing();
 		lootChance = 0.1667f; //by default, see rollToDropLoot()
 	}
-	
+
+	public Bat() {
+		if (SPDSettings.bigdungeon()){
+			EXP = 13;
+			maxLvl = 22;
+		}
+	}
+
 	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange( 5, 18 );

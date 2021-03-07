@@ -62,7 +62,14 @@ public class Swarm extends Mob {
 		loot = new PotionOfHealing();
 		lootChance = 0.1667f; //by default, see rollToDropLoot()
 	}
-	
+
+	public Swarm() {
+		if (SPDSettings.bigdungeon()){
+			EXP = 4;
+			maxLvl = 11;
+		}
+	}
+
 	private static final float SPLIT_DELAY	= 1f;
 	
 	int generation	= 0;
