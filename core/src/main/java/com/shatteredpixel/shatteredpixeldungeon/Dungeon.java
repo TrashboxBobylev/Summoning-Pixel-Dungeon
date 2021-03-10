@@ -412,7 +412,7 @@ public class Dungeon {
 		Mob.restoreAllies( level, pos );
 		Actor.init();
 
-//		level.addRespawner();
+		level.addRespawner();
 
 		hero.pos = pos;
 
