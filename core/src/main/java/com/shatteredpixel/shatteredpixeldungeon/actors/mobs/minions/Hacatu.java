@@ -96,7 +96,7 @@ public class Hacatu extends Minion implements Callback {
                 //lightning deals less damage per-target, the more targets that are hit.
                 float multipler = 0.4f + (0.6f/affected.size());
                 //if the main target is in water, all affected take full damage
-                if (Dungeon.level.water[enemy.pos]) multipler = 1f;
+                if (enemy.isWet()) multipler = 1f;
                 if (Dungeon.hero.buff(Attunement.class) != null) multipler *= Attunement.empowering();
 
                 int min = minDamage;

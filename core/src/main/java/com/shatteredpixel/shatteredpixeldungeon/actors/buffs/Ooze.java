@@ -103,7 +103,7 @@ public class Ooze extends Buff {
 		} else {
 			detach();
 		}
-		if (Dungeon.level.water[target.pos]) {
+		if (target.isWet()) {
 			detach();
 		}
 		return true;

@@ -159,7 +159,7 @@ public class ShockBomb extends Bomb {
         affected.add( ch );
 
         int dist;
-        if (Dungeon.level.water[ch.pos] && !ch.flying)
+        if (ch.isWet() && !ch.flying)
             dist = 4;
         else
             dist = 2;
@@ -224,7 +224,7 @@ public class ShockBomb extends Bomb {
             //lightning deals less damage per-target, the more targets that are hit.
             float multipler = 0.4f + (0.6f/affected.size());
             //if the main target is in water, all affected take full damage
-            if (Dungeon.level.water[cell]) multipler = 1f;
+            if (Actor.findChar(cell) != null && Actor.findChar(cell).isWet()) multipler = 1f;
             int dmg = Math.round(damageRoll() * 0.6f * charge * multipler);
 
             target.damage(dmg, new WandOfLightning());

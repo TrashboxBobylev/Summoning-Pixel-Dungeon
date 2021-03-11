@@ -246,7 +246,7 @@ public class Yog extends Mob {
 		@Override
 		public boolean act() {
 			
-			if (Dungeon.level.water[pos] && HP < HT) {
+			if (isWet() && HP < HT) {
 				sprite.emitter().burst( ShadowParticle.UP, 2 );
 				HP += REGENERATION;
 			}

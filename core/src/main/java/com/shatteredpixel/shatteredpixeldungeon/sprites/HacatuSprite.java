@@ -77,7 +77,7 @@ public class HacatuSprite extends MobSprite {
         ((Hacatu)ch).affected.add( che );
 
         int dist;
-        if (Dungeon.level.water[che.pos] && !che.flying)
+        if (che.isWet() && !che.flying)
             dist = 2;
         else
             dist = 1;

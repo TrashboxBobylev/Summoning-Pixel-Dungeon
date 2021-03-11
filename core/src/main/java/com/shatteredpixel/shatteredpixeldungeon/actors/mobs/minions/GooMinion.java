@@ -84,7 +84,7 @@ public class GooMinion extends Minion {
     @Override
     public boolean act() {
 
-        if (Dungeon.level.water[pos] && HP < HT) {
+        if (isWet() && HP < HT) {
             sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
             if (HP*2 == HT) {
                 ((GooMinionSprite)sprite).spray(false);

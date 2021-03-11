@@ -1673,7 +1673,7 @@ public class Hero extends Char {
 		super.move( step );
 		
 		if (!flying) {
-			if (Dungeon.level.water[pos]) {
+			if (isWet()) {
 				Sample.INSTANCE.play( Assets.Sounds.WATER, 1, Random.Float( 0.8f, 1.25f ) );
 			} else if (Dungeon.level.map[pos] == Terrain.EMPTY_SP) {
 				Sample.INSTANCE.play( Assets.Sounds.STURDY, 1, Random.Float( 0.96f, 1.05f ) );

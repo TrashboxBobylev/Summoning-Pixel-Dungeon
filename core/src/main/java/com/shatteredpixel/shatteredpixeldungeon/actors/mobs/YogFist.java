@@ -334,7 +334,7 @@ public abstract class YogFist extends Mob {
 			//ensures toxic gas acts at the appropriate time when added
 			GameScene.add(Blob.seed(pos, 0, ToxicGas.class));
 
-			if (Dungeon.level.water[pos] && HP < HT) {
+			if (isWet() && HP < HT) {
 				sprite.emitter().burst( Speck.factory(Speck.HEALING), 3 );
 				HP += HT/50;
 			}

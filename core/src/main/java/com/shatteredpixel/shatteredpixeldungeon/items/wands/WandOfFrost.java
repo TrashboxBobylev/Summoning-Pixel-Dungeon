@@ -101,7 +101,7 @@ public class WandOfFrost extends DamageWand {
             }
 
 			if (ch.isAlive() && !freeze){
-				if (Dungeon.level.water[ch.pos])
+				if (ch.isWet())
                     Buff.affect( ch, FrostBurn.class ).reignite( ch, 7f);
 				else
                     Buff.affect( ch, FrostBurn.class ).reignite( ch, 4f );

@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.Wet;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Thief;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
@@ -82,6 +83,7 @@ public class Burning extends Buff implements Hero.Doom {
 	@Override
 	public boolean attachTo(Char target) {
 		Buff.detach( target, Chill.class);
+		Buff.detach( target, Wet.class);
 
 		return super.attachTo(target);
 	}
@@ -157,7 +159,8 @@ public class Burning extends Buff implements Hero.Doom {
 		left -= TICK;
 		
 		if (left <= 0 ||
-			(Dungeon.level.water[target.pos] && !target.flying)) {
+			(target.isWet() && !target.flying)) {
+			Buff.detach(target, Wet.class);
 			
 			detach();
 		}

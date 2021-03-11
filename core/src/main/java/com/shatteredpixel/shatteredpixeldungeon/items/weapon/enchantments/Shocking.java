@@ -97,7 +97,7 @@ public class Shocking extends Weapon.Enchantment {
 				Char n = Actor.findChar(i);
 				if (n != null && n != attacker && !affected.contains(n)) {
 					arcs.add(new Lightning.Arc(defender.sprite.center(), n.sprite.center()));
-					arc(attacker, n, (Dungeon.level.water[n.pos] && !n.flying) ? 2 : 1, affected, arcs);
+					arc(attacker, n, (n.isWet() && !n.flying) ? 2 : 1, affected, arcs);
 				}
 			}
 		}
