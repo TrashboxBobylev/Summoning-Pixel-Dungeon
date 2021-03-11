@@ -27,10 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SmokeScreen;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Web;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WellWater;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
@@ -671,6 +668,12 @@ public abstract class Level implements Bundlable {
 				flamable[i] = flamable[i] || w.cur[i] > 0;
 			}
 		}
+		YogWall yw = (YogWall) blobs.get(YogWall.class);
+		if (w != null && w.volume > 0){
+			for (int i=0; i < length(); i++) {
+				solid[i] = solid[i] || w.cur[i] > 0;
+			}
+		}
 
 		int lastRow = length() - width();
 		for (int i=0; i < width(); i++) {
@@ -958,7 +961,10 @@ public abstract class Level implements Bundlable {
 	public void occupyCell( Char ch ){
 		if (!ch.isImmune(Web.class) && Blob.volumeAt(ch.pos, Web.class) > 0){
 			blobs.get(Web.class).clear(ch.pos);
-			Web.affectChar( ch );
+			 Web.affectChar( ch );
+		}
+		if (!ch.isImmune(YogWall.class) && Blob.volumeAt(ch.pos, YogWall.class) > 0){
+			if (ch.alignment == Char.Alignment.ALLY) YogWall.affectChar( ch );
 		}
 
 		if (!ch.flying){
