@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.blobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.FinalFroggit;
@@ -34,6 +35,8 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.WebParticle;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+
+import static com.shatteredpixel.shatteredpixeldungeon.actors.Char.Alignment.ALLY;
 
 public class YogWall extends Blob {
 
@@ -56,6 +59,10 @@ public class YogWall extends Blob {
 				volume += off[cell];
 
 				l.solid[cell] = off[cell] > 0 || (Terrain.flags[l.map[cell]] & Terrain.SOLID) != 0;
+
+				if (cur[cell] > 0 && Actor.findChar(cell) != null && Actor.findChar(cell).alignment == ALLY){
+					affectChar(Actor.findChar(cell));
+				}
 			}
 		}
 	}
@@ -73,7 +80,7 @@ public class YogWall extends Blob {
 				b.detach();
 			}
 		}
-		Buff.prolong( ch, FinalFroggit.Eradication.class, FinalFroggit.Eradication.DURATION ).combo++;
+		Buff.prolong( ch, FinalFroggit.Eradication.class, FinalFroggit.Eradication.DURATION * 5f ).combo++;
 		Buff.affect( ch, FrostBurn.class).reignite(ch, 20f);
 	}
 	

@@ -963,9 +963,6 @@ public abstract class Level implements Bundlable {
 			blobs.get(Web.class).clear(ch.pos);
 			 Web.affectChar( ch );
 		}
-		if (!ch.isImmune(YogWall.class) && Blob.volumeAt(ch.pos, YogWall.class) > 0){
-			if (ch.alignment == Char.Alignment.ALLY) YogWall.affectChar( ch );
-		}
 
 		if (!ch.flying){
 

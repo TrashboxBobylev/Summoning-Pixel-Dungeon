@@ -212,7 +212,12 @@ public abstract class YogFist extends Mob {
 				GameScene.updateMap( enemy.pos );
 				CellEmitter.get( enemy.pos ).burst( Speck.factory( Speck.STEAM ), 10 );
 			} else {
-				Buff.affect( enemy, Burning.class ).reignite( enemy );
+				FinalFroggit.Eradication eradication = buff(FinalFroggit.Eradication.class);
+				float multiplier = 1f;
+				if (eradication != null) {
+					multiplier = (float) (Math.pow(1.15f, eradication.combo));
+				}
+				Buff.affect( enemy, Burning.class ).reignite( enemy, 7f * multiplier );
 			}
 
 			for (int i : PathFinder.NEIGHBOURS9){
@@ -361,7 +366,12 @@ public abstract class YogFist extends Mob {
 		@Override
 		protected void zap() {
 			spend( 1f );
-			GameScene.add(Blob.seed(enemy.pos, 100, ToxicGas.class));
+			FinalFroggit.Eradication eradication = buff(FinalFroggit.Eradication.class);
+			float multiplier = 1f;
+			if (eradication != null) {
+				multiplier = (float) (Math.pow(1.15f, eradication.combo));
+			}
+			GameScene.add(Blob.seed(enemy.pos, (int) (100 * multiplier), ToxicGas.class));
 		}
 
 		@Override
@@ -437,8 +447,13 @@ public abstract class YogFist extends Mob {
 			spend( 1f );
 
 			if (hit( this, enemy, true )) {
+				FinalFroggit.Eradication eradication = buff(FinalFroggit.Eradication.class);
+				float multiplier = 1f;
+				if (eradication != null) {
+					multiplier = (float) (Math.pow(1.15f, eradication.combo));
+				}
 
-				enemy.damage( Random.NormalIntRange(10, 20), new LightBeam() );
+				enemy.damage((int) (Random.NormalIntRange(10, 20)*multiplier), new LightBeam() );
 				Buff.prolong( enemy, Blindness.class, Blindness.DURATION/2f );
 
 				if (!enemy.isAlive() && enemy == Dungeon.hero) {
@@ -500,8 +515,13 @@ public abstract class YogFist extends Mob {
 			spend( 1f );
 
 			if (hit( this, enemy, true )) {
+				FinalFroggit.Eradication eradication = buff(FinalFroggit.Eradication.class);
+				float multiplier = 1f;
+				if (eradication != null) {
+					multiplier = (float) (Math.pow(1.15f, eradication.combo));
+				}
 
-				enemy.damage( Random.NormalIntRange(10, 20), new DarkBolt() );
+				enemy.damage((int) (Random.NormalIntRange(10, 20)*multiplier), new DarkBolt() );
 
 				Light l = enemy.buff(Light.class);
 				if (l != null){

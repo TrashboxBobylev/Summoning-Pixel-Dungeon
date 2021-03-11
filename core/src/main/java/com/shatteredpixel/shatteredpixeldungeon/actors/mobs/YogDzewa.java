@@ -45,6 +45,8 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.YogSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.Camera;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.*;
 
@@ -155,13 +157,13 @@ public class YogDzewa extends Mob {
 			if (!Dungeon.hero.rooted) {
 
 				if (needCrossBeam){
-					Ballistica[] fenceBeams = new Ballistica[4];
-					for (int i = 0; i < PathFinder.NEIGHBOURS4.length; i++){
-						fenceBeams[i] = new Ballistica(pos, pos + PathFinder.NEIGHBOURS4[i], Ballistica.STOP_SOLID);
+					Ballistica[] fenceBeams = new Ballistica[8];
+					for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++){
+						fenceBeams[i] = new Ballistica(pos, pos + PathFinder.NEIGHBOURS8[i], Ballistica.STOP_SOLID);
 						for (int k : fenceBeams[i].path){
-							GameScene.add(Blob.seed(k, 20, YogWall.class));
+							GameScene.add(Blob.seed(k, 6, YogWall.class));
 							Char ch = Actor.findChar(k);
-							if (ch != null){
+							if (ch != null && ch.alignment == Alignment.ALLY){
 								ch.damage(Random.NormalIntRange(50, 170), new Eye.DeathGaze());
 							}
 						}
@@ -214,14 +216,16 @@ public class YogDzewa extends Mob {
 			if (abilityCooldown <= 0){
 				HashSet<Integer> affectedCells = new HashSet<>();
 				if (needCrossBeam){
-					Ballistica[] fenceBeams = new Ballistica[4];
-					for (int i = 0; i < PathFinder.NEIGHBOURS4.length; i++){
-						fenceBeams[i] = new Ballistica(pos, pos + PathFinder.NEIGHBOURS4[i], Ballistica.STOP_SOLID);
+
+					Ballistica[] fenceBeams = new Ballistica[8];
+					for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++){
+						fenceBeams[i] = new Ballistica(pos, pos + PathFinder.NEIGHBOURS8[i], Ballistica.STOP_SOLID);
+						targetedCells.addAll(fenceBeams[i].path);
 						affectedCells.addAll(fenceBeams[i].path);
 					}
 				}
 				else {
-					int beams = 1 + (HT - HP) / 400;
+					int beams = 1 + (HT - HP) / 200;
 
 					for (int i = 0; i < beams; i++) {
 
@@ -264,6 +268,10 @@ public class YogDzewa extends Mob {
 				abilityCooldown += Random.NormalFloat(MIN_ABILITY_CD, MAX_ABILITY_CD);
 				abilityCooldown -= (phase - 1);
 				needCrossBeam = Random.Int(3) == 0;
+				if (needCrossBeam){
+					GameScene.flash(0xFFFFFF);
+					GLog.negative(Messages.get(this, "cross_beams"));
+				}
 
 			} else {
 				spend(TICK);
@@ -524,7 +532,7 @@ public class YogDzewa extends Mob {
 		{
 			spriteClass = LarvaSprite.class;
 
-			HP = HT = 20;
+			HP = HT = 50;
 			defenseSkill = 12;
 			viewDistance = Light.DISTANCE;
 
@@ -541,7 +549,12 @@ public class YogDzewa extends Mob {
 
 		@Override
 		public int damageRoll() {
-			return Random.NormalIntRange( 15, 25 );
+			FinalFroggit.Eradication eradication = buff(FinalFroggit.Eradication.class);
+			float multiplier = 1f;
+			if (eradication != null) {
+				multiplier = (float) (Math.pow(1.15f, eradication.combo));
+			}
+			return (int) (Random.NormalIntRange( 15, 25 )*multiplier);
 		}
 
 		@Override
