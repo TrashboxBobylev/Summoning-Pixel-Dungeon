@@ -534,6 +534,11 @@ public class ItemSpriteSheet {
 	public static final int CAMOUFLAGE      = C_SPELLS +5;
 	public static final int CLONE           = C_SPELLS +6;
 	public static final int GONER           = C_SPELLS +7;
+	public static final int PUNCH           = C_SPELLS -5;
+	public static final int HEALKI          = C_SPELLS -4;
+	public static final int BOOM            = C_SPELLS -3;
+	public static final int SPREAD          = C_SPELLS -2;
+	public static final int FLOWER          = C_SPELLS -1;
 	static {
 		assignItemRect(STARS, 11, 11);
 		assignItemRect(HEAL, 10, 10);
@@ -543,6 +548,12 @@ public class ItemSpriteSheet {
 		assignItemRect(CAMOUFLAGE, 14, 14);
 		assignItemRect(CLONE, 14, 13);
 		assignItemRect(GONER, 16, 16);
+
+		assignItemRect(PUNCH, 13, 14);
+		assignItemRect(HEALKI, 13, 14);
+		assignItemRect(BOOM, 15, 14);
+		assignItemRect(SPREAD, 12, 15);
+		assignItemRect(FLOWER, 15, 15);
 	}
 
 	private static final int SCROLLS        =                               xy(1, 19);  //16 slots
