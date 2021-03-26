@@ -71,14 +71,22 @@ public class Barrier extends ConjurerSpell {
     private int heal(Char ch){
         switch (level()){
             case 1: return 20 + ch.HT / 2;
-            case 2: return 40 + ch.HT;
+            case 2: return (int) (40 + ch.HT * 1.25f);
         }
         return 20;
+    }
+
+    private int partialHeal(){
+        switch (level()){
+            case 1: return 50;
+            case 2: return 125;
+        }
+        return 0;
     }
 
 
     @Override
     public String desc() {
-        return Messages.get(this, "desc" + level());
+        return Messages.get(this, "desc", partialHeal(), manaCost());
     }
 }

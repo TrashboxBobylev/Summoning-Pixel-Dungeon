@@ -43,6 +43,8 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
+import java.text.DecimalFormat;
+
 public class Heal extends ConjurerSpell {
 
     {
@@ -84,9 +86,25 @@ public class Heal extends ConjurerSpell {
         return 3 + ch.HT / 20;
     }
 
+    private int intHeal(){
+        switch (level()){
+            case 1: return 6;
+            case 2: return 8;
+        }
+        return 3;
+    }
+
+    private float partialHeal(){
+        switch (level()){
+            case 1: return 12.5f;
+            case 2: return 33.3f;
+        }
+        return 5f;
+    }
+
 
     @Override
     public String desc() {
-        return Messages.get(this, "desc" + level());
+        return Messages.get(this, "desc", intHeal(), new DecimalFormat("#.##").format( partialHeal()), manaCost());
     }
 }

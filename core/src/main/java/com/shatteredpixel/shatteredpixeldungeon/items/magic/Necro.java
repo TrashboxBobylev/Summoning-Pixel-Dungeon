@@ -57,25 +57,25 @@ public class Necro extends ConjurerSpell {
                 ch instanceof WandOfWarding.Ward || (ch instanceof WardingWraith && ch.alignment == Char.Alignment.ALLY))
                     && ch.isAlive()){
             Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);
-            int healing = heal(ch);
+            int healing = heal();
             ch.sprite.emitter().burst(Speck.factory(Speck.STEAM), 20);
             Buff.affect(ch, NecromancyStat.class, 1000f).level = healing;
-            Buff.affect(Dungeon.hero, NecromancyCD.class, cd(ch));
+            Buff.affect(Dungeon.hero, NecromancyCD.class, cd());
 
             ch.sprite.burst(0xFFFFFFFF, buffedLvl() / 2 + 2);
         }
     }
 
-//    @Override
-//    public int manaCost() {
-//        switch (level()){
-//            case 1: return 12;
-//            case 2: return 30;
-//        }
-//        return 9;
-//    }
+    @Override
+    public int manaCost() {
+        switch (level()){
+            case 1: return 12;
+            case 2: return 30;
+        }
+        return 9;
+    }
 
-    private int heal(Char ch){
+    private int heal(){
         switch (level()){
             case 1: return 10;
             case 2: return 21;
@@ -83,7 +83,7 @@ public class Necro extends ConjurerSpell {
         return 4;
     }
 
-    private int cd(Char ch){
+    private int cd(){
         switch (level()){
             case 1: return 800;
             case 2: return 1000;
@@ -94,6 +94,6 @@ public class Necro extends ConjurerSpell {
 
     @Override
     public String desc() {
-        return Messages.get(this, "desc" + level());
+        return Messages.get(this, "desc", heal(), cd(), manaCost());
     }
 }
