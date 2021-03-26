@@ -315,6 +315,7 @@ public class WndSettings extends WndTabbed {
 		RedButton btnSplit; RedButton btnGrouped; RedButton btnCentered;
 		CheckBox chkFlipToolbar;
 		CheckBox chkFlipTags;
+		CheckBox chkFlipInventory;
 		ColorBlock sep2;
 		CheckBox chkFullscreen;
 		CheckBox chkFont;
@@ -394,6 +395,16 @@ public class WndSettings extends WndTabbed {
 			chkFlipTags.checked(SPDSettings.flipTags());
 			add(chkFlipTags);
 
+			chkFlipInventory = new CheckBox(Messages.get(this, "flip_inventory")){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					SPDSettings.flipInventory(checked());
+				}
+			};
+			chkFlipInventory.checked(SPDSettings.flipInventory());
+			add(chkFlipInventory);
+
 			sep2 = new ColorBlock(1, 1, 0xFF000000);
 			add(sep2);
 
@@ -462,15 +473,17 @@ public class WndSettings extends WndTabbed {
 			if (width > 200) {
 				chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP, width/2 - 1, BTN_HEIGHT);
 				chkFlipTags.setRect(chkFlipToolbar.right() + GAP, chkFlipToolbar.top(), width/2 -1, BTN_HEIGHT);
+				chkFlipInventory.setRect(0, chkFlipTags.bottom(), width -1, BTN_HEIGHT);
 				sep2.size(width, 1);
-				sep2.y = chkFlipTags.bottom() + 2;
+				sep2.y = chkFlipInventory.bottom() + 2;
 				chkFullscreen.setRect(0, sep2.y + 1 + GAP, width/2 - 1, BTN_HEIGHT);
 				chkFont.setRect(chkFullscreen.right() + GAP, chkFullscreen.top(), width/2 - 1, BTN_HEIGHT);
 			} else {
 				chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP, width, BTN_HEIGHT);
 				chkFlipTags.setRect(0, chkFlipToolbar.bottom() + GAP, width, BTN_HEIGHT);
+				chkFlipInventory.setRect(0, chkFlipTags.bottom() + GAP, width, BTN_HEIGHT);
 				sep2.size(width, 1);
-				sep2.y = chkFlipTags.bottom() + 2;
+				sep2.y = chkFlipInventory.bottom() + 2;
 				chkFullscreen.setRect(0, sep2.y + 1 + GAP, width, BTN_HEIGHT);
 				chkFont.setRect(0, chkFullscreen.bottom() + GAP, width, BTN_HEIGHT);
 			}

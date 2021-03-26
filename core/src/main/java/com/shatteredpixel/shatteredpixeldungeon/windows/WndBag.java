@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
@@ -68,6 +69,11 @@ import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class WndBag extends WndTabbed {
 	
@@ -150,7 +156,12 @@ public class WndBag extends WndTabbed {
 		slotHeight = PixelScene.landscape() ? SLOT_HEIGHT_L : SLOT_HEIGHT_P;
 
 		nCols = PixelScene.landscape() ? COLS_L : COLS_P;
-		nRows = (int)Math.ceil(25/(float)nCols); //we expect to lay out 25 slots in all cases
+		nRows = (int)Math.ceil(25/(float)nCols) ; //we expect to lay out 25 slots in all cases
+
+		if (SPDSettings.flipInventory()){
+//			col = nCols;
+			row = nRows;
+		}
 
 		int windowWidth = slotWidth * nCols + SLOT_MARGIN * (nCols - 1);
 		int windowHeight = TITLE_HEIGHT + slotHeight * nRows + SLOT_MARGIN * (nRows - 1);
@@ -168,7 +179,10 @@ public class WndBag extends WndTabbed {
 		}
 
 		placeTitle( bag, windowWidth );
-		
+
+		if (SPDSettings.flipInventory())
+			count = bag.capacity();
+
 		placeItems( bag );
 
 		resize( windowWidth, windowHeight );
@@ -246,16 +260,23 @@ public class WndBag extends WndTabbed {
 		
 		// Equipped items
 		Belongings stuff = Dungeon.hero.belongings;
-		placeItem( stuff.weapon != null ? stuff.weapon : new Placeholder( ItemSpriteSheet.WEAPON_HOLDER ) );
-		placeItem( stuff.armor != null ? stuff.armor : new Placeholder( ItemSpriteSheet.ARMOR_HOLDER ) );
-		placeItem( stuff.artifact != null ? stuff.artifact : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
-		placeItem( stuff.misc != null ? stuff.misc : new Placeholder( ItemSpriteSheet.SOMETHING ) );
-		placeItem( stuff.ring != null ? stuff.ring : new Placeholder( ItemSpriteSheet.RING_HOLDER ) );
+
+		if (!SPDSettings.flipInventory()) {
+			placeItem( stuff.weapon != null ? stuff.weapon : new Placeholder( ItemSpriteSheet.WEAPON_HOLDER ) );
+			placeItem( stuff.armor != null ? stuff.armor : new Placeholder( ItemSpriteSheet.ARMOR_HOLDER ) );
+			placeItem( stuff.misc != null ? stuff.misc : new Placeholder( ItemSpriteSheet.SOMETHING ) );
+			placeItem( stuff.ring != null ? stuff.ring : new Placeholder( ItemSpriteSheet.RING_HOLDER ) );
+			placeItem( stuff.artifact != null ? stuff.artifact : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
+
+		}
+		else {
+			placeItem(new lul());
+		}
 
 		//the container itself if it's not the root backpack
 		if (container != Dungeon.hero.belongings.backpack){
 			placeItem(container);
-			count--; //don't count this one, as it's not actually inside of itself
+			count += SPDSettings.flipInventory() ? 1 : -1; //don't count this one, as it's not actually inside of itself
 		}
 
 		// Items in the bag, except other containers (they have tags at the bottom)
@@ -263,28 +284,57 @@ public class WndBag extends WndTabbed {
 			if (!(item instanceof Bag)) {
 				placeItem( item );
 			} else {
-				count++;
+				count += SPDSettings.flipInventory() ? -1 : 1;
 			}
 		}
+
 		
 		// Free Space
-		while ((count - 5) < container.capacity()) {
-			placeItem( null );
+		if (SPDSettings.flipInventory()) {
+			while (count >= 0) {
+				placeItem(null);
+			}
+			count = -1 - container.capacity() + 20;
+			col = nCols;
+			row = 0;
 		}
+		else {
+			while ((count - 5) < container.capacity()) {
+				placeItem(null);
+			}
+		}
+
+		if (SPDSettings.flipInventory()) {
+
+			placeItem( stuff.ring != null ? stuff.ring : new Placeholder( ItemSpriteSheet.RING_HOLDER ) );
+			placeItem( stuff.misc != null ? stuff.misc : new Placeholder( ItemSpriteSheet.SOMETHING ) );
+			placeItem( stuff.artifact != null ? stuff.artifact : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
+			placeItem( stuff.armor != null ? stuff.armor : new Placeholder( ItemSpriteSheet.ARMOR_HOLDER ) );
+			placeItem( stuff.weapon != null ? stuff.weapon : new Placeholder( ItemSpriteSheet.WEAPON_HOLDER ) );
+		}
+
+
 	}
 	
 	protected void placeItem( final Item item ) {
 
-		count++;
+		count += SPDSettings.flipInventory() ? -1 : 1;
 
-		int x = col * (slotWidth + SLOT_MARGIN);
+		int x = (col + (SPDSettings.flipInventory() ? -1 : 0)) * (slotWidth + SLOT_MARGIN);
 		int y = TITLE_HEIGHT + row * (slotHeight + SLOT_MARGIN);
 		
 		add( new ItemButton( item ).setPos( x, y ) );
-		
-		if (++col >= nCols) {
-			col = 0;
-			row++;
+
+		if (SPDSettings.flipInventory()) {
+			if (--col <= 0) {
+				col = nCols;
+				row--;
+			}
+		} else {
+			if (++col >= nCols) {
+				col = 0;
+				row++;
+			}
 		}
 
 	}
@@ -375,6 +425,10 @@ public class WndBag extends WndTabbed {
 			return true;
 		}
 	}
+
+	public static class lul extends Item{
+
+	}
 	
 	private class ItemButton extends ItemSlot {
 		
@@ -389,7 +443,7 @@ public class WndBag extends WndTabbed {
 			super( item );
 
 			this.item = item;
-			if (item instanceof Gold || item instanceof Bag) {
+			if (item instanceof Gold || item instanceof Bag || item instanceof lul) {
 				bg.visible = false;
 			}
 			

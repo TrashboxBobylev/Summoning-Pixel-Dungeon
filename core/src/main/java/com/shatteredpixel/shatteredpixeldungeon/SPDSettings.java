@@ -140,6 +140,7 @@ public class SPDSettings extends GameSettings {
 	public static final String KEY_QUICKSLOTS	= "quickslots";
 	public static final String KEY_FLIPTOOLBAR	= "flipped_ui";
 	public static final String KEY_FLIPTAGS 	= "flip_tags";
+	public static final String KEY_FLIPINVENTORY 	= "flip_inventory";
 	public static final String KEY_BARMODE		= "toolbar_mode";
 	
 	public static void quickSlots( int value ){ put( KEY_QUICKSLOTS, value ); }
@@ -165,7 +166,13 @@ public class SPDSettings extends GameSettings {
 	public static String toolbarMode() {
 		return getString(KEY_BARMODE, PixelScene.landscape() ? "GROUP" : "SPLIT");
 	}
-	
+
+	public static void flipInventory( boolean value) {
+		put(KEY_FLIPINVENTORY, value );
+	}
+
+	public static boolean flipInventory(){ return getBoolean(KEY_FLIPINVENTORY, false); }
+
 	//Game State
 	
 	public static final String KEY_LAST_CLASS	= "last_class";
