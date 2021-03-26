@@ -45,7 +45,7 @@ public class ConjurerBook extends Bag {
 	}
 
 	public int capacity(){
-		return 12;
+		return 13;
 	}
 
 	@Override
