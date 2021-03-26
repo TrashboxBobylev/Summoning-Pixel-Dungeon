@@ -39,6 +39,7 @@ public class Punch extends ConjurerSpell {
 
     {
         image = ItemSpriteSheet.PUNCH;
+        usesTargeting = true;
     }
 
     @Override
