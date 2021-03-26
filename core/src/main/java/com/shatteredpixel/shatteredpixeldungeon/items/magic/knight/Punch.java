@@ -55,8 +55,8 @@ public class Punch extends ConjurerSpell {
 
     private float buff(){
         switch (level()){
-            case 1: return 4.0f;
-            case 2: return 1.5f;
+            case 1: return 3.0f;
+            case 2: return 1.1f;
         }
         return 9.0f;
     }
