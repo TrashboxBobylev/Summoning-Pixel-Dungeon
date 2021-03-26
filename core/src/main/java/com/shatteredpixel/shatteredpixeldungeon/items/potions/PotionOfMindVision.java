@@ -28,7 +28,10 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GoatClone;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
@@ -49,6 +52,11 @@ public class PotionOfMindVision extends Potion {
 		} else {
 			GLog.i( Messages.get(this, "see_none") );
 		}
+
+		GoatClone pris = new GoatClone();
+		pris.state = pris.WANDERING;
+		GameScene.add(pris, -1);
+		ScrollOfTeleportation.appear(pris, Dungeon.hero.pos+1);
 	}
 	
 	@Override

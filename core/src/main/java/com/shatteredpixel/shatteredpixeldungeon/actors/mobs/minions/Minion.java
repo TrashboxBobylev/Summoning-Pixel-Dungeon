@@ -304,7 +304,7 @@ public abstract class Minion extends Mob {
 
     //ported from DriedRose.java
     //minions will always move towards hero if enemies not here
-    private class Wandering extends Mob.Wandering {
+    public class Wandering extends Mob.Wandering {
 
         @Override
         public boolean act( boolean enemyInFOV, boolean justAlerted ) {

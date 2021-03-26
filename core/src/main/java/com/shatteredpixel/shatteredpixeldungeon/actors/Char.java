@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.GnollHunter;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GoatClone;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential;
@@ -246,6 +247,7 @@ public abstract class Char extends Actor {
 			
 			int dr = enemy.drRoll();
 			if (enemy.buff(Shrink.class) != null) dr *= 0.5f;
+			if (this instanceof GoatClone) dr = 0;
 
 			if (this instanceof Hero){
 				Hero h = (Hero)this;
