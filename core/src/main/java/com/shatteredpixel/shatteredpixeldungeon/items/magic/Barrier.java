@@ -84,9 +84,14 @@ public class Barrier extends ConjurerSpell {
         return 0;
     }
 
+    private int intHeal(){
+        if (level() == 2) return 40;
+        return 20;
+    }
+
 
     @Override
     public String desc() {
-        return Messages.get(this, "desc", partialHeal(), manaCost());
+        return Messages.get(this, "desc", intHeal(), partialHeal(), manaCost());
     }
 }

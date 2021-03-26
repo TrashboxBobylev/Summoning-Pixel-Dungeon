@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.magic;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
@@ -40,6 +41,8 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndTierInfo;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 
@@ -49,6 +52,7 @@ public abstract class ConjurerSpell extends Item {
 
     public static final String AC_ZAP	= "ZAP";
     public static final String AC_DOWNGRADE = "DOWNGRADE";
+    public static final String AC_TIERINFO = "TIERINFO";
 
     public int manaCost;
 
@@ -83,6 +87,7 @@ public abstract class ConjurerSpell extends Item {
         ArrayList<String> actions = new ArrayList<>();
         actions.add( AC_ZAP );
         if (level() > 0) actions.add(AC_DOWNGRADE);
+        actions.add( AC_TIERINFO );
 
         return actions;
     }
@@ -109,6 +114,13 @@ public abstract class ConjurerSpell extends Item {
             Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
             level(level()-1);
             GLog.warning( Messages.get(ConjurerSpell.class, "lower_tier"));
+        } else if (action.equals(AC_TIERINFO)){
+            ShatteredPixelDungeon.runOnRenderThread(new Callback() {
+                @Override
+                public void call() {
+                    Game.scene().addToFront(new WndTierInfo(ConjurerSpell.this));
+                }
+            });
         }
     }
 
