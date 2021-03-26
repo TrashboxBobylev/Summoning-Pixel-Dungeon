@@ -244,6 +244,7 @@ public enum HeroClass {
         new ScrollOfAttunement().identify();
 		new PotionOfMindVision().collect();
 		new Punch().collect();
+		new ScrollOfUpgrade().quantity(2).collect();
 
     }
 

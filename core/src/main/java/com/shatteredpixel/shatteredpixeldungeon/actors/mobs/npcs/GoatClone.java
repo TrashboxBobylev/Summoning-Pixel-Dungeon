@@ -63,6 +63,8 @@ public class GoatClone extends NPC {
             newEnemy = true;
         } else if (enemy.isInvulnerable(getClass()) && enemy.buff(StoneOfAggression.Aggression.class) == null) {
             newEnemy = true;
+        } else if (enemy.buff(Knife.SoulGain.class) == null) {
+            newEnemy = true;
         }
 
         if (newEnemy){
