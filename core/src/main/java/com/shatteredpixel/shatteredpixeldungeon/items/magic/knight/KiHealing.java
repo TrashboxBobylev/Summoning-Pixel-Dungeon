@@ -50,7 +50,7 @@ public class KiHealing extends AdHocSpell {
         hero.sprite.operate(hero.pos, new Callback() {
             @Override
             public void call() {
-                hero.spendAndNext(2f);
+                hero.spendAndNext(paralyse());
                 hero.sprite.idle();
                 hero.sprite.emitter().burst(WhiteParticle.UP, 8);
                 Sample.INSTANCE.play(Assets.Sounds.LULLABY);
@@ -77,10 +77,10 @@ public class KiHealing extends AdHocSpell {
         return 3f;
     }
 
-    @Override
-    public int manaCost() {
-        return 25;
-    }
+//    @Override
+//    public int manaCost() {
+//        return 25;
+//    }
 
     public String desc() {
         return Messages.get(this, "desc", intHeal(), new DecimalFormat("#.#").format(paralyse()), manaCost());

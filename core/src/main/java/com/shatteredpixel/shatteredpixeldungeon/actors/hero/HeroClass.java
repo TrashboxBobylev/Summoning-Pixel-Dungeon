@@ -45,6 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bombs.SupplyBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Webbomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.magic.knight.KiHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.knight.Punch;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
@@ -244,6 +245,7 @@ public enum HeroClass {
         new ScrollOfAttunement().identify();
 		new PotionOfMindVision().collect();
 		new Punch().collect();
+		new KiHealing().collect();
 		new ScrollOfUpgrade().quantity(2).collect();
 
     }

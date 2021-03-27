@@ -115,10 +115,11 @@ public abstract class ConjurerSpell extends Item {
             level(level()-1);
             GLog.warning( Messages.get(ConjurerSpell.class, "lower_tier"));
         } else if (action.equals(AC_TIERINFO)){
+            curItem = this;
             ShatteredPixelDungeon.runOnRenderThread(new Callback() {
                 @Override
                 public void call() {
-                    Game.scene().addToFront(new WndTierInfo(ConjurerSpell.this));
+                    Game.scene().addToFront(new WndTierInfo(curItem));
                 }
             });
         }
