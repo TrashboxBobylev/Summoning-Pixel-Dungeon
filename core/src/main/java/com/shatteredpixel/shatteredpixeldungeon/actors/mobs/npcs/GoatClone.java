@@ -111,6 +111,18 @@ public class GoatClone extends NPC {
         }
     }
 
+    public static GoatClone findClone(){
+        GoatClone clone = null;
+
+        for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+            if (mob instanceof GoatClone){
+                clone = (GoatClone) mob;
+            }
+        }
+
+        return clone;
+    }
+
     {
         immunities.add(Terror.class);
         immunities.add(Amok.class);
