@@ -48,6 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.magic.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.knight.Boom;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.knight.KiHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.knight.Punch;
+import com.shatteredpixel.shatteredpixeldungeon.items.magic.knight.Shards;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
@@ -248,6 +249,7 @@ public enum HeroClass {
 		new Punch().collect();
 		new KiHealing().collect();
 		new Boom().collect();
+		new Shards().collect();
 		new ScrollOfUpgrade().quantity(2).collect();
 
     }

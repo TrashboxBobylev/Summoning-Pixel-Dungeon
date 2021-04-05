@@ -223,6 +223,12 @@ public class Item implements Bundlable {
 	public boolean collect() {
 		return collect( Dungeon.hero.belongings.backpack );
 	}
+
+	// uhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+	public void collectWithAnnouncing(){
+		collect();
+		GLog.positive(Messages.get(this, "announce"));
+	}
 	
 	//returns a new item if the split was sucessful and there are now 2 items, otherwise null
 	public Item split( int amount ){
