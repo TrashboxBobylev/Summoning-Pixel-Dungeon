@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.FlowersCD;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
@@ -40,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.PathFinder;
 
 import java.text.DecimalFormat;
@@ -63,10 +65,10 @@ public class Flower extends ConjurerSpell {
 
     private int cooldown(){
         switch (level()){
-            case 1: return 20;
+            case 1: return 25;
             case 2: return 10;
         }
-        return 40;
+        return 50;
     }
 
     @Override
@@ -76,6 +78,15 @@ public class Flower extends ConjurerSpell {
             case 2: return 72;
         }
         return 18;
+    }
+
+    @Override
+    public boolean tryToZap(Hero owner) {
+        if (owner.buff(FlowersCD.class) != null){
+            GLog.warning( Messages.get(this, "no_magic") );
+            return false;
+        }
+        return super.tryToZap(owner);
     }
 
     public String desc() {
