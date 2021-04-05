@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulWeakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.WhiteWound;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
@@ -53,9 +54,53 @@ public class Knife extends MeleeWeapon {
 
     @Override
     public int max(int lvl) {
-        return  8*(tier) +    //8 base, down from 10
-                (lvl+1)*tier;               //same scaling
+        return  7*(tier) + ((1 + (level()+1)) / 2)*level();
+
     }
+
+    @Override
+    public int image() {
+	    switch (buffedLvl()){
+            case 0: case 1: case 2: case 3:
+                return ItemSpriteSheet.KNIFE;
+            case 4: case 5: case 6:
+                return ItemSpriteSheet.KNIVE_MK2;
+            case 7: case 8: case 9:
+                return ItemSpriteSheet.KNIVE_MK3;
+            default:
+                return ItemSpriteSheet.KNIVE_MK4;
+        }
+    }
+
+    @Override
+    public String name() {
+        switch (buffedLvl()){
+            case 0: case 1: case 2: case 3:
+                return Messages.get(this, "name");
+            case 4: case 5: case 6:
+                return Messages.get(this, "name2");
+            case 7: case 8: case 9:
+                return Messages.get(this, "name3");
+            default:
+                return Messages.get(this, "name4");
+        }
+    }
+
+    @Override
+    public String desc() {
+        switch (buffedLvl()){
+            case 0: case 1: case 2: case 3:
+                return Messages.get(this, "desc");
+            case 4: case 5: case 6:
+                return Messages.get(this, "desc2");
+            case 7: case 8: case 9:
+                return Messages.get(this, "desc3");
+            default:
+                return Messages.get(this, "desc4");
+        }
+    }
+
+
 
     @Override
     public int proc(Char attacker, Char defender, int damage ) {

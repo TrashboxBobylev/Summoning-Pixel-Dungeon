@@ -248,7 +248,7 @@ public enum HeroClass {
 		new Boom().collect();
 		new Shards().collect();
 		new Flower().collect();
-		new ScrollOfUpgrade().quantity(2).collect();
+		new ScrollOfUpgrade().quantity(20).collect();
 
     }
 

@@ -297,6 +297,15 @@ public class ItemSpriteSheet {
         assignItemRect(BROADSWORD, 16, 16);
 	}
 
+	public static final int KNIVE_MK2      = WEP_TIER5+13;
+	public static final int KNIVE_MK3      = WEP_TIER5+14;
+	public static final int KNIVE_MK4      = WEP_TIER5+12;
+	{
+		assignItemRect(KNIVE_MK2, 11, 11);
+		assignItemRect(KNIVE_MK3, 13, 16);
+		assignItemRect(KNIVE_MK4, 16, 16);
+	}
+
 	                                                                                    //8 free slots
 
 	private static final int MISSILE_WEP    =                               xy(1, 10);  //16 slots. 3 per tier + boomerang
