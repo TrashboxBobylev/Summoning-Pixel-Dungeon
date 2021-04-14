@@ -46,6 +46,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Webbomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.knight.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.magic.soulreaver.Defense;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.soulreaver.Offense;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
@@ -243,12 +244,10 @@ public enum HeroClass {
         new PotionOfStrength().identify();
         new ScrollOfAttunement().identify();
 		new PotionOfMindVision().collect();
-		new Punch().collect();
-		new KiHealing().collect();
-		new Boom().collect();
-		new Shards().collect();
-		new Flower().collect();
 		new Offense().collect();
+		new Defense().collect();
+		new ScrollOfUpgrade().quantity(2).collect();
+		new PotionOfExperience().quantity(12).collect();
 
     }
 

@@ -206,7 +206,7 @@ public abstract class Minion extends Mob {
         Char enemy = super.chooseEnemy();
 
         int targetPos = defendingPos != -1 ? defendingPos : Dungeon.hero.pos;
-        int distance = this instanceof StationaryMinion ? Integer.MAX_VALUE : independenceRange;
+        int distance = (this instanceof StationaryMinion || buff(ArmoredShielding.class) != null) ? Integer.MAX_VALUE : independenceRange;
 
 
         //will never attack something far from their target
@@ -219,6 +219,16 @@ public abstract class Minion extends Mob {
         }
 
         return null;
+    }
+
+    @Override
+    public void updateSpriteState() {
+        super.updateSpriteState();
+        if (buff(ArmoredShielding.class) != null){
+            sprite.add(CharSprite.State.SHIELDED);
+        } else {
+            sprite.remove(CharSprite.State.SHIELDED);
+        }
     }
 
     @Override
@@ -300,6 +310,18 @@ public abstract class Minion extends Mob {
             Mob mob = (Mob) ch;
             return (mob.state == mob.SLEEPING || mob.state == mob.PASSIVE || mob.state == mob.WANDERING);
         }
+    }
+
+    @Override
+    protected boolean getCloser(int target) {
+        if (buff(ArmoredShielding.class) != null) return false;
+        return super.getCloser(target);
+    }
+
+    @Override
+    protected boolean getFurther(int target) {
+        if (buff(ArmoredShielding.class) != null) return false;
+        return super.getFurther(target);
     }
 
     //ported from DriedRose.java

@@ -76,7 +76,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected float shadowOffset    = 0.25f;
 
 	public enum State {
-		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, HEALING, SHIELDED, FROSTBURNING, SPIRIT, SHRUNK, ALLURED
+		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, HEALING, SHIELDED, FROSTBURNING, SPIRIT, SHRUNK, ALLURED, ENLARGENED
 	}
 	private int stunStates = 0;
 	
@@ -415,6 +415,10 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
                 scale.x = 0.5f;
                 scale.y = 0.5f;
                 break;
+			case ENLARGENED:
+				scale.x = 1.33f;
+				scale.y = 1.33f;
+				break;
 		}
 	}
 	
@@ -502,7 +506,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				}
 				break;
             case SHRUNK:
-                scale.x = 1f;
+			case ENLARGENED:
+				scale.x = 1f;
                 scale.y = 1f;
                 break;
 		}
