@@ -548,6 +548,11 @@ public class ItemSpriteSheet {
 	public static final int BOOM            = C_SPELLS -3;
 	public static final int SPREAD          = C_SPELLS -2;
 	public static final int FLOWER          = C_SPELLS -1;
+	public static final int SR_OFFENSE      = C_SPELLS +11;
+	public static final int SR_DEFENSE      = C_SPELLS +12;
+	public static final int SR_MAGICAL      = C_SPELLS +13;
+	public static final int SR_RANGED       = C_SPELLS +14;
+	public static final int SR_SUPPORT      = C_SPELLS +15;
 	static {
 		assignItemRect(STARS, 11, 11);
 		assignItemRect(HEAL, 10, 10);
@@ -563,6 +568,12 @@ public class ItemSpriteSheet {
 		assignItemRect(BOOM, 15, 14);
 		assignItemRect(SPREAD, 12, 15);
 		assignItemRect(FLOWER, 15, 15);
+
+		assignItemRect(SR_OFFENSE, 12, 12);
+		assignItemRect(SR_DEFENSE, 11, 11);
+		assignItemRect(SR_MAGICAL, 13, 13);
+		assignItemRect(SR_RANGED, 12, 12);
+		assignItemRect(SR_SUPPORT, 10, 9);
 	}
 
 	private static final int SCROLLS        =                               xy(1, 19);  //16 slots

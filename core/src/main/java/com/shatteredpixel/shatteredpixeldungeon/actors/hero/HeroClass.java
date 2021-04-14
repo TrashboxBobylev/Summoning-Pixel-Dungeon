@@ -46,6 +46,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Webbomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.knight.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.magic.soulreaver.Offense;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
@@ -236,7 +237,6 @@ public enum HeroClass {
 		heal.collect();
 		Dungeon.quickslot.setSlot(0, heal);
 		new Zap().collect();
-		Buff.affect(hero, Wet.class, 10f);
 
         hero.mana = 0;
         hero.maxMana = 20;
@@ -248,7 +248,7 @@ public enum HeroClass {
 		new Boom().collect();
 		new Shards().collect();
 		new Flower().collect();
-		new ScrollOfUpgrade().quantity(20).collect();
+		new Offense().collect();
 
     }
 
