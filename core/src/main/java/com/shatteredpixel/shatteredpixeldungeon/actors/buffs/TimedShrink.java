@@ -29,9 +29,10 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 
-public class Shrink extends Buff {
-	
-	public int distance = 2;
+//same deal as Shrink, but has duration
+public class TimedShrink extends FlavourBuff {
+
+	public static final float DURATION = 20f;
 
 	{
 		type = buffType.POSITIVE;
@@ -53,6 +54,11 @@ public class Shrink extends Buff {
         icon.tint(0.5f, 0, 1, 0.75f);
     }
 
+	@Override
+	public float iconFadePercent() {
+		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
+	}
+
     @Override
     public void fx(boolean on) {
         if (on) target.sprite.add(CharSprite.State.SHRUNK);
@@ -61,6 +67,6 @@ public class Shrink extends Buff {
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc");
+		return Messages.get(this, "desc", dispTurns());
 	}
 }

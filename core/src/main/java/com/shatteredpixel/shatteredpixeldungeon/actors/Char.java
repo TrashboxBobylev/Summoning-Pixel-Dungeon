@@ -246,7 +246,7 @@ public abstract class Char extends Actor {
 		} else if (hit( this, enemy, false )) {
 			
 			int dr = enemy.drRoll();
-			if (enemy.buff(Shrink.class) != null) dr *= 0.5f;
+			if (enemy.buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dr *= 0.5f;
 			if (this instanceof GoatClone) dr = 0;
 
 			if (this instanceof Hero){
@@ -275,8 +275,7 @@ public abstract class Char extends Actor {
 				dmg = damageRoll();
 			}
 
-			if (enemy.buff(Shrink.class) != null) dmg *= 1.25f;
-			if (buff(Shrink.class) != null) dmg *= 0.75f;
+			if (enemy.buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dmg *= 1.4f;
 
 			int effectiveDamage = enemy.defenseProc( this, dmg );
 			effectiveDamage = Math.max( effectiveDamage - dr, 0 );
@@ -388,10 +387,12 @@ public abstract class Char extends Actor {
 		float acuRoll = Random.Float( acuStat );
 		if (attacker.buff(Bless.class) != null) acuRoll *= 1.25f;
 		if (attacker.buff(  Hex.class) != null) acuRoll *= 0.8f;
+		if (attacker.buff(Shrink.class)!= null || attacker.buff(TimedShrink.class)!= null) acuRoll *= 0.6f;
 
 		float defRoll = Random.Float( defStat );
 		if (defender.buff(Bless.class) != null) defRoll *= 1.25f;
 		if (defender.buff(  Hex.class) != null) defRoll *= 0.8f;
+		if (defender.buff(Shrink.class)!= null || defender.buff(TimedShrink.class)!= null) defRoll *= 0.8f;
 
 		return (magic ? acuRoll * 2 : acuRoll) >= defRoll;
 	}
@@ -795,6 +796,10 @@ public abstract class Char extends Actor {
 	public HashSet<Property> properties() {
 		return new HashSet<>(properties);
 	}
+
+	public void addProperty(Property prop) {properties.add(prop);}
+
+	public void removeProperty(Property prop) {properties.remove(prop);}
 
 	public enum Property{
 		BOSS ( new HashSet<Class>( Arrays.asList(Grim.class, GrimTrap.class, ScrollOfRetribution.class, ScrollOfPsionicBlast.class)),

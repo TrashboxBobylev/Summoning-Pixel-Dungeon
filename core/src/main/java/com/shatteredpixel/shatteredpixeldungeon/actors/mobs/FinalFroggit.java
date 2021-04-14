@@ -118,7 +118,7 @@ public class FinalFroggit extends Mob implements Callback {
 			    multiplier = (float) (Math.pow(1.15f, eradication.combo));
             }
 			int damage = Random.Int( 4, 10 );
-			if (buff(Shrink.class) != null) damage *= 0.75f;
+			if (buff(Shrink.class) != null|| enemy.buff(TimedShrink.class) != null) damage *= 0.6f;
 			
 			int dmg = Math.round(damage * multiplier);
 

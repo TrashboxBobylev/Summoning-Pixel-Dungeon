@@ -24,23 +24,37 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 
-public class Shrink extends Buff {
-	
-	public int distance = 2;
+//get bigger
+public class Chungus extends FlavourBuff {
+
+	public static final float DURATION = 20f;
 
 	{
 		type = buffType.POSITIVE;
 		announced = true;
 	}
-	
+
+	@Override
+	public boolean attachTo(Char target) {
+		target.addProperty(Char.Property.LARGE);
+		return super.attachTo(target);
+	}
+
+	@Override
+	public void detach() {
+		target.removeProperty(Char.Property.LARGE);
+		super.detach();
+	}
+
 	@Override
 	public int icon() {
-		return BuffIndicator.MOMENTUM;
+		return BuffIndicator.ROOTS;
 	}
 	
 	@Override
@@ -53,14 +67,19 @@ public class Shrink extends Buff {
         icon.tint(0.5f, 0, 1, 0.75f);
     }
 
+	@Override
+	public float iconFadePercent() {
+		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
+	}
+
     @Override
     public void fx(boolean on) {
-        if (on) target.sprite.add(CharSprite.State.SHRUNK);
-        else target.sprite.remove(CharSprite.State.SHRUNK);
+        if (on) target.sprite.add(CharSprite.State.ENLARGENED);
+        else target.sprite.remove(CharSprite.State.ENLARGENED);
     }
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc");
+		return Messages.get(this, "desc", dispTurns());
 	}
 }

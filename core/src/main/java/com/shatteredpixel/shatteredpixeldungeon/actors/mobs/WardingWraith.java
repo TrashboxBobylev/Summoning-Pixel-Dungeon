@@ -122,6 +122,7 @@ public class WardingWraith extends Mob implements Callback {
 			
 			int dmg = Random.Int( 13, 18 );
 			if (alignment == Alignment.ALLY) dmg = Random.Int(15, 20);
+            if (buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dmg *= 0.6f;
 			enemy.damage( dmg, new DarkBolt() );
 			
 			if (!enemy.isAlive() && enemy == Dungeon.hero) {

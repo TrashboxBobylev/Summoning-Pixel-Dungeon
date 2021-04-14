@@ -186,6 +186,8 @@ public class Yog extends Mob {
 		immunities.add( Sleep.class );
 		immunities.add( Burning.class );
 		immunities.add( ToxicGas.class );
+		immunities.add( Shrink.class);
+		immunities.add( TimedShrink.class);
 		immunities.add( ScrollOfRetribution.class );
 		immunities.add( ScrollOfPsionicBlast.class );
 		immunities.add( Vertigo.class );

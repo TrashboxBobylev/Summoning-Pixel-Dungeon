@@ -412,12 +412,12 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				GameScene.effect( shield = new ShieldHalo( this ));
 				break;
             case SHRUNK:
-                scale.x = 0.5f;
-                scale.y = 0.5f;
+                scale.x = 0.75f;
+                scale.y = 0.75f;
                 break;
 			case ENLARGENED:
-				scale.x = 1.33f;
-				scale.y = 1.33f;
+				scale.x = 1.5f;
+				scale.y = 1.5f;
 				break;
 		}
 	}

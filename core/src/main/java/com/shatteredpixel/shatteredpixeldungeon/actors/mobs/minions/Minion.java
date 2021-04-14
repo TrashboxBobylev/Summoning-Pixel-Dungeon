@@ -28,10 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.PerfumeGas;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Attunement;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Piranha;
@@ -172,6 +169,7 @@ public abstract class Minion extends Mob {
         int i = Random.NormalIntRange(minDamage, maxDamage);
         if (buff(AdditionalDamage.class) != null) i += minDamage*2;
         if (Dungeon.hero.buff(Attunement.class) != null) i *= Attunement.empowering();
+        if (buff(Chungus.class) != null) i*=1.4f;
         return i;
     }
 
@@ -315,6 +313,7 @@ public abstract class Minion extends Mob {
     @Override
     protected boolean getCloser(int target) {
         if (buff(ArmoredShielding.class) != null) return false;
+
         return super.getCloser(target);
     }
 
@@ -370,6 +369,7 @@ public abstract class Minion extends Mob {
     public String description() {
         String d = super.description();
         float empowering = 1f;
+        if (buff(Chungus.class) != null) empowering *= 1.4f;
         if (Dungeon.hero.buff(Attunement.class) != null) empowering = Attunement.empowering();
         return d + "\n\n" + Messages.get(Minion.class, "stats", Math.round(minDamage*empowering), Math.round(maxDamage*empowering), HP, HT, minDR + baseMinDR, maxDR + baseMaxDR);
     }

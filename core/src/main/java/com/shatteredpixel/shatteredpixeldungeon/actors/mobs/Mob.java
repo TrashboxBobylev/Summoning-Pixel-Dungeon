@@ -606,6 +606,7 @@ public abstract class Mob extends Char {
 	@Override
 	public int defenseSkill( Char enemy ) {
 		float modifier =1f;
+		if (buff(Chungus.class) != null) modifier *= 0.6f;
 
 		boolean seen = (enemySeen && enemy.invisible == 0);
 		if (enemy == Dungeon.hero && !Dungeon.hero.canSurpriseAttack()) seen = true;
@@ -663,6 +664,8 @@ public abstract class Mob extends Char {
 			Dungeon.hero.HP = (int)Math.ceil(Math.min(Dungeon.hero.HT, Dungeon.hero.HP+(restoration*0.4f)));
 			Dungeon.hero.sprite.emitter().burst( Speck.factory(Speck.HEALING), 1 );
 		}
+
+		if (buff(Chungus.class) != null) damage *= 0.6f;
 
 		return damage;
 	}

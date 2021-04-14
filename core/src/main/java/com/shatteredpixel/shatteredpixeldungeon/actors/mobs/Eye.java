@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Shrink;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.TimedShrink;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
@@ -193,7 +194,7 @@ public class Eye extends Mob {
 
 			if (hit( this, ch, true )) {
                 int damage = Random.NormalIntRange( 40, 65 );
-                if (buff(Shrink.class) != null) damage *= 0.75f;
+                if (buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) damage *= 0.6f;
 				ch.damage(damage , new DeathGaze() );
 
 				if (Dungeon.level.heroFOV[pos]) {
