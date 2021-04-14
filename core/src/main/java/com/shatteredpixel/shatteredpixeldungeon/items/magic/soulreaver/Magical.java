@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.ConjurerSpell;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 
@@ -49,10 +50,40 @@ public class Magical extends ConjurerSpell {
         if (ch != null) {
             CellEmitter.center( trajectory.collisionPos ).burst( MagicMissile.WardParticle.UP, Random.IntRange( 8, 15 ) );
             if (ch.alignment == Char.Alignment.ALLY) {
-                Buff.affect(ch, Chungus.class, Chungus.DURATION);
+                Buff.affect(ch, Chungus.class, enlargement());
             } else if (ch.alignment == Char.Alignment.ENEMY) {
-                Buff.affect(ch, TimedShrink.class, 10f);
+                Buff.affect(ch, TimedShrink.class, shrinking());
             }
         }
     }
+
+    private int enlargement(){
+        switch (level()){
+            case 1: return 13;
+            case 2: return 5;
+        }
+        return 5;
+    }
+
+    private int shrinking(){
+        switch (level()){
+            case 1: return 7;
+            case 2: return 15;
+        }
+        return 5;
+    }
+
+    @Override
+    public int manaCost(){
+        switch (level()){
+            case 1: return 30;
+            case 2: return 35;
+        }
+        return 18;
+    }
+
+    public String desc() {
+        return Messages.get(this, "desc", shrinking(), enlargement(), manaCost());
+    }
+
 }
