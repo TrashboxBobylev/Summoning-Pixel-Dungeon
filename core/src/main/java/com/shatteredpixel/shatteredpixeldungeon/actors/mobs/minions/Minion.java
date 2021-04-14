@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Piranha;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Yog;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.stationary.StationaryMinion;
+import com.shatteredpixel.shatteredpixeldungeon.effects.HolyAura;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
@@ -61,6 +62,7 @@ public abstract class Minion extends Mob {
 
     public int minDamage = 0;
     public int maxDamage = 0;
+    private float partialHealing;
 
     protected int minDR = 0;
     protected int maxDR = 0;
@@ -88,6 +90,7 @@ public abstract class Minion extends Mob {
         bundle.put("level", lvl);
         bundle.put("class", minionClass);
         bundle.put("deathtimer", timer);
+        bundle.put("partialhp", partialHealing);
     }
 
     @Override
@@ -104,6 +107,7 @@ public abstract class Minion extends Mob {
         enchantment = (Weapon.Enchantment) bundle.get("enchantment");
         minionClass = bundle.getEnum("class", MinionClass.class);
         timer = bundle.getInt("deathtimer");
+        partialHealing = bundle.getFloat("partialHealing");
     }
 
     public float attunement = 1;
@@ -138,6 +142,17 @@ public abstract class Minion extends Mob {
                 return true;
             }
         }
+
+        if (Dungeon.hero.buff(HolyAuraBuff.class) != null){
+            HolyAuraBuff buff = Dungeon.hero.buff(HolyAuraBuff.class);
+            partialHealing += 1.0f/buff.healingRate;
+            if (partialHealing >= 1) {
+                partialHealing--;
+                HP = Math.min(HP+1, HT);
+                sprite.emitter().burst(Speck.factory(Speck.HEALING), 3);
+            }
+        }
+
         return super.act();
     }
 

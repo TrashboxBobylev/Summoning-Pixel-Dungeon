@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.HolyAuraBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.Wet;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GoatClone;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.PrismaticImage;
@@ -245,13 +246,6 @@ public enum HeroClass {
         hero.maxMana = 20;
         new PotionOfStrength().identify();
         new ScrollOfAttunement().identify();
-		new PotionOfMindVision().collect();
-		new Offense().collect();
-		new Defense().collect();
-		new Magical().collect();
-		new Ranged().collect();
-		new ScrollOfUpgrade().quantity(2).collect();
-		new PotionOfExperience().quantity(12).collect();
 
     }
 

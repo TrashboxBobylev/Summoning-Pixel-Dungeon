@@ -620,6 +620,8 @@ public class Hero extends Char {
 			Buff.affect(this, Barkskin.class).set( lvl + 5, 1 );
 		}
 
+
+
         if (heroClass == HeroClass.CONJURER) {
             if (HP <= HT / 2) {
                 Buff.affect(this, Attunement.class);
