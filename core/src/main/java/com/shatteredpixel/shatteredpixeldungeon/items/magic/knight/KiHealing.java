@@ -77,10 +77,10 @@ public class KiHealing extends AdHocSpell {
         return 3f;
     }
 
-//    @Override
-//    public int manaCost() {
-//        return 25;
-//    }
+    @Override
+    public int manaCost() {
+        return 25;
+    }
 
     public String desc() {
         return Messages.get(this, "desc", intHeal(), new DecimalFormat("#.#").format(paralyse()), manaCost());

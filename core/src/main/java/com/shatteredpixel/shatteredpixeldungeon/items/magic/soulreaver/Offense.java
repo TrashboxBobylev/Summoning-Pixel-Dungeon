@@ -47,6 +47,7 @@ public class Offense extends ConjurerSpell {
 
     {
         image = ItemSpriteSheet.SR_OFFENSE;
+        usesTargeting = true;
     }
 
     @Override

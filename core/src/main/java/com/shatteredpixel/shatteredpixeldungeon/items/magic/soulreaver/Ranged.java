@@ -112,14 +112,14 @@ public class Ranged extends ConjurerSpell {
         return 6;
     }
 
-//    @Override
-//    public int manaCost(){
-//        switch (level()){
-//            case 1: return 25;
-//            case 2: return 50;
-//        }
-//        return 15;
-//    }
+    @Override
+    public int manaCost(){
+        switch (level()){
+            case 1: return 25;
+            case 2: return 50;
+        }
+        return 15;
+    }
 
     public String desc() {
         return Messages.get(this, "desc", distance(), manaCost());

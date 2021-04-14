@@ -52,11 +52,6 @@ public class PotionOfMindVision extends Potion {
 		} else {
 			GLog.i( Messages.get(this, "see_none") );
 		}
-
-		GoatClone pris = new GoatClone();
-		pris.state = pris.WANDERING;
-		GameScene.add(pris, -1);
-		ScrollOfTeleportation.appear(pris, Dungeon.hero.pos+1);
 	}
 	
 	@Override

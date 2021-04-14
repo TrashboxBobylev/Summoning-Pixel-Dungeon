@@ -42,6 +42,7 @@ public class Magical extends ConjurerSpell {
 
     {
         image = ItemSpriteSheet.SR_MAGICAL;
+        usesTargeting = true;
     }
 
     @Override
