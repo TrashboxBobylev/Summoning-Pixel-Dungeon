@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.WindParticle;
@@ -1151,6 +1152,16 @@ public abstract class Level implements Bundlable {
                 for (Mob mob : mobs) {
                     int p = mob.pos;
                     if (distance( c.pos, p) == 2) {
+
+						if (!fieldOfView[p]){
+							Dungeon.hero.mindVisionEnemies.add(mob);
+						}
+					}
+				}
+			} else if (((Hero)c).subClass == HeroSubClass.SOUL_REAVER) {
+				for (Mob mob : mobs) {
+					int p = mob.pos;
+					if (mob instanceof Minion) {
 
 						if (!fieldOfView[p]){
 							Dungeon.hero.mindVisionEnemies.add(mob);

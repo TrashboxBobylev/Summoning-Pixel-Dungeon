@@ -26,16 +26,28 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GoatClone;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MirrorImage;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
+import com.shatteredpixel.shatteredpixeldungeon.items.magic.knight.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.magic.soulreaver.Defense;
+import com.shatteredpixel.shatteredpixeldungeon.items.magic.soulreaver.Magical;
+import com.shatteredpixel.shatteredpixeldungeon.items.magic.soulreaver.Offense;
+import com.shatteredpixel.shatteredpixeldungeon.items.magic.soulreaver.Ranged;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndChooseWay;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -128,6 +140,35 @@ public class TomeOfMastery extends Item {
 		SpellSprite.show( curUser, SpellSprite.MASTERY );
 		curUser.sprite.emitter().burst( Speck.factory( Speck.MASTERY ), 12 );
 		GLog.warning( Messages.get(this, "way", way.title()) );
+		if (curUser.subClass == HeroSubClass.OCCULTIST){
+			ArrayList<Integer> respawnPoints = new ArrayList<>();
+
+			for (int i = 0; i < PathFinder.NEIGHBOURS9.length; i++) {
+				int p = curUser.pos + PathFinder.NEIGHBOURS9[i];
+				if ((Actor.findChar( p ) == null || Actor.findChar( p ) == curUser) && Dungeon.level.passable[p]) {
+					respawnPoints.add( p );
+				}
+			}
+
+			int index = Random.index( respawnPoints );
+
+			GoatClone clone = new GoatClone();
+
+			GameScene.add( clone );
+			ScrollOfTeleportation.appear( clone, respawnPoints.get( index ) );
+
+			new Boom().collect();
+			new Flower().collect();
+			new KiHealing().collect();
+			new Punch().collect();
+			new Shards().collect();
+		}
+		if (curUser.subClass == HeroSubClass.SOUL_REAVER){
+			new Offense().collect();
+			new Defense().collect();
+			new Magical().collect();
+			new Ranged().collect();
+		}
 		
 	}
 }
