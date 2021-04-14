@@ -95,14 +95,14 @@ public class Defense extends ConjurerSpell {
         return 3 + Dungeon.hero.lvl/3;
     }
 
-    @Override
-    public int manaCost(){
-        switch (level()){
-            case 1: return 35;
-            case 2: return 5;
-        }
-        return 30;
-    }
+//    @Override
+//    public int manaCost(){
+//        switch (level()){
+//            case 1: return 35;
+//            case 2: return 5;
+//        }
+//        return 30;
+//    }
 
     public String desc() {
         return Messages.get(this, "desc", defenseEarthValue(), defenseArcaneValue(), manaCost());

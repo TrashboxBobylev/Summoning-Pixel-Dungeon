@@ -53,6 +53,7 @@ public abstract class ConjurerSpell extends Item {
     public static final String AC_ZAP	= "ZAP";
     public static final String AC_DOWNGRADE = "DOWNGRADE";
     public static final String AC_TIERINFO = "TIERINFO";
+    protected static int collision = Ballistica.PROJECTILE;
 
     public int manaCost;
 
@@ -144,6 +145,10 @@ public abstract class ConjurerSpell extends Item {
         }
     }
 
+    public boolean validateCell(int pos){
+        return true;
+    }
+
     @Override
     public String toString() {
 
@@ -177,29 +182,31 @@ public abstract class ConjurerSpell extends Item {
                     return;
                 }
 
-                final Ballistica shot = new Ballistica( curUser.pos, target, Ballistica.PROJECTILE);
+                final Ballistica shot = new Ballistica( curUser.pos, target, collision);
                 int cell = shot.collisionPos;
+                if (curSpell.validateCell(cell)) {
 
-                curUser.sprite.zap(cell);
+                    curUser.sprite.zap(cell);
 
-                //attempts to target the cell aimed at if something is there, otherwise targets the collision pos.
-                if (Actor.findChar(target) != null)
-                    QuickSlotButton.target(Actor.findChar(target));
-                else
-                    QuickSlotButton.target(Actor.findChar(cell));
+                    //attempts to target the cell aimed at if something is there, otherwise targets the collision pos.
+                    if (Actor.findChar(target) != null)
+                        QuickSlotButton.target(Actor.findChar(target));
+                    else
+                        QuickSlotButton.target(Actor.findChar(cell));
 
-                curUser.busy();
+                    curUser.busy();
 
-                curUser.mana -= curSpell.manaCost();
+                    curUser.mana -= curSpell.manaCost();
 
-                curSpell.fx(shot, new Callback() {
-                    public void call() {
-                        curSpell.effect(shot);
-                        Invisibility.dispel();
-                        curSpell.updateQuickslot();
-                        curUser.spendAndNext( 1f );
-                    }
-                });
+                    curSpell.fx(shot, new Callback() {
+                        public void call() {
+                            curSpell.effect(shot);
+                            Invisibility.dispel();
+                            curSpell.updateQuickslot();
+                            curUser.spendAndNext(1f);
+                        }
+                    });
+                }
 
             }
 

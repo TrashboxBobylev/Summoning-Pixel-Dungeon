@@ -49,6 +49,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.magic.knight.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.soulreaver.Defense;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.soulreaver.Magical;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.soulreaver.Offense;
+import com.shatteredpixel.shatteredpixeldungeon.items.magic.soulreaver.Ranged;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
@@ -248,6 +249,7 @@ public enum HeroClass {
 		new Offense().collect();
 		new Defense().collect();
 		new Magical().collect();
+		new Ranged().collect();
 		new ScrollOfUpgrade().quantity(2).collect();
 		new PotionOfExperience().quantity(12).collect();
 
