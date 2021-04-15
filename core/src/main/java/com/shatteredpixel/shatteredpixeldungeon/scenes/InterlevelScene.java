@@ -104,8 +104,7 @@ public class InterlevelScene extends PixelScene {
 					loadingDepth = Dungeon.depth+1;
 					if (!(Statistics.deepestFloor < loadingDepth)) {
 						fadeTime = FAST_FADE;
-					} else if (loadingDepth == 6 || loadingDepth == 11
-							|| loadingDepth == 16 || loadingDepth == 20) {
+					} else if ((loadingDepth - 1) % Dungeon.chapterSize() == 0) {
 						fadeTime = SLOW_FADE;
 					}
 				}

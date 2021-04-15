@@ -36,12 +36,12 @@ import java.util.ArrayList;
 public abstract class ConnectionRoom extends Room {
 	
 	@Override
-	public int minWidth() { return 5; }
-	public int maxWidth() { return 15; }
+	public int minWidth() { return 3; }
+	public int maxWidth() { return 10; }
 	
 	@Override
-	public int minHeight() { return 5; }
-	public int maxHeight() { return 15; }
+	public int minHeight() { return 3; }
+	public int maxHeight() { return 10; }
 	
 	@Override
 	public int minConnections(int direction) {
@@ -70,7 +70,7 @@ public abstract class ConnectionRoom extends Room {
 	
 	private static float[][] chances = new float[31][];
 	static void setChances() {
-		for (int i = 1; i <= Dungeon.chapterSize(); i++){
+		for (int i = 0; i <= Dungeon.chapterSize(); i++){
 			chances[i] = new float[]{20, 1, 0, 2, 2, 1};
 		}
 		for (int i = Dungeon.chapterSize()+1; i <= Dungeon.chapterSize()*2; i++){

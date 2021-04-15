@@ -40,13 +40,13 @@ public abstract class StandardRoom extends Room {
 	
 	public enum SizeCategory {
 		
-		NORMAL(2, 6,
+		NORMAL(3, 10,
 				4, 10,
 				7, 15, 1),
-		LARGE(7, 10,
+		LARGE(10, 10,
 				10, 14,
 				14, 20, 2),
-		GIANT(10, 14,
+		GIANT(14, 14,
 				14, 18,
 				19, 30, 3);
 		
@@ -178,7 +178,7 @@ public abstract class StandardRoom extends Room {
 	
 	private static float[][] chances = new float[31][];
 	static void setChances() {
-		for (int i = 1; i <= Dungeon.chapterSize(); i++){
+		for (int i = 0; i <= Dungeon.chapterSize(); i++){
 			chances[i] = new float[]{15, 10, 10, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0};
 		}
 		for (int i = Dungeon.chapterSize()+1; i <= Dungeon.chapterSize()*2; i++){

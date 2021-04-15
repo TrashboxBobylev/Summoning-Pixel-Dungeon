@@ -56,6 +56,98 @@ public class Bestiary {
 	
 	//returns a rotation of standard mobs, unshuffled.
 	private static ArrayList<Class<? extends Mob>> standardMobRotation( int depth ){
+
+		if (SPDSettings.smalldungeon()){
+			switch(depth){
+
+				// Sewers
+				case 1: default:
+					return new ArrayList<>(Arrays.asList(
+							Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class));
+				case 2:
+					return new ArrayList<>(Arrays.asList(Rat.class, Rat.class,
+							Gnoll.class, Gnoll.class, Crab.class, Dog.class, Swarm.class));
+				case 3: case 4:
+					//1x rat, 3x gnoll, 2x crab, 1x swarm, 1x dogs
+					return new ArrayList<>(Arrays.asList(Rat.class,
+							Gnoll.class, Gnoll.class, Gnoll.class, Crab.class,
+							Crab.class, Swarm.class, Dog.class));
+
+				// Prison
+				case 5:
+					return new ArrayList<>(Arrays.asList(Skeleton.class, Skeleton.class, Skeleton.class,
+							Thief.class,
+							Swarm.class));
+				case 6:
+					return new ArrayList<>(Arrays.asList(Skeleton.class, Skeleton.class, Skeleton.class,
+							Thief.class,
+							DM100.class,
+							Guard.class));
+				case 7: case 8:
+					return new ArrayList<>(Arrays.asList(Skeleton.class,
+							Thief.class,
+							DM100.class, DM100.class,
+							Guard.class, Guard.class,
+							Necromancer.class, Necromancer.class));
+
+				// Caves
+				case 9:
+					return new ArrayList<>(Arrays.asList(
+							Bat.class, Bat.class, Bat.class, Bat.class, Bat.class,
+							Shaman.random()));
+				case 10:
+					//2x bat, 2x brute, 1x shaman, 1x spinner
+					return new ArrayList<>(Arrays.asList(
+							Bat.class, Snake.class,
+							Brute.class, Brute.class,
+							Shaman.random(),
+							Spinner.class));
+				case 11: case 12:
+					//1x bat, 1x brute, 2x shaman, 2x spinner, 2x DM-300
+					return new ArrayList<>(Arrays.asList(
+							Bat.class,
+							Brute.class,
+							Shaman.random(), ExplodingTNT.class,
+							Spinner.class,
+							DM200.class, Snake.class));
+
+				// City
+				case 13:
+					//2x ghoul, 2x elemental, 1x warlock
+					return new ArrayList<>(Arrays.asList(
+							Ghoul.class, Ghoul.class,
+							Elemental.random(), Elemental.random(),
+							Warlock.class));
+				case 14:
+					//1x ghoul, 2x elemental, 1x warlock, 1x monk
+					return new ArrayList<>(Arrays.asList(
+							Ghoul.class,
+							Elemental.random(), Elemental.random(),
+							Warlock.class,
+							Monk.class));
+				case 15: case 16:
+					//1x elemental, 1x warlock, 2x monk, 3x golem
+					return new ArrayList<>(Arrays.asList(
+							Elemental.random(),
+							Warlock.class,
+							Monk.class,
+							Golem.class, DwarfGuardMob.class));
+
+				// Halls
+				case 17:
+					//2x succubus, 2x evil eye, 2x slime
+					return new ArrayList<>(Arrays.asList(
+							Succubus.class, Succubus.class, Slime.class,
+							Eye.class, Eye.class, Slime.class));
+				case 18: case 19:
+					//2x evil eye, 3x scorpio, 1x slime
+					return new ArrayList<>(Arrays.asList(
+							Slime.class,
+							Eye.class, Eye.class,
+							Scorpio.class, Scorpio.class, Scorpio.class, HellBat.class, HellBat.class));
+			}
+		}
+
 		if (SPDSettings.bigdungeon()){
 			switch(depth){
 
