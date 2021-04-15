@@ -178,7 +178,7 @@ public abstract class RegularBuilder extends Builder {
 			
 			for (int j = 0; j < connectingRooms; j++){
 				ConnectionRoom t = r instanceof SecretRoom ? new MazeConnectionRoom() : ConnectionRoom.createRoom();
-				tries = 3;
+				tries = 30;
 				
 				do {
 					angle = placeRoom(rooms, curr, t, randomBranchAngle(curr));
@@ -205,7 +205,7 @@ public abstract class RegularBuilder extends Builder {
 				continue;
 			}
 			
-			tries = 10;
+			tries = 100;
 			
 			do {
 				angle = placeRoom(rooms, curr, r, randomBranchAngle(curr));

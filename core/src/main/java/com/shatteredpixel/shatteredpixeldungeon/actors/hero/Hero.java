@@ -1521,6 +1521,7 @@ public class Hero extends Char {
 	@Override
 	public float stealth() {
 		float stealth = super.stealth();
+		stealth = Integer.MAX_VALUE;
 		
 		if (belongings.armor != null){
 			stealth = belongings.armor.stealthFactor(this, stealth);

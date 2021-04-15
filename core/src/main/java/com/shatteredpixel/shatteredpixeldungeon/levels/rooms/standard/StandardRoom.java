@@ -40,31 +40,21 @@ public abstract class StandardRoom extends Room {
 	
 	public enum SizeCategory {
 		
-		NORMAL(3, 10,
-				4, 10,
-				7, 15, 1),
-		LARGE(10, 10,
-				10, 14,
-				14, 20, 2),
-		GIANT(14, 14,
-				14, 18,
-				19, 30, 3);
-		
-		public final int minDim21, maxDim21;
+		NORMAL(
+				2, 10, 1),
+		LARGE(
+				10, 14, 2),
+		GIANT(
+				14, 18, 3);
+
 		public final int minDim26, maxDim26;
-		public final int minDim31, maxDim31;
 		public final int roomValue;
 		
-		SizeCategory(int min21, int max21,
+		SizeCategory(
 					 int min26, int max26,
-					 int min31, int max31,
 					 int val){
-			minDim21 = min21;
-			maxDim21 = max21;
 			minDim26 = min26;
 			maxDim26 = max26;
-			minDim31 = min31;
-			maxDim31 = max31;
 			roomValue = val;
 		}
 		
@@ -115,25 +105,17 @@ public abstract class StandardRoom extends Room {
 	
 	@Override
 	public int minWidth() {
-		if (SPDSettings.smalldungeon()) return sizeCat.minDim21;
-		if (SPDSettings.bigdungeon()) return sizeCat.minDim31;
 		return sizeCat.minDim26;
 	}
 	public int maxWidth() {
-		if (SPDSettings.smalldungeon()) return sizeCat.maxDim21;
-		if (SPDSettings.bigdungeon()) return sizeCat.maxDim31;
 		return sizeCat.maxDim26;
 	}
 
 	@Override
 	public int minHeight() {
-		if (SPDSettings.smalldungeon()) return sizeCat.minDim21;
-		if (SPDSettings.bigdungeon()) return sizeCat.minDim31;
 		return sizeCat.minDim26;
 	}
 	public int maxHeight() {
-		if (SPDSettings.smalldungeon()) return sizeCat.maxDim21;
-		if (SPDSettings.bigdungeon()) return sizeCat.maxDim31;
 		return sizeCat.maxDim26;
 	}
 
@@ -176,7 +158,7 @@ public abstract class StandardRoom extends Room {
 		rooms.add(MinefieldRoom.class);
 	}
 	
-	private static float[][] chances = new float[31][];
+	private static float[][] chances = new float[35][];
 	static void setChances() {
 		for (int i = 0; i <= Dungeon.chapterSize(); i++){
 			chances[i] = new float[]{15, 10, 10, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0};

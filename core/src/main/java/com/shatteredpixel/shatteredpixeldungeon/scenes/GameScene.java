@@ -327,23 +327,16 @@ public class GameScene extends PixelScene {
 			ScrollOfTeleportation.appear(  Dungeon.hero, Dungeon.hero.pos );
 			break;
 		case DESCEND:
-			switch (Dungeon.depth) {
-			case 1:
+			if (Dungeon.depth == 1)
 				WndStory.showChapter( WndStory.ID_SEWERS );
-				break;
-			case 6:
+			else if (Dungeon.depth == Dungeon.chapterSize()+1)
 				WndStory.showChapter( WndStory.ID_PRISON );
-				break;
-			case 11:
+			else if (Dungeon.depth == Dungeon.chapterSize()*2+1)
 				WndStory.showChapter( WndStory.ID_CAVES );
-				break;
-			case 16:
+			else if (Dungeon.depth == Dungeon.chapterSize()*3+1)
 				WndStory.showChapter( WndStory.ID_CITY );
-				break;
-			case 20:
+			else if (Dungeon.depth == Dungeon.chapterSize()*4+1)
 				WndStory.showChapter( WndStory.ID_HALLS );
-				break;
-			}
 			if (Dungeon.hero.isAlive()) {
 				Badges.validateNoKilling();
 			}

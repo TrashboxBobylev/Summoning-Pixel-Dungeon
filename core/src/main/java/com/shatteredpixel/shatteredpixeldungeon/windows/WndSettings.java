@@ -535,7 +535,11 @@ public class WndSettings extends WndTabbed {
 					}
 				}
 			};
-			chkNews.setSelectedValue(1);
+			if (SPDSettings.smalldungeon())
+				chkNews.setSelectedValue(0);
+			else if (SPDSettings.bigdungeon())
+				chkNews.setSelectedValue(2);
+			else chkNews.setSelectedValue(1);
 			add(chkNews);
 			txtDescription = PixelScene.renderTextBlock(6);
 			txtDescription.text(Messages.get(this, "bigdungeon"));
