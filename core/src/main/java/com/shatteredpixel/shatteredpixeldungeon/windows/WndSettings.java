@@ -504,7 +504,7 @@ public class WndSettings extends WndTabbed {
 
 		RenderedTextBlock title;
 		ColorBlock sep1;
-		CheckBox chkNews;
+		OptionSlider chkNews;
 		RenderedTextBlock txtDescription;
 
 		@Override
@@ -516,15 +516,26 @@ public class WndSettings extends WndTabbed {
 			sep1 = new ColorBlock(1, 1, 0xFF000000);
 			add(sep1);
 
-			chkNews = new CheckBox(Messages.get(this, "news")){
+			chkNews = new OptionSlider("",
+					Messages.get(this, "smaller"),
+					Messages.get(this, "bigger"),
+					0,
+					2 ) {
 				@Override
-				protected void onClick() {
-					super.onClick();
-					SPDSettings.bigdungeon(checked());
-					News.clearArticles();
+				protected void onChange() {
+					if (getSelectedValue() == 0) {
+						SPDSettings.bigdungeon(false);
+						SPDSettings.smalldungeon(true);
+					} else if (getSelectedValue() == 1){
+						SPDSettings.bigdungeon(false);
+						SPDSettings.smalldungeon(false);
+					} else {
+						SPDSettings.bigdungeon(true);
+						SPDSettings.smalldungeon(false);
+					}
 				}
 			};
-			chkNews.checked(SPDSettings.bigdungeon());
+			chkNews.setSelectedValue(1);
 			add(chkNews);
 			txtDescription = PixelScene.renderTextBlock(6);
 			txtDescription.text(Messages.get(this, "bigdungeon"));

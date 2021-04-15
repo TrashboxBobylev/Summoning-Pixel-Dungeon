@@ -58,6 +58,7 @@ public class SPDSettings extends GameSettings {
 	public static final String KEY_BRIGHTNESS	= "brightness";
 	public static final String KEY_GRID 	    = "visual_grid";
 	public static final String KEY_BIGGER       = "big_dungeon";
+	public static final String KEY_SMALLER      = "small_dungeon";
 	
 	public static void fullscreen( boolean value ) {
 		put( KEY_FULLSCREEN, value );
@@ -120,6 +121,14 @@ public class SPDSettings extends GameSettings {
 
 	public static boolean bigdungeon() {
 		return getBoolean( KEY_BIGGER, false );
+	}
+
+	public static void smalldungeon( boolean value ) {
+		put( KEY_SMALLER, value );
+	}
+
+	public static boolean smalldungeon() {
+		return getBoolean( KEY_SMALLER, false );
 	}
 	
 	public static int brightness() {
