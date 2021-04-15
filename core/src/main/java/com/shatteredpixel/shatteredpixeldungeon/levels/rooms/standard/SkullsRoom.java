@@ -36,12 +36,12 @@ public class SkullsRoom extends StandardRoom {
 
 	@Override
 	public int minWidth() {
-		return Math.max(10, super.minWidth());
+		return Math.max(7, super.minWidth());
 	}
 
 	@Override
 	public int minHeight() {
-		return Math.max(10, super.minHeight());
+		return Math.max(7, super.minHeight());
 	}
 
 	@Override

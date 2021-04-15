@@ -33,12 +33,12 @@ public class PillarsRoom extends StandardRoom {
 	
 	@Override
 	public int minWidth() {
-		return Math.max(super.minWidth(), 10);
+		return Math.max(super.minWidth(), 7);
 	}
 	
 	@Override
 	public int minHeight() {
-		return Math.max(super.minHeight(), 10);
+		return Math.max(super.minHeight(), 7);
 	}
 	
 	@Override

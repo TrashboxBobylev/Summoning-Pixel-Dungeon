@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Ripple;
 import com.shatteredpixel.shatteredpixeldungeon.items.DewVial;
@@ -53,6 +54,7 @@ public class SewerLevel extends RegularLevel {
 	
 	@Override
 	protected int standardRooms(boolean forceMax) {
+		if (SPDSettings.smalldungeon()) return 5;
 		if (forceMax) return 18;
 		//9 to 13
 		return 9+Random.chances(new float[]{4, 3, 2, 1});
@@ -60,6 +62,7 @@ public class SewerLevel extends RegularLevel {
 	
 	@Override
 	protected int specialRooms(boolean forceMax) {
+		if (SPDSettings.smalldungeon()) return 1;
 		if (forceMax) return 3;
 		//1 to 3, average 1.8
 		return 1+Random.chances(new float[]{4, 4, 2});

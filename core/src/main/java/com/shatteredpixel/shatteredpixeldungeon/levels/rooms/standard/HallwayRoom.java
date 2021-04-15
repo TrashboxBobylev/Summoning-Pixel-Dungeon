@@ -37,12 +37,12 @@ public class HallwayRoom extends StandardRoom {
 
 	@Override
 	public int minWidth() {
-		return Math.max(8, super.minWidth());
+		return Math.max(5, super.minWidth());
 	}
 
 	@Override
 	public int minHeight() {
-		return Math.max(8, super.minHeight());
+		return Math.max(5, super.minHeight());
 	}
 
 	//FIXME lots of copy-pasta from tunnel rooms here

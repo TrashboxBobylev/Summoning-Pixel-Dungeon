@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.HallsPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -70,6 +71,7 @@ public class HallsLevel extends RegularLevel {
 
 	@Override
 	protected int standardRooms(boolean forceMax) {
+		if (SPDSettings.smalldungeon()) return 8;
 		if (forceMax) return 36;
 		//18 to 26
 		return 18+Random.chances(new float[]{3, 2, 1, 1, 1, 1});
@@ -77,6 +79,7 @@ public class HallsLevel extends RegularLevel {
 	
 	@Override
 	protected int specialRooms(boolean forceMax) {
+		if (SPDSettings.smalldungeon()) return 2;
 		if (forceMax) return 3;
 		//2 to 3, average 2.5
 		return 2 + Random.chances(new float[]{1, 1});

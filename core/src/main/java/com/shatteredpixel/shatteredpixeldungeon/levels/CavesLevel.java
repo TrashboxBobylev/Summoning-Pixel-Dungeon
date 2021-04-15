@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.CavesPainter;
@@ -58,6 +59,7 @@ public class CavesLevel extends RegularLevel {
 	
 	@Override
 	protected int standardRooms(boolean forceMax) {
+		if (SPDSettings.smalldungeon()) return 7;
 		if (forceMax) return 26;
 		//13 to 18
 		return 13+Random.chances(new float[]{2, 3, 3, 1, 1, 1});
@@ -65,6 +67,7 @@ public class CavesLevel extends RegularLevel {
 	
 	@Override
 	protected int specialRooms(boolean forceMax) {
+		if (SPDSettings.smalldungeon()) return 1;
 		if (forceMax) return 3;
 		//1 to 3, average 2.2
 		return 1+Random.chances(new float[]{2, 4, 4});

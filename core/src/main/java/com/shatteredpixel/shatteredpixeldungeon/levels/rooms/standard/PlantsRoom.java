@@ -37,12 +37,12 @@ public class PlantsRoom extends StandardRoom {
 	
 	@Override
 	public int minWidth() {
-		return Math.max(super.minWidth(), 8);
+		return Math.max(super.minWidth(), 5);
 	}
 	
 	@Override
 	public int minHeight() {
-		return Math.max(super.minHeight(), 8);
+		return Math.max(super.minHeight(), 5);
 	}
 	
 	@Override

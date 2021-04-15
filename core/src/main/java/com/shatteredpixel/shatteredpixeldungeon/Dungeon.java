@@ -227,7 +227,7 @@ public class Dungeon {
 			}
 		}
 
-		if (depth == 6 || depth == 12 || depth == 18 || depth == 24) depth++;
+		if (depth == 4 || depth == 8 || depth == 12 || depth == 16) depth++;
 		
 		Level level;
 		if (SPDSettings.bigdungeon()){
@@ -289,7 +289,57 @@ public class Dungeon {
 					level = new DeadEndLevel();
 					Statistics.deepestFloor--;
 			}
-		} else {
+		} else if (SPDSettings.smalldungeon()){
+			switch (depth) {
+				case 1:
+				case 2:
+				case 3:
+					level = new SewerLevel();
+					break;
+				case 4:
+					level = new SewerBossLevel();
+					break;
+				case 5:
+				case 6:
+				case 7:
+					level = new PrisonLevel();
+					break;
+				case 8:
+					level = new NewPrisonBossLevel();
+					break;
+				case 9:
+				case 10:
+				case 11:
+					level = new CavesLevel();
+					break;
+				case 12:
+					level = new NewCavesBossLevel();
+					break;
+				case 13:
+				case 14:
+				case 15:
+					level = new CityLevel();
+					break;
+				case 16:
+					level = new NewCityBossLevel();
+					break;
+				case 17:
+				case 18:
+				case 19:
+					level = new HallsLevel();
+					break;
+				case 20:
+					level = new NewHallsBossLevel();
+					break;
+				case 21:
+					level = new LastLevel();
+					break;
+				default:
+					level = new DeadEndLevel();
+					Statistics.deepestFloor--;
+			}
+		}
+		else {
 			switch (depth) {
 				case 1:
 				case 2:
@@ -379,6 +429,8 @@ public class Dungeon {
 	public static boolean shopOnLevel() {
 		if (SPDSettings.bigdungeon()){
 			return depth == 5 || depth == 10 || depth == 15 || depth == 20;
+		} else if (SPDSettings.smalldungeon()){
+			return depth == 5 || depth == 9 || depth == 13;
 		}
 		return depth == 6 || depth == 11 || depth == 16;
 	}
@@ -388,14 +440,18 @@ public class Dungeon {
 	}
 
 	public static int chapterSize(){
+		if (SPDSettings.smalldungeon()) return 4;
 		return SPDSettings.bigdungeon() ? 6 : 5;
 	}
 	
 	public static boolean bossLevel( int depth ) {
-		if (SPDSettings.bigdungeon())
+		if (!SPDSettings.bigdungeon())
 		return depth == 5 || depth == 10 || depth == 15 || depth == 20 || depth == 25;
-		else
-			return depth == 6 || depth == 12 || depth == 18 || depth == 24 || depth == 30;
+
+		if (SPDSettings.smalldungeon())
+			return depth == 4 || depth == 8 || depth == 12 || depth == 16 || depth == 20;
+
+		return depth == 6 || depth == 12 || depth == 18 || depth == 24 || depth == 30;
 	}
 
 	public static void switchLevel( final Level level, int pos ) {
@@ -459,14 +515,14 @@ public class Dungeon {
 
 	public static boolean posNeeded() {
 		//2 POS each floor set
-		int posLeftThisSet = 2 - (LimitedDrops.STRENGTH_POTIONS.count - (depth / 5) * 2);
+		int posLeftThisSet = 2 - (LimitedDrops.STRENGTH_POTIONS.count - (depth / Dungeon.chapterSize()) * 2);
 		if (posLeftThisSet <= 0) return false;
 
 		int floorThisSet = (depth % 5);
 
 		//pos drops every two floors, (numbers 1-2, and 3-4) with a 50% chance for the earlier one each time.
-		int targetPOSLeft = 2 - floorThisSet/2;
-		if (floorThisSet % 2 == 1 && Random.Int(2) == 0) targetPOSLeft --;
+		int targetPOSLeft = Dungeon.chapterSize() / 2 - floorThisSet/2;
+		if (floorThisSet % (Dungeon.chapterSize() / 2) == 1 && Random.Int(2) == 0) targetPOSLeft --;
 
 		if (targetPOSLeft < posLeftThisSet) return true;
 		else return false;
@@ -478,25 +534,25 @@ public class Dungeon {
 		int amount = SPDSettings.bigdungeon() ? 4 : 3;
 		//3 SOU each floor set, 1.5 (rounded) on forbidden runes challenge
 		if (isChallenged(Challenges.NO_SCROLLS)){
-			souLeftThisSet = Math.round(amount / 2 - (LimitedDrops.UPGRADE_SCROLLS.count - (depth / 5) * (amount / 2)));
+			souLeftThisSet = Math.round(amount / 2 - (LimitedDrops.UPGRADE_SCROLLS.count - (depth / Dungeon.chapterSize()) * (amount / 2)));
 		} else {
-			souLeftThisSet = amount - (LimitedDrops.UPGRADE_SCROLLS.count - (depth / 5) * amount);
+			souLeftThisSet = amount - (LimitedDrops.UPGRADE_SCROLLS.count - (depth / Dungeon.chapterSize()) * amount);
 		}
 		if (souLeftThisSet <= 0) return false;
 
-		int floorThisSet = (depth % 5);
+		int floorThisSet = (depth % Dungeon.chapterSize());
 		//chance is floors left / scrolls left
 		return Random.Int(5 - floorThisSet) < souLeftThisSet;
 	}
 	
 	public static boolean asNeeded() {
 		//1 AS each floor set
-		int asLeftThisSet = 1 - (LimitedDrops.ARCANE_STYLI.count - (depth / 5));
+		int asLeftThisSet = 1 - (LimitedDrops.ARCANE_STYLI.count - (depth / Dungeon.chapterSize()));
 		if (asLeftThisSet <= 0) return false;
 
-		int floorThisSet = (depth % 5);
+		int floorThisSet = (depth % Dungeon.chapterSize());
 		//chance is floors left / scrolls left
-		return Random.Int(5 - floorThisSet) < asLeftThisSet;
+		return Random.Int(Dungeon.chapterSize() - floorThisSet) < asLeftThisSet;
 	}
 	
 	private static final String VERSION		= "version";
@@ -674,7 +730,7 @@ public class Dungeon {
 
 		droppedItems = new SparseArray<>();
 		portedItems = new SparseArray<>();
-		for (int i=1; i <= 26; i++) {
+		for (int i=1; i <= Dungeon.chapterSize()*5+1; i++) {
 			
 			//dropped items
 			ArrayList<Item> items = new ArrayList<>();

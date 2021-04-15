@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -58,6 +59,7 @@ public class PrisonLevel extends RegularLevel {
 	
 	@Override
 	protected int standardRooms(boolean forceMax) {
+		if (SPDSettings.smalldungeon()) return 6;
 		if (forceMax) return 22;
 		//11 to 13
 		return 11+Random.chances(new float[]{4, 3, 2, 1});
@@ -65,6 +67,7 @@ public class PrisonLevel extends RegularLevel {
 	
 	@Override
 	protected int specialRooms(boolean forceMax) {
+		if (SPDSettings.smalldungeon()) return 1;
 		if (forceMax) return 3;
 		//1 to 3, average 2.0
 		return 1+Random.chances(new float[]{3, 4, 3});

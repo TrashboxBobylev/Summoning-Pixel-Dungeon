@@ -37,12 +37,12 @@ public class ExitRoom extends StandardRoom {
 	
 	@Override
 	public int minWidth() {
-		return Math.max(super.minWidth(), 9);
+		return Math.max(super.minWidth(), 5);
 	}
 	
 	@Override
 	public int minHeight() {
-		return Math.max(super.minHeight(), 9);
+		return Math.max(super.minHeight(), 5);
 	}
 	
 	public void paint(Level level) {

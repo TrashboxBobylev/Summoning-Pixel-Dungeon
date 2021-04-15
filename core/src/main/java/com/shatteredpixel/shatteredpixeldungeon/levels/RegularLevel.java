@@ -167,6 +167,10 @@ public abstract class RegularLevel extends Level {
 	protected int nTraps() {
 		if (SPDSettings.bigdungeon())
 			return Random.NormalIntRange( 7, 11 + (Dungeon.depth) );
+
+		if (SPDSettings.smalldungeon())
+			return Random.NormalIntRange( 2, 3 + (Dungeon.depth/5) );
+
 		return Random.NormalIntRange( 4, 5 + (Dungeon.depth/3) );
 	}
 	
@@ -186,13 +190,15 @@ public abstract class RegularLevel extends Level {
 		if (feeling == Feeling.LARGE){
 			mobs = (int)Math.ceil(mobs * 2f);
 		}
+		if (SPDSettings.smalldungeon()) mobs -= Random.Int(2, 4);
+
 		return mobs;
 	}
 	
 	@Override
 	protected void createMobs() {
 		//on floor 1, 8 pre-set mobs are created so the player can get level 2.
-		int mobsToSpawn = Dungeon.depth == 1 ? 12 : nMobs();
+		int mobsToSpawn = Dungeon.depth == 1 ? 10 : nMobs();
 
 		ArrayList<Room> stdRooms = new ArrayList<>();
 		for (Room room : rooms) {
