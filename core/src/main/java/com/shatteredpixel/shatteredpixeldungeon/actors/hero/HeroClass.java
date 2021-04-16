@@ -249,8 +249,6 @@ public enum HeroClass {
         new PotionOfStrength().identify();
         new ScrollOfAttunement().identify();
 
-        new ScrollOfMagicMapping().quantity(20).collect();
-
     }
 
 	public String title() {

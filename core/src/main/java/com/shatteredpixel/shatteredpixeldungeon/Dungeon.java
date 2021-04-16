@@ -226,8 +226,6 @@ public class Dungeon {
 				Statistics.completedWithNoKilling = false;
 			}
 		}
-
-		if (depth == 4 || depth == 8 || depth == 12 || depth == 16) depth++;
 		
 		Level level;
 		if (SPDSettings.bigdungeon()){
