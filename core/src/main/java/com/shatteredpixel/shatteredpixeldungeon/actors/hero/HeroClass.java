@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GoatClone;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.PrismaticImage;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.Ropes;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
@@ -124,6 +125,7 @@ public enum HeroClass {
 		hero.attunement = 0;
 
 		new ScrollOfIdentify().identify();
+		new Ropes().quantity(5).collect();
 
 	}
 

@@ -24,9 +24,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Ropes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.watabou.utils.Random;
 
 public class EmptyRoom extends StandardRoom {
 	
@@ -37,6 +41,11 @@ public class EmptyRoom extends StandardRoom {
 		
 		for (Door door : connected.values()) {
 			door.set( Door.Type.REGULAR );
+		}
+
+		if (Random.Int(10) == 0) {
+			int cell = level.pointToCell(random());
+			level.drop( new Ropes().quantity(Random.Int(1, 2)), cell ).type = Heap.Type.HEAP;
 		}
 	}
 }

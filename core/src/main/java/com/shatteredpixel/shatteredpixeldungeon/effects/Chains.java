@@ -81,6 +81,34 @@ public class Chains extends Group {
 		}
 	}
 
+	public Chains(PointF from, PointF to, Callback callback, Image image){
+		super();
+
+		this.callback = callback;
+
+		this.from = from;
+		this.to = to;
+
+		float dx = to.x - from.x;
+		float dy = to.y - from.y;
+		distance = (float)Math.hypot(dx, dy);
+
+
+		duration = distance/300f + 0.1f;
+
+		rotation = (float)(Math.atan2( dy, dx ) * A) + 90f;
+
+		numChains = Math.round(distance/6f)+1;
+
+		chains = new Image[numChains];
+		for (int i = 0; i < chains.length; i++){
+			chains[i] = new Image(image);
+			chains[i].angle = rotation;
+			chains[i].origin.set( chains[i].width()/ 2, chains[i].height() );
+			add(chains[i]);
+		}
+	}
+
 	@Override
 	public void update() {
 		if ((spent += Game.elapsed) > duration) {
