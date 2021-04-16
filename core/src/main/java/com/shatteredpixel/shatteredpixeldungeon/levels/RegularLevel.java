@@ -190,7 +190,7 @@ public abstract class RegularLevel extends Level {
 		if (feeling == Feeling.LARGE){
 			mobs = (int)Math.ceil(mobs * 2f);
 		}
-		if (SPDSettings.smalldungeon()) mobs -= Random.Int(2, 4);
+		if (SPDSettings.smalldungeon()) mobs /= 2;
 
 		return mobs;
 	}
