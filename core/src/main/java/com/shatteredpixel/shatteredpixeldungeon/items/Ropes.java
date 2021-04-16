@@ -81,13 +81,13 @@ public class Ropes extends Item {
             if (target != null && (Dungeon.level.visited[target] || Dungeon.level.mapped[target])){
 
                 //chains cannot be used to go where it is impossible to walk to
-                PathFinder.buildDistanceMap(target, BArray.or(Dungeon.level.passable, Dungeon.level.losBlocking, null));
+                PathFinder.buildDistanceMap(target, BArray.or(Dungeon.level.passable, Dungeon.level.avoid, null));
                 if (PathFinder.distance[curUser.pos] == Integer.MAX_VALUE){
                     GLog.warning( Messages.get(EtherealChains.class, "cant_reach") );
                     return;
                 }
 
-                final Ballistica chain = new Ballistica(curUser.pos, target, Ballistica.STOP_TARGET);
+                final Ballistica chain = new Ballistica(curUser.pos, target, Ballistica.PROJECTILE);
 
                 if (Actor.findChar( chain.collisionPos ) != null){
                     chainEnemy( chain, curUser, Actor.findChar( chain.collisionPos ));
