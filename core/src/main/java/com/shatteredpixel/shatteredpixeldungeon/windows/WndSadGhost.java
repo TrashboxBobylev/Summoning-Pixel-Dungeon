@@ -83,7 +83,7 @@ public class WndSadGhost extends Window {
 		};
 		btnWeapon.setRect( 0, message.top() + message.height() + GAP, WIDTH, BTN_HEIGHT );
 		add( btnWeapon );
-        RedButton btnStaff = new RedButton( Ghost.Quest.staff.name() + " +" + Ghost.Quest.staff.level() ) {
+        RedButton btnStaff = new RedButton( Ghost.Quest.staff.toString() ) {
             @Override
             protected void onClick() {
                 selectReward( ghost, Ghost.Quest.staff );
