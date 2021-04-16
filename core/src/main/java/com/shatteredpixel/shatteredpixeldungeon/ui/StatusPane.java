@@ -183,11 +183,12 @@ public class StatusPane extends Component {
 		hpText.y -= 0.001f; //prefer to be slightly higher
 		PixelScene.align(hpText);
 
-		mp.x = hp.width() + 16;
-		mp.y = 4;
+		mp.x = 3;
+		mp.y = avatar.y + 27;
+		PixelScene.align(mp);
 
 		mpText.scale.set(PixelScene.align(0.5f));
-		mpText.x = mp.x + 10;
+		mpText.x = mp.x + 4;
 		mpText.y = mp.y + 4 + (mp.height - (mpText.baseLine()+mpText.scale.y))/2f;
 		mpText.y -= 0.001f; //prefer to be slightly higher
 		PixelScene.align(mpText);
