@@ -249,4 +249,8 @@ public class Ropes extends Item {
         }, Effects.get(Effects.Type.ROPE)));
     }
 
+    @Override
+    public int value() {
+        return 2 * quantity;
+    }
 }

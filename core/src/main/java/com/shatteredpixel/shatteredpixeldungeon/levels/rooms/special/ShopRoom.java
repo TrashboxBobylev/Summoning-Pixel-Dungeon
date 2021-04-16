@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
@@ -157,37 +158,37 @@ public class ShopRoom extends SpecialRoom {
 	protected static ArrayList<Item> generateItems() {
 
 		ArrayList<Item> itemsToSpawn = new ArrayList<>();
+		Item i;
         Item[] powers = {new WarriorPower(), new RoguePower(), new MagePower(), new RangePower(), new ConjurerPower()};
-		switch (Dungeon.depth) {
-		case 5: case 6:
-            Item i;
-            do {
-                i = Generator.random(Generator.Category.WAND);
-                if (i instanceof DamageWand) break;
-            } while (i.cursed);
-            i.upgrade(1).identify();
+		if ((SPDSettings.bigdungeon() && Dungeon.depth == 5) || Dungeon.depth == Dungeon.chapterSize() + 1) {
+
+			do {
+				i = Generator.random(Generator.Category.WAND);
+				if (i instanceof DamageWand) break;
+			} while (i.cursed);
+			i.upgrade(1).identify();
 			itemsToSpawn.add(i);
-			break;
-			
-		case 10: case 11:
+		}
+
+		if ((SPDSettings.bigdungeon() && Dungeon.depth == 10) || Dungeon.depth == Dungeon.chapterSize()*2 + 1) {
 			itemsToSpawn.add(new PotionOfExperience());
 			itemsToSpawn.add(new ScrollOfDivination());
 			i = Generator.random(Generator.Category.RING);
 			i.cursed = false;
-            i.upgrade(1).identify();
-            itemsToSpawn.add(i);
+			i.upgrade(1).identify();
+			itemsToSpawn.add(i);
 
-            itemsToSpawn.add(Random.element(powers));
-			break;
-			
-		case 15: case 16:
+			itemsToSpawn.add(Random.element(powers));
+		}
+
+		if ((SPDSettings.bigdungeon() && Dungeon.depth == 15) || Dungeon.depth == Dungeon.chapterSize()*3 + 1) {
 			itemsToSpawn.add(new StoneOfEnchantment());
 			itemsToSpawn.add(Generator.random(Generator.Category.EXOTIC_POTION));
 			itemsToSpawn.add(Generator.random(Generator.Category.EXOTIC_SCROLL));
-            itemsToSpawn.add(new CleanWater());
-			break;
-			
-		case 24: case 20:
+			itemsToSpawn.add(new CleanWater());
+		}
+
+		if ((SPDSettings.bigdungeon() && Dungeon.depth == 20) || Dungeon.depth == Dungeon.chapterSize()*4 + 1) {
 		    itemsToSpawn.add(new ScrollOfEnchantment());
 			itemsToSpawn.add( new BeaconOfReturning().quantity(2));
             itemsToSpawn.add(Generator.random(Generator.Category.EXOTIC_POTION));
@@ -205,10 +206,10 @@ public class ShopRoom extends SpecialRoom {
             itemsToSpawn.add(new CleanWater());
 
             itemsToSpawn.add(Random.element(powers));
-			break;
 		}
 
 		if (Random.Float() < 0.6) itemsToSpawn.add(ChooseShopWeapon());
+		itemsToSpawn.add( new Torch() );
 
 		itemsToSpawn.add(new CleanWater());
 
@@ -218,7 +219,9 @@ public class ShopRoom extends SpecialRoom {
 
 		itemsToSpawn.add( new ElixirOfAttunement());
 
-        for (int i=0; i < 2; i++) itemsToSpawn.add(Generator.random(Generator.Category.STONE));
+		itemsToSpawn.add (new Ropes().quantity(Random.Int(10, 25)));
+
+        for (int k =0; k < 2; k++) itemsToSpawn.add(Generator.random(Generator.Category.STONE));
 
 //		itemsToSpawn.add(ChooseArmor(Dungeon.hero.belongings.armor));
 //        itemsToSpawn.add(ChooseWeapon((Weapon) Dungeon.hero.belongings.weapon));
@@ -235,7 +238,7 @@ public class ShopRoom extends SpecialRoom {
 		itemsToSpawn.add(ChooseBag(Dungeon.hero.belongings));
 
 		itemsToSpawn.add( new PotionOfHealing() );
-		for (int i=0; i < 3; i++)
+		for (int k=0; k < 3; k++)
 			itemsToSpawn.add( Generator.random( Generator.Category.POTION ) );
 
 		itemsToSpawn.add( new ScrollOfIdentify() );
@@ -244,7 +247,7 @@ public class ShopRoom extends SpecialRoom {
 		itemsToSpawn.add( new ScrollOfMagicMapping() );
 		itemsToSpawn.add( Generator.random( Generator.Category.SCROLL ) );
 
-		for (int i=0; i < 7; i++)
+		for (int k=0; k < 7; k++)
 			itemsToSpawn.add( Random.Int(2) == 0 ?
 					Generator.randomUsingDefaults( Generator.Category.POTION ) :
 					Generator.randomUsingDefaults( Generator.Category.SCROLL ) );
@@ -277,17 +280,17 @@ public class ShopRoom extends SpecialRoom {
 			//creates the given float percent of the remaining bags to be dropped.
 			//this way players who get the hourglass late can still max it, usually.
 			switch (Dungeon.depth) {
-				case 6: case 5:
+				case 6: case 5: case 4:
 					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.20f ); break;
-				case 11: case 10:
+				case 11: case 10: case 9:
 					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.25f ); break;
-				case 16: case 15:
+				case 16: case 15: case 13:
 					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.50f ); break;
-				case 20: case 24:
+				case 20: case 24: case 17:
 					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.80f ); break;
 			}
 
-			for(int i = 1; i <= bags; i++){
+			for(int k = 1; k <= bags; k++){
 				itemsToSpawn.add( new TimekeepersHourglass.sandBag());
 				hourglass.sandBags ++;
 			}

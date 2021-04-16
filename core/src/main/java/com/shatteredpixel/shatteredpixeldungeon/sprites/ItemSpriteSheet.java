@@ -90,11 +90,10 @@ public class ItemSpriteSheet {
 	public static final int PETAL           = UNCOLLECTIBLE+2;
 	public static final int SANDBAG         = UNCOLLECTIBLE+3;
 	public static final int SPIRIT_ARROW    = UNCOLLECTIBLE+4;
-	public static final int ROPES           = UNCOLLECTIBLE+5;
 
 	public static final int GUIDE_PAGE      = UNCOLLECTIBLE+6;
 	public static final int ALCH_PAGE       = UNCOLLECTIBLE+7;
-	public static final int RUNIC_SHOT = UNCOLLECTIBLE+8;
+	public static final int RUNIC_SHOT = 		UNCOLLECTIBLE+8;
     public static final int TENGU_BOMB      = UNCOLLECTIBLE+9;
     public static final int TENGU_SHOCKER   = UNCOLLECTIBLE+10;
     public static final int SPIRIT_BLAST = UNCOLLECTIBLE+12;
@@ -105,7 +104,7 @@ public class ItemSpriteSheet {
         assignItemRect(PETAL,       8,  8);
         assignItemRect(SANDBAG,     10, 10);
         assignItemRect(SPIRIT_ARROW,11, 11);
-        assignItemRect(ROPES, 16, 16);
+
 
         assignItemRect(GUIDE_PAGE,  10, 11);
         assignItemRect(ALCH_PAGE,   10, 11);
@@ -140,6 +139,7 @@ public class ItemSpriteSheet {
 	private static final int SINGLE_USE     =                               xy(1, 4);   //16 slots
 	public static final int ANKH            = SINGLE_USE+0;
 	public static final int STYLUS          = SINGLE_USE+1;
+	public static final int ROPES          = SINGLE_USE+2;
 	
 	public static final int SEAL            = SINGLE_USE+3;
 	public static final int TORCH           = SINGLE_USE+4;
@@ -157,6 +157,7 @@ public class ItemSpriteSheet {
 	static{
 		assignItemRect(ANKH,            10, 16);
 		assignItemRect(STYLUS,          12, 13);
+		assignItemRect(ROPES, 16, 16);
 		
 		assignItemRect(SEAL,            9,  15);
 		assignItemRect(TORCH,           12, 15);
