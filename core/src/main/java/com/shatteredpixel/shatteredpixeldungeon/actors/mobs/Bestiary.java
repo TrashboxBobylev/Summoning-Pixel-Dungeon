@@ -65,86 +65,89 @@ public class Bestiary {
 					return new ArrayList<>(Arrays.asList(
 							Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class));
 				case 2:
-					return new ArrayList<>(Arrays.asList(Rat.class, Rat.class,
-							Gnoll.class, Gnoll.class, Crab.class, Dog.class, Swarm.class));
+					//4x rat, 3x gnoll, 1x crab, 1x dog, 1x swarm
+					return new ArrayList<>(Arrays.asList(Rat.class, Rat.class, Rat.class, Rat.class,
+							Gnoll.class, Gnoll.class, Gnoll.class, Crab.class, Dog.class, Swarm.class));
 				case 3: case 4:
-					//1x rat, 3x gnoll, 2x crab, 1x swarm, 1x dogs
+					//1x rat, 5x gnoll, 2x crab, 3x swarm, 1x dog
 					return new ArrayList<>(Arrays.asList(Rat.class,
-							Gnoll.class, Gnoll.class, Gnoll.class, Crab.class,
+							Gnoll.class, Gnoll.class, Gnoll.class, Crab.class, Gnoll.class, Gnoll.class, Swarm.class, Swarm.class,
 							Crab.class, Swarm.class, Dog.class));
 
 				// Prison
 				case 5:
-					return new ArrayList<>(Arrays.asList(Skeleton.class, Skeleton.class, Skeleton.class,
-							Thief.class,
-							Swarm.class));
+					//2x skeleton, 2x thief, 3x swarm
+					return new ArrayList<>(Arrays.asList(Skeleton.class, Skeleton.class,
+							Thief.class, Thief.class,
+							Swarm.class, Swarm.class, Swarm.class));
 				case 6:
-					return new ArrayList<>(Arrays.asList(Skeleton.class, Skeleton.class, Skeleton.class,
-							Thief.class,
-							DM100.class,
+					//1x skeleton, 3x thief, 2x robot, 1x guard
+					return new ArrayList<>(Arrays.asList(Skeleton.class,
+							Thief.class, Thief.class, Thief.class,
+							DM100.class, DM100.class,
 							Guard.class));
 				case 7: case 8:
-					return new ArrayList<>(Arrays.asList(Skeleton.class,
-							Thief.class,
-							DM100.class, DM100.class,
+					//4x thief, 4x robot, 2x guard, 1x necro
+					return new ArrayList<>(Arrays.asList(
+							Thief.class, Thief.class, Thief.class, Thief.class,
+							DM100.class, DM100.class, DM100.class, DM100.class,
 							Guard.class, Guard.class,
-							Necromancer.class, Necromancer.class));
+							Necromancer.class));
 
 				// Caves
 				case 9:
+					//7x bat, 1x shaman
 					return new ArrayList<>(Arrays.asList(
-							Bat.class, Bat.class, Bat.class, Bat.class, Bat.class,
+							Bat.class, Bat.class, Bat.class, Bat.class, Bat.class, Bat.class, Bat.class, Bat.class,
 							Shaman.random()));
 				case 10:
-					//2x bat, 2x brute, 1x shaman, 1x spinner
+					//4x bat, 2x brute, 1x shaman, 1x snake
 					return new ArrayList<>(Arrays.asList(
-							Bat.class, Snake.class,
+							Bat.class, Bat.class, Bat.class, Bat.class, Snake.class,
 							Brute.class, Brute.class,
-							Shaman.random(),
-							Spinner.class));
+							Shaman.random()));
 				case 11: case 12:
-					//1x bat, 1x brute, 2x shaman, 2x spinner, 2x DM-300
+					//6x bat, 3x brute, 2x dm-200, 1x spinner, 1x shaman, 1x tnt, 1x spinner
 					return new ArrayList<>(Arrays.asList(
-							Bat.class,
-							Brute.class,
+							Bat.class, Bat.class, Bat.class, Bat.class, Bat.class, Bat.class, Bat.class,
+							Brute.class, Brute.class, Brute.class, DM200.class, DM200.class,
 							Shaman.random(), ExplodingTNT.class,
 							Spinner.class,
-							DM200.class, Snake.class));
+							DM200.class));
 
 				// City
 				case 13:
-					//2x ghoul, 2x elemental, 1x warlock
+					//5x ghoul, 2x elemental, 1x warlock
 					return new ArrayList<>(Arrays.asList(
-							Ghoul.class, Ghoul.class,
+							Ghoul.class, Ghoul.class, Ghoul.class, Ghoul.class, Ghoul.class,
 							Elemental.random(), Elemental.random(),
 							Warlock.class));
 				case 14:
-					//1x ghoul, 2x elemental, 1x warlock, 1x monk
+					//5x ghoul, 2x elemental, 1x warlock, 1x monk
 					return new ArrayList<>(Arrays.asList(
-							Ghoul.class,
+							Ghoul.class, Ghoul.class, Ghoul.class, Ghoul.class, Ghoul.class,
 							Elemental.random(), Elemental.random(),
 							Warlock.class,
 							Monk.class));
 				case 15: case 16:
-					//1x elemental, 1x warlock, 2x monk, 3x golem
+					//4x elemental, 1x monk, 1x golem, 1x guard
 					return new ArrayList<>(Arrays.asList(
-							Elemental.random(),
-							Warlock.class,
+							Elemental.random(), Elemental.random(), Elemental.random(), Elemental.random(),
 							Monk.class,
 							Golem.class, DwarfGuardMob.class));
 
 				// Halls
 				case 17:
-					//2x succubus, 2x evil eye, 2x slime
+					//2x succubus, 2x evil eye, 4x slime
 					return new ArrayList<>(Arrays.asList(
-							Succubus.class, Succubus.class, Slime.class,
+							Succubus.class, Succubus.class, Slime.class, Slime.class, Slime.class, Slime.class,
 							Eye.class, Eye.class, Slime.class));
 				case 18: case 19:
-					//2x evil eye, 3x scorpio, 1x slime
+					//4x succubus, 1x evil eye, 1x scorpio, 3x slime, 1x hell bat
 					return new ArrayList<>(Arrays.asList(
-							Slime.class,
-							Eye.class, Eye.class,
-							Scorpio.class, Scorpio.class, Scorpio.class, HellBat.class, HellBat.class));
+							Slime.class, Slime.class, Slime.class, Succubus.class, Succubus.class, Succubus.class, Succubus.class,
+							Eye.class,
+							Scorpio.class,  HellBat.class));
 			}
 		}
 
