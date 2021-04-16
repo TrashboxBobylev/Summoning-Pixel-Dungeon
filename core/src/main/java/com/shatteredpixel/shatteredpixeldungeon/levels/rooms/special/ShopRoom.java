@@ -219,7 +219,7 @@ public class ShopRoom extends SpecialRoom {
 
 		itemsToSpawn.add( new ElixirOfAttunement());
 
-		itemsToSpawn.add (new Ropes().quantity(Random.Int(10, 25)));
+		itemsToSpawn.add (new Ropes().quantity(Random.Int(3, 10)));
 
         for (int k =0; k < 2; k++) itemsToSpawn.add(Generator.random(Generator.Category.STONE));
 

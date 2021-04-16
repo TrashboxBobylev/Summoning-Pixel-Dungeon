@@ -42,10 +42,5 @@ public class EmptyRoom extends StandardRoom {
 		for (Door door : connected.values()) {
 			door.set( Door.Type.REGULAR );
 		}
-
-		if (Random.Int(10) == 0) {
-			int cell = level.pointToCell(random());
-			level.drop( new Ropes().quantity(Random.Int(1, 2)), cell ).type = Heap.Type.HEAP;
-		}
 	}
 }

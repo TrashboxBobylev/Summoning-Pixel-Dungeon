@@ -245,12 +245,13 @@ public class Ropes extends Item {
         hero.sprite.parent.add(new Chains(hero.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(chain.collisionPos), new Callback() {
             public void call() {
                 Dungeon.level.pressCell(chain.collisionPos);
+                hero.spendAndNext(1f);
             }
         }, Effects.get(Effects.Type.ROPE)));
     }
 
     @Override
     public int value() {
-        return 2 * quantity;
+        return 6 * quantity;
     }
 }
