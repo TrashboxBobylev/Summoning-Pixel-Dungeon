@@ -324,6 +324,7 @@ public abstract class RegularLevel extends Level {
 			nItems += 6;
 		}
 		if (SPDSettings.bigdungeon()) nItems *= 2;
+		if (SPDSettings.smalldungeon()) nItems -= 5;
 
 		for (int i=0; i < nItems; i++) {
 
