@@ -58,16 +58,16 @@ public class Support extends AdHocSpell {
 
     private int shieldingRate(){
         switch (level()){
-            case 1: return 2;
-            case 2: return 30;
+            case 1: return 1;
+            case 2: return 0;
         }
         return 4;
     }
 
     private int healingRate(){
         switch (level()){
-            case 1: return 2;
-            case 2: return 25;
+            case 1: return 1;
+            case 2: return 20;
         }
         return 5;
     }
@@ -77,7 +77,7 @@ public class Support extends AdHocSpell {
             case 1: return 50;
             case 2: return 3;
         }
-        return 20;
+        return 10;
     }
 
     private int maxDamage(){
@@ -90,8 +90,8 @@ public class Support extends AdHocSpell {
 
     private int manaSteal(){
         switch (level()){
-            case 1: return 3;
-            case 2: return 30;
+            case 1: return 2;
+            case 2: return 15;
         }
         return 5;
     }
@@ -99,29 +99,29 @@ public class Support extends AdHocSpell {
     private int duration(){
         switch (level()){
             case 1: return 20;
-            case 2: return 1000;
+            case 2: return 500;
         }
-        return 50;
+        return 60;
     }
 
     private int cooldown(){
         switch (level()){
-            case 1: return 400;
-            case 2: return Integer.MAX_VALUE;
+            case 1: return 500;
+            case 2: return 1000;
         }
-        return 250;
+        return 300;
     }
 
 //    @Override
 //    public int manaCost(){
 //        switch (level()){
-//            case 1: return 60;
-//            case 2: return 0;
+//            case 1: return 90;
+//            case 2: return 30;
 //        }
-//        return 90;
+//        return 75;
 //    }
 
     public String desc() {
-        return Messages.get(this, "desc", shieldingRate(), healingRate(), manaCost());
+        return Messages.get(this, "desc", shieldingRate(), healingRate(), duration(), manaCost());
     }
 }

@@ -80,6 +80,7 @@ public class HolyAuraBuff extends DummyBuff {
     private static final String MAX_D	= "maxDamage";
     private static final String CD  	= "cool_down";
     private static final String MANA	= "manaSteal";
+    private static final String DUR 	= "duration";
 
     @Override
     public void storeInBundle(Bundle bundle) {

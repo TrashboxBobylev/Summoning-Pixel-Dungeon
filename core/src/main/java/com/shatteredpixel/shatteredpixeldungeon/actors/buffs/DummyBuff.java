@@ -24,7 +24,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.watabou.utils.Bundle;
 
 public abstract class DummyBuff extends FlavourBuff {
     {
@@ -32,7 +34,21 @@ public abstract class DummyBuff extends FlavourBuff {
         announced = true;
     }
 
-    public static final float DURATION = 30f;
+    public int duration;
+
+    private static final String DURATION = "duration";
+
+    @Override
+    public void storeInBundle(Bundle bundle) {
+        super.storeInBundle(bundle);
+        bundle.put(DURATION, duration);
+    }
+
+    @Override
+    public void restoreFromBundle(Bundle bundle) {
+        super.restoreFromBundle(bundle);
+        duration = bundle.getInt(DURATION);
+    }
 
     @Override
     public String toString() {
@@ -40,7 +56,18 @@ public abstract class DummyBuff extends FlavourBuff {
     }
 
     @Override
+    public float iconFadePercent() {
+        return Math.max(0, (duration - visualcooldown()) / duration);
+    }
+
+    @Override
     public String desc() {
         return Messages.get(this, "desc", dispTurns());
+    }
+
+    @Override
+    protected void spend(float time) {
+        super.spend(time);
+        duration = (int) cooldown();
     }
 }
