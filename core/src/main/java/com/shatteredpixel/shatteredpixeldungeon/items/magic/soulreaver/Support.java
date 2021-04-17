@@ -112,14 +112,14 @@ public class Support extends AdHocSpell {
         return 300;
     }
 
-//    @Override
-//    public int manaCost(){
-//        switch (level()){
-//            case 1: return 90;
-//            case 2: return 30;
-//        }
-//        return 75;
-//    }
+    @Override
+    public int manaCost(){
+        switch (level()){
+            case 1: return 90;
+            case 2: return 30;
+        }
+        return 75;
+    }
 
     public String desc() {
         return Messages.get(this, "desc", shieldingRate(), healingRate(), duration(), manaCost());
