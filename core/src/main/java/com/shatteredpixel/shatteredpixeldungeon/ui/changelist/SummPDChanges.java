@@ -186,16 +186,6 @@ public class SummPDChanges {
         changes.hardlight(Window.TITLE_COLOR);
         changeInfos.add(changes);
 
-        changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-                "_-_ Fixed rare crash on Sad Ghost.\n" +
-                        "_-_ Fixed options screen having empty choices.\n" +
-                        "_-_ Fixed overfilling HP with Saturation buff.\n" +
-                        "_-_ Fixed crash related to Soul Reaver's powers.\n" +
-                        "_-_ Fixed crash with stationary minion interactions.\n" +
-                        "_-_ Staffs no longer recharge, if respective minion is present.\n" +
-                        "_-_ Soul Sparking effect is visible in descriptions.\n"+
-                        "_-_ No more stray attunement usage!"));
-
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.FROGGIT_STAFF, null), "Staves rework",
                 "_-_ Introducing ranking system! Use SoUs on your weapons to change their stats and abilities. Not all of them are direct upgrades, so beware (you can downgrade staff if you don't like its current rank!).\n\n" +
                         "_-_ Base state of most staves is buffed to be viable at regular stages.\n\n" +
@@ -204,23 +194,48 @@ public class SummPDChanges {
 
         changes.addButton( new ChangeButton(new Image(Assets.Sprites.CONJURER, 0, 90, 12, 15), "Conjurer",
                 "The rework for goat boy:\n\n" +
-                        "_-_ Love Holder is removed, its abilities will be partially restored during beta.\n\n" +
+                        "_-_ Love Holder is removed.\n\n" +
                         "_-_ Added Conjurer's Book as holder for new items.\n\n" +
                         "_-_ Introducing conjurer's mana spells! They can be obtained by leveling up. At start you have 3 base spells.\n\n" +
-                        "_-_ Spells also have rankings with different use cases!\n" +
-                        "_(This beta implements only five spells at the moment.)_\n\n" +
+                        "_-_ Spells also have rankings with different use cases!\n\n" +
+                        "_-_ Subclasses have been completely reworked to have exclusive set of spells, suited for various playstyles.\n\n" +
                         "_-_ As results of big buff, Conjurer's HP is reduced to 10 (+2), and his deltarune robe now works like cloth all time."));
 
         changes.addButton(new ChangeButton(Icons.get(Icons.SHPX), "Shattered PD Port",
                         "_-_ Ported QoL changes and bugfixes from Shattered PD 0.9.1 and 0.9.2.\n\n" +
                         "Talents are gonna be introduced in 1.1.7 as exclusive for Rogue."));
 
-        changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_HALLS, 0, 64, 16, 16 ), "Enlargement",
-                "To make game longer and more challenging, the dungeon is significantly expanded.\n\n" +
-                        "_-_ The levels are approximately increased by 2x-3x." +
-                        "_-_ The amount of items and monsters are increased as well.\n\n" +
-                        "_-_ Also ported worldgen from 0.9.1, with some adjustments to work with bigger stages.\n\n" +
-                        "_-_ Added \"Large Enlargement\" mode, which increases size and scale of dungeon even more!"));
+        changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_HALLS, 0, 64, 16, 16 ), "Dynamic Dungeon Size",
+                "To make game suit for every kind of player, the dungeon was renovated to have 3 different sizes!\n\n" +
+                        "_-_ You can choose between 21 floors, 26 floors and 31 floors.\n\n" +
+                        "_-_ 21 floors is for shorter runs, with minimal amount of rooms and clumped generation.\n\n" +
+                        "_-_ 26 floors is normal mode, the levels have been increased in size compared to previous releases.\n\n" +
+                        "_-_ 31 floors is for long steady runs, with 20 scrolls of upgrade, exclusive mob rotation and increased amount of everything."));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_OMNI, null), "Soul of Yendor",
+                "_-_ Added the artifact, that is 8 other artifacts at once.\n\n" +
+                        "_-_ This item combines properties of Horn of Plenty, Alchemical Toolkit, Ethereal Chains, Chalice of Blood, Sandals of Nature, Master Thieves\' Armband, Timekeeper\'s Hourglass and Unstable Spellbook.\n\n" +
+                        "_-_ To make it, use cursed wand in some way to combine all artifacts together."
+        ));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ROPES, null), "Morshu's wares",
+                "_-_ Added ropes, that can be used as consumable version of chains, with ability to pick up items and activate traps.\n" +
+                        "_-_ You get 5 ropes at start, and additional ropes can be found in dungeon or bought in shops."
+        ));
+
+        changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+                "_-_ Fixed rare crash on Sad Ghost.\n" +
+                        "_-_ Fixed options screen having empty choices.\n" +
+                        "_-_ Fixed overfilling HP with Saturation buff.\n" +
+                        "_-_ Fixed crash related to Soul Reaver's powers.\n" +
+                        "_-_ Fixed crash with stationary minion interactions.\n" +
+                        "_-_ Staffs no longer recharge, if respective minion is present.\n" +
+                        "_-_ Soul Sparking effect is visible in descriptions.\n"+
+                        "_-_ No more stray attunement usage!\n" +
+                        "_-_ Added wet debuff, that does same thing as being in water. Inflicted by Storm Clouds and Aqua Blast.\n" +
+                        "_-_ Added ergonomic inventory setting, that moves slots to bottom of screen.\n" +
+                        "_-_ Added new attacks for Yog, buffed his summon attack to include more monsters."));
+
 
 
     }
