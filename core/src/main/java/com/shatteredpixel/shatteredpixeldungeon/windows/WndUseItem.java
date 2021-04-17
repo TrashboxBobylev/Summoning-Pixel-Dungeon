@@ -64,7 +64,7 @@ public class WndUseItem extends WndInfoItem {
 				buttons.add(btn);
 				add( btn );
 
-				if (action.equals(item.defaultAction)) {
+				if (action.equals(item.getDefaultAction())) {
 					btn.textColor( TITLE_COLOR );
 				}
 				

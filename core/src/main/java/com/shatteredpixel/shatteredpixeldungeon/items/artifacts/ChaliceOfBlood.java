@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RegenerationBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -169,7 +170,7 @@ public class ChaliceOfBlood extends Artifact {
 		return desc;
 	}
 
-	public class chaliceRegen extends ArtifactBuff {
+	public class chaliceRegen extends ArtifactBuff implements RegenerationBuff {
 		//see Regeneration.class for effect
 	}
 

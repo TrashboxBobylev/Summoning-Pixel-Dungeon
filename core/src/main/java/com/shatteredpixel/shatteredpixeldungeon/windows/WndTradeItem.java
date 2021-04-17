@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 
@@ -119,13 +120,15 @@ public class WndTradeItem extends WndInfoItem {
 
 		pos = btnBuy.bottom();
 
-		final MasterThievesArmband.Thievery thievery = Dungeon.hero.buff(MasterThievesArmband.Thievery.class);
+		MasterThievesArmband.ThieveryBuff thievery = Dungeon.hero.buff(MasterThievesArmband.Thievery.class);
+		if (thievery == null) thievery = Dungeon.hero.buff(SoulOfYendor.omniBuff.class);
 		if (thievery != null && !thievery.isCursed()) {
 			final float chance = thievery.stealChance(price);
+			MasterThievesArmband.ThieveryBuff finalThievery = thievery;
 			RedButton btnSteal = new RedButton(Messages.get(this, "steal", Math.min(100, (int) (chance * 100)))) {
 				@Override
 				protected void onClick() {
-					if (thievery.steal(price)) {
+					if (finalThievery.steal(price)) {
 						Hero hero = Dungeon.hero;
 						Item item = heap.pickUp();
 						hide();

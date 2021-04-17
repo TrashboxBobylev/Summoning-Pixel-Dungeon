@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -68,7 +69,8 @@ public class Gold extends Item {
 		Statistics.goldCollected += quantity;
 		Badges.validateGoldCollected();
 
-		MasterThievesArmband.Thievery thievery = hero.buff(MasterThievesArmband.Thievery.class);
+		MasterThievesArmband.ThieveryBuff thievery = hero.buff(MasterThievesArmband.Thievery.class);
+		if (thievery == null) thievery = hero.buff(SoulOfYendor.omniBuff.class);
 		if (thievery != null)
 			thievery.collect(quantity);
 

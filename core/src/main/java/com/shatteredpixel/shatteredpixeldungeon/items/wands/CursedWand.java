@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.*;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
@@ -278,11 +279,10 @@ public class CursedWand {
 					for (int i = 1; i < Dungeon.depth; i++) depths[i-1] = i;
 					int depth = 1+Random.chances(depths);
 
-					Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
-					if (buff != null) buff.detach();
-					
-					buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
-					if (buff != null) buff.detach();
+					TimekeepersHourglass.TimeFreezing timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.timeFreeze.class );
+					if (timeFreeze == null) Dungeon.hero.buff( SoulOfYendor.timeFreeze.class );
+					if (timeFreeze == null) Dungeon.hero.buff( Swiftthistle.TimeBubble.class );
+					if (timeFreeze != null) timeFreeze.detach();
 
 					InterlevelScene.mode = InterlevelScene.Mode.RETURN;
 					InterlevelScene.returnDepth = depth;
@@ -408,6 +408,10 @@ public class CursedWand {
 				Dungeon.level.drop(result, user.pos).sprite.drop();
 				return true;
 		}
+	}
+
+	private static void createOmniArtifact(final Ballistica bolt){
+
 	}
 
 	private static void cursedFX(final Char user, final Ballistica bolt, final Callback callback){

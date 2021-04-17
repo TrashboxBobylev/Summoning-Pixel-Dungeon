@@ -72,7 +72,15 @@ public class MasterThievesArmband extends Artifact {
 		return desc;
 	}
 
-	public class Thievery extends ArtifactBuff{
+	public interface ThieveryBuff{
+		public void collect(int gold);
+		public boolean steal(int value);
+		public float stealChance(int value);
+
+		public boolean isCursed();
+	}
+
+	public class Thievery extends ArtifactBuff implements ThieveryBuff{
 		public void collect(int gold){
 			if (!cursed) {
 				charge += gold/2 * RingOfEnergy.artifactChargeMultiplier(target);

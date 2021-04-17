@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ChaliceOfBlood;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 
 public class Regeneration extends Buff {
@@ -54,7 +55,8 @@ public class Regeneration extends Buff {
 				}
 			}
 
-			ChaliceOfBlood.chaliceRegen regenBuff = Dungeon.hero.buff( ChaliceOfBlood.chaliceRegen.class);
+			RegenerationBuff regenBuff = Dungeon.hero.buff( ChaliceOfBlood.chaliceRegen.class);
+			if (regenBuff == null) regenBuff = Dungeon.hero.buff( SoulOfYendor.omniBuff.class);
 
 			float delay = REGENERATION_DELAY;
 			if (regenBuff != null) {

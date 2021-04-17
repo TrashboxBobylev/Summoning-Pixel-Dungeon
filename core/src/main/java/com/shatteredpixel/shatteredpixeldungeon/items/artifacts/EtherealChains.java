@@ -107,7 +107,7 @@ public class EtherealChains extends Artifact {
 		}
 	}
 
-	private CellSelector.Listener caster = new CellSelector.Listener(){
+	public CellSelector.Listener caster = new CellSelector.Listener(){
 
 		@Override
 		public void onSelect(Integer target) {

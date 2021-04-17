@@ -70,11 +70,6 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 public class WndBag extends WndTabbed {
 	
 	//only one wnditem can appear at a time
@@ -496,7 +491,7 @@ public class WndBag extends WndTabbed {
 						mode == Mode.UNIDENTIFED && !item.isIdentified() ||
 						mode == Mode.UNCURSABLE && ScrollOfRemoveCurse.uncursable(item) ||
 						mode == Mode.CURSABLE && ((item instanceof EquipableItem && !(item instanceof MissileWeapon)) || item instanceof Wand) ||
-						mode == Mode.QUICKSLOT && (item.defaultAction != null) ||
+						mode == Mode.QUICKSLOT && (item.getDefaultAction() != null) ||
 						mode == Mode.WEAPON && (item instanceof MeleeWeapon) ||
 						mode == Mode.ARMOR && (item instanceof Armor) ||
                         mode == Mode.ARMOR_FOR_IMBUE && (item instanceof Armor && !(item instanceof ConjurerArmor)) ||
@@ -550,7 +545,7 @@ public class WndBag extends WndTabbed {
 		
 		@Override
 		protected boolean onLongClick() {
-			if (listener == null && item.defaultAction != null) {
+			if (listener == null && item.getDefaultAction() != null) {
 				hide();
 				Dungeon.quickslot.setSlot( 0 , item );
 				QuickSlotButton.refresh();

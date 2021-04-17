@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.FeatherFall;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
@@ -83,10 +84,10 @@ public class Chasm implements Hero.Doom {
 				
 		Sample.INSTANCE.play( Assets.Sounds.FALLING );
 
-		Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
-		if (buff != null) buff.detach();
-		buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
-		if (buff != null) buff.detach();
+		TimekeepersHourglass.TimeFreezing timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.timeFreeze.class );
+		if (timeFreeze == null) Dungeon.hero.buff( SoulOfYendor.timeFreeze.class );
+		if (timeFreeze == null) Dungeon.hero.buff( Swiftthistle.TimeBubble.class );
+		if (timeFreeze != null) timeFreeze.detach();
 		
 		if (Dungeon.hero.isAlive()) {
 			Dungeon.hero.interrupt();

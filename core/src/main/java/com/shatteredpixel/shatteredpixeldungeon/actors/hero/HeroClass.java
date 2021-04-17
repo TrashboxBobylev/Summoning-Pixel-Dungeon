@@ -42,6 +42,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LoveHolder;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.SupplyBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Webbomb;
@@ -247,6 +249,8 @@ public enum HeroClass {
         new ScrollOfAttunement().identify();
         new Support().collect();
         new ScrollOfUpgrade().quantity(2).collect();
+        new SoulOfYendor().identify().collect();
+        new TimekeepersHourglass().identify().collect();
 
     }
 

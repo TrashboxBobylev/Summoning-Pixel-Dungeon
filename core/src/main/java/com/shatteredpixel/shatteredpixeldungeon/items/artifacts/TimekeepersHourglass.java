@@ -212,6 +212,8 @@ public class TimekeepersHourglass extends Artifact {
 		}
 	}
 
+
+
 	public class hourglassRecharge extends ArtifactBuff {
 		@Override
 		public boolean act() {
@@ -299,7 +301,15 @@ public class TimekeepersHourglass extends Artifact {
 		}
 	}
 
-	public class timeFreeze extends ArtifactBuff {
+	public interface TimeFreezing{
+		public void detach();
+
+		public void processTime(float time);
+
+		public void setDelayedPress(int cell);
+	}
+
+	public class timeFreeze extends ArtifactBuff implements TimeFreezing {
 		
 		{
 			type = buffType.POSITIVE;

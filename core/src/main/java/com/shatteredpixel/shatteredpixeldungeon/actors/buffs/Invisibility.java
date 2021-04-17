@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
@@ -108,7 +109,9 @@ public class Invisibility extends FlavourBuff {
         }
 		
 		//these aren't forms of invisibilty, but do dispel at the same time as it.
-		TimekeepersHourglass.timeFreeze timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.timeFreeze.class );
+		TimekeepersHourglass.TimeFreezing timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.timeFreeze.class );
+		if (timeFreeze == null) Dungeon.hero.buff( SoulOfYendor.timeFreeze.class );
+		if (timeFreeze == null) Dungeon.hero.buff( Swiftthistle.TimeBubble.class );
 		if (timeFreeze != null) {
 			timeFreeze.detach();
 		}
@@ -116,11 +119,6 @@ public class Invisibility extends FlavourBuff {
 		Preparation prep = Dungeon.hero.buff( Preparation.class );
 		if (prep != null){
 			prep.detach();
-		}
-		
-		Swiftthistle.TimeBubble bubble =  Dungeon.hero.buff( Swiftthistle.TimeBubble.class );
-		if (bubble != null){
-			bubble.detach();
 		}
 	}
 }

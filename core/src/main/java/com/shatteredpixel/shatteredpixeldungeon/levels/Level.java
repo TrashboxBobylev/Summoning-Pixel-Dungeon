@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.WindParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
@@ -1024,22 +1025,12 @@ public abstract class Level implements Bundlable {
 		}
 
 		if (trap != null) {
-			
-			TimekeepersHourglass.timeFreeze timeFreeze =
-					Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
-			
-			Swiftthistle.TimeBubble bubble =
-					Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
-			
-			if (bubble != null){
-				
-				Sample.INSTANCE.play(Assets.Sounds.TRAP);
 
-				discover(cell);
-
-				bubble.setDelayedPress(cell);
-
-			} else if (timeFreeze != null){
+			TimekeepersHourglass.TimeFreezing timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.timeFreeze.class );
+			if (timeFreeze == null) Dungeon.hero.buff( SoulOfYendor.timeFreeze.class );
+			if (timeFreeze == null) Dungeon.hero.buff( Swiftthistle.TimeBubble.class );
+			
+			if (timeFreeze != null){
 
 				Sample.INSTANCE.play(Assets.Sounds.TRAP);
 				

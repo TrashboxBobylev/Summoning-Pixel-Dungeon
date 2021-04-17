@@ -510,15 +510,11 @@ public class Hero extends Char {
 	@Override
 	public void spend( float time ) {
 		justMoved = false;
-		TimekeepersHourglass.timeFreeze freeze = buff(TimekeepersHourglass.timeFreeze.class);
+		TimekeepersHourglass.TimeFreezing freeze = Dungeon.hero.buff( TimekeepersHourglass.timeFreeze.class );
+		if (freeze == null) freeze = Dungeon.hero.buff( SoulOfYendor.timeFreeze.class );
+		if (freeze == null) freeze = Dungeon.hero.buff( Swiftthistle.TimeBubble.class );
 		if (freeze != null) {
 			freeze.processTime(time);
-			return;
-		}
-		
-		Swiftthistle.TimeBubble bubble = buff(Swiftthistle.TimeBubble.class);
-		if (bubble != null){
-			bubble.processTime(time);
 			return;
 		}
 		
@@ -731,7 +727,8 @@ public class Hero extends Char {
 
 			ready();
 			
-			AlchemistsToolkit.kitEnergy kit = buff(AlchemistsToolkit.kitEnergy.class);
+			AlchemistsToolkit.ToolkitBuff kit = buff(AlchemistsToolkit.kitEnergy.class);
+			if (kit == null) kit = buff(SoulOfYendor.omniBuff.class);
 			if (kit != null && kit.isCursed()){
 				GLog.warning( Messages.get(AlchemistsToolkit.class, "cursed"));
 				return false;
@@ -920,10 +917,10 @@ public class Hero extends Char {
 			Hunger.adjustHunger(-20);
 			lastMovPos = -1;
 
-			Buff buff = buff(TimekeepersHourglass.timeFreeze.class);
-			if (buff != null) buff.detach();
-			buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
-			if (buff != null) buff.detach();
+			TimekeepersHourglass.TimeFreezing timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.timeFreeze.class );
+			if (timeFreeze == null) Dungeon.hero.buff( SoulOfYendor.timeFreeze.class );
+			if (timeFreeze == null) Dungeon.hero.buff( Swiftthistle.TimeBubble.class );
+			if (timeFreeze != null) timeFreeze.detach();
 			
 			InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
 			Game.switchScene( InterlevelScene.class );
@@ -975,10 +972,10 @@ public class Hero extends Char {
 				Hunger.adjustHunger(-20);
 				lastMovPos = -1;
 
-				Buff buff = buff(TimekeepersHourglass.timeFreeze.class);
-				if (buff != null) buff.detach();
-				buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
-				if (buff != null) buff.detach();
+				TimekeepersHourglass.TimeFreezing timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.timeFreeze.class );
+				if (timeFreeze == null) Dungeon.hero.buff( SoulOfYendor.timeFreeze.class );
+				if (timeFreeze == null) Dungeon.hero.buff( Swiftthistle.TimeBubble.class );
+				if (timeFreeze != null) timeFreeze.detach();
 
 				InterlevelScene.mode = InterlevelScene.Mode.ASCEND;
 				Game.switchScene( InterlevelScene.class );

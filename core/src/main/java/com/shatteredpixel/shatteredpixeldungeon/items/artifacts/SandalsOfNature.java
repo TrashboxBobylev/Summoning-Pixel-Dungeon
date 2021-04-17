@@ -174,7 +174,7 @@ public class SandalsOfNature extends Artifact {
 		else if (level() >= 3)  image = ItemSpriteSheet.ARTIFACT_GREAVES;
 	}
 
-	public class Naturalism extends ArtifactBuff{
+	public class Naturalism extends ArtifactBuff implements NaturalismBuff{
 		public void charge() {
 			if (level() > 0 && charge < target.HT){
 				//gain 1+(1*level)% of the difference between current charge and max HP.
@@ -188,6 +188,12 @@ public class SandalsOfNature extends Artifact {
 				updateQuickslot();
 			}
 		}
+	}
+
+	public interface NaturalismBuff {
+		public boolean isCursed();
+		public int itemLevel();
+		public void charge();
 	}
 
 	protected WndBag.Listener itemSelector = new WndBag.Listener() {

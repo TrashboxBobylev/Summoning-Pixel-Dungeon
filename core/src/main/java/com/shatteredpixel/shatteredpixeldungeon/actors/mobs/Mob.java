@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.GoldToken;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
@@ -572,7 +573,8 @@ public abstract class Mob extends Char {
 	public void updateSpriteState() {
 		super.updateSpriteState();
 		if (Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class) != null
-				|| Dungeon.hero.buff(Swiftthistle.TimeBubble.class) != null)
+				|| Dungeon.hero.buff(Swiftthistle.TimeBubble.class) != null
+				|| Dungeon.hero.buff(SoulOfYendor.timeFreeze.class) != null)
 			sprite.add( CharSprite.State.PARALYSED );
 	}
 
