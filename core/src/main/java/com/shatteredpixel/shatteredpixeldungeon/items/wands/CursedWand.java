@@ -42,9 +42,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
 import com.shatteredpixel.shatteredpixeldungeon.effects.*;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -70,6 +70,7 @@ import com.watabou.utils.Random;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 //helper class to contain all the cursed wand zapping logic, so the main wand class doesn't get huge.
 public class CursedWand {
@@ -96,8 +97,11 @@ public class CursedWand {
 	}
 
 	public static boolean cursedEffect(final Item origin, final Char user, final int targetPos){
-		switch (Random.chances(new float[]{COMMON_CHANCE, UNCOMMON_CHANCE, RARE_CHANCE, VERY_RARE_CHANCE})){
-			case 0: default:
+		if (!createOmniArtifact(targetPos)){
+
+		switch (Random.chances(new float[]{COMMON_CHANCE, UNCOMMON_CHANCE, RARE_CHANCE, VERY_RARE_CHANCE})) {
+			case 0:
+			default:
 				return commonEffect(origin, user, targetPos);
 			case 1:
 				return uncommonEffect(origin, user, targetPos);
@@ -106,6 +110,8 @@ public class CursedWand {
 			case 3:
 				return veryRareEffect(origin, user, targetPos);
 		}
+		}
+		return true;
 	}
 
 	private static boolean commonEffect(final Item origin, final Char user, final int targetPos){
@@ -410,8 +416,62 @@ public class CursedWand {
 		}
 	}
 
-	private static void createOmniArtifact(final Ballistica bolt){
+	private static boolean createOmniArtifact(final int pos){
+		ArrayList<Class<? extends Artifact>> artifacts = new ArrayList<>();
+		ArrayList<Integer> artifactLevels = new ArrayList<>();
+		artifacts.add(EtherealChains.class);
+		artifacts.add(AlchemistsToolkit.class);
+		artifacts.add(HornOfPlenty.class);
+		artifacts.add(ChaliceOfBlood.class);
+		artifacts.add(MasterThievesArmband.class);
+		artifacts.add(EtherealChains.class);
+		artifacts.add(TimekeepersHourglass.class);
+		artifacts.add(UnstableSpellbook.class);
+		boolean circleOfItems = true;
+		for (int i : PathFinder.NEIGHBOURS8){
+			Heap heap = Dungeon.level.heaps.get(pos + i);
+			if (heap == null) circleOfItems = false;
+		}
+		if (circleOfItems){
+			for (int i : PathFinder.NEIGHBOURS8){
+				Heap heap = Dungeon.level.heaps.get(pos + i);
+				if (heap != null) scanForArtifact(heap, artifacts, artifactLevels);
+			}
+		} else {
+			GLog.i(Messages.get(CursedWand.class, "nothing"));
+			return false;
+		}
+		if (artifacts.isEmpty()){
+			int averageLevel = 0;
+			for (int i : artifactLevels){
+				averageLevel += i;
+			}
+			averageLevel /= 8;
+			Dungeon.level.drop(new SoulOfYendor().upgrade(averageLevel), pos).sprite.drop();
+			GameScene.flash(0xFFFFFF);
+			Sample.INSTANCE.play(Assets.Sounds.BOSS);
+		} else {
+			GLog.i(Messages.get(CursedWand.class, "nothing"));
+			return false;
+		}
+		return true;
+	}
 
+	private static void scanForArtifact(Heap heap, ArrayList<Class<? extends Artifact>> requiredArtifacts,
+										ArrayList<Integer> artifactLevels){
+		for (Item item: heap.items){
+			for (Class<? extends Artifact> artifactClass : requiredArtifacts){
+				if (artifactClass.isAssignableFrom(item.getClass())){
+					heap.items.remove(item);
+					artifactLevels.add(item.level());
+					if (heap.items.isEmpty()) {
+						heap.destroy();
+					}
+					requiredArtifacts.remove(artifactClass);
+					break;
+				}
+			}
+		}
 	}
 
 	private static void cursedFX(final Char user, final Ballistica bolt, final Callback callback){
