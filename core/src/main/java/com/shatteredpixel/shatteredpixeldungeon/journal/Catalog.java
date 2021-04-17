@@ -174,6 +174,7 @@ public enum Catalog {
 		ARTIFACTS.seen.put( TalismanOfForesight.class,      false);
 		ARTIFACTS.seen.put( TimekeepersHourglass.class,     false);
 		ARTIFACTS.seen.put( UnstableSpellbook.class,        false);
+		ARTIFACTS.seen.put( SoulOfYendor.class,             false);
 	
 		POTIONS.seen.put( PotionOfHealing.class,            false);
 		POTIONS.seen.put( PotionOfStrength.class,           false);
