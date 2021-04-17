@@ -97,7 +97,7 @@ public class CursedWand {
 	}
 
 	public static boolean cursedEffect(final Item origin, final Char user, final int targetPos){
-		if (!createOmniArtifact(targetPos)){
+		if (!createOmniArtifact(targetPos, origin)){
 
 		switch (Random.chances(new float[]{COMMON_CHANCE, UNCOMMON_CHANCE, RARE_CHANCE, VERY_RARE_CHANCE})) {
 			case 0:
@@ -416,7 +416,16 @@ public class CursedWand {
 		}
 	}
 
-	private static boolean createOmniArtifact(final int pos){
+	private static boolean createOmniArtifact(int pos, Item origin){
+
+		for (int i : PathFinder.NEIGHBOURS4){
+			Heap heap = Dungeon.level.heaps.get(pos + i);
+			if (heap == null && !Dungeon.level.solid[pos + i]){
+				pos = pos + i;
+				break;
+			}
+		}
+
 		ArrayList<Class<? extends Artifact>> artifacts = new ArrayList<>();
 		ArrayList<Integer> artifactLevels = new ArrayList<>();
 		artifacts.add(EtherealChains.class);
@@ -424,7 +433,7 @@ public class CursedWand {
 		artifacts.add(HornOfPlenty.class);
 		artifacts.add(ChaliceOfBlood.class);
 		artifacts.add(MasterThievesArmband.class);
-		artifacts.add(EtherealChains.class);
+		artifacts.add(SandalsOfNature.class);
 		artifacts.add(TimekeepersHourglass.class);
 		artifacts.add(UnstableSpellbook.class);
 		boolean circleOfItems = true;
@@ -450,6 +459,7 @@ public class CursedWand {
 			Dungeon.level.drop(new SoulOfYendor().upgrade(averageLevel), pos).sprite.drop();
 			GameScene.flash(0xFFFFFF);
 			Sample.INSTANCE.play(Assets.Sounds.BOSS);
+			origin.detach(Dungeon.hero.belongings.backpack);
 		} else {
 			GLog.i(Messages.get(CursedWand.class, "nothing"));
 			return false;

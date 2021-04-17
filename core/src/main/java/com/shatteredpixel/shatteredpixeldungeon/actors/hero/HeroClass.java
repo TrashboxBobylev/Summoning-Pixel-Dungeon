@@ -40,10 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Ropes;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LoveHolder;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.SupplyBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Webbomb;
@@ -53,6 +50,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.magic.knight.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.soulreaver.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFrost;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Slingshot;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
@@ -250,8 +248,6 @@ public enum HeroClass {
         new Support().collect();
         new ScrollOfUpgrade().quantity(2).collect();
         new SoulOfYendor().identify().collect();
-        new TimekeepersHourglass().identify().collect();
-
     }
 
 	public String title() {
