@@ -38,13 +38,13 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 
-public class ConstantShielding extends Buff{
+public class ConstantShielding extends ShieldBuff{
 
 	@Override
 	public boolean act() {
 		if (target.buff(HolyAuraBuff.class) != null) {
 			
-			Buff.affect(target, Barrier.class).incShield (1);
+			incShield (1);
 			spend( target.buff(HolyAuraBuff.class).shieldingRate );
 			
 		} else {
@@ -54,5 +54,18 @@ public class ConstantShielding extends Buff{
 		}
 		
 		return true;
+	}
+
+	@Override
+	//logic edited slightly as buff should not detach
+	public int absorbDamage(int dmg) {
+		if (shielding() >= dmg){
+			decShield(dmg);
+			dmg = 0;
+		} else {
+			dmg -= shielding();
+			setShield(0);
+		}
+		return dmg;
 	}
 }

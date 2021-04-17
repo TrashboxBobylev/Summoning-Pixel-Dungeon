@@ -48,10 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Webbomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.knight.*;
-import com.shatteredpixel.shatteredpixeldungeon.items.magic.soulreaver.Defense;
-import com.shatteredpixel.shatteredpixeldungeon.items.magic.soulreaver.Magical;
-import com.shatteredpixel.shatteredpixeldungeon.items.magic.soulreaver.Offense;
-import com.shatteredpixel.shatteredpixeldungeon.items.magic.soulreaver.Ranged;
+import com.shatteredpixel.shatteredpixeldungeon.items.magic.soulreaver.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
@@ -248,6 +245,8 @@ public enum HeroClass {
         hero.maxMana = 20;
         new PotionOfStrength().identify();
         new ScrollOfAttunement().identify();
+        new Support().collect();
+        new ScrollOfUpgrade().quantity(2).collect();
 
     }
 
