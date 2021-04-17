@@ -516,7 +516,7 @@ public class Dungeon {
 		int posLeftThisSet = 2 - (LimitedDrops.STRENGTH_POTIONS.count - (depth / Dungeon.chapterSize()) * 2);
 		if (posLeftThisSet <= 0) return false;
 
-		int floorThisSet = (depth % 5);
+		int floorThisSet = (depth % Dungeon.chapterSize());
 
 		//pos drops every two floors, (numbers 1-2, and 3-4) with a 50% chance for the earlier one each time.
 		int targetPOSLeft = Dungeon.chapterSize() / 2 - floorThisSet/2;
@@ -540,7 +540,7 @@ public class Dungeon {
 
 		int floorThisSet = (depth % Dungeon.chapterSize());
 		//chance is floors left / scrolls left
-		return Random.Int(5 - floorThisSet) < souLeftThisSet;
+		return Random.Int(Dungeon.chapterSize() - floorThisSet) < souLeftThisSet;
 	}
 	
 	public static boolean asNeeded() {
