@@ -690,8 +690,7 @@ public class SoulOfYendor extends Artifact {
 
             LockedFloor lock = target.buff(LockedFloor.class);
             if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
-                //90 turns to charge at full, 60 turns to charge at 0/10
-                float chargeGain = 0.2f + 0.075f*level();
+                float chargeGain = 0.025f + 0.025f*level();
                 chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
                 partialCharge += chargeGain;
 
