@@ -43,14 +43,13 @@ public class ConstantShielding extends ShieldBuff{
 	@Override
 	public boolean act() {
 		if (target.buff(HolyAuraBuff.class) != null) {
-			
 			incShield (1);
 			spend( target.buff(HolyAuraBuff.class).shieldingRate );
 			
 		} else {
-			
+			Buff.affect(target, Barrier.class).setShield(shielding());
+			setShield(0);
 			detach();
-			
 		}
 		
 		return true;

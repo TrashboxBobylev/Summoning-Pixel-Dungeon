@@ -51,7 +51,7 @@ public class Support extends AdHocSpell {
         aura.minDamage = minDamage();
         aura.maxDamage = maxDamage();
         aura.manaSteal = manaSteal();
-        Buff.affect(hero, ConstantShielding.class);
+        if (shieldingRate() != 0) Buff.affect(hero, ConstantShielding.class);
         Buff.affect(hero, ManaStealing.class);
         hero.spendAndNext(1f);
     }
