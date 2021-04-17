@@ -66,7 +66,7 @@ public class Dungeon {
 
 	//enum of items which have limited spawns, records how many have spawned
 	//could all be their own separate numbers, but this allows iterating, much nicer for bundling/initializing.
-	public static enum LimitedDrops {
+	public enum LimitedDrops {
 		//limited world drops
 		STRENGTH_POTIONS,
 		UPGRADE_SCROLLS,
@@ -219,12 +219,8 @@ public class Dungeon {
 		depth++;
 		if (depth > Statistics.deepestFloor) {
 			Statistics.deepestFloor = depth;
-			
-			if (Statistics.qualifiedForNoKilling) {
-				Statistics.completedWithNoKilling = true;
-			} else {
-				Statistics.completedWithNoKilling = false;
-			}
+
+			Statistics.completedWithNoKilling = Statistics.qualifiedForNoKilling;
 		}
 		
 		Level level;
@@ -512,18 +508,23 @@ public class Dungeon {
 	}
 
 	public static boolean posNeeded() {
-		//2 POS each floor set
-		int posLeftThisSet = 2 - (LimitedDrops.STRENGTH_POTIONS.count - (depth / Dungeon.chapterSize()) * 2);
-		if (posLeftThisSet <= 0) return false;
+		if (SPDSettings.bigdungeon()){
+			return Dungeon.depth == 2 + Dungeon.chapterSize()*(LimitedDrops.STRENGTH_POTIONS.count/2) ||
+					Dungeon.depth == 4 + Dungeon.chapterSize()*(LimitedDrops.STRENGTH_POTIONS.count/2);
+		}
+		else {
+			//2 POS each floor set
+			int posLeftThisSet = 2 - (LimitedDrops.STRENGTH_POTIONS.count - (depth / Dungeon.chapterSize()) * 2);
+			if (posLeftThisSet <= 0) return false;
 
-		int floorThisSet = (depth % Dungeon.chapterSize());
+			int floorThisSet = (depth % Dungeon.chapterSize());
 
-		//pos drops every two floors, (numbers 1-2, and 3-4) with a 50% chance for the earlier one each time.
-		int targetPOSLeft = Dungeon.chapterSize() / 2 - floorThisSet/2;
-		if (floorThisSet % (Dungeon.chapterSize() / 2) == 1 && Random.Int(2) == 0) targetPOSLeft --;
+			//pos drops every two floors, (numbers 1-2, and 3-4) with a 50% chance for the earlier one each time.
+			int targetPOSLeft = Dungeon.chapterSize() / 2 - floorThisSet/2;
+			if (floorThisSet % (Dungeon.chapterSize() / 2) == 1 && Random.Int(2) == 0) targetPOSLeft --;
 
-		if (targetPOSLeft < posLeftThisSet) return true;
-		else return false;
+			return targetPOSLeft < posLeftThisSet;
+		}
 
 	}
 	
@@ -594,7 +595,7 @@ public class Dungeon {
 			bundle.put ( LIMDROPS, limDrops );
 			
 			int count = 0;
-			int ids[] = new int[chapters.size()];
+			int[] ids = new int[chapters.size()];
 			for (Integer id : chapters) {
 				ids[count++] = id;
 			}
@@ -684,7 +685,7 @@ public class Dungeon {
 			LimitedDrops.restore( bundle.getBundle(LIMDROPS) );
 
 			chapters = new HashSet<>();
-			int ids[] = bundle.getIntArray( CHAPTERS );
+			int[] ids = bundle.getIntArray( CHAPTERS );
 			if (ids != null) {
 				for (int id : ids) {
 					chapters.add( id );

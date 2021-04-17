@@ -32,7 +32,7 @@ public class RuinsRoom extends PatchRoom {
 	
 	@Override
 	public float[] sizeCatProbs() {
-		return new float[]{4, 1, 0};
+		return new float[]{2, 1, 0};
 	}
 	
 	@Override
@@ -47,7 +47,7 @@ public class RuinsRoom extends PatchRoom {
 		// normal   ~20% to ~30%
 		// large    ~30% to ~40%
 		// giant    ~40% to ~50%
-		float fill = 0.20f + (width()*height())/1024f;
+		float fill = 0.30f + (width()*height())/1024f;
 		
 		setupPatch(level, fill, 0, true);
 //		cleanDiagonalEdges();
