@@ -1435,11 +1435,11 @@ public class Hero extends Char {
                         attunement += 0.5;
                     }
                     maxMana += 5;
-                    if (lvl == 5) new Barrier().identify().collect();
-                    if (lvl == 7) new Wave().identify().collect();
-                    if (lvl == 9) new Shocker().identify().collect();
-                    if (lvl == 11) new Necro().identify().collect();
-                    if (lvl == 15) new Field().identify().collect();
+                    if (lvl == 5) new Barrier().identify().collectWithAnnouncing();
+                    if (lvl == 7) new Wave().identify().collectWithAnnouncing();
+                    if (lvl == 9) new Shocker().identify().collectWithAnnouncing();
+                    if (lvl == 11) new Necro().identify().collectWithAnnouncing();
+                    if (lvl == 15) new Field().identify().collectWithAnnouncing();
                 } else if (lvl == 6){
                     attunement++;
                 }

@@ -35,10 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MirrorImage;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.knight.*;
-import com.shatteredpixel.shatteredpixeldungeon.items.magic.soulreaver.Defense;
-import com.shatteredpixel.shatteredpixeldungeon.items.magic.soulreaver.Magical;
-import com.shatteredpixel.shatteredpixeldungeon.items.magic.soulreaver.Offense;
-import com.shatteredpixel.shatteredpixeldungeon.items.magic.soulreaver.Ranged;
+import com.shatteredpixel.shatteredpixeldungeon.items.magic.soulreaver.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -157,17 +154,18 @@ public class TomeOfMastery extends Item {
 			GameScene.add( clone );
 			ScrollOfTeleportation.appear( clone, respawnPoints.get( index ) );
 
-			new Boom().collect();
-			new Flower().collect();
-			new KiHealing().collect();
-			new Punch().collect();
-			new Shards().collect();
+			new Boom().collectWithAnnouncing();
+			new Flower().collectWithAnnouncing();
+			new KiHealing().collectWithAnnouncing();
+			new Punch().collectWithAnnouncing();
+			new Shards().collectWithAnnouncing();
 		}
 		if (curUser.subClass == HeroSubClass.SOUL_REAVER){
-			new Offense().collect();
-			new Defense().collect();
-			new Magical().collect();
-			new Ranged().collect();
+			new Offense().collectWithAnnouncing();
+			new Defense().collectWithAnnouncing();
+			new Magical().collectWithAnnouncing();
+			new Ranged().collectWithAnnouncing();
+			new Support().collectWithAnnouncing();
 		}
 		
 	}

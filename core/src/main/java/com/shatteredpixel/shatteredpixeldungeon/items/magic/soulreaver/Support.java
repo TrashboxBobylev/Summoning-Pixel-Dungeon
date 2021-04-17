@@ -28,11 +28,14 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ConstantShielding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ManaStealing;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.FlowersCD;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.HolyAuraBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.HolyAuraCD;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.AdHocSpell;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 
 public class Support extends AdHocSpell {
@@ -119,6 +122,15 @@ public class Support extends AdHocSpell {
             case 2: return 30;
         }
         return 75;
+    }
+
+    @Override
+    public boolean tryToZap(Hero owner) {
+        if (owner.buff(HolyAuraCD.class) != null){
+            GLog.warning( Messages.get(this, "no_magic") );
+            return false;
+        }
+        return super.tryToZap(owner);
     }
 
     public String desc() {
