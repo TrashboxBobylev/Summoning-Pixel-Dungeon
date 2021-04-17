@@ -508,6 +508,7 @@ public class ItemSpriteSheet {
     public static final int ARTIFACT_LOVE1      = ARTIFACTS+23;
     public static final int ARTIFACT_LOVE2      = ARTIFACTS+24;
     public static final int ARTIFACT_LOVE3      = ARTIFACTS+25;
+    public static final int ARTIFACT_OMNI       = ARTIFACTS+26;
 	static{
 		assignItemRect(ARTIFACT_CLOAK,      9,  15);
 		assignItemRect(ARTIFACT_ARMBAND,    16, 13);
@@ -535,6 +536,7 @@ public class ItemSpriteSheet {
         assignItemRect(ARTIFACT_LOVE1,      10, 9);
         assignItemRect(ARTIFACT_LOVE2,      12, 12);
         assignItemRect(ARTIFACT_LOVE3,      14, 14);
+		assignItemRect(ARTIFACT_OMNI,       14, 14);
 	}
 
 	private static final int C_SPELLS = xy(1, 18);
