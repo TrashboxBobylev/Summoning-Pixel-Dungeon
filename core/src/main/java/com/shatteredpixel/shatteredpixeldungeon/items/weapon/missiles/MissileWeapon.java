@@ -46,6 +46,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 
@@ -143,7 +144,16 @@ abstract public class MissileWeapon extends Weapon {
 		actions.remove( AC_EQUIP );
 		return actions;
 	}
-	
+
+	@Override
+	public void cast(Hero user, int dst) {
+		super.cast(user, dst);
+		if (Dungeon.hero.buff(Crossbow.DartSpent.class) != null && this instanceof Dart){
+			MissileWeapon thing = Reflection.newInstance(getClass());
+			thing.collect();
+		}
+	}
+
 	@Override
 	public boolean collect(Bag container) {
 		if (container instanceof MagicalHolster) holster = true;

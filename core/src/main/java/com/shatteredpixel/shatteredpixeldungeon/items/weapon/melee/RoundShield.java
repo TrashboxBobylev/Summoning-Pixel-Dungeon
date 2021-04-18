@@ -81,6 +81,6 @@ public class RoundShield extends MeleeWeapon {
 
 	@Override
 	public float warriorDelay(float delay, Char enemy) {
-		return 0;
+		return 1f;
 	}
 }

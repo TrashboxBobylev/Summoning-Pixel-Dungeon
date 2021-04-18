@@ -56,8 +56,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Slingshot;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.shop.Jjango;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.shop.Pike;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.shop.Stabber;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.shop.StoneHammer;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.utils.Bundle;
@@ -156,6 +161,7 @@ public enum HeroClass {
 
 		new PotionOfHealing().identify();
 		new ScrollOfRage().identify();
+		new Jjango().identify().collect();
 	}
 
 	private static void initMage( Hero hero ) {
@@ -245,6 +251,7 @@ public enum HeroClass {
         hero.maxMana = 20;
         new PotionOfStrength().identify();
         new ScrollOfAttunement().identify();
+
     }
 
 	public String title() {

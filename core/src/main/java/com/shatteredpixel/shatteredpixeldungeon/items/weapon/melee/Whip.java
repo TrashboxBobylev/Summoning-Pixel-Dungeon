@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
@@ -53,19 +54,35 @@ public class Whip extends MeleeWeapon {
 	@Override
 	public int warriorAttack(int damage, Char enemy) {
 		numberOfHits = Random.Int(4, 10);
-		for (int i = 0; i < numberOfHits; i++) Dungeon.hero.sprite.attack(enemy.pos, new Callback() {
+		attack(damage, enemy);
+		return 0;
+	}
+
+	public void attack(int damage, Char enemy){
+		Dungeon.hero.sprite.attack(enemy.pos, new Callback() {
 			@Override
 			public void call() {
-				Dungeon.hero.damage(damage / 2, Dungeon.hero);
+				Dungeon.hero.sprite.showStatus(CharSprite.DEFAULT, String.valueOf(numberOfHits+1));
+				Dungeon.hero.attack(enemy);
+				if (numberOfHits > 0){
+					numberOfHits--;
+					Dungeon.hero.spend(-Dungeon.hero.cooldown());
+					attack(damage, enemy);
+				} else {
+					Dungeon.hero.spendAndNext(1.5f);
+				}
 			}
 		});
-		return 0;
+	}
+
+	@Override
+	public int damageRoll(Char owner) {
+		if (numberOfHits > 0) return super.damageRoll(owner) / 2;
+		return super.damageRoll(owner);
 	}
 
 	@Override
 	public float warriorDelay(float delay, Char enemy) {
-		int hits = numberOfHits;
-		numberOfHits = 0;
-		return speedFactor(Dungeon.hero)*hits;
+		return 0f;
 	}
 }

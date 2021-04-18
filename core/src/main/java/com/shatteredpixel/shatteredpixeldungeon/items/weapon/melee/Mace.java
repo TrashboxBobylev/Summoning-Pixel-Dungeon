@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
@@ -54,7 +55,7 @@ public class Mace extends MeleeWeapon {
 	public int warriorAttack(int damage, Char enemy) {
 		if (enemy.isAlive()){
 			//trace a ballistica to our target (which will also extend past them
-			Ballistica trajectory = new Ballistica(enemy.pos, enemy.pos, Ballistica.STOP_TARGET);
+			Ballistica trajectory = new Ballistica(Dungeon.hero.pos, enemy.pos, Ballistica.STOP_TARGET);
 			//trim it to just be the part that goes past them
 			trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size()-1), Ballistica.PROJECTILE);
 			//knock them back along that ballistica
