@@ -64,8 +64,8 @@ public class Fadeleaf extends Plant {
 				}
 
 				TimekeepersHourglass.TimeFreezing timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.timeFreeze.class );
-				if (timeFreeze == null) Dungeon.hero.buff( SoulOfYendor.timeFreeze.class );
-				if (timeFreeze == null) Dungeon.hero.buff( Swiftthistle.TimeBubble.class );
+				if (timeFreeze == null) timeFreeze = Dungeon.hero.buff( SoulOfYendor.timeFreeze.class );
+				if (timeFreeze == null) timeFreeze = Dungeon.hero.buff( Swiftthistle.TimeBubble.class );
 				if (timeFreeze != null) timeFreeze.detach();
 				
 				InterlevelScene.mode = InterlevelScene.Mode.RETURN;

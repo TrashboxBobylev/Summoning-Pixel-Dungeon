@@ -110,8 +110,8 @@ public class Invisibility extends FlavourBuff {
 		
 		//these aren't forms of invisibilty, but do dispel at the same time as it.
 		TimekeepersHourglass.TimeFreezing timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.timeFreeze.class );
-		if (timeFreeze == null) Dungeon.hero.buff( SoulOfYendor.timeFreeze.class );
-		if (timeFreeze == null) Dungeon.hero.buff( Swiftthistle.TimeBubble.class );
+		if (timeFreeze == null) timeFreeze = Dungeon.hero.buff( SoulOfYendor.timeFreeze.class );
+		if (timeFreeze == null) timeFreeze = Dungeon.hero.buff( Swiftthistle.TimeBubble.class );
 		if (timeFreeze != null) {
 			timeFreeze.detach();
 		}
