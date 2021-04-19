@@ -49,6 +49,6 @@ public class HandAxe extends MeleeWeapon {
 	@Override
 	public int warriorAttack(int damage, Char enemy) {
 		//deals more damage depending on hero's HP
-		return damage + damage * (1 - (Dungeon.hero.HP / Dungeon.hero.HT));
+		return damage + damage * 2 * (1 - (Dungeon.hero.HP / Dungeon.hero.HT));
 	}
 }
