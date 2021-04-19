@@ -164,8 +164,6 @@ public enum HeroClass {
 
 		new PotionOfHealing().identify();
 		new ScrollOfRage().identify();
-		new Jjango().identify().collect();
-		new TomeOfMastery().collect();
 	}
 
 	private static void initMage( Hero hero ) {
@@ -183,8 +181,6 @@ public enum HeroClass {
 
 		new ScrollOfUpgrade().identify();
 		new PotionOfLiquidFlame().identify();
-		new SupplyBomb().quantity(5).collect();
-		new Webbomb().quantity(5).collect();
 	}
 
 	private static void initRogue( Hero hero ) {

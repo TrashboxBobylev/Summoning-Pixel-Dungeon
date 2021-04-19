@@ -33,7 +33,11 @@ import java.util.LinkedHashMap;
 
 public enum Talent {
 
-    ECH(1),
+    SPECIAL_DELIVERY(18),
+    COLD_FRONT(19),
+    ACUTENESS(20),
+    HYPERSPACE(21),
+    PERDERE_CRIMEN(22),
     ECHERS(10),
     ECHEREST(20);
 
@@ -68,7 +72,7 @@ public enum Talent {
         return Messages.get(this, name() + ".desc");
     }
 
-    public static final int MAX_TALENT_TIERS = 3;
+    public static final int MAX_TALENT_TIERS = 1;
 
     public static void initClassTalents( Hero hero ){
         initClassTalents( hero.heroClass, hero.talents );
@@ -81,7 +85,7 @@ public enum Talent {
 
         ArrayList<Talent> tierTalents = new ArrayList<>();
 
-        Collections.addAll(tierTalents, ECH);
+        Collections.addAll(tierTalents, SPECIAL_DELIVERY, COLD_FRONT, ACUTENESS, HYPERSPACE, PERDERE_CRIMEN);
 
         for (Talent talent : tierTalents){
             talents.get(0).put(talent, 0);
@@ -89,21 +93,21 @@ public enum Talent {
 
         tierTalents.clear();
 
-        Collections.addAll(tierTalents, ECHERS);
-
-        for (Talent talent : tierTalents){
-            talents.get(1).put(talent, 0);
-        }
-
-        tierTalents.clear();
-
-        Collections.addAll(tierTalents, ECHEREST);
-
-        for (Talent talent : tierTalents){
-            talents.get(2).put(talent, 0);
-        }
-
-        tierTalents.clear();
+//        Collections.addAll(tierTalents, ECHERS);
+//
+//        for (Talent talent : tierTalents){
+//            talents.get(1).put(talent, 0);
+//        }
+//
+//        tierTalents.clear();
+//
+//        Collections.addAll(tierTalents, ECHEREST);
+//
+//        for (Talent talent : tierTalents){
+//            talents.get(2).put(talent, 0);
+//        }
+//
+//        tierTalents.clear();
 
     }
 
