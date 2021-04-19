@@ -43,7 +43,7 @@ public class Jjango extends MeleeWeapon {
     @Override
     public int max(int lvl) {
         return 4*(tier - 1) +
-                lvl*tier; //16, +5
+                lvl*(tier-2); //16, +3
     }
 
     @Override
@@ -59,15 +59,14 @@ public class Jjango extends MeleeWeapon {
             Bleeding blood = enemy.buff(Bleeding.class);
             float bloodAmount = 0;
             while (Math.round(blood.level()) > 0){
-                float amt = Random.NormalFloat(blood.level() / 2, blood.level());
-                blood.set(amt);
+                float amt = Math.round(Random.NormalFloat(blood.level() * 0.5f, blood.level()*0.75f));
+                blood.setForcefully(amt);
                 bloodAmount += amt;
             }
             blood.detach();
-            Dungeon.hero.HP += bloodAmount;
+            Dungeon.hero.HP = (int) Math.min(Dungeon.hero.HP + bloodAmount, Dungeon.hero.HT);
             Dungeon.hero.sprite.emitter().start( Speck.factory( Speck.HEALING ), 0.4f, 1 );
             Dungeon.hero.sprite.showStatus( CharSprite.POSITIVE, Integer.toString((int) bloodAmount) );
-            enemy.damage((int) Random.NormalFloat(bloodAmount / 2, bloodAmount), Dungeon.hero);
         }
         return 0;
     }

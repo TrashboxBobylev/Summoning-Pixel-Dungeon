@@ -65,6 +65,10 @@ public class Bleeding extends Buff {
 	public void set( float level ) {
 		this.level = Math.max(this.level, level);
 	}
+
+	public void setForcefully( float level ) {
+		this.level = level;
+	}
 	
 	@Override
 	public int icon() {
