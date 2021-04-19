@@ -1073,11 +1073,6 @@ public class Hero extends Char {
 	public int defenseProc( Char enemy, int damage ) {
 
 	    int initialDamage = damage;
-
-		if (damage > 0 && subClass == HeroSubClass.BERSERKER){
-			Berserk berserk = Buff.affect(this, Berserk.class);
-			berserk.damage(damage);
-		}
 		
 		if (belongings.armor != null) {
 			damage = belongings.armor.proc( enemy, this, damage );
