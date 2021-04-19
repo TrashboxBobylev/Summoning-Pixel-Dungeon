@@ -72,6 +72,11 @@ public class WndHero extends WndTabbed {
 		
 		stats = new StatsTab();
 		add( stats );
+
+		talents = new TalentsTab();
+		add(talents);
+		talents.setRect(0, 0, WIDTH, HEIGHT);
+		talents.visible = false;
 		
 		buffs = new BuffsTab();
 		add( buffs );
@@ -89,6 +94,7 @@ public class WndHero extends WndTabbed {
 				protected void select(boolean value) {
 					super.select(value);
 					if (selected) lastIdx = 1;
+					if (talents != null)
 					talents.visible = talents.active = selected;
 				}
 			});
@@ -103,9 +109,11 @@ public class WndHero extends WndTabbed {
 		layoutTabs();
 
 		if (Dungeon.hero.heroClass == HeroClass.ROGUE) {
-			talents.setRect(0, 0, WIDTH, HEIGHT);
-			talents.pane.scrollTo(0, talents.pane.content().height() - talents.pane.height());
-			talents.layout();
+			if (talents != null) {
+				talents.setRect(0, 0, WIDTH, HEIGHT);
+				talents.pane.scrollTo(0, talents.pane.content().height() - talents.pane.height());
+				talents.layout();
+			}
 		}
 		
 		select( 0 );
