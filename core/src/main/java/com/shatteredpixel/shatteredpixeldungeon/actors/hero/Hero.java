@@ -91,6 +91,7 @@ import com.watabou.utils.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 
 public class Hero extends Char {
 
@@ -132,6 +133,8 @@ public class Hero extends Char {
 	
 	public float attunement = 1;
 	public float usedAttunement;
+
+	public ArrayList<LinkedHashMap<Talent, Integer>> talents = new ArrayList<>();
 
 	public int mana = 0;
 	public int maxMana = 0;
@@ -216,6 +219,7 @@ public class Hero extends Char {
 		
 		heroClass.storeInBundle( bundle );
 		subClass.storeInBundle( bundle );
+		Talent.storeTalentsInBundle( bundle, this );
 		
 		bundle.put( ATTACK, attackSkill );
 		bundle.put( DEFENSE, defenseSkill );
@@ -242,6 +246,7 @@ public class Hero extends Char {
 		
 		heroClass = HeroClass.restoreInBundle( bundle );
 		subClass = HeroSubClass.restoreInBundle( bundle );
+		Talent.restoreTalentsFromBundle( bundle, this );
 		
 		attackSkill = bundle.getInt( ATTACK );
 		defenseSkill = bundle.getInt( DEFENSE );
@@ -273,6 +278,47 @@ public class Hero extends Char {
 		info.heroClass = HeroClass.restoreInBundle( bundle );
 		info.subClass = HeroSubClass.restoreInBundle( bundle );
 		Belongings.preview( info, bundle );
+	}
+
+	public boolean hasTalent( Talent talent ){
+		return pointsInTalent(talent) > 0;
+	}
+
+	public int pointsInTalent( Talent talent ){
+		for (LinkedHashMap<Talent, Integer> tier : talents){
+			for (Talent f : tier.keySet()){
+				if (f == talent) return tier.get(f);
+			}
+		}
+		return 0;
+	}
+
+	public void upgradeTalent( Talent talent ){
+		for (LinkedHashMap<Talent, Integer> tier : talents){
+			for (Talent f : tier.keySet()){
+				if (f == talent) tier.put(talent, tier.get(talent)+1);
+			}
+		}
+	}
+
+	public int talentPointsSpent(int tier){
+		int total = 0;
+		for (int i : talents.get(tier-1).values()){
+			total += i;
+		}
+		return total;
+	}
+
+	public int talentPointsAvailable(int tier){
+		if (heroClass != HeroClass.ROGUE) return 0;
+		if (lvl < Talent.tierLevelThresholds[tier]
+				|| (tier == 3 && subClass == HeroSubClass.NONE)){
+			return 0;
+		} else if (lvl >= Talent.tierLevelThresholds[tier+1]){
+			return Talent.tierLevelThresholds[tier+1] - Talent.tierLevelThresholds[tier] - talentPointsSpent(tier);
+		} else {
+			return 1 + lvl - Talent.tierLevelThresholds[tier] - talentPointsSpent(tier);
+		}
 	}
 	
 	public String className() {

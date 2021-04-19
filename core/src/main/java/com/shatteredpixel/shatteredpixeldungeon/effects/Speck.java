@@ -568,4 +568,20 @@ public class Speck extends Image {
 
 		return factory;
 	}
+
+	public Speck image( int type ){
+		reset(0, 0, 0, type);
+
+		left = lifespan = Float.POSITIVE_INFINITY;
+		this.type = -1;
+
+		resetColor();
+		scale.set( 1 );
+		speed.set( 0 );
+		acc.set( 0 );
+		angle = 0;
+		angularSpeed = 0;
+
+		return this;
+	}
 }

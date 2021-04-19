@@ -77,6 +77,7 @@ public enum Icons {
 	NEWS,
 	CHANGES,
 	SHPX,
+	TALENT,
 	
 	//misc icons
 	LIBGDX,
@@ -176,6 +177,9 @@ public enum Icons {
 			break;
 		case CONJURER_BOOK:
 			icon.frame( icon.texture.uvRect( 88, 22, 98, 32 ) );
+			break;
+		case TALENT:
+			icon.frame( icon.texture.uvRect( 102, 17, 116, 31 ) );
 			break;
 			
 		case DEPTH:
