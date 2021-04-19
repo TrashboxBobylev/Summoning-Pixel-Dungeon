@@ -514,7 +514,10 @@ public class HeroSelectScene extends PixelScene {
 
 			if (talents != null) {
 				talents.setRect(0, info.bottom() + MARGIN, WIDTH, HEIGHT - (info.bottom() + MARGIN));
-				resize(WIDTH, (int) talents.bottom() + MARGIN);
+				if (talents.active) resize(WIDTH, (int) talents.bottom() + MARGIN);
+				else {
+					resize(WIDTH, (int) info.bottom() + MARGIN);
+				}
 			} else {
 				resize(WIDTH, (int) info.bottom() + MARGIN);
 			}
