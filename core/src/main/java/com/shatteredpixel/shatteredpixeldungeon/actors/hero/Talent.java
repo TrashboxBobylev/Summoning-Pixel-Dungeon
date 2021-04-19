@@ -33,7 +33,7 @@ import java.util.LinkedHashMap;
 
 public enum Talent {
 
-    ECH(1, 1);
+    ECH(1);
 
     int icon;
     int maxPoints;
@@ -66,7 +66,7 @@ public enum Talent {
         return Messages.get(this, name() + ".desc");
     }
 
-    public static final int MAX_TALENT_TIERS = 3;
+    public static final int MAX_TALENT_TIERS = 1;
 
     public static void initClassTalents( Hero hero ){
         initClassTalents( hero.heroClass, hero.talents );
@@ -80,24 +80,13 @@ public enum Talent {
         ArrayList<Talent> tierTalents = new ArrayList<>();
 
         Collections.addAll(tierTalents, ECH);
+
         for (Talent talent : tierTalents){
             talents.get(0).put(talent, 0);
         }
+
         tierTalents.clear();
 
-        for (Talent talent : tierTalents){
-            talents.get(1).put(talent, 0);
-        }
-        tierTalents.clear();
-
-
-        for (Talent talent : tierTalents){
-            talents.get(2).put(talent, 0);
-        }
-        tierTalents.clear();
-
-        //tier4
-        //TBD
     }
 
     public static void initSubclassTalents( Hero hero ){
@@ -105,19 +94,19 @@ public enum Talent {
     }
 
     public static void initSubclassTalents( HeroSubClass cls, ArrayList<LinkedHashMap<Talent, Integer>> talents ){
-        if (cls == HeroSubClass.NONE) return;
-
-        while (talents.size() < MAX_TALENT_TIERS){
-            talents.add(new LinkedHashMap<>());
-        }
-
-        ArrayList<Talent> tierTalents = new ArrayList<>();
-
-
-        for (Talent talent : tierTalents){
-            talents.get(2).put(talent, 0);
-        }
-        tierTalents.clear();
+//        if (cls == HeroSubClass.NONE) return;
+//
+//        while (talents.size() < MAX_TALENT_TIERS){
+//            talents.add(new LinkedHashMap<>());
+//        }
+//
+//        ArrayList<Talent> tierTalents = new ArrayList<>();
+//
+//
+//        for (Talent talent : tierTalents){
+//            talents.get(2).put(talent, 0);
+//        }
+//        tierTalents.clear();
     }
 
     private static final String TALENT_TIER = "talents_tier_";

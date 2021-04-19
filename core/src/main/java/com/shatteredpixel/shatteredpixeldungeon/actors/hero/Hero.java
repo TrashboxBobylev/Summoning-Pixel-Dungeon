@@ -219,6 +219,7 @@ public class Hero extends Char {
 		
 		heroClass.storeInBundle( bundle );
 		subClass.storeInBundle( bundle );
+		if (heroClass == HeroClass.ROGUE)
 		Talent.storeTalentsInBundle( bundle, this );
 		
 		bundle.put( ATTACK, attackSkill );
@@ -246,6 +247,7 @@ public class Hero extends Char {
 		
 		heroClass = HeroClass.restoreInBundle( bundle );
 		subClass = HeroSubClass.restoreInBundle( bundle );
+		if (heroClass == HeroClass.ROGUE)
 		Talent.restoreTalentsFromBundle( bundle, this );
 		
 		attackSkill = bundle.getInt( ATTACK );

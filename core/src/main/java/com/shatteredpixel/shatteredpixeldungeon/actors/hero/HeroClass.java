@@ -127,6 +127,8 @@ public enum HeroClass {
 
 		hero.attunement = 0;
 
+		Talent.initClassTalents(hero);
+
 		new ScrollOfIdentify().identify();
 		new Ropes().quantity(5).collect();
 
