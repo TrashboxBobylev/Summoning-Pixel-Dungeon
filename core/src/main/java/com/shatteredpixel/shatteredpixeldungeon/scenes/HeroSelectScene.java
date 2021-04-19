@@ -324,7 +324,7 @@ public class HeroSelectScene extends PixelScene {
 		private RedButton secondSub;
 
 		private int WIDTH = 120;
-		private int HEIGHT = 120;
+		private int HEIGHT = 140;
 		private int MARGIN = 2;
 		private int INFO_WIDTH = WIDTH - MARGIN*2;
 
@@ -376,14 +376,15 @@ public class HeroSelectScene extends PixelScene {
 					break;
 			}
 
-
+			ArrayList<LinkedHashMap<Talent, Integer>> talentList = new ArrayList<>();
+			Talent.initClassTalents(cl, talentList);
+			Talent.initSubclassTalents(cl.subClasses()[secondSubclass ? 1 : 0], talentList);
+			talents = new TalentsPane(false, talentList);
+			add(talents);
+			talents.active = talents.visible = false;
 
 			if (cl == HeroClass.ROGUE){
-				ArrayList<LinkedHashMap<Talent, Integer>> talentList = new ArrayList<>();
-				Talent.initClassTalents(cl, talentList);
-				Talent.initSubclassTalents(cl.subClasses()[secondSubclass ? 1 : 0], talentList);
-				talents = new TalentsPane(false, talentList);
-				add(talents);
+
 				firstSub = new RedButton(Messages.titleCase(cl.subClasses()[0].title()), 7){
 					@Override
 					protected void onClick() {
@@ -498,8 +499,6 @@ public class HeroSelectScene extends PixelScene {
 
 		}
 
-
-
 		@Override
 		public void select(Tab tab) {
 			super.select(tab);
@@ -512,15 +511,12 @@ public class HeroSelectScene extends PixelScene {
 			if (secondSub != null)
 			secondSub.setPos(title.right() + (WIDTH - title.right() - secondSub.width()) / 2, 0);
 
-			if (talents != null) {
-				talents.setRect(0, info.bottom() + MARGIN, WIDTH, HEIGHT - (info.bottom() + MARGIN));
-				if (talents.active) resize(WIDTH, (int) talents.bottom() + MARGIN);
-				else {
-					resize(WIDTH, (int) info.bottom() + MARGIN);
-				}
-			} else {
-				resize(WIDTH, (int) info.bottom() + MARGIN);
-			}
+			talents.setRect(0, info.bottom()+MARGIN, WIDTH, HEIGHT - (info.bottom()+MARGIN));
+
+//			if (talents.active){
+//				resize(WIDTH, (int) talents.bottom() + MARGIN);
+//			}
+			resize(WIDTH, /*(int) info.bottom() + MARGIN*20*/HEIGHT);
 
 			layoutTabs();
 		}

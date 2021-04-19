@@ -33,7 +33,9 @@ import java.util.LinkedHashMap;
 
 public enum Talent {
 
-    ECH(1);
+    ECH(1),
+    ECHERS(10),
+    ECHEREST(20);
 
     int icon;
     int maxPoints;
@@ -66,7 +68,7 @@ public enum Talent {
         return Messages.get(this, name() + ".desc");
     }
 
-    public static final int MAX_TALENT_TIERS = 1;
+    public static final int MAX_TALENT_TIERS = 3;
 
     public static void initClassTalents( Hero hero ){
         initClassTalents( hero.heroClass, hero.talents );
@@ -83,6 +85,22 @@ public enum Talent {
 
         for (Talent talent : tierTalents){
             talents.get(0).put(talent, 0);
+        }
+
+        tierTalents.clear();
+
+        Collections.addAll(tierTalents, ECHERS);
+
+        for (Talent talent : tierTalents){
+            talents.get(1).put(talent, 0);
+        }
+
+        tierTalents.clear();
+
+        Collections.addAll(tierTalents, ECHEREST);
+
+        for (Talent talent : tierTalents){
+            talents.get(2).put(talent, 0);
         }
 
         tierTalents.clear();

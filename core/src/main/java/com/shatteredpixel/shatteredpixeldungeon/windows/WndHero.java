@@ -76,7 +76,7 @@ public class WndHero extends WndTabbed {
 		talents = new TalentsTab();
 		add(talents);
 		talents.setRect(0, 0, WIDTH, HEIGHT);
-		talents.visible = false;
+		talents.visible = talents.active = false;
 		
 		buffs = new BuffsTab();
 		add( buffs );
