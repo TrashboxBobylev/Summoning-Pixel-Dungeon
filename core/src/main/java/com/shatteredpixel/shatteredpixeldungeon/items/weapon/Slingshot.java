@@ -28,8 +28,10 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -335,7 +337,11 @@ public class Slingshot extends Weapon {
         @Override
         public void rangedHit(Char enemy, int cell) {
             super.rangedHit(enemy, cell);
-            if (Dungeon.hero.subClass == HeroSubClass.BERSERKER){
+            Hunger hunger = Dungeon.hero.buff(Hunger.class);
+            if (Dungeon.hero.subClass == HeroSubClass.BERSERKER &&
+                !(hunger == null) && !hunger.isHungry() &&
+                    Dungeon.hero.belongings.weapon != null &&
+                    ((MeleeWeapon)Dungeon.hero.belongings.weapon).checkSeal() != null){
                 WarriorAbilityButton.doAttack(enemy);
             }
         }
