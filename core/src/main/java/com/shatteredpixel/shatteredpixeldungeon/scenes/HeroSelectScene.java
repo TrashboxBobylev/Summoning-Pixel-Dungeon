@@ -512,9 +512,12 @@ public class HeroSelectScene extends PixelScene {
 			if (secondSub != null)
 			secondSub.setPos(title.right() + (WIDTH - title.right() - secondSub.width()) / 2, 0);
 
-			if (talents != null)
-			talents.setRect(0, info.bottom() + MARGIN, WIDTH, HEIGHT - (info.bottom() + MARGIN));
-			resize(WIDTH, (int) info.bottom() + MARGIN);
+			if (talents != null) {
+				talents.setRect(0, info.bottom() + MARGIN, WIDTH, HEIGHT - (info.bottom() + MARGIN));
+				resize(WIDTH, (int) talents.bottom() + MARGIN);
+			} else {
+				resize(WIDTH, (int) info.bottom() + MARGIN);
+			}
 
 			layoutTabs();
 		}
