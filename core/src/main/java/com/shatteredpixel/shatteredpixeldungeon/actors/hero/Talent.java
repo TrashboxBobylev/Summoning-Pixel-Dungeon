@@ -38,8 +38,32 @@ public enum Talent {
     ACUTENESS(20),
     HYPERSPACE(21),
     PERDERE_CRIMEN(22),
-    ECHERS(10),
-    ECHEREST(20);
+    SCRAP_BRAIN(23),
+    WELCOME_TO_EARTH(50),
+    THE_SANDSTORM(51),
+    TIME_TOGETHER(52),
+    DIRECTIVE(53),
+    GOOD_INTENTIONS(54),
+    LIFE_ON_AXIOM(55),
+    LETHAL_MOMENTUM(56),
+    DOG_BREEDING(82, 3),
+    NUCLEAR_RAGE(83, 3),
+    SNIPER_PATIENCE(84, 3),
+    ARCANE_CLOAK(85, 3),
+    ARMORED_ARMADA(86, 3),
+    TIMEBENDING(87, 3),
+    LUST_AND_DUST(88, 3),
+    TOWER_OF_POWER(89, 3),
+    JUST_ONE_MORE_TILE(90, 3),
+    NEVER_GONNA_GIVE_YOU_UP(114, 3),
+    ASSASSINATION(115, 3),
+    SPEED_SHOES(116, 3),
+    BREAD_AND_CIRCUSES(117, 3),
+    COMET_FALL(118, 3),
+    SPYDER_MAN(119, 3),
+    DETERMINED(120, 3),
+    MY_SUNSHINE(121, 3),
+    OLYMPIC_SKILLS(122, 3);
 
     int icon;
     int maxPoints;
@@ -72,7 +96,7 @@ public enum Talent {
         return Messages.get(this, name() + ".desc");
     }
 
-    public static final int MAX_TALENT_TIERS = 1;
+    public static final int MAX_TALENT_TIERS = 3;
 
     public static void initClassTalents( Hero hero ){
         initClassTalents( hero.heroClass, hero.talents );
@@ -85,7 +109,7 @@ public enum Talent {
 
         ArrayList<Talent> tierTalents = new ArrayList<>();
 
-        Collections.addAll(tierTalents, SPECIAL_DELIVERY, COLD_FRONT, ACUTENESS, HYPERSPACE, PERDERE_CRIMEN);
+        Collections.addAll(tierTalents, SPECIAL_DELIVERY, COLD_FRONT, ACUTENESS, HYPERSPACE, PERDERE_CRIMEN, SCRAP_BRAIN);
 
         for (Talent talent : tierTalents){
             talents.get(0).put(talent, 0);
@@ -93,21 +117,20 @@ public enum Talent {
 
         tierTalents.clear();
 
-//        Collections.addAll(tierTalents, ECHERS);
-//
-//        for (Talent talent : tierTalents){
-//            talents.get(1).put(talent, 0);
-//        }
-//
-//        tierTalents.clear();
-//
-//        Collections.addAll(tierTalents, ECHEREST);
-//
-//        for (Talent talent : tierTalents){
-//            talents.get(2).put(talent, 0);
-//        }
-//
-//        tierTalents.clear();
+        Collections.addAll(tierTalents, WELCOME_TO_EARTH, THE_SANDSTORM, TIME_TOGETHER, DIRECTIVE, GOOD_INTENTIONS, LIFE_ON_AXIOM, LETHAL_MOMENTUM);
+
+        for (Talent talent : tierTalents){
+            talents.get(1).put(talent, 0);
+        }
+
+        tierTalents.clear();
+
+        Collections.addAll(tierTalents, DOG_BREEDING, NUCLEAR_RAGE, SNIPER_PATIENCE, ARCANE_CLOAK, ARMORED_ARMADA, TIMEBENDING, LUST_AND_DUST, TOWER_OF_POWER, JUST_ONE_MORE_TILE, NEVER_GONNA_GIVE_YOU_UP, ASSASSINATION, SPEED_SHOES, BREAD_AND_CIRCUSES, COMET_FALL, SPYDER_MAN, DETERMINED, MY_SUNSHINE, OLYMPIC_SKILLS);
+       for (Talent talent : tierTalents){
+            talents.get(2).put(talent, 0);
+        }
+
+        tierTalents.clear();
 
     }
 
