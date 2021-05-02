@@ -17,7 +17,7 @@ jobs:
       - name: Generate Release APK
         run: ./gradlew android:assembleRelease
       - name: Generate Release JAR
-        run: ./gradlew desktop:assembleRelease
+        run: ./gradlew desktop:assemble
       # 3
       - name: Sign APK
         uses: r0adkll/sign-android-release@v1
