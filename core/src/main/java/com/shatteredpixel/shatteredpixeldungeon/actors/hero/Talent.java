@@ -63,7 +63,19 @@ public enum Talent {
     SPYDER_MAN(119, 3),
     DETERMINED(120, 3),
     MY_SUNSHINE(121, 3),
-    OLYMPIC_SKILLS(122, 3);
+    OLYMPIC_SKILLS(122, 3),
+    REAL_KNIFE_MASTER(25, 3),
+    BLOOD_DRIVE(26, 3),
+    UNSETTLING_GAZE(27, 3),
+    SUPPORT_POTION(28, 3),
+    WITCHING_STRIKE(29, 3),
+    SILENCE_OF_LAMBS(30, 3),
+    BLESSING_OF_SANITY(57, 3),
+    GUIDANCE_FLAME(58, 3),
+    SPEEDY_STEALTH(59, 3),
+    THAUMATURGY(60, 3),
+    SHARP_VISION(61, 3),
+    CHEMISTRY_DEGREE(62, 3);
 
     int icon;
     int maxPoints;
@@ -139,19 +151,26 @@ public enum Talent {
     }
 
     public static void initSubclassTalents( HeroSubClass cls, ArrayList<LinkedHashMap<Talent, Integer>> talents ){
-//        if (cls == HeroSubClass.NONE) return;
-//
-//        while (talents.size() < MAX_TALENT_TIERS){
-//            talents.add(new LinkedHashMap<>());
-//        }
-//
-//        ArrayList<Talent> tierTalents = new ArrayList<>();
-//
-//
-//        for (Talent talent : tierTalents){
-//            talents.get(2).put(talent, 0);
-//        }
-//        tierTalents.clear();
+        if (cls == HeroSubClass.NONE) return;
+
+        while (talents.size() < MAX_TALENT_TIERS){
+            talents.add(new LinkedHashMap<>());
+        }
+
+        ArrayList<Talent> tierTalents = new ArrayList<>();
+        switch (cls){
+            case ASSASSIN:
+                Collections.addAll(tierTalents, REAL_KNIFE_MASTER, BLOOD_DRIVE, UNSETTLING_GAZE, SUPPORT_POTION, WITCHING_STRIKE, SILENCE_OF_LAMBS);
+                break;
+            case FREERUNNER:
+                Collections.addAll(tierTalents, BLESSING_OF_SANITY, GUIDANCE_FLAME, SPEEDY_STEALTH, THAUMATURGY, SHARP_VISION, CHEMISTRY_DEGREE);
+                break;
+        }
+
+        for (Talent talent : tierTalents){
+            talents.get(2).put(talent, 0);
+        }
+        tierTalents.clear();
     }
 
     private static final String TALENT_TIER = "talents_tier_";

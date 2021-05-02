@@ -369,7 +369,7 @@ public class HeroSelectScene extends PixelScene {
 					break;
 				case CONJURER:
 					tabIcons = new Image[]{
-							new ItemSprite(ItemSpriteSheet.ARTIFACT_LOVE1, null),
+							new ItemSprite(ItemSpriteSheet.BOOK, null),
 							new ItemSprite(ItemSpriteSheet.ARMOR_CONJURER, null),
 							new Image(Assets.Interfaces.BUFFS_LARGE, 112, 32, 16, 16)
 					};
@@ -384,7 +384,41 @@ public class HeroSelectScene extends PixelScene {
 			talents.active = talents.visible = false;
 
 			if (cl == HeroClass.ROGUE){
+				firstSub = new RedButton(Messages.titleCase(cl.subClasses()[0].title()), 7){
+					@Override
+					protected void onClick() {
+						super.onClick();
+						if (secondSubclass){
+							secondSubclass = false;
+							hide();
+							WndHeroInfo newWindow = new WndHeroInfo(cl);
+							newWindow.talents.scrollTo(0, talents.content().camera.scroll.y);
+							newWindow.select(3);
+							ShatteredPixelDungeon.scene().addToFront(newWindow);
+						}
+					}
+				};
+				if (!secondSubclass) firstSub.textColor(Window.TITLE_COLOR);
+				firstSub.setSize(40, firstSub.reqHeight()+2);
+				add(firstSub);
 
+				secondSub = new RedButton(Messages.titleCase(cl.subClasses()[1].title()), 7){
+					@Override
+					protected void onClick() {
+						super.onClick();
+						if (!secondSubclass){
+							secondSubclass = true;
+							hide();
+							WndHeroInfo newWindow = new WndHeroInfo(cl);
+							newWindow.talents.scrollTo(0, talents.content().camera.scroll.y);
+							newWindow.select(3);
+							ShatteredPixelDungeon.scene().addToFront(newWindow);
+						}
+					}
+				};
+				if (secondSubclass) secondSub.textColor(Window.TITLE_COLOR);
+				secondSub.setSize(40, secondSub.reqHeight()+2);
+				add(secondSub);
 			}
 
 			tab = new IconTab( tabIcons[0] ){
@@ -433,6 +467,8 @@ public class HeroSelectScene extends PixelScene {
 							info.text(Messages.get(WndHeroInfo.class, "talents_desc"), INFO_WIDTH);
 						}
 						talents.visible = talents.active = value;
+						firstSub.visible = firstSub.active = value;
+						secondSub.visible = secondSub.active = value;
 					}
 				};
 				add(tab);
