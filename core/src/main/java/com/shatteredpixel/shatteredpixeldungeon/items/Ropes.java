@@ -69,6 +69,12 @@ public class Ropes extends Item {
     }
 
     @Override
+    public Item upgrade() {
+        GLog.positive(Messages.get(Ropes.class, "upgrade"));
+        return super.upgrade();
+    }
+
+    @Override
     public void doThrow(Hero hero) {
         GameScene.selectCell(caster);
     }
