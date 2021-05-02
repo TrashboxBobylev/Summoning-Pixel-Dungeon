@@ -56,13 +56,6 @@ public class StationaryStaff extends Staff {
     }
 
     @Override
-    public ArrayList<String> actions(Hero hero) {
-        ArrayList<String> actions = super.actions( hero );
-        actions.remove(AC_ZAP);
-        return actions;
-    }
-
-    @Override
     public void execute(Hero hero, String action) {
 
         super.execute(hero, action);
@@ -111,15 +104,10 @@ public class StationaryStaff extends Staff {
                 //okay, this is incredible mess
                 //basically it's copy-paste from various wand classes
                 //ZAP from summon staff doesn't do damage and serves only as targetting tool for your minions
+
                 if (staff.tryToZap(curUser, target)){
                     curUser.busy();
                     Invisibility.dispel();
-
-                    if (curItem.cursed){
-                        GLog.negative(Messages.get(Staff.class, "curse_discover", staff.name()));
-                        curUser.damage(staff.minionDamageRoll(curUser), staff);
-                        curUser.spendAndNext(1f);
-                    } else {
                         try {
                             Sample.INSTANCE.play( Assets.Sounds.ZAP );
                             staff.summon(curUser, target);
@@ -128,7 +116,6 @@ public class StationaryStaff extends Staff {
                             ShatteredPixelDungeon.reportException(e);
                             GLog.warning( Messages.get(Wand.class, "fizzles") );
                         }
-                    }
                     curItem.cursedKnown = true;
                 }
             }

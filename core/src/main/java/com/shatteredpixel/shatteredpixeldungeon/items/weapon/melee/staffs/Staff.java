@@ -80,11 +80,7 @@ public class Staff extends Weapon {
     public int tier;
     public MinionBalanceTable table;
 
-    public int Tier;
-
     public static final String AC_SUMMON = "SUMMON";
-    public static final String AC_ZAP = "ZAP";
-    public static final String AC_ENHANCE = "ENHANCE";
     public static final String AC_DOWNGRADE = "DOWNGRADE";
     public static final String AC_TIERINFO = "TIERINFO";
 
@@ -96,8 +92,6 @@ public class Staff extends Weapon {
     private float availableUsesToID = USES_TO_ID/2f;
 
     public Charger charger;
-
-    private boolean curChargeKnown = false;
 
     //a lot of saving
     public static final String MAX_CHARGES = "max_charges";
@@ -149,11 +143,8 @@ public class Staff extends Weapon {
 
     @Override
     public int level() {
-        if (!cursed && curseInfusionBonus){
-            curseInfusionBonus = false;
-            updateLevel();
-        }
-        return super.level() + (curseInfusionBonus ? 1 : 0);
+        updateLevel();
+        return super.level();
     }
 
     @Override
@@ -164,7 +155,6 @@ public class Staff extends Weapon {
         updateLevel();
         curCharges = Math.min( curCharges + 1, 1);
         updateQuickslot();
-
 
         return this;
     }
@@ -195,11 +185,8 @@ public class Staff extends Weapon {
 
     {
         defaultAction = AC_SUMMON;
-        usesTargeting = true;
     }
 
-    //worse damage in melee
-    //as example, Froggit Staff deals 1-4 damage and have +0.5/+1 scale
     @Override
     public int min(int lvl) {
         return tier +  lvl / 2;
@@ -265,11 +252,6 @@ public class Staff extends Weapon {
         return true;
     }
 
-    //only for cursed behavour
-    public int minionDamageRoll(Char owner) {
-        return augment.damageFactor(Random.NormalIntRange(minionMin(level()), minionMax(level())));
-    }
-
     public float requiredAttunement(){
         switch (level()) {
             case 0: return table.att1;
@@ -302,16 +284,11 @@ public class Staff extends Weapon {
         if (curCharges > 0) {
             actions.add( AC_SUMMON );
         }
-        if (hero.subClass == HeroSubClass.SOUL_REAVER && hero.buff(SoulReaver.class) != null){
-            actions.add(AC_ENHANCE);
-        }
         actions.remove( AC_EQUIP);
         if (level() > 0) actions.add(AC_DOWNGRADE);
         actions.add( AC_TIERINFO );
         return actions;
     }
-
-    private static boolean enchance = false;
 
     @Override
     public void execute(Hero hero, String action) {
@@ -329,11 +306,6 @@ public class Staff extends Weapon {
                 GLog.warning( Messages.get(Wand.class, "fizzles") );
             }
 
-        } else if (action.equals(AC_ZAP) || action.equals(AC_ENHANCE)){
-            enchance = action.equals(AC_ENHANCE);
-            curUser = hero;
-            curItem = this;
-            GameScene.selectCell( zapper );
         } else if (action.equals(AC_DOWNGRADE)){
             GameScene.flash(0xFFFFFF);
             Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
@@ -470,83 +442,6 @@ public class Staff extends Weapon {
     }
 
     public void customizeMinion(Minion minion){ }
-
-    protected static CellSelector.Listener zapper = new  CellSelector.Listener() {
-
-        @Override
-        public void onSelect( Integer target ) {
-
-            if (target != null) {
-
-                final Staff staff = (Staff)curItem;
-
-                final Ballistica shot = new Ballistica( curUser.pos, target, Ballistica.MAGIC_BOLT);
-                int cell = shot.collisionPos;
-
-                if (target == curUser.pos || cell == curUser.pos) {
-                    GLog.i( Messages.get(Wand.class, "self_target") );
-                    return;
-                }
-
-                curUser.sprite.zap(cell);
-
-                //attempts to target the cell aimed at if something is there, otherwise targets the collision pos.
-                if (Actor.findChar(target) != null)
-                    QuickSlotButton.target(Actor.findChar(target));
-                else
-                    QuickSlotButton.target(Actor.findChar(cell));
-
-                //okay, this is incredible mess
-                //basically it's copy-paste from various wand classes
-                //ZAP from summon staff doesn't do damage and serves only as targetting tool for your minions
-                if (staff.tryToZap(curUser, target)){
-                    curUser.busy();
-                    Invisibility.dispel();
-
-                    if (curItem.cursed){
-                        GLog.negative(Messages.get(Staff.class, "curse_discover", staff.name()));
-                        curUser.damage(staff.minionDamageRoll(curUser), staff);
-                        curUser.spendAndNext(1f);
-                    } else {
-                        curUser.sprite.parent.add(
-                                new Beam.LightRay(curUser.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(shot.collisionPos)));
-                        Sample.INSTANCE.play( Assets.Sounds.ZAP );
-                        Char ch = Actor.findChar(shot.collisionPos);
-                        if (ch != null){
-                            if (ch instanceof Minion){
-                                if (!enchance)ch.die( curUser );
-                                else {
-                                    SoulReaver buff = curUser.buff(SoulReaver.class);
-                                    if (buff != null){
-                                        switch (buff.type){
-                                            case MELEE:
-                                                Buff.prolong(ch, AdditionalDamage.class, buff.cooldown()*2); break;
-                                            case RANGE:
-                                                Buff.prolong(ch, AdditionalEvasion.class, buff.cooldown()*2); break;
-                                            case MAGIC:
-                                                Buff.prolong(ch, MagicalResistance.class, buff.cooldown()*2); break;
-                                            case DEFENSE:
-                                                Buff.prolong(ch, AdditionalDefense.class, buff.cooldown()*2); break;
-                                        }
-                                        buff.detach();
-
-                                    }
-                                }
-                            }
-                            else ch.damage(0, this);
-                        }
-                        staff.wandUsed(true);
-                    }
-                    curItem.cursedKnown = true;
-                }
-            }
-        }
-
-        @Override
-        public String prompt() {
-            return Messages.get(Wand.class, "prompt");
-        }
-    };
 
     protected int chargeTurns = 400;
 
