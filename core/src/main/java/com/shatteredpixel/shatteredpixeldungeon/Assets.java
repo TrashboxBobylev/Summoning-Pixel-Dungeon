@@ -24,8 +24,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon;
 
-import com.watabou.noosa.Image;
-
 public class Assets {
 
 	public static class Effects {
