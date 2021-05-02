@@ -38,5 +38,5 @@ jobs:
           prerelease: true
           title: "dev build, ech"
           files: |
-              *.apk
-              desktop-*.jar
+              android/build/outputs/apk/release/android-release-unsigned-signed.apk
+              desktop/build/libs/*.jar
