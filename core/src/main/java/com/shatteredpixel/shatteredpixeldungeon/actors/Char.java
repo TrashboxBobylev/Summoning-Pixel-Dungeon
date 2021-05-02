@@ -587,7 +587,12 @@ public abstract class Char extends Actor {
 		if (buff( Speed.class ) != null) {
 			timeScale *= 2.0f;
 		}
-		
+
+		float fpsMod = 1f;
+		if (timeScale < 1f) fpsMod /= 0.75f * timeScale;
+
+		if (sprite != null) sprite.setAnimSpeed(fpsMod);
+
 		super.spend( time / timeScale );
 	}
 	

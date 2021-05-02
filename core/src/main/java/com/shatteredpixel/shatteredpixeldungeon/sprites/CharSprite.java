@@ -134,6 +134,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 			super.play(anim);
 		}
 	}
+
 	
 	//intended to be used for placing a character in the game world
 	public void link( Char ch ) {

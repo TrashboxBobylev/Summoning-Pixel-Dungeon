@@ -36,6 +36,12 @@ public class MovieClip extends Image {
 	public boolean paused = false;
 
 	public Listener listener;
+
+	public float animSpeed = 1f;
+
+	public void setAnimSpeed(float mod){
+		animSpeed = mod;
+	}
 	
 	public MovieClip() {
 		super();
@@ -63,8 +69,8 @@ public class MovieClip extends Image {
 			int lastFrame = curFrame;
 			
 			frameTimer += Game.elapsed;
-			while (frameTimer > curAnim.delay) {
-				frameTimer -= curAnim.delay;
+			while (frameTimer > curAnim.delay * animSpeed) {
+				frameTimer -= curAnim.delay * animSpeed;
 				if (curFrame == curAnim.frames.length - 1) {
 					if (curAnim.looped) {
 						curFrame = 0;
