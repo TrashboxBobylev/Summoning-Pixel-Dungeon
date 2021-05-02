@@ -77,8 +77,7 @@ public class HighGrass {
 			int naturalismLevel = 0;
 			
 			if (ch != null) {
-				SandalsOfNature.NaturalismBuff naturalism = ch.buff( SandalsOfNature.Naturalism.class );
-				if (naturalism == null) naturalism = ch.buff(SoulOfYendor.omniBuff.class);
+				SandalsOfNature.NaturalismBuff naturalism = ch.buff( SandalsOfNature.NaturalismBuff.class );
 				if (naturalism != null) {
 					if (!naturalism.isCursed()) {
 						naturalismLevel = naturalism.itemLevel() + 1;

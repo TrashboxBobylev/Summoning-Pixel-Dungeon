@@ -101,6 +101,7 @@ public class Invisibility extends FlavourBuff {
 		if (cloakBuff != null) {
 			cloakBuff.dispel();
 		}
+
         for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
             Buff buff = mob.buff( Invisibility.class );
             if (mob instanceof Minion && buff != null){
@@ -109,9 +110,7 @@ public class Invisibility extends FlavourBuff {
         }
 		
 		//these aren't forms of invisibilty, but do dispel at the same time as it.
-		TimekeepersHourglass.TimeFreezing timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.timeFreeze.class );
-		if (timeFreeze == null) timeFreeze = Dungeon.hero.buff( SoulOfYendor.timeFreeze.class );
-		if (timeFreeze == null) timeFreeze = Dungeon.hero.buff( Swiftthistle.TimeBubble.class );
+		TimekeepersHourglass.TimeFreezing timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.TimeFreezing.class );
 		if (timeFreeze != null) {
 			timeFreeze.detach();
 		}

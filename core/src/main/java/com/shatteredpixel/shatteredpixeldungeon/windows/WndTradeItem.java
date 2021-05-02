@@ -120,8 +120,7 @@ public class WndTradeItem extends WndInfoItem {
 
 		pos = btnBuy.bottom();
 
-		MasterThievesArmband.ThieveryBuff thievery = Dungeon.hero.buff(MasterThievesArmband.Thievery.class);
-		if (thievery == null) thievery = Dungeon.hero.buff(SoulOfYendor.omniBuff.class);
+		MasterThievesArmband.ThieveryBuff thievery = Dungeon.hero.buff(MasterThievesArmband.ThieveryBuff.class);
 		if (thievery != null && !thievery.isCursed()) {
 			final float chance = thievery.stealChance(price);
 			MasterThievesArmband.ThieveryBuff finalThievery = thievery;

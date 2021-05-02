@@ -55,8 +55,7 @@ public class Regeneration extends Buff {
 				}
 			}
 
-			RegenerationBuff regenBuff = Dungeon.hero.buff( ChaliceOfBlood.chaliceRegen.class);
-			if (regenBuff == null) regenBuff = Dungeon.hero.buff( SoulOfYendor.omniBuff.class);
+			RegenerationBuff regenBuff = Dungeon.hero.buff( RegenerationBuff.class);
 
 			float delay = REGENERATION_DELAY;
 			if (regenBuff != null) {

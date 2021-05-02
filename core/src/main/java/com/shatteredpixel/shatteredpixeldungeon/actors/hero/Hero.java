@@ -558,9 +558,7 @@ public class Hero extends Char {
 	@Override
 	public void spend( float time ) {
 		justMoved = false;
-		TimekeepersHourglass.TimeFreezing freeze = Dungeon.hero.buff( TimekeepersHourglass.timeFreeze.class );
-		if (freeze == null) freeze = Dungeon.hero.buff( SoulOfYendor.timeFreeze.class );
-		if (freeze == null) freeze = Dungeon.hero.buff( Swiftthistle.TimeBubble.class );
+		TimekeepersHourglass.TimeFreezing freeze = Dungeon.hero.buff( TimekeepersHourglass.TimeFreezing.class );
 		if (freeze != null) {
 			freeze.processTime(time);
 			return;
@@ -965,9 +963,7 @@ public class Hero extends Char {
 			Hunger.adjustHunger(-20);
 			lastMovPos = -1;
 
-			TimekeepersHourglass.TimeFreezing timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.timeFreeze.class );
-			if (timeFreeze == null) timeFreeze = Dungeon.hero.buff( SoulOfYendor.timeFreeze.class );
-			if (timeFreeze == null) timeFreeze = Dungeon.hero.buff( Swiftthistle.TimeBubble.class );
+			TimekeepersHourglass.TimeFreezing timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.TimeFreezing.class );
 			if (timeFreeze != null) timeFreeze.detach();
 			
 			InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
@@ -1020,9 +1016,7 @@ public class Hero extends Char {
 				Hunger.adjustHunger(-20);
 				lastMovPos = -1;
 
-				TimekeepersHourglass.TimeFreezing timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.timeFreeze.class );
-				if (timeFreeze == null) timeFreeze = Dungeon.hero.buff( SoulOfYendor.timeFreeze.class );
-				if (timeFreeze == null) timeFreeze = Dungeon.hero.buff( Swiftthistle.TimeBubble.class );
+				TimekeepersHourglass.TimeFreezing timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.TimeFreezing.class );
 				if (timeFreeze != null) timeFreeze.detach();
 
 				InterlevelScene.mode = InterlevelScene.Mode.ASCEND;
