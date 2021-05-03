@@ -76,6 +76,7 @@ public class Speck extends Image {
     public static final int PERFUME = 122;
     public static final int HASTE = 123;
     public static final int STENCH_WAND = 124;
+    public static final int SWORD = 15;
 	
 	private static final int SIZE = 7;
 	
@@ -139,6 +140,7 @@ public class Speck extends Image {
 			break;
 		default:
 			frame( film.get( type ) );
+
 		}
 		
 		this.x = x - origin.x;
@@ -406,6 +408,13 @@ public class Speck extends Image {
 			acc.y = 256;
 			lifespan = -speed.y / acc.y * 2;
 			break;
+
+			case SWORD:
+				this.y -= 16;
+				angularSpeed = Random.Float(-90, 90);
+				angle = Random.Float( 360 );
+				lifespan = Random.Float( 1f, 5f );
+				break;
 		}
 		
 		left = lifespan;
@@ -512,6 +521,7 @@ public class Speck extends Image {
             case HONEY:
             case PERFUME:
             case HASTE:
+			case SWORD:
 				am = (float)Math.sqrt( (p < 0.5f ? p : 1 - p) * 0.5f );
 				scale.set( 1 + p );
 				break;
