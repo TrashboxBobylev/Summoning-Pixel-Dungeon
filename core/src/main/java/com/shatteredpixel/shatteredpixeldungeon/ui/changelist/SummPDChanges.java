@@ -182,7 +182,7 @@ public class SummPDChanges {
 //    }
     public static void add_1_1_7_Changes(ArrayList<ChangeInfo> changeInfos) {
 
-        ChangeInfo changes = new ChangeInfo("1.1.6-BETA", true, "");
+        ChangeInfo changes = new ChangeInfo("1.2", true, "");
         changes.hardlight(Window.TITLE_COLOR);
         changeInfos.add(changes);
 
@@ -203,7 +203,7 @@ public class SummPDChanges {
 
         changes.addButton(new ChangeButton(Icons.get(Icons.SHPX), "Shattered PD Port",
                         "_-_ Ported QoL changes and bugfixes from Shattered PD 0.9.1 and 0.9.2.\n\n" +
-                        "Talents are gonna be introduced in 1.1.7 as exclusive for Rogue."));
+                        "Talents are gonna be introduced in 1.3 as exclusive for Rogue."));
 
         changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_HALLS, 0, 64, 16, 16 ), "Dynamic Dungeon Size",
                 "To make game suit for every kind of player, the dungeon was renovated to have 3 different sizes!\n\n" +
@@ -221,6 +221,12 @@ public class SummPDChanges {
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ROPES, null), "Morshu's wares",
                 "_-_ Added ropes, that can be used as consumable version of chains, with ability to pick up items and activate traps.\n" +
                         "_-_ You get 5 ropes at start, and additional ropes can be found in dungeon or bought in shops."
+        ));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAND_CONJURATION, null), "New wand",
+                "_-_ Added the Wand of Conjuration, reminiscent of a staff with same name from _Brogue._\n\n" +
+                        "_-_ This wand casts spectre swords above you, that will aid in battles.\n\n" +
+                        "_-_ The strength of this new wand comes from it being spammable and ability of swords being overwhelming in numbers."
         ));
 
         changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
