@@ -24,17 +24,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.PerfumeGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LoveHolder;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ChaosSaberSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.watabou.utils.Bundle;
 
 public class ChaosSaber extends NPC {
@@ -67,35 +62,12 @@ public class ChaosSaber extends NPC {
     }
 
     @Override
-    public void damage(int dmg, Object src) {
-        super.damage(0, new Object());
-    }
-
-    @Override
     public int attackSkill( Char target ) {
         return Integer.MAX_VALUE;
     }
 
     @Override
     public int damageRoll() {
-        return damage;
-    }
-
-    @Override
-    public int attackProc(Char enemy, int damage ) {
-        damage = super.attackProc( enemy, damage );
-
-        destroy();
-        sprite.die();
-
-        LoveHolder.lul buff = Dungeon.hero.buff(LoveHolder.lul.class);
-        if (buff != null && Dungeon.hero.subClass == HeroSubClass.SOUL_REAVER){
-            int gain = ((Mob)enemy).EXP;
-            gain *= 2;
-            int charge = buff.gainCharge(gain);
-            if (charge == 0) enemy.sprite.showStatus(CharSprite.NEUTRAL, "+%d♥", gain);
-        }
-
         return damage;
     }
 
