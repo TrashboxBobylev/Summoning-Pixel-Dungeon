@@ -39,6 +39,8 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
+import java.util.Arrays;
+
 public class WandOfConjuration extends Wand {
 
 	{
@@ -59,11 +61,6 @@ public class WandOfConjuration extends Wand {
 	@Override
 	protected void fx(Ballistica bolt, Callback callback) {
 		callback.call();
-	}
-
-	@Override
-	protected int initialCharges() {
-		return 2;
 	}
 
 	public int swordCount(int lvl){
@@ -90,6 +87,26 @@ public class WandOfConjuration extends Wand {
 
 			Buff.affect(Dungeon.hero, SwordStorage.class).countUp(2);
 		}
+	}
+
+	@Override
+	public String statsDesc() {
+		if (!levelKnown)
+			return Messages.get(this, "stats_desc", 2);
+		else
+			return Messages.get(this, "stats_desc", swordCount(buffedLvl()));
+	}
+
+	@Override
+	public void staffFx(MagesStaff.StaffParticle particle) {
+		particle.color( Random.element(Arrays.asList(0xff61ac, 0x007bdb, 0xffffff)));
+		particle.am = 1f;
+		particle.setLifespan(2f);
+		particle.setSize( 1f, 1.5f);
+		particle.shuffleXY(0.5f);
+		float dst = Random.Float(8f);
+		particle.x -= dst;
+		particle.y += dst;
 	}
 
 }
