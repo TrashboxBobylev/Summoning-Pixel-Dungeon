@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
 public class WandOfConjuration extends Wand {
@@ -56,12 +57,17 @@ public class WandOfConjuration extends Wand {
 	}
 
 	@Override
+	protected void fx(Ballistica bolt, Callback callback) {
+		callback.call();
+	}
+
+	@Override
 	protected int initialCharges() {
-		return 3;
+		return 2;
 	}
 
 	public int swordCount(int lvl){
-		return 3 + lvl;
+		return 2 + lvl/2;
 	}
 
 	@Override

@@ -411,9 +411,10 @@ public class Speck extends Image {
 
 			case SWORD:
 				this.y -= 16;
-				angularSpeed = Random.Float(-90, 90);
+				speed.set( 0, -15 );
+				angularSpeed = Random.Float(-180, 180);
 				angle = Random.Float( 360 );
-				lifespan = Random.Float( 1f, 5f );
+				lifespan = Random.Float( 0.4f, 1f );
 				break;
 		}
 		
@@ -521,9 +522,13 @@ public class Speck extends Image {
             case HONEY:
             case PERFUME:
             case HASTE:
-			case SWORD:
 				am = (float)Math.sqrt( (p < 0.5f ? p : 1 - p) * 0.5f );
 				scale.set( 1 + p );
+				break;
+
+			case SWORD:
+				am = (float)Math.sqrt( (p < 0.6f ? p : 1 - p) * 0.6f );
+				scale.set( 1 + p*2 );
 				break;
 
 			case CORROSION:

@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.ChaosSaber;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -79,6 +78,9 @@ public class SwordStorage extends CounterBuff {
                 countDown(1);
 
                 if (count() <= 0) detach();
+                else {
+                    spend( TICK );
+                }
             } else {
                 spend( TICK );
             }
@@ -88,6 +90,18 @@ public class SwordStorage extends CounterBuff {
         }
 
         return true;
+    }
+
+    @Override
+    public void countUp(float inc) {
+        super.countUp(inc);
+        target.updateSpriteState();
+    }
+
+    @Override
+    public void countDown(float inc) {
+        super.countDown(inc);
+        target.updateSpriteState();
     }
 
     @Override
@@ -109,7 +123,6 @@ public class SwordStorage extends CounterBuff {
     public void fx(boolean on) {
         if (on) {
             target.sprite.add(CharSprite.State.SWORDS);
-            target.sprite.swords.pour(Speck.factory(Speck.SWORD), 0.08f / count());
         }
         else {
             target.sprite.remove(CharSprite.State.SWORDS);

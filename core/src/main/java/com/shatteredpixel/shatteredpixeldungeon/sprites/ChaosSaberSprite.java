@@ -45,7 +45,7 @@ public class ChaosSaberSprite extends MobSprite {
         die = new Animation(20, false);
         die.frames(film, 4);
 
-        attack = new Animation(4, false);
+        attack = new Animation(9, false);
         attack.frames(film, 1, 2, 3, 4);
 
         idle();

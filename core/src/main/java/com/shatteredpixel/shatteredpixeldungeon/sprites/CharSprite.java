@@ -427,6 +427,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				break;
 			case SWORDS:
 				swords = emitter();
+				swords.pour(Speck.factory(Speck.SWORD), 0.5f);
 				if (visible) {
 					Sample.INSTANCE.play( Assets.Sounds.HIT_SLASH );
 				}

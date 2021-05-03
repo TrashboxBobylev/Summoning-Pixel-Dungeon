@@ -462,7 +462,7 @@ public class ItemSpriteSheet {
 			assignItemRect(i, 14, 14);
 		assignItemRect(SLIME_STAFF, 16, 16);
 		assignItemRect(STAR_WAND, 14, 14);
-		assignItemRect(WAND_CONJURATION, 14, 14);
+
 	}
 
 	private static final int RINGS          =                               xy(1, 15);  //16 slots
@@ -481,6 +481,7 @@ public class ItemSpriteSheet {
 	static {
 		for (int i = RINGS; i < RINGS+16; i++)
 			assignItemRect(i, 8, 10);
+		assignItemRect(WAND_CONJURATION, 14, 14);
 	}
 
 	private static final int ARTIFACTS          =                            xy(1, 16);  //32 slots
