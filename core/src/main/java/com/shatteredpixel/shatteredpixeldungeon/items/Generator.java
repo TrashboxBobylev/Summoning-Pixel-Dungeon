@@ -238,8 +238,9 @@ public class Generator {
 					WandOfTransfusion.class,
 					WandOfCorruption.class,
 					WandOfRegrowth.class,
-                    WandOfStench.class};
-			WAND.probs = new float[]{ 4, 4, 3, 4, 4, 3, 3, 3, 3, 4, 3, 3, 3, 3, 3, 3 };
+                    WandOfStench.class,
+					WandOfConjuration.class};
+			WAND.probs = new float[]{ 4, 4, 3, 4, 4, 3, 3, 3, 3, 4, 3, 3, 3, 3, 3, 3, 3 };
 			
 			//see generator.randomWeapon
 			WEAPON.classes = new Class<?>[]{};

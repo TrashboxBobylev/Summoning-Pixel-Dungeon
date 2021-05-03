@@ -59,12 +59,17 @@ public class WandOfConjuration extends Wand {
 	}
 
 	@Override
+	protected int initialCharges() {
+		return 4;
+	}
+
+	@Override
 	protected void fx(Ballistica bolt, Callback callback) {
 		callback.call();
 	}
 
 	public int swordCount(int lvl){
-		return 2 + lvl/2;
+		return 3 + lvl;
 	}
 
 	@Override
@@ -85,14 +90,14 @@ public class WandOfConjuration extends Wand {
 			Dungeon.hero.sprite.burst(0x007bdb, 10);
 			Dungeon.hero.sprite.burst(0xff61ac, 10);
 
-			Buff.affect(Dungeon.hero, SwordStorage.class).countUp(2);
+			Buff.affect(Dungeon.hero, SwordStorage.class).countUp(0.75f);
 		}
 	}
 
 	@Override
 	public String statsDesc() {
 		if (!levelKnown)
-			return Messages.get(this, "stats_desc", 2);
+			return Messages.get(this, "stats_desc", 3);
 		else
 			return Messages.get(this, "stats_desc", swordCount(buffedLvl()));
 	}

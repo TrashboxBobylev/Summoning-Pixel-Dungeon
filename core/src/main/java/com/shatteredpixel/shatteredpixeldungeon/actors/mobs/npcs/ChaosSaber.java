@@ -35,7 +35,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SwordStorage;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ChaosSaberSprite;
-import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class ChaosSaber extends NPC {
@@ -45,25 +44,12 @@ public class ChaosSaber extends NPC {
         alignment = Alignment.ALLY;
         intelligentAlly = true;
         flying = true;
+        baseSpeed = 2f;
 
         WANDERING = new Wandering();
 
-        HP = HT = 0;
+        HP = HT = 1;
         immunities.add(PerfumeGas.Affection.class);
-    }
-
-    private int damage;
-
-    private static final String DAMAGE	= "damage";
-
-    @Override
-    public void storeInBundle( Bundle bundle ) {
-        super.storeInBundle( bundle );
-    }
-
-    @Override
-    public void restoreFromBundle( Bundle bundle ) {
-        super.restoreFromBundle( bundle );
     }
 
     @Override
@@ -71,10 +57,9 @@ public class ChaosSaber extends NPC {
         return (int) (target.defenseSkill(this)*1.2f);
     }
 
-
     @Override
     public int damageRoll() {
-        return Random.NormalIntRange(2, 10);
+        return Random.NormalIntRange(2, 5);
     }
 
     @Override
@@ -84,6 +69,7 @@ public class ChaosSaber extends NPC {
 
     @Override
     public int attackProc(Char enemy, int damage) {
+//        if (enemy instanceof Mob) ((Mob)enemy).aggro(this);
         return super.attackProc(enemy, damage) + enemy.drRoll();
     }
 
@@ -99,7 +85,7 @@ public class ChaosSaber extends NPC {
         @Override
         public boolean act(boolean enemyInFOV, boolean justAlerted) {
             if (!enemyInFOV){
-                Buff.affect(Dungeon.hero, SwordStorage.class).countUp(1);
+                Buff.affect(Dungeon.hero, SwordStorage.class).countUp(0.25f);
                 Dungeon.hero.sprite.centerEmitter().burst(MagicMissile.WardParticle.UP, 12);
                 destroy();
                 sprite.die();

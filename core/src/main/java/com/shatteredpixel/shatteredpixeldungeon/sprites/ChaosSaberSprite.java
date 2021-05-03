@@ -42,10 +42,10 @@ public class ChaosSaberSprite extends MobSprite {
 
         run = idle.clone();
 
-        die = new Animation(20, false);
+        die = new Animation(25, false);
         die.frames(film, 4);
 
-        attack = new Animation(9, false);
+        attack = new Animation(11, false);
         attack.frames(film, 1, 2, 3, 4);
 
         idle();

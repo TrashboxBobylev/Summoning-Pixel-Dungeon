@@ -59,7 +59,7 @@ public class SwordStorage extends CounterBuff {
             }
         }
 
-        if (closest != null){
+        if (closest != null && count() >= 1){
             //spawn sword
             int bestPos = -1;
             for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
@@ -73,35 +73,17 @@ public class SwordStorage extends CounterBuff {
             if (bestPos != -1) {
                 ChaosSaber sword = new ChaosSaber();
                 sword.state = sword.HUNTING;
-                GameScene.add(sword, 1);
+                GameScene.add(sword, -1);
                 ScrollOfTeleportation.appear(sword, bestPos);
                 countDown(1);
 
                 if (count() <= 0) detach();
-                else {
-                    spend( TICK );
-                }
-            } else {
-                spend( TICK );
             }
-
-        } else {
-            spend(TICK);
         }
 
+        spend(TICK);
+
         return true;
-    }
-
-    @Override
-    public void countUp(float inc) {
-        super.countUp(inc);
-        target.updateSpriteState();
-    }
-
-    @Override
-    public void countDown(float inc) {
-        super.countDown(inc);
-        target.updateSpriteState();
     }
 
     @Override
