@@ -48,9 +48,6 @@ public class ChaosSaber extends NPC {
 
         WANDERING = new Wandering();
 
-        //before other mobs
-        actPriority = MOB_PRIO + 1;
-
         HP = HT = 0;
         immunities.add(PerfumeGas.Affection.class);
     }
@@ -73,6 +70,7 @@ public class ChaosSaber extends NPC {
     public int attackSkill( Char target ) {
         return (int) (target.defenseSkill(this)*1.2f);
     }
+
 
     @Override
     public int damageRoll() {
