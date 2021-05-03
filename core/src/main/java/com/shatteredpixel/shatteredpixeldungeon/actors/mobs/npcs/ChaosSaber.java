@@ -24,13 +24,19 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.PerfumeGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SwordStorage;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ChaosSaberSprite;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 
 public class ChaosSaber extends NPC {
     {
@@ -38,7 +44,15 @@ public class ChaosSaber extends NPC {
 
         alignment = Alignment.ALLY;
         intelligentAlly = true;
-        state = HUNTING;
+        flying = true;
+
+        WANDERING = new Wandering();
+
+        //before other mobs
+        actPriority = MOB_PRIO + 1;
+
+        HP = HT = 0;
+        immunities.add(PerfumeGas.Affection.class);
     }
 
     private int damage;
@@ -48,27 +62,31 @@ public class ChaosSaber extends NPC {
     @Override
     public void storeInBundle( Bundle bundle ) {
         super.storeInBundle( bundle );
-        bundle.put( DAMAGE, damage );
     }
 
     @Override
     public void restoreFromBundle( Bundle bundle ) {
         super.restoreFromBundle( bundle );
-        damage = bundle.getInt( DAMAGE );
-    }
-
-    public void duplicate( int hp ) {
-        damage = hp*2;
     }
 
     @Override
     public int attackSkill( Char target ) {
-        return Integer.MAX_VALUE;
+        return (int) (target.defenseSkill(this)*1.2f);
     }
 
     @Override
     public int damageRoll() {
-        return damage;
+        return Random.NormalIntRange(2, 10);
+    }
+
+    @Override
+    public int defenseSkill(Char enemy) {
+        return (int) (enemy.attackSkill(this)*1.25f);
+    }
+
+    @Override
+    public int attackProc(Char enemy, int damage) {
+        return super.attackProc(enemy, damage) + enemy.drRoll();
     }
 
     {
@@ -76,5 +94,22 @@ public class ChaosSaber extends NPC {
         immunities.add( CorrosiveGas.class );
         immunities.add( Burning.class );
         immunities.add(PerfumeGas.Affection.class);
+    }
+
+    private class Wandering extends Mob.Wandering{
+
+        @Override
+        public boolean act(boolean enemyInFOV, boolean justAlerted) {
+            if (!enemyInFOV){
+                Buff.affect(Dungeon.hero, SwordStorage.class).countUp(1);
+                Dungeon.hero.sprite.centerEmitter().burst(MagicMissile.WardParticle.UP, 12);
+                destroy();
+                sprite.die();
+                return true;
+            } else {
+                return super.act(enemyInFOV, justAlerted);
+            }
+        }
+
     }
 }
