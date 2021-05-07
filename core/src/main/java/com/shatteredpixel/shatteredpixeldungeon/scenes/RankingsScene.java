@@ -209,9 +209,7 @@ public class RankingsScene extends PixelScene {
 					desc.hardlight(TEXT_WIN[odd]);
 					depth.hardlight(TEXT_WIN[odd]);
 					level.hardlight(TEXT_WIN[odd]);
-				}
-
-			    if (rec.cause == Sword.class) {
+				} else if (rec.cause == Sword.class) {
                     shield.view(ItemSpriteSheet.BONES, null);
                     position.hardlight(TEXT_GENO[odd]);
                     desc.hardlight(TEXT_GENO[odd]);

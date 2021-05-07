@@ -424,9 +424,9 @@ public class Dungeon {
 	
 	public static boolean shopOnLevel() {
 		if (SPDSettings.bigdungeon()){
-			return Dungeon.depth % 5 == 0;
+			return Dungeon.depth % 5 == 0 && Dungeon.depth != 1;
 		}
-		return (Dungeon.depth - 1) % Dungeon.chapterSize() == 0 && Dungeon.depth != Dungeon.chapterSize()*4+1;
+		return (Dungeon.depth - 1) % Dungeon.chapterSize() == 0 && Dungeon.depth != Dungeon.chapterSize()*4+1 && Dungeon.depth != 1;
 	}
 	
 	public static boolean bossLevel() {

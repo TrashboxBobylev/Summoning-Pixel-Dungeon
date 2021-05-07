@@ -209,7 +209,8 @@ public class Badges {
 		String names[] = new String[badges.size()];
 		
 		for (Badge badge:badges) {
-			names[count++] = badge.toString();
+			if (badge != null)
+				names[count++] = badge.toString();
 		}
 		bundle.put( BADGES, names );
 	}
@@ -801,8 +802,10 @@ public class Badges {
 		if (challenges >= 6){
 			badge = Badge.CHAMPION_3;
 		}
-		local.add(badge);
-		displayBadge( badge );
+		if (badge != null) {
+			local.add(badge);
+			displayBadge(badge);
+		}
 	}
 	
 	private static void displayBadge( Badge badge ) {
