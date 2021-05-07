@@ -149,7 +149,8 @@ public class Bestiary {
 							Scorpio.class,  HellBat.class));
 				default:
 					return new ArrayList<>(Arrays.asList(
-							SpectreRat.class, DarkestElf.class, GhostChicken.class, Phantom.class
+							SpectreRat.class, DarkestElf.class, GhostChicken.class, Phantom.class, BlinkingMan.class
+
 					));
 			}
 		}
@@ -315,7 +316,8 @@ public class Bestiary {
 							Scorpio.class, Scorpio.class, HellBat.class, HellBat.class));
 				default:
 					return new ArrayList<>(Arrays.asList(
-							SpectreRat.class, DarkestElf.class, GhostChicken.class, Phantom.class
+							SpectreRat.class, DarkestElf.class, GhostChicken.class, Phantom.class, BlinkingMan.class
+
 					));
 			}
 		} else
@@ -449,7 +451,8 @@ public class Bestiary {
 						Scorpio.class, Scorpio.class, Scorpio.class, HellBat.class, HellBat.class));
 			default:
 				return new ArrayList<>(Arrays.asList(
-						SpectreRat.class, DarkestElf.class, GhostChicken.class, Phantom.class
+						SpectreRat.class, DarkestElf.class, GhostChicken.class, Phantom.class, BlinkingMan.class
+
 				));
 		}
 		

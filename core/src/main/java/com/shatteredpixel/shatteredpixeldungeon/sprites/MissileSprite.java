@@ -96,6 +96,7 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		ANGULAR_SPEEDS.put(SpiritBow.SpiritArrow.class,       0);
 		ANGULAR_SPEEDS.put(ScorpioSprite.ScorpioShot.class,   0);
         ANGULAR_SPEEDS.put(ShakeSprite.ShakeShot.class,   0);
+        ANGULAR_SPEEDS.put(BlinkingManSprite.TenguJavelin.class, 0);
 		
 		//720 is default
 		
@@ -105,6 +106,7 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		ANGULAR_SPEEDS.put(Shuriken.class,      2160);
 		
 		ANGULAR_SPEEDS.put(TenguSprite.TenguShuriken.class,      2160);
+
 	}
 
 	//TODO it might be nice to have a source and destination angle, to improve thrown weapon visuals
@@ -154,7 +156,8 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
             speed *= 3f;
         } else if (item instanceof SpiritBow.SpiritArrow
 				|| item instanceof ScorpioSprite.ScorpioShot
-				|| item instanceof TenguSprite.TenguShuriken){
+				|| item instanceof TenguSprite.TenguShuriken
+				|| item instanceof BlinkingManSprite.TenguJavelin){
 			speed *= 1.5f;
 		}
 		
