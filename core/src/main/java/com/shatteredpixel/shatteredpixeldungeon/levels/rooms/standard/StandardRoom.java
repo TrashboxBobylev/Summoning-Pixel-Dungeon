@@ -42,7 +42,7 @@ public abstract class StandardRoom extends Room {
 		NORMAL(
 				4, 8, 1),
 		LARGE(
-				8, 12, 2),
+				9, 13, 2),
 		GIANT(
 				12, 20, 3);
 
@@ -184,11 +184,11 @@ public abstract class StandardRoom extends Room {
 	
 	public static StandardRoom createRoom(){
 		setChances();
-		if (Dungeon.depth >= 26){
-			float[] chance = new float[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+		if (Dungeon.depth >= Dungeon.chapterSize()*5){
+			float[] chance = new float[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 			return Reflection.newInstance(rooms.get(Random.chances(chance)));
 		}
-		return Reflection.newInstance(rooms.get(Random.chances(chances[Dungeon.depth])));
+		else return Reflection.newInstance(rooms.get(Random.chances(chances[Dungeon.depth])));
 	}
 	
 }

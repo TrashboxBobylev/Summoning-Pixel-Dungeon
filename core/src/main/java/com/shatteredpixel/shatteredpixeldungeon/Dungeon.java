@@ -422,11 +422,9 @@ public class Dungeon {
 	
 	public static boolean shopOnLevel() {
 		if (SPDSettings.bigdungeon()){
-			return depth == 5 || depth == 10 || depth == 15 || depth == 20;
-		} else if (SPDSettings.smalldungeon()){
-			return depth == 5 || depth == 9 || depth == 13;
+			return Dungeon.depth % 5 == 0;
 		}
-		return depth == 6 || depth == 11 || depth == 16;
+		return (Dungeon.depth - 1) % Dungeon.chapterSize() == 0 && Dungeon.depth != Dungeon.chapterSize()*4+1;
 	}
 	
 	public static boolean bossLevel() {

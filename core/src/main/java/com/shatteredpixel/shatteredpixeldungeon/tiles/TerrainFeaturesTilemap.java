@@ -67,6 +67,7 @@ public class TerrainFeaturesTilemap extends DungeonTilemap {
 		}
 
 		int stage = (Dungeon.depth-1)/Dungeon.chapterSize();
+		if (stage > 5) stage = 1;
 		if (tile == Terrain.HIGH_GRASS){
 			return 9 + 16*stage + (DungeonTileSheet.tileVariance[pos] >= 50 ? 1 : 0);
 		} else if (tile == Terrain.FURROWED_GRASS){

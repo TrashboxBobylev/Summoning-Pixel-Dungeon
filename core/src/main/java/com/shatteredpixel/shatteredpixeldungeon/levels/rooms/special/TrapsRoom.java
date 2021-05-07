@@ -50,7 +50,10 @@ public class TrapsRoom extends SpecialRoom {
 				trapClass = null;
 				break;
 			default:
+				if (Dungeon.depth < Dungeon.chapterSize()*5)
 				trapClass = Random.oneOf(levelTraps[Dungeon.depth/Dungeon.chapterSize()]);
+				else
+					trapClass = GrimTrap.class;
 				break;
 		}
 

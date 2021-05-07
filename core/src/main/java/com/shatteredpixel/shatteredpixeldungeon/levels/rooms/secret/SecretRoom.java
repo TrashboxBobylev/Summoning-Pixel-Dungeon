@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
@@ -89,14 +90,17 @@ public abstract class SecretRoom extends SpecialRoom {
 		if (floorsLeft == 0) {
 			secrets = regionSecretsThisRun[region];
 		} else {
-			secrets = regionSecretsThisRun[region] / (float)floorsLeft;
+			if (Dungeon.depth >= Dungeon.chapterSize()*5){
+				secrets = 1;
+			}
+			else secrets = regionSecretsThisRun[region] / (float)floorsLeft;
 			if (Random.Float() < secrets % 1f){
 				secrets = (float)Math.ceil(secrets);
 			} else {
 				secrets = (float)Math.floor(secrets);
 			}
 		}
-		
+		if (Dungeon.depth < Dungeon.chapterSize()*5)
 		regionSecretsThisRun[region] -= (int)secrets;
 		return (int)secrets;
 	}

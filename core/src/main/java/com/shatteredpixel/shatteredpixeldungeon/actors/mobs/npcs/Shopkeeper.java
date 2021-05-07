@@ -103,6 +103,9 @@ public class Shopkeeper extends NPC {
 
 	//shopkeepers are greedy!
 	public static int sellPrice(Item item){
+		if (Dungeon.depth > Dungeon.chapterSize()*5){
+			return item.value() * 5 * (Dungeon.depth * 3 / Dungeon.chapterSize() + 1);
+		}
 		return item.value() * 5 * (Dungeon.depth / Dungeon.chapterSize() + 1);
 	}
 	
