@@ -27,11 +27,12 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.PrisonPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.DemonSpawnerRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.AbyssalSpawnerRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.*;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
@@ -55,7 +56,7 @@ public class AbyssLevel extends RegularLevel {
 	protected ArrayList<Room> initRooms() {
 		ArrayList<Room> rooms = super.initRooms();
 
-		rooms.add(new DemonSpawnerRoom());
+		rooms.add(new AbyssalSpawnerRoom());
 
 		return rooms;
 	}
@@ -86,6 +87,10 @@ public class AbyssLevel extends RegularLevel {
 		if (forceMax) return 3;
 		//2 to 3, average 2.5
 		return 2 + Random.chances(new float[]{1, 1});
+	}
+
+	public Actor addRespawner() {
+		return null;
 	}
 	
 	@Override

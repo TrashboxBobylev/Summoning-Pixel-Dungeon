@@ -54,7 +54,7 @@ public class AbyssalNightmare extends Mob {
 	{
 		spriteClass = AbyssalSprite.class;
 
-		HP = HT = 500;
+		HP = HT = 200;
 		defenseSkill = 30;
 
 		EXP = 40;

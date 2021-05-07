@@ -124,7 +124,7 @@ public class BlinkingMan extends Mob {
 
 	private void blink( ) {
 
-		int direction = PathFinder.NEIGHBOURS8[Random.Int(9)];
+		int direction = PathFinder.NEIGHBOURS8[Random.Int(8)];
 		
 		Ballistica route = new Ballistica( pos+direction, target, Ballistica.PROJECTILE);
 		int cell = route.collisionPos;
