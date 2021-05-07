@@ -60,7 +60,7 @@ public class Bestiary {
 			switch(depth){
 
 				// Sewers
-				case 1: default:
+				case 1:
 					return new ArrayList<>(Arrays.asList(
 							Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class));
 				case 2:
@@ -147,6 +147,10 @@ public class Bestiary {
 							Slime.class, Slime.class, Slime.class, Succubus.class, Succubus.class, Succubus.class, Succubus.class,
 							Eye.class,
 							Scorpio.class,  HellBat.class));
+				default:
+					return new ArrayList<>(Arrays.asList(
+							SpectreRat.class
+					));
 			}
 		}
 
@@ -154,7 +158,7 @@ public class Bestiary {
 			switch(depth){
 
 				// Sewers
-				case 1: default:
+				case 1:
 					//8x rat
 					return new ArrayList<>(Arrays.asList(
 							Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class));
@@ -309,12 +313,16 @@ public class Bestiary {
 					return new ArrayList<>(Arrays.asList(
 							Eye.class, Eye.class, Succubus.class, Succubus.class,
 							Scorpio.class, Scorpio.class, HellBat.class, HellBat.class));
+				default:
+					return new ArrayList<>(Arrays.asList(
+							SpectreRat.class
+					));
 			}
 		} else
 		switch(depth){
 			
 			// Sewers
-			case 1: default:
+			case 1:
 				//3x rat, 1x snake
 				return new ArrayList<>(Arrays.asList(
                          Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class));
@@ -439,6 +447,10 @@ public class Bestiary {
 						Slime.class,
 						Eye.class, Eye.class,
 						Scorpio.class, Scorpio.class, Scorpio.class, HellBat.class, HellBat.class));
+			default:
+				return new ArrayList<>(Arrays.asList(
+						SpectreRat.class
+				));
 		}
 		
 	}
