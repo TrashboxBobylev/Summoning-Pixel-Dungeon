@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.Chaosstone;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.PrisonPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
@@ -70,6 +71,10 @@ public class AbyssLevel extends RegularLevel {
 	@Override
 	public void create() {
 		addItemToSpawn( new com.shatteredpixel.shatteredpixeldungeon.items.Torch() );
+		for (int i = 0; i < (Dungeon.depth - Dungeon.chapterSize()*5) / Dungeon.chapterSize(); i++){
+			addItemToSpawn(new Chaosstone());
+			if (Random.Int(2) == 0) addItemToSpawn(new Chaosstone());
+		}
 		super.create();
 	}
 

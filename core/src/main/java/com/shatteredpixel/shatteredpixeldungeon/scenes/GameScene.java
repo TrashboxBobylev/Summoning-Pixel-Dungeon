@@ -327,6 +327,8 @@ public class GameScene extends PixelScene {
 				WndStory.showChapter( WndStory.ID_CITY );
 			else if (Dungeon.depth == Dungeon.chapterSize()*4+1)
 				WndStory.showChapter( WndStory.ID_HALLS );
+			else if (Dungeon.depth == Dungeon.chapterSize()*5+2)
+				WndStory.showChapter( WndStory.ID_ABYSS );
 			if (Dungeon.hero.isAlive()) {
 				Badges.validateNoKilling();
 			}

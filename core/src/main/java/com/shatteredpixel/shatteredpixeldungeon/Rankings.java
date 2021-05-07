@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.Chaosstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
@@ -135,6 +136,16 @@ public enum Rankings {
 	    return 0;
     }
 
+    private static int chaosStones(boolean win){
+		int chaosstones = 0;
+		for (Item item : Dungeon.hero.belongings){
+			if (item instanceof Chaosstone){
+				chaosstones = item.quantity();
+			}
+		}
+		return chaosstones * 50000;
+	}
+
     private static int noClassUniqueItemCheck(boolean win){
 	    if (Dungeon.hero.heroClass == HeroClass.CONJURER && win && Statistics.summonedMinions == 0) return 2500000;
 	    boolean noUniqueItem = false;
@@ -171,6 +182,7 @@ public enum Rankings {
                         memeUpgCheck(win) +
                         noMoneyCheck(win) +
                         noClassUniqueItemCheck(win) +
+						chaosStones(win)+
                         Statistics.foodEaten * 500 +
                         Statistics.potionsCooked * 500) *
                         (win ? 2 : 1) * chalCheckSoJuhWillBeHappy(win));
@@ -181,6 +193,7 @@ public enum Rankings {
 	public static final String BADGES = "badges";
 	public static final String HANDLERS = "handlers";
 	public static final String CHALLENGES = "challenges";
+	public static final String CHAOSSTONES = "chaosstones";
 
 	public void saveGameData(Record rec){
 		rec.gameData = new Bundle();
@@ -189,6 +202,14 @@ public enum Rankings {
 
 		//save the hero and belongings
 		ArrayList<Item> allItems = (ArrayList<Item>) belongings.backpack.items.clone();
+		int chaosstones = 0;
+		for (Item item : allItems){
+			if (item instanceof Chaosstone){
+				chaosstones = item.quantity();
+			}
+		}
+		rec.gameData.put(CHAOSSTONES, chaosstones);
+
 		//remove items that won't show up in the rankings screen
 		for (Item item : belongings.backpack.items.toArray( new Item[0])) {
 			if (item instanceof Bag){
@@ -332,6 +353,7 @@ public enum Rankings {
 		public int armorTier;
 		public int herolevel;
 		public int depth;
+		public int chaosstones;
 		
 		public Bundle gameData;
 		public String gameID;
@@ -341,7 +363,13 @@ public enum Rankings {
 		public String desc(){
 			if (cause == null) {
 				return Messages.get(this, "something");
-			} else {
+			}
+
+			if (cause == Chaosstone.class){
+				return Messages.get(this, "chaosstone", gameData.getInt(CHAOSSTONES));
+			}
+
+			else {
 				String result = Messages.get(cause, "rankings_desc", (Messages.get(cause, "name")));
 				if (result.contains("!!!NO TEXT FOUND!!!")){
 					return Messages.get(this, "something");

@@ -1409,7 +1409,7 @@ public class Hero extends Char {
                 if (canDo) curAction = new HeroAction.Descend(cell);
                 else GLog.warning(Messages.get(Level.class, "seal"));
 
-        } else if (cell == Dungeon.level.entrance || Dungeon.level.map[cell] == Terrain.ENTRANCE) {
+        } else if (cell == Dungeon.level.entrance || Dungeon.level.map[cell] == Terrain.ENTRANCE && Dungeon.depth != Dungeon.chapterSize()*5 + 2) {
 			
 			curAction = new HeroAction.Ascend( cell );
 			

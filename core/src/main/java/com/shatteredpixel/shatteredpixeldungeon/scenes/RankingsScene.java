@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.Chaosstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -201,6 +202,15 @@ public class RankingsScene extends PixelScene {
 			int odd = pos % 2;
 			
 			if (rec.win) {
+
+				if (rec.cause == Chaosstone.class){
+					shield.view(ItemSpriteSheet.CHAOSSTONE, new ItemSprite.Glowing());
+					position.hardlight(TEXT_WIN[odd]);
+					desc.hardlight(TEXT_WIN[odd]);
+					depth.hardlight(TEXT_WIN[odd]);
+					level.hardlight(TEXT_WIN[odd]);
+				}
+
 			    if (rec.cause == Sword.class) {
                     shield.view(ItemSpriteSheet.BONES, null);
                     position.hardlight(TEXT_GENO[odd]);
