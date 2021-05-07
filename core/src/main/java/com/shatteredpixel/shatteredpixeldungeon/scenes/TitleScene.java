@@ -71,15 +71,7 @@ public class TitleScene extends PixelScene {
 		Image title = BannerSprites.get( BannerSprites.Type.PIXEL_DUNGEON );
 		add( title );
 
-		float topRegion = Math.max(title.height - 6, h*0.45f);
-
-		title.x = (w - title.width()) / 2f;
-		title.y = 2 + (topRegion - title.height()) / 2f;
-
-		align(title);
-
-		placeTorch(title.x + 22, title.y + 46);
-		placeTorch(title.x + title.width - 22, title.y + 46);
+		float topRegion = Math.max(94, h*0.45f);
 
 		Image signs = new Image( BannerSprites.get( BannerSprites.Type.PIXEL_DUNGEON_SIGNS ) ) {
 			private float time = 0;
@@ -96,8 +88,6 @@ public class TitleScene extends PixelScene {
 				Blending.setNormalMode();
 			}
 		};
-		signs.x = title.x + (title.width() - signs.width())/2f;
-		signs.y = title.y;
 		add( signs );
 
 		final Chrome.Type GREY_TR = Chrome.Type.GREY_BUTTON_TR;
@@ -169,28 +159,39 @@ public class TitleScene extends PixelScene {
 		GAP = Math.max(GAP, 2);
 
 		if (landscape()) {
-			btnPlay.setRect(title.x-50, topRegion+GAP, ((title.width()+100))-1, BTN_HEIGHT);
-			align(btnPlay);
-			btnRankings.setRect(btnPlay.left(), btnPlay.bottom()+ GAP, btnPlay.width()/2, BTN_HEIGHT);
-			btnBadges.setRect(btnRankings.right()+2, btnPlay.bottom()+GAP, btnPlay.width()/2, BTN_HEIGHT);
-			btnChanges.setRect(btnRankings.left(), btnRankings.bottom() + GAP, btnPlay.width()/2, BTN_HEIGHT);
-			btnSettings.setRect(btnChanges.right()+2, btnChanges.top(), btnPlay.width()/2, BTN_HEIGHT);
-			btnAbout.setRect(btnChanges.left(), btnChanges.bottom() + GAP, btnPlay.width(), BTN_HEIGHT);
-		} else {
-			btnPlay.setRect(title.x, topRegion+GAP, title.width(), BTN_HEIGHT);
-			align(btnPlay);
-			btnRankings.setRect(btnPlay.left(), btnPlay.bottom()+ GAP, (btnPlay.width()/2)-1, BTN_HEIGHT);
-			btnBadges.setRect(btnRankings.right()+2, btnRankings.top(), btnRankings.width(), BTN_HEIGHT);
-			btnChanges.setRect(btnRankings.left(), btnRankings.bottom()+GAP, btnRankings.width(), BTN_HEIGHT);
-			btnSettings.setRect(btnChanges.right()+1, btnRankings.bottom()+GAP, btnRankings.width(), BTN_HEIGHT);
-			btnAbout.setRect(btnChanges.left(), btnChanges.bottom()+GAP, btnPlay.width(), BTN_HEIGHT);
+			btnPlay.setRect((w - 132) / 2f - 50, GAP, ((132+100))-1, BTN_HEIGHT);
+			} else {
+			btnPlay.setRect((w - 132) / 2f, GAP, 132, BTN_HEIGHT);
+//			align(btnPlay);
+//			btnAbout.setRect(btnPlay.left() + 20, h - BTN_HEIGHT - 12, btnPlay.width() - 40, BTN_HEIGHT);
+//			btnRankings.setRect(btnPlay.left(), btnPlay.bottom()+ GAP, (btnPlay.width()/2)-1, BTN_HEIGHT);
+//			btnBadges.setRect(btnRankings.right()+2, btnRankings.top(), btnRankings.width(), BTN_HEIGHT);
+//			btnChanges.setRect(btnRankings.left(), btnRankings.bottom()+GAP, btnRankings.width(), BTN_HEIGHT);
+//			btnSettings.setRect(btnChanges.right()+1, btnRankings.bottom()+GAP, btnRankings.width(), BTN_HEIGHT);
 		}
+		align(btnPlay);
+		btnAbout.setRect(btnPlay.left(), h - BTN_HEIGHT - 12, btnPlay.width(), BTN_HEIGHT);
+		btnRankings.setRect(btnPlay.left(), btnPlay.bottom() + GAP, btnPlay.width()/2, BTN_HEIGHT);
+		btnBadges.setRect(btnPlay.left() + btnPlay.width()/2 , btnPlay.bottom()+GAP, btnPlay.width()/2, BTN_HEIGHT);
+		btnChanges.setRect(btnAbout.left(), btnAbout.top()-10-BTN_HEIGHT, btnPlay.width()/2f, BTN_HEIGHT);
+		btnSettings.setRect(btnAbout.left() + btnAbout.width()/2, btnAbout.top()-10-BTN_HEIGHT, btnPlay.width()/2f, BTN_HEIGHT);
+//		title.x = btnPlay.left() + btnPlay.width()/4;
+//		if (landscape()){
+//			title.x = btnPlay.left() + btnPlay.width()/6;
+//		}
+		title.x = btnPlay.centerX() - title.width()/2;
+		title.y = btnPlay.bottom()*3;
+//		align(title);
+		placeTorch(title.x + 22, title.y + 46);
+		placeTorch(title.x + title.width - 22, title.y + 46);
+		signs.x = title.x + (title.width() - signs.width())/2f;
+		signs.y = title.y;
 
 		BitmapText version = new BitmapText( "v" + Game.version, pixelFont);
 		version.measure();
 		version.hardlight( 0x888888 );
-		version.x = w - version.width() - 4;
-		version.y = h - version.height() - 2;
+		version.x = btnPlay.centerX() - version.width()/2;
+		version.y = h - version.height() - 1;
 		add( version );
 
 		fadeIn();

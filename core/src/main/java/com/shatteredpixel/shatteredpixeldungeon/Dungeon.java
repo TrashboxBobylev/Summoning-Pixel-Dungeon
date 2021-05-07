@@ -280,8 +280,8 @@ public class Dungeon {
 					level = new LastLevel();
 					break;
 				default:
-					level = new DeadEndLevel();
-					Statistics.deepestFloor--;
+					level = new AbyssLevel();
+					break;
 			}
 		} else if (SPDSettings.smalldungeon()){
 			switch (depth) {
@@ -329,8 +329,8 @@ public class Dungeon {
 					level = new LastLevel();
 					break;
 				default:
-					level = new DeadEndLevel();
-					Statistics.deepestFloor--;
+					level = new AbyssLevel();
+					break;
 			}
 		}
 		else {
@@ -384,8 +384,8 @@ public class Dungeon {
 					level = new LastLevel();
 					break;
 				default:
-					level = new DeadEndLevel();
-					Statistics.deepestFloor--;
+					level = new AbyssLevel();
+					break;
 			}
 		}
 		

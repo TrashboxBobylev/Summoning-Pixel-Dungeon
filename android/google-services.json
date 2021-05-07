@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "342569482960",
+    "project_id": "summoning-pd-funky-analytics",
+    "storage_bucket": "summoning-pd-funky-analytics.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:342569482960:android:77e12920c4a6d6e9c6fcd5",
+        "android_client_info": {
+          "package_name": "com.trashboxbobylev.summoningpixeldungeon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "342569482960-jotd622n9q5gfftdtnatl4hkjb8em5cm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt8H2MBTIwf4ErBBby0MyT0QX-Tf7VsWo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "342569482960-jotd622n9q5gfftdtnatl4hkjb8em5cm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
