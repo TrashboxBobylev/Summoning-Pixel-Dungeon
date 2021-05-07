@@ -44,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.magic.Heal;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Stars;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Zap;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.Chaosstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfConjuration;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
@@ -115,6 +116,7 @@ public enum HeroClass {
 
 		new ScrollOfIdentify().identify();
 		new Ropes().quantity(5).collect();
+		new Chaosstone().quantity(2).collect();
 	}
 
 	public Badges.Badge masteryBadge() {

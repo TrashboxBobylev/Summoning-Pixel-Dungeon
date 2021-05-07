@@ -353,7 +353,6 @@ public enum Rankings {
 		public int armorTier;
 		public int herolevel;
 		public int depth;
-		public int chaosstones;
 		
 		public Bundle gameData;
 		public String gameID;
