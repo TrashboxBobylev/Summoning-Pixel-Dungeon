@@ -267,7 +267,7 @@ public class DarkestElf extends Mob {
 				mySkeleton = new NecroGasterBlaster();
 				mySkeleton.setMaxHP(100);
 				mySkeleton.setDamage(10, 34);
-				mySkeleton.lvl = 3;
+				mySkeleton.lvl = 2;
 				mySkeleton.attunement = 0f;
 				mySkeleton.pos = summoningPos;
 				GameScene.add( mySkeleton );
