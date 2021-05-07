@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Phantom;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.input.GameAction;
 import com.watabou.noosa.BitmapText;
@@ -113,7 +114,7 @@ public class DangerIndicator extends Tag {
 			Mob target = Dungeon.hero.visibleEnemy(++enemyIndex);
 
 			QuickSlotButton.target(target);
-			if (Dungeon.hero.canAttack(target)) AttackIndicator.target(target);
+			if (Dungeon.hero.canAttack(target) && !(target instanceof Phantom)) AttackIndicator.target(target);
 
 			if (Dungeon.hero.curAction == null) Camera.main.panTo(target.sprite.center(), 5f);
 		}

@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Phantom;
 import com.shatteredpixel.shatteredpixeldungeon.effects.*;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FrostfireParticle;
@@ -573,7 +574,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 			marked.visible = visible;
 		}
 		if (sleeping) {
-			showSleep();
+			if (!(ch instanceof Phantom))
+				showSleep();
 		} else {
 			hideSleep();
 		}

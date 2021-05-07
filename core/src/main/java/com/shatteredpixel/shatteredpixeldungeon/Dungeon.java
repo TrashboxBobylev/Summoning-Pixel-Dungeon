@@ -92,6 +92,7 @@ public class Dungeon {
 		SHAMAN_WAND,
 		DM200_EQUIP,
 		GOLEM_EQUIP,
+		PHANTOM_EQUIP,
 
         //guaranted staff
         STAFF,
