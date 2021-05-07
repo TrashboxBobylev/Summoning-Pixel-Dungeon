@@ -38,7 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportat
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.SuccubusSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.BlinkingManSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -51,7 +51,7 @@ public class BlinkingMan extends Mob {
 	private int blinkCooldown = 0;
 
 	{
-		spriteClass = SuccubusSprite.class;
+		spriteClass = BlinkingManSprite.class;
 
 		HP = HT = 45;
 		defenseSkill = 60;
@@ -93,6 +93,12 @@ public class BlinkingMan extends Mob {
 		}
 		
 		return damage;
+	}
+
+	@Override
+	protected boolean canAttack( Char enemy ) {
+		Ballistica attack = new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE);
+		return !Dungeon.level.adjacent( pos, enemy.pos ) && attack.collisionPos == enemy.pos;
 	}
 	
 	@Override

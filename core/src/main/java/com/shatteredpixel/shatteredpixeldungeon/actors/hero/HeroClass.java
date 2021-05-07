@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
@@ -120,7 +121,7 @@ public enum HeroClass {
 		new Ropes().quantity(5).collect();
 		Buff.affect(hero, Invisibility.class, 2000000);
 		Buff.affect(hero, Light.class, 2000000);
-
+		Buff.affect(hero, Barrier.class).setShield(1000);
 	}
 
 	public Badges.Badge masteryBadge() {

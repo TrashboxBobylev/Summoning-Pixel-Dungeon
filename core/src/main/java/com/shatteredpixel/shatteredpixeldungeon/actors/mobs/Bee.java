@@ -156,7 +156,7 @@ public class Bee extends Mob {
 				
 				//find all mobs near the pot
 				HashSet<Char> enemies = new HashSet<>();
-				for (Mob mob : Dungeon.level.mobs) {
+				for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 					if (!(mob == this)
 							&& Dungeon.level.distance(mob.pos, potPos) <= 3
 							&& mob.alignment != Alignment.NEUTRAL
