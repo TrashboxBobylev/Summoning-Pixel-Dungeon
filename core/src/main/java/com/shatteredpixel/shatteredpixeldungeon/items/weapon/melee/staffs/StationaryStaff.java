@@ -154,6 +154,7 @@ public class StationaryStaff extends Staff {
             Statistics.summonedMinions++;
             minion.strength = STRReq();
             minion.attunement = requiredAttunement();
+            minion.lvl = level();
             this.customizeMinion(minion);
 
             //if we have upgraded robe, increase hp

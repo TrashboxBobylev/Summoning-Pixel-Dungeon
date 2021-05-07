@@ -840,7 +840,7 @@ public abstract class Mob extends Char {
 
 	public String description() {
 		String desc = Messages.get(this, "desc");
-		desc += "\n\n" + Messages.get(Mob.class, "stats", HP, HT, attackSkill(Dungeon.hero), defenseSkill(Dungeon.hero));
+		desc += "\n\n" + Messages.get(Mob.class, "stats", HP, HT, attackSkill(Dungeon.hero), defenseSkill);
 		return desc;
 	}
 
