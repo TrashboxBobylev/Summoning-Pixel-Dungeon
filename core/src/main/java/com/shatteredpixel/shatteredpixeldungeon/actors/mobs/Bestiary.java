@@ -62,7 +62,7 @@ public class Bestiary {
 				// Sewers
 				case 1:
 					return new ArrayList<>(Arrays.asList(
-							Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class));
+							ExplodingTNT.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class));
 				case 2:
 					//4x rat, 3x gnoll, 1x crab, 1x dog, 1x swarm
 					return new ArrayList<>(Arrays.asList(Rat.class, Rat.class, Rat.class, Rat.class,

@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ExplodingTNTSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
@@ -97,6 +98,11 @@ public class ExplodingTNT extends Mob {
                 @Override
                 public void call() {
                     final Bomb bbbomb = new Bomb(){
+
+                        {
+                            image = ItemSpriteSheet.FLASHBANG;
+                        }
+
                         @Override
                         public void explode(int cell) {
                             this.fuse = null;
@@ -119,7 +125,7 @@ public class ExplodingTNT extends Mob {
                                             continue;
                                         }
 
-                                        int dmg = damageRoll() / 3;
+                                        int dmg = /*damageRoll() / 3*/1;
                                         if (buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dmg *= 0.6f;
 
                                         dmg -= cher.drRoll();
@@ -135,8 +141,8 @@ public class ExplodingTNT extends Mob {
                                         int power = 25 - 8*Dungeon.level.distance(cher.pos, cell);
                                         if (power > 0){
                                             if (cher instanceof Mob && !(cher instanceof ExplodingTNT)){
-                                                Buff.prolong(ch, Blindness.class, power);
-                                                Buff.prolong(ch, Cripple.class, power);
+                                                Buff.prolong(cher, Blindness.class, power);
+                                                Buff.prolong(cher, Cripple.class, power);
                                                 ((Mob) cher).enemy = null;
                                                 ((Mob) cher).enemySeen = false;
                                                 ((Mob) cher).state = ((Mob) cher).WANDERING;
