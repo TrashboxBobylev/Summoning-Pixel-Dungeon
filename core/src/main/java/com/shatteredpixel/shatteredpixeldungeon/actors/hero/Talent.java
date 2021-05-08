@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 
 public enum Talent {
@@ -108,7 +107,7 @@ public enum Talent {
         return Messages.get(this, name() + ".desc");
     }
 
-    public static final int MAX_TALENT_TIERS = 3;
+    public static final int MAX_TALENT_TIERS = 0;
 
     public static void initClassTalents( Hero hero ){
         initClassTalents( hero.heroClass, hero.talents );
@@ -119,30 +118,30 @@ public enum Talent {
             talents.add(new LinkedHashMap<>());
         }
 
-        ArrayList<Talent> tierTalents = new ArrayList<>();
-
-        Collections.addAll(tierTalents, SPECIAL_DELIVERY, COLD_FRONT, ACUTENESS, HYPERSPACE, PERDERE_CRIMEN, SCRAP_BRAIN);
-
-        for (Talent talent : tierTalents){
-            talents.get(0).put(talent, 0);
-        }
-
-        tierTalents.clear();
-
-        Collections.addAll(tierTalents, WELCOME_TO_EARTH, THE_SANDSTORM, TIME_TOGETHER, DIRECTIVE, GOOD_INTENTIONS, LIFE_ON_AXIOM, LETHAL_MOMENTUM);
-
-        for (Talent talent : tierTalents){
-            talents.get(1).put(talent, 0);
-        }
-
-        tierTalents.clear();
-
-        Collections.addAll(tierTalents, DOG_BREEDING, NUCLEAR_RAGE, SNIPER_PATIENCE, ARCANE_CLOAK, ARMORED_ARMADA, TIMEBENDING, LUST_AND_DUST, TOWER_OF_POWER, JUST_ONE_MORE_TILE, NEVER_GONNA_GIVE_YOU_UP, ASSASSINATION, SPEED_SHOES, BREAD_AND_CIRCUSES, COMET_FALL, SPYDER_MAN, DETERMINED, MY_SUNSHINE, OLYMPIC_SKILLS);
-       for (Talent talent : tierTalents){
-            talents.get(2).put(talent, 0);
-        }
-
-        tierTalents.clear();
+//        ArrayList<Talent> tierTalents = new ArrayList<>();
+//
+//        Collections.addAll(tierTalents, SPECIAL_DELIVERY, COLD_FRONT, ACUTENESS, HYPERSPACE, PERDERE_CRIMEN, SCRAP_BRAIN);
+//
+//        for (Talent talent : tierTalents){
+//            talents.get(0).put(talent, 0);
+//        }
+//
+//        tierTalents.clear();
+//
+//        Collections.addAll(tierTalents, WELCOME_TO_EARTH, THE_SANDSTORM, TIME_TOGETHER, DIRECTIVE, GOOD_INTENTIONS, LIFE_ON_AXIOM, LETHAL_MOMENTUM);
+//
+//        for (Talent talent : tierTalents){
+//            talents.get(1).put(talent, 0);
+//        }
+//
+//        tierTalents.clear();
+//
+//        Collections.addAll(tierTalents, DOG_BREEDING, NUCLEAR_RAGE, SNIPER_PATIENCE, ARCANE_CLOAK, ARMORED_ARMADA, TIMEBENDING, LUST_AND_DUST, TOWER_OF_POWER, JUST_ONE_MORE_TILE, NEVER_GONNA_GIVE_YOU_UP, ASSASSINATION, SPEED_SHOES, BREAD_AND_CIRCUSES, COMET_FALL, SPYDER_MAN, DETERMINED, MY_SUNSHINE, OLYMPIC_SKILLS);
+//       for (Talent talent : tierTalents){
+//            talents.get(2).put(talent, 0);
+//        }
+//
+//        tierTalents.clear();
 
     }
 
@@ -157,20 +156,20 @@ public enum Talent {
             talents.add(new LinkedHashMap<>());
         }
 
-        ArrayList<Talent> tierTalents = new ArrayList<>();
-        switch (cls){
-            case ASSASSIN:
-                Collections.addAll(tierTalents, REAL_KNIFE_MASTER, BLOOD_DRIVE, UNSETTLING_GAZE, SUPPORT_POTION, WITCHING_STRIKE, SILENCE_OF_LAMBS);
-                break;
-            case FREERUNNER:
-                Collections.addAll(tierTalents, BLESSING_OF_SANITY, GUIDANCE_FLAME, SPEEDY_STEALTH, THAUMATURGY, SHARP_VISION, CHEMISTRY_DEGREE);
-                break;
-        }
-
-        for (Talent talent : tierTalents){
-            talents.get(2).put(talent, 0);
-        }
-        tierTalents.clear();
+//        ArrayList<Talent> tierTalents = new ArrayList<>();
+//        switch (cls){
+//            case ASSASSIN:
+//                Collections.addAll(tierTalents, REAL_KNIFE_MASTER, BLOOD_DRIVE, UNSETTLING_GAZE, SUPPORT_POTION, WITCHING_STRIKE, SILENCE_OF_LAMBS);
+//                break;
+//            case FREERUNNER:
+//                Collections.addAll(tierTalents, BLESSING_OF_SANITY, GUIDANCE_FLAME, SPEEDY_STEALTH, THAUMATURGY, SHARP_VISION, CHEMISTRY_DEGREE);
+//                break;
+//        }
+//
+//        for (Talent talent : tierTalents){
+//            talents.get(2).put(talent, 0);
+//        }
+//        tierTalents.clear();
     }
 
     private static final String TALENT_TIER = "talents_tier_";

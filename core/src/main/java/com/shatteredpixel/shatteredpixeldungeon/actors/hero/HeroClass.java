@@ -44,9 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.magic.Heal;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Stars;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Zap;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.*;
-import com.shatteredpixel.shatteredpixeldungeon.items.quest.Chaosstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfConjuration;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Slingshot;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
@@ -116,7 +114,6 @@ public enum HeroClass {
 
 		new ScrollOfIdentify().identify();
 		new Ropes().quantity(5).collect();
-		new Chaosstone().quantity(2).collect();
 	}
 
 	public Badges.Badge masteryBadge() {
@@ -166,9 +163,6 @@ public enum HeroClass {
 
 		new ScrollOfUpgrade().identify();
 		new PotionOfLiquidFlame().identify();
-
-		new WandOfConjuration().identify().collect();
-		new ScrollOfUpgrade().quantity(5).collect();
 	}
 
 	private static void initRogue( Hero hero ) {

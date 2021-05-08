@@ -189,7 +189,7 @@ public class SummPDChanges {
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.FROGGIT_STAFF, null), "Staves rework",
                 "_-_ Introducing ranking system! Use SoUs on your weapons to change their stats and abilities. Not all of them are direct upgrades, so beware (you can downgrade staff if you don't like its current rank!).\n\n" +
                         "_-_ Base state of most staves is buffed to be viable at regular stages.\n\n" +
-                        "_-_ The things are subjective to change during beta test."
+                        "_-_ The things are subjective with time, as balance is not properly tested out."
         ));
 
         changes.addButton( new ChangeButton(new Image(Assets.Sprites.CONJURER, 0, 90, 12, 15), "Conjurer",
@@ -218,8 +218,6 @@ public class SummPDChanges {
                         "_-_ Several new monsters and new challenges are residing in Abyss. Mobs are getting respawned by abyssal spawner, destroying which will award you a Scroll of Upgrade.\n\n" +
                         "_-_ Every room appears with same chance in Abyss's cartography, making really unique shape of levels.\n\n" +
                         "_-_ Your goal in Abyss in collecting Chaosstones - the mysterious unstable gems, giving incredible power to wielder (and a truck load of score). If you feel like you can't descend anymore, you can sumbit the amount of found chaos stones into rankings and finish the run."));
-
-
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_OMNI, null), "Soul of Yendor",
                 "_-_ Added the artifact, that is 8 other artifacts at once.\n\n" +
                         "_-_ This item combines properties of Horn of Plenty, Alchemical Toolkit, Ethereal Chains, Chalice of Blood, Sandals of Nature, Master Thieves\' Armband, Timekeeper\'s Hourglass and Unstable Spellbook.\n\n" +
@@ -250,7 +248,8 @@ public class SummPDChanges {
                         "_-_ Added ergonomic inventory setting, that moves slots to bottom of screen.\n" +
                         "_-_ Added new attacks for Yog, buffed his summon attack to include more monsters."));
 
-
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.ROGUE, 0, 90, 12, 15), "Rogue",
+                "Rogue is undergoing some global changes. Assassin and Freerunner are still in the game, but will be replaced in 1.3 patch."));
 
     }
 
