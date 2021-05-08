@@ -212,6 +212,14 @@ public class SummPDChanges {
                         "_-_ 26 floors is normal mode, the levels have been increased in size compared to previous releases.\n\n" +
                         "_-_ 31 floors is for long steady runs, with 20 scrolls of upgrade, exclusive mob rotation and increased amount of everything."));
 
+        changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_ABYSS, 0, 64, 16, 16 ), "Abyss and Endless mode",
+                "As optional challenge, the bottomless abyss awaits you!\n\n" +
+                        "_-_ Use amulet in third way to descend into floor 27. Once you enter, there is no way out.\n\n" +
+                        "_-_ Several new monsters and new challenges are residing in Abyss. Mobs are getting respawned by abyssal spawner, destroying which will award you a Scroll of Upgrade.\n\n" +
+                        "_-_ Every room appears with same chance in Abyss's cartography, making really unique shape of levels.\n\n" +
+                        "_-_ Your goal in Abyss in collecting Chaosstones - the mysterious unstable gems, giving incredible power to wielder (and a truck load of score). If you feel like you can't descend anymore, you can sumbit the amount of found chaos stones into rankings and finish the run."));
+
+
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_OMNI, null), "Soul of Yendor",
                 "_-_ Added the artifact, that is 8 other artifacts at once.\n\n" +
                         "_-_ This item combines properties of Horn of Plenty, Alchemical Toolkit, Ethereal Chains, Chalice of Blood, Sandals of Nature, Master Thieves\' Armband, Timekeeper\'s Hourglass and Unstable Spellbook.\n\n" +

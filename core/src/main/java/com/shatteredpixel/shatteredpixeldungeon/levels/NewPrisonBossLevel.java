@@ -129,20 +129,6 @@ public class NewPrisonBossLevel extends Level {
 		for (Bundlable item : bundle.getCollection(STORED_ITEMS)){
 			storedItems.add( (Item)item );
 		}
-
-		//if for some reason we don't have needed key, give key
-		boolean key = false;
-		for (Heap heap : heaps.valueList()){
-			for (Item item: itemsToSpawn.toArray(new Item[0])){
-				if (item instanceof IronKey){
-					key = true;
-				}
-			}
-		}
-
-		if (!key){
-			drop(new IronKey(Dungeon.chapterSize()*2), Dungeon.hero.pos);
-		}
 		
 		triggered = bundle.getBooleanArray(TRIGGERED);
 		
