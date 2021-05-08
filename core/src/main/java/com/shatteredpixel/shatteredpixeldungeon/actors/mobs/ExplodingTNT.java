@@ -125,7 +125,7 @@ public class ExplodingTNT extends Mob {
                                             continue;
                                         }
 
-                                        int dmg = /*damageRoll() / 3*/1;
+                                        int dmg = damageRoll() / 3;
                                         if (buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dmg *= 0.6f;
 
                                         dmg -= cher.drRoll();
