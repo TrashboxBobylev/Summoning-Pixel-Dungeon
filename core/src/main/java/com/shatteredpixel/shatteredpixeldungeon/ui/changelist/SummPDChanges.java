@@ -186,6 +186,16 @@ public class SummPDChanges {
         changes.hardlight(Window.TITLE_COLOR);
         changeInfos.add(changes);
 
+        changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
+        changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
+                "_-_ Released May 9th, 2021\n" +
+                        "_-_ 148 days after 1.1.5b\n\n" +
+                        "Those delays are getting longer and longer, huh.\n\n" +
+                        "Thanks everyone for supporting me in such difficult time for everyone. This release was originally planned to be much less, but unfortunate circumstances have ruined the estimates. But life goes on, and we have a ton content of explore.\n\n" +
+                        "Stay tuned for 1.3 and enjoy 1.2!"));
+
+        changes = ChangesScene.createChangeInfo(changeInfos, "Overhauls", false, 0x5ed8ff);
+
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.FROGGIT_STAFF, null), "Staves rework",
                 "_-_ Introducing ranking system! Use SoUs on your weapons to change their stats and abilities. Not all of them are direct upgrades, so beware (you can downgrade staff if you don't like its current rank!).\n\n" +
                         "_-_ Base state of most staves is buffed to be viable at regular stages.\n\n" +
@@ -201,9 +211,10 @@ public class SummPDChanges {
                         "_-_ Subclasses have been completely reworked to have exclusive set of spells, suited for various playstyles.\n\n" +
                         "_-_ As results of big buff, Conjurer's HP is reduced to 10 (+2), and his deltarune robe now works like cloth all time."));
 
-        changes.addButton(new ChangeButton(Icons.get(Icons.SHPX), "Shattered PD Port",
-                        "_-_ Ported QoL changes and bugfixes from Shattered PD 0.9.1 and 0.9.2.\n\n" +
-                        "Talents are gonna be introduced in 1.3 as exclusive for Rogue."));
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.ROGUE, 0, 90, 12, 15), "Rogue",
+                "Rogue is undergoing some global changes. Assassin and Freerunner are still in the game, but will be replaced in 1.3 patch."));
+
+        changes = ChangesScene.createChangeInfo(changeInfos, "New Content", false, Window.SHPX_COLOR);
 
         changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_HALLS, 0, 64, 16, 16 ), "Dynamic Dungeon Size",
                 "To make game suit for every kind of player, the dungeon was renovated to have 3 different sizes!\n\n" +
@@ -235,6 +246,12 @@ public class SummPDChanges {
                         "_-_ The strength of this new wand comes from it being spammable and ability of swords being overwhelming in numbers."
         ));
 
+        changes = ChangesScene.createChangeInfo(changeInfos, "Changes", false, 0xc65c0c);
+
+        changes.addButton(new ChangeButton(Icons.get(Icons.SHPX), "Shattered PD Port",
+                "_-_ Ported QoL changes and bugfixes from Shattered PD 0.9.1 and 0.9.2.\n\n" +
+                        "Talents are gonna be introduced in 1.3 as exclusive for Rogue."));
+
         changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
                 "_-_ Fixed rare crash on Sad Ghost.\n" +
                         "_-_ Fixed options screen having empty choices.\n" +
@@ -247,10 +264,6 @@ public class SummPDChanges {
                         "_-_ Added wet debuff, that does same thing as being in water. Inflicted by Storm Clouds and Aqua Blast.\n" +
                         "_-_ Added ergonomic inventory setting, that moves slots to bottom of screen.\n" +
                         "_-_ Added new attacks for Yog, buffed his summon attack to include more monsters."));
-
-        changes.addButton( new ChangeButton(new Image(Assets.Sprites.ROGUE, 0, 90, 12, 15), "Rogue",
-                "Rogue is undergoing some global changes. Assassin and Freerunner are still in the game, but will be replaced in 1.3 patch."));
-
     }
 
     public static void add_1_1_5_Changes(ArrayList<ChangeInfo> changeInfos) {
