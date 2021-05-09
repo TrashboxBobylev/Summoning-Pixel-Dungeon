@@ -522,7 +522,6 @@ public abstract class Char extends Actor {
 		} else if (isResist( srcClass)){
 		    if (this instanceof Hero) dmg = 1;
 		    else dmg = (int) Math.round( Math.sqrt(dmg));
-			dmg *= RingOfElements.resist(this, srcClass);
 		}
 		
 		//TODO improve this when I have proper damage source logic
