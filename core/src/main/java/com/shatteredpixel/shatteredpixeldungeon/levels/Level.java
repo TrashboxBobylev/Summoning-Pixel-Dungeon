@@ -613,9 +613,9 @@ public abstract class Level implements Bundlable {
 
 	public boolean checkForFroggits(){
 	    for (Mob mob : mobs){
-	        if (mob instanceof FinalFroggit) return false;
+	        if (mob instanceof FinalFroggit) return true;
         }
-	    return true;
+	    return false;
     }
 
     public int numberOfStars(){
