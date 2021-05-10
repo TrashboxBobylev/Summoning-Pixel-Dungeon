@@ -186,6 +186,15 @@ public class SummPDChanges {
         changes.hardlight(Window.TITLE_COLOR);
         changeInfos.add(changes);
 
+        changes = ChangesScene.createChangeInfo(changeInfos, "v1.2.0a", false, Window.WHITE);
+
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "Fixed:\n" +
+                        "_-_ Debuff large icons being incorrect.\n\n" +
+                        "_-_ Frost Elemental minion's animation were incorrect.\n\n"+
+                        "_-_ Demon Halls was undescenable if Final Froggits were dead.\n\n" +
+                        "_-_ Stationary minions displayed missing text when interacted with."));
+
         changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
         changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
                 "_-_ Released May 9th, 2021\n" +
