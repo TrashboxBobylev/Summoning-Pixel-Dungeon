@@ -56,10 +56,10 @@ public class StationaryMinion extends Minion {
         Game.runOnRenderThread(new Callback() {
             @Override
             public void call() {
-                GameScene.show(new WndOptions(Messages.get(this, "dismiss_title"),
-                        Messages.get(this, "dismiss_body"),
-                        Messages.get(this, "dismiss_confirm"),
-                        Messages.get(this, "dismiss_cancel")) {
+                GameScene.show(new WndOptions(Messages.get(StationaryMinion.class, "dismiss_title"),
+                        Messages.get(StationaryMinion.class, "dismiss_body"),
+                        Messages.get(StationaryMinion.class, "dismiss_confirm"),
+                        Messages.get(StationaryMinion.class, "dismiss_cancel")) {
                     @Override
                     protected void onSelect(int index) {
                         if (index == 0) {
