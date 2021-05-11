@@ -561,7 +561,7 @@ public class GameScene extends PixelScene {
 
 		if (actorThread != null && actorThread.isAlive()){
 			if (actorThread.getState() == Thread.State.WAITING && !Dungeon.hero.ready){
-				if ((wait += Game.elapsed) > 0.33f){
+				if ((wait += Game.elapsed) > 1f){
 					synchronized (actorThread){
 						actorThread.notify();
 						if (Actor.current != null)
