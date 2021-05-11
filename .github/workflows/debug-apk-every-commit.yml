@@ -49,6 +49,15 @@ jobs:
       - name: Remove unsigned apk
         run: rm android/build/outputs/apk/release/android-release-unsigned.apk
 
+      - name: Remove unsigned apk
+        run: rm android/build/outputs/apk/release/android-release-unsigned-aligned.apk
+
+      - name: Remove signing key
+        run: rm android/build/outputs/apk/release/signing_key.jks
+
+      - name: Remove output.json
+        run: rm android/build/outputs/apk/release/output.json
+
       - name: Rename APK
         run: mv android/build/outputs/apk/release/android-release-unsigned-signed.apk android/build/outputs/apk/release/android-release.apk
 
