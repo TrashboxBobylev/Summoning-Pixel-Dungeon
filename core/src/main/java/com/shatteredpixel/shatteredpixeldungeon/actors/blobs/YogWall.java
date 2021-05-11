@@ -88,7 +88,7 @@ public class YogWall extends Blob {
 	public void use( BlobEmitter emitter ) {
 		super.use( emitter );
 		
-		emitter.pour(MagicMissile.MagicParticle.FACTORY, 0.005f );
+		emitter.pour(MagicMissile.YogParticle.FACTORY, 0.1f );
 	}
 
 	@Override

@@ -268,6 +268,57 @@ public class MagicMissile extends Emitter {
 			}
 		}
 	}
+
+	public static class YogParticle extends PixelParticle {
+
+		public static final Emitter.Factory FACTORY = new Factory() {
+			@Override
+			public void emit( Emitter emitter, int index, float x, float y ) {
+				((YogParticle)emitter.recycle( YogParticle.class )).reset( x, y );
+			}
+			@Override
+			public boolean lightMode() {
+				return true;
+			}
+		};
+
+		public YogParticle() {
+			super();
+
+			color( 0x88CCFF );
+			lifespan = 3f;
+
+			speed.set( Random.Float( -0.03f, +0.03f ), Random.Float( -4, +4 ) );
+		}
+
+		public void reset( float x, float y ) {
+			revive();
+
+			this.x = x;
+			this.y = y;
+
+			left = lifespan;
+		}
+
+		public void resetAttract( float x, float y) {
+			revive();
+
+			//size = 8;
+			left = lifespan;
+
+			speed.polar( Random.Float( PointF.PI2 ), Random.Float( 16, 32 ) );
+			this.x = x - speed.x * lifespan;
+			this.y = y - speed.y * lifespan;
+		}
+
+		@Override
+		public void update() {
+			super.update();
+			// alpha: 1 -> 0; size: 1 -> 4
+			size( 8 );
+			am = left * 0.75f / lifespan;
+		}
+	}
 	
 	public static class MagicParticle extends PixelParticle {
 		
