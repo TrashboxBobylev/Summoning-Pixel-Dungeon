@@ -53,7 +53,7 @@ jobs:
         run: rm android/build/outputs/apk/release/android-release-unsigned-aligned.apk
 
       - name: Remove signing key
-        run: rm android/build/outputs/apk/release/signing_key.jks
+        run: rm android/build/outputs/apk/release/signingKey.jks
 
       - name: Remove output.json
         run: rm android/build/outputs/apk/release/output.json
