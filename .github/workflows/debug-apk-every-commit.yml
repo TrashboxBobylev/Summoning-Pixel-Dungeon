@@ -58,11 +58,11 @@ jobs:
           VERSION_FILE: version
 
       - name: Upload to itch.io (android)
-          uses: josephbmanley/butler-publish-itchio-action@master
-          env:
-            BUTLER_CREDENTIALS: ${{ secrets.BUTLER_KEY }}
-            CHANNEL: android-stable
-            ITCH_GAME: summoning-pixel-dungeon
-            ITCH_USER: TrashboxBobylev
-            PACKAGE: android/build/outputs/apk/release/android-release-unsigned-signed.apk
-            VERSION_FILE: version
+        uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_KEY }}
+          CHANNEL: android-stable
+          ITCH_GAME: summoning-pixel-dungeon
+          ITCH_USER: TrashboxBobylev
+          PACKAGE: android/build/outputs/apk/release/android-release-unsigned-signed.apk
+          VERSION_FILE: version
