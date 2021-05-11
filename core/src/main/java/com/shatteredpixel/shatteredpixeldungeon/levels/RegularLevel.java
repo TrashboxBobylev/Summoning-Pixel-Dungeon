@@ -166,12 +166,12 @@ public abstract class RegularLevel extends Level {
 
 	protected int nTraps() {
 		if (SPDSettings.bigdungeon())
-			return Random.NormalIntRange( 7, 11 + (Dungeon.depth) );
+			return Random.NormalIntRange( 8, 12 + (Dungeon.depth) );
 
 		if (SPDSettings.smalldungeon())
-			return Random.NormalIntRange( 2, 3 + (Dungeon.depth/5) );
+			return Random.NormalIntRange( 1, 3 + (Dungeon.depth/5) );
 
-		return Random.NormalIntRange( 4, 5 + (Dungeon.depth/3) );
+		return Random.NormalIntRange( 3, 5 + (Dungeon.depth/3) );
 	}
 	
 	protected Class<?>[] trapClasses(){
@@ -186,11 +186,11 @@ public abstract class RegularLevel extends Level {
 	public int nMobs() {
 		if (Dungeon.depth <= 1) return 0;
 
-		int mobs = 8 + Dungeon.depth % 2 + Random.Int(11);
+		int mobs = 8 + Dungeon.depth + Random.Int(7);
 		if (feeling == Feeling.LARGE){
 			mobs = (int)Math.ceil(mobs * 2f);
 		}
-		if (SPDSettings.smalldungeon()) mobs /= 2;
+		if (SPDSettings.smalldungeon()) mobs /= 3;
 
 		return mobs;
 	}

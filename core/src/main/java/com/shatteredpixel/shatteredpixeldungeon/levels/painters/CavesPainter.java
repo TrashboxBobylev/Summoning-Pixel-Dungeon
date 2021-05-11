@@ -27,44 +27,25 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.ConnectionRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.CaveRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
 import com.watabou.utils.Random;
-import com.watabou.utils.Rect;
 
 import java.util.ArrayList;
 
 public class CavesPainter extends RegularPainter {
-	
+
 	@Override
 	protected void decorate(Level level, ArrayList<Room> rooms) {
-		
+
 		int w = level.width();
 		int l = level.length();
 		int[] map = level.map;
 
 		for (Room r : rooms) {
-			if (r instanceof StandardRoom && ((StandardRoom) r).joinable) {
-				for (Room n : r.neigbours) {
-					if (n instanceof StandardRoom && ((StandardRoom) n).joinable && !r.connected.containsKey( n )) {
-						Rect i = r.intersect( n );
-						if (i.left == i.right && i.bottom - i.top >= 3) {
-
-							i.top++;
-							i.right++;
-
-							Painter.fill( level, i.left, i.top, 1, i.height(), Terrain.CHASM );
-
-						} else if (i.top == i.bottom && i.right - i.left >= 3) {
-
-							i.left++;
-							i.bottom++;
-
-							Painter.fill( level, i.left, i.top, i.width(), 1, Terrain.CHASM );
-						}
-					}
+			for (Room n : r.neigbours) {
+				if (!r.connected.containsKey( n )) {
+					mergeRooms(level, r, n, null, Terrain.CHASM);
 				}
 			}
 		}
@@ -73,13 +54,13 @@ public class CavesPainter extends RegularPainter {
 			if (!(room instanceof StandardRoom)) {
 				continue;
 			}
-			
+
 			if (room.width() <= 4 || room.height() <= 4) {
 				continue;
 			}
-			
+
 			int s = room.square();
-			
+
 			if (Random.Int( s ) > 8) {
 				int corner = (room.left + 1) + (room.top + 1) * w;
 				if (map[corner - 1] == Terrain.WALL && map[corner - w] == Terrain.WALL) {
@@ -87,7 +68,7 @@ public class CavesPainter extends RegularPainter {
 					level.traps.remove(corner);
 				}
 			}
-			
+
 			if (Random.Int( s ) > 8) {
 				int corner = (room.right - 1) + (room.top + 1) * w;
 				if (map[corner + 1] == Terrain.WALL && map[corner - w] == Terrain.WALL) {
@@ -95,7 +76,7 @@ public class CavesPainter extends RegularPainter {
 					level.traps.remove(corner);
 				}
 			}
-			
+
 			if (Random.Int( s ) > 8) {
 				int corner = (room.left + 1) + (room.bottom - 1) * w;
 				if (map[corner - 1] == Terrain.WALL && map[corner + w] == Terrain.WALL) {
@@ -103,7 +84,7 @@ public class CavesPainter extends RegularPainter {
 					level.traps.remove(corner);
 				}
 			}
-			
+
 			if (Random.Int( s ) > 8) {
 				int corner = (room.right - 1) + (room.bottom - 1) * w;
 				if (map[corner + 1] == Terrain.WALL && map[corner + w] == Terrain.WALL) {
@@ -111,17 +92,9 @@ public class CavesPainter extends RegularPainter {
 					level.traps.remove(corner);
 				}
 			}
-			
-			for (Room n : room.connected.keySet()) {
-				if ((n instanceof StandardRoom || n instanceof ConnectionRoom) && Random.Int( 5 ) == 0) {
-					Painter.set( level, room.connected.get( n ), Terrain.EMPTY_DECO );
-				}
-				if (n instanceof CaveRoom && room instanceof CaveRoom){
-					Painter.set( level, room.connected.get( n ), Terrain.EMPTY_DECO );
-				}
-			}
+
 		}
-		
+
 		for (int i=w + 1; i < l - w; i++) {
 			if (map[i] == Terrain.EMPTY) {
 				int n = 0;
@@ -142,7 +115,7 @@ public class CavesPainter extends RegularPainter {
 				}
 			}
 		}
-		
+
 		for (int i=0; i < l - w; i++) {
 			if (map[i] == Terrain.WALL &&
 					DungeonTileSheet.floorTile(map[i + w])

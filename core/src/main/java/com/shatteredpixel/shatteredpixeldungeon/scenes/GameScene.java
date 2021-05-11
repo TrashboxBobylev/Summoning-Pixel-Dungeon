@@ -118,6 +118,8 @@ public class GameScene extends PixelScene {
 	private ResumeIndicator resume;
 	private WarriorAbilityButton warriorTag;
 
+	public float wait;
+
 	@Override
 	public void create() {
 		
@@ -556,6 +558,19 @@ public class GameScene extends PixelScene {
 			g.destroy();
 		}
 		toDestroy.clear();
+
+		if (actorThread != null && actorThread.isAlive()){
+			if (actorThread.getState() == Thread.State.WAITING && !Dungeon.hero.ready){
+				if ((wait += Game.elapsed) > 1f){
+					synchronized (actorThread){
+						actorThread.notify();
+						if (Actor.current != null)
+							Actor.current.next();
+						wait = 0;
+					}
+				}
+			}
+		}
 	}
 
 	private boolean tagAttack    = false;

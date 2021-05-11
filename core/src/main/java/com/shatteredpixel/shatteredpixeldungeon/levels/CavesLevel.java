@@ -59,10 +59,10 @@ public class CavesLevel extends RegularLevel {
 	
 	@Override
 	protected int standardRooms(boolean forceMax) {
-		if (SPDSettings.smalldungeon()) return 5;
-		if (forceMax) return 26;
+		if (SPDSettings.smalldungeon()) return 4;
+		if (forceMax) return 20;
 		//13 to 18
-		return 13+Random.chances(new float[]{2, 3, 3, 1, 1, 1});
+		return 11+Random.chances(new float[]{3, 2, 2, 1});
 	}
 	
 	@Override

@@ -130,7 +130,7 @@ public abstract class Actor implements Bundlable {
 	
 	private static HashSet<Actor> all = new HashSet<>();
 	private static HashSet<Char> chars = new HashSet<>();
-	private static volatile Actor current;
+	public static volatile Actor current;
 
 	private static SparseArray<Actor> ids = new SparseArray<>();
 

@@ -39,7 +39,7 @@ public class MysteryMeat extends Food {
 
 	{
 		image = ItemSpriteSheet.MEAT;
-		energy = 80;
+		energy = 88;
 		regen = -25;
 	}
 	

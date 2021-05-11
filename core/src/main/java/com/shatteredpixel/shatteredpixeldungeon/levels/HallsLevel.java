@@ -47,8 +47,7 @@ import java.util.ArrayList;
 public class HallsLevel extends RegularLevel {
 
 	{
-		
-		viewDistance = Math.min( 26 - Dungeon.depth, viewDistance );
+		viewDistance = Math.min( Dungeon.chapterSize()*5+1 - Dungeon.depth, viewDistance );
 		
 		color1 = 0x801500;
 		color2 = 0xa68521;
@@ -71,10 +70,10 @@ public class HallsLevel extends RegularLevel {
 
 	@Override
 	protected int standardRooms(boolean forceMax) {
-		if (SPDSettings.smalldungeon()) return 6;
-		if (forceMax) return 36;
+		if (SPDSettings.smalldungeon()) return 4;
+		if (forceMax) return 29;
 		//18 to 26
-		return 18+Random.chances(new float[]{3, 2, 1, 1, 1, 1});
+		return 15+Random.chances(new float[]{3, 2, 1, 1});
 	}
 	
 	@Override

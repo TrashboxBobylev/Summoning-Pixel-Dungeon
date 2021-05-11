@@ -31,14 +31,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public abstract class Builder {
-	
+
 	//If builders require additional parameters, they should
 	// request them in their constructor or other methods
-	
+
 	//builders take a list of rooms and returns them as a connected map
 	//returns null on failure
 	public abstract ArrayList<Room> build(ArrayList<Room> rooms);
-	
+
 	protected static void findNeighbours(ArrayList<Room> rooms){
 		Room[] ra = rooms.toArray( new Room[0] );
 		for (int i=0; i < ra.length-1; i++) {
@@ -55,7 +55,7 @@ public abstract class Builder {
 		//shallow copy
 		ArrayList<Room> colliding = new ArrayList<>(collision);
 		do{
-			
+
 			//remove empty rooms and any rooms we aren't currently overlapping
 			Iterator<Room> it = colliding.iterator();
 			while (it.hasNext()){
@@ -67,14 +67,14 @@ public abstract class Builder {
 					it.remove();
 				}
 			}
-			
+
 			//iterate through all rooms we are overlapping, and find the closest one
 			Room closestRoom = null;
 			int closestDiff = Integer.MAX_VALUE;
 			boolean inside = true;
 			int curDiff = 0;
 			for (Room curRoom : colliding){
-				
+
 				if (start.x <= curRoom.left){
 					inside = false;
 					curDiff += curRoom.left - start.x;
@@ -82,7 +82,7 @@ public abstract class Builder {
 					inside = false;
 					curDiff += start.x - curRoom.right;
 				}
-			
+
 				if (start.y <= curRoom.top){
 					inside = false;
 					curDiff += curRoom.top - start.y;
@@ -90,36 +90,36 @@ public abstract class Builder {
 					inside = false;
 					curDiff += start.y - curRoom.bottom;
 				}
-				
+
 				if (inside){
 					space.set(start.x, start.y, start.x, start.y);
 					return space;
 				}
-				
+
 				if (curDiff < closestDiff){
 					closestDiff = curDiff;
 					closestRoom = curRoom;
 				}
-			
+
 			}
-			
+
 			int wDiff, hDiff;
 			if (closestRoom != null){
-				
+
 				wDiff = Integer.MAX_VALUE;
 				if (closestRoom.left >= start.x){
 					wDiff = (space.right - closestRoom.left) * (space.height() + 1);
 				} else if (closestRoom.right <= start.x){
 					wDiff = (closestRoom.right - space.left) * (space.height() + 1);
 				}
-				
+
 				hDiff = Integer.MAX_VALUE;
 				if (closestRoom.top >= start.y){
 					hDiff = (space.bottom - closestRoom.top) * (space.width() + 1);
 				} else if (closestRoom.bottom <= start.y){
 					hDiff = (closestRoom.bottom - space.top) * (space.width() + 1);
 				}
-				
+
 				//reduce by as little as possible to resolve the collision
 				if (wDiff < hDiff || wDiff == hDiff && Random.Int(2) == 0){
 					if (closestRoom.left >= start.x && closestRoom.left < space.right) space.right = closestRoom.left;
@@ -132,25 +132,25 @@ public abstract class Builder {
 			} else {
 				colliding.clear();
 			}
-			
+
 			//loop until we are no longer colliding with any rooms
 		} while (!colliding.isEmpty());
-		
+
 		return space;
 	}
 
 	private static final double A = 180 / Math.PI;
-	
+
 	//returns the angle in degrees made by the centerpoints of 2 rooms, with 0 being straight up.
 	protected static float angleBetweenRooms( Room from, Room to){
 		PointF fromCenter = new PointF((from.left + from.right)/2f, (from.top + from.bottom)/2f);
 		PointF toCenter = new PointF((to.left + to.right)/2f, (to.top + to.bottom)/2f);
 		return angleBetweenPoints(fromCenter, toCenter);
 	}
-	
+
 	protected static float angleBetweenPoints( PointF from, PointF to ){
 		double m = (to.y - from.y)/(to.x - from.x);
-		
+
 		float angle = (float)(A*(Math.atan(m) + Math.PI/2.0));
 		if (from.x > to.x) angle -= 180f;
 		return angle;
