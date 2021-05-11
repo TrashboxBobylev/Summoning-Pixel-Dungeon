@@ -32,29 +32,29 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 
 public class FigureEightBuilder extends RegularBuilder {
-	
+
 	//These methods allow for the adjusting of the shape of the loop
 	//by default the loop is a perfect circle, but it can be adjusted
-	
+
 	//increasing the exponent will increase the the curvature, making the loop more oval shaped.
 	private int curveExponent = 0;
-	
+
 	//This is a percentage (range 0-1) of the intensity of the curve function
 	// 0 makes for a perfect linear curve (circle)
 	// 1 means the curve is completely determined by the curve exponent
 	private float curveIntensity = 1;
-	
+
 	//Adjusts the starting point along the loop.
 	// a common example, setting to 0.25 will make for a short fat oval instead of a long one.
 	private float curveOffset = 0;
-	
+
 	public FigureEightBuilder setLoopShape(int exponent, float intensity, float offset){
 		this.curveExponent = Math.abs(exponent);
 		curveIntensity = intensity % 1f;
 		curveOffset = offset % 0.5f;
 		return this;
 	}
-	
+
 	private float targetAngle( float percentAlong ){
 		percentAlong += curveOffset;
 		return 360f * (float)(
@@ -62,27 +62,27 @@ public class FigureEightBuilder extends RegularBuilder {
 						+ (1-curveIntensity)*(percentAlong)
 						- curveOffset);
 	}
-	
+
 	private double curveEquation( double x ){
 		return Math.pow(4, 2*curveExponent)
 				*(Math.pow((x % 0.5f )-0.25, 2*curveExponent + 1))
 				+ 0.25 + 0.5*Math.floor(2*x);
 	}
-	
+
 	private Room landmarkRoom;
-	
+
 	public FigureEightBuilder setLandmarkRoom(Room room){
 		landmarkRoom = room;
 		return this;
 	}
-	
+
 	ArrayList<Room> firstLoop, secondLoop;
 	PointF firstLoopCenter, secondLoopCenter;
-	
+
 	@Override
 	public ArrayList<Room> build(ArrayList<Room> rooms) {
 		setupRooms(rooms);
-		
+
 		if (landmarkRoom == null){
 			//prefer large and giant standard rooms over others
 			for (Room r : mainPathRooms){
@@ -98,7 +98,7 @@ public class FigureEightBuilder extends RegularBuilder {
 		}
 		mainPathRooms.remove(landmarkRoom);
 		multiConnections.remove(landmarkRoom);
-		
+
 		float startAngle = Random.Float(0, 360);
 
 		int roomsOnFirstLoop = mainPathRooms.size()/2;
@@ -150,10 +150,10 @@ public class FigureEightBuilder extends RegularBuilder {
 				secondLoop.add(ConnectionRoom.createRoom());
 			}
 		}
-		
+
 		landmarkRoom.setSize();
 		landmarkRoom.setPos(0, 0);
-		
+
 		Room prev = landmarkRoom;
 		float targetAngle;
 		for (int i = 1; i < firstLoop.size(); i++){
@@ -168,11 +168,11 @@ public class FigureEightBuilder extends RegularBuilder {
 				return null;
 			}
 		}
-		
+
 		//FIXME this is still fairly chance reliant
 		// should just write a general function for stitching two rooms together in builder
 		while (!prev.connect(landmarkRoom)){
-			
+
 			ConnectionRoom c = ConnectionRoom.createRoom();
 			if (placeRoom(rooms, prev, c, angleBetweenRooms(prev, landmarkRoom)) == -1){
 				return null;
@@ -181,7 +181,7 @@ public class FigureEightBuilder extends RegularBuilder {
 			rooms.add(c);
 			prev = c;
 		}
-		
+
 		prev = landmarkRoom;
 		startAngle += 180f;
 		for (int i = 1; i < secondLoop.size(); i++){
@@ -196,11 +196,11 @@ public class FigureEightBuilder extends RegularBuilder {
 				return null;
 			}
 		}
-		
+
 		//FIXME this is still fairly chance reliant
 		// should just write a general function for stitching two rooms together in builder
 		while (!prev.connect(landmarkRoom)){
-			
+
 			ConnectionRoom c = ConnectionRoom.createRoom();
 			if (placeRoom(rooms, prev, c, angleBetweenRooms(prev, landmarkRoom)) == -1){
 				return null;
@@ -209,7 +209,7 @@ public class FigureEightBuilder extends RegularBuilder {
 			rooms.add(c);
 			prev = c;
 		}
-		
+
 		if (shop != null) {
 			float angle;
 			int tries = 10;
@@ -219,7 +219,7 @@ public class FigureEightBuilder extends RegularBuilder {
 			} while (angle == -1 && tries >= 0);
 			if (angle == -1) return null;
 		}
-		
+
 		firstLoopCenter = new PointF();
 		for (Room r : firstLoop){
 			firstLoopCenter.x += (r.left + r.right)/2f;
@@ -227,7 +227,7 @@ public class FigureEightBuilder extends RegularBuilder {
 		}
 		firstLoopCenter.x /= firstLoop.size();
 		firstLoopCenter.y /= firstLoop.size();
-		
+
 		secondLoopCenter = new PointF();
 		for (Room r : secondLoop){
 			secondLoopCenter.x += (r.left + r.right)/2f;
@@ -235,19 +235,19 @@ public class FigureEightBuilder extends RegularBuilder {
 		}
 		secondLoopCenter.x /= secondLoop.size();
 		secondLoopCenter.y /= secondLoop.size();
-		
+
 		ArrayList<Room> branchable = new ArrayList<>(firstLoop);
 		branchable.addAll(secondLoop);
 		branchable.remove(landmarkRoom); //remove once so it isn't present twice
-		
+
 		ArrayList<Room> roomsToBranch = new ArrayList<>();
 		roomsToBranch.addAll(multiConnections);
 		roomsToBranch.addAll(singleConnections);
 		weightRooms(branchable);
 		createBranches(rooms, branchable, roomsToBranch, branchTunnelChances);
-		
+
 		findNeighbours(rooms);
-		
+
 		for (Room r : rooms){
 			for (Room n : r.neigbours){
 				if (!n.connected.containsKey(r)
@@ -256,10 +256,10 @@ public class FigureEightBuilder extends RegularBuilder {
 				}
 			}
 		}
-		
+
 		return rooms;
 	}
-	
+
 	@Override
 	protected float randomBranchAngle( Room r ) {
 		PointF center;
@@ -274,7 +274,7 @@ public class FigureEightBuilder extends RegularBuilder {
 			//generate four angles randomly and return the one which points closer to the center
 			float toCenter = angleBetweenPoints( new PointF((r.left + r.right)/2f, (r.top + r.bottom)/2f), center);
 			if (toCenter < 0) toCenter += 360f;
-			
+
 			float currAngle = Random.Float(360f);
 			for( int i = 0; i < 4; i ++){
 				float newAngle = Random.Float(360f);
@@ -285,5 +285,5 @@ public class FigureEightBuilder extends RegularBuilder {
 			return currAngle;
 		}
 	}
-	
+
 }
