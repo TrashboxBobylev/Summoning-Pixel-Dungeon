@@ -166,7 +166,7 @@ public abstract class Level implements Bundlable {
 		
 		if (!(Dungeon.bossLevel())) {
 
-			if (Random.Float() < 0.5f) addItemToSpawn(Generator.random(Generator.Category.FOOD));
+			addItemToSpawn(Generator.random(Generator.Category.FOOD));
 
 			if (Dungeon.isChallenged(Challenges.DARKNESS)){
 				addItemToSpawn( new Torch() );
@@ -215,6 +215,7 @@ public abstract class Level implements Bundlable {
 						break;
 					case 4:
 						feeling = Feeling.LARGE;
+						addItemToSpawn(Generator.random(Generator.Category.FOOD));
 						addItemToSpawn(Generator.random(Generator.Category.FOOD));
 						break;
 					case 5:
