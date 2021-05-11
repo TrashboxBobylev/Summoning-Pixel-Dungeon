@@ -186,6 +186,23 @@ public class SummPDChanges {
         changes.hardlight(Window.TITLE_COLOR);
         changeInfos.add(changes);
 
+        changes = ChangesScene.createChangeInfo(changeInfos, "v1.2.0b", false, Window.WHITE);
+
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "_-_ Added failsafe for potential softlocks, which will give control to player if he gets stuck for too long.\n\n" +
+                        "_-_ Reduced lag from Yog's eradicating wall attack."));
+
+        changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_HALLS, 0, 64, 16, 16 ), "Dynamic Dungeon Size",
+                "_-_ Reduced amount of rooms by 25-35% in every dungeon mode.\n\n" +
+                        "_-_ Reduced amount of monsters in 21 floors mode.\n\n" +
+                        "_-_ Fixed view distance in demon halls.\n\n" +
+                        "_-_ Increased amount of mobs, but made it more consistent."));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RATION, null), "Food",
+                "_-_ Food satisfies for 10% more energy. Heroes take 10% more time to get hungry and starving.\n\n" +
+                        "_-_ Food appears in every floor now instead of the chance."
+        ));
+
         changes = ChangesScene.createChangeInfo(changeInfos, "v1.2.0a", false, Window.WHITE);
 
         changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
