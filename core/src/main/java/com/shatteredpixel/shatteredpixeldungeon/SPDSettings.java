@@ -120,7 +120,7 @@ public class SPDSettings extends GameSettings {
 	}
 
 	public static boolean bigdungeon() {
-		return getBoolean( KEY_BIGGER, false );
+		return Dungeon.mode == Dungeon.GameMode.BIGGER;
 	}
 
 	public static void smalldungeon( boolean value ) {
@@ -128,7 +128,7 @@ public class SPDSettings extends GameSettings {
 	}
 
 	public static boolean smalldungeon() {
-		return getBoolean( KEY_SMALLER, false );
+		return Dungeon.mode == Dungeon.GameMode.SMALL;
 	}
 	
 	public static int brightness() {

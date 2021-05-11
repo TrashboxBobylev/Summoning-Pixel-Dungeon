@@ -142,6 +142,8 @@ public class Dungeon {
 
 	public enum GameMode {
 		NORMAL("normal", Icons.ENTER),
+		SMALL("small", Icons.SHRINKING),
+		BIGGER("bigger", Icons.ENLARGEMENT),
 		GAUNTLET("gauntlet", Icons.GAUNTLET);
 
 		public String saveName;

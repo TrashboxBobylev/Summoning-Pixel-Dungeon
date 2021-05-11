@@ -56,7 +56,6 @@ public class WndSettings extends WndTabbed {
 
 	private DisplayTab  display;
 	private UITab       ui;
-	private DataTab     data;
 	private AudioTab    audio;
 	private LangsTab    langs;
 
@@ -97,19 +96,19 @@ public class WndSettings extends WndTabbed {
 			}
 		});
 
-		data = new DataTab();
-		data.setSize(width, 0);
-		height = Math.max(height, data.height());
-		add( data );
-
-		add( new IconTab(Icons.get(Icons.DATA)){
-			@Override
-			protected void select(boolean value) {
-				super.select(value);
-				data.visible = data.active = value;
-				if (value) last_index = 2;
-			}
-		});
+//		data = new DataTab();
+//		data.setSize(width, 0);
+//		height = Math.max(height, data.height());
+//		add( data );
+//
+//		add( new IconTab(Icons.get(Icons.DATA)){
+//			@Override
+//			protected void select(boolean value) {
+//				super.select(value);
+//				data.visible = data.active = value;
+//				if (value) last_index = 2;
+//			}
+//		});
 
 		audio = new AudioTab();
 		audio.setSize(width, 0);

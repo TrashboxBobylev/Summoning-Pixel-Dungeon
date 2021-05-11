@@ -79,6 +79,8 @@ public enum Icons {
 	SHPX,
 	TALENT,
 	GAUNTLET,
+	SHRINKING,
+	ENLARGEMENT,
 	
 	//misc icons
 	LIBGDX,
@@ -260,6 +262,12 @@ public enum Icons {
 			break;
 		case GAUNTLET:
 			icon.frame( icon.texture.uvRect( 48, 128, 64, 144 ) );
+			break;
+		case SHRINKING:
+			icon.frame( icon.texture.uvRect( 63, 128, 81, 143 ) );
+			break;
+		case ENLARGEMENT:
+			icon.frame( icon.texture.uvRect( 81, 129, 101, 149 ) );
 			break;
 
 		}
