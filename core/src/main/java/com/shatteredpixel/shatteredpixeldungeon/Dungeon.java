@@ -155,6 +155,7 @@ public class Dungeon {
 		public String desc(){
 			return Messages.get(Dungeon.class, "game_mode_" + saveName);
 		}
+
 	}
 
 	public static int challenges;
@@ -576,6 +577,7 @@ public class Dungeon {
 	private static final String VERSION		= "version";
 	private static final String SEED		= "seed";
 	private static final String CHALLENGES	= "challenges";
+	private static final String MODE        = "mode";
 	private static final String HERO		= "hero";
 	private static final String GOLD		= "gold";
 	private static final String DEPTH		= "depth";
@@ -598,6 +600,7 @@ public class Dungeon {
 			bundle.put( HERO, hero );
 			bundle.put( GOLD, gold );
 			bundle.put( DEPTH, depth );
+			bundle.put( MODE, mode);
 
 			for (int d : droppedItems.keyArray()) {
 				bundle.put(Messages.format(DROPPED, d), droppedItems.get(d));
@@ -666,7 +669,7 @@ public class Dungeon {
 			saveGame( GamesInProgress.curSlot );
 			saveLevel( GamesInProgress.curSlot );
 
-			GamesInProgress.set( GamesInProgress.curSlot, depth, challenges, hero );
+			GamesInProgress.set( GamesInProgress.curSlot, depth, challenges, mode, hero );
 
 		}
 	}
@@ -689,6 +692,11 @@ public class Dungeon {
 		QuickSlotButton.reset();
 
 		Dungeon.challenges = bundle.getInt( CHALLENGES );
+		try {
+			Dungeon.mode = GameMode.valueOf(bundle.getString(MODE));
+		} catch (IllegalArgumentException exception){
+			Dungeon.mode = GameMode.NORMAL;
+		}
 		
 		Dungeon.level = null;
 		Dungeon.depth = -1;
@@ -803,6 +811,11 @@ public class Dungeon {
 		info.depth = bundle.getInt( DEPTH );
 		info.version = bundle.getInt( VERSION );
 		info.challenges = bundle.getInt( CHALLENGES );
+		try {
+			info.mode = GameMode.valueOf(bundle.getString(MODE));
+		} catch (IllegalArgumentException exception){
+			info.mode = GameMode.NORMAL;
+		}
 		Hero.preview( info, bundle.getBundle( HERO ) );
 		Statistics.preview( info, bundle );
 	}

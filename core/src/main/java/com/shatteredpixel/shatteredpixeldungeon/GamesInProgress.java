@@ -39,7 +39,7 @@ import java.util.HashMap;
 
 public class GamesInProgress {
 	
-	public static final int MAX_SLOTS = 4;
+	public static final int MAX_SLOTS = 6;
 	
 	//null means we have loaded info and it is empty, no entry means unknown.
 	private static HashMap<Integer, Info> slotStates = new HashMap<>();
@@ -123,7 +123,7 @@ public class GamesInProgress {
 		}
 	}
 
-	public static void set(int slot, int depth, int challenges,
+	public static void set(int slot, int depth, int challenges, Dungeon.GameMode mode,
 	                       Hero hero) {
 		Info info = new Info();
 		info.slot = slot;
@@ -140,6 +140,7 @@ public class GamesInProgress {
 		info.heroClass = hero.heroClass;
 		info.subClass = hero.subClass;
 		info.armorTier = hero.tier();
+		info.mode = mode;
 		
 		info.goldCollected = Statistics.goldCollected;
 		info.maxDepth = Statistics.deepestFloor;
@@ -161,6 +162,7 @@ public class GamesInProgress {
 		public int depth;
 		public int version;
 		public int challenges;
+		public Dungeon.GameMode mode;
 		
 		public int level;
 		public int str;

@@ -125,6 +125,7 @@ public class StartScene extends PixelScene {
 		private BitmapText depth;
 		private Image classIcon;
 		private BitmapText level;
+		private Image mode;
 		
 		private int slot;
 		private boolean newGame;
@@ -178,6 +179,8 @@ public class StartScene extends PixelScene {
 					
 					classIcon = new Image(Icons.get(info.heroClass));
 					add(classIcon);
+					mode = new Image(Icons.get(info.mode.icon));
+					add(mode);
 					level = new BitmapText(PixelScene.pixelFont);
 					add(level);
 				} else {
@@ -225,6 +228,10 @@ public class StartScene extends PixelScene {
 						y + (height - name.height())/2f
 				);
 				align(name);
+
+				mode.x = x + width - 56 + (16 - mode.width())/2f;
+				mode.y = y + (height - mode.height())/2f;
+				align(classIcon);
 				
 				classIcon.x = x + width - 24 + (16 - classIcon.width())/2f;
 				classIcon.y = y + (height - classIcon.height())/2f;
