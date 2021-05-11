@@ -246,169 +246,11 @@ public class Dungeon {
 		}
 		
 		Level level;
-		if (SPDSettings.bigdungeon()){
-			switch (depth) {
-				case 1:
-				case 2:
-				case 3:
-				case 4:
-				case 5:
-					level = new SewerLevel();
-					break;
-				case 6:
-					level = new SewerBossLevel();
-					break;
-				case 7:
-				case 8:
-				case 9:
-				case 10:
-				case 11:
-					level = new PrisonLevel();
-					break;
-				case 12:
-					level = new NewPrisonBossLevel();
-					break;
-				case 13:
-				case 14:
-				case 15:
-				case 16:
-				case 17:
-					level = new CavesLevel();
-					break;
-				case 18:
-					level = new NewCavesBossLevel();
-					break;
-				case 19:
-				case 20:
-				case 21:
-				case 22:
-				case 23:
-					level = new CityLevel();
-					break;
-				case 24:
-					level = new NewCityBossLevel();
-					break;
-				case 25:
-				case 26:
-				case 27:
-				case 28:
-				case 29:
-					level = new HallsLevel();
-					break;
-				case 30:
-					level = new NewHallsBossLevel();
-					break;
-				case 31:
-					level = new LastLevel();
-					break;
-				default:
-					level = new AbyssLevel();
-					break;
-			}
-		} else if (SPDSettings.smalldungeon()){
-			switch (depth) {
-				case 1:
-				case 2:
-				case 3:
-					level = new SewerLevel();
-					break;
-				case 4:
-					level = new SewerBossLevel();
-					break;
-				case 5:
-				case 6:
-				case 7:
-					level = new PrisonLevel();
-					break;
-				case 8:
-					level = new NewPrisonBossLevel();
-					break;
-				case 9:
-				case 10:
-				case 11:
-					level = new CavesLevel();
-					break;
-				case 12:
-					level = new NewCavesBossLevel();
-					break;
-				case 13:
-				case 14:
-				case 15:
-					level = new CityLevel();
-					break;
-				case 16:
-					level = new NewCityBossLevel();
-					break;
-				case 17:
-				case 18:
-				case 19:
-					level = new HallsLevel();
-					break;
-				case 20:
-					level = new NewHallsBossLevel();
-					break;
-				case 21:
-					level = new LastLevel();
-					break;
-				default:
-					level = new AbyssLevel();
-					break;
-			}
-		}
-		else {
-			switch (depth) {
-				case 1:
-				case 2:
-				case 3:
-				case 4:
-					level = new SewerLevel();
-					break;
-				case 5:
-					level = new SewerBossLevel();
-					break;
-				case 6:
-				case 7:
-				case 8:
-				case 9:
-					level = new PrisonLevel();
-					break;
-				case 10:
-					level = new NewPrisonBossLevel();
-					break;
-				case 11:
-				case 12:
-				case 13:
-				case 14:
-					level = new CavesLevel();
-					break;
-				case 15:
-					level = new NewCavesBossLevel();
-					break;
-				case 16:
-				case 17:
-				case 18:
-				case 19:
-					level = new CityLevel();
-					break;
-				case 20:
-					level = new NewCityBossLevel();
-					break;
-				case 21:
-				case 22:
-				case 23:
-				case 24:
-					level = new HallsLevel();
-					break;
-				case 25:
-					level = new NewHallsBossLevel();
-					break;
-				case 26:
-					level = new LastLevel();
-					break;
-				default:
-					level = new AbyssLevel();
-					break;
-			}
+
+		switch(mode){
+			case NORMAL: default:
+				level = chooseNormalLevel();
+				break;
 		}
 		
 		level.create();
@@ -416,6 +258,43 @@ public class Dungeon {
 		Statistics.qualifiedForNoKilling = !bossLevel();
 		
 		return level;
+	}
+
+	public static Level chooseNormalLevel(){
+		if (Dungeon.depth > 0 && Dungeon.depth < Dungeon.chapterSize()) {
+			return new SewerLevel();
+		}
+		if (Dungeon.depth == Dungeon.chapterSize()){
+			return new SewerBossLevel();
+		}
+		if (Dungeon.depth > Dungeon.chapterSize() && Dungeon.depth < Dungeon.chapterSize()*2) {
+			return new PrisonLevel();
+		}
+		if (Dungeon.depth == Dungeon.chapterSize()*2){
+			return new NewPrisonBossLevel();
+		}
+		if (Dungeon.depth > Dungeon.chapterSize()*2 && Dungeon.depth < Dungeon.chapterSize()*3) {
+			return new CavesLevel();
+		}
+		if (Dungeon.depth == Dungeon.chapterSize()*3){
+			return new NewCavesBossLevel();
+		}
+		if (Dungeon.depth > Dungeon.chapterSize()*3 && Dungeon.depth < Dungeon.chapterSize()*4) {
+			return new CityLevel();
+		}
+		if (Dungeon.depth == Dungeon.chapterSize()*4){
+			return new NewCityBossLevel();
+		}
+		if (Dungeon.depth > Dungeon.chapterSize()*4 && Dungeon.depth < Dungeon.chapterSize()*5) {
+			return new HallsLevel();
+		}
+		if (Dungeon.depth == Dungeon.chapterSize()*5){
+			return new NewHallsBossLevel();
+		}
+		if (Dungeon.depth == Dungeon.chapterSize()*5+1){
+			return new LastLevel();
+		}
+		return new AbyssLevel();
 	}
 	
 	public static void resetLevel() {
