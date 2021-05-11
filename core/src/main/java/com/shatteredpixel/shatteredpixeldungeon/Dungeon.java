@@ -52,6 +52,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
@@ -139,7 +140,25 @@ public class Dungeon {
 
 	}
 
+	public enum GameMode {
+		NORMAL("normal", Icons.ENTER),
+		GAUNTLET("gauntlet", Icons.GAUNTLET);
+
+		public String saveName;
+		public Icons icon;
+
+		GameMode(String saveName, Icons icon) {
+			this.saveName = saveName;
+			this.icon = icon;
+		}
+
+		public String desc(){
+			return Messages.get(Dungeon.class, "game_mode_" + saveName);
+		}
+	}
+
 	public static int challenges;
+	public static GameMode mode;
 
 	public static Hero hero;
 	public static Level level;

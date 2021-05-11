@@ -78,6 +78,7 @@ public enum Icons {
 	CHANGES,
 	SHPX,
 	TALENT,
+	GAUNTLET,
 	
 	//misc icons
 	LIBGDX,
@@ -256,6 +257,9 @@ public enum Icons {
 		case CUBE_CODE:
 			icon.frame( icon.texture.uvRect( 101, 32, 128, 62 ) );
 			icon.scale.set(PixelScene.align(0.49f));
+			break;
+		case GAUNTLET:
+			icon.frame( icon.texture.uvRect( 48, 128, 64, 144 ) );
 			break;
 
 		}
