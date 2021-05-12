@@ -90,7 +90,7 @@ public class AmuletScene extends PixelScene {
 		RedButton btnMastery = new RedButton( Messages.get(this, "mastery") ) {
 			@Override
 			protected void onClick() {
-				Dungeon.depth = 26;
+				Dungeon.depth = Dungeon.chapterSize()*5+1;
 				InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
 				ShatteredPixelDungeon.switchScene(InterlevelScene.class);
 			}
