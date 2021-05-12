@@ -214,7 +214,7 @@ public class ShopRoom extends SpecialRoom {
 		}
 		rare.identify();
 		itemsToSpawn.add( rare );
-		itemsToSpawn.add( new Bomb() );
+		itemsToSpawn.add( new Bomb().random() );
 
 		Random.pushGenerator(Random.Long());
 		Random.shuffle(itemsToSpawn);
