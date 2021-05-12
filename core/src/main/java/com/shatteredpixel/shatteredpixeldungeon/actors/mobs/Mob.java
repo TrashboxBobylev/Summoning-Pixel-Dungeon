@@ -665,8 +665,10 @@ public abstract class Mob extends Char {
 			}
 
 			Buff.affect(Dungeon.hero, Hunger.class).satisfy(restoration);
-			Dungeon.hero.HP = (int)Math.ceil(Math.min(Dungeon.hero.HT, Dungeon.hero.HP+(restoration*0.4f)));
-			Dungeon.hero.sprite.emitter().burst( Speck.factory(Speck.HEALING), 1 );
+			if (Dungeon.mode != Dungeon.GameMode.HELL) {
+				Dungeon.hero.HP = (int) Math.ceil(Math.min(Dungeon.hero.HT, Dungeon.hero.HP + (restoration * 0.4f)));
+				Dungeon.hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+			}
 		}
 
 		if (buff(Chungus.class) != null) damage *= 0.6f;

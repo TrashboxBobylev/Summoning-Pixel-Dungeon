@@ -99,9 +99,10 @@ public class SupplyBomb extends Bomb {
 				PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 2 );
 				for (int i = 0; i < PathFinder.distance.length; i++) {
 					if (PathFinder.distance[i] < Integer.MAX_VALUE && Dungeon.hero.pos == i) {
-
-						CellEmitter.get(i).burst(Speck.factory(Speck.HEALING), 1);
-						Dungeon.hero.HP = Math.min(Dungeon.hero.HP + 1, Dungeon.hero.HT);
+						if (Dungeon.mode != Dungeon.GameMode.HELL) {
+							CellEmitter.get(i).burst(Speck.factory(Speck.HEALING), 1);
+							Dungeon.hero.HP = Math.min(Dungeon.hero.HP + 1, Dungeon.hero.HT);
+						}
 						Hunger.adjustHunger(8f);
 					}
 				}

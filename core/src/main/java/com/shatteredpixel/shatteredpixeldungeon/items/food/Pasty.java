@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.food;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -107,8 +108,10 @@ public class Pasty extends Food {
 				break; //do nothing extra
 			case HWEEN:
 				//heals for 10% max hp
-				hero.HP = Math.min(hero.HP + hero.HT/10, hero.HT);
-				hero.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
+				if (Dungeon.mode != Dungeon.GameMode.HELL) {
+					hero.HP = Math.min(hero.HP + hero.HT / 10, hero.HT);
+					hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+				}
 				break;
 			case XMAS:
 				Buff.affect( hero, Recharging.class, 2f ); //half of a charge

@@ -38,6 +38,8 @@ import com.watabou.noosa.audio.Sample;
 
 import java.util.ArrayList;
 
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.GameMode.HELL;
+
 public class Food extends Item {
 
 	public static final float TIME_TO_EAT	= 3f;
@@ -96,11 +98,11 @@ public class Food extends Item {
 	protected void satisfy( Hero hero ){
 		if (Dungeon.isChallenged(Challenges.NO_FOOD)) {
 			Buff.affect(hero, Hunger.class).satisfy(energy/3f);
-			if (regen > 0) Buff.affect(hero, FoodRegen.class).fullHP = regen/3;
+			if (regen > 0 && Dungeon.mode != HELL) Buff.affect(hero, FoodRegen.class).fullHP = regen/3;
 			if (regen < 0) Buff.affect(hero, FoodDebuff.class).fullHP = -regen/3;
 		} else {
 			Buff.affect(hero, Hunger.class).satisfy( energy );
-			if (regen > 0) Buff.affect(hero, FoodRegen.class).fullHP = regen;
+			if (regen > 0 && Dungeon.mode != HELL) Buff.affect(hero, FoodRegen.class).fullHP = regen;
 			if (regen < 0) Buff.affect(hero, FoodDebuff.class).fullHP = -regen;
 		}
 	}
@@ -113,7 +115,7 @@ public class Food extends Item {
 				ScrollOfRecharging.charge( hero );
 				break;
 			case CONJURER:
-				if (hero.HP < hero.HT) {
+				if (hero.HP < hero.HT && Dungeon.mode != HELL) {
 					hero.HP = Math.min( hero.HP + 5, hero.HT );
 					hero.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
 				}

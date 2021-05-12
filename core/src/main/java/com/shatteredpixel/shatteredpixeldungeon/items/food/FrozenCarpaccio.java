@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.food;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
@@ -68,10 +69,12 @@ public class FrozenCarpaccio extends Food {
 				PotionOfHealing.cure(hero);
 				break;
 			case 3:
-				GLog.i( Messages.get(FrozenCarpaccio.class, "better") );
-				if (hero.HP < hero.HT) {
-					hero.HP = Math.min( hero.HP + hero.HT / 4, hero.HT );
-					hero.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
+				if (Dungeon.mode != Dungeon.GameMode.HELL) {
+					GLog.i(Messages.get(FrozenCarpaccio.class, "better"));
+					if (hero.HP < hero.HT) {
+						hero.HP = Math.min(hero.HP + hero.HT / 4, hero.HT);
+						hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+					}
 				}
 				break;
 		}

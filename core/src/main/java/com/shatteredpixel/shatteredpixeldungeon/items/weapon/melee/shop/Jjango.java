@@ -64,9 +64,11 @@ public class Jjango extends MeleeWeapon {
                 bloodAmount += amt;
             }
             blood.detach();
-            Dungeon.hero.HP = (int) Math.min(Dungeon.hero.HP + bloodAmount, Dungeon.hero.HT);
-            Dungeon.hero.sprite.emitter().start( Speck.factory( Speck.HEALING ), 0.4f, 1 );
-            Dungeon.hero.sprite.showStatus( CharSprite.POSITIVE, Integer.toString((int) bloodAmount) );
+            if (Dungeon.mode != Dungeon.GameMode.HELL) {
+                Dungeon.hero.HP = (int) Math.min(Dungeon.hero.HP + bloodAmount, Dungeon.hero.HT);
+                Dungeon.hero.sprite.emitter().start(Speck.factory(Speck.HEALING), 0.4f, 1);
+                Dungeon.hero.sprite.showStatus(CharSprite.POSITIVE, Integer.toString((int) bloodAmount));
+            }
         }
         return 0;
     }

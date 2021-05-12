@@ -26,6 +26,15 @@ package com.shatteredpixel.shatteredpixeldungeon;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ChaliceOfBlood;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.RegrowthBomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfHoneyedHealing;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfShielding;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.HealingDart;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
 
 public class Challenges {
 
@@ -67,6 +76,17 @@ public class Challenges {
 		if (Dungeon.isChallenged(NO_HERBALISM) && item instanceof Dewdrop){
 			return true;
 		}
+		if (Dungeon.mode == Dungeon.GameMode.NO_SOU && item instanceof ScrollOfUpgrade){
+			return true;
+		}
+		if (Dungeon.mode == Dungeon.GameMode.HELL && (
+			item instanceof PotionOfHealing || item instanceof Sungrass.Seed ||
+					item instanceof Dewdrop || item instanceof ChaliceOfBlood ||
+					item instanceof SoulOfYendor || item instanceof PotionOfShielding ||
+					item instanceof ElixirOfHoneyedHealing || item instanceof RegrowthBomb ||
+					item instanceof HealingDart
+				))
+			return true;
 
 		return false;
 

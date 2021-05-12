@@ -106,6 +106,10 @@ public class Hero extends Char {
 
 		immunities.add(PerfumeGas.Affection.class);
 		immunities.add(GonerField.class);
+		if (Dungeon.mode == Dungeon.GameMode.HELL){
+			immunities.add(ShieldBuff.class);
+			immunities.add(Healing.class);
+		}
 	}
 	
 	public static int MAX_LEVEL = 30;

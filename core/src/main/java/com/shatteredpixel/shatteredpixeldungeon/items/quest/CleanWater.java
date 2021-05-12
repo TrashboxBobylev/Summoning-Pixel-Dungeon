@@ -92,7 +92,13 @@ public class CleanWater extends Item {
 
 	public void apply( Hero hero ) {
 
-		hero.HP = hero.HT;
+
+		if (Dungeon.mode == Dungeon.GameMode.HELL){
+		    hero.HP = Math.min(hero.HT, hero.HP + hero.HT / 2);
+        }
+		else {
+            hero.HP = hero.HT;
+        }
         hero.sprite.emitter().start( Speck.factory( Speck.HEALING ), 0.4f, 4 );
 		cure( hero );
 		GLog.positive( Messages.get(PotionOfHealing.class, "heal") );

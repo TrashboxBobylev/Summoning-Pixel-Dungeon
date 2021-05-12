@@ -82,6 +82,8 @@ public enum Icons {
 	SHRINKING,
 	ENLARGEMENT,
 	EXPLORE,
+	SOULLESS,
+	HELL_CHEST,
 	
 	//misc icons
 	LIBGDX,
@@ -262,7 +264,7 @@ public enum Icons {
 			icon.scale.set(PixelScene.align(0.49f));
 			break;
 		case GAUNTLET:
-			icon.frame( icon.texture.uvRect( 48, 128, 64, 144 ) );
+			icon.frame( icon.texture.uvRect( 48, 128, 63, 144 ) );
 			break;
 		case SHRINKING:
 			icon.frame( icon.texture.uvRect( 63, 128, 81, 143 ) );
@@ -272,6 +274,12 @@ public enum Icons {
 			break;
 		case EXPLORE:
 			icon.frame( icon.texture.uvRect( 32, 144, 48, 160 ) );
+			break;
+		case SOULLESS:
+			icon.frame( icon.texture.uvRect( 48, 144, 64, 160 ) );
+			break;
+		case HELL_CHEST:
+			icon.frame( icon.texture.uvRect( 64, 145, 80, 159 ) );
 			break;
 
 		}

@@ -142,7 +142,9 @@ public class Dungeon {
 		SMALL("small", Icons.SHRINKING),
 		BIGGER("bigger", Icons.ENLARGEMENT),
 		GAUNTLET("gauntlet", Icons.GAUNTLET),
-		EXPLORE( "explore", Icons.EXPLORE);
+		EXPLORE( "explore", Icons.EXPLORE),
+		NO_SOU("no_sou", Icons.SOULLESS),
+		HELL("hell", Icons.HELL_CHEST);
 
 		public String saveName;
 		public Icons icon;

@@ -100,6 +100,7 @@ public class GoatClone extends NPC {
 
     @Override
     public int attackProc(Char enemy, int damage) {
+        if (Dungeon.mode != Dungeon.GameMode.HELL)
         Dungeon.hero.HP = Math.min(Dungeon.hero.HT, Dungeon.hero.HP+1);
         damage = super.attackProc(enemy, damage);
         if (Dungeon.hero.belongings.weapon != null){

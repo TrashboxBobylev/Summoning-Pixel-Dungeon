@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WaterOfAwareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WaterOfHealth;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WellWater;
@@ -53,6 +54,7 @@ public class MagicWellRoom extends SpecialRoom {
 			overrideWater != null ?
 			overrideWater :
 			(Class<? extends WellWater>)Random.element( WATERS );
+		if (Dungeon.mode == Dungeon.GameMode.HELL) waterClass = WaterOfAwareness.class;
 			
 		
 		WellWater.seed(c.x + level.width() * c.y, 1, waterClass, level);
