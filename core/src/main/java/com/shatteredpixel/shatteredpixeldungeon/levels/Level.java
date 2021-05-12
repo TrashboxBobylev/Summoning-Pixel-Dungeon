@@ -443,7 +443,7 @@ public abstract class Level implements Bundlable {
 	public Mob createMob() {
 		if (mobsToSpawn == null || mobsToSpawn.isEmpty()) {
 			float relativeDepthMod = Dungeon.mode == Dungeon.GameMode.GAUNTLET ? 0.4f : 1f;
-			mobsToSpawn = Bestiary.getMobRotation(Math.round(Dungeon.depth * relativeDepthMod)+1);
+			mobsToSpawn = Bestiary.getMobRotation(Math.round(Dungeon.depth * relativeDepthMod));
 		}
 
 		return Reflection.newInstance(mobsToSpawn.remove(0));
