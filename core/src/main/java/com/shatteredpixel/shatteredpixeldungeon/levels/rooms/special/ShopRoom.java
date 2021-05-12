@@ -172,7 +172,7 @@ public class ShopRoom extends SpecialRoom {
 	protected static ArrayList<Item> generateItemsGauntlet(){
 		ArrayList<Item> itemsToSpawn = new ArrayList<>();
 
-		itemsToSpawn.add(Generator.randomMissile());
+
 		itemsToSpawn.add(Generator.random(Generator.Category.POTION));
 		itemsToSpawn.add(Generator.random(Generator.Category.SCROLL));
 		itemsToSpawn.add(Generator.random(Generator.Category.STONE));
@@ -185,6 +185,7 @@ public class ShopRoom extends SpecialRoom {
 		if (Dungeon.depth % 3 == 0) itemsToSpawn.add( new PotionOfStrength());
 		if (Dungeon.depth % 3 == 0) itemsToSpawn.add(new CleanWater());
 		if (Dungeon.depth % 4 == 0) itemsToSpawn.add( new ElixirOfAttunement());
+		if (Dungeon.depth % 2 == 0) itemsToSpawn.add( Generator.randomMissile());
 
 		Item rare;
 		switch (Random.Int(5)){
@@ -208,8 +209,7 @@ public class ShopRoom extends SpecialRoom {
 			default:
 				rare = new Dewdrop();
 		}
-		rare.cursed = false;
-		rare.cursedKnown = true;
+		rare.identify();
 		itemsToSpawn.add( rare );
 		itemsToSpawn.add( new Bomb() );
 
@@ -217,7 +217,7 @@ public class ShopRoom extends SpecialRoom {
 		Random.shuffle(itemsToSpawn);
 		Random.popGenerator();
 
-		ScrollOfRemoveCurse.uncurse(Dungeon.hero, itemsToSpawn.toArray(new Item[0]));
+		ScrollOfRemoveCurse.uncurse(Dungeon.hero, false, itemsToSpawn.toArray(new Item[0]));
 
 		return itemsToSpawn;
 	}

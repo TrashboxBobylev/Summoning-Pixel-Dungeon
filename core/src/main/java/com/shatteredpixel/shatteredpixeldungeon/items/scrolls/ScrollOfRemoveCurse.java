@@ -62,6 +62,10 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 	}
 
 	public static boolean uncurse( Hero hero, Item... items ) {
+		return uncurse(hero, true, items);
+	}
+
+	public static boolean uncurse( Hero hero, boolean visual, Item... items ) {
 		
 		boolean procced = false;
 		for (Item item : items) {
@@ -90,8 +94,8 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 				((Wand) item).updateLevel();
 			}
 		}
-		
-		if (procced && hero != null) {
+
+		if (procced && hero != null && visual) {
 			hero.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
 			hero.updateHT( false ); //for ring of might
 			updateQuickslot();
