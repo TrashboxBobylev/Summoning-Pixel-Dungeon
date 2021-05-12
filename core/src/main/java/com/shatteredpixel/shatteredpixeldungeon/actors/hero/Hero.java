@@ -84,6 +84,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndExploreResurrect;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
@@ -398,6 +399,7 @@ public class Hero extends Char {
 		KindOfWeapon wep = belongings.weapon;
 		
 		float accuracy = 1;
+		if (Dungeon.mode == Dungeon.GameMode.EXPLORE) accuracy = 1.2f;
 		accuracy *= RingOfAccuracy.accuracyMultiplier( this );
 		
 		if (wep instanceof MissileWeapon || (wep instanceof Knife && ((Knife) wep).ranged)){
@@ -423,6 +425,7 @@ public class Hero extends Char {
 	public int defenseSkill( Char enemy ) {
 		
 		float evasion = defenseSkill;
+		if (Dungeon.mode == Dungeon.GameMode.EXPLORE) evasion *= 1.2f;
 		
 		evasion *= RingOfEvasion.evasionMultiplier( this );
 		
@@ -1165,6 +1168,10 @@ public class Hero extends Char {
 			dmg = thorns.proc(dmg, (src instanceof Char ? (Char)src : null),  this);
 		}
 
+		if (Dungeon.mode == Dungeon.GameMode.EXPLORE){
+			dmg *= 0.75f;
+		}
+
 		dmg = (int)Math.ceil(dmg * RingOfElements.damageMultiplier( this ));
 
 		//TODO improve this when I have proper damage source logic
@@ -1608,24 +1615,35 @@ public class Hero extends Char {
 			return;
 		}
 		
-		Actor.fixTime();
-		super.die( cause );
 
-		if (ankh == null) {
-			
-			reallyDie( cause );
-			
-		} else {
-			
-			Dungeon.deleteGame( GamesInProgress.curSlot, false );
-			final Ankh finalAnkh = ankh;
+		if (Dungeon.mode != Dungeon.GameMode.EXPLORE) {
+			Actor.fixTime();
+			super.die(cause);
+
+			if (ankh == null) {
+
+				reallyDie(cause);
+
+			} else {
+
+				Dungeon.deleteGame(GamesInProgress.curSlot, false);
+				final Ankh finalAnkh = ankh;
+				Game.runOnRenderThread(new Callback() {
+					@Override
+					public void call() {
+						GameScene.show(new WndResurrect(finalAnkh, cause));
+					}
+				});
+
+			}
+		}
+		else {
 			Game.runOnRenderThread(new Callback() {
 				@Override
 				public void call() {
-					GameScene.show( new WndResurrect( finalAnkh, cause ) );
+					GameScene.show(new WndExploreResurrect(cause));
 				}
 			});
-			
 		}
 	}
 	

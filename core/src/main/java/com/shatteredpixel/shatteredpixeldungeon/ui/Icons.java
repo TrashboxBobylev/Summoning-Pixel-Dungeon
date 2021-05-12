@@ -81,6 +81,7 @@ public enum Icons {
 	GAUNTLET,
 	SHRINKING,
 	ENLARGEMENT,
+	EXPLORE,
 	
 	//misc icons
 	LIBGDX,
@@ -268,6 +269,9 @@ public enum Icons {
 			break;
 		case ENLARGEMENT:
 			icon.frame( icon.texture.uvRect( 81, 129, 101, 149 ) );
+			break;
+		case EXPLORE:
+			icon.frame( icon.texture.uvRect( 32, 144, 48, 160 ) );
 			break;
 
 		}

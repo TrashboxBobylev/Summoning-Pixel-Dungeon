@@ -75,7 +75,11 @@ public enum Rankings {
 		rec.armorTier	= Dungeon.hero.tier();
 		rec.herolevel	= Dungeon.hero.lvl;
 		rec.depth		= Dungeon.depth;
-		rec.score	= Statistics.score = score( win );
+		if (Dungeon.mode != Dungeon.GameMode.EXPLORE) {
+			rec.score = Statistics.score = score(win);
+		} else {
+			rec.score = 0;
+		}
 		rec.mode = Dungeon.mode;
 		
 		INSTANCE.saveGameData(rec);

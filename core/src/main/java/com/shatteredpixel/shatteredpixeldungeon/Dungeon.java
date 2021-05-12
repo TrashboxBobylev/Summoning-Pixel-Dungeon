@@ -141,7 +141,8 @@ public class Dungeon {
 		NORMAL("normal", Icons.ENTER),
 		SMALL("small", Icons.SHRINKING),
 		BIGGER("bigger", Icons.ENLARGEMENT),
-		GAUNTLET("gauntlet", Icons.GAUNTLET);
+		GAUNTLET("gauntlet", Icons.GAUNTLET),
+		EXPLORE( "explore", Icons.EXPLORE);
 
 		public String saveName;
 		public Icons icon;
@@ -156,9 +157,8 @@ public class Dungeon {
 		}
 
 		public boolean isNormal() {
-			return (this.equals(NORMAL) || this.equals(SMALL) || this.equals(BIGGER));
+			return (this.equals(NORMAL) || this.equals(SMALL) || this.equals(BIGGER) || this.equals(EXPLORE));
 		}
-
 
 		@Override
 		public String toString() {
@@ -714,11 +714,12 @@ public class Dungeon {
 	}
 	
 	public static void fail( Class cause ) {
-		if (hero.belongings.getItem( Ankh.class ) == null) {
-			if (Dungeon.mode == GameMode.GAUNTLET){
-				Rankings.INSTANCE.submit(false, Gold.class);
+		if (Dungeon.mode != GameMode.EXPLORE) {
+			if (hero.belongings.getItem(Ankh.class) == null) {
+				if (Dungeon.mode == GameMode.GAUNTLET) {
+					Rankings.INSTANCE.submit(false, Gold.class);
+				} else Rankings.INSTANCE.submit(false, cause);
 			}
-			else Rankings.INSTANCE.submit( false, cause );
 		}
 	}
 	
