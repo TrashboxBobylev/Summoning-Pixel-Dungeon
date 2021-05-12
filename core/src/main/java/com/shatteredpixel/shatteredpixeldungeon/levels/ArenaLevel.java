@@ -84,16 +84,16 @@ public class ArenaLevel extends RegularLevel {
     @Override
     protected Class<?>[] trapClasses() {
         return new Class[]{
-                FrostTrap.class, StormTrap.class, CorrosionTrap.class, CalamityTrap.class, DisintegrationTrap.class,
-                RockfallTrap.class, FlashingTrap.class, GuardianTrap.class, AbyssFlameTrap.class,
+                FrostTrap.class, SummoningTrap.class, StormTrap.class, CorrosionTrap.class, CalamityTrap.class, ConfusionTrap.class,
+                RockfallTrap.class, FlashingTrap.class, WornDartTrap.class, GuardianTrap.class, AbyssFlameTrap.class, ExplosiveTrap.class,
                 DisarmingTrap.class, WraithTrap.class, WarpingTrap.class, CursingTrap.class, GrimTrap.class, PitfallTrap.class, DistortionTrap.class };
     }
 
     @Override
     protected float[] trapChances() {
         return new float[]{
-                2, 2, 2, 2, 2,
-                2, 2, 2,
+                1, 1, 1, 1, 1, 1,
+                1, 1, 1, 1, 1,
                 1, 1, 1, 1 };
     }
 
@@ -123,7 +123,7 @@ public class ArenaLevel extends RegularLevel {
 
     @Override
     protected int nTraps() {
-        return (int) (super.nTraps()*1.5f);
+        return (int) (super.nTraps());
     }
 
     @Override
