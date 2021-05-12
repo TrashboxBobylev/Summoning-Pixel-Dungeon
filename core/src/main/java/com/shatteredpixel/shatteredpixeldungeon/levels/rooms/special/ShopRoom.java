@@ -173,9 +173,8 @@ public class ShopRoom extends SpecialRoom {
 	protected static ArrayList<Item> generateItemsGauntlet(){
 		ArrayList<Item> itemsToSpawn = new ArrayList<>();
 
-
-		itemsToSpawn.add(Generator.random(Generator.Category.POTION));
-		itemsToSpawn.add(Generator.random(Generator.Category.SCROLL));
+		itemsToSpawn.add(Generator.random(Generator.Category.POTION).identify());
+		itemsToSpawn.add(Generator.random(Generator.Category.SCROLL).identify());
 		itemsToSpawn.add(Generator.random(Generator.Category.STONE));
 
 		itemsToSpawn.add( TippedDart.randomTipped(1) );
