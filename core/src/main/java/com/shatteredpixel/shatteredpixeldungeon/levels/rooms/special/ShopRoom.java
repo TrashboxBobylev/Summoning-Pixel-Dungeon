@@ -171,47 +171,53 @@ public class ShopRoom extends SpecialRoom {
 
 	protected static ArrayList<Item> generateItemsGauntlet(){
 		ArrayList<Item> itemsToSpawn = new ArrayList<>();
-		Item i;
 
 		itemsToSpawn.add(Generator.randomMissile());
 		itemsToSpawn.add(Generator.random(Generator.Category.POTION));
 		itemsToSpawn.add(Generator.random(Generator.Category.SCROLL));
 		itemsToSpawn.add(Generator.random(Generator.Category.STONE));
 
-		itemsToSpawn.add( new Torch() );
+		itemsToSpawn.add( TippedDart.randomTipped(1) );
 
-		itemsToSpawn.add(new CleanWater());
-
-		itemsToSpawn.add( TippedDart.randomTipped(2) );
-
-		itemsToSpawn.add( new ElixirOfAttunement());
-
-		itemsToSpawn.add (new Ropes().quantity(Random.Int(3, 10)));
+		itemsToSpawn.add (new Ropes().quantity(Random.Int(1, 4)));
 
 		if (Dungeon.depth % 2 == 0) itemsToSpawn.add( new ScrollOfUpgrade());
 		if (Dungeon.depth % 3 == 0) itemsToSpawn.add( new PotionOfStrength());
+		if (Dungeon.depth % 3 == 0) itemsToSpawn.add(new CleanWater());
+		if (Dungeon.depth % 4 == 0) itemsToSpawn.add( new ElixirOfAttunement());
 
-		i = Generator.random(Generator.Category.WAND);
-		i.cursed = false;
-		i.identify();
-		itemsToSpawn.add(i);
-
-		i = Generator.randomWeapon();
-		i.cursed = false;
-		i.identify();
-		itemsToSpawn.add(i);
-
-		i = Generator.randomArmor();
-		i.cursed = false;
-		i.identify();
-		itemsToSpawn.add(i);
-
-		itemsToSpawn.add( new SmallRation() );
+		Item rare;
+		switch (Random.Int(5)){
+			case 0:
+				rare = Generator.random( Generator.Category.WAND );
+				rare.level( 0 );
+				break;
+			case 1:
+				rare = Generator.random(Generator.Category.RING);
+				rare.level( 0 );
+				break;
+			case 2:
+				rare = Generator.random( Generator.Category.ARTIFACT );
+				break;
+			case 3:
+				rare = Generator.randomWeapon();
+				break;
+			case 4:
+				rare = Generator.randomArmor();
+				break;
+			default:
+				rare = new Dewdrop();
+		}
+		rare.cursed = false;
+		rare.cursedKnown = true;
+		itemsToSpawn.add( rare );
 		itemsToSpawn.add( new Bomb() );
 
 		Random.pushGenerator(Random.Long());
 		Random.shuffle(itemsToSpawn);
 		Random.popGenerator();
+
+		ScrollOfRemoveCurse.uncurse(Dungeon.hero, itemsToSpawn.toArray(new Item[0]));
 
 		return itemsToSpawn;
 	}

@@ -765,7 +765,7 @@ public abstract class Mob extends Char {
 			}
 			if (!mobsAlive){
 				Dungeon.level.drop(new SkeletonKey(Dungeon.depth), Dungeon.hero.pos).sprite.drop();
-				Dungeon.level.drop(new Gold().quantity(100 + 10 * Dungeon.depth), Dungeon.hero.pos).sprite.drop();
+				Dungeon.level.drop(new Gold().quantity(100 + 5 * Dungeon.depth), Dungeon.hero.pos).sprite.drop();
 				Dungeon.level.unseal();
 			}
 		}
