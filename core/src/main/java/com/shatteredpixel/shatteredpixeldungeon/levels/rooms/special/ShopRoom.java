@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.*;
@@ -186,9 +187,12 @@ public class ShopRoom extends SpecialRoom {
 		if (Dungeon.depth % 3 == 0) itemsToSpawn.add(new CleanWater());
 		if (Dungeon.depth % 4 == 0) itemsToSpawn.add( new ElixirOfAttunement());
 		if (Dungeon.depth % 2 == 0) itemsToSpawn.add( Generator.randomMissile());
+		if (Dungeon.hero.lvl >= 12 && Dungeon.hero.subClass == null) itemsToSpawn.add( new TomeOfMastery());
+		if (Dungeon.hero.lvl >= 21 && Dungeon.hero.belongings.armor != null &&
+			!(Dungeon.hero.belongings.armor instanceof ClassArmor)) itemsToSpawn.add( new ArmorKit());
 
 		Item rare;
-		switch (Random.Int(5)){
+		switch (Random.Int(6)){
 			case 0:
 				rare = Generator.randomUsingDefaults( Generator.Category.WAND );
 				break;
@@ -203,7 +207,9 @@ public class ShopRoom extends SpecialRoom {
 				break;
 			case 4:
 				rare = Generator.randomArmor();
-				break;
+			break;
+			case 5:
+				rare = Generator.randomStaff();
 			default:
 				rare = new Dewdrop();
 		}
