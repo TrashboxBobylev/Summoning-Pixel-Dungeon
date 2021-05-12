@@ -94,7 +94,10 @@ public abstract class ConnectionRoom extends Room {
 	
 	public static ConnectionRoom createRoom(){
 		setChances();
-		if (Dungeon.depth >= Dungeon.chapterSize()*5){
+		if (Dungeon.mode == Dungeon.GameMode.GAUNTLET){
+			return Reflection.newInstance(TunnelRoom.class);
+		}
+		if (Dungeon.depth >= Dungeon.chapterSize()*5 || Dungeon.mode == Dungeon.GameMode.GAUNTLET){
 			float[] chance = new float[]{1, 1, 1, 1, 1, 1};
 			return Reflection.newInstance(rooms.get(Random.chances(chance)));
 		}

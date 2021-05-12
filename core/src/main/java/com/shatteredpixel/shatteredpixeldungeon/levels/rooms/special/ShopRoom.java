@@ -39,12 +39,14 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfAttunement;
 import com.shatteredpixel.shatteredpixeldungeon.items.powers.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CleanWater;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfDivination;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.BeaconOfReturning;
@@ -84,7 +86,14 @@ public class ShopRoom extends SpecialRoom {
 	}
 
 	public int itemCount(){
-		if (itemsToSpawn == null) itemsToSpawn = generateItems();
+		if (itemsToSpawn == null){
+			if (Dungeon.mode == Dungeon.GameMode.GAUNTLET){
+				itemsToSpawn = generateItemsGauntlet();
+			}
+			else {
+				itemsToSpawn = generateItems();
+			}
+		}
 		return itemsToSpawn.size();
 	}
 	
@@ -116,7 +125,12 @@ public class ShopRoom extends SpecialRoom {
 	protected void placeItems( Level level ){
 
 		if (itemsToSpawn == null){
-			itemsToSpawn = generateItems();
+			if (Dungeon.mode == Dungeon.GameMode.GAUNTLET){
+				itemsToSpawn = generateItemsGauntlet();
+			}
+			else {
+				itemsToSpawn = generateItems();
+			}
 		}
 
 		Point itemPlacement = new Point(entrance());
@@ -153,6 +167,53 @@ public class ShopRoom extends SpecialRoom {
 			level.drop( item, cell ).type = Heap.Type.FOR_SALE;
 		}
 
+	}
+
+	protected static ArrayList<Item> generateItemsGauntlet(){
+		ArrayList<Item> itemsToSpawn = new ArrayList<>();
+		Item i;
+
+		itemsToSpawn.add(Generator.randomMissile());
+		itemsToSpawn.add(Generator.random(Generator.Category.POTION));
+		itemsToSpawn.add(Generator.random(Generator.Category.SCROLL));
+		itemsToSpawn.add(Generator.random(Generator.Category.STONE));
+
+		itemsToSpawn.add( new Torch() );
+
+		itemsToSpawn.add(new CleanWater());
+
+		itemsToSpawn.add( TippedDart.randomTipped(2) );
+
+		itemsToSpawn.add( new ElixirOfAttunement());
+
+		itemsToSpawn.add (new Ropes().quantity(Random.Int(3, 10)));
+
+		if (Dungeon.depth % 2 == 0) itemsToSpawn.add( new ScrollOfUpgrade());
+		if (Dungeon.depth % 3 == 0) itemsToSpawn.add( new PotionOfStrength());
+
+		i = Generator.random(Generator.Category.WAND);
+		i.cursed = false;
+		i.identify();
+		itemsToSpawn.add(i);
+
+		i = Generator.randomWeapon();
+		i.cursed = false;
+		i.identify();
+		itemsToSpawn.add(i);
+
+		i = Generator.randomArmor();
+		i.cursed = false;
+		i.identify();
+		itemsToSpawn.add(i);
+
+		itemsToSpawn.add( new SmallRation() );
+		itemsToSpawn.add( new Bomb() );
+
+		Random.pushGenerator(Random.Long());
+		Random.shuffle(itemsToSpawn);
+		Random.popGenerator();
+
+		return itemsToSpawn;
 	}
 	
 	protected static ArrayList<Item> generateItems() {

@@ -48,6 +48,12 @@ public class Amulet extends Item {
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
 		actions.add( AC_END );
+		if (Dungeon.mode == Dungeon.GameMode.GAUNTLET){
+			actions.remove(AC_END);
+			actions.remove(AC_THROW);
+			actions.remove(AC_DROP);
+			defaultAction = "";
+		}
 		return actions;
 	}
 	

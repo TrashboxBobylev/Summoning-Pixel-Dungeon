@@ -156,7 +156,7 @@ public class Bestiary {
 			}
 		}
 
-		if (SPDSettings.bigdungeon()){
+		if (SPDSettings.bigdungeon() || Dungeon.mode == Dungeon.GameMode.GAUNTLET){
 			switch(depth){
 
 				// Sewers

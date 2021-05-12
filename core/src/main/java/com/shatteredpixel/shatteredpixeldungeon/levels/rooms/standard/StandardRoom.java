@@ -184,6 +184,9 @@ public abstract class StandardRoom extends Room {
 	
 	public static StandardRoom createRoom(){
 		setChances();
+		if (Dungeon.mode == Dungeon.GameMode.GAUNTLET){
+			return Reflection.newInstance(EmptyRoom.class);
+		}
 		if (Dungeon.depth >= Dungeon.chapterSize()*5){
 			float[] chance = new float[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 			return Reflection.newInstance(rooms.get(Random.chances(chance)));

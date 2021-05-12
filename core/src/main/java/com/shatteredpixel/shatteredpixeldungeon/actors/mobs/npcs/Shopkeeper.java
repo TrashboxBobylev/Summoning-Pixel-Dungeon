@@ -103,6 +103,9 @@ public class Shopkeeper extends NPC {
 
 	//shopkeepers are greedy!
 	public static int sellPrice(Item item){
+		if (Dungeon.mode == Dungeon.GameMode.GAUNTLET){
+			return 100;
+		}
 		if (Dungeon.depth > Dungeon.chapterSize()*5){
 			return item.value() * 5 * (Dungeon.depth * 3 / Dungeon.chapterSize() + 1);
 		}
@@ -114,6 +117,7 @@ public class Shopkeeper extends NPC {
 	}
 
 	public static boolean willBuyItem( Item item ){
+		if (Dungeon.mode == Dungeon.GameMode.GAUNTLET)                      return false;
 		if (item.value() < 0)                                               return false;
 		if (item.unique && !item.stackable)                                 return false;
 		if (item instanceof Weapon && ((Weapon) item).checkSeal() != null)    return false;

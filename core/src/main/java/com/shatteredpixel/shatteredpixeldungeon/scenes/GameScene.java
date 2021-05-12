@@ -319,20 +319,27 @@ public class GameScene extends PixelScene {
 			ScrollOfTeleportation.appear(  Dungeon.hero, Dungeon.hero.pos );
 			break;
 		case DESCEND:
-			if (Dungeon.depth == 1)
-				WndStory.showChapter( WndStory.ID_SEWERS );
-			else if (Dungeon.depth == Dungeon.chapterSize()+1)
-				WndStory.showChapter( WndStory.ID_PRISON );
-			else if (Dungeon.depth == Dungeon.chapterSize()*2+1)
-				WndStory.showChapter( WndStory.ID_CAVES );
-			else if (Dungeon.depth == Dungeon.chapterSize()*3+1)
-				WndStory.showChapter( WndStory.ID_CITY );
-			else if (Dungeon.depth == Dungeon.chapterSize()*4+1)
-				WndStory.showChapter( WndStory.ID_HALLS );
-			else if (Dungeon.depth == Dungeon.chapterSize()*5+2)
-				WndStory.showChapter( WndStory.ID_ABYSS );
-			if (Dungeon.hero.isAlive()) {
-				Badges.validateNoKilling();
+			if (Dungeon.mode.isNormal()) {
+				if (Dungeon.depth == 1)
+					WndStory.showChapter(WndStory.ID_SEWERS);
+				else if (Dungeon.depth == Dungeon.chapterSize() + 1)
+					WndStory.showChapter(WndStory.ID_PRISON);
+				else if (Dungeon.depth == Dungeon.chapterSize() * 2 + 1)
+					WndStory.showChapter(WndStory.ID_CAVES);
+				else if (Dungeon.depth == Dungeon.chapterSize() * 3 + 1)
+					WndStory.showChapter(WndStory.ID_CITY);
+				else if (Dungeon.depth == Dungeon.chapterSize() * 4 + 1)
+					WndStory.showChapter(WndStory.ID_HALLS);
+				else if (Dungeon.depth == Dungeon.chapterSize() * 5 + 2)
+					WndStory.showChapter(WndStory.ID_ABYSS);
+				if (Dungeon.hero.isAlive()) {
+					Badges.validateNoKilling();
+				}
+			} else {
+				if (Dungeon.depth == 1){
+					WndStory.showChapter(WndStory.ID_GAUNTLET);
+				} else if (Dungeon.depth == Dungeon.chapterSize() * 5 + 1)
+					WndStory.showChapter(WndStory.ID_ABYSS);
 			}
 			break;
 		default:

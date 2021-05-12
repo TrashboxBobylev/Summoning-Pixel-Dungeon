@@ -158,6 +158,10 @@ public class Dungeon {
 			return Messages.get(Dungeon.class, "game_mode_" + saveName);
 		}
 
+		public boolean isNormal() {
+			return (this.equals(NORMAL) || this.equals(SMALL) || this.equals(BIGGER));
+		}
+
 	}
 
 	public static int challenges;
@@ -209,6 +213,9 @@ public class Dungeon {
 		
 		depth = 0;
 		gold = 0;
+		if (Dungeon.mode == GameMode.GAUNTLET){
+			gold = 100;
+		}
 
 		droppedItems = new SparseArray<>();
 		portedItems = new SparseArray<>();
@@ -252,7 +259,9 @@ public class Dungeon {
 		switch(mode){
 			case NORMAL: default:
 				level = chooseNormalLevel();
-				break;
+			break;
+			case GAUNTLET:
+				level = new ArenaLevel();
 		}
 		
 		level.create();
@@ -335,6 +344,7 @@ public class Dungeon {
 	}
 
 	public static int chapterSize(){
+		if (Dungeon.mode == GameMode.GAUNTLET) return 15;
 		if (SPDSettings.smalldungeon()) return 4;
 		return SPDSettings.bigdungeon() ? 6 : 5;
 	}

@@ -41,10 +41,12 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Surprise;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.GoldToken;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
@@ -703,6 +705,9 @@ public abstract class Mob extends Char {
 			Buff.affect(this, PerfumeGas.Aggression.class, 8f);
 		}
 
+		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
+		if (lock != null && !isImmune(src.getClass())) lock.addTime(dmg/2);
+
 		super.damage( dmg, src );
 	}
 
@@ -748,8 +753,21 @@ public abstract class Mob extends Char {
 			Dungeon.hero.mana = Math.min(Dungeon.hero.mana + gain, Dungeon.hero.maxMana);
 		}
 
-		if (alignment == Alignment.ENEMY){
+		if (alignment == Alignment.ENEMY && Dungeon.mode != Dungeon.GameMode.GAUNTLET){
 			rollToDropLoot();
+		}
+		else if (Dungeon.mode == Dungeon.GameMode.GAUNTLET){
+			boolean mobsAlive = false;
+			for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])){
+				if (mob.isAlive() && mob.alignment == Alignment.ENEMY){
+					mobsAlive = true;
+				}
+			}
+			if (!mobsAlive){
+				Dungeon.level.drop(new SkeletonKey(Dungeon.depth), Dungeon.hero.pos).sprite.drop();
+				Dungeon.level.drop(new Gold().quantity(200 + 25 * Dungeon.depth), Dungeon.hero.pos).sprite.drop();
+				Dungeon.level.unseal();
+			}
 		}
 
 		if (Dungeon.hero.isAlive() && !Dungeon.level.heroFOV[pos]) {
@@ -845,6 +863,7 @@ public abstract class Mob extends Char {
 	}
 
 	public void notice() {
+		if (sprite != null)
 		sprite.showAlert();
 	}
 

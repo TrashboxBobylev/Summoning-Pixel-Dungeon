@@ -199,6 +199,7 @@ public abstract class RegularLevel extends Level {
 	protected void createMobs() {
 		//on floor 1, 8 pre-set mobs are created so the player can get level 2.
 		int mobsToSpawn = Dungeon.depth == 1 ? 10 : nMobs();
+		if (Dungeon.mode == Dungeon.GameMode.GAUNTLET) mobsToSpawn = nMobs();
 
 		ArrayList<Room> stdRooms = new ArrayList<>();
 		for (Room room : rooms) {
