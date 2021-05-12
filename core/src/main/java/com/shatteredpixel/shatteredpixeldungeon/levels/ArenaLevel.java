@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Chaosstone;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LoopBuilder;
@@ -157,6 +158,21 @@ public class ArenaLevel extends RegularLevel {
     }
 
     @Override
+    public void pressCell(int cell) {
+        super.pressCell(cell);
+
+        for (Heap heap : Dungeon.level.heaps.valueList().toArray(new Heap[0])){
+            if (heap.pos == cell){
+                for (Item item : heap.items){
+                    if (item instanceof SkeletonKey){
+                        keyDropped = true;
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
     public void create() {
 
         for (int i = 0; i < (Dungeon.depth - Dungeon.chapterSize()*5 + 1) / Dungeon.chapterSize(); i++){
@@ -222,7 +238,7 @@ public class ArenaLevel extends RegularLevel {
     public void occupyCell(Char ch) {
         super.occupyCell(ch);
 
-        if (ch == Dungeon.hero && !roomEntrance.inside(cellToPoint(ch.pos)) && !locked){
+        if (ch == Dungeon.hero && !roomEntrance.inside(cellToPoint(ch.pos)) && !locked && !keyDropped){
             seal();
         }
     }
