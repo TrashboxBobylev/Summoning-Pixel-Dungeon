@@ -43,7 +43,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLightning;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Camera;
@@ -189,14 +188,14 @@ public class ShockBomb extends Bomb {
 
         ArrayList<Lightning.Arc> arcs = new ArrayList<>();
 
-        Heap h = null;
-        for (Heap heap : Dungeon.level.heaps.valueList()) {
-            if (heap.items.contains(this)) {
-                h = heap;
-                break;
-            }
-        }
+        Heap h = Dungeon.level.heaps.get(cell);
 
+        if (h == null){
+            h = new Heap();
+            h.seen = Dungeon.level.heroFOV[cell];
+            h.pos = cell;
+            h.drop(this);
+        }
 
         for (int i : PathFinder.NEIGHBOURS9) {
             Char ch = Actor.findChar(cell + i);
@@ -204,7 +203,7 @@ public class ShockBomb extends Bomb {
                 arcs.add(new Lightning.Arc(h.sprite.center(), ch.sprite.center()));
                 arc(ch, affected, arcs);
             } else {
-                arcs.add(new Lightning.Arc(h.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(cell)));
+//                arcs.add(new Lightning.Arc(h.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(cell)));
                 CellEmitter.center(cell).burst(SparkParticle.FACTORY, 3);
             }
         }
@@ -213,11 +212,13 @@ public class ShockBomb extends Bomb {
 
         if (Dungeon.level.heroFOV[cell]) {
 
-		CellEmitter.center(cell).burst(SparkParticle.FACTORY, 20);
-		Dungeon.hero.sprite.parent.addToFront(new Lightning(arcs, null));
-		Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
+		    CellEmitter.center(cell).burst(SparkParticle.FACTORY, 20);
+//		    Dungeon.hero.sprite.parent.addToFront(new Lightning(arcs, null));
+		    Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
             CellEmitter.center(cell).burst(SparkParticle.FACTORY, 20);
-            h.sprite.parent.addToFront(new Lightning(arcs, null));
+            if (h != null) {
+                h.sprite.parent.addToFront(new Lightning(arcs, null));
+            }
         }
 
         for (Char target : affected){

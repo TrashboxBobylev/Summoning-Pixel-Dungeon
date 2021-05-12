@@ -117,7 +117,7 @@ public class ArcaneBomb extends Bomb {
 				}
 
 
-                GameScene.add(Blob.seed(i, Random.NormalIntRange(1000, 1500), Miasma.class));
+                GameScene.add(Blob.seed(i, Random.NormalIntRange(100, 150), Miasma.class));
 			}
 		
 		for (Char ch : affected){

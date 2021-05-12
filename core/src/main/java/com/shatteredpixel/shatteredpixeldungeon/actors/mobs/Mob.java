@@ -263,7 +263,7 @@ public abstract class Mob extends Char {
 			//if the mob is amoked...
 			if ( buff(Amok.class) != null) {
 				//try to find an enemy mob to attack first.
-				for (Mob mob : Dungeon.level.mobs)
+				for (Mob mob :  Dungeon.level.mobs.toArray(new Mob[0]))
 					if (mob.alignment == Alignment.ENEMY && mob != this
 							&& fieldOfView[mob.pos] && mob.invisible <= 0) {
 						enemies.add(mob);
@@ -271,7 +271,7 @@ public abstract class Mob extends Char {
 
 				if (enemies.isEmpty()) {
 					//try to find ally mobs to attack second, ignoring the soul flame
-					for (Mob mob : Dungeon.level.mobs)
+					for (Mob mob :  Dungeon.level.mobs.toArray(new Mob[0]))
 						if (mob.alignment == Alignment.ALLY && mob != this && fieldOfView[mob.pos] && !canBeIgnored(mob))
 							enemies.add(mob);
 				}
@@ -287,7 +287,7 @@ public abstract class Mob extends Char {
 			//if the mob is an ally...
 			else if ( alignment == Alignment.ALLY ) {
 				//look for hostile mobs to attack
-				for (Mob mob : Dungeon.level.mobs)
+				for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
 					if (mob.alignment == Alignment.ENEMY && fieldOfView[mob.pos]
 							&& mob.invisible <= 0 && !mob.isInvulnerable(getClass()) && !canBeIgnored(mob))
 						//intelligent allies do not target mobs which are passive, wandering, or asleep
@@ -299,7 +299,7 @@ public abstract class Mob extends Char {
 				//if the mob is an enemy...
 			} else if (alignment == Alignment.ENEMY) {
 				//look for ally mobs to attack, ignoring the soul flame
-				for (Mob mob : Dungeon.level.mobs)
+				for (Mob mob :  Dungeon.level.mobs.toArray(new Mob[0]))
 					if (mob.alignment == Alignment.ALLY && fieldOfView[mob.pos] && !canBeIgnored(mob))
 						enemies.add(mob);
 

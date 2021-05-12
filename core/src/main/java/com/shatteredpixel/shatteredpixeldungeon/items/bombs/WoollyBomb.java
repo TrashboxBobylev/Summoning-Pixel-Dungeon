@@ -32,10 +32,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Shrink;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Point;
+
+import java.util.ArrayList;
 
 public class WoollyBomb extends Bomb {
 	
@@ -50,17 +53,41 @@ public class WoollyBomb extends Bomb {
 	public void explode(int cell) {
 		super.explode(cell);
         GameScene.flash(0xA09d309f);
-        Room room = ((RegularLevel)Dungeon.level).room(cell);
-        if (room != null){
-            for (Point point : room.getPoints()){
-                int tile = Dungeon.level.pointToCell(point);
-                Char ch = Actor.findChar(tile);
-                if (ch != null && ch != Dungeon.hero && ch.alignment != Char.Alignment.ALLY && !ch.properties().contains(Char.Property.BOSS)
-                        && !ch.properties().contains(Char.Property.MINIBOSS)){
-                    Buff.affect(ch, Shrink.class);
-                }
-            }
-        }
+        if (Dungeon.level instanceof RegularLevel) {
+			Room room = ((RegularLevel) Dungeon.level).room(cell);
+			if (room != null) {
+				for (Point point : room.getPoints()) {
+					int tile = Dungeon.level.pointToCell(point);
+					Char ch = Actor.findChar(tile);
+					if (ch != null && ch != Dungeon.hero && ch.alignment != Char.Alignment.ALLY && !ch.properties().contains(Char.Property.BOSS)
+							&& !ch.properties().contains(Char.Property.MINIBOSS)) {
+						Buff.affect(ch, Shrink.class);
+					}
+				}
+			}
+		} else {
+			boolean[] FOV = new boolean[Dungeon.level.length()];
+			Point c = Dungeon.level.cellToPoint(cell);
+			ShadowCaster.castShadow(c.x, c.y, FOV, Dungeon.level.losBlocking, Dungeon.level.viewDistance);
+
+			ArrayList<Char> affected = new ArrayList<>();
+
+			for (int i = 0; i < FOV.length; i++) {
+				if (FOV[i]) {
+					Char ch = Actor.findChar(i);
+					if (ch != null) {
+						affected.add(ch);
+					}
+				}
+			}
+
+			for (Char ch : affected) {
+				if (ch != null && ch != Dungeon.hero && ch.alignment != Char.Alignment.ALLY && !ch.properties().contains(Char.Property.BOSS)
+						&& !ch.properties().contains(Char.Property.MINIBOSS)) {
+					Buff.affect(ch, Shrink.class);
+				}
+			}
+		}
 		
 		Sample.INSTANCE.play(Assets.Sounds.PUFF);
 		
