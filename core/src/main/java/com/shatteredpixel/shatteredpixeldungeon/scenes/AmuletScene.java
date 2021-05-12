@@ -46,6 +46,7 @@ public class AmuletScene extends PixelScene {
 	private static final float LARGE_GAP	= 8;
 	
 	public static boolean noText = false;
+	public static boolean gauntlet = false;
 	
 	private Image amulet;
 	
@@ -66,13 +67,16 @@ public class AmuletScene extends PixelScene {
 		RedButton btnExit = new RedButton( Messages.get(this, "exit") ) {
 			@Override
 			protected void onClick() {
-			    Class clazz = Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE) ? Sword.class : Amulet.class;
-			    if (Dungeon.hero.belongings.getSimilar(new Chaosstone()) != null){
-			    	clazz = Chaosstone.class;
+				if ((Dungeon.mode == Dungeon.GameMode.GAUNTLET && Dungeon.depth > 77) ||
+						(Dungeon.mode.isNormal() && Dungeon.depth > 0)) {
+					Class clazz = Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE) ? Sword.class : Amulet.class;
+					if (Dungeon.hero.belongings.getSimilar(new Chaosstone()) != null) {
+						clazz = Chaosstone.class;
+					}
+					Dungeon.win(clazz);
+					Dungeon.deleteGame(GamesInProgress.curSlot, true);
+					Game.switchScene(RankingsScene.class);
 				}
-				Dungeon.win( clazz );
-				Dungeon.deleteGame( GamesInProgress.curSlot, true );
-				Game.switchScene( RankingsScene.class );
 			}
 		};
 		btnExit.setSize( WIDTH, BTN_HEIGHT );
@@ -90,7 +94,7 @@ public class AmuletScene extends PixelScene {
 		RedButton btnMastery = new RedButton( Messages.get(this, "mastery") ) {
 			@Override
 			protected void onClick() {
-				Dungeon.depth = 26;
+				Dungeon.depth = Dungeon.chapterSize()*5+1;
 				InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
 				ShatteredPixelDungeon.switchScene(InterlevelScene.class);
 			}

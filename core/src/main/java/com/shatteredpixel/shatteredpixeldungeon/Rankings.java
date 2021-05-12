@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
@@ -75,6 +76,7 @@ public enum Rankings {
 		rec.herolevel	= Dungeon.hero.lvl;
 		rec.depth		= Dungeon.depth;
 		rec.score	= Statistics.score = score( win );
+		rec.mode = Dungeon.mode;
 		
 		INSTANCE.saveGameData(rec);
 
@@ -194,6 +196,7 @@ public enum Rankings {
 	public static final String HANDLERS = "handlers";
 	public static final String CHALLENGES = "challenges";
 	public static final String CHAOSSTONES = "chaosstones";
+	public static final String MODE = "mode";
 
 	public void saveGameData(Record rec){
 		rec.gameData = new Bundle();
@@ -209,6 +212,7 @@ public enum Rankings {
 			}
 		}
 		rec.gameData.put(CHAOSSTONES, chaosstones);
+		rec.gameData.put(MODE, Dungeon.mode);
 
 		//remove items that won't show up in the rankings screen
 		for (Item item : belongings.backpack.items.toArray( new Item[0])) {
@@ -278,6 +282,7 @@ public enum Rankings {
 		Statistics.restoreFromBundle(data.getBundle(STATS));
 		
 		Dungeon.challenges = data.getInt(CHALLENGES);
+		Dungeon.mode = rec.mode;
 
 	}
 	
@@ -358,10 +363,15 @@ public enum Rankings {
 		public String gameID;
 
 		public int score;
+		public Dungeon.GameMode mode;
 
 		public String desc(){
 			if (cause == null) {
 				return Messages.get(this, "something");
+			}
+
+			if (cause == Gold.class){
+				return Messages.get(this, "gauntlet", depth);
 			}
 
 			if (cause == Chaosstone.class){
@@ -400,6 +410,7 @@ public enum Rankings {
 
 			depth = bundle.getInt( DEPTH );
 			herolevel = bundle.getInt( LEVEL );
+			mode = bundle.getEnum(MODE, Dungeon.GameMode.class);
 
 		}
 		
@@ -418,6 +429,7 @@ public enum Rankings {
 			
 			if (gameData != null) bundle.put( DATA, gameData );
 			bundle.put( ID, gameID );
+			bundle.put( MODE, mode);
 		}
 	}
 

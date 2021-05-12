@@ -37,10 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
-import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
@@ -155,13 +152,18 @@ public class Dungeon {
 		}
 
 		public String desc(){
-			return Messages.get(Dungeon.class, "game_mode_" + saveName);
+			return "_" + toString() + "_: " + Messages.get(Dungeon.class, "mode_desc_" + saveName);
 		}
 
 		public boolean isNormal() {
 			return (this.equals(NORMAL) || this.equals(SMALL) || this.equals(BIGGER));
 		}
 
+
+		@Override
+		public String toString() {
+			return Messages.get(Dungeon.class, "mode_name_" + saveName);
+		}
 	}
 
 	public static int challenges;
@@ -713,7 +715,10 @@ public class Dungeon {
 	
 	public static void fail( Class cause ) {
 		if (hero.belongings.getItem( Ankh.class ) == null) {
-			Rankings.INSTANCE.submit( false, cause );
+			if (Dungeon.mode == GameMode.GAUNTLET){
+				Rankings.INSTANCE.submit(false, Gold.class);
+			}
+			else Rankings.INSTANCE.submit( false, cause );
 		}
 	}
 	

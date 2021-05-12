@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
+import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Chaosstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -50,7 +51,7 @@ public class RankingsScene extends PixelScene {
 	private static final float ROW_HEIGHT_MAX	= 20;
 	private static final float ROW_HEIGHT_MIN	= 12;
 
-	private static final float MAX_ROW_WIDTH    = 160;
+	private static final float MAX_ROW_WIDTH    = 175;
 
 	private static final float GAP	= 4;
 	
@@ -88,7 +89,7 @@ public class RankingsScene extends PixelScene {
 			//attempts to give each record as much space as possible, ideally as much space as portrait mode
 			float rowHeight = GameMath.gate(ROW_HEIGHT_MIN, (uiCamera.height - 26)/Rankings.INSTANCE.records.size(), ROW_HEIGHT_MAX);
 
-			float left = (w - Math.min( MAX_ROW_WIDTH, w )) / 2 + GAP;
+			float left = (w - Math.min( MAX_ROW_WIDTH, w )) / 3 + GAP ;
 			float top = (h - rowHeight  * Rankings.INSTANCE.records.size()) / 2;
 			
 			int pos = 0;
@@ -178,6 +179,7 @@ public class RankingsScene extends PixelScene {
 		private BitmapText depth;
 		private Image classIcon;
 		private BitmapText level;
+		private Image mode;
 		
 		public Record( int pos, boolean latest, Rankings.Record rec ) {
 			super();
@@ -224,6 +226,10 @@ public class RankingsScene extends PixelScene {
                     level.hardlight(TEXT_WIN[odd]);
                 }
 			} else {
+				if (rec.cause == Gold.class){
+					shield.view(ItemSpriteSheet.PUNCH, null);
+				}
+
 				position.hardlight( TEXT_LOSE[odd] );
 				desc.hardlight( TEXT_LOSE[odd] );
 				depth.hardlight( TEXT_LOSE[odd] );
@@ -251,6 +257,8 @@ public class RankingsScene extends PixelScene {
 				//cloak of shadows needs to be brightened a bit
 				classIcon.brightness(2f);
 			}
+
+			mode.copy(Icons.get(rec.mode.icon));
 		}
 		
 		@Override
@@ -274,6 +282,9 @@ public class RankingsScene extends PixelScene {
 			classIcon = new Image();
 			add( classIcon );
 
+			mode = new Image();
+			add( mode );
+
 			level = new BitmapText( PixelScene.pixelFont);
 		}
 		
@@ -294,7 +305,7 @@ public class RankingsScene extends PixelScene {
 				flare.point( shield.center() );
 			}
 
-			classIcon.x = x + width - 16 + (16 - classIcon.width())/2f;
+			classIcon.x = x + width - 0 + (16 - classIcon.width())/2f;
 			classIcon.y = shield.y + (16 - classIcon.height())/2f;
 			align(classIcon);
 
@@ -302,7 +313,7 @@ public class RankingsScene extends PixelScene {
 			level.y = classIcon.y + (classIcon.height - level.height()) / 2f + 1;
 			align(level);
 
-			steps.x = x + width - 32 + (16 - steps.width())/2f;
+			steps.x = x + width - 16 + (16 - steps.width())/2f;
 			steps.y = shield.y + (16 - steps.height())/2f;
 			align(steps);
 
@@ -310,7 +321,11 @@ public class RankingsScene extends PixelScene {
 			depth.y = steps.y + (steps.height - depth.height()) / 2f + 1;
 			align(depth);
 
-			desc.maxWidth((int)(steps.x - (shield.x + shield.width + GAP)));
+			mode.x = x + width - 32 + (18 - mode.width())/2f;
+			mode.y = shield.y + (18 - mode.height())/2f + 1;
+			align(mode);
+
+			desc.maxWidth((int)(mode.x - (shield.x + shield.width + GAP)));
 			desc.setPos(shield.x + shield.width + GAP, shield.y + (shield.height - desc.height()) / 2f + 1);
 			align(desc);
 		}
