@@ -148,7 +148,7 @@ public class ArenaLevel extends RegularLevel {
         initRooms.add( new ShopRoom());
         initRooms.add( roomExit = new SewerBossExitRoom());
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 2 + Dungeon.depth * 2 / Dungeon.chapterSize(); i++) {
             StandardRoom s = StandardRoom.createRoom();
             initRooms.add(s);
         }
