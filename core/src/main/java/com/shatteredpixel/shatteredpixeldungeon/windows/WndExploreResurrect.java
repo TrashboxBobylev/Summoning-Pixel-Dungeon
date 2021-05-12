@@ -24,21 +24,18 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Rankings;
-import com.shatteredpixel.shatteredpixeldungeon.Statistics;
+import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
@@ -46,6 +43,8 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+
+import java.io.IOException;
 
 public class WndExploreResurrect extends Window {
 
@@ -79,18 +78,20 @@ public class WndExploreResurrect extends Window {
 			protected void onClick() {
 				hide();
 
-				Dungeon.hero.HP = Dungeon.hero.HT/4;
+				Dungeon.hero.HP = Dungeon.hero.HT;
 
 				//ensures that you'll get to act first in almost any case, to prevent reviving and then instantly dieing again.
 				PotionOfHealing.cure(Dungeon.hero);
 				Buff.detach(Dungeon.hero, Paralysis.class);
 				Dungeon.hero.spend(-Dungeon.hero.cooldown());
+				Dungeon.observe();
+				GameScene.updateFog();
 
 				new Flare(8, 32).color(0xFFFF66, true).show(Dungeon.hero.sprite, 2f);
 				CellEmitter.get(Dungeon.hero.pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
 
 				Sample.INSTANCE.play( Assets.Sounds.TELEPORT );
-				GLog.warning( Messages.get(this, "revive") );
+				GLog.warning( Messages.get(WndExploreResurrect.class, "revive") );
 				Statistics.ankhsUsed++;
 
 				for (Char ch : Actor.chars()){
@@ -98,6 +99,12 @@ public class WndExploreResurrect extends Window {
 						((DriedRose.GhostHero) ch).sayAnkh();
 						return;
 					}
+				}
+
+				try {
+					Dungeon.saveAll();
+				} catch (IOException e) {
+					ShatteredPixelDungeon.reportException(e);
 				}
 			}
 		};
@@ -109,7 +116,7 @@ public class WndExploreResurrect extends Window {
 			protected void onClick() {
 				hide();
 
-				Hero.reallyDie( WndExploreResurrect.causeOfDeath );
+				Dungeon.hero.reallyDie( WndExploreResurrect.causeOfDeath );
 				Rankings.INSTANCE.submit( false, WndExploreResurrect.causeOfDeath.getClass() );
 			}
 		};

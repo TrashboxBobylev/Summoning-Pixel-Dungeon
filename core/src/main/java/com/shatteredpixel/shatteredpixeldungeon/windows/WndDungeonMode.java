@@ -34,12 +34,19 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.*;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.ui.Component;
+
+import java.util.ArrayList;
 
 public class WndDungeonMode extends Window {
     private static final int WIDTH_P = 120;
     private static final int WIDTH_L = 160;
 
     private static final int MARGIN  = 2;
+
+    private ScrollPane modeList;
+    private ArrayList<RedButton> slots = new ArrayList<>();
+
 
     public WndDungeonMode( ){
         super();
@@ -53,7 +60,22 @@ public class WndDungeonMode extends Window {
         title.maxWidth(width - MARGIN * 2);
         add(title);
 
+        modeList = new ScrollPane( new Component() ){
+            @Override
+            public void onClick( float x, float y ) {
+                int size = slots.size();
+                for (int i=0; i < size; i++) {
+                    if (slots.get( i ).inside(x, y)) {
+                        break;
+                    }
+                }
+            }
+        };
+        add(modeList);
+
         pos = title.bottom() + 3*MARGIN;
+        Component content = modeList.content();
+        int positem = 0;
 
         for (Dungeon.GameMode mode : Dungeon.GameMode.values()) {
             Image ic = Icons.get(mode.icon);
@@ -82,13 +104,17 @@ public class WndDungeonMode extends Window {
             moveBtn.icon(ic);
             moveBtn.multiline = true;
             moveBtn.setSize(width, moveBtn.reqHeight());
-            moveBtn.setRect(0, pos, width, moveBtn.reqHeight());
+            moveBtn.setRect(0, positem, width, moveBtn.reqHeight());
             moveBtn.enable(true);
-            add(moveBtn);
-            pos = moveBtn.bottom() + MARGIN;
+            content.add(moveBtn);
+//            modeList.add(moveBtn);
+//            add(moveBtn);
+            positem += moveBtn.height() + MARGIN;
         }
+        content.setSize(width, positem+1);
 
-        resize(width, (int)pos);
+        resize(width, (int)PixelScene.uiCamera.height-100);
+        modeList.setRect(0, title.bottom()+MARGIN, width, height - MARGIN*4.5f);
 
     }
 }

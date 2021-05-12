@@ -24,9 +24,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
@@ -83,7 +83,7 @@ public class WndResurrect extends Window {
 			protected void onClick() {
 				hide();
 
-				Hero.reallyDie( WndResurrect.causeOfDeath );
+				Dungeon.hero.reallyDie( WndResurrect.causeOfDeath );
 				Rankings.INSTANCE.submit( false, WndResurrect.causeOfDeath.getClass() );
 			}
 		};

@@ -1638,6 +1638,7 @@ public class Hero extends Char {
 			}
 		}
 		else {
+			Dungeon.deleteGame(GamesInProgress.curSlot, false);
 			Game.runOnRenderThread(new Callback() {
 				@Override
 				public void call() {
@@ -1647,8 +1648,12 @@ public class Hero extends Char {
 		}
 	}
 	
-	public static void reallyDie( Object cause ) {
-		
+	public void reallyDie(Object cause) {
+
+		if (Dungeon.mode == Dungeon.GameMode.EXPLORE){
+			super.die(cause);
+		}
+
 		int length = Dungeon.level.length();
 		int[] map = Dungeon.level.map;
 		boolean[] visited = Dungeon.level.visited;

@@ -155,7 +155,7 @@ public class WndKeyBindings extends Window {
 		btnCancel.setRect(WIDTH/2 + 1, height - BTN_HEIGHT, WIDTH/2 - 1, BTN_HEIGHT);
 		add(btnCancel);
 
-		scrollingList.setRect(0, BTN_HEIGHT +1, WIDTH, btnDefaults.top()- BTN_HEIGHT - 1);
+		scrollingList.setRect(0, BTN_HEIGHT +1, WIDTH, btnDefaults.top() - BTN_HEIGHT - 1);
 
 	}
 
