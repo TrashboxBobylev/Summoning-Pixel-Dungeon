@@ -69,18 +69,8 @@ import com.watabou.utils.*;
 import java.util.*;
 
 public abstract class Level implements Bundlable {
-
-    public void press(Integer collisionPos, Object o, boolean b) {
-        if (o == null && b == true){
-            pressCell(collisionPos);
-        }
-    }
-
-    public void press(int pos, Char sheep) {
-        occupyCell(sheep);
-    }
-
-    public static enum Feeling {
+	
+	public static enum Feeling {
 		NONE,
 		CHASM,
 		WATER,
@@ -1030,7 +1020,7 @@ public abstract class Level implements Bundlable {
 			if (timeFreeze != null){
 
 				Sample.INSTANCE.play(Assets.Sounds.TRAP);
-				
+
 				discover(cell);
 				
 				timeFreeze.setDelayedPress(cell);

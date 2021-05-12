@@ -52,8 +52,8 @@ public class Levitation extends FlavourBuff {
 	@Override
 	public void detach() {
 		target.flying = false;
-		super.detach();
 		Dungeon.level.occupyCell(target );
+		super.detach();
 	}
 	
 	@Override
