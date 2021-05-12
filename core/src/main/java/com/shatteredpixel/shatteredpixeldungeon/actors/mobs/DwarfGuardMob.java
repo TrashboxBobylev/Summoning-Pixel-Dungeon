@@ -28,7 +28,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.stationary.RoseWraith;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Chains;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -150,6 +152,7 @@ public class DwarfGuardMob extends Mob {
                 WardingWraith mob = new WardingWraith();
                 GameScene.add( mob );
                 mob.state = mob.WANDERING;
+				Buff.affect(mob, RoseWraith.Timer.class, 20f);
                 ScrollOfTeleportation.appear( mob, spawnPoints.get( index ) );
 
                 spawnPoints.remove( index );

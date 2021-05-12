@@ -248,8 +248,13 @@ public class GooMinion extends Minion {
 
     @Override
     protected boolean getCloser( int target ) {
-        if (pumping) return false;
-        pumpedUp = 0;
+        if (pumpedUp == 0) return super.getCloser( target );
+        else {
+            if (pumping) {
+                pumpedUp = 0;
+                return false;
+            }
+        }
         return super.getCloser( target );
     }
 
