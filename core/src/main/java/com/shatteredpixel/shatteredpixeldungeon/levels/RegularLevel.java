@@ -184,7 +184,7 @@ public abstract class RegularLevel extends Level {
 	
 	@Override
 	public int nMobs() {
-		if (Dungeon.depth <= 1) return 0;
+		if (Dungeon.depth <= 1 && Dungeon.mode != Dungeon.GameMode.GAUNTLET) return 0;
 
 		int mobs = 8 + Dungeon.depth + Random.Int(7);
 		if (feeling == Feeling.LARGE){

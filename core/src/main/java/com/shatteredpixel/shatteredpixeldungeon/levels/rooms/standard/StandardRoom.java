@@ -157,7 +157,7 @@ public abstract class StandardRoom extends Room {
 		rooms.add(MinefieldRoom.class);
 	}
 	
-	private static float[][] chances = new float[35][];
+	private static float[][] chances = new float[1000][];
 	static void setChances() {
 		for (int i = 0; i <= Dungeon.chapterSize(); i++){
 			chances[i] = new float[]{15, 10, 10, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0};
@@ -183,10 +183,10 @@ public abstract class StandardRoom extends Room {
 	
 	
 	public static StandardRoom createRoom(){
-		setChances();
 		if (Dungeon.mode == Dungeon.GameMode.GAUNTLET){
 			return Reflection.newInstance(EmptyRoom.class);
 		}
+		setChances();
 		if (Dungeon.depth >= Dungeon.chapterSize()*5){
 			float[] chance = new float[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 			return Reflection.newInstance(rooms.get(Random.chances(chance)));

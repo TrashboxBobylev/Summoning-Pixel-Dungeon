@@ -24,18 +24,22 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.food;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class ChargrilledMeat extends Food {
 
 	{
 		image = ItemSpriteSheet.STEAK;
-		energy = 220;
-		regen = -15;
+		energy = 330;
+		if (Dungeon.mode == Dungeon.GameMode.GAUNTLET){
+			energy = 385;
+		}
 	}
 	
 	@Override
 	public int value() {
+		if (Dungeon.mode == Dungeon.GameMode.GAUNTLET) return 0;
 		return 8 * quantity;
 	}
 	

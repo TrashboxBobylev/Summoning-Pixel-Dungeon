@@ -756,7 +756,7 @@ public abstract class Mob extends Char {
 		if (alignment == Alignment.ENEMY && Dungeon.mode != Dungeon.GameMode.GAUNTLET){
 			rollToDropLoot();
 		}
-		else if (Dungeon.mode == Dungeon.GameMode.GAUNTLET){
+		else if (Dungeon.mode == Dungeon.GameMode.GAUNTLET && alignment == Alignment.ENEMY){
 			boolean mobsAlive = false;
 			for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])){
 				if (mob.isAlive() && mob.alignment == Alignment.ENEMY){
@@ -765,7 +765,7 @@ public abstract class Mob extends Char {
 			}
 			if (!mobsAlive){
 				Dungeon.level.drop(new SkeletonKey(Dungeon.depth), Dungeon.hero.pos).sprite.drop();
-				Dungeon.level.drop(new Gold().quantity(200 + 25 * Dungeon.depth), Dungeon.hero.pos).sprite.drop();
+				Dungeon.level.drop(new Gold().quantity(100 + 10 * Dungeon.depth), Dungeon.hero.pos).sprite.drop();
 				Dungeon.level.unseal();
 			}
 		}

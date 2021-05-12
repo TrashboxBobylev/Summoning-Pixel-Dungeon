@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Chaosstone;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LoopBuilder;
@@ -157,13 +158,18 @@ public class ArenaLevel extends RegularLevel {
 
     @Override
     public void create() {
-        super.create();
 
         for (int i = 0; i < (Dungeon.depth - Dungeon.chapterSize()*5 + 1) / Dungeon.chapterSize(); i++){
             addItemToSpawn(new Chaosstone());
             if (Random.Int(2) == 0) addItemToSpawn(new Chaosstone());
         }
+        addItemToSpawn(new ChargrilledMeat());
 
+        super.create();
+    }
+
+    @Override
+    protected void createItems() {
         for (Item item : itemsToSpawn) {
             int cell = randomDropCell();
             drop( item, cell ).type = Heap.Type.HEAP;
@@ -175,10 +181,7 @@ public class ArenaLevel extends RegularLevel {
 
         //use a separate generator for this to prevent held items and meta progress from affecting levelgen
         Random.pushGenerator( Dungeon.seedCurDepth() );
-    }
 
-    @Override
-    protected void createItems() {
         Item item = Bones.get();
         if (item != null) {
             int pos;

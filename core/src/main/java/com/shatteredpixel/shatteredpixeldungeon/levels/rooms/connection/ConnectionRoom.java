@@ -67,7 +67,7 @@ public abstract class ConnectionRoom extends Room {
 		rooms.add(RingBridgeRoom.class);
 	}
 	
-	private static float[][] chances = new float[36][];
+	private static float[][] chances = new float[1000][];
 	static void setChances() {
 		for (int i = 0; i <= Dungeon.chapterSize(); i++){
 			chances[i] = new float[]{20, 1, 0, 2, 2, 1};

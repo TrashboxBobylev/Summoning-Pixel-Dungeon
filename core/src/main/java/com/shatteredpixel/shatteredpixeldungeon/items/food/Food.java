@@ -141,12 +141,12 @@ public class Food extends Item {
         String desc = super.desc();
         if (regen != 0) {
         	if (Dungeon.isChallenged(Challenges.NO_FOOD))
-            desc += Messages.get(Food.class, "stats", Math.round(energy / 30), regen/3);
-        	else desc += Messages.get(Food.class, "stats", Math.round(energy / 10), regen);
+            desc += Messages.get(Food.class, "stats", Math.round(energy / 33), regen/3);
+        	else desc += Messages.get(Food.class, "stats", Math.round(energy / 11), regen);
         } else {
 			if (Dungeon.isChallenged(Challenges.NO_FOOD))
-				desc += Messages.get(Food.class, "stats_regular", Math.round(energy / 30));
-			else desc += Messages.get(Food.class, "stats_regular", Math.round(energy / 10));
+				desc += Messages.get(Food.class, "stats_regular", Math.round(energy / 33));
+			else desc += Messages.get(Food.class, "stats_regular", Math.round(energy / 11));
         }
 
         return desc;

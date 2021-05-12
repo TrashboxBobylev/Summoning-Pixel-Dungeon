@@ -71,6 +71,7 @@ public class StatusPane extends Component {
 	private DangerIndicator danger;
 	private BuffIndicator buffs;
 	private Compass compass;
+	private Image mode;
 
 	private JournalButton btnJournal;
 	private MenuButton btnMenu;
@@ -146,6 +147,9 @@ public class StatusPane extends Component {
 		depth.measure();
 		add( depth );
 
+		mode = new Image(Icons.get(Dungeon.mode.icon));
+		add( mode );
+
 		danger = new DangerIndicator();
 		add( danger );
 
@@ -199,7 +203,10 @@ public class StatusPane extends Component {
 		depth.y = 8f - depth.baseLine() / 2f;
 		PixelScene.align(depth);
 
-		danger.setPos( width - danger.width(), 20 );
+		mode.x = width - mode.width;
+		mode.y = 5 + mode.height;
+
+		danger.setPos( width - danger.width(), mode.height + 22 );
 
 		buffs.setPos( 31, 9 );
 

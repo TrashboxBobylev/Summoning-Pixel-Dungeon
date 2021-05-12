@@ -118,6 +118,8 @@ public enum HeroClass {
 
 		if (Dungeon.mode == Dungeon.GameMode.GAUNTLET){
 			new Amulet().collect();
+			new PotionOfStrength().identify();
+			new ScrollOfUpgrade().identify();
 		}
 	}
 
