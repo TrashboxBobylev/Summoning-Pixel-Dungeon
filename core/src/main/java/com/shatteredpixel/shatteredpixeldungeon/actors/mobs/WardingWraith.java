@@ -69,8 +69,6 @@ public class WardingWraith extends Mob implements Callback {
 
 		properties.add(Property.INORGANIC);
 
-		Buff.affect(this, RoseWraith.Timer.class, 20f);
-
 		intelligentAlly = true;
 	}
 
