@@ -31,12 +31,16 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfTargeting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knife;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GoatCloneSprite;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class GoatClone extends NPC {
@@ -119,6 +123,25 @@ public class GoatClone extends NPC {
         }
 
         return clone;
+    }
+
+    public static void spawnClone(){
+        ArrayList<Integer> respawnPoints = new ArrayList<>();
+
+        for (int i = 0; i < PathFinder.NEIGHBOURS9.length; i++) {
+            int p = Dungeon.hero.pos + PathFinder.NEIGHBOURS9[i];
+            if ((Actor.findChar( p ) == null || Actor.findChar( p ) == Dungeon.hero) && Dungeon.level.passable[p]) {
+                respawnPoints.add( p );
+            }
+        }
+        int index = 1;
+        if (!respawnPoints.isEmpty())
+            index = Random.index( respawnPoints );
+
+        GoatClone clone = new GoatClone();
+
+        GameScene.add( clone );
+        ScrollOfTeleportation.appear( clone, respawnPoints.get( index ) );
     }
 
     {
