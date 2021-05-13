@@ -126,7 +126,7 @@ public class AbyssalSpawner extends Mob {
 					Actor.addDelayed(new Pushing(spawn, pos, spawn.pos), -1);
 				}
 
-				spawnCooldown = Math.min(6, Dungeon.chapterSize()*12 - Dungeon.depth);
+				spawnCooldown = Math.min(4, Dungeon.chapterSize()*20 - Dungeon.depth);
 			}
 		}
 		return super.act();
