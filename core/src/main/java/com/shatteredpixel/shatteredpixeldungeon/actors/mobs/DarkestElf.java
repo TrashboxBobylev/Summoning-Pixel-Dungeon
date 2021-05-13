@@ -32,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.stationary.GasterBlaster;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
@@ -47,8 +46,6 @@ import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
-
-import static com.shatteredpixel.shatteredpixeldungeon.actors.Char.Alignment.ENEMY;
 
 public class DarkestElf extends Mob {
 
@@ -86,7 +83,7 @@ public class DarkestElf extends Mob {
 	
 	private boolean firstSummon = true;
 	
-	private NecroGasterBlaster mySkeleton;
+	private NecroSlime mySkeleton;
 	private int storedSkeletonID = -1;
 
 	@Override
@@ -139,8 +136,8 @@ public class DarkestElf extends Mob {
 		if (storedSkeletonID != -1){
 			Actor ch = Actor.findById(storedSkeletonID);
 			storedSkeletonID = -1;
-			if (ch instanceof NecroGasterBlaster){
-				mySkeleton = (NecroGasterBlaster) ch;
+			if (ch instanceof NecroSlime){
+				mySkeleton = (NecroSlime) ch;
 			}
 		}
 		
@@ -224,8 +221,8 @@ public class DarkestElf extends Mob {
 			if (storedSkeletonID != -1){
 				Actor ch = Actor.findById(storedSkeletonID);
 				storedSkeletonID = -1;
-				if (ch instanceof NecroGasterBlaster){
-					mySkeleton = (NecroGasterBlaster) ch;
+				if (ch instanceof NecroSlime){
+					mySkeleton = (NecroSlime) ch;
 				}
 			}
 			
@@ -264,11 +261,7 @@ public class DarkestElf extends Mob {
 				
 				summoning = firstSummon = false;
 				
-				mySkeleton = new NecroGasterBlaster();
-				mySkeleton.setMaxHP(100);
-				mySkeleton.setDamage(10, 34);
-				mySkeleton.lvl = 2;
-				mySkeleton.attunement = 0f;
+				mySkeleton = new NecroSlime();
 				mySkeleton.pos = summoningPos;
 				GameScene.add( mySkeleton );
 				Dungeon.level.occupyCell( mySkeleton );
@@ -379,35 +372,13 @@ public class DarkestElf extends Mob {
 		}
 	}
 	
-	public static class NecroGasterBlaster extends GasterBlaster {
+	public static class NecroSlime extends Slime {
 		
 		{
 			state = HUNTING;
-
-			alignment = ENEMY;
-			
-			//no loot or exp
-			maxLvl = -5;
-			
-			//20/25 health to start
-			HP = 50;
 		}
-
-		@Override
-		public Char chooseEnemy() {
-			if (alignment == ENEMY && fieldOfView[Dungeon.hero.pos]){
-				return Dungeon.hero;
-			}
-			else return super.chooseEnemy();
-		}
-
-		@Override
-		protected boolean act() {
-			if (sprite != null){
-				sprite.setAnimSpeed(2.5f);
-			}
-			return super.act();
-		}
+		
+		
 
 		@Override
 		public float spawningWeight() {
