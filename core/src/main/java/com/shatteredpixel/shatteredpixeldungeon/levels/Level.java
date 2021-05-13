@@ -525,7 +525,7 @@ public abstract class Level implements Bundlable {
 				mob.pos = Dungeon.level.randomRespawnCell( mob );
 				if (Dungeon.hero.isAlive() && mob.pos != -1 && PathFinder.distance[mob.pos] >= 12) {
 					GameScene.add( mob );
-					if (Statistics.amuletObtained) {
+					if (Statistics.amuletObtained && Dungeon.depth < Dungeon.chapterSize() * 5 + 2) {
 						mob.beckon( Dungeon.hero.pos );
 					}
 					spend(Dungeon.level.respawnCooldown());
