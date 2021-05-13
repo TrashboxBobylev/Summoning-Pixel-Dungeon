@@ -301,5 +301,6 @@ public class Assets {
 		public static final String WIZARD = "sprites/wizard.png";
 		public static final String CONJURER = "sprites/conjurer.png";
 		public static final String MAGIC_MISSILE = "sprites/magic_missile.png";
+		public static final String DRAGON = "sprites/mob_drake.png";
 	}
 }

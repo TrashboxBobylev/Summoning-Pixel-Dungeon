@@ -214,6 +214,10 @@ public abstract class Mob extends Char {
 	//FIXME this is sort of a band-aid correction for allies needing more intelligent behaviour
 	protected boolean intelligentAlly = false;
 
+	public boolean canSee(int pos){
+		return fieldOfView[pos];
+	}
+
 	public Char chooseEnemy() {
 
 		Terror terror = buff( Terror.class );
@@ -229,7 +233,7 @@ public abstract class Mob extends Char {
 		if (alignment == Alignment.ENEMY
 				&& (enemy == null || enemy.buff(StoneOfAggression.Aggression.class) == null)) {
 			for (Char ch : Actor.chars()) {
-				if (ch != this && fieldOfView[ch.pos] &&
+				if (ch != this && canSee(ch.pos) &&
 						ch.buff(StoneOfAggression.Aggression.class) != null) {
 					return ch;
 				}
@@ -265,20 +269,20 @@ public abstract class Mob extends Char {
 				//try to find an enemy mob to attack first.
 				for (Mob mob :  Dungeon.level.mobs.toArray(new Mob[0]))
 					if (mob.alignment == Alignment.ENEMY && mob != this
-							&& fieldOfView[mob.pos] && mob.invisible <= 0) {
+							&& canSee(mob.pos) && mob.invisible <= 0) {
 						enemies.add(mob);
 					}
 
 				if (enemies.isEmpty()) {
 					//try to find ally mobs to attack second, ignoring the soul flame
 					for (Mob mob :  Dungeon.level.mobs.toArray(new Mob[0]))
-						if (mob.alignment == Alignment.ALLY && mob != this && fieldOfView[mob.pos] && !canBeIgnored(mob))
+						if (mob.alignment == Alignment.ALLY && mob != this && canSee(mob.pos) && !canBeIgnored(mob))
 							enemies.add(mob);
 				}
 
 				if (enemies.isEmpty()) {
 					//try to find the hero third
-					if (fieldOfView[Dungeon.hero.pos] && Dungeon.hero.invisible <= 0) {
+					if (canSee(Dungeon.hero.pos) && Dungeon.hero.invisible <= 0) {
 						enemies.add(Dungeon.hero);
 					}
 				}
@@ -288,7 +292,7 @@ public abstract class Mob extends Char {
 			else if ( alignment == Alignment.ALLY ) {
 				//look for hostile mobs to attack
 				for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
-					if (mob.alignment == Alignment.ENEMY && fieldOfView[mob.pos]
+					if (mob.alignment == Alignment.ENEMY && canSee(mob.pos)
 							&& mob.invisible <= 0 && !mob.isInvulnerable(getClass()) && !canBeIgnored(mob))
 						//intelligent allies do not target mobs which are passive, wandering, or asleep
 						if (!intelligentAlly ||
@@ -300,7 +304,7 @@ public abstract class Mob extends Char {
 			} else if (alignment == Alignment.ENEMY) {
 				//look for ally mobs to attack, ignoring the soul flame
 				for (Mob mob :  Dungeon.level.mobs.toArray(new Mob[0]))
-					if (mob.alignment == Alignment.ALLY && fieldOfView[mob.pos] && !canBeIgnored(mob))
+					if (mob.alignment == Alignment.ALLY && canSee(mob.pos) && !canBeIgnored(mob))
 						enemies.add(mob);
 
 
@@ -311,7 +315,7 @@ public abstract class Mob extends Char {
 					}
 				}
 
-				if (fieldOfView[Dungeon.hero.pos]) {
+				if (canSee(Dungeon.hero.pos)) {
 					enemies.add(Dungeon.hero);
 				}
 

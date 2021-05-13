@@ -210,7 +210,7 @@ public class GameScene extends PixelScene {
 
 		for (Mob mob : Dungeon.level.mobs) {
 			addMobSprite( mob );
-			if (Statistics.amuletObtained) {
+			if (Statistics.amuletObtained && Dungeon.depth < Dungeon.chapterSize() * 5 + 2) {
 				mob.beckon( Dungeon.hero.pos );
 			}
 		}

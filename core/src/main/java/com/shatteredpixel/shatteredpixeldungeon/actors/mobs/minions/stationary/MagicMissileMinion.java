@@ -79,8 +79,8 @@ public class MagicMissileMinion extends StationaryMinion {
                         CellEmitter.get(i).burst(MagicMissile.MagicParticle.FACTORY, 8);
                         if (Actor.findChar(i) != null) {
                             Char ch = Actor.findChar(i);
-                            if (ch != Dungeon.hero) {
-                                ch.damage(damageRoll(), Dungeon.hero);
+                            if (ch != null && ch != Dungeon.hero && ch != this) {
+                                ch.damage(damageRoll(), this);
                             }
                         }
                     }
@@ -88,8 +88,11 @@ public class MagicMissileMinion extends StationaryMinion {
 
                 damage(lvl == 2 ? 1 : 2, this);
             } else {
-                enemy.sprite.showStatus(CharSprite.NEUTRAL, enemy.defenseVerb());
+                enemy.damage(damageRoll(), this);
+                damage(lvl == 2 ? 1 : 2, this);
             }
+        } else {
+            enemy.sprite.showStatus(CharSprite.NEUTRAL, enemy.defenseVerb());
         }
     }
 }

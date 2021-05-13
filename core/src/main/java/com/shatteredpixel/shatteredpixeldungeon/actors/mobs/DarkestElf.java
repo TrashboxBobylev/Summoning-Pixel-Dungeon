@@ -76,7 +76,7 @@ public class DarkestElf extends Mob {
 	public DarkestElf() {
 		if (SPDSettings.bigdungeon()){
 			EXP = 40;
-			maxLvl = 100;
+			maxLvl = 64;
 		}
 	}
 
@@ -399,6 +399,14 @@ public class DarkestElf extends Mob {
 				return Dungeon.hero;
 			}
 			else return super.chooseEnemy();
+		}
+
+		@Override
+		protected boolean act() {
+			if (sprite != null){
+				sprite.setAnimSpeed(2.5f);
+			}
+			return super.act();
 		}
 
 		@Override

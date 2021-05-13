@@ -529,7 +529,7 @@ public abstract class Level implements Bundlable {
 				mob.pos = Dungeon.level.randomRespawnCell( mob );
 				if (Dungeon.hero.isAlive() && mob.pos != -1 && PathFinder.distance[mob.pos] >= 12) {
 					GameScene.add( mob );
-					if (Statistics.amuletObtained) {
+					if (Statistics.amuletObtained && Dungeon.depth < Dungeon.chapterSize() * 5 + 2) {
 						mob.beckon( Dungeon.hero.pos );
 					}
 					spend(Dungeon.level.respawnCooldown());
@@ -1059,8 +1059,14 @@ public abstract class Level implements Bundlable {
 						&& c.buff( TimekeepersHourglass.timeStasis.class ) == null && c.isAlive();
 		if (sighted) {
 			boolean[] blocking;
-			
-			if ((c instanceof Hero && ((Hero) c).subClass == HeroSubClass.WARDEN)
+			if (c instanceof AbyssalNightmare){
+				blocking = Dungeon.level.losBlocking.clone();
+				for (int i = 0; i < blocking.length; i++){
+					if (blocking[i])
+						blocking[i] = false;
+				}
+			}
+			else if ((c instanceof Hero && ((Hero) c).subClass == HeroSubClass.WARDEN)
 				|| c instanceof YogFist.SoiledFist) {
 				blocking = Dungeon.level.losBlocking.clone();
 				for (int i = 0; i < blocking.length; i++){

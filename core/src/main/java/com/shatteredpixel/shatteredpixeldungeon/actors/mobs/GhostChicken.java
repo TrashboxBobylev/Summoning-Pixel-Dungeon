@@ -41,7 +41,7 @@ public class GhostChicken extends Mob {
 		spriteClass = GhostChickenSprite.class;
 
 		HP = HT = 4;
-		defenseSkill = 35;
+		defenseSkill = 40;
 		baseSpeed = 3f;
 
 		EXP = 20;
@@ -53,23 +53,26 @@ public class GhostChicken extends Mob {
 
 		loot = Generator.random();
 		lootChance = 0.1f;
+
+		properties.add(Property.DEMONIC);
+		properties.add(Property.UNDEAD);
 	}
 
 	public GhostChicken() {
 		if (SPDSettings.bigdungeon()){
 			EXP = 40;
-			maxLvl = 100;
+			maxLvl = 64;
 		}
 	}
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 2, 6 );
+		return Random.NormalIntRange( 1, 4 );
 	}
 
 	@Override
 	public int attackProc(Char enemy, int damage) {
-		damage += enemy.drRoll();
+		damage += enemy.drRoll()/2;
 		Buff.prolong(enemy, TimedShrink.class, 2.5f);
 		return super.attackProc(enemy, damage);
 	}
@@ -82,7 +85,7 @@ public class GhostChicken extends Mob {
 	@Override
 	public boolean isInvulnerable(Class effect) {
 		HP--;
-		if (HP <= -1) die(Dungeon.hero);
+		if (HP <= 0) die(Dungeon.hero);
 		return true;
 	}
 
