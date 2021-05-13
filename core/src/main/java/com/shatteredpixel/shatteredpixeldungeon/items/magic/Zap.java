@@ -30,9 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Stamina;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
@@ -58,7 +56,7 @@ public class Zap extends ConjurerSpell {
             if (ch instanceof Minion){
                 ch.die( curUser );
                 if (level() == 1){
-                    Dungeon.hero.mana = Math.min(Dungeon.hero.mana + 13, Dungeon.hero.maxMana);
+                    Dungeon.hero.mana = Math.min(Dungeon.hero.mana + 24, Dungeon.hero.maxMana);
                 } else if (level() == 2){
                     try {
                         Minion minion = (Minion) ch.getClass().newInstance();
@@ -85,8 +83,9 @@ public class Zap extends ConjurerSpell {
             } else {
                 ch.damage(0, curUser);
                 if (level() == 1){
-                    Buff.affect(ch, Haste.class, 10f);
-                    Buff.affect(ch, Stamina.class, 10f);
+                    Buff.affect(ch, Weakness.class, 10f);
+                    Buff.affect(ch, Hex.class, 10f);
+                    Buff.affect(ch, Vulnerable.class, 10f);
                 } else if (level() == 2){
                     for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )){
                         if (mob instanceof Minion){
@@ -96,8 +95,8 @@ public class Zap extends ConjurerSpell {
                             mob.state = mob.HUNTING;
                             mob.notice();
                             mob.beckon(ch.pos);
-                            Buff.affect(mob, Haste.class, 5f);
-                            Buff.affect(mob, Stamina.class, 5f);
+                            Buff.affect(mob, Haste.class, 4f);
+                            Buff.affect(mob, Stamina.class, 4f);
                         }
                     }
                 }
@@ -108,8 +107,8 @@ public class Zap extends ConjurerSpell {
     @Override
     public int manaCost() {
         switch (level()){
-            case 1: return 9;
-            case 2: return 15;
+            case 1: return 11;
+            case 2: return 14;
         }
         return 0;
     }
