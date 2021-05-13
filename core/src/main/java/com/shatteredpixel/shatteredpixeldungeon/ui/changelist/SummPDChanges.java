@@ -186,12 +186,39 @@ public class SummPDChanges {
         changes.hardlight(Window.TITLE_COLOR);
         changeInfos.add(changes);
 
-        changes = ChangesScene.createChangeInfo(changeInfos, "v1.2.0b", false, Window.WHITE);
+        changes = ChangesScene.createChangeInfo(changeInfos, "v1.2.0c", false, Window.WHITE);
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "Fixed:\n" +
+                        "_-_ Goo minion being stuck in place if enemy died before elemental attack.\n" +
+                        "_-_ Shock explosives crashed because of heap issues.\n" +
+                        "_-_ Magic missile sentries being useless.\n" +
+                        "_-_ Abyss descend not working properly.\n" +
+                        "_-_ Shrinking bomb crashing on boss floors.\n" +
+                        "_-_ Attunement spirits dying instantly in some cases.\n\n" +
+                        "_-_ Removed softlock protection."));
+        changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_ABYSS, 0, 64, 16, 16 ), "Abyss and Endless mode",
+                "Changed Abyss levels to be less annoying:\n\n" +
+                        "_-_ Abyssal mobs no longer rush at you because of amulet.\n\n" +
+                        "_-_ All abyssal mobs are demons and undead.\n\n"+
+                        "_-_ Abyssal mobs give XP up to level 64 instead of level 100.\n\n" +
+                        "_-_ Reworked Abyssal Nightmares: now are large big-damage enemies, who are immune to everything but Amok and melee, and can see their enemies and eliminate all obstacles while trying to reach them.\n\n" +
+                        "_-_ Ghost Chickens deal less damage and die at 0 HP instead of -1.\n\n" +
+                        "_-_ Blinking Mans deal less damage and less knockback, but are willing to blink more often and will retreat slower than player walks.\n\n" +
+                        "_-_ Darkest Elf's blasters attack \"faster\".\n\n" +
+                        "_-_ Added Abyssal Dragons, who breath fire, spawn smaller dragons and attack with sweeping.\n\n" +
+                        "_-_ Rare abyss mobs (nightmares and dragons) drop wealth loot."));
+
+
+        changes = ChangesScene.createChangeInfo(changeInfos, "v1.2.0a & 1.2.0b", false, Window.WHITE);
 
         changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-                "_-_ Added failsafe for potential softlocks, which will give control to player if he gets stuck for too long.\n\n" +
+                "Fixed:\n" +
+                        "_-_ Debuff large icons being incorrect.\n\n" +
+                        "_-_ Frost Elemental minion's animation were incorrect.\n\n"+
+                        "_-_ Demon Halls was undescenable if Final Froggits were dead.\n\n" +
+                        "_-_ Stationary minions displayed missing text when interacted with.\n\n\n" +
+                        "_-_ Added failsafe for potential softlocks, which will give control to player if he gets stuck for too long.\n\n" +
                         "_-_ Reduced lag from Yog's eradicating wall attack."));
-
         changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_HALLS, 0, 64, 16, 16 ), "Dynamic Dungeon Size",
                 "_-_ Reduced amount of rooms by 25-35% in every dungeon mode.\n\n" +
                         "_-_ Reduced amount of monsters in 21 floors mode.\n\n" +
@@ -202,15 +229,6 @@ public class SummPDChanges {
                 "_-_ Food satisfies for 10% more energy. Heroes take 10% more time to get hungry and starving.\n\n" +
                         "_-_ Food appears in every floor now instead of the chance."
         ));
-
-        changes = ChangesScene.createChangeInfo(changeInfos, "v1.2.0a", false, Window.WHITE);
-
-        changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-                "Fixed:\n" +
-                        "_-_ Debuff large icons being incorrect.\n\n" +
-                        "_-_ Frost Elemental minion's animation were incorrect.\n\n"+
-                        "_-_ Demon Halls was undescenable if Final Froggits were dead.\n\n" +
-                        "_-_ Stationary minions displayed missing text when interacted with."));
 
         changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
         changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
