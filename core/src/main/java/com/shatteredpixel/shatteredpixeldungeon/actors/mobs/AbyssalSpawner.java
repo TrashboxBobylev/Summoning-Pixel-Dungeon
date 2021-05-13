@@ -83,11 +83,6 @@ public class AbyssalSpawner extends Mob {
 	}
 
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 38);
-	}
-
-	@Override
 	public void beckon(int cell) {
 		//do nothing
 	}
@@ -137,7 +132,7 @@ public class AbyssalSpawner extends Mob {
 		if (dmg >= 40){
 			//takes 20/21/22/23/24/25/26/27/28/29/30 dmg
 			// at   20/22/25/29/34/40/47/55/64/74/85 incoming dmg
-			dmg = 40 + (int)(Math.sqrt(16*(dmg - 40) + 1) - 1)/2;
+			dmg = 40 + (int)(Math.sqrt(8*(dmg - 40) + 1) - 1)/2;
 		}
 		spawnCooldown -= dmg;
 		super.damage(dmg, src);
