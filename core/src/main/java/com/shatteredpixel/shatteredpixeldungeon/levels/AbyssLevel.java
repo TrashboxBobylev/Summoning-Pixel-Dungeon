@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Chaosstone;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.PrisonPainter;
@@ -70,6 +71,7 @@ public class AbyssLevel extends RegularLevel {
 
 	@Override
 	public void create() {
+		addItemToSpawn(Generator.random(Generator.Category.FOOD));
 		addItemToSpawn( new com.shatteredpixel.shatteredpixeldungeon.items.Torch() );
 		for (int i = 0; i < (Dungeon.depth - Dungeon.chapterSize()*5) / Dungeon.chapterSize(); i++){
 			addItemToSpawn(new Chaosstone());
@@ -80,10 +82,10 @@ public class AbyssLevel extends RegularLevel {
 
 	@Override
 	protected int standardRooms(boolean forceMax) {
-		if (SPDSettings.smalldungeon()) return 6;
-		if (forceMax) return 36;
-		//24 to 32
-		return 20+Random.chances(new float[]{3, 2, 1, 1, 1});
+		if (SPDSettings.smalldungeon()) return 8;
+		if (forceMax) return 39;
+		//23 to 28
+		return 23+Random.chances(new float[]{3, 2, 1, 1, 1});
 	}
 
 	@Override

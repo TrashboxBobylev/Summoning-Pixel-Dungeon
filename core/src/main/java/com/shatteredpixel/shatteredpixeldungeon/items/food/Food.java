@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -70,9 +71,9 @@ public class Food extends Item {
 
 		if (action.equals( AC_EAT )) {
 			
-			detach( hero.belongings.backpack );
-//			InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
-//			ShatteredPixelDungeon.switchScene(InterlevelScene.class);
+//			detach( hero.belongings.backpack );
+			InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
+			ShatteredPixelDungeon.switchScene(InterlevelScene.class);
 			
 			satisfy(hero);
 			GLog.i( message );
