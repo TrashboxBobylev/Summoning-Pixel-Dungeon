@@ -317,7 +317,7 @@ public class GameScene extends PixelScene {
 		timeCounter = new CircleArc((int) Math.floor(10), 4.25f);
 		timeCounter.color( 0xff0000, true );
 		timeCounter.camera = uiCamera;
-		timeCounter.show(this, busy.center(), 0f);
+		timeCounter.show(this, busy.center().offset(0f, 9f), 0f);
 		
 		switch (InterlevelScene.mode) {
 		case RESURRECT:
@@ -395,12 +395,15 @@ public class GameScene extends PixelScene {
 		switch (InterlevelScene.mode){
 			case FALL: case DESCEND: case CONTINUE:
 				Camera.main.snapTo(hero.center().x, hero.center().y - DungeonTilemap.SIZE * (defaultZoom/Camera.main.zoom));
+				GameScene.timer = 45;
 				break;
 			case ASCEND:
 				Camera.main.snapTo(hero.center().x, hero.center().y + DungeonTilemap.SIZE * (defaultZoom/Camera.main.zoom));
+				GameScene.timer = 45;
 				break;
 			default:
 				Camera.main.snapTo(hero.center().x, hero.center().y);
+				resetTimer();
 		}
 		Camera.main.panTo(hero.center(), 2.5f);
 
@@ -459,7 +462,6 @@ public class GameScene extends PixelScene {
 		}
 
 		fadeIn();
-		resetTimer();
 	}
 
 	private void resetTimer() {
@@ -1058,7 +1060,7 @@ public class GameScene extends PixelScene {
 		if (scene != null && scene.toolbar != null) scene.toolbar.examining = false;
 		if(Dungeon.hero.ready) {
 			timerPaused = false;
-			if (scene != null) scene.resetTimer();
+			if (scene != null && timer < 45f) scene.resetTimer();
 		}
 	}
 
