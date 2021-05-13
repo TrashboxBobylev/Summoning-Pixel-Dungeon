@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.magic;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -56,6 +57,11 @@ public abstract class AdHocSpell extends ConjurerSpell {
             if (tryToZap(Dungeon.hero)) {
                 curUser = Dungeon.hero;
                 curItem = this;
+                curUser.mana -= manaCost();
+                Invisibility.dispel();
+                curUser.busy();
+                updateQuickslot();
+                curUser.spendAndNext(1f);
                 effect(curUser);
             }
 

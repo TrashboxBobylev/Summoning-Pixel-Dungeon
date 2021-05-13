@@ -194,6 +194,7 @@ public class SummPDChanges {
                         "_-_ Magic missile sentries being useless.\n" +
                         "_-_ Abyss descend not working properly.\n" +
                         "_-_ Shrinking bomb crashing on boss floors.\n" +
+                        "_-_ Instant use spells not consuming mana.\n" +
                         "_-_ Blinking Man crashing the game when trying to teleport.\n"+
                         "_-_ Abyssal spawners spawning obscene amount of monsters.\n" +
                         "_-_ Attunement spirits dying instantly in some cases.\n\n" +
