@@ -74,6 +74,7 @@ public class MagicMissile extends Emitter {
 	public static final int TOXIC_VENT      = 20;
 	public static final int ELMO            = 21;
 	public static final int INVISI          = 22;
+	public static final int ABYSS           = 23;
 
 	public static final int FIRE_CONE       = 100;
 	public static final int FOLIAGE_CONE    = 101;
@@ -219,6 +220,10 @@ public class MagicMissile extends Emitter {
 			case INVISI:
 				size( 20 );
 				pour( InvisibleParticle.FACTORY, 0.03f );
+				break;
+			case ABYSS:
+				size( 9 );
+				pour( YogParticle.FACTORY, 0.04f );
 				break;
 		}
 

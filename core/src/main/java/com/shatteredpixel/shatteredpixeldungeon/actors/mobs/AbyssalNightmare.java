@@ -55,7 +55,7 @@ public class AbyssalNightmare extends Mob {
 	{
 		spriteClass = AbyssalSprite.class;
 
-		HP = HT = 180;
+		HP = HT = 250;
 		defenseSkill = 30;
 
 		EXP = 40;
@@ -113,7 +113,7 @@ public class AbyssalNightmare extends Mob {
 
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(10, 25);
+		return Random.NormalIntRange(0, 16);
 	}
 	
 	@Override
@@ -145,8 +145,6 @@ public class AbyssalNightmare extends Mob {
 
 				GameScene.add( clone, SPLIT_DELAY );
 				Actor.addDelayed( new Pushing( clone, pos, clone.pos ), -1 );
-
-				HP -= clone.HP;
 			}
 		}
 		return super.attackProc(enemy, damage);
