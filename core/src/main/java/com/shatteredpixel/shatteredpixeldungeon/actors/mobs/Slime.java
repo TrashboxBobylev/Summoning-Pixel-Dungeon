@@ -50,7 +50,7 @@ public class Slime extends Mob {
 	{
 		spriteClass = SlimeSprite.class;
 		
-		HP = HT = 80;
+		HP = HT = 64;
 		defenseSkill = 23;
 
 		EXP = 12;
@@ -102,7 +102,7 @@ public class Slime extends Mob {
     public void damage(int dmg, Object src) {
         for (Class c : RingOfElements.RESISTS){
             if (c.isAssignableFrom(src.getClass()) && src instanceof Wand){
-                dmg *= 2.5f;
+                dmg *= 3f;
             }
         }
         super.damage(dmg, src);
