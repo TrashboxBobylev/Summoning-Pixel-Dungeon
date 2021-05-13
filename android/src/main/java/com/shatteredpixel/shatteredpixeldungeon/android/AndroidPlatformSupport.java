@@ -45,6 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PlatformSupport;
+import com.watabou.utils.Point;
 
 import java.util.HashMap;
 import java.util.regex.Pattern;
@@ -184,6 +185,12 @@ public class AndroidPlatformSupport extends PlatformSupport {
 					}
 				}
 		);
+	}
+
+	//as you can't move touch without holding
+	@Override
+	public Point getMouseCoords() {
+		return null;
 	}
 
 	/* FONT SUPPORT */

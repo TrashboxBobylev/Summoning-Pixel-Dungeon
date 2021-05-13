@@ -42,6 +42,8 @@ public abstract class PlatformSupport {
 	public static abstract class TextCallback {
 		public abstract void onSelect( boolean positive, String text );
 	}
+
+	public abstract Point getMouseCoords();
 	
 	//TODO should consider spinning this into its own class, rather than platform support getting ever bigger
 	

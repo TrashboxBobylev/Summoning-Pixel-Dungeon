@@ -72,7 +72,7 @@ public class GameScene extends PixelScene {
 	static GameScene scene;
 
 	private SkinnedBlock water;
-	private DungeonTerrainTilemap tiles;
+	public DungeonTerrainTilemap tiles;
 	private GridTileMap visualGrid;
 	private TerrainFeaturesTilemap terrainFeatures;
 	private RaisedTerrainTilemap raisedTerrain;
@@ -87,8 +87,8 @@ public class GameScene extends PixelScene {
 	
 	private BusyIndicator busy;
 	private CircleArc counter;
-	
-	private static CellSelector cellSelector;
+
+	public static CellSelector cellSelector;
 	
 	private Group terrain;
 	private Group customTiles;
