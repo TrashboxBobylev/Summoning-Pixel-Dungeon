@@ -204,6 +204,7 @@ public class SummPDChanges {
                         "_-_ All abyssal mobs are demons and undead.\n\n"+
                         "_-_ Added extra food item to each floor; torches last 3x longer.\n\n"+
                         "_-_ Abyssal mobs give XP up to level 64 instead of level 100.\n\n" +
+                        "_-_ Abyssal Spawner no longer spam mobs and recieve more damage.\n\n"+
                         "_-_ Reworked Abyssal Nightmares: now are large big-damage enemies, who are immune to everything but Amok and melee, and can see their enemies and eliminate all obstacles while trying to reach them.\n\n" +
                         "_-_ Ghost Chickens deal less damage and die at 0 HP instead of -1.\n\n" +
                         "_-_ Blinking Mans deal less damage and less knockback, but are willing to blink more often and will retreat slower than player walks.\n\n" +
@@ -212,7 +213,9 @@ public class SummPDChanges {
                         "_-_ Rare abyss mobs (nightmares and dragons) drop wealth loot.\n\n\n" +
                         "Also tweaked the endgame of Shattered:\n\n" +
                         "_-_ Yog cast lasers 2.2x less frequently, abyssal flame walls stay 2 turns longer to compensate."));
-
+        changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+                "_-_ Added mouse targeting for Desktop builds.\n\n" +
+                        "_-_ Added quick item use while holding inventory's button."));
 
         changes = ChangesScene.createChangeInfo(changeInfos, "v1.2.0a & 1.2.0b", false, Window.WHITE);
 
