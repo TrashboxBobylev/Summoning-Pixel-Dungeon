@@ -87,6 +87,9 @@ public class GameScene extends PixelScene {
 	
 	private BusyIndicator busy;
 	private CircleArc counter;
+
+	public static boolean timerPaused = true;
+	public static double timer = 0.25;
 	
 	private static CellSelector cellSelector;
 	
@@ -450,7 +453,11 @@ public class GameScene extends PixelScene {
 		}
 
 		fadeIn();
+		resetTimer();
+	}
 
+	private void resetTimer() {
+		timer = 0.33;
 	}
 	
 	public void destroy() {
@@ -503,7 +510,15 @@ public class GameScene extends PixelScene {
 		}
 
 		super.update();
-		
+
+		if (!timerPaused && Dungeon.mode == Dungeon.GameMode.REALTIME && Dungeon.hero.ready) {
+			timer -= Game.elapsed;
+			if (timer <= 0 && Dungeon.hero.isAlive()) {
+				Dungeon.hero.spendAndNext(1f);
+				resetTimer();
+			}
+		}
+
 		if (!Emitter.freezeEmitters) water.offset( 0, -5 * Game.elapsed );
 
 		if (!Actor.processing() && Dungeon.hero.isAlive()) {
@@ -975,6 +990,7 @@ public class GameScene extends PixelScene {
 			cellSelector.listener.onSelect(null);
 		}
 		cellSelector.listener = listener;
+		GameScene.timerPaused = true;
 		if (scene != null)
 			scene.prompt( listener.prompt() );
 	}
@@ -1026,6 +1042,10 @@ public class GameScene extends PixelScene {
 		selectCell( defaultCellListener );
 		QuickSlotButton.cancel();
 		if (scene != null && scene.toolbar != null) scene.toolbar.examining = false;
+		if(Dungeon.hero.ready) {
+			timerPaused = false;
+			if (scene != null) scene.resetTimer();
+		}
 	}
 
 	public static void checkKeyHold(){

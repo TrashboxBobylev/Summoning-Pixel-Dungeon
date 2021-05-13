@@ -143,7 +143,8 @@ public class Dungeon {
 		GAUNTLET("gauntlet", Icons.GAUNTLET),
 		EXPLORE( "explore", Icons.EXPLORE),
 		NO_SOU("no_sou", Icons.SOULLESS),
-		HELL("hell", Icons.HELL_CHEST);
+		HELL("hell", Icons.HELL_CHEST),
+		REALTIME("realtime", Icons.REAL_TIME);
 
 		public String saveName;
 		public Icons icon;
@@ -403,6 +404,7 @@ public class Dungeon {
 		hero.curAction = hero.lastAction = null;
 
 		observe();
+		GameScene.timer += 10;
 		try {
 			saveAll();
 		} catch (IOException e) {

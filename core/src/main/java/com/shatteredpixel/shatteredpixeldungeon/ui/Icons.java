@@ -84,6 +84,7 @@ public enum Icons {
 	EXPLORE,
 	SOULLESS,
 	HELL_CHEST,
+	REAL_TIME,
 	
 	//misc icons
 	LIBGDX,
@@ -280,6 +281,9 @@ public enum Icons {
 			break;
 		case HELL_CHEST:
 			icon.frame( icon.texture.uvRect( 64, 145, 80, 159 ) );
+			break;
+		case REAL_TIME:
+			icon.frame( icon.texture.uvRect( 2, 160, 24, 176 ) );
 			break;
 
 		}

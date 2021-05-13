@@ -683,6 +683,7 @@ public class Hero extends Char {
 	
 	public void busy() {
 		ready = false;
+		GameScene.timerPaused=true;
 	}
 	
 	private void ready() {

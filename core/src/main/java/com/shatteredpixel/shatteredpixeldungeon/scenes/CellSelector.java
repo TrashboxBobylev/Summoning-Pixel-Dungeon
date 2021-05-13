@@ -276,7 +276,7 @@ public class CellSelector extends ScrollArea {
 			//each step when keyboard moving takes 0.15s, 0.125s, 0.1s, 0.1s, ...
 			// this is to make it easier to move 1 or 2 steps without overshooting
 			CharSprite.setMoveInterval( CharSprite.DEFAULT_MOVE_INTERVAL +
-			                            Math.max(0, 0.05f - heldTurns *0.025f));
+									Math.max(0, 0.05f - heldTurns *0.025f));
 			select(cell);
 			return true;
 

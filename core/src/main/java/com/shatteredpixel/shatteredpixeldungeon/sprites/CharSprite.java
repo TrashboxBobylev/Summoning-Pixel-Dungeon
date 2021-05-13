@@ -204,6 +204,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		play( run );
 		
 		motion = new PosTweener( this, worldToCamera( to ), moveInterval );
+		if (Dungeon.mode == Dungeon.GameMode.REALTIME) motion.interval *= 0.5f;
 		motion.listener = this;
 		parent.add( motion );
 

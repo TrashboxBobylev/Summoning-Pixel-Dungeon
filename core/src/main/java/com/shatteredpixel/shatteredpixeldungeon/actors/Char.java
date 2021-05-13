@@ -590,6 +590,7 @@ public abstract class Char extends Actor {
 		}
 
 		float fpsMod = 1f;
+		if (Dungeon.mode == Dungeon.GameMode.REALTIME) fpsMod = 0.5f;
 		if (timeScale < 1f) fpsMod /= 0.75f * timeScale;
 
 		if (sprite != null) sprite.setAnimSpeed(fpsMod);

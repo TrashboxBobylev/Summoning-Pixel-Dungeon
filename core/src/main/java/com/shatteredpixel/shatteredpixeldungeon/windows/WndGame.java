@@ -34,6 +34,8 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.Gizmo;
+import com.watabou.noosa.Visual;
 
 import java.io.IOException;
 
@@ -48,6 +50,8 @@ public class WndGame extends Window {
 	public WndGame() {
 		
 		super();
+
+		GameScene.timerPaused = true;
 
 		RedButton curBtn;
 		addButton( curBtn = new RedButton( Messages.get(this, "settings") ) {
@@ -144,6 +148,14 @@ public class WndGame extends Window {
 		} );
 		
 		resize( WIDTH, pos );
+
+		if (Dungeon.mode == Dungeon.GameMode.REALTIME) {
+			for (Gizmo giz : Game.scene().members) {
+				if (giz instanceof Visual) {
+					((Visual) giz).hardlight(0xd1d1d1);
+				}
+			}
+		}
 	}
 	
 	private void addButton( RedButton btn ) {
@@ -158,5 +170,26 @@ public class WndGame extends Window {
 		add( btn2 );
 		btn2.setRect( btn1.right() + GAP, btn1.top(), WIDTH - btn1.right() - GAP, BTN_HEIGHT );
 		pos += BTN_HEIGHT;
+	}
+
+	@Override
+	public void hide() {
+		for (Gizmo giz : Game.scene().members){
+			if (giz instanceof Visual){
+				((Visual) giz).resetColor();
+			}
+		}
+		super.hide();
+	}
+
+	@Override
+	public void onBackPressed() {
+		for (Gizmo giz : Game.scene().members){
+			if (giz instanceof Visual){
+				((Visual) giz).resetColor();
+			}
+		}
+		GameScene.timerPaused = false;
+		super.onBackPressed();
 	}
 }
