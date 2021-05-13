@@ -32,10 +32,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTerrainTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndJournal;
 import com.watabou.input.GameAction;
 import com.watabou.noosa.*;
 import com.watabou.noosa.ui.Button;
@@ -152,8 +152,8 @@ public class Toolbar extends Component {
 			
 			@Override
 			protected boolean onLongClick() {
-				WndJournal.last_index = 3; //catalog page
-				GameScene.show(new WndJournal());
+				InterlevelScene.mode = InterlevelScene.Mode.RESET;
+				Game.switchScene(InterlevelScene.class);
 				return true;
 			}
 
