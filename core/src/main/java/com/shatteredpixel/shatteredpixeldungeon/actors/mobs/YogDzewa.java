@@ -77,8 +77,8 @@ public class YogDzewa extends Mob {
 	private int phase = 0;
 
 	private float abilityCooldown;
-	private static final int MIN_ABILITY_CD = 4;
-	private static final int MAX_ABILITY_CD = 7;
+	private static final int MIN_ABILITY_CD = 11;
+	private static final int MAX_ABILITY_CD = 16;
 
 	private float summonCooldown;
 	private static final int MIN_SUMMON_CD = 10;
@@ -162,7 +162,7 @@ public class YogDzewa extends Mob {
 					for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++){
 						fenceBeams[i] = new Ballistica(pos, pos + PathFinder.NEIGHBOURS8[i], Ballistica.STOP_SOLID);
 						for (int k : fenceBeams[i].path){
-							GameScene.add(Blob.seed(k, 6, YogWall.class));
+							GameScene.add(Blob.seed(k, 8, YogWall.class));
 							Char ch = Actor.findChar(k);
 							if (ch != null && ch.alignment == Alignment.ALLY){
 								ch.damage(Random.NormalIntRange(50, 170), new Eye.DeathGaze());

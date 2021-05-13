@@ -53,7 +53,7 @@ public class BlinkingMan extends Mob {
 	{
 		spriteClass = BlinkingManSprite.class;
 
-		HP = HT = 45;
+		HP = HT = 35;
 		defenseSkill = 60;
 		viewDistance = Light.DISTANCE;
 		baseSpeed = 0.75f;
@@ -128,6 +128,10 @@ public class BlinkingMan extends Mob {
 		int direction = PathFinder.NEIGHBOURS8[Random.Int(8)];
 		
 		Ballistica route = new Ballistica( pos+direction, target, Ballistica.PROJECTILE);
+		if (route.dist == 0){
+			blink();
+			return;
+		}
 		int cell = route.collisionPos;
 
 		//can't occupy the same cell as another char, so move back one.

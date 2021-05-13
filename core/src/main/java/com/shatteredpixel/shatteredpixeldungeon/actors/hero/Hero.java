@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulWeakness
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SpikyShield;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Phantom;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GoatClone;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CheckedCell;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
@@ -677,6 +678,10 @@ public class Hero extends Char {
             }
             else if (buff(Attunement.class) != null) buff(Attunement.class).detach();
         }
+
+        if (subClass == HeroSubClass.OCCULTIST && GoatClone.findClone() == null){
+        	GoatClone.spawnClone();
+		}
 
 		return actResult;
 	}

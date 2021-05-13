@@ -72,7 +72,7 @@ public class GameScene extends PixelScene {
 	static GameScene scene;
 
 	private SkinnedBlock water;
-	private DungeonTerrainTilemap tiles;
+	public DungeonTerrainTilemap tiles;
 	private GridTileMap visualGrid;
 	private TerrainFeaturesTilemap terrainFeatures;
 	private RaisedTerrainTilemap raisedTerrain;
@@ -91,9 +91,9 @@ public class GameScene extends PixelScene {
 
 	public static boolean timerPaused = true;
 	public static double timer = 0.25;
-	
-	private static CellSelector cellSelector;
-	
+
+	public static CellSelector cellSelector;
+
 	private Group terrain;
 	private Group customTiles;
 	private Group levelVisuals;
@@ -318,7 +318,7 @@ public class GameScene extends PixelScene {
 		timeCounter.color( 0xff0000, true );
 		timeCounter.camera = uiCamera;
 		timeCounter.show(this, busy.center().offset(0f, 9f), 0f);
-		
+
 		switch (InterlevelScene.mode) {
 		case RESURRECT:
 			ScrollOfTeleportation.appear( Dungeon.hero, Dungeon.level.entrance );

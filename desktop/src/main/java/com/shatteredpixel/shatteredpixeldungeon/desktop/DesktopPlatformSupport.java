@@ -81,7 +81,14 @@ public class DesktopPlatformSupport extends PlatformSupport {
 			callback.onSelect(true, result.replace("\r\n", "").replace("\n", ""));
 		}
 	}
-	
+
+	@Override
+	public Point getMouseCoords() {
+		int screenX = (int) (Gdx.input.getX() / (Game.dispWidth / (float)Game.width));
+		int screenY = (int) (Gdx.input.getY() /(Game.dispHeight / (float)Game.height));
+		return new Point(screenX, screenY);
+	}
+
 	private int pageSize;
 	private PixmapPacker packer;
 	private boolean systemfont;

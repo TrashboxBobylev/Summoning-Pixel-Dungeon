@@ -44,7 +44,7 @@ public class AbyssalSpawner extends Mob {
 	{
 		spriteClass = AbyssalSpawnerSprite.class;
 
-		HP = HT = 400;
+		HP = HT = 320;
 		defenseSkill = 0;
 
 		EXP = 50;
@@ -80,11 +80,6 @@ public class AbyssalSpawner extends Mob {
 			EXP = 100;
 			maxLvl = 100;
 		}
-	}
-
-	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 38);
 	}
 
 	@Override
@@ -126,7 +121,7 @@ public class AbyssalSpawner extends Mob {
 					Actor.addDelayed(new Pushing(spawn, pos, spawn.pos), -1);
 				}
 
-				spawnCooldown = Math.min(6, Dungeon.chapterSize()*12 - Dungeon.depth);
+				spawnCooldown = Math.max(4, Dungeon.chapterSize()*20 - Dungeon.depth);
 			}
 		}
 		return super.act();
@@ -137,7 +132,7 @@ public class AbyssalSpawner extends Mob {
 		if (dmg >= 40){
 			//takes 20/21/22/23/24/25/26/27/28/29/30 dmg
 			// at   20/22/25/29/34/40/47/55/64/74/85 incoming dmg
-			dmg = 40 + (int)(Math.sqrt(16*(dmg - 40) + 1) - 1)/2;
+			dmg = 40 + (int)(Math.sqrt(8*(dmg - 40) + 1) - 1)/2;
 		}
 		spawnCooldown -= dmg;
 		super.damage(dmg, src);

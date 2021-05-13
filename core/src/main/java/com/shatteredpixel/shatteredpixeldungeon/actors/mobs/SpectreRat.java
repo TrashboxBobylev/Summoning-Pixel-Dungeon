@@ -50,7 +50,7 @@ public class SpectreRat extends Mob implements Callback {
 	{
 		spriteClass = SpectreRatSprite.class;
 
-		HP = HT = 125;
+		HP = HT = 100;
 		defenseSkill = 23;
 		viewDistance = Light.DISTANCE;
 

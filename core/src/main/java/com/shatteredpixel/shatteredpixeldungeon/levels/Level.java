@@ -157,6 +157,7 @@ public abstract class Level implements Bundlable {
 		if (!(Dungeon.bossLevel() || Dungeon.mode == Dungeon.GameMode.GAUNTLET) ) {
 
 			addItemToSpawn(Generator.random(Generator.Category.FOOD));
+			if (SPDSettings.bigdungeon()) addItemToSpawn(Generator.random(Generator.Category.FOOD));
 
 			if (Dungeon.isChallenged(Challenges.DARKNESS)){
 				addItemToSpawn( new Torch() );

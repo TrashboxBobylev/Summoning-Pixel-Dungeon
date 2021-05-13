@@ -67,7 +67,7 @@ public class Heal extends ConjurerSpell {
     @Override
     public int manaCost() {
         switch (level()){
-            case 1: return 3;
+            case 1: return 4;
             case 2: return 8;
         }
         return 1;
@@ -76,26 +76,26 @@ public class Heal extends ConjurerSpell {
     private int heal(Char ch){
         if (ch.buff(Shocker.NoHeal.class) != null) return 0;
         switch (level()){
-            case 1: return 6 + ch.HT / 8;
-            case 2: return 8 + ch.HT / 3;
+            case 1: return 10 + ch.HT / 6;
+            case 2: return 14 + ch.HT / 5;
         }
-        return 3 + ch.HT / 20;
+        return 5 + ch.HT / 15;
     }
 
     private int intHeal(){
         switch (level()){
-            case 1: return 6;
-            case 2: return 8;
+            case 1: return 10;
+            case 2: return 14;
         }
-        return 3;
+        return 5;
     }
 
     private float partialHeal(){
         switch (level()){
-            case 1: return 12.5f;
-            case 2: return 33.3f;
+            case 1: return 16.6f;
+            case 2: return 20f;
         }
-        return 5f;
+        return 6.6f;
     }
 
 
