@@ -402,6 +402,14 @@ public class DarkestElf extends Mob {
 		}
 
 		@Override
+		protected boolean act() {
+			if (sprite != null){
+				sprite.setAnimSpeed(2.5f);
+			}
+			return super.act();
+		}
+
+		@Override
 		public float spawningWeight() {
 			return 0;
 		}
