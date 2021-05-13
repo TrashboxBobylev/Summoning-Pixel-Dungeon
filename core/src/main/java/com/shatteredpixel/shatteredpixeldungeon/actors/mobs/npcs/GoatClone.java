@@ -52,6 +52,7 @@ public class GoatClone extends NPC {
         intelligentAlly = true;
         WANDERING = new Wandering();
         baseSpeed = 2f;
+        actPriority = MOB_PRIO + 1;
         state = WANDERING;
     }
 
