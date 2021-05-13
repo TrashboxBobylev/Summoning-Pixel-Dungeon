@@ -52,7 +52,7 @@ public class DarkestElf extends Mob {
 	{
 		spriteClass = DarkestElfSprite.class;
 
-		HP = HT = 200;
+		HP = HT = 145;
 		defenseSkill = 19;
 
 		EXP = 20;

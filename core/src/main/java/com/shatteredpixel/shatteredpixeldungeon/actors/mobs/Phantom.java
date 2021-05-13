@@ -42,7 +42,7 @@ public class Phantom extends Mob {
 	{
 		spriteClass = PhantomSprite.class;
 
-		HP = HT = 145;
+		HP = HT = 112;
 		defenseSkill = 36;
 
 		EXP = 20;

@@ -53,7 +53,7 @@ public class BlinkingMan extends Mob {
 	{
 		spriteClass = BlinkingManSprite.class;
 
-		HP = HT = 45;
+		HP = HT = 35;
 		defenseSkill = 60;
 		viewDistance = Light.DISTANCE;
 		baseSpeed = 0.75f;

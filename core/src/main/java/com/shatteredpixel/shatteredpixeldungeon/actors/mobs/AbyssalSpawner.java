@@ -44,7 +44,7 @@ public class AbyssalSpawner extends Mob {
 	{
 		spriteClass = AbyssalSpawnerSprite.class;
 
-		HP = HT = 400;
+		HP = HT = 320;
 		defenseSkill = 0;
 
 		EXP = 50;

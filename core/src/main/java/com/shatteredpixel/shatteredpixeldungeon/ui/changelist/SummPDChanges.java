@@ -201,17 +201,19 @@ public class SummPDChanges {
                         "_-_ Removed softlock protection."));
         changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_ABYSS, 0, 64, 16, 16 ), "Abyss and Endless mode",
                 "Changed Abyss levels to be less annoying:\n\n" +
-                        "_-_ Abyssal mobs no longer rush at you because of amulet.\n\n" +
-                        "_-_ All abyssal mobs are demons and undead.\n\n"+
-                        "_-_ Added extra food item to each floor; torches last 3x longer.\n\n"+
-                        "_-_ Abyssal mobs give XP up to level 64 instead of level 100.\n\n" +
-                        "_-_ Abyssal Spawner no longer spam mobs and recieve more damage.\n\n"+
-                        "_-_ Reworked Abyssal Nightmares: now are large big-damage enemies, who are immune to everything but Amok and melee, and can see their enemies and eliminate all obstacles while trying to reach them.\n\n" +
-                        "_-_ Ghost Chickens deal less damage and die at 0 HP instead of -1.\n\n" +
-                        "_-_ Blinking Mans deal less damage and less knockback, but are willing to blink more often and will retreat slower than player walks.\n\n" +
-                        "_-_ Darkest Elf's blasters attack \"faster\".\n\n" +
-                        "_-_ Added Abyssal Dragons, who breath fire, spawn smaller dragons and attack with sweeping.\n\n" +
-                        "_-_ Rare abyss mobs (nightmares and dragons) drop wealth loot.\n\n\n" +
+                        "_-_ Abyssal mobs no longer rush at you because of amulet.\n" +
+                        "_-_ All abyssal mobs are demons and undead and recieved HP nerf.\n"+
+                        "_-_ Significantly decreased the size of abyss levels.\n"+
+                        "_-_ Abyss no longer multiplies the amount of monsters on each level.\n"+
+                        "_-_ Added extra food item to each floor; torches last 3x longer.\n"+
+                        "_-_ Abyssal mobs give XP up to level 64 instead of level 100.\n" +
+                        "_-_ Abyssal Spawner no longer spam mobs and recieve more damage.\n"+
+                        "_-_ Reworked Abyssal Nightmares: now are large big-damage enemies, who are immune to everything but Amok and melee, and can see their enemies and eliminate all obstacles while trying to reach them.\n" +
+                        "_-_ Ghost Chickens deal less damage and die at 0 HP instead of -1.\n" +
+                        "_-_ Blinking Mans deal less damage and less knockback, but are willing to blink more often and will retreat slower than player walks.\n" +
+                        "_-_ Darkest Elf now cast Dark Matter Slimes instead of gaster blasters.\n" +
+                        "_-_ Added Abyssal Dragons, who breath fire, spawn smaller dragons and attack with sweeping.\n" +
+                        "_-_ Rare abyss mobs (nightmares and dragons) drop wealth loot.\n\n" +
                         "Also tweaked the endgame of Shattered:\n\n" +
                         "_-_ Yog cast lasers 2.2x less frequently, abyssal flame walls stay 2 turns longer to compensate."));
         changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
