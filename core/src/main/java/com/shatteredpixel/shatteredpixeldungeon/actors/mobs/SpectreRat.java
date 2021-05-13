@@ -66,7 +66,7 @@ public class SpectreRat extends Mob implements Callback {
 	public SpectreRat() {
 		if (SPDSettings.bigdungeon()){
 			EXP = 36;
-			maxLvl = 100;
+			maxLvl = 64;
 		}
 	}
 	
@@ -137,7 +137,7 @@ public class SpectreRat extends Mob implements Callback {
 	@Override
 	public Item createLoot(){
 
-		if (Random.Int(3) == 0 && Random.Int(10) > Dungeon.LimitedDrops.WARLOCK_HP.count ){
+		if (Random.Int(3) == 0 && Random.Int(10) > Dungeon.LimitedDrops.SPECTRE_RAT.count ){
 			Dungeon.LimitedDrops.SPECTRE_RAT.drop();
 			return new PotionOfHealing();
 		} else {

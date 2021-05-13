@@ -34,6 +34,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FrostBurn;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -97,6 +99,18 @@ public class Dragon extends Mob{
         }
 
         return super.act();
+    }
+
+    @Override
+    protected Item createLoot(){
+        int rolls = 30;
+        ((RingOfWealth)(new RingOfWealth().upgrade(10))).buff().attachTo(this);
+        ArrayList<Item> bonus = RingOfWealth.tryForBonusDrop(this, rolls);
+        if (bonus != null && !bonus.isEmpty()) {
+            for (Item b : bonus) Dungeon.level.drop(b, pos).sprite.drop();
+            RingOfWealth.showFlareForBonusDrop(sprite);
+        }
+        return null;
     }
 
     @Override

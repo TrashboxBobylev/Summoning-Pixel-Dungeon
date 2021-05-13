@@ -56,7 +56,7 @@ public class BlinkingMan extends Mob {
 		HP = HT = 45;
 		defenseSkill = 60;
 		viewDistance = Light.DISTANCE;
-		baseSpeed = 2f;
+		baseSpeed = 0.75f;
 		flying = true;
 
 		EXP = 20;
@@ -66,30 +66,31 @@ public class BlinkingMan extends Mob {
 		lootChance = 0.25f;
 
 		properties.add(Property.DEMONIC);
+		properties.add(Property.UNDEAD);
 	}
 
 	public BlinkingMan() {
 		if (SPDSettings.bigdungeon()){
 			EXP = 40;
-			maxLvl = 100;
+			maxLvl = 64;
 		}
 	}
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 8, 20 );
+		return Random.NormalIntRange( 5, 16 );
 	}
 	
 	@Override
 	public int attackProc( Char enemy, int damage ) {
 		damage = super.attackProc( enemy, damage );
 		
-		if (Random.Int( 3 ) == 0) {
+		if (Random.Int( 2 ) == 0) {
 			Ballistica trajectory = new Ballistica(pos, enemy.pos, Ballistica.STOP_TARGET);
 			//trim it to just be the part that goes past them
 			trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size()-1), Ballistica.PROJECTILE);
 			//knock them back along that ballistica
-			WandOfBlastWave.throwChar(enemy, trajectory, 2, false);
+			WandOfBlastWave.throwChar(enemy, trajectory, Random.Int(1, 2), false);
 		}
 		
 		return damage;
@@ -103,7 +104,7 @@ public class BlinkingMan extends Mob {
 	
 	@Override
 	protected boolean getCloser( int target ) {
-		if (fieldOfView[target] && Dungeon.level.distance( pos, target ) <= 2 && blinkCooldown <= 0) {
+		if (fieldOfView[target] && Dungeon.level.distance( pos, target ) <= 3 && blinkCooldown <= 0) {
 			
 			blink( );
 			spend( -1 / speed() );
@@ -144,24 +145,24 @@ public class BlinkingMan extends Mob {
 			if (candidates.size() > 0)
 				cell = Random.element(candidates);
 			else {
-				blinkCooldown = Random.IntRange(2, 3);
+				blinkCooldown = Random.IntRange(1, 6);
 				return;
 			}
 		}
 		
 		ScrollOfTeleportation.appear( this, cell );
 
-		blinkCooldown = Random.IntRange(2, 3);
+		blinkCooldown = Random.IntRange(1, 6);
 	}
 	
 	@Override
 	public int attackSkill( Char target ) {
-		return 40;
+		return 45;
 	}
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 2);
+		return Random.NormalIntRange(0, 9);
 	}
 
 	@Override
