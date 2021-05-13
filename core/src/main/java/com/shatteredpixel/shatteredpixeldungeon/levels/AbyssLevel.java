@@ -64,12 +64,6 @@ public class AbyssLevel extends RegularLevel {
 	}
 
 	@Override
-	public int nMobs() {
-		//monsters spawn in big hordes
-		return super.nMobs()*Random.Int(2, 4);
-	}
-
-	@Override
 	public void create() {
 		addItemToSpawn(Generator.random(Generator.Category.FOOD));
 		addItemToSpawn( new com.shatteredpixel.shatteredpixeldungeon.items.Torch() );
@@ -82,17 +76,17 @@ public class AbyssLevel extends RegularLevel {
 
 	@Override
 	protected int standardRooms(boolean forceMax) {
-		if (SPDSettings.smalldungeon()) return 8;
-		if (forceMax) return 39;
+		if (SPDSettings.smalldungeon()) return 6;
+		if (forceMax) return 33;
 		//23 to 28
-		return 23+Random.chances(new float[]{3, 2, 1, 1, 1});
+		return 18+Random.chances(new float[]{3, 2, 1, 1, 1});
 	}
 
 	@Override
 	protected int specialRooms(boolean forceMax) {
-		if (SPDSettings.smalldungeon()) return 2;
+		if (SPDSettings.smalldungeon()) return 1;
 		if (forceMax) return 3;
-		//2 to 3, average 2.5
+		//2 to 4, average 2.5
 		return 2 + Random.chances(new float[]{1, 1});
 	}
 
