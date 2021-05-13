@@ -55,10 +55,6 @@ public final class ShadowCaster {
 			distance = MAX_DISTANCE;
 		}
 
-        if (distance >= MAX_DISTANCE){
-            distance = MAX_DISTANCE;
-        }
-
 		BArray.setFalse(fieldOfView);
 
 		//set source cell to true
@@ -123,30 +119,33 @@ public final class ShadowCaster {
 				if (col == end && inBlocking && (int)Math.ceil((row - 0.5) * rSlope - 0.499) != end){
 					break;
 				}
-				
+
+				if (cell > 0 && cell < fov.length)
 				fov[cell] = true;
-				
-				if (blocking[cell]){
-					if (!inBlocking){
-						inBlocking = true;
-						
-						//start a new scan, 1 row deeper, ending at the left side of current cell
-						if (col != start){
-							scanOctant(distance, fov, blocking, row+1, x, y, lSlope,
-									//change in x over change in y
-									(col - 0.5) / (row + 0.5),
-									mX, mY, mXY);
+
+				if (cell > 0 && cell < blocking.length) {
+					if (blocking[cell]) {
+						if (!inBlocking) {
+							inBlocking = true;
+
+							//start a new scan, 1 row deeper, ending at the left side of current cell
+							if (col != start) {
+								scanOctant(distance, fov, blocking, row + 1, x, y, lSlope,
+										//change in x over change in y
+										(col - 0.5) / (row + 0.5),
+										mX, mY, mXY);
+							}
 						}
-					}
-				
-				} else {
-					if (inBlocking){
-						inBlocking = false;
-						
-						//restrict current scan to the left side of current cell for future rows
-						
-						//change in x over change in y
-						lSlope = (col - 0.5) / (row - 0.5);
+
+					} else {
+						if (inBlocking) {
+							inBlocking = false;
+
+							//restrict current scan to the left side of current cell for future rows
+
+							//change in x over change in y
+							lSlope = (col - 0.5) / (row - 0.5);
+						}
 					}
 				}
 				

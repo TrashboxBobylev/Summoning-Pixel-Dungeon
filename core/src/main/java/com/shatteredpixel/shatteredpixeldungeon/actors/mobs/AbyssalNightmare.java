@@ -35,17 +35,23 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Hacatu;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Wizard;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.stationary.GasterBlaster;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.stationary.MagicMissileMinion;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SmokeParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.*;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrimTrap;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.AbyssalSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -71,6 +77,7 @@ public class AbyssalNightmare extends Mob {
 		properties.add(Property.UNDEAD);
 		properties.add(Property.DEMONIC);
 		properties.add(Property.BOSS);
+		properties.add(Property.LARGE);
 	}
 
 	public AbyssalNightmare() {
@@ -100,10 +107,45 @@ public class AbyssalNightmare extends Mob {
 	}
 
 	@Override
+	protected float attackDelay() {
+		return super.attackDelay()*1.6f;
+	}
+
+	@Override
 	protected boolean act() {
+		if (fieldOfView == null || fieldOfView.length != Dungeon.level.length()){
+			fieldOfView = new boolean[Dungeon.level.length()];
+		}
+		Dungeon.level.updateFieldOfView( this, fieldOfView );
+
 		HP = Math.min(HP+6, HT);
 
-		return super.act();
+		boolean justAlerted = alerted;
+		alerted = false;
+
+		if (justAlerted){
+			sprite.showAlert();
+		} else {
+			sprite.hideAlert();
+			sprite.hideLost();
+		}
+
+		if (paralysed > 0) {
+			enemySeen = false;
+			spend( TICK );
+			return true;
+		}
+
+		enemy = chooseEnemy();
+
+		boolean enemyInFOV = enemy != null && enemy.isAlive() && enemy.invisible <= 0;
+
+		return state.act( enemyInFOV, justAlerted );
+	}
+
+	@Override
+	public boolean canSee(int pos) {
+		return true;
 	}
 
 	@Override
@@ -169,6 +211,64 @@ public class AbyssalNightmare extends Mob {
 			RingOfWealth.showFlareForBonusDrop(sprite);
 		}
 		return null;
+	}
+
+	@Override
+	protected boolean getCloser(int target) {
+		if (super.getCloser(target)){
+			return true;
+		} else {
+
+			if (target == pos || Dungeon.level.adjacent(pos, target)) {
+				return false;
+			}
+
+
+
+
+			int bestpos = pos;
+			for (int i : PathFinder.NEIGHBOURS8){
+				PathFinder.buildDistanceMap(pos+i, BArray.or(Dungeon.level.passable, Dungeon.level.avoid, null));
+				if (PathFinder.distance[pos+i] == Integer.MAX_VALUE){
+					continue;
+				}
+				if (Actor.findChar(pos+i) == null &&
+						Dungeon.level.trueDistance(bestpos, target) > Dungeon.level.trueDistance(pos+i, target)){
+					bestpos = pos+i;
+				}
+			}
+			if (bestpos != pos){
+
+				for (int i : PathFinder.CIRCLE8){
+					if ((Dungeon.level.map[pos+i] == Terrain.WALL || Dungeon.level.map[pos+i] == Terrain.WALL_DECO ||
+							Dungeon.level.map[pos+i] == Terrain.DOOR || Dungeon.level.map[pos+i] == Terrain.SECRET_DOOR)){
+						Level.set(pos+i, Terrain.EMPTY);
+						if (Dungeon.hero.fieldOfView[pos+i]){
+							CellEmitter.bottom(pos+i).burst(SmokeParticle.FACTORY, 12);
+						}
+						GameScene.updateMap(pos+i);
+					}
+				}
+				Dungeon.level.cleanWalls();
+				Dungeon.observe();
+
+				bestpos = pos;
+				for (int i : PathFinder.NEIGHBOURS8){
+					if (Actor.findChar(pos+i) == null && Dungeon.level.openSpace[pos+i] &&
+							Dungeon.level.trueDistance(bestpos, target) > Dungeon.level.trueDistance(pos+i, target)){
+						bestpos = pos+i;
+					}
+				}
+
+				if (bestpos != pos) {
+					move(bestpos);
+				}
+
+				return true;
+			}
+
+			return false;
+		}
 	}
 
 	{

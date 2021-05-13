@@ -1055,8 +1055,14 @@ public abstract class Level implements Bundlable {
 						&& c.buff( TimekeepersHourglass.timeStasis.class ) == null && c.isAlive();
 		if (sighted) {
 			boolean[] blocking;
-			
-			if ((c instanceof Hero && ((Hero) c).subClass == HeroSubClass.WARDEN)
+			if (c instanceof AbyssalNightmare){
+				blocking = Dungeon.level.losBlocking.clone();
+				for (int i = 0; i < blocking.length; i++){
+					if (blocking[i])
+						blocking[i] = false;
+				}
+			}
+			else if ((c instanceof Hero && ((Hero) c).subClass == HeroSubClass.WARDEN)
 				|| c instanceof YogFist.SoiledFist) {
 				blocking = Dungeon.level.losBlocking.clone();
 				for (int i = 0; i < blocking.length; i++){

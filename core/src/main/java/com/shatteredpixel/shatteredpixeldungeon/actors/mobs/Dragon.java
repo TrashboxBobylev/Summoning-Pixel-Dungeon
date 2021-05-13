@@ -49,6 +49,7 @@ public class Dragon extends Mob{
     {
         HP = HT = 210;
         defenseSkill = 40;
+        spriteClass = DragonSprite.class;
 
         EXP = 40;
         maxLvl = 30;
@@ -61,7 +62,7 @@ public class Dragon extends Mob{
         properties.add(Property.BOSS);
         properties.add(Property.FIERY);
         properties.add(Property.DEMONIC);
-        properties.add(Property.LARGE);
+        properties.add(Property.UNDEAD);
     }
 
     public Dragon() {
@@ -87,7 +88,7 @@ public class Dragon extends Mob{
     }
 
     private int rangedCooldown = Random.NormalIntRange( 3, 5 );
-    private boolean doingSweepAttack = false;
+    private static boolean doingSweepAttack = false;
 
     @Override
     protected boolean act() {
@@ -111,7 +112,14 @@ public class Dragon extends Mob{
 
         if (Dungeon.level.adjacent( pos, enemy.pos )) {
 
-            return super.doAttack( enemy );
+            if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
+                sprite.attack( enemy.pos );
+                return false;
+
+            } else {
+                attack( enemy );
+                return true;
+            }
 
         } else {
 
@@ -152,56 +160,74 @@ public class Dragon extends Mob{
         next();
     }
 
+    private static Char previousEnemy;
+    private static int enemyDirection;
+
     protected void meleeProc( Char enemy, int damage ) {
         if (Random.Int( 2 ) == 0 && !enemy.isWet()) {
             Buff.affect( enemy, FrostBurn.class ).reignite( enemy, 10f );
             Splash.at( enemy.sprite.center(), sprite.blood(), 5);
         }
 
-        int enemyDirection = 0;
-        if (!doingSweepAttack) {
-            spend(-cooldown());
-            doingSweepAttack = true;
-            for (int i : PathFinder.NEIGHBOURS9) {
-                if (pos + i == enemy.pos) {
+            for (int i = 0; i < PathFinder.NEIGHBOURS9.length; i++) {
+                if (pos + PathFinder.NEIGHBOURS9[i] == enemy.pos) {
                     enemyDirection = i;
+                    break;
                 }
-                swipeAttack(enemyDirection, 0, 1, 3);
-                swipeAttack(enemyDirection, 1, 0, 2);
-                swipeAttack(enemyDirection, 2, 1, 5);
-                swipeAttack(enemyDirection, 3, 0, 6);
-                swipeAttack(enemyDirection, 5, 2, 8);
-                swipeAttack(enemyDirection, 6, 3, 7);
-                swipeAttack(enemyDirection, 7, 6, 8);
-                swipeAttack(enemyDirection, 8, 5, 7);
-                doingSweepAttack = false;
             }
-        }
+            if (previousEnemy == null) {
+                previousEnemy = enemy;
+                spend( attackDelay() );
+                switch (enemyDirection) {
+                    case 0:
+                        swipeAttack(1, 3);
+                        break;
+                    case 1:
+                        swipeAttack(0, 2);
+                        break;
+                    case 2:
+                        swipeAttack(1, 5);
+                        break;
+                    case 3:
+                        swipeAttack(0, 6);
+                        break;
+                    case 4:
+                        swipeAttack(2, 8);
+                        break;
+                    case 5:
+                        swipeAttack(3, 7);
+                        break;
+                    case 6:
+                        swipeAttack(6, 8);
+                        break;
+                    case 7:
+                        swipeAttack(5, 7);
+                        break;
+                }
+
+            }
     }
 
-    @Override
-    public void onAttackComplete() {
+    protected void swipeAttack(int adjacentDir1, int adjacentDir2){
+        swipeAttack(adjacentDir1, adjacentDir2, false);
     }
 
-    protected void swipeAttack(int direct, int checkedDir, int adjacentDir1, int adjacentDir2){
-        if (direct == PathFinder.NEIGHBOURS9[checkedDir]){
+    protected void swipeAttack(int adjacentDir1, int adjacentDir2, boolean last){
             Char ch = Actor.findChar(pos + PathFinder.NEIGHBOURS9[adjacentDir1]);
-            if (ch != null && ch.alignment != alignment){
-                sprite.attack(ch.pos, new Callback() {
-                    @Override
-                    public void call() {
-                        doAttack(ch);
-                        spend(-cooldown());
-                        Char ch = Actor.findChar(pos + PathFinder.NEIGHBOURS9[adjacentDir2]);
-                        if (ch != null){
-                            sprite.attack(ch.pos);
-                            spend(attackDelay());
-                            next();
-                        }
-                    }
-                });
+            if (!previousEnemy.isAlive()){
+                next();
+                return;
             }
-        }
+            if (ch != null && ch.alignment != alignment && ch != previousEnemy){ ;
+                attack(ch);
+                Char ch2 = Actor.findChar(pos + PathFinder.NEIGHBOURS9[adjacentDir2]);
+                if (ch2 != null && ch.alignment != alignment && ch != previousEnemy){
+                    attack(ch2);
+                }
+            }
+        enemy = previousEnemy;
+        previousEnemy = null;
+        next();
     }
 
     protected void rangedProc( Char enemy ) {
@@ -229,7 +255,7 @@ public class Dragon extends Mob{
 
             Dungeon.level.occupyCell(clone);
 
-            GameScene.add( clone, 1f );
+            GameScene.add( clone);
             clone.sprite.jump(pos, clone.pos, new Callback() {
                 @Override
                 public void call() {
@@ -263,6 +289,14 @@ public class Dragon extends Mob{
         }
     }
 
+    public static class SmallDragonSprite extends DragonSprite{
+        public SmallDragonSprite() {
+            super();
+            scale.x = 0.5f;
+            scale.y = 0.5f;
+        }
+    }
+
     public class SmallDragon extends Mob {
 
         {
@@ -277,14 +311,6 @@ public class Dragon extends Mob{
 
             properties.add(Property.DEMONIC);
             properties.add(Property.FIERY);
-        }
-
-        public class SmallDragonSprite extends DragonSprite{
-            public SmallDragonSprite() {
-                super();
-                scale.x = 0.5f;
-                scale.y = 0.5f;
-            }
         }
 
         @Override
