@@ -32,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTerrainTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
@@ -43,7 +42,7 @@ import com.watabou.noosa.ui.Component;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
 
-public class Toolbar extends Component {
+public class Toolbar extends Component implements WndBag.Listener {
 
 	private Tool btnWait;
 	private Tool btnSearch;
@@ -56,6 +55,11 @@ public class Toolbar extends Component {
 	public boolean examining = false;
 
 	private static Toolbar instance;
+
+	@Override
+	public void onSelect(Item item) {
+		item.execute(Dungeon.hero);
+	}
 
 	public enum Mode {
 		SPLIT,
@@ -140,6 +144,8 @@ public class Toolbar extends Component {
 		add(btnInventory = new Tool(0, 0, 24, 26) {
 			private GoldIndicator gold;
 
+
+
 			@Override
 			protected void onClick() {
 				GameScene.show(new WndBag(Dungeon.hero.belongings.backpack, null, WndBag.Mode.ALL, null));
@@ -152,8 +158,7 @@ public class Toolbar extends Component {
 			
 			@Override
 			protected boolean onLongClick() {
-				InterlevelScene.mode = InterlevelScene.Mode.RESET;
-				Game.switchScene(InterlevelScene.class);
+				GameScene.selectItem(Toolbar.instance, WndBag.Mode.QUICKSLOT, Messages.get(Toolbar.class, "quickuse"));
 				return true;
 			}
 
@@ -173,6 +178,8 @@ public class Toolbar extends Component {
 
 		add(pickedUp = new PickedUpItem());
 	}
+
+
 	
 	@Override
 	protected void layout() {
