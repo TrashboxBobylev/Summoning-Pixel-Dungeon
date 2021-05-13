@@ -76,7 +76,7 @@ public class DarkestElf extends Mob {
 	public DarkestElf() {
 		if (SPDSettings.bigdungeon()){
 			EXP = 40;
-			maxLvl = 100;
+			maxLvl = 64;
 		}
 	}
 
