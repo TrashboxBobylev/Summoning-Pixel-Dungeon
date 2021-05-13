@@ -87,6 +87,7 @@ public class GameScene extends PixelScene {
 	
 	private BusyIndicator busy;
 	private CircleArc counter;
+	private CircleArc timeCounter;
 
 	public static boolean timerPaused = true;
 	public static double timer = 0.25;
@@ -312,6 +313,11 @@ public class GameScene extends PixelScene {
 		counter.color( 0x808080, true );
 		counter.camera = uiCamera;
 		counter.show(this, busy.center(), 0f);
+
+		timeCounter = new CircleArc((int) Math.floor(10), 4.25f);
+		timeCounter.color( 0xff0000, true );
+		timeCounter.camera = uiCamera;
+		timeCounter.show(this, busy.center(), 0f);
 		
 		switch (InterlevelScene.mode) {
 		case RESURRECT:
@@ -512,11 +518,19 @@ public class GameScene extends PixelScene {
 		super.update();
 
 		if (!timerPaused && Dungeon.mode == Dungeon.GameMode.REALTIME && Dungeon.hero.ready) {
+			timeCounter.visible = true;
 			timer -= Game.elapsed;
+			if (timer > 0.33f) {
+				timeCounter.setSweep((1f - (float) (timer / 45f)) % 1f);
+			} else {
+				timeCounter.setSweep((1f - (float) (timer / 0.33f)) % 1f);
+			}
 			if (timer <= 0 && Dungeon.hero.isAlive()) {
 				Dungeon.hero.spendAndNext(1f);
 				resetTimer();
 			}
+		} else {
+			timeCounter.visible = false;
 		}
 
 		if (!Emitter.freezeEmitters) water.offset( 0, -5 * Game.elapsed );

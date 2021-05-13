@@ -404,7 +404,7 @@ public class Dungeon {
 		hero.curAction = hero.lastAction = null;
 
 		observe();
-		GameScene.timer += 10;
+		GameScene.timer += 45;
 		try {
 			saveAll();
 		} catch (IOException e) {
