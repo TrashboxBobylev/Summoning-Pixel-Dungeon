@@ -58,7 +58,7 @@ public class GhostChicken extends Mob {
 	public GhostChicken() {
 		if (SPDSettings.bigdungeon()){
 			EXP = 40;
-			maxLvl = 100;
+			maxLvl = 64;
 		}
 	}
 
@@ -82,7 +82,7 @@ public class GhostChicken extends Mob {
 	@Override
 	public boolean isInvulnerable(Class effect) {
 		HP--;
-		if (HP <= -1) die(Dungeon.hero);
+		if (HP <= 0) die(Dungeon.hero);
 		return true;
 	}
 

@@ -80,7 +80,7 @@ public class MagicMissileMinion extends StationaryMinion {
                         if (Actor.findChar(i) != null) {
                             Char ch = Actor.findChar(i);
                             if (ch != null && ch != Dungeon.hero && ch != this) {
-                                ch.damage(damageRoll(), Dungeon.hero);
+                                ch.damage(damageRoll(), this);
                             }
                         }
                     }
@@ -88,7 +88,7 @@ public class MagicMissileMinion extends StationaryMinion {
 
                 damage(lvl == 2 ? 1 : 2, this);
             } else {
-                enemy.damage(damageRoll(), Dungeon.hero);
+                enemy.damage(damageRoll(), this);
                 damage(lvl == 2 ? 1 : 2, this);
             }
         } else {

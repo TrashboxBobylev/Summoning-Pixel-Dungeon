@@ -88,7 +88,7 @@ public class RingOfWealth extends Ring {
 	}
 
 	@Override
-	protected RingBuff buff( ) {
+	public RingBuff buff() {
 		return new Wealth();
 	}
 	

@@ -30,21 +30,22 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.Wet;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Hacatu;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Wizard;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.stationary.GasterBlaster;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.stationary.MagicMissileMinion;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.*;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.*;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrimTrap;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.AbyssalSprite;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -54,22 +55,28 @@ public class AbyssalNightmare extends Mob {
 	{
 		spriteClass = AbyssalSprite.class;
 
-		HP = HT = 200;
+		HP = HT = 180;
 		defenseSkill = 30;
 
 		EXP = 40;
 		maxLvl = 30;
 
 		flying = true;
+		baseSpeed = 0.5f;
 
 		loot = new PotionOfHealing();
 		lootChance = 0.1667f; //by default, see rollToDropLoot()
+
+		properties.add(Property.INORGANIC);
+		properties.add(Property.UNDEAD);
+		properties.add(Property.DEMONIC);
+		properties.add(Property.BOSS);
 	}
 
 	public AbyssalNightmare() {
 		if (SPDSettings.bigdungeon()){
 			EXP = 80;
-			maxLvl = 100;
+			maxLvl = 64;
 		}
 	}
 
@@ -94,106 +101,76 @@ public class AbyssalNightmare extends Mob {
 
 	@Override
 	protected boolean act() {
-		HP = Math.min(HP+8, HT);
+		HP = Math.min(HP+6, HT);
 
-		if (Random.Int(20) == 0 && generation < 2){
-			ArrayList<Integer> candidates = new ArrayList<>();
-			for (int n : PathFinder.NEIGHBOURS8) {
-				if (Dungeon.level.passable[pos+n] && Actor.findChar( pos+n ) == null) {
-					candidates.add( pos+n );
-				}
-			}
-
-			if (!candidates.isEmpty()) {
-				AbyssalNightmare spawn = new AbyssalNightmare();
-
-				spawn.pos = Random.element( candidates );
-				spawn.state = spawn.HUNTING;
-				spawn.generation = generation+1;
-
-				Dungeon.level.occupyCell(spawn);
-				Level.set(spawn.pos, Terrain.CHASM);
-				GameScene.updateMap(spawn.pos);
-
-				GameScene.add( spawn, 1 );
-				if (sprite.visible) {
-					Actor.addDelayed(new Pushing(spawn, pos, spawn.pos), -1);
-				}
-			}
-			Random.pushGenerator();
-		}
 		return super.act();
 	}
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 24, 54 );
+		return Random.NormalIntRange( 25, 60 );
 	}
 
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(5, 25);
-	}
-
-	@Override
-	public int defenseProc( Char enemy, int damage ) {
-
-		if (HP >= damage + 2) {
-			ArrayList<Integer> candidates = new ArrayList<>();
-			boolean[] solid = Dungeon.level.solid;
-			
-			int[] neighbours = {pos + 1, pos - 1, pos + Dungeon.level.width(), pos - Dungeon.level.width()};
-			for (int n : neighbours) {
-				if (!solid[n] && Actor.findChar( n ) == null) {
-					candidates.add( n );
-				}
-			}
-	
-			if (candidates.size() > 0) {
-				
-				AbyssalNightmare clone = split();
-				clone.HP = (HP - damage) / 2;
-				clone.pos = Random.element( candidates );
-				clone.state = clone.HUNTING;
-				
-				Dungeon.level.occupyCell(clone);
-				
-				GameScene.add( clone, SPLIT_DELAY );
-				Actor.addDelayed( new Pushing( clone, pos, clone.pos ), -1 );
-				
-				HP -= clone.HP;
-			}
-		}
-		
-		return super.defenseProc(enemy, damage);
+		return Random.NormalIntRange(10, 25);
 	}
 	
 	@Override
 	public int attackSkill( Char target ) {
 		return 60;
 	}
-	
+
+	@Override
+	public int attackProc(Char enemy, int damage) {
+		if (Random.Int(5) == 0){
+			ArrayList<Integer> candidates = new ArrayList<>();
+			boolean[] solid = Dungeon.level.solid;
+
+			int[] neighbours = {pos + 1, pos - 1, pos + Dungeon.level.width(), pos - Dungeon.level.width()};
+			for (int n : neighbours) {
+				if (!solid[n] && Actor.findChar( n ) == null) {
+					candidates.add( n );
+				}
+			}
+
+			if (candidates.size() > 0) {
+
+				AbyssalNightmare clone = split();
+				clone.HP = HP;
+				clone.pos = Random.element( candidates );
+				clone.state = clone.HUNTING;
+
+				Dungeon.level.occupyCell(clone);
+
+				GameScene.add( clone, SPLIT_DELAY );
+				Actor.addDelayed( new Pushing( clone, pos, clone.pos ), -1 );
+
+				HP -= clone.HP;
+			}
+		}
+		return super.attackProc(enemy, damage);
+	}
+
 	private AbyssalNightmare split() {
 		AbyssalNightmare clone = new AbyssalNightmare();
-		clone.generation = generation + 1;
-		clone.EXP = 0;
+		clone.EXP = EXP/2;
 		if (buff(Corruption.class ) != null) {
 			Buff.affect( clone, Corruption.class);
 		}
 		return clone;
 	}
-	
-	@Override
-	public void rollToDropLoot() {
-		lootChance = 1f/(6 * (generation+1) );
-		lootChance *= (5f - Dungeon.LimitedDrops.SWARM_HP.count) / 5f;
-		super.rollToDropLoot();
-	}
-	
+
 	@Override
 	protected Item createLoot(){
-		Dungeon.LimitedDrops.SWARM_HP.count++;
-		return super.createLoot();
+		int rolls = 30;
+		((RingOfWealth)(new RingOfWealth().upgrade(10))).buff().attachTo(this);
+		ArrayList<Item> bonus = RingOfWealth.tryForBonusDrop(this, rolls);
+		if (bonus != null && !bonus.isEmpty()) {
+			for (Item b : bonus) Dungeon.level.drop(b, pos).sprite.drop();
+			RingOfWealth.showFlareForBonusDrop(sprite);
+		}
+		return null;
 	}
 
 	{
@@ -212,6 +189,14 @@ public class AbyssalNightmare extends Mob {
 		immunities.add( StormCloud.class );
 		immunities.add( ToxicGas.class );
 		immunities.add( Web.class );
+		immunities.add( FireKeeper.class);
+		immunities.add( FrostFire.class);
+		immunities.add( GonerField.class);
+		immunities.add( HealGas.class);
+		immunities.add( HoneyGas.class);
+		immunities.add( PerfumeGas.class);
+		immunities.add( YogWall.class);
+
 
 		immunities.add( Burning.class );
 		immunities.add( Charm.class );
@@ -226,6 +211,19 @@ public class AbyssalNightmare extends Mob {
 		immunities.add( Shrink.class);
 		immunities.add( TimedShrink.class);
 		immunities.add( MagicalSleep.class);
+		immunities.add( Vertigo.class);
+		immunities.add( Terror.class);
+		immunities.add( Vulnerable.class);
+		immunities.add( SoulParalysis.class);
+		immunities.add( Slow.class);
+		immunities.add( Blindness.class);
+		immunities.add( Wet.class);
+		immunities.add( Cripple.class);
+		immunities.add( DefenseDebuff.class);
+		immunities.add( Doom.class);
+		immunities.add( Drowsy.class);
+		immunities.add( Hex.class);
+		immunities.add( Sleep.class);
 
 		immunities.add( DisintegrationTrap.class );
 		immunities.add( GrimTrap.class );
@@ -242,6 +240,7 @@ public class AbyssalNightmare extends Mob {
 		immunities.add( WandOfWarding.Ward.class );
 		immunities.add( WandOfCrystalBullet.class);
 		immunities.add( WandOfStars.Star.class);
+		immunities.add( WandOfBounceBeams.class);
 
 		immunities.add( Shaman.EarthenBolt.class );
 		immunities.add( Hacatu.LightningBolt.class );
@@ -250,9 +249,17 @@ public class AbyssalNightmare extends Mob {
 		immunities.add( Eye.DeathGaze.class );
 		immunities.add( Yog.BurningFist.DarkBolt.class );
 		immunities.add( FinalFroggit.Bolt.class);
+		immunities.add( SpectreRat.DarkBolt.class);
+		immunities.add( WardingWraith.DarkBolt.class);
+		immunities.add(	GasterBlaster.class);
+		immunities.add(	MagicMissileMinion.class);
 
 		immunities.add(NewTengu.FireAbility.FireBlob.class);
 
 		immunities.add(Grim.class);
+		immunities.add(Kinetic.class);
+		immunities.add(Blazing.class);
+		immunities.add(Shocking.class);
+		immunities.add(Vampiric.class);
 	}
 }
