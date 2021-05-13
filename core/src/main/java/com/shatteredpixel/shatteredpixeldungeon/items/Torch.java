@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -71,6 +72,7 @@ public class Torch extends Item {
 			detach( hero.belongings.backpack );
 			
 			Buff.affect(hero, Light.class, Light.DURATION);
+			if (Dungeon.depth >= Dungeon.chapterSize()*5+2) Buff.affect(hero, Light.class, Light.DURATION);
 			Sample.INSTANCE.play(Assets.Sounds.BURNING);
 
 			Emitter emitter = hero.sprite.centerEmitter();
