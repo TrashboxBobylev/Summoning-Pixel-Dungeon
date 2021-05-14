@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.GuaranteedEnchant;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -238,13 +237,16 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 
 	public int STRReq(){
-		return STRReq(level());
+		return STRReq(buffedLvl());
 	}
 
 	public abstract int STRReq(int lvl);
 	
 	@Override
 	public int level() {
+		if (this instanceof SpiritBow || this instanceof SpiritBow.SpiritArrow){
+			return super.level();
+		}
 		return super.level() + (curseInfusionBonus ? 1 : 0);
 	}
 	
@@ -411,9 +413,16 @@ abstract public class Weapon extends KindOfWeapon {
 
 		protected float procChanceMultiplier( Char attacker ){
 			float multi = 1f;
-			if (attacker instanceof Hero && ((Hero) attacker).hasTalent(Talent.ENRAGED_CATALYST)){
-				Berserk rage = attacker.buff(Berserk.class);
-				multi += 0.2f*rage.rageAmount()*((Hero) attacker).pointsInTalent(Talent.ENRAGED_CATALYST);
+			if (attacker instanceof Hero){
+				if (((Hero) attacker).belongings.weapon instanceof SpiritBow.SpiritArrow &&
+					!(((SpiritBow.SpiritArrow) ((Hero) attacker).belongings.weapon).enchantment.curse())){
+					switch (((Hero) attacker).belongings.weapon.level()){
+						case 1:
+							return 0.75f;
+						case 2:
+							return 0.50f;
+					}
+				}
 			}
 			return multi;
 		}

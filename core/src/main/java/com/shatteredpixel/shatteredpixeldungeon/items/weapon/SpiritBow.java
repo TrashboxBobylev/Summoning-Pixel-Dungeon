@@ -26,10 +26,12 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
+import com.shatteredpixel.shatteredpixeldungeon.items.magic.ConjurerSpell;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
@@ -41,7 +43,11 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndTierInfo;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
@@ -50,6 +56,8 @@ import java.util.ArrayList;
 public class SpiritBow extends Weapon {
 	
 	public static final String AC_SHOOT		= "SHOOT";
+	public static final String AC_DOWNGRADE = "DOWNGRADE";
+	public static final String AC_TIERINFO = "TIERINFO";
 	
 	{
 		image = ItemSpriteSheet.SPIRIT_BOW;
@@ -62,15 +70,39 @@ public class SpiritBow extends Weapon {
 	}
 	
 	public boolean sniperSpecial = false;
-	
+	private boolean tieringUpdate = false;
+
+	@Override
+	public int throwPos(Hero user, int dst) {
+		return super.throwPos(user, dst);
+	}
+
 	@Override
 	public ArrayList<String> actions(Hero hero) {
 		ArrayList<String> actions = super.actions(hero);
 		actions.remove(AC_EQUIP);
 		actions.add(AC_SHOOT);
+		if (level() > 0) actions.add(AC_DOWNGRADE);
+		actions.add( AC_TIERINFO );
 		return actions;
 	}
-	
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put("tier", tieringUpdate);
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		tieringUpdate = bundle.getBoolean("tier");
+		if (!tieringUpdate){
+			tieringUpdate = true;
+			level(0);
+		}
+	}
+
 	@Override
 	public void execute(Hero hero, String action) {
 		
@@ -82,16 +114,49 @@ public class SpiritBow extends Weapon {
 			curItem = this;
 			GameScene.selectCell( shooter );
 			
+		} else if (action.equals(AC_DOWNGRADE)){
+			GameScene.flash(0xFFFFFF);
+			Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
+			level(level()-1);
+			GLog.warning( Messages.get(ConjurerSpell.class, "lower_tier"));
+		} else if (action.equals(AC_TIERINFO)){
+			curItem = this;
+			ShatteredPixelDungeon.runOnRenderThread(new Callback() {
+				@Override
+				public void call() {
+					Game.scene().addToFront(new WndTierInfo(curItem));
+				}
+			});
 		}
+	}
+
+	@Override
+	public String toString() {
+
+		String name = name();
+		String tier = "";
+		switch (level()){
+			case 0: tier = "I"; break;
+			case 1: tier = "II"; break;
+			case 2: tier = "III"; break;
+		}
+
+		name = Messages.format( "%s %s", name, tier  );
+
+		return name;
+
 	}
 	
 	@Override
 	public String info() {
 		String info = desc();
+
+		int min = Math.round(augment.damageFactor(min()));
+		int max = Math.round(augment.damageFactor(max()));
 		
 		info += "\n\n" + Messages.get( SpiritBow.class, "stats",
-				Math.round(augment.damageFactor(min())),
-				Math.round(augment.damageFactor(max())),
+				Integer.toString(min()),
+				Integer.toString(max()),
 				STRReq());
 		
 		if (STRReq() > Dungeon.hero.STR()) {
@@ -134,9 +199,34 @@ public class SpiritBow extends Weapon {
 		//strength req decreases at +1,+3,+6,+10,etc.
 		return 10 - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
 	}
-	
+
+	@Override
+	public int STRReq() {
+		return STRReq(Dungeon.hero.lvl/5);
+	}
+
+	@Override
+	public int min() {
+		return min(level());
+	}
+
+	@Override
+	public int max() {
+		return max(level());
+	}
+
 	@Override
 	public int min(int lvl) {
+		switch (level()){
+			case 1:
+				return 2 + Dungeon.hero.lvl/4
+						+ RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
+						+ (curseInfusionBonus ? 1 : 0);
+			case 2:
+				return 5 + (int)(Dungeon.hero.lvl/1.5f)
+						+ RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
+						+ (curseInfusionBonus ? 1 : 0);
+		}
 		return 1 + Dungeon.hero.lvl/5
 				+ RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
 				+ (curseInfusionBonus ? 1 : 0);
@@ -144,6 +234,16 @@ public class SpiritBow extends Weapon {
 	
 	@Override
 	public int max(int lvl) {
+		switch (level()){
+			case 1:
+				return 9 + Dungeon.hero.lvl/2
+						+ 2*RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
+						+ (curseInfusionBonus ? 2 : 0);
+			case 2:
+				return 14 + (int)(Dungeon.hero.lvl/0.8f)
+										+ RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
+										+ (curseInfusionBonus ? 1 : 0);
+		}
 		return 6 + (int)(Dungeon.hero.lvl/2.5f)
 				+ 2*RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
 				+ (curseInfusionBonus ? 2 : 0);
@@ -200,24 +300,31 @@ public class SpiritBow extends Weapon {
 					return 2f * RingOfFuror.attackDelayMultiplier(owner);
 			}
 		} else {
-			return super.speedFactor(owner);
+			float mod = 1f;
+			switch (level()){
+				case 1:
+					mod = 0.8f;
+				case 2:
+					mod = 0.4f;
+			}
+			return super.speedFactor(owner)*mod;
 		}
-	}
-	
-	@Override
-	public int level() {
-		return (Dungeon.hero == null ? 0 : Dungeon.hero.lvl/5) + (curseInfusionBonus ? 1 : 0);
 	}
 
 	@Override
 	public int buffedLvl() {
-		//level isn't affected by buffs/debuffs
-		return level();
+		switch (level()){
+			case 1:
+				return Dungeon.hero.lvl/3;
+			case 2:
+				return Math.round(Dungeon.hero.lvl/7f);
+		}
+		return Dungeon.hero.lvl/5;
 	}
 	
 	@Override
 	public boolean isUpgradable() {
-		return false;
+		return level() < 2;
 	}
 	
 	public SpiritArrow knockArrow(){
@@ -273,7 +380,7 @@ public class SpiritBow extends Weapon {
 		
 		@Override
 		public int STRReq(int lvl) {
-			return SpiritBow.this.STRReq(lvl);
+			return SpiritBow.this.STRReq(Dungeon.hero.lvl/5);
 		}
 
 		@Override
