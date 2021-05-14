@@ -160,19 +160,23 @@ public abstract class Char extends Actor {
 			|| c.properties.contains(Property.LARGE) && !Dungeon.level.openSpace[pos]){
 			return true;
 		}
-		
+
 		int curPos = pos;
-		
-		moveSprite( pos, Dungeon.hero.pos );
-		move( Dungeon.hero.pos );
-		
-		Dungeon.hero.sprite.move( Dungeon.hero.pos, curPos );
-		Dungeon.hero.move( curPos );
-		
-		Dungeon.hero.spend( 1 / Dungeon.hero.speed() );
-		Dungeon.hero.busy();
+
+		moveSprite(pos, c.pos);
+		move(c.pos);
+
+		c.sprite.move(c.pos, curPos);
+		c.move(curPos);
+
+		c.spend(1 / c.speed());
+		c.busy();
 		
 		return true;
+	}
+
+	public void busy() {
+
 	}
 	
 	protected boolean moveSprite( int from, int to ) {

@@ -39,12 +39,12 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Shocker;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfTargeting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public abstract class Minion extends Mob {
@@ -337,27 +337,42 @@ public abstract class Minion extends Mob {
 
     //ported from DriedRose.java
     //minions will always move towards hero if enemies not here
-    public class Wandering extends Mob.Wandering {
+    public class Wandering extends Mob.Wandering implements AiState{
+
+        private Char toFollow(Char start) {
+            Char toFollow = start;
+            boolean[] passable = Dungeon.level.passable.clone();
+            PathFinder.buildDistanceMap(pos, passable, Integer.MAX_VALUE);//No limit on distance
+            for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+                if (mob.alignment == alignment &&
+                        PathFinder.distance[toFollow.pos] > PathFinder.distance[mob.pos] &&
+                        mob.following(toFollow)) {
+                    toFollow = toFollow(mob);
+                }
+                else {
+                    return start;
+                }
+            }
+            return toFollow;
+        }
 
         @Override
         public boolean act( boolean enemyInFOV, boolean justAlerted ) {
-            StoneOfTargeting.Defending defending = buff(StoneOfTargeting.Defending.class);
-            if ( enemyInFOV && defending == null ) {
+
+            //Ensure there is direct line of sight from ally to enemy, and the distance is small. This is enforced so that allies don't end up trailing behind when following hero.
+            if ( enemyInFOV/* Dungeon.level.distance(pos, enemy.pos) < 5*/) {
 
                 enemySeen = true;
 
                 notice();
                 alerted = true;
+
                 state = HUNTING;
                 target = enemy.pos;
 
             } else {
 
                 enemySeen = false;
-                if (defending != null) {
-                    defendingPos = defending.position;
-                } else defendingPos = -1;
-
                 Char toFollow = toFollow(Dungeon.hero);
                 int oldPos = pos;
                 //always move towards the target when wandering

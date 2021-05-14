@@ -33,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfTargeting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knife;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GoatCloneSprite;
@@ -153,25 +152,35 @@ public class GoatClone extends NPC {
 
     public class Wandering extends Mob.Wandering {
 
+        private Char toFollow(Char start) {
+            Char toFollow = start;
+            boolean[] passable = Dungeon.level.passable;
+            PathFinder.buildDistanceMap(pos, passable, 8*2);//No limit on distance
+            for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+                if (mob.alignment == alignment && PathFinder.distance[toFollow.pos] > PathFinder.distance[mob.pos] && mob.following(toFollow)) {
+                    toFollow = toFollow(mob);//If we find a mob already following the target, ensure there is not a mob already following them. This allows even massive chains of allies to traverse corridors correctly.
+                }
+            }
+            return toFollow;
+        }
+
         @Override
         public boolean act( boolean enemyInFOV, boolean justAlerted ) {
-            StoneOfTargeting.Defending defending = buff(StoneOfTargeting.Defending.class);
-            if ( enemyInFOV && defending == null ) {
+
+            //Ensure there is direct line of sight from ally to enemy, and the distance is small. This is enforced so that allies don't end up trailing behind when following hero.
+            if ( enemyInFOV && Dungeon.level.distance(pos, enemy.pos) < 8) {
 
                 enemySeen = true;
 
                 notice();
                 alerted = true;
+
                 state = HUNTING;
                 target = enemy.pos;
 
             } else {
 
                 enemySeen = false;
-                if (defending != null) {
-                    defendingPos = defending.position;
-                } else defendingPos = -1;
-
                 Char toFollow = toFollow(Dungeon.hero);
                 int oldPos = pos;
                 //always move towards the target when wandering
