@@ -56,6 +56,10 @@ public class StyledButton extends Button {
 		add( text );
 	}
 
+	public StyledButton() {
+
+	}
+
 	@Override
 	protected void layout() {
 

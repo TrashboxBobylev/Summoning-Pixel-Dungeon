@@ -87,19 +87,21 @@ public class Button extends Component {
 	@Override
 	public void update() {
 		super.update();
-		
-		hotArea.active = visible;
-		
-		if (pressed) {
-			if ((pressTime += Game.elapsed) >= longClick) {
-				pressed = false;
-				if (onLongClick()) {
 
-					hotArea.reset();
-					processed = true;
-					onPointerUp();
-					
-					Game.vibrate( 50 );
+		if (hotArea != null) {
+			hotArea.active = visible;
+
+			if (pressed) {
+				if ((pressTime += Game.elapsed) >= longClick) {
+					pressed = false;
+					if (onLongClick()) {
+
+						hotArea.reset();
+						processed = true;
+						onPointerUp();
+
+						Game.vibrate(50);
+					}
 				}
 			}
 		}
@@ -114,10 +116,12 @@ public class Button extends Component {
 	
 	@Override
 	protected void layout() {
-		hotArea.x = x;
-		hotArea.y = y;
-		hotArea.width = width;
-		hotArea.height = height;
+		if (hotArea != null) {
+			hotArea.x = x;
+			hotArea.y = y;
+			hotArea.width = width;
+			hotArea.height = height;
+		}
 	}
 	
 	@Override
