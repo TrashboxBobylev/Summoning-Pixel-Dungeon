@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Halo;
 import com.watabou.noosa.particles.Emitter;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
@@ -67,7 +68,8 @@ public class AbyssLevel extends RegularLevel {
 	public void create() {
 		addItemToSpawn(Generator.random(Generator.Category.FOOD));
 		addItemToSpawn( new com.shatteredpixel.shatteredpixeldungeon.items.Torch() );
-		for (int i = 0; i < (Dungeon.depth - Dungeon.chapterSize()*5) / Dungeon.chapterSize(); i++){
+		for (int i = 0; i < GameMath.gate(1, Dungeon.depth / Dungeon.chapterSize() - 5
+				- (Dungeon.depth % Dungeon.chapterSize() == 0 ? 1 : 0), Integer.MAX_VALUE); i++){
 			addItemToSpawn(new Chaosstone());
 			if (Random.Int(2) == 0) addItemToSpawn(new Chaosstone());
 		}
