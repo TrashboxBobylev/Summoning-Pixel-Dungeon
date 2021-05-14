@@ -303,9 +303,9 @@ public class SpiritBow extends Weapon {
 			float mod = 1f;
 			switch (level()){
 				case 1:
-					mod = 0.8f;
+					mod = 1f / 0.8f; break;
 				case 2:
-					mod = 0.4f;
+					mod = 1f / 0.4f;
 			}
 			return super.speedFactor(owner)*mod;
 		}
@@ -358,7 +358,12 @@ public class SpiritBow extends Weapon {
 		public boolean hasEnchant(Class<? extends Enchantment> type, Char owner) {
 			return SpiritBow.this.hasEnchant(type, owner);
 		}
-		
+
+		@Override
+		public boolean hasGoodEnchant() {
+			return SpiritBow.this.hasGoodEnchant();
+		}
+
 		@Override
 		public int proc(Char attacker, Char defender, int damage) {
 			return SpiritBow.this.proc(attacker, defender, damage);

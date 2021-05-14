@@ -415,7 +415,7 @@ abstract public class Weapon extends KindOfWeapon {
 			float multi = 1f;
 			if (attacker instanceof Hero){
 				if (((Hero) attacker).belongings.weapon instanceof SpiritBow.SpiritArrow &&
-					!(((SpiritBow.SpiritArrow) ((Hero) attacker).belongings.weapon).enchantment.curse())){
+					!(((SpiritBow.SpiritArrow) ((Hero) attacker).belongings.weapon).hasGoodEnchant())){
 					switch (((Hero) attacker).belongings.weapon.level()){
 						case 1:
 							return 0.75f;
