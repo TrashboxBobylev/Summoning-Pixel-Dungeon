@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.GuaranteedEnchant;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -407,6 +408,15 @@ abstract public class Weapon extends KindOfWeapon {
             if (attacker.buff(GuaranteedEnchant.class) != null) wp.level(12);
             return proc(wp, attacker, defender, damage);
         }
+
+		protected float procChanceMultiplier( Char attacker ){
+			float multi = 1f;
+			if (attacker instanceof Hero && ((Hero) attacker).hasTalent(Talent.ENRAGED_CATALYST)){
+				Berserk rage = attacker.buff(Berserk.class);
+				multi += 0.2f*rage.rageAmount()*((Hero) attacker).pointsInTalent(Talent.ENRAGED_CATALYST);
+			}
+			return multi;
+		}
 
 		public String name() {
 			if (!curse())
