@@ -109,7 +109,7 @@ public class GameScene extends PixelScene {
 	private Group overFogEffects;
 	private Group healthIndicators;
 	
-	private Toolbar toolbar;
+	public Toolbar toolbar;
 	private Toast prompt;
 
 	private AttackIndicator attack;
