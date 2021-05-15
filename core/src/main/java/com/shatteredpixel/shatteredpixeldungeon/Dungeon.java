@@ -159,7 +159,7 @@ public class Dungeon {
 		}
 
 		public boolean isNormal() {
-			return (this.equals(NORMAL) || this.equals(SMALL) || this.equals(BIGGER) || this.equals(EXPLORE));
+			return !(this.equals(GAUNTLET));
 		}
 
 		@Override

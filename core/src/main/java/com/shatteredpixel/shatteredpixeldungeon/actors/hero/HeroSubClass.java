@@ -44,7 +44,10 @@ public enum HeroSubClass {
 	WARDEN( "warden" ),
 
 	SOUL_REAVER("soul_reaver"),
-    OCCULTIST("occultist");
+    OCCULTIST("occultist"),
+
+	NOTHING_1("no_1"),
+	NOTHING_2("no_2");
 	
 	private String title;
 	

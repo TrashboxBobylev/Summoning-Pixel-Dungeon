@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Ropes;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.SyntheticArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ConjurerBook;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
@@ -53,6 +54,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.FroggitStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnive2;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
 
@@ -62,7 +64,8 @@ public enum HeroClass {
 	MAGE( "mage", HeroSubClass.BATTLEMAGE, HeroSubClass.WARLOCK ),
 	ROGUE( "rogue", HeroSubClass.ASSASSIN, HeroSubClass.FREERUNNER ),
 	HUNTRESS( "huntress", HeroSubClass.SNIPER, HeroSubClass.WARDEN ),
-    CONJURER("conjurer", HeroSubClass.SOUL_REAVER, HeroSubClass.OCCULTIST);
+    CONJURER("conjurer", HeroSubClass.SOUL_REAVER, HeroSubClass.OCCULTIST),
+	ADVENTURER("adventurer", HeroSubClass.NOTHING_1, HeroSubClass.NOTHING_2);
 
 	private String title;
 	private HeroSubClass[] subClasses;
@@ -97,7 +100,12 @@ public enum HeroClass {
 
             case CONJURER:
                 initConjurer( hero );
-                break;
+			break;
+
+			case ADVENTURER:
+				initAdventurer(hero);
+				break;
+
 		}
 
 	}
@@ -243,6 +251,19 @@ public enum HeroClass {
 
     }
 
+	private static void initAdventurer( Hero hero ) {
+		hero.HP = hero.HT = 30;
+		hero.STR = 12;
+
+		(hero.belongings.armor = new SyntheticArmor()).identify();
+
+		(hero.belongings.weapon = new Dagger2()).identify();
+
+		ThrowingKnive2 knives = new ThrowingKnive2();
+		knives.quantity(2).collect();
+		Dungeon.quickslot.setSlot(0, knives);
+	}
+
 	public String title() {
 		return Messages.get(HeroClass.class, title);
 	}
@@ -262,7 +283,9 @@ public enum HeroClass {
 			case HUNTRESS:
 				return Assets.Sprites.HUNTRESS;
 			case CONJURER:
-				return Assets.Sprites.CONJURER;
+			return Assets.Sprites.CONJURER;
+			case ADVENTURER:
+				return Assets.Sprites.ADVENTURER;
 		}
 	}
 
@@ -278,6 +301,8 @@ public enum HeroClass {
 				return Assets.Splashes.HUNTRESS;
 			case CONJURER:
 				return Assets.Splashes.CONJURER;
+			case ADVENTURER:
+				return Assets.Splashes.ADVENTURER;
 		}
 	}
 	

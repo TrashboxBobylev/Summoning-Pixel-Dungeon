@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
@@ -427,8 +428,10 @@ public class DwarfKing extends Mob {
 				}
 				h.destroy();
 			}
+			if (Dungeon.hero.heroClass != HeroClass.ADVENTURER)
 			Dungeon.level.drop(new ArmorKit(), pos + Dungeon.level.width()).sprite.drop(pos);
 		} else {
+			if (Dungeon.hero.heroClass != HeroClass.ADVENTURER)
 			Dungeon.level.drop(new ArmorKit(), pos).sprite.drop();
 		}
 

@@ -44,10 +44,12 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.SyntheticArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.*;
@@ -64,9 +66,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Cleaver;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger2;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knife;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnive2;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -181,6 +185,10 @@ public class Hero extends Char {
 
 		float adjustHT = heroClass == HeroClass.CONJURER ? 10 : 20;
         float adjustScaling = heroClass == HeroClass.CONJURER ? 2 : 5;
+        if (heroClass == HeroClass.ADVENTURER){
+        	adjustHT = 30;
+        	adjustScaling = 6;
+		}
 
 		HT = (int) ((adjustHT + adjustScaling*(lvl-1)) + HTBoost);
 		float multiplier = RingOfMight.HTMultiplier(this);
@@ -195,6 +203,29 @@ public class Hero extends Char {
 			HP += Math.max(HT - curHT, 0);
 		}
 		HP = Math.min(HP, HT);
+	}
+
+	public void updateAdventurerEquip(){
+		if (heroClass == HeroClass.ADVENTURER && lvl < 10){
+			if (belongings.weapon instanceof Dagger2){
+				((Dagger2) belongings.weapon).upgrade(false);
+			}
+			if (belongings.armor instanceof SyntheticArmor){
+				belongings.armor.upgrade();
+			}
+			for (Item item : belongings){
+				if (item instanceof ThrowingKnive2){
+					item.upgrade();
+				}
+				else if (item instanceof MagicalHolster){
+					for (Item missiles : (MagicalHolster)item){
+						if (missiles instanceof ThrowingKnive2){
+							item.upgrade();
+						}
+					}
+				}
+			}
+		}
 	}
 
 	public int STR() {
@@ -416,9 +447,9 @@ public class Hero extends Char {
 		}
 		
 		if (wep != null) {
-			return (int)(attackSkill * accuracy * wep.accuracyFactor( this ));
+			return (int)(attackSkill + ((heroClass == HeroClass.ADVENTURER ? 3 : 0)) * accuracy * wep.accuracyFactor( this ));
 		} else {
-			return (int)(attackSkill * accuracy);
+			return (int)(attackSkill + ((heroClass == HeroClass.ADVENTURER ? 3 : 0)) * accuracy);
 		}
 	}
 
@@ -429,7 +460,7 @@ public class Hero extends Char {
 	@Override
 	public int defenseSkill( Char enemy ) {
 		
-		float evasion = defenseSkill;
+		float evasion = defenseSkill + (heroClass == HeroClass.ADVENTURER ? 2 : 0);
 		if (Dungeon.mode == Dungeon.GameMode.EXPLORE) evasion *= 1.2f;
 		
 		evasion *= RingOfEvasion.evasionMultiplier( this );
@@ -1488,6 +1519,11 @@ public class Hero extends Char {
 				updateHT( true );
 				attackSkill++;
 				defenseSkill++;
+				if (heroClass == HeroClass.ADVENTURER && lvl % 3 == 0){
+					attackSkill++;
+					defenseSkill++;
+					updateAdventurerEquip();
+				}
                 if (heroClass == HeroClass.CONJURER) {
                     if (lvl % 3 == 0) {
                         attunement += 0.5;

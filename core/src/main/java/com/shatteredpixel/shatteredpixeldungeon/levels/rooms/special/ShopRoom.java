@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.items.*;
@@ -186,9 +187,9 @@ public class ShopRoom extends SpecialRoom {
 		if (Dungeon.depth % 3 == 0) itemsToSpawn.add(new CleanWater());
 		if (Dungeon.depth % 4 == 0) itemsToSpawn.add( new ElixirOfAttunement());
 		if (Dungeon.depth % 2 == 0) itemsToSpawn.add( Generator.randomMissile());
-		if (Dungeon.hero.lvl >= 12 && Dungeon.hero.subClass == null) itemsToSpawn.add( new TomeOfMastery());
+		if (Dungeon.hero.lvl >= 12 && Dungeon.hero.subClass == null && Dungeon.hero.heroClass != HeroClass.ADVENTURER) itemsToSpawn.add( new TomeOfMastery());
 		if (Dungeon.hero.lvl >= 21 && Dungeon.hero.belongings.armor != null &&
-			!(Dungeon.hero.belongings.armor instanceof ClassArmor)) itemsToSpawn.add( new ArmorKit());
+			!(Dungeon.hero.belongings.armor instanceof ClassArmor) && Dungeon.hero.heroClass != HeroClass.ADVENTURER) itemsToSpawn.add( new ArmorKit());
 
 		Item rare;
 		switch (Random.Int(6)){

@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GoldenMimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -326,6 +327,7 @@ public abstract class RegularLevel extends Level {
 		}
 		if (SPDSettings.bigdungeon()) nItems *= 2;
 		if (SPDSettings.smalldungeon()) nItems -= 5;
+		if (Dungeon.hero.heroClass == HeroClass.ADVENTURER) nItems *= 1.5f;
 
 		for (int i=0; i < nItems; i++) {
 

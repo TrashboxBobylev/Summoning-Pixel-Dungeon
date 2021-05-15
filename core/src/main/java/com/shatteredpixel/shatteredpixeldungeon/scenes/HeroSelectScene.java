@@ -264,7 +264,7 @@ public class HeroSelectScene extends PixelScene {
 
 		private HeroClass cl;
 
-		private static final int MIN_WIDTH = 20;
+		private static final int MIN_WIDTH = 16;
 		private static final int HEIGHT = 24;
 
 		HeroBtn ( HeroClass cl ){
@@ -361,6 +361,13 @@ public class HeroSelectScene extends PixelScene {
 							new ItemSprite(ItemSpriteSheet.BOOK, null),
 							new ItemSprite(ItemSpriteSheet.ARMOR_CONJURER, null),
 							new Image(Assets.Interfaces.BUFFS_LARGE, 112, 32, 16, 16)
+					};
+					break;
+				case ADVENTURER:
+					tabIcons = new Image[]{
+							new ItemSprite(ItemSpriteSheet.ARTIFACT_LOVE1, null),
+							new ItemSprite(ItemSpriteSheet.DAGGER, null),
+							Icons.get(Icons.ADVENTURER)
 					};
 					break;
 			}

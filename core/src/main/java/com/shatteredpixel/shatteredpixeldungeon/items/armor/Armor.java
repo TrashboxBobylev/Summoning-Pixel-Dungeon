@@ -210,7 +210,7 @@ public class Armor extends EquipableItem {
 		}
 	}
 
-	public final int DRMin(){
+	public int DRMin(){
 		return DRMin(buffedLvl());
 	}
 
