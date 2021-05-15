@@ -561,20 +561,6 @@ public abstract class Mob extends Char {
 
 	}
 
-	public Char toFollow(Char start) {
-		Char toFollow = start;
-		boolean[] passable = Dungeon.level.passable.clone();
-		PathFinder.buildDistanceMap(pos, passable, Integer.MAX_VALUE);//No limit on distance
-		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-			if (mob.alignment == alignment &&
-					PathFinder.distance[toFollow.pos] > PathFinder.distance[mob.pos] &&
-					mob.following(toFollow)) {
-				toFollow = toFollow(mob);
-			}
-		}
-		return toFollow;
-	}
-
 	@Override
 	public void updateSpriteState() {
 		super.updateSpriteState();
@@ -1006,6 +992,9 @@ public abstract class Mob extends Char {
 
 		public static final String TAG	= "HUNTING";
 
+		//prevents rare infinite loop cases
+		private boolean recursing = false;
+
 		@Override
 		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
 			enemySeen = enemyInFOV;
@@ -1039,13 +1028,17 @@ public abstract class Mob extends Char {
 				} else {
 
 					//if moving towards an enemy isn't possible, try to switch targets to another enemy that is closer
-					Char oldEnemy = enemy;
+					//unless we have already done that and still can't move toward them, then move on.
+					if (!recursing) {
+						Char oldEnemy = enemy;
 						enemy = null;
 						enemy = chooseEnemy();
-					if (enemy != null &&
-						enemy != oldEnemy) {
-						spend( TICK );
-						return true;
+						if (enemy != null && enemy != oldEnemy) {
+							recursing = true;
+							boolean result = act(enemyInFOV, justAlerted);
+							recursing = false;
+							return result;
+						}
 					}
 
 					spend( TICK );
@@ -1124,7 +1117,9 @@ public abstract class Mob extends Char {
 
 		@Override
 		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
-			if ( enemyInFOV) {
+
+			//Ensure there is direct line of sight from ally to enemy, and the distance is small. This is enforced so that allies don't end up trailing behind when following hero.
+			if ( enemyInFOV && Dungeon.level.distance(pos, enemy.pos) < 6) {
 
 				enemySeen = true;
 
@@ -1153,6 +1148,7 @@ public abstract class Mob extends Char {
 			}
 			return true;
 		}
+
 	}
 
 

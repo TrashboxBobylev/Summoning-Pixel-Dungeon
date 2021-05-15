@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -50,7 +51,7 @@ import java.util.Locale;
 public class WndHero extends WndTabbed {
 	
 	private static final int WIDTH		= 135;
-	private static final int HEIGHT		= 120;
+	private static final int HEIGHT		= 140;
 	
 	private StatsTab stats;
 	private TalentsTab talents;
@@ -148,6 +149,8 @@ public class WndHero extends WndTabbed {
             Hunger hunger = Buff.affect(hero, Hunger.class);
             statSlot( Messages.get(this, "hunger"), new DecimalFormat("#.##").format(100f * (hunger.hunger() / Hunger.STARVING)) + "%");
             statSlot( Messages.get(this, "attunement"), hero.usedAttunement + "/" + hero.attunement() );
+			statSlot(Messages.get(this, "accuracy"), hero.attackSkill(new Rat()));
+			statSlot(Messages.get(this, "evasion"), hero.defenseSkill(new Rat()));
 
 			pos += GAP;
 

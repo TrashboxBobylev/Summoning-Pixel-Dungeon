@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.ConjurerSpell;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -255,7 +256,7 @@ public class ItemSlot extends Button {
 		} else {
 			level.text( null );
 		}
-		if (item instanceof Staff || item instanceof ConjurerSpell){
+		if (item instanceof Staff || item instanceof ConjurerSpell || item instanceof SpiritBow){
 			switch (item.level()){
 				case 0:
 					level.hardlight(BRONZE);

@@ -238,13 +238,16 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 
 	public int STRReq(){
-		return STRReq(level());
+		return STRReq(buffedLvl());
 	}
 
 	public abstract int STRReq(int lvl);
 	
 	@Override
 	public int level() {
+		if (this instanceof SpiritBow || this instanceof SpiritBow.SpiritArrow){
+			return super.level();
+		}
 		return super.level() + (curseInfusionBonus ? 1 : 0);
 	}
 	
@@ -408,6 +411,22 @@ abstract public class Weapon extends KindOfWeapon {
             if (attacker.buff(GuaranteedEnchant.class) != null) wp.level(12);
             return proc(wp, attacker, defender, damage);
         }
+
+		protected float procChanceMultiplier( Char attacker ){
+			float multi = 1f;
+			if (attacker instanceof Hero){
+				if (((Hero) attacker).belongings.weapon instanceof SpiritBow.SpiritArrow &&
+					!(((SpiritBow.SpiritArrow) ((Hero) attacker).belongings.weapon).hasGoodEnchant())){
+					switch (((Hero) attacker).belongings.weapon.level()){
+						case 1:
+							return 0.75f;
+						case 2:
+							return 0.50f;
+					}
+				}
+			}
+			return multi;
+		}
 
 		public String name() {
 			if (!curse())

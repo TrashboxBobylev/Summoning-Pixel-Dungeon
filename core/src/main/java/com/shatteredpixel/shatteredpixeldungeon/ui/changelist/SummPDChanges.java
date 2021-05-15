@@ -220,6 +220,21 @@ public class SummPDChanges {
                 "_-_ Added mouse targeting for Desktop builds.\n\n" +
                         "_-_ Added quick item use while holding inventory's button."));
 
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.STARS, null), "Conjurer buffs, part 1",
+                "_-_ Buffed _Star Blazing:_\n\n" +
+                        "   _Tier I:_ +33% max damage, +5% scaling\n" +
+                        "   _Tier II:_ +25% min damage, +33% max damage, +~28% scaling\n" +
+                        "   _Tier III:_ +38% min damage, +46% max damage, +~45% scaling, mana cost: _7_ -> _8_\n\n" +
+                        "_-_ Buffed tier I and II and nerfed tier III of _Energizing Renewal:_\n\n" +
+                        "   _Tier I:_ +66% flat heal, +34% percentage heal\n" +
+                        "   _Tier II:_ +66% flat heal, +32% percentage heal, mana cost: _3_ -> _4_\n" +
+                        "   _Tier III:_ +75% flat heal, -67% percentage heal\n\n" +
+                        "_-_ Buffed tier II and changed tier III of _Beam of Affection:_\n\n" +
+                        "   _Tier II:_ +85% mana gain, replaced speed boost for enemies by shaman buffs, mana cost: _9_ -> _11_\n" +
+                        "   _Tier III:_ -1 turn of speed boost for minions, mana cost: _15_ -> _14_"
+
+        ));
+
         changes = ChangesScene.createChangeInfo(changeInfos, "v1.2.0a & 1.2.0b", false, Window.WHITE);
 
         changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
