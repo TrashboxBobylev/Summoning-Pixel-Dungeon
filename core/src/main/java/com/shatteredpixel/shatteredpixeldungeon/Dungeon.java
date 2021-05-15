@@ -591,7 +591,10 @@ public class Dungeon {
 		try {
 			Dungeon.mode = GameMode.valueOf(bundle.getString(MODE));
 		} catch (IllegalArgumentException exception){
-			Dungeon.mode = GameMode.NORMAL;
+			Dungeon.mode = SPDSettings.getBoolean(SPDSettings.KEY_BIGGER, false) ? GameMode.BIGGER :
+					(SPDSettings.getBoolean(SPDSettings.KEY_SMALLER, false) ? GameMode.SMALL :
+							GameMode.NORMAL);
+
 		}
 		
 		Dungeon.level = null;
