@@ -37,10 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.SyntheticArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.ConjurerBook;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Heal;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Stars;
@@ -121,7 +118,9 @@ public enum HeroClass {
 
 		Talent.initClassTalents(hero);
 
-		new ScrollOfIdentify().identify();
+		if (hero.heroClass != ADVENTURER) {
+			new ScrollOfIdentify().identify();
+		}
 		new Ropes().quantity(5).collect();
 
 		if (Dungeon.mode == Dungeon.GameMode.GAUNTLET){
@@ -262,6 +261,15 @@ public enum HeroClass {
 		ThrowingKnive2 knives = new ThrowingKnive2();
 		knives.quantity(2).collect();
 		Dungeon.quickslot.setSlot(0, knives);
+
+		new PotionBandolier().collect();
+		Dungeon.LimitedDrops.POTION_BANDOLIER.drop();
+		new ScrollHolder().collect();
+		Dungeon.LimitedDrops.SCROLL_HOLDER.drop();
+		new VelvetPouch().collect();
+		Dungeon.LimitedDrops.VELVET_POUCH.drop();
+		new MagicalHolster().collect();
+		Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
 	}
 
 	public String title() {

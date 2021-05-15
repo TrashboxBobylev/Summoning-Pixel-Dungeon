@@ -35,12 +35,18 @@ public class ThrowingKnive2 extends MissileWeapon {
 		hitSoundPitch = 1f;
 		
 		tier = 2;
+
+		baseUses = 6.67f;
 	}
 
 	@Override
 	public int max(int lvl) {
-		return  4 * tier +                      //8 base, down from 10
+		return  5 * tier - 3 +                      //7 base, down from 10
 				(tier == 1 ? 2*lvl : tier*lvl); //scaling unchanged
 	}
-	
+
+	@Override
+	public int min(int lvl) {
+		return tier + 1 + lvl;
+	}
 }

@@ -52,9 +52,9 @@ public class SyntheticArmor extends Armor {
 
 		int max = DRMax(lvl);
 		if (lvl >= max){
-			return (lvl + 1 - max);
+			return (lvl + 2 - max);
 		} else {
-			return lvl + 1;
+			return lvl + 2;
 		}
 	}
 

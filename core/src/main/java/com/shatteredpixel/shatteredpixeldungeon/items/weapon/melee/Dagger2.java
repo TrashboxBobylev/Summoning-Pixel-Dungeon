@@ -40,8 +40,13 @@ public class Dagger2 extends MeleeWeapon {
 	}
 
 	@Override
+	public int min(int lvl) {
+		return tier + 1 + lvl;
+	}
+
+	@Override
 	public int max(int lvl) {
-		return  4*(tier+1) +    //12 base, down from 15
+		return  9*(tier-1) +    //12 base, down from 15
 				lvl*(tier);   //scaling down to +2
 	}
 }

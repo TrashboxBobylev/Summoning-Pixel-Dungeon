@@ -27,7 +27,10 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Stacks;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulWeakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SpeedyShots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -174,7 +177,6 @@ abstract public class MissileWeapon extends Weapon {
 	public void doThrow(Hero hero) {
 		parent = null; //reset parent before throwing, just incase
 		super.doThrow(hero);
-        Hunger.adjustHunger(-3);
 	}
 
 	@Override

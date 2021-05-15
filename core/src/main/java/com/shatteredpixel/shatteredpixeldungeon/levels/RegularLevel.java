@@ -327,7 +327,7 @@ public abstract class RegularLevel extends Level {
 		}
 		if (SPDSettings.bigdungeon()) nItems *= 2;
 		if (SPDSettings.smalldungeon()) nItems -= 5;
-		if (Dungeon.hero.heroClass == HeroClass.ADVENTURER) nItems *= 1.5f;
+		if (Dungeon.hero.heroClass == HeroClass.ADVENTURER) nItems *= 2f;
 
 		for (int i=0; i < nItems; i++) {
 
