@@ -54,7 +54,7 @@ public class Toolbar extends Component implements WndBag.Listener {
 	private boolean lastEnabled = true;
 	public boolean examining = false;
 
-	private static Toolbar instance;
+	public static Toolbar instance;
 
 	@Override
 	public void onSelect(Item item) {

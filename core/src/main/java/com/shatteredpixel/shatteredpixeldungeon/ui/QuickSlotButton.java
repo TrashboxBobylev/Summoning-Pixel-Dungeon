@@ -29,25 +29,23 @@ import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Phantom;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.input.GameAction;
-import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Button;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
+
+import static com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene.scene;
 
 public class QuickSlotButton extends Button implements WndBag.Listener {
 	
@@ -59,7 +57,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 	private static Image crossB;
 	private static Image crossM;
 	
-	private static boolean targeting = false;
+	public static boolean targeting = false;
 	public static Char lastTarget = null;
 	
 	public QuickSlotButton( int slotNum ) {
@@ -90,25 +88,45 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 		slot = new ItemSlot() {
 			@Override
 			protected void onClick() {
-				int cell = -1;
-				Item item = select(slotNum);
-				if (lastTarget != null)
-					cell = autoAim(lastTarget, select(slotNum));
-				if ((cell == -1 || !item.usesTargeting) && ShatteredPixelDungeon.platform.getMouseCoords() != null){
-					selectByMouse(item);
-				}
-				else if (targeting && cell != -1) {
-					GameScene.handleCell(cell);
-					//					} else {
-//						//couldn't auto-aim, just target the position and hope for the best.
-//						GameScene.handleCell( lastTarget.pos );
-//					}
-				}
-				if (!targeting){
-					if (item.usesTargeting) {
-						useTargeting();
+				if (Game.platform.getMouseCoords() != null) {
+					int cell;
+					Item item = select(slotNum);
+
+					if (targeting) {
+						cell = autoAim(lastTarget, select(slotNum));
+
+						if (cell != -1) {
+							GameScene.handleCell(cell);
+						} else {
+							//couldn't auto-aim, just target the position and hope for the best.
+							GameScene.handleCell(lastTarget.pos);
+						}
+					} else {
+						if (item.usesTargeting) {
+							useTargeting();
+						}
+						item.execute(Dungeon.hero);
+						if (lastTarget == null)
+							selectByMouse();
+
 					}
-					item.execute( Dungeon.hero );
+				} else {
+					if (targeting) {
+						int cell = autoAim(lastTarget, select(slotNum));
+
+						if (cell != -1){
+							GameScene.handleCell(cell);
+						} else {
+							//couldn't auto-aim, just target the position and hope for the best.
+							GameScene.handleCell( lastTarget.pos );
+						}
+					} else {
+						Item item = select(slotNum);
+						if (item.usesTargeting) {
+							useTargeting();
+						}
+						item.execute( Dungeon.hero );
+					}
 				}
 			}
 			
@@ -140,61 +158,16 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 		crossM.copy( crossB );
 	}
 
-	public void selectByMouse(Item item){
+	public void selectByMouse(){
 		Point mouse = ShatteredPixelDungeon.platform.getMouseCoords();
-		if (mouse != null) {
-			PointF p = Camera.main.screenToCamera((int) mouse.x, (int) mouse.y);
-
-			//Prioritizes a sprite if it and a tile overlap, so long as that sprite isn't more than 4 pixels into another tile.
-			//The extra check prevents large sprites from blocking the player from clicking adjacent tiles
-			GameScene scene = (GameScene)Game.scene();
-			//hero first
-			if (Dungeon.hero.sprite != null && Dungeon.hero.sprite.overlapsPoint(p.x, p.y)) {
-				PointF c = DungeonTilemap.tileCenterToWorld(Dungeon.hero.pos);
-				if (Math.abs(p.x - c.x) <= 12 && Math.abs(p.y - c.y) <= 12) {
-					scene.cellSelector.select(Dungeon.hero.pos);
-					return;
-				}
-			}
-
-			//then mobs
-			for (Char mob : Dungeon.level.mobs.toArray(new Mob[0])) {
-				if (mob.sprite != null && mob.sprite.overlapsPoint(p.x, p.y)) {
-					PointF c = DungeonTilemap.tileCenterToWorld(mob.pos);
-					if (Math.abs(p.x - c.x) <= 12 && Math.abs(p.y - c.y) <= 12) {
-						scene.cellSelector.select(mob.pos);
-						return;
-					}
-				}
-			}
-
-			//then heaps
-			for (Heap heap : Dungeon.level.heaps.valueList()) {
-				if (heap.sprite != null && heap.sprite.overlapsPoint(p.x, p.y)) {
-					PointF c = DungeonTilemap.tileCenterToWorld(heap.pos);
-					if (Math.abs(p.x - c.x) <= 12 && Math.abs(p.y - c.y) <= 12) {
-						scene.cellSelector.select(heap.pos);
-						return;
-					}
-				}
-			}
-
-
-			if (scene != null) {
-				int cell = (scene.tiles.screenToTile(
-						mouse.x,
-						mouse.y,
-						true));
-				item.execute( Dungeon.hero );
-				if (GameScene.cellSelector.enabled && GameScene.cellSelector.listener != null && cell != -1 &&
-					mouse.y < PixelScene.uiCamera.height - scene.toolbar.height()) {
-					GameScene.cellSelector.listener.onSelect( cell );
-					GameScene.ready();
-				} else {
-
-					GameScene.cancel();
-
-				}
+		PointF localMouse = camera().screenToCamera( mouse.x, mouse.y );
+		if (mouse != null && localMouse.y < Toolbar.instance.top()) {
+			int cell = (scene.tiles.screenToTile(
+					mouse.x,
+					mouse.y,
+					true));
+			if (Dungeon.level.insideMap(cell)) {
+				GameScene.cellSelector.select( cell );
 			}
 		}
 	}
