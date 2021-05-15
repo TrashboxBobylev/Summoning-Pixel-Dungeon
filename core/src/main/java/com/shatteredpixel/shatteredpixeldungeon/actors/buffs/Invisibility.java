@@ -81,6 +81,8 @@ public class Invisibility extends FlavourBuff {
 		else if (target.invisible == 0) target.sprite.remove( CharSprite.State.INVISIBLE );
 	}
 
+
+
 	@Override
 	public String toString() {
 		return Messages.get(this, "name");
@@ -98,6 +100,10 @@ public class Invisibility extends FlavourBuff {
 		CloakOfShadows.cloakStealth cloakBuff = Dungeon.hero.buff( CloakOfShadows.cloakStealth.class );
 		if (cloakBuff != null) {
 			cloakBuff.dispel();
+		}
+		Shadows shadows = Dungeon.hero.buff( Shadows.class );
+		if (shadows != null) {
+			shadows.dispel();
 		}
 
         for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
