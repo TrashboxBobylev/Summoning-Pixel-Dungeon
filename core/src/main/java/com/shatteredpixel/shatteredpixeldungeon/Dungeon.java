@@ -710,7 +710,10 @@ public class Dungeon {
 		try {
 			info.mode = GameMode.valueOf(bundle.getString(MODE));
 		} catch (IllegalArgumentException exception){
-			info.mode = GameMode.NORMAL;
+			info.mode = SPDSettings.getBoolean(SPDSettings.KEY_BIGGER, false) ? GameMode.BIGGER :
+					(SPDSettings.getBoolean(SPDSettings.KEY_SMALLER, false) ? GameMode.SMALL :
+							GameMode.NORMAL);
+
 		}
 		Hero.preview( info, bundle.getBundle( HERO ) );
 		Statistics.preview( info, bundle );
