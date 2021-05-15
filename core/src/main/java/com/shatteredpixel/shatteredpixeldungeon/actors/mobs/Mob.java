@@ -45,6 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.magic.ConjurerSpell;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.GoldToken;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
@@ -733,8 +734,11 @@ public abstract class Mob extends Char {
 			EXP /= 2;
 		}
 
-		if ((((cause instanceof Minion || cause instanceof GoatClone) && Dungeon.hero.heroClass == HeroClass.CONJURER) || (cause instanceof Hero && buff(Knife.SoulGain.class) != null))){
+		if ((((cause instanceof Minion || cause instanceof GoatClone) && Dungeon.hero.heroClass == HeroClass.CONJURER)
+				|| (cause instanceof Hero && buff(Knife.SoulGain.class) != null)) ||
+					cause instanceof ConjurerSpell){
 			int gain = (int) Math.floor(EXP*(Dungeon.hero.subClass == HeroSubClass.SOUL_REAVER ? 2.25f : 1.5f));
+			if (cause instanceof ConjurerSpell) gain /= 2;
 			Dungeon.hero.mana = Math.min(Dungeon.hero.mana + gain, Dungeon.hero.maxMana);
 		}
 
