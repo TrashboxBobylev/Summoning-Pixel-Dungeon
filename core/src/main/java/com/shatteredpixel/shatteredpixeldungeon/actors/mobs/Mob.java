@@ -740,7 +740,7 @@ public abstract class Mob extends Char {
 			EXP /= 2;
 		}
 
-		if ((((cause instanceof Minion || cause instanceof GoatClone) && Dungeon.hero.heroClass == HeroClass.CONJURER) || (cause instanceof Hero && ((Hero) cause).subClass != HeroSubClass.OCCULTIST && buff(Knife.SoulGain.class) != null))){
+		if ((((cause instanceof Minion || cause instanceof GoatClone) && Dungeon.hero.heroClass == HeroClass.CONJURER) || (cause instanceof Hero && buff(Knife.SoulGain.class) != null))){
 			int gain = (int) Math.floor(EXP*(Dungeon.hero.subClass == HeroSubClass.SOUL_REAVER ? 2.25f : 1.5f));
 			Dungeon.hero.mana = Math.min(Dungeon.hero.mana + gain, Dungeon.hero.maxMana);
 		}
