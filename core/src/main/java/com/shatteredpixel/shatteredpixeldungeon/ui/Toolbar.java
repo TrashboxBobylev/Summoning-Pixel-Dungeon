@@ -47,7 +47,7 @@ public class Toolbar extends Component implements WndBag.Listener {
 	private Tool btnWait;
 	private Tool btnSearch;
 	private Tool btnInventory;
-	private QuickslotTool[] btnQuick;
+	public QuickslotTool[] btnQuick;
 	
 	private PickedUpItem pickedUp;
 	
@@ -369,7 +369,7 @@ public class Toolbar extends Component implements WndBag.Listener {
 		}
 	}
 	
-	private static class QuickslotTool extends Tool {
+	public static class QuickslotTool extends Tool {
 		
 		private QuickSlotButton slot;
 		private int borderLeft = 2;

@@ -95,8 +95,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 				if (lastTarget != null)
 					cell = autoAim(lastTarget, select(slotNum));
 				if ((cell == -1 || !item.usesTargeting) && ShatteredPixelDungeon.platform.getMouseCoords() != null){
-					item.execute( Dungeon.hero );
-					selectByMouse();
+					selectByMouse(item);
 				}
 				else if (targeting && cell != -1) {
 					GameScene.handleCell(cell);
@@ -141,7 +140,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 		crossM.copy( crossB );
 	}
 
-	public void selectByMouse(){
+	public void selectByMouse(Item item){
 		Point mouse = ShatteredPixelDungeon.platform.getMouseCoords();
 		if (mouse != null) {
 			PointF p = Camera.main.screenToCamera((int) mouse.x, (int) mouse.y);
@@ -186,11 +185,11 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 						mouse.x,
 						mouse.y,
 						true));
-				if (GameScene.cellSelector.enabled && GameScene.cellSelector.listener != null && cell != -1) {
-
+				item.execute( Dungeon.hero );
+				if (GameScene.cellSelector.enabled && GameScene.cellSelector.listener != null && cell != -1 &&
+					mouse.y < PixelScene.uiCamera.height - scene.toolbar.height()) {
 					GameScene.cellSelector.listener.onSelect( cell );
 					GameScene.ready();
-
 				} else {
 
 					GameScene.cancel();
