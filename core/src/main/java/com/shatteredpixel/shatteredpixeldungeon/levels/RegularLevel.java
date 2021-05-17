@@ -111,9 +111,6 @@ public abstract class RegularLevel extends Level {
 				if (SPDSettings.bigdungeon()) {
 					roomSizeCon = !s.setSizeCat(1, (int)(standards * 1.25f) - i);
 				}
-				else if (SPDSettings.smalldungeon()){
-					roomSizeCon = !s.setSizeCat((int)(standards * 0.75f) - i);
-				}
 				else {
 					roomSizeCon = !s.setSizeCat( standards-i );
 				}
