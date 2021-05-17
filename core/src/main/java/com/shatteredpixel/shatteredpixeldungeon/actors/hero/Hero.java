@@ -1419,7 +1419,7 @@ public class Hero extends Char {
 			curAction = new HeroAction.Unlock( cell );
 
         } else if ((cell == Dungeon.level.exit || Dungeon.level.map[cell] == Terrain.EXIT || Dungeon.level.map[cell] == Terrain.UNLOCKED_EXIT)
-                && Dungeon.depth < Dungeon.chapterSize()*5+1) {
+                && Dungeon.depth != Dungeon.chapterSize()*5+1) {
 		        boolean canDo = true;
                 if ((Dungeon.depth > Dungeon.chapterSize()*4) && (Dungeon.depth < Dungeon.chapterSize()*5)) {
 					if (Dungeon.level.checkForFroggits()) {
