@@ -212,6 +212,10 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		n.cursedKnown = w.cursedKnown;
 		n.cursed = w.cursed;
 		n.augment = w.augment;
+		if (w.checkSeal() != null){
+			if (w.checkSeal().level() > 0) n.degrade();
+			n.affixSeal(w.seal);
+		}
 		
 		return n;
 		
