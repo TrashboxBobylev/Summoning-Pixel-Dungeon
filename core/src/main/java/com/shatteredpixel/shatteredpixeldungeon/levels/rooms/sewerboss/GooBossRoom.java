@@ -40,7 +40,7 @@ public abstract class GooBossRoom extends StandardRoom {
 	
 	@Override
 	public float[] sizeCatProbs() {
-		return new float[]{0, 1, 0};
+		return new float[]{0, 3, 1, 0};
 	}
 	
 	public static GooBossRoom randomGooRoom(){
