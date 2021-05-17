@@ -218,6 +218,7 @@ public class Dragon extends Mob{
                         swipeAttack(5, 7);
                         break;
                 }
+                next();
 
             }
     }
@@ -241,7 +242,6 @@ public class Dragon extends Mob{
             }
         enemy = previousEnemy;
         previousEnemy = null;
-        next();
     }
 
     protected void rangedProc( Char enemy ) {
