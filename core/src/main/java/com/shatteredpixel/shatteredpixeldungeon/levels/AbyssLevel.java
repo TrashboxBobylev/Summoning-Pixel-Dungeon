@@ -79,9 +79,8 @@ public class AbyssLevel extends RegularLevel {
 	@Override
 	protected int standardRooms(boolean forceMax) {
 		if (SPDSettings.smalldungeon()) return 6;
-		if (forceMax) return 35;
-		//23 to 28
-		return 17+Random.chances(new float[]{3, 2, 1, 1, 1});
+		if (forceMax) return 36;
+		return 14+Random.chances(new float[]{3, 2, 1, 1, 1});
 	}
 
 	@Override
