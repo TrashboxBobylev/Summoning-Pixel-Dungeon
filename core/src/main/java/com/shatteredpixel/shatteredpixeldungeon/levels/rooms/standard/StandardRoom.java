@@ -38,13 +38,11 @@ public abstract class StandardRoom extends Room {
 	public boolean joinable = true;
 	
 	public enum SizeCategory {
-		
-		NORMAL(
-				4, 8, 1),
-		LARGE(
-				9, 13, 2),
-		GIANT(
-				12, 20, 3);
+
+		NORMAL(4, 10, 1),
+		LARGE(10, 14, 2),
+		GIANT(14, 18, 3),
+		EXCESSIVE(18, 26, 4);
 
 		public final int minDim26, maxDim26;
 		public final int roomValue;
@@ -70,7 +68,7 @@ public abstract class StandardRoom extends Room {
 	//but would (effectively) never roll that size category, consider using Float.MIN_VALUE
 	public float[] sizeCatProbs(){
 		//always normal by default
-		return new float[]{1, 0, 0};
+		return new float[]{1, 0, 0, 0};
 	}
 	
 	public boolean setSizeCat(){

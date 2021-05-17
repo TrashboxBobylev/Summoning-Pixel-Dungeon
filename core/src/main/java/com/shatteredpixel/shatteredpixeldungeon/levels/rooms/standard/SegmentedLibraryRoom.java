@@ -40,7 +40,7 @@ public class SegmentedLibraryRoom extends StandardRoom {
 
 	@Override
 	public float[] sizeCatProbs() {
-		return new float[]{0, 3, 1};
+		return new float[]{0, 9, 3, 1};
 	}
 
 	@Override

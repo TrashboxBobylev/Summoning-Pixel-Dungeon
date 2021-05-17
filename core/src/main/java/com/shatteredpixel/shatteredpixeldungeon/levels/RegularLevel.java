@@ -107,12 +107,17 @@ public abstract class RegularLevel extends Level {
 		}
 		for (int i = 0; i < standards; i++) {
 			StandardRoom s;
+			boolean roomSizeCon;
 			do {
 				s = StandardRoom.createRoom();
-			} while (!s.setSizeCat( standards-i ));
-			if (Dungeon.mode != Dungeon.GameMode.CHAOS) {
-				i += s.sizeCat.roomValue - 1;
-			}
+				if (SPDSettings.bigdungeon()) {
+					roomSizeCon = !s.setSizeCat(1, (int)(standards * 1.25f) - i);
+				}
+				else {
+					roomSizeCon = !s.setSizeCat( standards-i );
+				}
+			} while (roomSizeCon);
+			i += s.sizeCat.roomValue-1;
 			initRooms.add(s);
 		}
 		
