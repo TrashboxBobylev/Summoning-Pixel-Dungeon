@@ -108,7 +108,7 @@ public class StatusPane extends Component {
 		avatar = HeroSprite.avatar( Dungeon.hero.heroClass, lastTier );
 		add( avatar );
 
-		compass = new Compass( Statistics.amuletObtained ? Dungeon.level.entrance : Dungeon.level.exit );
+		compass = new Compass( Statistics.amuletObtained ? (Dungeon.depth >= Dungeon.chapterSize()*5+2 ? Dungeon.level.exit : Dungeon.level.entrance) : Dungeon.level.exit );
 		add( compass );
 
 		rawShielding = new Image( Assets.Interfaces.SHLD_BAR );
