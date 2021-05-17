@@ -72,7 +72,7 @@ public class SegmentedRoom extends StandardRoom {
 			return;
 		}
 		
-		int tries = 10;
+		int tries = 30;
 		
 		//splitting top/bottom
 		if (area.width() > area.height() || (area.width() == area.height() && Random.Int(2) == 0)){
