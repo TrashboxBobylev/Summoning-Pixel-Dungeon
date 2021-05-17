@@ -55,7 +55,7 @@ public class ChasmRoom extends PatchRoom {
 		float fill = 0.30f + (width()*height())/1024f;
 
 		setupPatch(level, fill, 1, true);
-//		cleanDiagonalEdges();
+		cleanDiagonalEdges();
 
 		for (int i = top + 1; i < bottom; i++) {
 			for (int j = left + 1; j < right; j++) {
