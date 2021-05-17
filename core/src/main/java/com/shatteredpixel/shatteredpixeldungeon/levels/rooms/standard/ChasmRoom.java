@@ -37,7 +37,7 @@ public class ChasmRoom extends PatchRoom {
 
 	@Override
 	public float[] sizeCatProbs() {
-		return new float[]{3, 1, 0};
+		return new float[]{9, 3, 1, 0};
 	}
 
 	@Override

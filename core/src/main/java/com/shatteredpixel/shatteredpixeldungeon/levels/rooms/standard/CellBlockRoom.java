@@ -34,7 +34,7 @@ public class CellBlockRoom extends StandardRoom {
 
 	@Override
 	public float[] sizeCatProbs() {
-		return new float[]{0, 3, 1};
+		return new float[]{0, 6, 3, 1};
 	}
 
 	@Override

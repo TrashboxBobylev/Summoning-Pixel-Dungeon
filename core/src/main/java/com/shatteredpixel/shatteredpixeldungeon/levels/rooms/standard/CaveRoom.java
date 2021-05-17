@@ -36,7 +36,7 @@ public class CaveRoom extends PatchRoom {
 
 	@Override
 	public float[] sizeCatProbs() {
-		return new float[]{4, 2, 0};
+		return new float[]{8, 4, 1, 0};
 	}
 	
 	@Override
