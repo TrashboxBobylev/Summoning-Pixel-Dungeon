@@ -96,6 +96,7 @@ public abstract class RegularBuilder extends Builder {
 	protected void setupRooms(ArrayList<Room> rooms){
 		for(Room r : rooms){
 			r.setEmpty();
+			if (Dungeon.mode == Dungeon.GameMode.CHAOS && r instanceof StandardRoom) ((StandardRoom) r).joinable = true;
 		}
 
 		entrance = exit = shop = null;

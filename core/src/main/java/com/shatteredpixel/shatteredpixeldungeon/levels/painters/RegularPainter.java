@@ -39,6 +39,7 @@ import com.watabou.noosa.Game;
 import com.watabou.utils.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public abstract class RegularPainter extends Painter {
@@ -69,6 +70,9 @@ public abstract class RegularPainter extends Painter {
 		nTraps = num;
 		trapClasses = (Class<? extends Trap>[]) classes;
 		trapChances = chances;
+		if (Dungeon.mode == Dungeon.GameMode.CHAOS){
+			Arrays.fill(trapChances, 1);
+		}
 		return this;
 	}
 

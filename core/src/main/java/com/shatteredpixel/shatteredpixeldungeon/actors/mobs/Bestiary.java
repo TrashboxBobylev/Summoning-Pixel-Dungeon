@@ -56,6 +56,32 @@ public class Bestiary {
 	//returns a rotation of standard mobs, unshuffled.
 	private static ArrayList<Class<? extends Mob>> standardMobRotation( int depth ){
 
+		if (Dungeon.mode == Dungeon.GameMode.CHAOS){
+			if (Dungeon.depth > 0 && Dungeon.depth < Dungeon.chapterSize()) {
+				return new ArrayList<>(Arrays.asList(Rat.class, Gnoll.class, Dog.class, Swarm.class, Crab.class, Albino.class));
+			}
+			if (Dungeon.depth > Dungeon.chapterSize() && Dungeon.depth < Dungeon.chapterSize()*2) {
+				return new ArrayList<>(Arrays.asList(Skeleton.class, Thief.class, Bandit.class, Guard.class, DM100.class, Necromancer.class));
+			}
+			if (Dungeon.depth > Dungeon.chapterSize()*2 && Dungeon.depth < Dungeon.chapterSize()*3) {
+				return new ArrayList<>(Arrays.asList(Bat.class, Brute.class, ArmoredBrute.class, Shaman.RedShaman.class,
+						Spinner.class, Shaman.BlueShaman.class, Snake.class, Shaman.PurpleShaman.class,
+						ExplodingTNT.class, DM200.class, DM201.class));
+			}
+			if (Dungeon.depth > Dungeon.chapterSize()*3 && Dungeon.depth < Dungeon.chapterSize()*4) {
+				return new ArrayList<>(Arrays.asList(Ghoul.class, Monk.class, Senior.class,
+						Elemental.FireElemental.class, Elemental.FrostElemental.class, Elemental.ShockElemental.class,
+						Elemental.ChaosElemental.class, Warlock.class, Golem.class, DwarfGuardMob.class));
+			}
+			if (Dungeon.depth > Dungeon.chapterSize()*4 && Dungeon.depth < Dungeon.chapterSize()*5) {
+				return new ArrayList<>(Arrays.asList(Slime.class, Succubus.class, Eye.class, Scorpio.class, Acidic.class,
+						HellBat.class));
+			}
+			return new ArrayList<>(Arrays.asList(
+					SpectreRat.class, DarkestElf.class, GhostChicken.class, Phantom.class, BlinkingMan.class, AbyssalNightmare.class,
+					Dragon.class));
+		}
+
 		if (SPDSettings.smalldungeon()){
 			switch(depth){
 

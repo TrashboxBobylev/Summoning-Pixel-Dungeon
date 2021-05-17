@@ -542,7 +542,9 @@ public class Armor extends EquipableItem {
 
 		@SuppressWarnings("unchecked")
 		public static Glyph random( Class<? extends Glyph> ... toIgnore ) {
-			switch(Random.chances(typeChances)){
+			float[] chances = typeChances;
+			if (Dungeon.mode == Dungeon.GameMode.CHAOS) chances = new float[]{1, 1, 1};
+			switch(Random.chances(chances)){
 				case 0: default:
 					return randomCommon( toIgnore );
 				case 1:

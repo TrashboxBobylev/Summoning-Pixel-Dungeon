@@ -93,6 +93,9 @@ public abstract class StandardRoom extends Room {
 		for (int i = maxOrdinal+1; i < categories.length; i++)  probs[i] = 0;
 		
 		int ordinal = Random.chances(probs);
+		if (Dungeon.mode == Dungeon.GameMode.CHAOS){
+			ordinal = Random.chances(new float[]{1, 1, 1});
+		}
 		
 		if (ordinal != -1){
 			sizeCat = categories[ordinal];
@@ -187,7 +190,7 @@ public abstract class StandardRoom extends Room {
 			return Reflection.newInstance(EmptyRoom.class);
 		}
 		setChances();
-		if (Dungeon.depth >= Dungeon.chapterSize()*5){
+		if (Dungeon.depth >= Dungeon.chapterSize()*5 || Dungeon.mode == Dungeon.GameMode.CHAOS){
 			float[] chance = new float[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 			return Reflection.newInstance(rooms.get(Random.chances(chance)));
 		}

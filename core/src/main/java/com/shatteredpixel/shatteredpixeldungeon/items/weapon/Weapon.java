@@ -459,7 +459,9 @@ abstract public class Weapon extends KindOfWeapon {
 		
 		@SuppressWarnings("unchecked")
 		public static Enchantment random( Class<? extends Enchantment> ... toIgnore ) {
-			switch(Random.chances(typeChances)){
+			float[] chances = typeChances;
+			if (Dungeon.mode == Dungeon.GameMode.CHAOS) chances = new float[]{1, 1, 1};
+			switch(Random.chances(chances)){
 				case 0: default:
 					return randomCommon( toIgnore );
 				case 1:

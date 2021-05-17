@@ -97,7 +97,7 @@ public abstract class ConnectionRoom extends Room {
 		if (Dungeon.mode == Dungeon.GameMode.GAUNTLET){
 			return Reflection.newInstance(TunnelRoom.class);
 		}
-		if (Dungeon.depth >= Dungeon.chapterSize()*5 || Dungeon.mode == Dungeon.GameMode.GAUNTLET){
+		if (Dungeon.depth >= Dungeon.chapterSize()*5 || Dungeon.mode == Dungeon.GameMode.GAUNTLET || Dungeon.mode == Dungeon.GameMode.CHAOS){
 			float[] chance = new float[]{1, 1, 1, 1, 1, 1};
 			return Reflection.newInstance(rooms.get(Random.chances(chance)));
 		}

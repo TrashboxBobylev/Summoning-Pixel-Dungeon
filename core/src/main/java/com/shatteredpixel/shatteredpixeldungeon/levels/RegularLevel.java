@@ -101,6 +101,7 @@ public abstract class RegularLevel extends Level {
 
 		//force max standard rooms and multiple by 1.5x for large levels
 		int standards = standardRooms(feeling == Feeling.LARGE || SPDSettings.bigdungeon());
+		if (Dungeon.mode == Dungeon.GameMode.CHAOS) standards = Random.Int(1, standards);
 		if (feeling == Feeling.LARGE && !SPDSettings.smalldungeon()){
 			standards = (int)Math.ceil(standards * 1.5f);
 		}
@@ -109,7 +110,9 @@ public abstract class RegularLevel extends Level {
 			do {
 				s = StandardRoom.createRoom();
 			} while (!s.setSizeCat( standards-i ));
-			i += s.sizeCat.roomValue-1;
+			if (Dungeon.mode != Dungeon.GameMode.CHAOS) {
+				i += s.sizeCat.roomValue - 1;
+			}
 			initRooms.add(s);
 		}
 		
@@ -121,6 +124,7 @@ public abstract class RegularLevel extends Level {
 		if (feeling == Feeling.LARGE){
 			specials++;
 		}
+		if (Dungeon.mode == Dungeon.GameMode.CHAOS) specials = Random.Int(1, specials);
 		SpecialRoom.initForFloor();
 		for (int i = 0; i < specials; i++) {
 			SpecialRoom s = SpecialRoom.createRoom();
@@ -131,6 +135,7 @@ public abstract class RegularLevel extends Level {
 		int secrets = SecretRoom.secretsForFloor(Dungeon.depth);
 		//one additional secret for secret levels
 		if (feeling == Feeling.SECRETS) secrets++;
+		if (Dungeon.mode == Dungeon.GameMode.CHAOS) secrets = Random.Int(1, secrets);
 		for (int i = 0; i < secrets; i++) {
 			initRooms.add(SecretRoom.createRoom());
 		}
@@ -172,7 +177,9 @@ public abstract class RegularLevel extends Level {
 		if (SPDSettings.smalldungeon())
 			return Random.NormalIntRange( 1, 3 + (Dungeon.depth/5) );
 
-		return Random.NormalIntRange( 3, 5 + (Dungeon.depth/3) );
+		int i = Random.NormalIntRange(3, 5 + (Dungeon.depth / 3));
+		if (Dungeon.mode == Dungeon.GameMode.CHAOS) i = Random.Int(0, i);
+		return i;
 	}
 	
 	protected Class<?>[] trapClasses(){
@@ -192,6 +199,7 @@ public abstract class RegularLevel extends Level {
 			mobs = (int)Math.ceil(mobs * 2f);
 		}
 		if (SPDSettings.smalldungeon()) mobs /= 3;
+		if (Dungeon.mode == Dungeon.GameMode.CHAOS) mobs = Random.Int(0, mobs);
 
 		return mobs;
 	}
@@ -328,6 +336,8 @@ public abstract class RegularLevel extends Level {
 		if (SPDSettings.bigdungeon()) nItems *= 2;
 		if (SPDSettings.smalldungeon()) nItems -= 5;
 		if (Dungeon.hero.heroClass == HeroClass.ADVENTURER) nItems *= 2f;
+
+		if (Dungeon.mode == Dungeon.GameMode.CHAOS) nItems = Random.Int(0 ,nItems);
 
 		for (int i=0; i < nItems; i++) {
 

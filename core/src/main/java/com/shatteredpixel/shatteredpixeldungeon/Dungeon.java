@@ -144,7 +144,8 @@ public class Dungeon {
 		EXPLORE( "explore", Icons.EXPLORE),
 		NO_SOU("no_sou", Icons.SOULLESS),
 		HELL("hell", Icons.HELL_CHEST),
-		REALTIME("realtime", Icons.REAL_TIME);
+		REALTIME("realtime", Icons.REAL_TIME),
+		CHAOS("chaos", Icons.CHAOS);
 
 		public String saveName;
 		public Icons icon;

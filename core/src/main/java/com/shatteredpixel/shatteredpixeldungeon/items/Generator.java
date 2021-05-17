@@ -421,21 +421,339 @@ public class Generator {
 		}
 	}
 
+	public static void chaosDistributionInit(){
+		{
+			Category.GOLD.classes = new Class<?>[]{
+					Gold.class };
+			Category.GOLD.prob = 1;
+			Category.GOLD.probs = new float[]{ 1 };
+
+			Category.POTION.prob = 1;
+			Category.POTION.classes = new Class<?>[]{
+					PotionOfStrength.class,
+					PotionOfHealing.class,
+					PotionOfMindVision.class,
+					PotionOfFrost.class,
+					PotionOfLiquidFlame.class,
+					PotionOfToxicGas.class,
+					PotionOfHaste.class,
+					PotionOfInvisibility.class,
+					PotionOfLevitation.class,
+					PotionOfParalyticGas.class,
+					PotionOfPurity.class,
+					PotionOfExperience.class};
+			Category.POTION.defaultProbs = new float[]{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+			Category.POTION.probs = Category.POTION.defaultProbs.clone();
+			Category.EXOTIC_POTION.classes = new Class<?>[]{
+					PotionOfAdrenalineSurge.class, //2 drop every chapter, see Dungeon.posNeeded()
+					PotionOfShielding.class,
+					PotionOfMagicalSight.class,
+					PotionOfSnapFreeze.class,
+					PotionOfDragonsBreath.class,
+					PotionOfCorrosiveGas.class,
+					PotionOfStamina.class,
+					PotionOfShroudingFog.class,
+					PotionOfStormClouds.class,
+					PotionOfEarthenArmor.class,
+					PotionOfCleansing.class,
+					PotionOfHolyFuror.class};
+			Category.EXOTIC_POTION.defaultProbs = Category.POTION.defaultProbs.clone();
+			Category.EXOTIC_POTION.probs = Category.POTION.probs.clone();
+
+			Category.SEED.prob = 1;
+			Category.SEED.classes = new Class<?>[]{
+					Rotberry.Seed.class,
+					Sungrass.Seed.class,
+					Fadeleaf.Seed.class,
+					Icecap.Seed.class,
+					Firebloom.Seed.class,
+					Sorrowmoss.Seed.class,
+					Swiftthistle.Seed.class,
+					Blindweed.Seed.class,
+					Stormvine.Seed.class,
+					Earthroot.Seed.class,
+					Dreamfoil.Seed.class,
+					Starflower.Seed.class};
+			Category.SEED.defaultProbs = new float[]{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+			Category.SEED.probs = Category.SEED.defaultProbs.clone();
+
+			Category.SCROLL.prob = 1;
+			Category.SCROLL.classes = new Class<?>[]{
+					ScrollOfUpgrade.class,
+					ScrollOfIdentify.class,
+					ScrollOfRemoveCurse.class,
+					ScrollOfMirrorImage.class,
+					ScrollOfRecharging.class,
+					ScrollOfTeleportation.class,
+					ScrollOfLullaby.class,
+					ScrollOfMagicMapping.class,
+					ScrollOfRage.class,
+					ScrollOfRetribution.class,
+					ScrollOfAttunement.class,
+					ScrollOfTransmutation.class
+			};
+			Category.SCROLL.defaultProbs = new float[]{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+			Category.SCROLL.probs = Category.SCROLL.defaultProbs.clone();
+			Category.EXOTIC_SCROLL.classes = new Class<?>[]{
+					ScrollOfEnchantment.class, //3 drop every chapter, see Dungeon.souNeeded()
+					ScrollOfDivination.class,
+					ScrollOfAntiMagic.class,
+					ScrollOfPrismaticImage.class,
+					ScrollOfMysticalEnergy.class,
+					ScrollOfPassage.class,
+					ScrollOfAffection.class,
+					ScrollOfForesight.class,
+					ScrollOfConfusion.class,
+					ScrollOfPsionicBlast.class,
+					ScrollOfSoulEnergy.class,
+					ScrollOfPolymorph.class
+			};
+			Category.EXOTIC_SCROLL.probs = Category.SCROLL.probs.clone();
+			Category.EXOTIC_SCROLL.defaultProbs = Category.SCROLL.probs.clone();
+
+			Category.STONE.prob = 1;
+			Category.STONE.classes = new Class<?>[]{
+					StoneOfEnchantment.class,
+					StoneOfAugmentation.class,
+					StoneOfIntuition.class,
+					StoneOfAggression.class,
+					StoneOfTargeting.class,
+					StoneOfBlast.class,
+					StoneOfBlink.class,
+					StoneOfClairvoyance.class,
+					StoneOfDeepenedSleep.class,
+					StoneOfDisarming.class,
+					StoneOfFlock.class,
+					StoneOfShock.class
+			};
+			Category.STONE.defaultProbs = new float[]{ 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 };
+			Category.STONE.probs = Category.STONE.defaultProbs.clone();
+
+			Category.WAND.classes = new Class<?>[]{
+					WandOfMagicMissile.class,
+					WandOfLightning.class,
+					WandOfBounceBeams.class,
+					WandOfFireblast.class,
+					WandOfCorrosion.class,
+					WandOfBlastWave.class,
+					WandOfCrystalBullet.class,
+					WandOfStars.class,
+					WandOfLivingEarth.class,
+					WandOfFrost.class,
+					WandOfPrismaticLight.class,
+					WandOfWarding.class,
+					WandOfTransfusion.class,
+					WandOfCorruption.class,
+					WandOfRegrowth.class,
+					WandOfStench.class,
+					WandOfConjuration.class};
+			Category.WAND.probs = new float[]{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+
+			//see generator.randomWeapon
+			Category.WEAPON.prob = 1;
+			Category.WEAPON.classes = new Class<?>[]{};
+			Category.WEAPON.probs = new float[]{};
+
+			Category.WEP_T1.classes = new Class<?>[]{
+					WornShortsword.class,
+					Gloves.class,
+					Dagger.class,
+					MagesStaff.class
+			};
+			Category.WEP_T1.probs = new float[]{ 1, 1, 1, 1 };
+
+			Category.WEP_T2.classes = new Class<?>[]{
+					Shortsword.class,
+					HandAxe.class,
+					Spear.class,
+					Quarterstaff.class,
+					Dirk.class,
+					Cleaver.class
+			};
+			Category.WEP_T2.probs = new float[]{ 1, 1, 1, 1, 1, 1};
+
+			Category.WEP_T3.classes = new Class<?>[]{
+					Sword.class,
+					Mace.class,
+					Scimitar.class,
+					RoundShield.class,
+					Sai.class,
+					Whip.class
+			};
+			Category.WEP_T3.probs = new float[]{ 1, 1, 1, 1, 1, 1 };
+
+			Category.WEP_T4.classes = new Class<?>[]{
+					Longsword.class,
+					BattleAxe.class,
+					Flail.class,
+					RunicBlade.class,
+					AssassinsBlade.class,
+					Crossbow.class
+			};
+			Category.WEP_T4.probs = new float[]{ 1, 1, 1, 1, 1, 1 };
+
+			Category.WEP_T5.classes = new Class<?>[]{
+					Greatsword.class,
+					WarHammer.class,
+					Glaive.class,
+					Greataxe.class,
+					Greatshield.class,
+					Gauntlet.class
+			};
+			Category.WEP_T5.probs = new float[]{ 1, 1, 1, 1, 1, 1 };
+
+			//see Generator.randomArmor
+			Category.ARMOR.prob = 1;
+			Category.ARMOR.classes = new Class<?>[]{
+					ClothArmor.class,
+					LeatherArmor.class,
+					MailArmor.class,
+					ScaleArmor.class,
+					PlateArmor.class };
+			Category.ARMOR.probs = new float[]{ 0, 0, 0, 0, 0 };
+
+			//see Generator.randomMissile
+			Category.MISSILE.prob = 1;
+			Category.MISSILE.classes = new Class<?>[]{};
+			Category.MISSILE.probs = new float[]{};
+
+			Category.MIS_T1.classes = new Class<?>[]{
+					ThrowingStone.class,
+					ThrowingKnife.class
+			};
+			Category.MIS_T1.probs = new float[]{ 1, 1 };
+
+			Category.MIS_T2.classes = new Class<?>[]{
+					FishingSpear.class,
+					ThrowingClub.class,
+					Shuriken.class
+			};
+			Category.MIS_T2.probs = new float[]{ 1, 1, 1 };
+
+			Category.MIS_T3.classes = new Class<?>[]{
+					ThrowingSpear.class,
+					Kunai.class,
+					Bolas.class
+			};
+			Category.MIS_T3.probs = new float[]{ 1, 1, 1 };
+
+			Category.MIS_T4.classes = new Class<?>[]{
+					Javelin.class,
+					Tomahawk.class,
+					HeavyBoomerang.class
+			};
+			Category.MIS_T4.probs = new float[]{ 1, 1, 1 };
+
+			Category.MIS_T5.classes = new Class<?>[]{
+					Trident.class,
+					ThrowingHammer.class,
+					ForceCube.class
+			};
+			Category.MIS_T5.probs = new float[]{ 1, 1, 1 };
+
+			//see Generator.randomMissile
+			Category.STAFFS.prob = 1;
+			Category.STAFFS.classes = new Class<?>[]{};
+			Category.STAFFS.probs = new float[]{};
+
+			Category.STF_T1.classes = new Class<?>[]{
+					FroggitStaff.class,
+			};
+			Category.STF_T1.probs = new float[]{ 1 };
+
+			Category.STF_T2.classes = new Class<?>[]{
+					GreyRatStaff.class,
+					SlimeStaff.class,
+					SheepStaff.class
+			};
+			Category.STF_T2.probs = new float[]{ 1, 1, 1};
+
+			Category.STF_T3.classes = new Class<?>[]{
+					SkeletonStaff.class,
+					GnollHunterStaff.class,
+					ChickenStaff.class,
+					MagicMissileStaff.class
+			};
+			Category.STF_T3.probs = new float[]{ 1, 1, 1, 1};
+
+			Category.STF_T4.classes = new Class<?>[]{
+					FrostElementalStaff.class,
+					WizardStaff.class,
+					RoboStaff.class,
+					RoseStaff.class
+			};
+			Category.STF_T4.probs = new float[]{ 1, 1, 1, 1  };
+
+			Category.STF_T5.classes = new Class<?>[]{
+					GooStaff.class,
+					BlasterStaff.class,
+					ImpQueenStaff.class,
+					HacatuStaff.class
+			};
+			Category.STF_T5.probs = new float[]{ 1, 1, 1, 1 };
+
+			Category.FOOD.prob = 1;
+			Category.FOOD.classes = new Class<?>[]{
+					Food.class,
+					Pasty.class,
+					MysteryMeat.class };
+			Category.FOOD.probs = new float[]{ 1, 1, 1 };
+
+			Category.RING.prob = 1;
+			Category.RING.classes = new Class<?>[]{
+					RingOfAccuracy.class,
+					RingOfEvasion.class,
+					RingOfElements.class,
+					RingOfForce.class,
+					RingOfFuror.class,
+					RingOfHaste.class,
+					RingOfEnergy.class,
+					RingOfMight.class,
+					RingOfSharpshooting.class,
+					RingOfAttunement.class,
+					RingOfWealth.class};
+			Category.RING.probs = new float[]{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+
+			Category.ARTIFACT.prob = 1;
+			Category.ARTIFACT.classes = new Class<?>[]{
+					CapeOfThorns.class,
+					ChaliceOfBlood.class,
+					CloakOfShadows.class,
+					HornOfPlenty.class,
+					MasterThievesArmband.class,
+					SandalsOfNature.class,
+					TalismanOfForesight.class,
+					TimekeepersHourglass.class,
+					UnstableSpellbook.class,
+					AlchemistsToolkit.class,
+					DriedRose.class,
+					LloydsBeacon.class,
+					EtherealChains.class
+			};
+			Category.ARTIFACT.defaultProbs = new float[]{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1};
+			Category.ARTIFACT.probs = Category.ARTIFACT.defaultProbs.clone();
+		}
+	}
+
 	private static final float[][] floorSetTierProbs = new float[][] {
 			{0, 70, 20,  8,  2},
 			{0, 25, 50, 20,  5},
 			{0,  0, 40, 50, 10},
 			{0,  0, 20, 40, 40},
 			{0,  0,  0, 20, 80},
-			{1, 1, 1, 1, 1}
+			{0, 1, 1, 1, 1}
 	};
 	
 	private static HashMap<Category,Float> categoryProbs = new LinkedHashMap<>();
 
 	public static void fullReset() {
 		generalReset();
+
 		for (Category cat : Category.values()) {
 			reset(cat);
+		}
+		if (Dungeon.mode == Dungeon.GameMode.CHAOS){
+			chaosDistributionInit();
 		}
 	}
 
@@ -504,6 +822,7 @@ public class Generator {
 	public static Armor randomArmor(int floorSet) {
 
 		floorSet = (int)GameMath.gate(0, floorSet, floorSetTierProbs.length-1);
+		if (Dungeon.mode == Dungeon.GameMode.CHAOS) floorSet = 5;
 
 		Armor a = (Armor)Reflection.newInstance(Category.ARMOR.classes[Random.chances(floorSetTierProbs[floorSet])]);
 		a.random();
@@ -525,6 +844,7 @@ public class Generator {
 	public static MeleeWeapon randomWeapon(int floorSet) {
 
 		floorSet = (int)GameMath.gate(0, floorSet, floorSetTierProbs.length-1);
+		if (Dungeon.mode == Dungeon.GameMode.CHAOS) floorSet = 5;
 
 		Category c = wepTiers[Random.chances(floorSetTierProbs[floorSet])];
 		MeleeWeapon w = (MeleeWeapon)Reflection.newInstance(c.classes[Random.chances(c.probs)]);
@@ -547,6 +867,7 @@ public class Generator {
 	public static MissileWeapon randomMissile(int floorSet) {
 		
 		floorSet = (int)GameMath.gate(0, floorSet, floorSetTierProbs.length-1);
+		if (Dungeon.mode == Dungeon.GameMode.CHAOS) floorSet = 5;
 		
 		Category c = misTiers[Random.chances(floorSetTierProbs[floorSet])];
 		MissileWeapon w = (MissileWeapon)Reflection.newInstance(c.classes[Random.chances(c.probs)]);
@@ -569,6 +890,7 @@ public class Generator {
     public static Staff randomStaff(int floorSet) {
 
         floorSet = (int)GameMath.gate(0, floorSet, floorSetTierProbs.length-1);
+		if (Dungeon.mode == Dungeon.GameMode.CHAOS) floorSet = 5;
 
         try {
             Category c = stfTiers[Random.chances(floorSetTierProbs[floorSet])];

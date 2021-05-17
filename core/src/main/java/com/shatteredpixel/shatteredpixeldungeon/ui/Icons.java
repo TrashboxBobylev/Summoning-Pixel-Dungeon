@@ -86,6 +86,7 @@ public enum Icons {
 	SOULLESS,
 	HELL_CHEST,
 	REAL_TIME,
+	CHAOS,
 	
 	//misc icons
 	LIBGDX,
@@ -289,7 +290,9 @@ public enum Icons {
 		case REAL_TIME:
 			icon.frame( icon.texture.uvRect( 2, 160, 24, 176 ) );
 			break;
-
+			case CHAOS:
+				icon.frame( icon.texture.uvRect( 48, 160, 63, 178 ) );
+				break;
 		}
 		return icon;
 	}
