@@ -218,9 +218,10 @@ public class Dragon extends Mob{
                         swipeAttack(5, 7);
                         break;
                 }
-                next();
+
 
             }
+        next();
     }
 
     protected void swipeAttack(int adjacentDir1, int adjacentDir2){

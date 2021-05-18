@@ -58,6 +58,7 @@ public class Toolbar extends Component implements WndBag.Listener {
 
 	@Override
 	public void onSelect(Item item) {
+		if (item != null)
 		item.execute(Dungeon.hero);
 	}
 
