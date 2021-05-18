@@ -433,7 +433,7 @@ public abstract class Level implements Bundlable {
 	
 	public Mob createMob() {
 		if (mobsToSpawn == null || mobsToSpawn.isEmpty()) {
-			float relativeDepthMod = Dungeon.mode == Dungeon.GameMode.GAUNTLET ? 0.4f : 1f;
+			float relativeDepthMod = Dungeon.mode == Dungeon.GameMode.GAUNTLET ? 0.75f : 1f;
 			int depth = Math.round(Dungeon.depth * relativeDepthMod);
 			if (Dungeon.depth == 1 && Dungeon.mode == Dungeon.GameMode.GAUNTLET)
 				depth++;

@@ -179,7 +179,7 @@ public class ArenaLevel extends RegularLevel {
             addItemToSpawn(new Chaosstone());
             if (Random.Int(2) == 0) addItemToSpawn(new Chaosstone());
         }
-        addItemToSpawn(new ChargrilledMeat());
+        if (Dungeon.depth % 2 == 0) addItemToSpawn(new ChargrilledMeat());
 
         super.create();
     }

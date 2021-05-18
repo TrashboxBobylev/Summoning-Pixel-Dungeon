@@ -67,7 +67,7 @@ public class AmuletScene extends PixelScene {
 		RedButton btnExit = new RedButton( Messages.get(this, "exit") ) {
 			@Override
 			protected void onClick() {
-				if ((Dungeon.mode == Dungeon.GameMode.GAUNTLET && Dungeon.depth > 77) ||
+				if ((Dungeon.mode == Dungeon.GameMode.GAUNTLET && Dungeon.depth > 41) ||
 						(Dungeon.mode.isNormal() && Dungeon.depth > 0)) {
 					Class clazz = Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE) ? Sword.class : Amulet.class;
 					if (Dungeon.hero.belongings.getSimilar(new Chaosstone()) != null) {

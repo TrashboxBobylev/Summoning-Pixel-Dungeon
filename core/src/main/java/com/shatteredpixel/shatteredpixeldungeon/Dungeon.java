@@ -349,7 +349,7 @@ public class Dungeon {
 	}
 
 	public static int chapterSize(){
-		if (Dungeon.mode == GameMode.GAUNTLET) return 15;
+		if (Dungeon.mode == GameMode.GAUNTLET) return 8;
 		if (SPDSettings.smalldungeon()) return 4;
 		return SPDSettings.bigdungeon() ? 6 : 5;
 	}

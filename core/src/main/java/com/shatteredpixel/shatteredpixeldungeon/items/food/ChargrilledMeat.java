@@ -32,9 +32,6 @@ public class ChargrilledMeat extends Food {
 	{
 		image = ItemSpriteSheet.STEAK;
 		energy = 330;
-		if (Dungeon.mode == Dungeon.GameMode.GAUNTLET){
-			energy = 385;
-		}
 	}
 	
 	@Override
