@@ -120,7 +120,7 @@ public class Hunger extends Buff implements Hero.Doom {
 			hunger.level = STARVING;
 			hunger.partialDamage += Math.abs(energy) * target.HT/400f;
 			if (hunger.partialDamage > 1){
-				target.damage( (int)Math.abs(hunger.partialDamage), target);
+				target.damage( (int)Math.abs(hunger.partialDamage), new Hunger());
 				hunger.partialDamage -= (int)hunger.partialDamage;
 			}
 		}

@@ -537,7 +537,7 @@ public class Item implements Bundlable {
 		final int cell = throwPos( user, dst );
 		user.sprite.zap( cell );
 		user.busy();
-		Hunger.adjustHunger(-3);
+		Hunger.adjustHunger(-3*castDelay(user, dst));
 
 		throwSound();
 

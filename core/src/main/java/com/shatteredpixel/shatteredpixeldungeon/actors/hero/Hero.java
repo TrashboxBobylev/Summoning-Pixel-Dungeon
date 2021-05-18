@@ -32,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.GonerField;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.PerfumeGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.FierySlash;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulReaver;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulWeakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SpikyShield;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -725,7 +724,7 @@ public class Hero extends Char {
 	private boolean actMove( HeroAction.Move action ) {
 
 		if (getCloser( action.dst )) {
-			Hunger.adjustHunger(-1*speed());
+			Hunger.adjustHunger(-1/speed());
 			return true;
 
 		} else {
@@ -979,7 +978,7 @@ public class Hero extends Char {
 		} else if ((Dungeon.level.map[pos] == Terrain.EXIT || Dungeon.level.map[pos] == Terrain.UNLOCKED_EXIT)) {
 			
 			curAction = null;
-			Hunger.adjustHunger(-20);
+			Hunger.adjustHunger(-20/speed());
 			lastMovPos = -1;
 
 			TimekeepersHourglass.TimeFreezing timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.TimeFreezing.class );
@@ -1032,7 +1031,7 @@ public class Hero extends Char {
 			} else {
 				
 				curAction = null;
-				Hunger.adjustHunger(-20);
+				Hunger.adjustHunger(-20/speed());
 				lastMovPos = -1;
 
 				TimekeepersHourglass.TimeFreezing timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.TimeFreezing.class );
@@ -1162,7 +1161,7 @@ public class Hero extends Char {
 		if (buff(TimekeepersHourglass.timeStasis.class) != null)
 			return;
 
-		if (!(src instanceof Hunger || src instanceof Viscosity.DeferedDamage || src instanceof HateOccult) && damageInterrupt) {
+		if (!(src instanceof Hunger || src instanceof Viscosity.DeferedDamage) && damageInterrupt) {
 			interrupt();
 			resting = false;
 		}
@@ -1770,7 +1769,7 @@ public class Hero extends Char {
 		
 		Invisibility.dispel();
 		spend( attackDelay() );
-        Hunger.adjustHunger(-2f);
+        Hunger.adjustHunger(-2f*attackDelay());
 
 		curAction = null;
 
@@ -1956,9 +1955,9 @@ public class Hero extends Char {
 			if (!Dungeon.level.locked) {
 				if (cursed) {
 					GLog.negative(Messages.get(this, "search_distracted"));
-					Hunger.adjustHunger(-(TIME_TO_SEARCH - (2 * HUNGER_FOR_SEARCH)));
+					Hunger.adjustHunger((TIME_TO_SEARCH - (2 * HUNGER_FOR_SEARCH)));
 				} else {
-					Hunger.adjustHunger(-(TIME_TO_SEARCH - HUNGER_FOR_SEARCH));
+					Hunger.adjustHunger((TIME_TO_SEARCH - HUNGER_FOR_SEARCH));
 				}
 			}
 			spendAndNext(TIME_TO_SEARCH);
