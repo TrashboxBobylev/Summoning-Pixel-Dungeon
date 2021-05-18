@@ -24,8 +24,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Stamina;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
@@ -39,7 +39,7 @@ public class PotionOfStamina extends ExoticPotion {
 	public void apply(Hero hero) {
 		setKnown();
 		
-		Buff.affect(hero, Stamina.class, Stamina.DURATION);
+		Buff.affect(hero, Adrenaline.class, Adrenaline.DURATION);
 	}
 	
 }
