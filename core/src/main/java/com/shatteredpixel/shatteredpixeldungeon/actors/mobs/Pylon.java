@@ -107,7 +107,7 @@ public class Pylon extends Mob {
 		if (ch != null && !(ch instanceof NewDM300)){
 			ch.sprite.flash();
 			int dmg = Random.NormalIntRange(10, 20);
-			if (buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dmg *= 0.6f;
+			if (buff(Shrink.class) != null || buff(TimedShrink.class) != null) dmg *= 0.6f;
 			ch.damage(dmg, new Electricity());
 
 			if (ch == Dungeon.hero && !ch.isAlive()){
