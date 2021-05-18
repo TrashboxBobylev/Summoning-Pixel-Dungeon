@@ -31,7 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.PerfumeGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulReaver;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.Wet;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -327,15 +326,6 @@ public abstract class Char extends Actor {
 				}
 				enemy.sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Preparation.class, "assassinated"));
 			}
-
-            if (this instanceof Hero)
-                if (((Hero) this).subClass == HeroSubClass.SOUL_REAVER) {
-                    if (!(((Hero) this).belongings.weapon instanceof MissileWeapon)) {
-                        Buff.affect(this, SoulReaver.class, 20f).type = SoulReaver.Type.MELEE;
-                    } else {
-                        Buff.affect(this, SoulReaver.class, 20f).type = SoulReaver.Type.RANGE;
-                    }
-                }
 
 
 			enemy.sprite.bloodBurstA( sprite.center(), effectiveDamage );

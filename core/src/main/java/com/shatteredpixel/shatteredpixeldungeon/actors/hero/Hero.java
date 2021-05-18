@@ -1154,10 +1154,6 @@ public class Hero extends Char {
 			damage = rockArmor.absorb(damage);
 		}
 
-		if (subClass == HeroSubClass.SOUL_REAVER && (initialDamage / 2 >= damage)){
-            Buff.affect(this, SoulReaver.class, 20f).type = SoulReaver.Type.DEFENSE;
-        }
-
 		return damage;
 	}
 	
