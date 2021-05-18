@@ -121,7 +121,7 @@ public class DarkestElf extends Mob {
 	}
 
 	@Override
-	protected void spend(float time) {
+    public void spend(float time) {
 		super.spend(time / 2f);
 	}
 

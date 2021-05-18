@@ -568,7 +568,7 @@ public abstract class Char extends Actor {
 	}
 	
 	@Override
-	protected void spend( float time ) {
+    public void spend(float time) {
 		
 		float timeScale = 1f;
 		if (buff( Slow.class ) != null) {

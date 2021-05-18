@@ -26,24 +26,17 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Timer;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Flashbang;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.RatBomb;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ExplodingTNTSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.Callback;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
-
-import java.util.ArrayList;
 
 public class ExplodingTNT extends Mob {
 
@@ -92,82 +85,14 @@ public class ExplodingTNT extends Mob {
 	    if (!attack) {
             return super.doAttack(enemy);
         } else {
-	        final Ballistica ballistica = new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE);
-	        final ExplodingTNT mouse = this;
-            Callback call = new Callback() {
-                @Override
-                public void call() {
-                    final Bomb bbbomb = new Bomb(){
-
-                        {
-                            image = ItemSpriteSheet.FLASHBANG;
-                        }
-
-                        @Override
-                        public void explode(int cell) {
-                            this.fuse = null;
-                            ArrayList<Char> affected = new ArrayList<>();
-
-                            boolean terrainAffected = false;
-                            for (int n : PathFinder.NEIGHBOURS9) {
-                                int c = cell + n;
-                                if (c >= 0 && c < Dungeon.level.length()) {
-
-                                    Char ch = Actor.findChar(c);
-                                    if (ch != null) {
-                                        affected.add(ch);
-                                    }
-
-                                    for (Char cher : affected){
-
-                                        //if they have already been killed by another bomb
-                                        if(!cher.isAlive()){
-                                            continue;
-                                        }
-
-                                        int dmg = Math.round(damageRoll() / Random.Float(4, 6));
-                                        if (buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dmg *= 0.6f;
-
-                                        dmg -= cher.drRoll();
-
-                                        if (dmg > 0) {
-                                            cher.damage(dmg, this);
-                                        }
-
-                                        if (cher == Dungeon.hero && !cher.isAlive()) {
-                                            Dungeon.fail(Bomb.class);
-                                        }
-
-                                        int power = 25 - 8*Dungeon.level.distance(cher.pos, cell);
-                                        if (power > 0){
-                                            if (cher instanceof Mob && !(cher instanceof ExplodingTNT)){
-                                                Buff.prolong(cher, Blindness.class, power);
-                                                Buff.prolong(cher, Cripple.class, power);
-                                                ((Mob) cher).enemy = null;
-                                                ((Mob) cher).enemySeen = false;
-                                                ((Mob) cher).state = ((Mob) cher).WANDERING;
-                                            }
-                                        }
-                                        if (cher == Dungeon.hero){
-                                            GameScene.flash(0xFFFFFF);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    };
-                    bbbomb.fuse  = new Bomb.Fuse().ignite(bbbomb);
-                    Actor.addDelayed( bbbomb.fuse, 1);
-                    Heap heap = Dungeon.level.drop( bbbomb, ballistica.collisionPos );
-                    if (!heap.isEmpty()) {
-                        heap.sprite.drop( ballistica.collisionPos );
-                    }
-                    spend(TICK);
-                    next();
-
-                }
-            };
-            ((MissileSprite)sprite.parent.recycle(MissileSprite.class)).reset(pos, enemy.pos, new Bomb(), call);
+            final ExplodingTNT mouse = this;
+//            Callback call = new Callback() {
+//                @Override
+//                public void call() {
+                    new RatBomb().cast(mouse, enemy.pos);
+//                }
+//            };
+//            ((MissileSprite)sprite.parent.recycle(MissileSprite.class)).reset(pos, enemy.pos, new RatBomb(), call);
             attack = false;
 
             Buff.affect(mouse, Timer.class, 10f);

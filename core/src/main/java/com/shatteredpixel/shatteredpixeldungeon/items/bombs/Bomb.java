@@ -117,7 +117,7 @@ public class Bomb extends Item {
 
 	@Override
 	protected void onThrow( int cell ) {
-		if (!Dungeon.level.pit[ cell ] && lightingFuse) {
+		if (!Dungeon.level.pit[ cell ] && (lightingFuse || curUser == null)) {
 			Actor.addDelayed(fuse = new Fuse().ignite(this), fuseDelay);
 			if (this instanceof Noisemaker) Buff.affect(Dungeon.hero, Noisemaker.Trigger.class).set(cell);
 			if (this instanceof SupplyBomb) Buff.affect(Dungeon.hero, SupplyBomb.Trigger.class).set(cell);
@@ -190,6 +190,7 @@ public class Bomb extends Item {
 				}
 
 				int dmg = damageRoll();
+				if (this instanceof RatBomb) dmg = (int) (damageRoll() / Random.Float(2, 3.5f));
 
 				//those not at the center of the blast take less damage
 				if (ch.pos != cell){
