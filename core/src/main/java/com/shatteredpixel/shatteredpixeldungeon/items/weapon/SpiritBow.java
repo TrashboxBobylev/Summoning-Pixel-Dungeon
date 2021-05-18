@@ -219,7 +219,7 @@ public class SpiritBow extends Weapon {
 	public int min(int lvl) {
 		switch (level()){
 			case 1:
-				return 2 + Dungeon.hero.lvl/4
+				return 2 + Dungeon.hero.lvl/5
 						+ RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
 						+ (curseInfusionBonus ? 1 : 0);
 			case 2:
@@ -236,12 +236,12 @@ public class SpiritBow extends Weapon {
 	public int max(int lvl) {
 		switch (level()){
 			case 1:
-				return 9 + Dungeon.hero.lvl/2
+				return 7 + (int)(Dungeon.hero.lvl/2.5f)
 						+ 2*RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
 						+ (curseInfusionBonus ? 2 : 0);
 			case 2:
-				return 14 + (int)(Dungeon.hero.lvl/0.8f)
-										+ RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
+				return 15 + (int)(Dungeon.hero.lvl/0.8f)
+										+ 2*RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
 										+ (curseInfusionBonus ? 1 : 0);
 		}
 		return 6 + (int)(Dungeon.hero.lvl/2.5f)
@@ -303,7 +303,7 @@ public class SpiritBow extends Weapon {
 			float mod = 1f;
 			switch (level()){
 				case 1:
-					mod = 1f / 0.8f; break;
+					mod = 1f / 0.75f; break;
 				case 2:
 					mod = 1f / 0.4f;
 			}
@@ -317,7 +317,7 @@ public class SpiritBow extends Weapon {
 			case 1:
 				return Dungeon.hero.lvl/3;
 			case 2:
-				return Math.round(Dungeon.hero.lvl/7f);
+				return Dungeon.hero.lvl/6;
 		}
 		return Dungeon.hero.lvl/5;
 	}
