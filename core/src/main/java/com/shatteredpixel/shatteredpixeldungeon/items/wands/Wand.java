@@ -464,7 +464,9 @@ public abstract class Wand extends Item {
 				} else {
 					return;
 				}
-
+				if (curWand instanceof WandOfBounceBeams){
+					Ballistica.REFLECTION = ((WandOfBounceBeams) curWand).bounceCount(curWand.buffedLvl());
+				}
 				final Ballistica shot = new Ballistica( curUser.pos, target, curWand.collisionProperties(target));
 				int cell = shot.collisionPos;
 				
