@@ -63,8 +63,8 @@ public class Statue extends Mob {
 		
 		weapon.enchant( Enchantment.random() );
 		
-		HP = HT = 15 + Dungeon.depth * 5;
-		defenseSkill = 4 + Dungeon.depth;
+		HP = HT = 15 + Dungeon.depth * 5 * 5 / Dungeon.chapterSize();
+		defenseSkill = 4 + Dungeon.depth * 5 / Dungeon.chapterSize();
 	}
 	
 	private static final String WEAPON	= "weapon";
@@ -96,7 +96,7 @@ public class Statue extends Mob {
 	
 	@Override
 	public int attackSkill( Char target ) {
-		return (int)((9 + Dungeon.depth) * weapon.accuracyFactor(this));
+		return (int)((9 + Dungeon.depth * 5 / Dungeon.chapterSize()) * weapon.accuracyFactor(this));
 	}
 	
 	@Override
@@ -111,7 +111,7 @@ public class Statue extends Mob {
 
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, Dungeon.depth + weapon.defenseFactor(this));
+		return Random.NormalIntRange(0, Dungeon.depth* 5 / Dungeon.chapterSize() + weapon.defenseFactor(this));
 	}
 	
 	@Override

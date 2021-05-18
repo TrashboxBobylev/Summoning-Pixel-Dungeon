@@ -220,7 +220,7 @@ public class Bomb extends Item {
 		//caves: 38-72
 		//city: 43-102
 		//halls: 68-112
-		return Random.NormalIntRange(8 + ((Dungeon.depth / 5))*15, 12 + ((Dungeon.depth / 5))*30);
+		return Random.NormalIntRange(8 + ((Dungeon.depth / 5) * 5 / Dungeon.chapterSize())*15, 12 + ((Dungeon.depth / 5) * 5 / Dungeon.chapterSize())*30);
 	}
 	
 	@Override

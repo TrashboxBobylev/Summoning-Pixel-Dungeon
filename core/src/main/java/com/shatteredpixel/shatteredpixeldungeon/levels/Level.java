@@ -177,7 +177,7 @@ public abstract class Level implements Bundlable {
 			}
 			//one scroll of transmutation is guaranteed to spawn somewhere on chapter 2-4
 			int enchChapter = (int)((Dungeon.seed / 10) % 3) + 1;
-			if ( Dungeon.depth / 5 == enchChapter &&
+			if ( Dungeon.depth / 5 * 5 / Dungeon.chapterSize() == enchChapter &&
 					Dungeon.seed % 4 + 1 == Dungeon.depth % 5){
 				addItemToSpawn( new StoneOfEnchantment() );
 			}

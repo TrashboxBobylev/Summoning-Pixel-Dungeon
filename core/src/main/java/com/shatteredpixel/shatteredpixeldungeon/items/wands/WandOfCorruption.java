@@ -144,12 +144,12 @@ public class WandOfCorruption extends Wand {
     public static float getEnemyResist(Char ch, Mob enemy) {
         float enemyResist = 1 + enemy.EXP;
         if (ch instanceof Mimic || ch instanceof Statue){
-            enemyResist = 1 + Dungeon.depth;
+            enemyResist = 1 + Dungeon.depth * 5 / Dungeon.chapterSize();
         } else if (ch instanceof Piranha || ch instanceof Bee) {
-            enemyResist = 1 + Dungeon.depth/2f;
+            enemyResist = 1 + Dungeon.depth/2f * 5 / Dungeon.chapterSize();
         } else if (ch instanceof Wraith) {
             //this is so low because wraiths are always at max hp
-            enemyResist = 0.5f + Dungeon.depth/8f;
+            enemyResist = 0.5f + Dungeon.depth/8f * 5 / Dungeon.chapterSize();
         } else if (ch instanceof Yog.BurningFist || ch instanceof Yog.RottingFist) {
             enemyResist = 1 + 30;
         } else if (ch instanceof Yog.Larva || ch instanceof King.Undead){

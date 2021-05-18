@@ -328,7 +328,7 @@ public class WandOfLivingEarth extends DamageWand {
 
 		@Override
 		public int damageRoll() {
-			return Random.NormalIntRange(1 + Dungeon.depth/5, 3 + Dungeon.depth/3);
+			return Random.NormalIntRange(1 + Dungeon.depth/5 * 5 / Dungeon.chapterSize(), 3 + Dungeon.depth/3 * 5 / Dungeon.chapterSize());
 		}
 
 		@Override

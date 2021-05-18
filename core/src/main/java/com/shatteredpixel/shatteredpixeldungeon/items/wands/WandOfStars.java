@@ -221,7 +221,7 @@ public class WandOfStars extends DamageWand {
 
             if (defender.buff(FrostBurn.class) != null){
                 Buff.affect(defender, FrostBurn.class).reignite(defender, 8f);
-                int burnDamage = Random.NormalIntRange( 1, 3 + Dungeon.depth/4 );
+                int burnDamage = Random.NormalIntRange( 1, 3 + Dungeon.depth/4 * 5 / Dungeon.chapterSize() );
                 defender.damage( Math.round(burnDamage * 0.67f), this );
             } else {
                 Buff.affect(defender, FrostBurn.class).reignite(defender, 8f);

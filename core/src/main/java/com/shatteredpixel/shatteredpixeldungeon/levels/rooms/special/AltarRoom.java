@@ -75,7 +75,7 @@ public class AltarRoom extends SpecialRoom {
     private static Item prize(Level level ) {
 
         //1 floor set higher than normal
-        Staff prize = Generator.randomStaff( (Dungeon.depth / 5) + 1);
+        Staff prize = Generator.randomStaff( (Dungeon.depth / Dungeon.chapterSize()) + 1);
 
         //if it isn't already cursed, give it a free upgrade
         if (!prize.cursed){

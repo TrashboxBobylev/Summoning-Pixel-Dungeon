@@ -87,8 +87,8 @@ public class Ooze extends Buff {
 	@Override
 	public boolean act() {
 		if (target.isAlive()) {
-			if (Dungeon.depth > 4)
-				target.damage( Dungeon.depth/5, this );
+			if (Dungeon.depth > Dungeon.chapterSize() - 1)
+				target.damage( Dungeon.depth/Dungeon.chapterSize(), this );
 			else if (Random.Int(2) == 0)
 				target.damage( 1, this );
 			if (!target.isAlive() && target == Dungeon.hero) {

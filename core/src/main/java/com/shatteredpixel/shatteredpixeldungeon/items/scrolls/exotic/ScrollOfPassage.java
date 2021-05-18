@@ -55,7 +55,7 @@ public class ScrollOfPassage extends ExoticScroll {
 		if (timeFreeze != null) timeFreeze.detach();
 		
 		InterlevelScene.mode = InterlevelScene.Mode.RETURN;
-		InterlevelScene.returnDepth = Math.max(1, (Dungeon.depth - 1 - (Dungeon.depth-2)%5));
+		InterlevelScene.returnDepth = Math.max(1, (Dungeon.depth - 1 - (Dungeon.depth-2)%5 * 5 / Dungeon.chapterSize()));
 		InterlevelScene.returnPos = -1;
 		Game.switchScene( InterlevelScene.class );
 	}

@@ -72,10 +72,10 @@ public class Miasma extends Blob {
                         Buff.affect(ch, debuffCls, 5);
                         if (Random.Float() < 0.75) {
                             switch(Random.Int(4)) {
-                                case 0: Buff.affect(ch, Poison.class).set(3 + Dungeon.depth / 3); break;
+                                case 0: Buff.affect(ch, Poison.class).set(3 + (Dungeon.depth / 3) * 5 / Dungeon.chapterSize()); break;
                                 case 1: Buff.affect( ch, Burning.class ).reignite( ch ); break;
                                 case 2: Buff.affect(ch, Ooze.class).set( 20f ); break;
-                                case 3: Buff.affect(ch, Corrosion.class).set(10f, Dungeon.depth/3); break;
+                                case 3: Buff.affect(ch, Corrosion.class).set(10f, Dungeon.depth/3 * 5 / Dungeon.chapterSize()); break;
                             }
                         }
                     }

@@ -249,7 +249,7 @@ public class RingOfWealth extends Ring {
 	private static Item genEquipmentDrop( int level ){
 		Item result;
 		//each upgrade increases depth used for calculating drops by 1
-		int floorset = (Dungeon.depth + level)/5;
+		int floorset = (Dungeon.depth* 5 / Dungeon.chapterSize() + level)/5;
 		switch (Random.Int(5)){
 			default: case 0: case 1:
 				Weapon w = Generator.randomWeapon(floorset);

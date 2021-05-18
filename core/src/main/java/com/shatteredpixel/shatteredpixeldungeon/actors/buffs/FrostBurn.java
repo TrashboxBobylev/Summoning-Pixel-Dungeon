@@ -86,7 +86,7 @@ public class FrostBurn extends Buff implements Hero.Doom {
 		
 		if (target.isAlive() && !target.isImmune(getClass())) {
 			
-			int damage = Random.NormalIntRange( 1, 2 + Dungeon.depth/4 );
+			int damage = Random.NormalIntRange( 1, 2 + Dungeon.depth/4 * 5 / Dungeon.chapterSize() );
 
 			if (target instanceof Hero) {
 				

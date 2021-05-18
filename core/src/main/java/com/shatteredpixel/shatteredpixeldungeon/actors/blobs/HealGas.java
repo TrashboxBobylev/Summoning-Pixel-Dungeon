@@ -50,8 +50,8 @@ public class HealGas extends Blob {
                         ch.HP = Math.min(ch.HT, ch.HP + 1);
 					} else {
 
-                        int damage = (ch.HT + 5 + Dungeon.depth * 5) / 40;
-                        if (Random.Int( 40 ) < (ch.HT + 5 + Dungeon.depth * 5) % 40) {
+                        int damage = (ch.HT + 5 + (Dungeon.depth * 5) / (5 * Dungeon.chapterSize())) / 40;
+                        if (Random.Int( 40 ) < (ch.HT + 5 + (Dungeon.depth * 5) / (5 * Dungeon.chapterSize())) % 40) {
                             damage++;
                         }
 
