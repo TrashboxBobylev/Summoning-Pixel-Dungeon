@@ -48,6 +48,7 @@ public class Statistics {
 	public static int summonedMinions;
 
 	public static float duration;
+	public static long realDuration;
 	public static int score;
 
 	public static boolean qualifiedForNoKilling = false;
@@ -76,6 +77,7 @@ public class Statistics {
 		spawnersAlive   = 0;
 
 		duration	= 0;
+		realDuration = 0;
 		
 		qualifiedForNoKilling = false;
 		
@@ -124,6 +126,7 @@ public class Statistics {
 
 		bundle.put( DURATION,	duration );
 		bundle.put("strange_number", score);
+		bundle.put("realtime", realDuration);
 
 		bundle.put( AMULET,		amuletObtained );
 	}
@@ -148,6 +151,7 @@ public class Statistics {
         clothArmorForWarrior = bundle.getBoolean("warrior_is_ech");
 
 		duration		= bundle.getFloat( DURATION );
+		realDuration = bundle.getLong("realtime");
 		score = bundle.getInt("strange_number");
 
 		amuletObtained	= bundle.getBoolean( AMULET );

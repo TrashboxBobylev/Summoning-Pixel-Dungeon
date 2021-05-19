@@ -145,6 +145,8 @@ public class AmuletScene extends PixelScene {
 	@Override
 	public void update() {
 		super.update();
+
+		Statistics.realDuration += (int)(Game.elapsed*1000);
 		
 		if ((timer -= Game.elapsed) < 0) {
 			timer = Random.Float( 0.5f, 5f );

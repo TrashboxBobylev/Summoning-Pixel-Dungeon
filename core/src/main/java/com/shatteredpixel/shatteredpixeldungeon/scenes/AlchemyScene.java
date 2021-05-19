@@ -283,6 +283,7 @@ public class AlchemyScene extends PixelScene {
 	@Override
 	public void update() {
 		super.update();
+		Statistics.realDuration += (int)(Game.elapsed*1000);
 		water.offset( 0, -5 * Game.elapsed );
 	}
 	

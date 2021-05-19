@@ -46,7 +46,7 @@ import java.util.Locale;
 public class WndRanking extends WndTabbed {
 	
 	private static final int WIDTH			= 115;
-	private static final int HEIGHT			= 195;
+	private static final int HEIGHT			= 205;
 	
 	private static Thread thread;
 	private String error = null;
@@ -227,7 +227,16 @@ public class WndRanking extends WndTabbed {
 			pos += GAP;
 			
 			pos = statSlot( this, Messages.get(this, "duration"), Integer.toString( (int)Statistics.duration ), pos );
-			
+			if (Statistics.realDuration != 0){
+				pos = statSlot( this, Messages.get(this, "realDuration"),
+						Messages.format("%02d:%02d:%02d",
+								(int) ((Statistics.realDuration / 1000) / 3600),
+								(int) (((Statistics.realDuration / 1000) / 60) % 60),
+								(int) ((Statistics.realDuration / 1000) % 60)), pos );
+			}
+			else {
+				pos = statSlot( this, Messages.get(this, "realDuration"), Messages.get(this, "unknown"), pos );
+			}
 			pos += GAP;
 			
 			pos = statSlot( this, Messages.get(this, "depth"), Integer.toString( Statistics.deepestFloor ), pos );
@@ -250,7 +259,7 @@ public class WndRanking extends WndTabbed {
 			
 			txt = PixelScene.renderTextBlock( value, 7 );
 			txt.setPos(WIDTH * 0.7f, pos);
-			if (value == Dungeon.mode.toString()){
+			if (value.equals(Dungeon.mode.toString())){
 				txt.setPos(WIDTH * 0.45f, pos);
 			}
 			PixelScene.align(txt);

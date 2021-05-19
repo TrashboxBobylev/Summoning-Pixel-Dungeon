@@ -516,6 +516,7 @@ public class GameScene extends PixelScene {
 		if (Dungeon.hero == null || scene == null) {
 			return;
 		}
+		Statistics.realDuration += (int)(Game.elapsed*1000);
 
 		super.update();
 
