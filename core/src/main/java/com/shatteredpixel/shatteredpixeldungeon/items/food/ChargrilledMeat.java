@@ -24,7 +24,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.food;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class ChargrilledMeat extends Food {
@@ -36,8 +35,7 @@ public class ChargrilledMeat extends Food {
 	
 	@Override
 	public int value() {
-		if (Dungeon.mode == Dungeon.GameMode.GAUNTLET) return 0;
-		return 8 * quantity;
+		return 25 * quantity;
 	}
 	
 	public static Food cook( int quantity ) {
