@@ -909,9 +909,9 @@ public class Generator {
 		Category cat = Category.ARTIFACT;
 		int i = Random.chances( cat.probs );
 
-		//if no artifacts are left, return null
 		if (i == -1){
-			return null;
+			reset(Category.ARTIFACT);
+			return randomArtifact();
 		}
 
 		cat.probs[i]--;
