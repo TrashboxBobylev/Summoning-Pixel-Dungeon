@@ -34,6 +34,7 @@ import com.watabou.utils.RectF;
 public class BlobEmitter extends Emitter {
 	
 	private Blob blob;
+	public boolean randomize = true;
 	
 	public BlobEmitter( Blob blob ) {
 		
@@ -65,8 +66,10 @@ public class BlobEmitter extends Emitter {
 				if (cell < Dungeon.level.heroFOV.length
 						&& (Dungeon.level.heroFOV[cell] || blob.alwaysVisible)
 						&& map[cell] > 0) {
-					float x = (i + Random.Float(bound.left, bound.right)) * size;
-					float y = (j + Random.Float(bound.top, bound.bottom)) * size;
+					float relativeX = randomize ? Random.Float(bound.left, bound.right) : 0.5f;
+					float relativeY = randomize ? Random.Float(bound.top, bound.bottom) : 0.5f;
+					float x = (i + relativeX) * size;
+					float y = (j + relativeY) * size;
 					factory.emit(this, index, x, y);
 				}
 			}

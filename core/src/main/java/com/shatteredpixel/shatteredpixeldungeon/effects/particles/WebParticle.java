@@ -34,7 +34,7 @@ public class WebParticle extends PixelParticle {
 	public static final Emitter.Factory FACTORY = new Factory() {
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
-			for (int i=0; i < 3; i++) {
+			for (int i=0; i < 5; i++) {
 				((WebParticle)emitter.recycle( WebParticle.class )).reset( x, y );
 			}
 		}
@@ -44,7 +44,7 @@ public class WebParticle extends PixelParticle {
 		super();
 		
 		color( 0xCCCCCC );
-		lifespan = 2f;
+		lifespan = 1f;
 	}
 	
 	public void reset( float x, float y ) {
@@ -55,6 +55,7 @@ public class WebParticle extends PixelParticle {
 		
 		left = lifespan;
 		angle = Random.Float( 360 );
+		angularSpeed = 80;
 	}
 	
 	@Override
@@ -62,7 +63,7 @@ public class WebParticle extends PixelParticle {
 		super.update();
 		
 		float p = left / lifespan;
-		am = p < 0.5f ? p : 1 - p;
+		am = p < 0.25f ? p : 1 - p;
 		scale.y = 12 + p * 6;
 	}
 }

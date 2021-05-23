@@ -75,6 +75,7 @@ public class Web extends Blob {
 	@Override
 	public void use( BlobEmitter emitter ) {
 		super.use( emitter );
+		emitter.randomize = false;
 		
 		emitter.pour( WebParticle.FACTORY, 0.25f );
 	}
