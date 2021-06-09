@@ -55,7 +55,7 @@ public class Webbomb extends Bomb {
 					GameScene.add(Blob.seed(i, 5, Web.class));
 				else
 					GameScene.add(Blob.seed(i, 30, Web.class));
-				CellEmitter.get(i).burst(WebParticle.FACTORY, 8);
+				CellEmitter.get(i).burst(WebParticle.FACTORY, 3);
 			}
 		}
 		Sample.INSTANCE.play(Assets.Sounds.PUFF);

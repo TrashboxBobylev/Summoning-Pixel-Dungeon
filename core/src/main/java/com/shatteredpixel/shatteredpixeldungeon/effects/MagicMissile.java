@@ -123,7 +123,7 @@ public class MagicMissile extends Emitter {
 				pour( WhiteParticle.FACTORY, 0.01f );
 				break;
 			case FROST:
-				pour( MagicParticle.FACTORY, 0.01f );
+				pour(WebParticle.FROST, 0.01f );
 				break;
 			case FIRE:
 				size( 4 );
@@ -193,8 +193,8 @@ public class MagicMissile extends Emitter {
                 pour(StenchParticle.FACTORY, 0.01f );
                 break;
             case SPINNER:
-                size (12);
-                pour(WebParticle.FACTORY, 0.01f);
+                size (9);
+                pour(WebParticle.FACTORY, 0.03f);
                 break;
             case CRYSTAL:
                 size (9);

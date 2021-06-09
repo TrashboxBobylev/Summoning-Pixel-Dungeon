@@ -39,7 +39,9 @@ public class Effects {
 		LIGHT_RAY,
 		HEALTH_RAY,
         DOOM_CLOUD,
-		ROPE
+		ROPE,
+		SQUARE,
+		CIRCLE
 	};
 	
 	public static Image get( Type type ) {
@@ -74,6 +76,12 @@ public class Effects {
                 break;
 			case ROPE:
 				icon.frame(icon.texture.uvRect(12, 16, 14, 18));
+				break;
+			case SQUARE:
+				icon.frame(icon.texture.uvRect(32, 0, 40, 8));
+				break;
+			case CIRCLE:
+				icon.frame(icon.texture.uvRect(41, 0, 50, 9));
 				break;
 		}
 		return icon;

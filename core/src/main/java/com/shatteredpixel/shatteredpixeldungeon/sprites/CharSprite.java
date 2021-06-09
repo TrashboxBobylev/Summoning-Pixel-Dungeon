@@ -30,9 +30,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Phantom;
 import com.shatteredpixel.shatteredpixeldungeon.effects.*;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FrostfireParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SnowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.WebParticle;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -370,7 +370,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
                 break;
             case FROSTBURNING:
                 frostburning = emitter();
-                frostburning.pour( FrostfireParticle.FACTORY, 0.06f );
+                frostburning.pour(WebParticle.FROSTBURN, 0.04f );
                 if (visible) {
                     Sample.INSTANCE.play( Assets.Sounds.BURNING );
                 }

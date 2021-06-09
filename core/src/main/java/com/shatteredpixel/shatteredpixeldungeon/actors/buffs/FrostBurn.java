@@ -181,13 +181,13 @@ public class FrostBurn extends Buff implements Hero.Doom {
 	@Override
 	public void fx(boolean on) {
 		if (on) {
-            target.sprite.add(CharSprite.State.CHILLED);
+//            target.sprite.add(CharSprite.State.CHILLED);
 		    target.sprite.add(CharSprite.State.FROSTBURNING);
 		}
 
 		else {
 		    target.sprite.remove(CharSprite.State.FROSTBURNING);
-            target.sprite.remove(CharSprite.State.CHILLED);
+//            target.sprite.remove(CharSprite.State.CHILLED);
 		}
 	}
 

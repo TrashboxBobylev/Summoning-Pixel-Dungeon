@@ -26,7 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.blobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.WebParticle;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 
 public class Blizzard extends Blob {
@@ -67,7 +67,7 @@ public class Blizzard extends Blob {
 	@Override
 	public void use( BlobEmitter emitter ) {
 		super.use( emitter );
-		emitter.pour( Speck.factory( Speck.BLIZZARD, true ), 0.4f );
+		emitter.pour(WebParticle.FROST, 0.075f );
 	}
 	
 	@Override
