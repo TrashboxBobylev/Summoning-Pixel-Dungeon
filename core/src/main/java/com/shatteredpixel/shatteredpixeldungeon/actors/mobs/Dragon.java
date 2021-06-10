@@ -24,21 +24,21 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FrostBurn;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.DragonSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
@@ -48,12 +48,13 @@ import java.util.ArrayList;
 
 public class Dragon extends Mob{
     {
-        HP = HT = 210;
-        defenseSkill = 40;
+        HP = HT = 320;
+        defenseSkill = 45;
         spriteClass = DragonSprite.class;
 
         EXP = 40;
         maxLvl = 30;
+        baseSpeed = 2f;
 
         flying = true;
         properties.add(Property.BOSS);
@@ -62,24 +63,22 @@ public class Dragon extends Mob{
         properties.add(Property.UNDEAD);
     }
 
-
     @Override
     public int damageRoll() {
-        return Random.NormalIntRange( 26, 49 );
+        return Random.NormalIntRange( 46, 90 );
     }
 
     @Override
     public int attackSkill( Char target ) {
-        return 64;
+        return 70;
     }
 
     @Override
     public int drRoll() {
-        return Random.NormalIntRange(16, 36);
+        return Random.NormalIntRange(20, 35);
     }
 
-    private int rangedCooldown = Random.NormalIntRange( 3, 5 );
-    private static boolean doingSweepAttack = false;
+    private int rangedCooldown = Random.NormalIntRange( 1, 3 );
 
     @Override
     protected boolean act() {
@@ -115,14 +114,7 @@ public class Dragon extends Mob{
 
         if (Dungeon.level.adjacent( pos, enemy.pos )) {
 
-            if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
-                sprite.attack( enemy.pos );
-                return false;
-
-            } else {
-                attack( enemy );
-                return true;
-            }
+            return super.doAttack( enemy );
 
         } else {
 
@@ -145,7 +137,7 @@ public class Dragon extends Mob{
     }
 
     private void zap() {
-        spend( 1f );
+        spend( 2f );
 
         if (hit( this, enemy, true )) {
 
@@ -163,25 +155,14 @@ public class Dragon extends Mob{
         next();
     }
 
-    private static Char previousEnemy;
-    private static int enemyDirection;
-
     protected void meleeProc( Char enemy, int damage ) {
         if (Random.Int( 2 ) == 0 && !enemy.isWet()) {
             Buff.affect( enemy, FrostBurn.class ).reignite( enemy, 10f );
             Splash.at( enemy.sprite.center(), sprite.blood(), 5);
         }
-
-            for (int i = 0; i < PathFinder.NEIGHBOURS9.length; i++) {
-                if (pos + PathFinder.NEIGHBOURS9[i] == enemy.pos) {
-                    enemyDirection = i;
-                    break;
-                }
-            }
-            if (previousEnemy == null) {
-                previousEnemy = enemy;
-                spend( attackDelay() );
-                switch (enemyDirection) {
+        for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
+            if (pos + PathFinder.NEIGHBOURS8[i] == enemy.pos) {
+                switch (i) {
                     case 0:
                         swipeAttack(1, 3);
                         break;
@@ -207,31 +188,76 @@ public class Dragon extends Mob{
                         swipeAttack(5, 7);
                         break;
                 }
-
-
+                return;
             }
-        next();
+        }
     }
 
     protected void swipeAttack(int adjacentDir1, int adjacentDir2){
-        swipeAttack(adjacentDir1, adjacentDir2, false);
+            Char ch = Actor.findChar(pos + PathFinder.NEIGHBOURS9[adjacentDir1]);
+            if (ch != null && ch.alignment != alignment) {
+                bite(ch);
+            }
+            Char ch2 = Actor.findChar(pos + PathFinder.NEIGHBOURS9[adjacentDir2]);
+            if (ch2 != null && ch2.alignment != alignment){
+                bite(ch2);
+            }
     }
 
-    protected void swipeAttack(int adjacentDir1, int adjacentDir2, boolean last){
-            Char ch = Actor.findChar(pos + PathFinder.NEIGHBOURS9[adjacentDir1]);
-            if (!previousEnemy.isAlive()){
-                next();
-                return;
+    private void bite(Char enemy){
+        boolean visibleFight = Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[enemy.pos];
+
+        if (enemy.isInvulnerable(getClass())) {
+
+            if (visibleFight) {
+                enemy.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "invulnerable") );
+
+                Sample.INSTANCE.play(Assets.Sounds.HIT_PARRY, 1f, Random.Float(0.96f, 1.05f));
             }
-            if (ch != null && ch.alignment != alignment && ch != previousEnemy){ ;
-                attack(ch);
-                Char ch2 = Actor.findChar(pos + PathFinder.NEIGHBOURS9[adjacentDir2]);
-                if (ch2 != null && ch.alignment != alignment && ch != previousEnemy){
-                    attack(ch2);
+        } else if (hit( this, enemy, false )) {
+
+            int dr = enemy.drRoll();
+            if (enemy.buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dr *= 0.5f;
+            int dmg = damageRoll();
+            if (enemy.buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dmg *= 1.4f;
+
+            int effectiveDamage = enemy.defenseProc(this, dmg);
+            effectiveDamage = Math.max(effectiveDamage - dr, 0);
+
+            if (enemy.buff(Vulnerable.class) != null) {
+                effectiveDamage *= 1.33f;
+            }
+
+            if (visibleFight) {
+                if (effectiveDamage > 0 || !enemy.blockSound(Random.Float(0.96f, 1.05f))) {
+                    hitSound(Random.Float(0.87f, 1.15f));
                 }
             }
-        enemy = previousEnemy;
-        previousEnemy = null;
+
+            enemy.damage(effectiveDamage, this);
+
+            enemy.sprite.bloodBurstA(sprite.center(), effectiveDamage);
+            enemy.sprite.flash();
+
+            if (!enemy.isAlive() && visibleFight) {
+                if (enemy == Dungeon.hero) {
+
+                    Dungeon.fail(getClass());
+                    GLog.negative(Messages.capitalize(Messages.get(Char.class, "kill", getName())));
+
+                }
+            }
+        } else {
+
+            if (visibleFight) {
+                String defense = enemy.defenseVerb();
+                enemy.sprite.showStatus( CharSprite.NEUTRAL, defense );
+
+                Sample.INSTANCE.play(Assets.Sounds.MISS);
+
+                if (enemy.buff(Block.class)!=null) enemy.buff(Block.class).detach();
+            }
+        }
     }
 
     protected void rangedProc( Char enemy ) {
@@ -244,7 +270,7 @@ public class Dragon extends Mob{
         ArrayList<Integer> candidates = new ArrayList<>();
         boolean[] solid = Dungeon.level.solid;
 
-        int[] neighbours = {pos + 1, pos - 1, pos + Dungeon.level.width(), pos - Dungeon.level.width()};
+        int[] neighbours = {enemy.pos + 1, enemy.pos - 1, enemy.pos + Dungeon.level.width(), enemy.pos - Dungeon.level.width()};
         for (int n : neighbours) {
             if (!solid[n] && Actor.findChar( n ) == null) {
                 candidates.add( n );
@@ -263,7 +289,6 @@ public class Dragon extends Mob{
             clone.sprite.jump(pos, clone.pos, new Callback() {
                 @Override
                 public void call() {
-                    Actor.addDelayed( new Pushing( clone, pos, clone.pos ), 1f );
                 }
             });
         }
@@ -301,13 +326,13 @@ public class Dragon extends Mob{
         }
     }
 
-    public class SmallDragon extends Mob {
+    public static class SmallDragon extends Mob {
 
         {
             spriteClass = SmallDragonSprite.class;
 
-            HP = HT = 60;
-            defenseSkill = 40;
+            HP = HT = 85;
+            defenseSkill = 60;
             viewDistance = Light.DISTANCE;
 
             EXP = 5;
@@ -319,17 +344,17 @@ public class Dragon extends Mob{
 
         @Override
         public int attackSkill( Char target ) {
-            return 70;
+            return 55;
         }
 
         @Override
         public int damageRoll() {
-            return Random.NormalIntRange( 19, 36 );
+            return Random.NormalIntRange( 25, 48 );
         }
 
         @Override
         public int drRoll() {
-            return Random.NormalIntRange(6, 20);
+            return Random.NormalIntRange(19, 28);
         }
 
     }

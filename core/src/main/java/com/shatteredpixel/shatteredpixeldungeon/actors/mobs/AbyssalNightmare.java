@@ -60,8 +60,8 @@ public class AbyssalNightmare extends Mob {
 	{
 		spriteClass = AbyssalSprite.class;
 
-		HP = HT = 250;
-		defenseSkill = 30;
+		HP = HT = 620;
+		defenseSkill = 0;
 
 		EXP = 40;
 		maxLvl = 30;
@@ -99,18 +99,13 @@ public class AbyssalNightmare extends Mob {
 	}
 
 	@Override
-	protected float attackDelay() {
-		return super.attackDelay()*1.6f;
-	}
-
-	@Override
 	protected boolean act() {
 		if (fieldOfView == null || fieldOfView.length != Dungeon.level.length()){
 			fieldOfView = new boolean[Dungeon.level.length()];
 		}
 		Dungeon.level.updateFieldOfView( this, fieldOfView );
 
-		HP = Math.min(HP+6, HT);
+		HP = Math.min(HP+10, HT);
 
 		boolean justAlerted = alerted;
 		alerted = false;
@@ -142,17 +137,17 @@ public class AbyssalNightmare extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 25, 60 );
+		return Random.NormalIntRange( 20, 36 );
 	}
 
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 16);
+		return 0;
 	}
 	
 	@Override
 	public int attackSkill( Char target ) {
-		return 60;
+		return 70;
 	}
 
 	@Override
@@ -214,9 +209,6 @@ public class AbyssalNightmare extends Mob {
 			if (target == pos || Dungeon.level.adjacent(pos, target)) {
 				return false;
 			}
-
-
-
 
 			int bestpos = pos;
 			for (int i : PathFinder.NEIGHBOURS8){
