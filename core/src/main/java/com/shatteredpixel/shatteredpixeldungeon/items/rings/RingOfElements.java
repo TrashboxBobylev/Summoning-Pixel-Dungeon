@@ -36,11 +36,16 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.*;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrimTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 import java.text.DecimalFormat;
 import java.util.HashSet;
 
 public class RingOfElements extends Ring {
+
+	{
+		icon = ItemSpriteSheet.Icons.RING_TENACITY;
+	}
 	
 	public String statsInfo() {
 		if (isIdentified()){
