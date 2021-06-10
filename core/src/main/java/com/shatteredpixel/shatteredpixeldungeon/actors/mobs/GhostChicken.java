@@ -26,7 +26,6 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.TimedShrink;
@@ -46,23 +45,12 @@ public class GhostChicken extends Mob {
 
 		EXP = 20;
 		maxLvl = 30;
-		if (SPDSettings.bigdungeon()){
-			EXP = 40;
-			maxLvl = 100;
-		}
 
 		loot = Generator.random();
 		lootChance = 0.1f;
 
 		properties.add(Property.DEMONIC);
 		properties.add(Property.UNDEAD);
-	}
-
-	public GhostChicken() {
-		if (SPDSettings.bigdungeon()){
-			EXP = 40;
-			maxLvl = 64;
-		}
 	}
 
 	@Override

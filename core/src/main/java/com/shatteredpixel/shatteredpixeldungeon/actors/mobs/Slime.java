@@ -25,7 +25,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -55,23 +54,12 @@ public class Slime extends Mob {
 
 		EXP = 12;
 		maxLvl = 25;
-		if (SPDSettings.bigdungeon()){
-			EXP = 28;
-			maxLvl = 46;
-		}
 
 		loot = new GooBlob();
 		lootChance = 0.1f;
 		properties.add(Property.ACIDIC);
 		properties.add(Property.DEMONIC);
 		properties.add(Property.INORGANIC);
-	}
-
-	public Slime() {
-		if (SPDSettings.bigdungeon()){
-			EXP = 28;
-			maxLvl = 46;
-		}
 	}
 
 	private static final float SPLIT_DELAY	= 1f;

@@ -25,7 +25,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ShieldBuff;
@@ -49,21 +48,11 @@ public class Brute extends Mob {
 		
 		EXP = 8;
 		maxLvl = 16;
-		if (SPDSettings.bigdungeon()){
-			EXP = 14;
-			maxLvl = 24;
-		}
 		
 		loot = new Gold().goldFromEnemy();
 		lootChance = 0.5f;
 	}
 
-	public Brute() {
-		if (SPDSettings.bigdungeon()){
-			EXP = 14;
-			maxLvl = 24;
-		}
-	}
 
 	protected boolean hasRaged = false;
 	

@@ -25,7 +25,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Miasma;
@@ -56,13 +55,6 @@ public class Phantom extends Mob {
 		properties.add(Property.UNDEAD);
 
 		HUNTING = new Hunting();
-	}
-
-	public Phantom() {
-		if (SPDSettings.bigdungeon()){
-			EXP = 40;
-			maxLvl = 100;
-		}
 	}
 
 	@Override

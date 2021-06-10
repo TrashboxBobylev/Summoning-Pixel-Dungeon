@@ -26,7 +26,6 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
@@ -58,10 +57,6 @@ public class Necromancer extends Mob {
 		
 		EXP = 7;
 		maxLvl = 14;
-		if (SPDSettings.bigdungeon()){
-			EXP = 11;
-			maxLvl = 20;
-		}
 		
 		loot = new PotionOfHealing();
 		lootChance = 0.2f; //see createloot
@@ -69,13 +64,6 @@ public class Necromancer extends Mob {
 		properties.add(Property.UNDEAD);
 		
 		HUNTING = new Hunting();
-	}
-
-	public Necromancer() {
-		if (SPDSettings.bigdungeon()){
-			EXP = 11;
-			maxLvl = 20;
-		}
 	}
 
 	public boolean summoning = false;

@@ -25,7 +25,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -55,10 +54,6 @@ public class Dragon extends Mob{
 
         EXP = 40;
         maxLvl = 30;
-        if (SPDSettings.bigdungeon()){
-            EXP = 21;
-            maxLvl = 34;
-        }
 
         flying = true;
         properties.add(Property.BOSS);
@@ -67,12 +62,6 @@ public class Dragon extends Mob{
         properties.add(Property.UNDEAD);
     }
 
-    public Dragon() {
-        if (SPDSettings.bigdungeon()){
-            EXP = 80;
-            maxLvl = 64;
-        }
-    }
 
     @Override
     public int damageRoll() {

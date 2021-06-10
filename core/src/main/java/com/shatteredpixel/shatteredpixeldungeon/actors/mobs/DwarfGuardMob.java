@@ -25,7 +25,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -60,10 +59,6 @@ public class DwarfGuardMob extends Mob {
 
 		EXP = 13;
 		maxLvl = 23;
-		if (SPDSettings.bigdungeon()){
-			EXP = 25;
-			maxLvl = 42;
-		}
 
 		loot = new ScrollOfSoulEnergy();
 		lootChance = 0.25f;
@@ -71,13 +66,6 @@ public class DwarfGuardMob extends Mob {
 		properties.add(Property.UNDEAD);
 		
 		HUNTING = new Hunting();
-	}
-
-	public DwarfGuardMob() {
-		if (SPDSettings.bigdungeon()){
-			EXP = 25;
-			maxLvl = 42;
-		}
 	}
 
 	@Override

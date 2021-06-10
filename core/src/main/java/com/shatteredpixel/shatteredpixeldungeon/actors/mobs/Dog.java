@@ -24,7 +24,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.DogSprite;
@@ -41,20 +40,9 @@ public class Dog extends Mob {
 		
 		EXP = 2;
 		maxLvl = 6;
-		if (SPDSettings.bigdungeon()){
-			EXP = 3;
-			maxLvl = 9;
-		}
 		
 		loot = Generator.random();
 		lootChance = 0.1f;
-	}
-
-	public Dog() {
-		if (SPDSettings.bigdungeon()){
-			EXP = 3;
-			maxLvl = 9;
-		}
 	}
 
 	@Override

@@ -25,7 +25,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
@@ -49,10 +48,6 @@ public class Golem extends Mob {
 		
 		EXP = 12;
 		maxLvl = 22;
-		if (SPDSettings.bigdungeon()){
-			EXP = 24;
-			maxLvl = 40;
-		}
 
 		loot = Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR);
 		lootChance = 0.125f; //initially, see rollToDropLoot
@@ -62,13 +57,6 @@ public class Golem extends Mob {
 
 		WANDERING = new Wandering();
 		HUNTING = new Hunting();
-	}
-
-	public Golem() {
-		if (SPDSettings.bigdungeon()){
-			EXP = 24;
-			maxLvl = 40;
-		}
 	}
 
 	@Override

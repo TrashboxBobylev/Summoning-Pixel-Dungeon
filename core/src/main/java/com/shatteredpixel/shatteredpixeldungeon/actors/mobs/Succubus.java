@@ -26,7 +26,6 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
@@ -63,22 +62,11 @@ public class Succubus extends Mob {
 		
 		EXP = 13;
 		maxLvl = 26;
-		if (SPDSettings.bigdungeon()){
-			EXP = 29;
-			maxLvl = 48;
-		}
 		
 		loot = Generator.Category.SCROLL;
 		lootChance = 0.33f;
 
 		properties.add(Property.DEMONIC);
-	}
-
-	public Succubus() {
-		if (SPDSettings.bigdungeon()){
-			EXP = 29;
-			maxLvl = 48;
-		}
 	}
 
 	@Override

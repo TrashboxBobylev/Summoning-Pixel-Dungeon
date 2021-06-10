@@ -26,7 +26,6 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
@@ -56,10 +55,6 @@ public class Guard extends Mob {
 
 		EXP = 7;
 		maxLvl = 14;
-		if (SPDSettings.bigdungeon()){
-			EXP = 10;
-			maxLvl = 18;
-		}
 
 		loot = Generator.Category.ARMOR;
 		lootChance = 0.2f; //by default, see rollToDropLoot()
@@ -67,13 +62,6 @@ public class Guard extends Mob {
 		properties.add(Property.UNDEAD);
 		
 		HUNTING = new Hunting();
-	}
-
-	public Guard() {
-		if (SPDSettings.bigdungeon()){
-			EXP = 10;
-			maxLvl = 18;
-		}
 	}
 
 	@Override

@@ -25,7 +25,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
@@ -72,13 +71,6 @@ public class AbyssalSpawner extends Mob {
 		public void die() {
 			Splash.at( center(), Random.Int(0x000000, 0xFFFFFF), 100 );
 			killAndErase();
-		}
-	}
-
-	public AbyssalSpawner() {
-		if (SPDSettings.bigdungeon()){
-			EXP = 100;
-			maxLvl = 100;
 		}
 	}
 

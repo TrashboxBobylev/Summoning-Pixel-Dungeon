@@ -25,7 +25,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -52,22 +51,11 @@ public class Swarm extends Mob {
 
 		EXP = 3;
 		maxLvl = 9;
-		if (SPDSettings.bigdungeon()){
-			EXP = 4;
-			maxLvl = 11;
-		}
 		
 		flying = true;
 
 		loot = new PotionOfHealing();
 		lootChance = 0.1667f; //by default, see rollToDropLoot()
-	}
-
-	public Swarm() {
-		if (SPDSettings.bigdungeon()){
-			EXP = 4;
-			maxLvl = 11;
-		}
 	}
 
 	private static final float SPLIT_DELAY	= 1f;

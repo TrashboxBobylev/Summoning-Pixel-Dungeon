@@ -1532,7 +1532,8 @@ public class Hero extends Char {
 	}
 	
 	public int maxExp() {
-		if (Dungeon.mode == Dungeon.GameMode.GAUNTLET) return maxExp(lvl)*3/2;
+		if (Dungeon.mode == Dungeon.GameMode.BIGGER || Dungeon.mode == Dungeon.GameMode.GAUNTLET)
+			return maxExp(lvl) * 3 / 2;
 		return maxExp( lvl );
 	}
 	

@@ -26,7 +26,6 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -61,13 +60,6 @@ public class SpectreRat extends Mob implements Callback {
 		lootChance = 0.33f;
 
 		properties.add(Property.DEMONIC);
-	}
-
-	public SpectreRat() {
-		if (SPDSettings.bigdungeon()){
-			EXP = 36;
-			maxLvl = 64;
-		}
 	}
 	
 	@Override

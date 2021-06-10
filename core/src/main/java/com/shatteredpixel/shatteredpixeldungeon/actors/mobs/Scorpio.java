@@ -25,7 +25,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
@@ -51,22 +50,11 @@ public class Scorpio extends Mob {
 		
 		EXP = 16;
 		maxLvl = 28;
-		if (SPDSettings.bigdungeon()){
-			EXP = 32;
-			maxLvl = 52;
-		}
 		
 		loot = Generator.Category.POTION;
 		lootChance = 0.5f;
 
 		properties.add(Property.DEMONIC);
-	}
-
-	public Scorpio() {
-		if (SPDSettings.bigdungeon()){
-			EXP = 32;
-			maxLvl = 52;
-		}
 	}
 
 	@Override

@@ -25,7 +25,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.*;
@@ -78,13 +77,6 @@ public class AbyssalNightmare extends Mob {
 		properties.add(Property.DEMONIC);
 		properties.add(Property.BOSS);
 		properties.add(Property.LARGE);
-	}
-
-	public AbyssalNightmare() {
-		if (SPDSettings.bigdungeon()){
-			EXP = 80;
-			maxLvl = 64;
-		}
 	}
 
 	private static final float SPLIT_DELAY	= 1f;

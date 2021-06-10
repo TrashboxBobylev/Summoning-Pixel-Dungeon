@@ -25,7 +25,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -53,23 +52,12 @@ public class FinalFroggit extends Mob implements Callback {
 		
 		EXP = 20;
 		maxLvl = 30;
-		if (SPDSettings.bigdungeon()){
-			EXP = 50;
-			maxLvl = 100;
-		}
 		
 		loot = Generator.random();
 		lootChance = 1f;
 
 		properties.add(Property.UNDEAD);
 		properties.add(Property.DEMONIC);
-	}
-
-	public FinalFroggit() {
-		if (SPDSettings.bigdungeon()){
-			EXP = 50;
-			maxLvl = 100;
-		}
 	}
 
 	@Override

@@ -25,7 +25,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
@@ -45,20 +44,9 @@ public class Snake extends Mob {
 		
 		EXP = 9;
 		maxLvl = 18;
-		if (SPDSettings.bigdungeon()){
-			EXP = 16;
-			maxLvl = 28;
-		}
 		
 		loot = new Dart();
 		lootChance = 0.90f;
-	}
-
-	public Snake() {
-		if (SPDSettings.bigdungeon()){
-			EXP = 16;
-			maxLvl = 28;
-		}
 	}
 
 	{

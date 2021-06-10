@@ -26,7 +26,6 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.SoulFlame;
@@ -59,10 +58,6 @@ public class WardingWraith extends Mob implements Callback {
 		
 		EXP = 8;
 		maxLvl = 23;
-        if (SPDSettings.bigdungeon()){
-            EXP = 26;
-            maxLvl = 44;
-        }
 		
 		loot = new ScrollOfAttunement();
 		lootChance = 1f;
@@ -71,13 +66,6 @@ public class WardingWraith extends Mob implements Callback {
 
 		intelligentAlly = true;
 	}
-
-    public WardingWraith() {
-        if (SPDSettings.bigdungeon()){
-            EXP = 26;
-            maxLvl = 44;
-        }
-    }
 
     @Override
 	public int attackSkill( Char target ) {

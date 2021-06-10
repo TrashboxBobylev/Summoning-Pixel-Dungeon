@@ -26,7 +26,6 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -47,10 +46,6 @@ public abstract class Shaman extends Mob {
 		
 		EXP = 8;
 		maxLvl = 16;
-		if (SPDSettings.bigdungeon()){
-			EXP = 15;
-			maxLvl = 26;
-		}
 		
 		loot = Generator.Category.WAND;
 		lootChance = 0.03f; //initially, see rollToDropLoot

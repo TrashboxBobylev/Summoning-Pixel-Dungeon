@@ -25,7 +25,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -44,22 +43,11 @@ public class Bat extends Mob {
 		
 		EXP = 7;
 		maxLvl = 15;
-		if (SPDSettings.bigdungeon()){
-			EXP = 13;
-			maxLvl = 22;
-		}
 		
 		flying = true;
 		
 		loot = new PotionOfHealing();
 		lootChance = 0.1667f; //by default, see rollToDropLoot()
-	}
-
-	public Bat() {
-		if (SPDSettings.bigdungeon()){
-			EXP = 13;
-			maxLvl = 22;
-		}
 	}
 
 	@Override
