@@ -71,8 +71,17 @@ public class ImpQueen extends Minion {
                 }
             }
         }
-        if (buff(MorphTimer.class) != null) sprite.showStatus(CharSprite.NEUTRAL, new DecimalFormat("#").format(buff(MorphTimer.class).cooldown()+1));
         if (buff(MagicPower.class) != null && HP + 2 + lvl < HT) HP += 2 + lvl;
+        if (buff(MorphTimer.class) != null) {
+            if (Dungeon.hero.resting){
+                if ((buff(MorphTimer.class).cooldown()+1) % 10 == 0){
+                    sprite.showStatus(CharSprite.NEUTRAL, new DecimalFormat("#").format(buff(MorphTimer.class).cooldown()+1));
+                    return super.act();
+                }
+            }
+            else sprite.showStatus(CharSprite.NEUTRAL, new DecimalFormat("#").format(buff(MorphTimer.class).cooldown()+1));
+        }
+
         return super.act();
     }
 

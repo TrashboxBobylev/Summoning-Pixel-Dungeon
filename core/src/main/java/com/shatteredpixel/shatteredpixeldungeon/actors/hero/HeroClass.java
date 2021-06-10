@@ -50,6 +50,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.FroggitStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.ImpQueenStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnive2;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -230,8 +231,10 @@ public enum HeroClass {
 //        hero.belongings.artifact.activate( hero );
 //        Dungeon.quickslot.setSlot(0, hero.belongings.artifact);
 
-        hero.attunement = 1;
+        hero.attunement = 3;
         hero.HP = hero.HT = 10;
+        hero.STR = 17;
+        new ImpQueenStaff().identify().collect();
 
         Stars star = new Stars();
         star.collect();
