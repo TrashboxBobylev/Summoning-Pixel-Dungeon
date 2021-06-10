@@ -109,7 +109,9 @@ public class ArmoredStatue extends Statue {
 
 	@Override
 	public String description() {
-		return Messages.get(this, "desc", weapon.name(), armor.name());
+		String desc = Messages.get(this, "desc", weapon.name(), armor.name());
+		desc += "\n\n" + Messages.get(Mob.class, "stats", HP, HT, attackSkill(Dungeon.hero), defenseSkill);
+		return desc;
 	}
 
 }
