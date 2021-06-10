@@ -395,15 +395,12 @@ public class GameScene extends PixelScene {
 		switch (InterlevelScene.mode){
 			case FALL: case DESCEND: case CONTINUE:
 				Camera.main.snapTo(hero.center().x, hero.center().y - DungeonTilemap.SIZE * (defaultZoom/Camera.main.zoom));
-				GameScene.timer = 45;
 				break;
 			case ASCEND:
 				Camera.main.snapTo(hero.center().x, hero.center().y + DungeonTilemap.SIZE * (defaultZoom/Camera.main.zoom));
-				GameScene.timer = 45;
 				break;
 			default:
 				Camera.main.snapTo(hero.center().x, hero.center().y);
-				resetTimer();
 		}
 		Camera.main.panTo(hero.center(), 2.5f);
 
@@ -464,8 +461,8 @@ public class GameScene extends PixelScene {
 		fadeIn();
 	}
 
-	private void resetTimer() {
-		timer = 0.33;
+	public static void resetTimer() {
+		timer = 0.33f;
 	}
 	
 	public void destroy() {
@@ -1061,7 +1058,7 @@ public class GameScene extends PixelScene {
 		if (scene != null && scene.toolbar != null) scene.toolbar.examining = false;
 		if(Dungeon.hero.ready) {
 			timerPaused = false;
-			if (scene != null && timer < 45f) scene.resetTimer();
+//			if (scene != null && timer < 45f) scene.resetTimer();
 		}
 	}
 

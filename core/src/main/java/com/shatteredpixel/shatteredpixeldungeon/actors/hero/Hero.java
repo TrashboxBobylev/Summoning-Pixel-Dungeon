@@ -583,6 +583,11 @@ public class Hero extends Char {
 		}
 		
 		super.spend(time);
+
+		if (time > 0) {
+			GameScene.resetTimer();
+
+		}
 	}
 	
 	public void spendAndNext( float time ) {
@@ -677,8 +682,6 @@ public class Hero extends Char {
 			Buff.affect(this, Barkskin.class).set( lvl + 5, 1 );
 		}
 
-
-
         if (heroClass == HeroClass.CONJURER) {
             if (HP <= HT / 2) {
                 Buff.affect(this, Attunement.class);
@@ -705,6 +708,7 @@ public class Hero extends Char {
 		ready = true;
 
 		AttackIndicator.updateState();
+
 		
 		GameScene.ready();
 	}

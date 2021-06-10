@@ -95,7 +95,6 @@ public class Hunger extends Buff implements Hero.Doom {
             return;
         }
         if (Dungeon.hero.heroClass == HeroClass.WARRIOR && energy != -50 && energy < 0) energy *= 0.75f;
-		if (Dungeon.mode == Dungeon.GameMode.REALTIME) energy *= 0.5f;
 		hunger.level = Math.max(hunger.level - energy, 0);
 		switchHungerLevel(energy, hunger, target);
 		BuffIndicator.refreshHero();

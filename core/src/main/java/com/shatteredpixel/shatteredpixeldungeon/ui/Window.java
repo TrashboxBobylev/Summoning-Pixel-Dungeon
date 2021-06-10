@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.effects.ShadowBox;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.input.KeyBindings;
 import com.watabou.input.KeyEvent;
@@ -114,6 +115,7 @@ public class Window extends Group implements Signal.Listener<KeyEvent> {
 				chrome.width(), chrome.height );
 
 		KeyEvent.addKeyListener( this );
+		GameScene.timerPaused = true;
 	}
 	
 	public void resize( int w, int h ) {
@@ -145,6 +147,7 @@ public class Window extends Group implements Signal.Listener<KeyEvent> {
 			parent.erase(this);
 		}
 		destroy();
+		GameScene.timerPaused = false;
 	}
 	
 	@Override
