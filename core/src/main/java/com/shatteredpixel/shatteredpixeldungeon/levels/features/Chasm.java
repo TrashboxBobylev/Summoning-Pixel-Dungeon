@@ -157,5 +157,10 @@ public class Chasm implements Hero.Doom {
 		public void onDeath() {
 			Badges.validateDeathFromFalling();
 		}
+
+		@Override
+		public void set( float level ) {
+			this.level = Math.max(this.level, level);
+		}
 	}
 }
