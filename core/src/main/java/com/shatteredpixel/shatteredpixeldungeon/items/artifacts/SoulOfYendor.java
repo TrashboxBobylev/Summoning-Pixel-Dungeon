@@ -675,6 +675,7 @@ public class SoulOfYendor extends Artifact {
             if (partialCharge >= 1){
                 partialCharge--;
                 charge++;
+                if (charge >= 100) charge = 100;
                 updateQuickslot();
             }
         }
@@ -742,6 +743,7 @@ public class SoulOfYendor extends Artifact {
                         GLog.positive( Messages.get(AlchemistsToolkit.class, "full") );
                         partialCharge = 0;
                     }
+                    if (charge >= 100) charge = 100;
 
                     updateQuickslot();
                 }
@@ -762,6 +764,7 @@ public class SoulOfYendor extends Artifact {
         public void collect(int gold){
             if (!cursed) {
                 charge += gold/20 * RingOfEnergy.artifactChargeMultiplier(target);
+                if (charge >= 100) charge = 100;
             }
         }
 
