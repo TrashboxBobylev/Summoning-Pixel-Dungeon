@@ -63,10 +63,12 @@ abstract public class MissileWeapon extends Weapon {
 
 		defaultAction = AC_THROW;
 		usesTargeting = true;
+
 	}
 	
 	protected boolean sticky = true;
     protected boolean sneaky = false;
+    public boolean strikeAllies = false;
 
 	protected static final float MAX_DURABILITY = 100;
 	protected float durability = MAX_DURABILITY;

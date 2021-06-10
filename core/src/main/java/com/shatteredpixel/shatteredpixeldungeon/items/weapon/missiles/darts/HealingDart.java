@@ -34,6 +34,7 @@ public class HealingDart extends TippedDart {
 	
 	{
 		image = ItemSpriteSheet.HEALING_DART;
+		strikeAllies = true;
 	}
 	
 	@Override

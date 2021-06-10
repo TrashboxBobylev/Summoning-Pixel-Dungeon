@@ -33,6 +33,7 @@ public class HolyDart extends TippedDart {
 
 	{
 		image = ItemSpriteSheet.HOLY_DART;
+		strikeAllies = true;
 	}
 	
 	@Override

@@ -99,7 +99,7 @@ public class WandOfCrystalBullet extends DamageWand {
         shardPositions.clear();
         if (!cursed) {
             for (int i: PathFinder.NEIGHBOURS8){
-                final int dest = new Ballistica(collisionPos, collisionPos+i, Ballistica.MAGIC_BOLT).collisionPos;
+                final int dest = new Ballistica(collisionPos, collisionPos+i, Ballistica.FRIENDLY_MAGIC).collisionPos;
                 if (!shardPositions.contains(dest)){
                     if (Actor.findChar(dest) != null && Actor.findChar(dest) != Dungeon.hero) {
                         MagicMissile missile = ((MagicMissile)curUser.sprite.parent.recycle( MagicMissile.class ));

@@ -63,7 +63,7 @@ public class Gauntlet extends MeleeWeapon {
 				trajectory,
 				5,
 				90,
-				Ballistica.MAGIC_BOLT
+				Ballistica.FRIENDLY_MAGIC
 		);
 		for (int cell : cone.cells){
 			CellEmitter.bottom(cell).burst(Speck.factory(Speck.STEAM), 10);

@@ -33,6 +33,7 @@ public class AdrenalineDart extends TippedDart {
 	
 	{
 		image = ItemSpriteSheet.ADRENALINE_DART;
+		strikeAllies = true;
 	}
 	
 	@Override

@@ -378,7 +378,9 @@ public class Hero extends Char {
 		//temporarily set the hero's weapon to the missile weapon being used
 		belongings.stashedWeapon = belongings.weapon;
 		belongings.weapon = wep;
-		boolean hit = attack( enemy );
+		boolean hit = false;
+		if (enemy.alignment != Alignment.ALLY || wep.strikeAllies)
+			hit = attack( enemy );
 		Invisibility.dispel();
 		belongings.weapon = belongings.stashedWeapon;
 		belongings.stashedWeapon = null;
@@ -394,7 +396,9 @@ public class Hero extends Char {
         KindOfWeapon equipped = belongings.weapon;
         belongings.weapon = knife;
         knife.ranged = true;
-        boolean hit = attack( enemy );
+		boolean hit = false;
+		if (enemy.alignment != Alignment.ALLY)
+			hit = attack( enemy );
         Invisibility.dispel();
         belongings.weapon = equipped;
 

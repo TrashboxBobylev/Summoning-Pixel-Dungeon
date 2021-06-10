@@ -52,7 +52,7 @@ public abstract class ConjurerSpell extends Item {
     public static final String AC_ZAP	= "ZAP";
     public static final String AC_DOWNGRADE = "DOWNGRADE";
     public static final String AC_TIERINFO = "TIERINFO";
-    protected static int collision = Ballistica.PROJECTILE;
+    protected static int collision = Ballistica.FRIENDLY_PROJECTILE;
 
     public int manaCost;
 

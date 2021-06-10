@@ -41,7 +41,7 @@ public class SoulFlame extends Minion {
 
     @Override
     protected boolean canAttack( Char enemy ) {
-        return new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos;
+        return new Ballistica( pos, enemy.pos, Ballistica.FRIENDLY_MAGIC).collisionPos == enemy.pos;
     }
 
     @Override

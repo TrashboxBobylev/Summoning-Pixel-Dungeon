@@ -57,7 +57,7 @@ public class WandOfBlastWave extends DamageWand {
 	{
 		image = ItemSpriteSheet.WAND_BLAST_WAVE;
 
-		collisionProperties = Ballistica.PROJECTILE;
+		collisionProperties = Ballistica.FRIENDLY_PROJECTILE;
 	}
 
 	public int min(int lvl){

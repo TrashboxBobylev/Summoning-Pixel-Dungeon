@@ -52,7 +52,7 @@ public class Wizard extends Minion implements Callback {
 	
 	@Override
 	protected boolean canAttack( Char enemy ) {
-		return new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos;
+		return new Ballistica( pos, enemy.pos, Ballistica.FRIENDLY_MAGIC).collisionPos == enemy.pos;
 	}
 
 	private static final HashMap<Class<? extends Buff>, Float> DEBUFFS = new HashMap<>();

@@ -90,7 +90,7 @@ public class Ropes extends Item {
                     return;
                 }
 
-                final Ballistica chain = new Ballistica(curUser.pos, target, Ballistica.PROJECTILE);
+                final Ballistica chain = new Ballistica(curUser.pos, target, Ballistica.FRIENDLY_PROJECTILE);
 
                 if (Actor.findChar( chain.collisionPos ) != null){
                     chainEnemy( chain, curUser, Actor.findChar( chain.collisionPos ));

@@ -75,7 +75,7 @@ public class Wave extends ConjurerSpell {
             //trace a ballistica to our target (which will also extend past them
             Ballistica trajectory = new Ballistica(Dungeon.hero.pos, ch.pos, Ballistica.STOP_TARGET);
             //trim it to just be the part that goes past them
-            trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size()-1), Ballistica.PROJECTILE);
+            trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size()-1), Ballistica.FRIENDLY_PROJECTILE);
             WandOfBlastWave.throwChar(ch, trajectory, 2 + level());
         }
         Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);

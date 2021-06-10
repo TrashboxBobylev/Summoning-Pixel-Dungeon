@@ -56,7 +56,7 @@ public class Hacatu extends Minion implements Callback {
 	
 	@Override
 	protected boolean canAttack( Char enemy ) {
-		return !Dungeon.level.adjacent( pos, enemy.pos ) && new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos;
+		return !Dungeon.level.adjacent( pos, enemy.pos ) && new Ballistica( pos, enemy.pos, Ballistica.FRIENDLY_MAGIC).collisionPos == enemy.pos;
 	}
 
     //run away when getting closer

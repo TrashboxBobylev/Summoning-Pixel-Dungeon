@@ -31,6 +31,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.shatteredpixel.shatteredpixeldungeon.actors.Char.Alignment.ALLY;
+
 public class Ballistica {
 
 	//note that the path is the FULL path of the projectile, including tiles after collision.
@@ -47,6 +49,7 @@ public class Ballistica {
 	public static final int STOP_SOLID = 4;     //ballistica will stop on solid terrain
 	public static final int IGNORE_SOFT_SOLID = 8; //ballistica will ignore soft solid terrain, such as doors and webs
 	public static final int REFLECT = 16; //ballistica will reflect instead of stopping
+	public static final int IGNORE_ALLY_CHARS = 32; //ballistica will ignore allies
 
 	public static final int PROJECTILE =  	STOP_TARGET	| STOP_CHARS	| STOP_SOLID;
 
@@ -55,10 +58,12 @@ public class Ballistica {
 	public static final int WONT_STOP =     0;
 
 	public static final int LASER = STOP_SOLID | REFLECT;
+
+	public static final int FRIENDLY_PROJECTILE = STOP_TARGET	| STOP_CHARS	| STOP_SOLID | IGNORE_ALLY_CHARS;
+	public static final int FRIENDLY_MAGIC      = STOP_CHARS  | STOP_SOLID | IGNORE_ALLY_CHARS;
 	public static int REFLECTION;
 	public ArrayList<Integer> reflectPositions = new ArrayList<>();
 	private int reflectTimes = 0;
-
 
 	public Ballistica( int from, int to, int params ){
 		sourcePos = from;
@@ -68,7 +73,8 @@ public class Ballistica {
 				(params & STOP_CHARS) > 0,
 				(params & STOP_SOLID) > 0,
 				(params & IGNORE_SOFT_SOLID) > 0,
-				(params & REFLECT) > 0);
+				(params & REFLECT) > 0,
+				(params & IGNORE_ALLY_CHARS) > 0);
 
 		if (collisionPos != null) {
 			dist = path.indexOf(collisionPos);
@@ -81,7 +87,7 @@ public class Ballistica {
 		}
 	}
 
-	private void build( int from, int to, boolean stopTarget, boolean stopChars, boolean stopTerrain, boolean ignoreSoftSolid, boolean reflect ) {
+	private void build( int from, int to, boolean stopTarget, boolean stopChars, boolean stopTerrain, boolean ignoreSoftSolid, boolean reflect, boolean ignoreAllies ) {
 		int w = Dungeon.level.width();
 
 		int x0 = from % w;
@@ -160,7 +166,13 @@ public class Ballistica {
 						collide(cell);
 					}
 				} else if (cell != sourcePos && stopChars && Actor.findChar(cell) != null) {
-					collide(cell);
+					if (ignoreAllies && Actor.findChar(cell).alignment == ALLY){
+						if (cell == to && stopTarget) {
+							collide(cell);
+						}
+					} else {
+						collide(cell);
+					}
 				} else if (cell == to && stopTarget) {
 					collide(cell);
 				}
@@ -213,7 +225,7 @@ public class Ballistica {
 					}
 				}
 					reflectPositions.add(cellBeforeWall);
-					build(cellBeforeWall, destinationX + destinationY * w, stopTarget, stopChars, stopTerrain, ignoreSoftSolid, ++reflectTimes < REFLECTION);
+					build(cellBeforeWall, destinationX + destinationY * w, stopTarget, stopChars, stopTerrain, ignoreSoftSolid, ++reflectTimes < REFLECTION, false);
 			}
 		}
 		return true;

@@ -165,7 +165,7 @@ public class Slingshot extends Weapon {
             if (target != null) {
                 if (charge > 0) {
                     final Stone stone = new Stone();
-                    target = new Ballistica( curUser.pos, target, Ballistica.PROJECTILE ).collisionPos;
+                    target = new Ballistica( curUser.pos, target, Ballistica.FRIENDLY_PROJECTILE ).collisionPos;
                     charge -= 1;
                     updateQuickslot();
                     curUser.sprite.zap(target);
