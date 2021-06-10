@@ -117,8 +117,8 @@ public abstract class Minion extends Mob {
         WANDERING = new Wandering();
         state = WANDERING;
 
-        //before other mobs
-        actPriority = MOB_PRIO + 1;
+        //at same time as hero
+        actPriority = HERO_PRIO;
 
         immunities.add(PerfumeGas.Affection.class);
     }
