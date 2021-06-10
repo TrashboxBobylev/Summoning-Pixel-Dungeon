@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.watabou.noosa.TextureFilm;
 
 public class GhostChickenSprite extends MobSprite {
@@ -49,7 +50,17 @@ public class GhostChickenSprite extends MobSprite {
 		die.frames( frames, 4, 5, 6 );
 		
 		play( idle );
+		alpha(0.25f);
+	}
 
-		alpha(0.3f);
+	@Override
+	public void link(Char ch) {
+		super.link(ch);
+		alpha(0.25f);
+	}
+
+	@Override
+	public void linkVisuals(Char ch) {
+		super.linkVisuals(ch);
 	}
 }
