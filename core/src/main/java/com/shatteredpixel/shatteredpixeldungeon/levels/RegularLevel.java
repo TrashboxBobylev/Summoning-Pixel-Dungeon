@@ -333,14 +333,17 @@ public abstract class RegularLevel extends Level {
 	protected void createItems() {
 		
 		// drops 8-16 items
-		int nItems = 8 + Random.chances(new float[]{6, 5, 4, 3, 2, 1, 1, 1});
+		int nItems = 5 + Random.chances(new float[]{6, 5, 4, 3, 2, 1, 1, 1});
 
 		if (feeling == Feeling.LARGE){
 			nItems += 6;
 		}
-		if (SPDSettings.bigdungeon()) nItems *= 2;
-		if (SPDSettings.smalldungeon()) nItems -= 5;
-		if (Dungeon.hero.heroClass == HeroClass.ADVENTURER) nItems *= 2f;
+		if (SPDSettings.bigdungeon()) {
+			nItems *= 2;
+			if (Dungeon.hero.heroClass == HeroClass.ADVENTURER) nItems *= 1.5f;
+		}
+		else if (Dungeon.hero.heroClass == HeroClass.ADVENTURER) nItems *= 2f;
+		if (SPDSettings.smalldungeon()) nItems -= 3;
 
 		if (Dungeon.mode == Dungeon.GameMode.CHAOS) nItems = Random.Int(0 ,nItems);
 
