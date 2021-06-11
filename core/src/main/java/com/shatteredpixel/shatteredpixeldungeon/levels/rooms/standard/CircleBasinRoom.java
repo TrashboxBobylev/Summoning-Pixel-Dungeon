@@ -32,10 +32,6 @@ import com.watabou.utils.Rect;
 
 public class CircleBasinRoom extends PatchRoom {
 
-	{
-		joinable = false;
-	}
-
 	@Override
 	public int minWidth() { return sizeCat.minDim26+1; }
 	public int minHeight() {

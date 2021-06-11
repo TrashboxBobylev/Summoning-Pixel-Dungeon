@@ -25,17 +25,16 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 
 public abstract class StandardRoom extends Room {
-
-	//whether this room can be joined with other standard rooms
-	//should usually be set to false by rooms that substantially alter terrain
-	public boolean joinable = true;
 	
 	public enum SizeCategory {
 
@@ -56,6 +55,7 @@ public abstract class StandardRoom extends Room {
 		}
 		
 		public int connectionWeight(){
+			if (Dungeon.mode == Dungeon.GameMode.CHAOS) return Random.IntRange(1, roomValue*roomValue);
 			return roomValue*roomValue;
 		}
 		
@@ -92,9 +92,9 @@ public abstract class StandardRoom extends Room {
 		
 		int ordinal = Random.chances(probs);
 		if (Dungeon.mode == Dungeon.GameMode.CHAOS){
-			ordinal = Random.chances(new float[]{1, 1, 1});
+			ordinal = Random.chances(new float[]{4, 2, 1, 1});
 		}
-		
+
 		if (ordinal != -1){
 			sizeCat = categories[ordinal];
 			return true;
@@ -112,6 +112,12 @@ public abstract class StandardRoom extends Room {
 	}
 
 	@Override
+	public boolean canMerge(Level l, Point p, int mergeTerrain) {
+		if (Dungeon.mode == Dungeon.GameMode.CHAOS) return true;
+		int cell = l.pointToCell(pointInside(p, 1));
+		return (Terrain.flags[l.map[cell]] & Terrain.SOLID) == 0;
+	}
+
 	public int minHeight() {
 		return sizeCat.minDim26;
 	}

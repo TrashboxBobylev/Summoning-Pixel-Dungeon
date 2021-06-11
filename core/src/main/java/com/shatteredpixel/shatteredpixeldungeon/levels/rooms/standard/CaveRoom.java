@@ -30,10 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 
 public class CaveRoom extends PatchRoom {
 
-	{
-		joinable = false;
-	}
-
 	@Override
 	public float[] sizeCatProbs() {
 		return new float[]{8, 4, 1, 0};

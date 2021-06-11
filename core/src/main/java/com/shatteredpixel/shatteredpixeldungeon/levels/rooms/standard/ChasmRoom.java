@@ -31,10 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 
 public class ChasmRoom extends PatchRoom {
 
-	{
-		joinable = false;
-	}
-
 	@Override
 	public float[] sizeCatProbs() {
 		return new float[]{9, 3, 1, 0};
