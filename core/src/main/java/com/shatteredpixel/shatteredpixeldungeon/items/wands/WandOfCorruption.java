@@ -24,7 +24,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
-import com.shatteredpixel.shatteredpixeldungeon.*;
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
@@ -102,7 +105,6 @@ public class WandOfCorruption extends Wand {
 			Mob enemy = (Mob) ch;
 
 			float corruptingPower = 3 + buffedLvl()/2f;
-			if (SPDSettings.bigdungeon()) corruptingPower *= 2;
 			
 			//base enemy resistance is usually based on their exp, but in special cases it is based on other criteria
             float enemyResist = getEnemyResist(ch, enemy);
