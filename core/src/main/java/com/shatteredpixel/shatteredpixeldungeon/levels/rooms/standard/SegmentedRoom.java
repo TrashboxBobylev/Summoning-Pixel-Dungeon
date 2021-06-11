@@ -27,7 +27,6 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.watabou.noosa.Game;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
@@ -69,7 +68,7 @@ public class SegmentedRoom extends StandardRoom {
 			return;
 		}
 		
-		int tries = 200;
+		int tries = 1000;
 		
 		//splitting top/bottom
 		if (area.width() > area.height() || (area.width() == area.height() && Random.Int(2) == 0)){
@@ -116,6 +115,5 @@ public class SegmentedRoom extends StandardRoom {
 			} while (--tries > 0);
 
 		}
-		if (tries == 0) Game.reportException(new RuntimeException("cannot create walls in SegmentedRoom"));
 	}
 }
