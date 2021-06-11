@@ -199,10 +199,11 @@ public abstract class RegularLevel extends Level {
 	public int nMobs() {
 		if (Dungeon.depth <= 1 && Dungeon.mode != Dungeon.GameMode.GAUNTLET) return 0;
 
-		int mobs = 8 + Dungeon.depth + Random.Int(7);
+		int mobs = Math.round(5 + Dungeon.depth*0.7f + Random.Int(4));
 		if (feeling == Feeling.LARGE){
 			mobs = (int)Math.ceil(mobs * 2f);
 		}
+		if (SPDSettings.bigdungeon()) mobs *= 1.5f;
 		if (SPDSettings.smalldungeon()) mobs /= 3;
 		if (Dungeon.mode == Dungeon.GameMode.CHAOS) mobs = Random.Int(0, mobs);
 

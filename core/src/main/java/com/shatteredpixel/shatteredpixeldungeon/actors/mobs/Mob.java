@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.SoulFlame;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GoatClone;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Surprise;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
@@ -58,6 +59,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knife;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
@@ -108,6 +110,8 @@ public abstract class Mob extends Char {
 	public Char enemy;
 	public boolean enemySeen;
 	protected boolean alerted = false;
+	public boolean hordeSpawned = false;
+	public int hordeHead = -1;
 
 	protected static final float TIME_TO_WAKE_UP = 1f;
 
@@ -115,6 +119,8 @@ public abstract class Mob extends Char {
 	private static final String SEEN	= "seen";
 	private static final String TARGET	= "target";
 	private static final String MAX_LVL	= "max_lvl";
+	private static final String HORDE_HEAD = "hordeHead";
+	private static final String HORDE_SPAWNED = "hordeSpawned";
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -137,6 +143,8 @@ public abstract class Mob extends Char {
 		bundle.put( SEEN, enemySeen );
 		bundle.put( TARGET, target );
 		bundle.put( MAX_LVL, maxLvl );
+		bundle.put( HORDE_HEAD, hordeHead);
+		bundle.put( HORDE_SPAWNED, hordeSpawned);
 	}
 
 	@Override
@@ -162,6 +170,9 @@ public abstract class Mob extends Char {
 		target = bundle.getInt( TARGET );
 
 		if (bundle.contains(MAX_LVL)) maxLvl = bundle.getInt(MAX_LVL);
+
+		hordeHead = bundle.getInt(HORDE_HEAD);
+		hordeSpawned = bundle.getBoolean(HORDE_SPAWNED);
 	}
 
 	public CharSprite sprite() {
@@ -175,6 +186,43 @@ public abstract class Mob extends Char {
 
 		boolean justAlerted = alerted;
 		alerted = false;
+
+		if (!hordeSpawned && Random.Int(Math.max(3, 8 - Dungeon.depth / Dungeon.chapterSize())) == 0 && !Dungeon.bossLevel()){
+
+			int hordeSize = Random.IntRange(1, Dungeon.depth / 8);
+			for (int i = 0; i < hordeSize; i++) {
+
+				ArrayList<Integer> candidates = new ArrayList<>();
+				for (int n : PathFinder.NEIGHBOURS8) {
+					if (Dungeon.level.map[pos+n] != Terrain.DOOR
+							&& Dungeon.level.map[pos+n] != Terrain.SECRET_DOOR
+							&& Dungeon.level.passable[pos+n]
+						&& Actor.findChar(pos + n) == null) {
+						candidates.add(pos + n);
+					}
+				}
+
+				if (!candidates.isEmpty()) {
+					Mob child = Dungeon.level.createMob();
+					child.hordeHead = this.id();
+					child.hordeSpawned = true;
+					if (state != SLEEPING) {
+						child.state = child.WANDERING;
+					}
+
+					child.pos = Random.element(candidates);
+
+					Dungeon.level.occupyCell(child);
+
+					GameScene.add(child);
+					if (sprite.visible) {
+						Actor.addDelayed(new Pushing(child, pos, child.pos), -1);
+					}
+				}
+			}
+			HP = HT = HT*2;
+		}
+		hordeSpawned = true;
 
 		if (justAlerted){
 			sprite.showAlert();
@@ -226,6 +274,13 @@ public abstract class Mob extends Char {
 			Char source = (Char)Actor.findById( terror.object );
 			if (source != null) {
 				return source;
+			}
+		}
+
+		if (hordeHead != -1 && Actor.findById(hordeHead) != null){
+			Mob hordeHead = (Mob) Actor.findById(this.hordeHead);
+			if (hordeHead.isAlive()){
+				return hordeHead.enemy;
 			}
 		}
 
@@ -569,6 +624,12 @@ public abstract class Mob extends Char {
 				|| Dungeon.hero.buff(Swiftthistle.TimeBubble.class) != null
 				|| Dungeon.hero.buff(SoulOfYendor.timeFreeze.class) != null)
 			sprite.add( CharSprite.State.PARALYSED );
+		if (hordeHead != -1 && Actor.findById(hordeHead) != null){
+			Mob hordeHead = (Mob) Actor.findById(Mob.this.hordeHead);
+			if (hordeHead.isAlive()){
+				sprite.add(CharSprite.State.SHRUNK);
+			}
+		}
 	}
 
 	protected float attackDelay() {
@@ -677,6 +738,12 @@ public abstract class Mob extends Char {
 		enemy = ch;
 		if (state != PASSIVE){
 			state = HUNTING;
+		}
+		if (hordeHead != -1 && Actor.findById(hordeHead) != null){
+			Mob hordeHead = (Mob) Actor.findById(Mob.this.hordeHead);
+			if (hordeHead.isAlive()){
+				enemy = hordeHead.enemy;
+			}
 		}
 	}
 
@@ -835,6 +902,12 @@ public abstract class Mob extends Char {
 
 	//how many mobs this one should count as when determining spawning totals
 	public float spawningWeight(){
+		if (hordeHead != -1 && Actor.findById(hordeHead) != null){
+			Mob hordeHead = (Mob) Actor.findById(Mob.this.hordeHead);
+			if (hordeHead.isAlive()){
+				return 0;
+			}
+		}
 		return 1;
 	}
 
@@ -850,10 +923,25 @@ public abstract class Mob extends Char {
 			state = WANDERING;
 		}
 		target = cell;
+		if (hordeHead != -1 && Actor.findById(hordeHead) != null){
+			Mob hordeHead = (Mob) Actor.findById(Mob.this.hordeHead);
+			if (hordeHead.isAlive()){
+				target = hordeHead.target;
+			}
+		}
 	}
 
 	public String description() {
 		String desc = Messages.get(this, "desc");
+		if (hordeHead != -1 && Actor.findById(hordeHead) != null){
+			Mob hordeHead = (Mob) Actor.findById(Mob.this.hordeHead);
+			if (hordeHead.isAlive()){
+				desc += "\n\n" + Messages.get(Mob.class, "horde");
+			}
+		}
+		if (hordeSpawned && hordeHead == -1){
+			desc += "\n\n" + Messages.get(Mob.class, "horde_leader");
+		}
 		desc += "\n\n" + Messages.get(Mob.class, "stats", HP, HT, attackSkill(Dungeon.hero), defenseSkill);
 		return desc;
 	}
@@ -984,6 +1072,12 @@ public abstract class Mob extends Char {
 						buff(PerfumeGas.Affection.class).detach();
 					}
 				}
+				if (hordeHead != -1 && Actor.findById(hordeHead) != null){
+					Mob hordeHead = (Mob) Actor.findById(Mob.this.hordeHead);
+					if (hordeHead.isAlive()){
+						target = hordeHead.target;
+					}
+				}
 				spend( TICK );
 			}
 
@@ -1019,6 +1113,12 @@ public abstract class Mob extends Char {
 					sprite.showLost();
 					state = WANDERING;
 					target = Dungeon.level.randomDestination( Mob.this );
+					if (hordeHead != -1 && Actor.findById(hordeHead) != null){
+						Mob hordeHead = (Mob) Actor.findById(Mob.this.hordeHead);
+						if (hordeHead.isAlive()){
+							target = hordeHead.target;
+						}
+					}
 					spend( TICK );
 					return true;
 				}
@@ -1050,6 +1150,12 @@ public abstract class Mob extends Char {
 						sprite.showLost();
 						state = WANDERING;
 						target = Dungeon.level.randomDestination( Mob.this );
+						if (hordeHead != -1 && Actor.findById(hordeHead) != null){
+							Mob hordeHead = (Mob) Actor.findById(Mob.this.hordeHead);
+							if (hordeHead.isAlive()){
+								target = hordeHead.target;
+							}
+						}
 					}
 					return true;
 				}
@@ -1072,6 +1178,12 @@ public abstract class Mob extends Char {
 				//if enemy isn't in FOV, keep running from their previous position.
 			} else if (enemyInFOV) {
 				target = enemy.pos;
+			}
+			if (hordeHead != -1 && Actor.findById(hordeHead) != null){
+				Mob hordeHead = (Mob) Actor.findById(Mob.this.hordeHead);
+				if (hordeHead.isAlive()){
+					target = hordeHead.target;
+				}
 			}
 
 			int oldPos = pos;
