@@ -293,7 +293,7 @@ public class Mimic extends Mob {
 		do {
 			switch (Random.Int(6)) {
 				case 0:
-					reward = new Gold().random();
+					reward = new Gold().goldFromEnemy();
 					break;
 				case 1:
 					reward = Generator.randomMissile();

@@ -62,9 +62,9 @@ public class SewerLevel extends RegularLevel {
 	@Override
 	protected int specialRooms(boolean forceMax) {
 		if (SPDSettings.smalldungeon()) return 1;
-		if (forceMax) return 3;
-		//1 to 3, average 1.8
-		return 1+Random.chances(new float[]{4, 4, 2});
+		if (forceMax) return 2;
+		//1 to 2, average 1.8
+		return 1+Random.chances(new float[]{1, 4});
 	}
 	
 	@Override

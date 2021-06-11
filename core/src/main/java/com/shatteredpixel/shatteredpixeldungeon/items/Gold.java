@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -93,12 +94,14 @@ public class Gold extends Item {
 	
 	@Override
 	public Item random() {
-		quantity = Random.Int( 60 + Dungeon.depth * 80, 100 + Dungeon.depth * 130 );
+		quantity = Random.Int( 15 + Dungeon.depth * 20, 40 + Dungeon.depth * 25 ) / (5 / Dungeon.chapterSize());
+		if (Dungeon.hero.heroClass == HeroClass.ADVENTURER) quantity *= 0.75f;
 		return this;
 	}
 
 	public Item goldFromEnemy(){
-        quantity = Random.Int( 40 + Dungeon.depth * 40, 60 + Dungeon.depth * 60 );
+        quantity = Random.Int( 12 + Dungeon.depth * 12, 18 + Dungeon.depth * 15 ) / (5 / Dungeon.chapterSize());
+		if (Dungeon.hero.heroClass == HeroClass.ADVENTURER) quantity *= 0.75f;
         return this;
     }
 	

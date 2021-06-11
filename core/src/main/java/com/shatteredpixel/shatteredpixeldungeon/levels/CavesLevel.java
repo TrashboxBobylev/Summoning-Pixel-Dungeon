@@ -68,8 +68,8 @@ public class CavesLevel extends RegularLevel {
 	protected int specialRooms(boolean forceMax) {
 		if (SPDSettings.smalldungeon()) return 1;
 		if (forceMax) return 3;
-		//1 to 3, average 2.2
-		return 1+Random.chances(new float[]{2, 4, 4});
+		//2 to 3, average 2.2
+		return 2+Random.chances(new float[]{4, 1});
 	}
 	
 	@Override

@@ -69,7 +69,7 @@ public class PrisonLevel extends RegularLevel {
 		if (SPDSettings.smalldungeon()) return 1;
 		if (forceMax) return 3;
 		//1 to 3, average 2.0
-		return 1+Random.chances(new float[]{3, 4, 3});
+		return 1+Random.chances(new float[]{1, 3, 1});
 	}
 	
 	@Override
