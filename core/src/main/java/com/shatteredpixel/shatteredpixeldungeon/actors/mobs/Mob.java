@@ -939,9 +939,6 @@ public abstract class Mob extends Char {
 				desc += "\n\n" + Messages.get(Mob.class, "horde");
 			}
 		}
-		if (hordeSpawned && hordeHead == -1){
-			desc += "\n\n" + Messages.get(Mob.class, "horde_leader");
-		}
 		desc += "\n\n" + Messages.get(Mob.class, "stats", HP, HT, attackSkill(Dungeon.hero), defenseSkill);
 		return desc;
 	}
