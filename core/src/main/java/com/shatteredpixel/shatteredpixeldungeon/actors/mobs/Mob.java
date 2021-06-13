@@ -209,6 +209,7 @@ public abstract class Mob extends Char {
 					if (state != SLEEPING) {
 						child.state = child.WANDERING;
 					}
+					child.HP = child.HT = child.HT/2;
 
 					child.pos = Random.element(candidates);
 
@@ -220,7 +221,7 @@ public abstract class Mob extends Char {
 					}
 				}
 			}
-			HP = HT = HT*2;
+			if (!properties.contains(Property.BOSS)) HP = HT = HT*2;
 		}
 		hordeSpawned = true;
 
@@ -767,6 +768,14 @@ public abstract class Mob extends Char {
 
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
 		if (lock != null && !isImmune(src.getClass())) lock.addTime(dmg/2);
+
+		if (hordeHead != -1 && Actor.findById(hordeHead) != null){
+			Mob hordeHead = (Mob) Actor.findById(this.hordeHead);
+			if (hordeHead.isAlive()){
+					super.damage(dmg/2, src);
+					return;
+			}
+		}
 
 		super.damage( dmg, src );
 	}
