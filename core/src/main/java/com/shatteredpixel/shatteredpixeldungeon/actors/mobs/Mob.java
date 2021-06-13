@@ -760,6 +760,12 @@ public abstract class Mob extends Char {
 		}
 		if (state != HUNTING) {
 			alerted = true;
+			for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+				if (mob.hordeHead == id()){
+					mob.state = mob.WANDERING;
+					mob.alerted = true;
+				}
+			}
 		}
 		if (buff(PerfumeGas.Affection.class) != null && src instanceof Char){
 			buff(PerfumeGas.Affection.class).detach();
@@ -844,6 +850,13 @@ public abstract class Mob extends Char {
 
 		if (Dungeon.hero.isAlive() && !Dungeon.level.heroFOV[pos]) {
 			GLog.i( Messages.get(this, "died") );
+		}
+		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+			if (mob.hordeHead == id()){
+				mob.state = mob.HUNTING;
+				mob.enemy = enemy;
+				mob.alerted = true;
+			}
 		}
 
 		super.die( cause );
@@ -1036,6 +1049,13 @@ public abstract class Mob extends Char {
 			alerted = true;
 			state = HUNTING;
 			target = enemy.pos;
+			for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+				if (mob.hordeHead == id()){
+					mob.state = mob.HUNTING;
+					mob.alerted = true;
+					mob.beckon(target);
+				}
+			}
 
 			if (alignment == Alignment.ENEMY && Dungeon.isChallenged( Challenges.SWARM_INTELLIGENCE )) {
 				for (Mob mob : Dungeon.level.mobs) {
