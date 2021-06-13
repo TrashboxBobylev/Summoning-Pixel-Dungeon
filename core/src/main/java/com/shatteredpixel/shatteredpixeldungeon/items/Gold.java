@@ -94,13 +94,13 @@ public class Gold extends Item {
 	
 	@Override
 	public Item random() {
-		quantity = Random.Int( 15 + Dungeon.depth * 20, 40 + Dungeon.depth * 25 ) / (5 / Dungeon.chapterSize());
+		quantity = (int) (Random.Int( 15 + Dungeon.depth * 20, 40 + Dungeon.depth * 25 ) / (5f / Dungeon.chapterSize()));
 		if (Dungeon.hero.heroClass == HeroClass.ADVENTURER) quantity *= 0.75f;
 		return this;
 	}
 
 	public Item goldFromEnemy(){
-        quantity = Random.Int( 12 + Dungeon.depth * 12, 18 + Dungeon.depth * 15 ) / (5 / Dungeon.chapterSize());
+        quantity = (int) (Random.Int( 12 + Dungeon.depth * 12, 18 + Dungeon.depth * 15 ) / (5f / Dungeon.chapterSize()));
 		if (Dungeon.hero.heroClass == HeroClass.ADVENTURER) quantity *= 0.75f;
         return this;
     }
