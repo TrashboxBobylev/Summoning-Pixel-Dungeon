@@ -24,8 +24,7 @@ jobs:
         id: vars
         shell: bash
         run: |
-          git_hash=$(git rev-parse --short "$GITHUB_SHA")
-          echo "1.2.1-$(git_hash)" > version
+          echo "1.2.1-$(git rev-parse --short "$GITHUB_SHA")" > version
       # 2
       - name: Generate Release APK
         run: ./gradlew android:assembleRelease
