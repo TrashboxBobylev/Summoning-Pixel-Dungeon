@@ -127,14 +127,14 @@ public class Wave extends ConjurerSpell {
         Sample.INSTANCE.play( Assets.Sounds.ROCKS );
     }
 
-//    @Override
-//    public int manaCost() {
-//        switch (level()){
-//            case 1: return 15;
-//            case 2: return 30;
-//        }
-//        return 9;
-//    }
+    @Override
+    public int manaCost() {
+        switch (level()){
+            case 1: return 15;
+            case 2: return 30;
+        }
+        return 9;
+    }
 
     @Override
     public String desc() {
