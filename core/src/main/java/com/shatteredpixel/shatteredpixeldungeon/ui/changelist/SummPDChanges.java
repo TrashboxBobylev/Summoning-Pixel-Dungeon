@@ -182,11 +182,7 @@ public class SummPDChanges {
 //    }
     public static void add_1_1_7_Changes(ArrayList<ChangeInfo> changeInfos) {
 
-        ChangeInfo changes = new ChangeInfo("1.2", true, "");
-        changes.hardlight(Window.TITLE_COLOR);
-        changeInfos.add(changes);
-
-        changes = ChangesScene.createChangeInfo(changeInfos, "v1.2.0c", false, Window.WHITE);
+        ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "v1.2.1", true, Window.TITLE_COLOR);
         changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
                 "Fixed:\n" +
                         "_-_ Goo minion being stuck in place if enemy died before elemental attack.\n" +
@@ -239,7 +235,8 @@ public class SummPDChanges {
                         "_-_ Reworked _Pushing Waveform_:\n\n" +
                         "   _-_ Knockback strength is always at 3 instead of scaling with tiering.\n" +
                         "   _-_ Minions are teleported to you instead of being pushed away.\n" +
-                        "   _-_ Tiering increases the cone's width, increased the range and decreased mana cost for every tier."
+                        "   _-_ Tiering increases the cone's width, increased the range and decreased mana cost for every tier.\n\n" +
+                        "_-_ Halfed the cost of _Bridge of Artemis_."
 
         ));
 
@@ -263,6 +260,10 @@ public class SummPDChanges {
                 "_-_ Food satisfies for 10% more energy. Heroes take 10% more time to get hungry and starving.\n\n" +
                         "_-_ Food appears in every floor now instead of the chance."
         ));
+
+        changes = new ChangeInfo("1.2", true, "");
+        changes.hardlight(Window.TITLE_COLOR);
+        changeInfos.add(changes);
 
         changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
         changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",

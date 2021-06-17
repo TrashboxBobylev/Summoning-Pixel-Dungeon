@@ -114,10 +114,10 @@ public class Ranged extends ConjurerSpell {
     @Override
     public int manaCost(){
         switch (level()){
-            case 1: return 25;
-            case 2: return 50;
+            case 1: return 12;
+            case 2: return 25;
         }
-        return 15;
+        return 7;
     }
 
     public String desc() {
