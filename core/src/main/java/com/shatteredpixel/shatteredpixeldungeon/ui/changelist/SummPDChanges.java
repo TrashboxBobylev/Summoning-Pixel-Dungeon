@@ -235,7 +235,11 @@ public class SummPDChanges {
                         "_-_ Reworked _Runic Shell_:\n\n" +
                         "   _Tier I:_ -75% flat shielding, added 25% of max HP shielding\n" +
                         "   _Tier II:_ +25% flat shielding, -100% percentage shielding, mana cost: _7_ -> _15_\n" +
-                        "   _Tier III:_ -100% shielding, gives Temporary Block buff instead, mana cost: _16_ -> _20_\n\n"
+                        "   _Tier III:_ -100% shielding, gives Temporary Block buff instead, mana cost: _16_ -> _20_\n\n" +
+                        "_-_ Reworked _Pushing Waveform_:\n\n" +
+                        "   _-_ Knockback strength is always at 3 instead of scaling with tiering.\n" +
+                        "   _-_ Minions are teleported to you instead of being pushed away.\n" +
+                        "   _-_ Tiering increases the cone's width, increased the range and decreased mana cost for every tier."
 
         ));
 

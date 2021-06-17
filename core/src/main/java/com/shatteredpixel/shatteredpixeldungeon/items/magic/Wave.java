@@ -29,7 +29,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -37,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -72,12 +75,21 @@ public class Wave extends ConjurerSpell {
             }
         }
         for (Char ch : affectedChars){
-            //trace a ballistica to our target (which will also extend past them
-            Ballistica trajectory = new Ballistica(Dungeon.hero.pos, ch.pos, Ballistica.STOP_TARGET);
-            //trim it to just be the part that goes past them
-            trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size()-1), Ballistica.FRIENDLY_PROJECTILE);
-            WandOfBlastWave.throwChar(ch, trajectory, 2 + level());
+            if (ch.alignment == Char.Alignment.ENEMY) {
+                //trace a ballistica to our target (which will also extend past them
+                Ballistica trajectory = new Ballistica(Dungeon.hero.pos, ch.pos, Ballistica.STOP_TARGET);
+                //trim it to just be the part that goes past them
+                trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.FRIENDLY_PROJECTILE);
+                WandOfBlastWave.throwChar(ch, trajectory, 3);
+            } else if (ch.alignment == Char.Alignment.ALLY){
+                ArrayList<Integer> points = Level.getSpawningPoints(Dungeon.hero.pos);
+                if (!points.isEmpty()){
+                    ch.pos = Random.element(points);
+                    ScrollOfTeleportation.appear(ch, ch.pos);
+                }
+            }
         }
+
         Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
         Camera.main.shake( 3, 0.7f );
     }
@@ -87,12 +99,12 @@ public class Wave extends ConjurerSpell {
         //need to perform flame spread logic here so we can determine what cells to put flames in.
 
         // unlimited distance
-        int d = 4 + level()*2;
+        int d = 5 + level()*3;
         int dist = Math.min(bolt.dist, d);
 
         cone = new ConeAOE( bolt,
                 d,
-                90,
+                60 + level()*30,
                 Ballistica.STOP_SOLID);
 
         //cast to cells at the tip, rather than all cells, better performance.
@@ -115,18 +127,18 @@ public class Wave extends ConjurerSpell {
         Sample.INSTANCE.play( Assets.Sounds.ROCKS );
     }
 
-    @Override
-    public int manaCost() {
-        switch (level()){
-            case 1: return 24;
-            case 2: return 40;
-        }
-        return 12;
-    }
+//    @Override
+//    public int manaCost() {
+//        switch (level()){
+//            case 1: return 15;
+//            case 2: return 30;
+//        }
+//        return 9;
+//    }
 
     @Override
     public String desc() {
-        return Messages.get(this, "desc", 5 + level()*2, manaCost());
+        return Messages.get(this, "desc", 5 + level()*3, manaCost());
     }
 
 }
