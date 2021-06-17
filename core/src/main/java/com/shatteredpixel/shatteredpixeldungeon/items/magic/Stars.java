@@ -28,12 +28,18 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Callback;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 public class Stars extends ConjurerSpell {
@@ -48,9 +54,17 @@ public class Stars extends ConjurerSpell {
         Char ch = Actor.findChar(trajectory.collisionPos);
         if (ch != null){
             ch.damage(damageRoll(), this);
+
+            for (int i : PathFinder.NEIGHBOURS8){
+                ((MagicMissile)curUser.sprite.parent.recycle( MagicMissile.class )).reset(
+                        MagicMissile.MAGIC_MISSILE,
+                        ch.sprite,
+                        ch.pos+i,
+                        null
+                );
+            }
             Sample.INSTANCE.play( Assets.Sounds.HIT_MAGIC, 1, Random.Float(0.87f, 1.15f) );
 
-            ch.sprite.burst(0xFFFFFFFF, buffedLvl() / 2 + 2);
         }
     }
 
@@ -90,8 +104,34 @@ public class Stars extends ConjurerSpell {
 
     @Override
     protected void fx(Ballistica bolt, Callback callback) {
-        ((MissileSprite) Dungeon.hero.sprite.parent.recycle( MissileSprite.class )).
-                reset( Dungeon.hero.sprite, bolt.collisionPos, new Stars(), callback);
-        Sample.INSTANCE.play( Assets.Sounds.ZAP );
+        Sample.INSTANCE.play(Assets.Sounds.READ);
+        Dungeon.hero.sprite.zap(bolt.collisionPos, new Callback() {
+            @Override
+            public void call() {
+                Dungeon.hero.sprite.idle();
+                MissileSprite starSprite = (MissileSprite) Dungeon.hero.sprite.parent.recycle(MissileSprite.class);
+                Item sprite = new ProjectileStar();
+                PointF starDest = DungeonTilemap.tileCenterToWorld(bolt.collisionPos);
+                PointF starSource = DungeonTilemap.raisedTileCenterToWorld(Dungeon.hero.pos);
+                starSource.y -= 200;
+
+                starSprite.reset( starSource, starDest, sprite, callback);
+            }
+        });
     }
+
+    public static class ProjectileStar extends Item {
+        {
+            image = ItemSpriteSheet.STARS;
+        }
+
+        @Override
+        public Emitter emitter() {
+            Emitter e = new Emitter();
+            e.pos(6, 6);
+            e.fillTarget = false;
+            e.pour(MagicMissile.YogParticle.FACTORY, 0.03f);
+            return e;
+        }
+    };
 }

@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.magic.Stars;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
@@ -154,7 +155,7 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		    speed = 200f;
         }
 		if (item instanceof ThrowingKnive2 || item instanceof ThrowingKnife ||
-			item instanceof Kunai){
+			item instanceof Kunai || item instanceof Stars.ProjectileStar){
 			speed = 380f;
 		}
 		if (item instanceof Dart && Dungeon.hero.belongings.weapon instanceof Crossbow) {
@@ -164,6 +165,9 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 				|| item instanceof TenguSprite.TenguShuriken
 				|| item instanceof BlinkingManSprite.TenguJavelin){
 			speed *= 1.5f;
+		}
+		if (item instanceof Stars.ProjectileStar){
+			parent.addToFront(this);
 		}
 		
 		PosTweener tweener = new PosTweener( this, to, d.length() / speed );
