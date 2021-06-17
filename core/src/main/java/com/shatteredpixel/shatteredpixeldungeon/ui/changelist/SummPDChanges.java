@@ -183,18 +183,6 @@ public class SummPDChanges {
     public static void add_1_1_7_Changes(ArrayList<ChangeInfo> changeInfos) {
 
         ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "v1.2.1", true, Window.TITLE_COLOR);
-        changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-                "Fixed:\n" +
-                        "_-_ Goo minion being stuck in place if enemy died before elemental attack.\n" +
-                        "_-_ Shock explosives crashed because of heap issues.\n" +
-                        "_-_ Magic missile sentries being useless.\n" +
-                        "_-_ Abyss descend not working properly.\n" +
-                        "_-_ Shrinking bomb crashing on boss floors.\n" +
-                        "_-_ Instant use spells not consuming mana.\n" +
-                        "_-_ Blinking Man crashing the game when trying to teleport.\n"+
-                        "_-_ Abyssal spawners spawning obscene amount of monsters.\n" +
-                        "_-_ Attunement spirits dying instantly in some cases.\n\n" +
-                        "_-_ Removed softlock protection."));
         changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_ABYSS, 0, 64, 16, 16 ), "Abyss and Endless mode",
                 "Changed Abyss levels to be less annoying:\n\n" +
                         "_-_ Abyssal mobs no longer rush at you because of amulet.\n" +
@@ -239,27 +227,22 @@ public class SummPDChanges {
                         "_-_ Halfed the cost of _Bridge of Artemis_."
 
         ));
-
-        changes = ChangesScene.createChangeInfo(changeInfos, "v1.2.0a & 1.2.0b", false, Window.WHITE);
-
         changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
                 "Fixed:\n" +
-                        "_-_ Debuff large icons being incorrect.\n\n" +
-                        "_-_ Frost Elemental minion's animation were incorrect.\n\n"+
-                        "_-_ Demon Halls was undescenable if Final Froggits were dead.\n\n" +
-                        "_-_ Stationary minions displayed missing text when interacted with.\n\n\n" +
-                        "_-_ Added failsafe for potential softlocks, which will give control to player if he gets stuck for too long.\n\n" +
-                        "_-_ Reduced lag from Yog's eradicating wall attack."));
-        changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_HALLS, 0, 64, 16, 16 ), "Dynamic Dungeon Size",
-                "_-_ Reduced amount of rooms by 25-35% in every dungeon mode.\n\n" +
-                        "_-_ Reduced amount of monsters in 21 floors mode.\n\n" +
-                        "_-_ Fixed view distance in demon halls.\n\n" +
-                        "_-_ Increased amount of mobs, but made it more consistent."));
-
-        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RATION, null), "Food",
-                "_-_ Food satisfies for 10% more energy. Heroes take 10% more time to get hungry and starving.\n\n" +
-                        "_-_ Food appears in every floor now instead of the chance."
-        ));
+                        "_-_ Goo minion being stuck in place if enemy died before elemental attack.\n" +
+                        "_-_ Shock explosives crashed because of heap issues.\n" +
+                        "_-_ Magic missile sentries being useless.\n" +
+                        "_-_ Abyss descend not working properly.\n" +
+                        "_-_ Shrinking bomb crashing on boss floors.\n" +
+                        "_-_ Instant use spells not consuming mana.\n" +
+                        "_-_ Blinking Man crashing the game when trying to teleport.\n"+
+                        "_-_ Abyssal spawners spawning obscene amount of monsters.\n" +
+                        "_-_ Attunement spirits dying instantly in some cases.\n" +
+                        "_-_ Phantoms giving EXP up to level 100.\n" +
+                        "_-_ Ghost Chickens being not invisible if summoned.\n" +
+                        "_-_ Fixed crash with Stone of Intuition and rings.\n"+
+                        "_-_ Soul of Yendor being overcharged from gold.\n" +
+                        "_-_ Removed softlock protection."));
 
         changes = new ChangeInfo("1.2", true, "");
         changes.hardlight(Window.TITLE_COLOR);
@@ -343,6 +326,27 @@ public class SummPDChanges {
                         "_-_ Added wet debuff, that does same thing as being in water. Inflicted by Storm Clouds and Aqua Blast.\n" +
                         "_-_ Added ergonomic inventory setting, that moves slots to bottom of screen.\n" +
                         "_-_ Added new attacks for Yog, buffed his summon attack to include more monsters."));
+
+        changes = ChangesScene.createChangeInfo(changeInfos, "v1.2.0a & 1.2.0b", false, Window.WHITE);
+
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "Fixed:\n" +
+                        "_-_ Debuff large icons being incorrect.\n\n" +
+                        "_-_ Frost Elemental minion's animation were incorrect.\n\n"+
+                        "_-_ Demon Halls was undescenable if Final Froggits were dead.\n\n" +
+                        "_-_ Stationary minions displayed missing text when interacted with.\n\n\n" +
+                        "_-_ Added failsafe for potential softlocks, which will give control to player if he gets stuck for too long.\n\n" +
+                        "_-_ Reduced lag from Yog's eradicating wall attack."));
+        changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_HALLS, 0, 64, 16, 16 ), "Dynamic Dungeon Size",
+                "_-_ Reduced amount of rooms by 25-35% in every dungeon mode.\n\n" +
+                        "_-_ Reduced amount of monsters in 21 floors mode.\n\n" +
+                        "_-_ Fixed view distance in demon halls.\n\n" +
+                        "_-_ Increased amount of mobs, but made it more consistent."));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RATION, null), "Food",
+                "_-_ Food satisfies for 10% more energy. Heroes take 10% more time to get hungry and starving.\n\n" +
+                        "_-_ Food appears in every floor now instead of the chance."
+        ));
     }
 
     public static void add_1_1_5_Changes(ArrayList<ChangeInfo> changeInfos) {
