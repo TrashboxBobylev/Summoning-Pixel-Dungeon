@@ -195,6 +195,10 @@ public abstract class Char extends Actor {
 	}
 
 	public boolean blockSound( float pitch ) {
+		if (buff(Block.class) != null){
+			Sample.INSTANCE.play( Assets.Sounds.HIT_PARRY, 1, pitch);
+			return true;
+		}
 		return false;
 	}
 
@@ -355,9 +359,13 @@ public abstract class Char extends Actor {
 				enemy.sprite.showStatus( CharSprite.NEUTRAL, defense );
 
 				//TODO enemy.defenseSound? currently miss plays for monks/crab even when they parry
-				Sample.INSTANCE.play(Assets.Sounds.MISS);
 
-				if (enemy.buff(Block.class)!=null) enemy.buff(Block.class).detach();
+				if (enemy.buff(Block.class)!=null) {
+					enemy.buff(Block.class).detach();
+					Sample.INSTANCE.play( Assets.Sounds.HIT_PARRY, 1);
+				} else {
+					Sample.INSTANCE.play(Assets.Sounds.MISS);
+				}
 			}
 			
 			return false;
@@ -402,6 +410,7 @@ public abstract class Char extends Actor {
 	}
 	
 	public String defenseVerb() {
+		if (buff(Block.class) != null) return Messages.get(Hero.class, "absorbed");
 		return Messages.get(this, "def_verb");
 	}
 	

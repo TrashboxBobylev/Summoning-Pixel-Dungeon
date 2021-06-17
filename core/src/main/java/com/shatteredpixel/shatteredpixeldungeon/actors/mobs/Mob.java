@@ -665,6 +665,8 @@ public abstract class Mob extends Char {
 		float modifier =1f;
 		if (buff(Chungus.class) != null) modifier *= 0.6f;
 
+		if (buff(Block.class) != null) return INFINITE_EVASION;
+
 		boolean seen = (enemySeen && enemy.invisible == 0);
 		if (enemy == Dungeon.hero && !Dungeon.hero.canSurpriseAttack()) seen = true;
 		if ( seen

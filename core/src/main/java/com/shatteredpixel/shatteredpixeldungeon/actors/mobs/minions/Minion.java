@@ -261,6 +261,7 @@ public abstract class Minion extends Mob {
     //same accuracy and dexterity as player
     @Override
     public int defenseSkill(Char enemy) {
+        if (buff(Block.class) != null) return INFINITE_EVASION;
         boolean seen = (enemySeen && enemy.invisible == 0);
 
         if (enemy == Dungeon.hero && !Dungeon.hero.canSurpriseAttack()) seen = true;

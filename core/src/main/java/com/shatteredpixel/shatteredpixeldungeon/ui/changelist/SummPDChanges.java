@@ -231,7 +231,11 @@ public class SummPDChanges {
                         "   _Tier III:_ +75% flat heal, -67% percentage heal\n\n" +
                         "_-_ Buffed tier II and changed tier III of _Beam of Affection:_\n\n" +
                         "   _Tier II:_ +85% mana gain, replaced speed boost for enemies by shaman buffs, mana cost: _9_ -> _11_\n" +
-                        "   _Tier III:_ -1 turn of speed boost for minions, mana cost: _15_ -> _14_"
+                        "   _Tier III:_ -1 turn of speed boost for minions, mana cost: _15_ -> _14_\n\n" +
+                        "_-_ Reworked _Runic Shell_:\n\n" +
+                        "   _Tier I:_ -75% flat shielding, added 25% of max HP shielding\n" +
+                        "   _Tier II:_ +25% flat shielding, -100% percentage shielding, mana cost: _7_ -> _15_\n" +
+                        "   _Tier III:_ -100% shielding, gives Temporary Block buff instead, mana cost: _16_ -> _20_\n\n"
 
         ));
 

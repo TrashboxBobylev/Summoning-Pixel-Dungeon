@@ -455,7 +455,6 @@ public class Hero extends Char {
 
 	@Override
 	public String defenseVerb() {
-		if (buff(Block.class) != null) return Messages.get(this, "absorbed");
 		return super.defenseVerb();
 	}
 

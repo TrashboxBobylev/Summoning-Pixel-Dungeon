@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.magic;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Block;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.WardingWraith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
@@ -50,8 +51,13 @@ public class Barrier extends ConjurerSpell {
         if (ch instanceof Minion || ch instanceof DriedRose.GhostHero || ch instanceof WandOfLivingEarth.EarthGuardian ||
                 ch instanceof WandOfWarding.Ward || (ch instanceof WardingWraith && ch.alignment == Char.Alignment.ALLY)){
             Sample.INSTANCE.play(Assets.Sounds.ATK_SPIRITBOW);
-            int healing = heal(ch);
-            Buff.affect(ch, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier.class).setShield(healing);
+            if (level() < 2) {
+                int healing = heal(ch);
+                Buff.affect(ch, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier.class).setShield(healing);
+            }
+            else {
+                Buff.affect(ch, Block.class, 12f);
+            }
 
             ch.sprite.burst(0xFFFFFFFF, buffedLvl() / 2 + 2);
         }
@@ -60,31 +66,35 @@ public class Barrier extends ConjurerSpell {
     @Override
     public int manaCost() {
         switch (level()){
-            case 1: return 7;
-            case 2: return 16;
+            case 1: return 15;
+            case 2: return 20;
         }
         return 3;
     }
 
     private int heal(Char ch){
         switch (level()){
-            case 1: return 20 + ch.HT / 2;
+            case 1: return 25;
             case 2: return (int) (40 + ch.HT * 1.25f);
         }
-        return 20;
+        return 5 + ch.HT / 4;
     }
 
     private int partialHeal(){
         switch (level()){
-            case 1: return 50;
-            case 2: return 125;
+            case 1:
+            case 2:
+                return 0;
         }
-        return 0;
+        return 25;
     }
 
     private int intHeal(){
-        if (level() == 2) return 40;
-        return 20;
+        switch (level()){
+            case 1: return 25;
+            case 2: return 0;
+        }
+        return 5;
     }
 
 
