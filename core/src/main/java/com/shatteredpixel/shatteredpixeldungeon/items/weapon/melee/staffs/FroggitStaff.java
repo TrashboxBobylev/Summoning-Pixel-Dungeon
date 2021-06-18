@@ -33,9 +33,17 @@ public class FroggitStaff extends Staff {
         image = ItemSpriteSheet.FROGGIT_STAFF;
         minionType = Froggit.class;
         tier = 1;
-        chargeTurns = 200;
         table = MinionBalanceTable.FROGGIT;
         setClass(Minion.MinionClass.MELEE);
+    }
+
+    @Override
+    public void customizeMinion(Minion minion) {
+        switch (level()){
+            case 0: minion.baseMinDR = 2; minion.baseMaxDR = 2; break;
+            case 1: minion.baseMaxDR = 2; minion.baseMinDR = 2; break;
+            case 2: minion.baseMaxDR = 4; minion.baseMinDR = 4; break;
+        }
     }
 
 }

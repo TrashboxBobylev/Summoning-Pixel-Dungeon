@@ -25,9 +25,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs;
 
 public enum MinionBalanceTable {
-    FROGGIT(10, 5, 10, 1.0f,
-            17, 8, 14, 1.5f,
-            23, 11, 18, 2.0f),
+    FROGGIT(15, 3, 8, 1.0f,
+            20, 4, 9, 1.5f,
+            25, 6, 11, 2.0f),
     GREY_RAT(33, 6, 15, 1.0f,
              27, 9, 17, 1.5f,
              20, 13, 24, 2.25f),

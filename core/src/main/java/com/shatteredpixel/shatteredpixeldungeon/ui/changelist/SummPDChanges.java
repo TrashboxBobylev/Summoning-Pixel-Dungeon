@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CleanWater;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfStench;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.FroggitStaff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -243,6 +244,16 @@ public class SummPDChanges {
                         "_-_ Fixed crash with Stone of Intuition and rings.\n"+
                         "_-_ Soul of Yendor being overcharged from gold.\n" +
                         "_-_ Removed softlock protection."));
+
+        changes = ChangesScene.createChangeInfo(changeInfos, "Minion Rebalancing", false, 0x5ed8ff);
+
+        changes.addButton(new ChangeButton(new FroggitStaff(),
+                "While offensive power of froggit was somewhat alright, he was too squishy to survive multiple mobs or skeleton explosions even at tier III.\n\n" +
+                        "_-_ Average damage reduced by _25%/41%/42%_.\n" +
+                        "_-_ HP increased to _15/20/25_ from _10/17/23_.\n" +
+                        "_-_ Armor is fixed value of _2/2/4_ instead of 0-1 at all tiers.\n" +
+                        "_-_ Increased recharge to 400 turns."));
+
 
         changes = new ChangeInfo("1.2", true, "");
         changes.hardlight(Window.TITLE_COLOR);
