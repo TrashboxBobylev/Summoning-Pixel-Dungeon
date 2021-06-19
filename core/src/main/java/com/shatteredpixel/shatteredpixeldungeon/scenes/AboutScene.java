@@ -62,10 +62,10 @@ public class AboutScene extends PixelScene {
 		CreditsBlock guys = new CreditsBlock(false, Window.TITLE_COLOR,
 				"Credits:",
 				Icons.INFO.get(),
-				"Krauzxe#1119 - Graphics and design\n" +
-						"MarshalldotEXE#9805 - Conjurer's graphics\n" +
-						"0microng9946 - Conjurer's graphics, app icon and proofreading\n" +
-						"smujames#5300, Gamma Lolman#3370 and rest of community - help and support",
+				"Krauzxe#1119, MarshalldotEXE#9805, RavenWolf#4290 - Advanced sprites\n" +
+						"0micronrg#0223 - Conjurer's graphics, app icon and playtesting\n" +
+						"Zrp200#0484, Kohru#4813 - Code spinnets\n"+
+						"smujames#5300, Gamma Lolman#3370, NeoSlav#5320 and rest of community - ideas and support",
 				"discord.gg/tkrjtUS",
 				"https://discord.gg/tkrjtUS");
 		guys.setSize(colWidth, 4);
