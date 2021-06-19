@@ -326,9 +326,45 @@ public class SpiritBow extends Weapon {
 	public boolean isUpgradable() {
 		return level() < 2;
 	}
+
+	public static boolean superShot = false;
 	
 	public SpiritArrow knockArrow(){
+		if (superShot){
+			return new SuperShot();
+		}
 		return new SpiritArrow();
+	}
+
+	public class SuperShot extends SpiritArrow{
+		{
+			hitSound = Assets.Sounds.HIT_STRONG;
+		}
+
+		@Override
+		public int image() {
+			return ItemSpriteSheet.SR_RANGED;
+		}
+
+		@Override
+		public int damageRoll(Char owner) {
+			int damage = SpiritBow.this.damageRoll(owner);
+			int distance = Dungeon.level.distance(owner.pos, targetPos) - 1;
+			float multiplier = Math.min(5f, 1.32f * (float)Math.pow(1.13f, distance));
+			damage = Math.round(damage * multiplier);
+			return damage;
+		}
+
+		@Override
+		public float speedFactor(Char user) {
+			return SpiritBow.this.speedFactor(user) * 2f;
+		}
+
+		@Override
+		public void onThrow(int cell) {
+			superShot = false;
+			super.onThrow(cell);
+		}
 	}
 	
 	public class SpiritArrow extends MissileWeapon {
