@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SpawnerSprite;
 import com.watabou.utils.Bundle;
@@ -38,7 +37,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-public class AbyssalSpawner extends Mob {
+public class AbyssalSpawner extends AbyssalMob {
 
 	{
 		spriteClass = AbyssalSpawnerSprite.class;
@@ -50,9 +49,6 @@ public class AbyssalSpawner extends Mob {
 		maxLvl = 30;
 
 		state = PASSIVE;
-
-		loot = ScrollOfUpgrade.class;
-		lootChance = 1f;
 
 		properties.add(Property.IMMOVABLE);
 		properties.add(Property.MINIBOSS);
@@ -113,7 +109,7 @@ public class AbyssalSpawner extends Mob {
 					Actor.addDelayed(new Pushing(spawn, pos, spawn.pos), -1);
 				}
 
-				spawnCooldown = Math.max(4, Dungeon.chapterSize()*20 - Dungeon.depth);
+				spawnCooldown = Math.max(4, Dungeon.chapterSize()*10 - Dungeon.depth);
 			}
 		}
 		return super.act();

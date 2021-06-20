@@ -40,7 +40,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
-public class FinalFroggit extends Mob implements Callback {
+public class FinalFroggit extends AbyssalMob implements Callback {
 	
 	private static final float TIME_TO_ZAP	= 1f;
 	
@@ -67,12 +67,12 @@ public class FinalFroggit extends Mob implements Callback {
 	
 	@Override
 	public int attackSkill( Char target ) {
-		return 30;
+		return 30 + abyssLevel()*10;
 	}
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 8);
+		return Random.NormalIntRange(0 + abyssLevel()*10, 8 + abyssLevel()*15);
 	}
 	
 	@Override
@@ -103,9 +103,9 @@ public class FinalFroggit extends Mob implements Callback {
 			Eradication eradication = enemy.buff(Eradication.class);
 			float multiplier = 1f;
 			if (eradication != null){
-			    multiplier = (float) (Math.pow(1.15f, eradication.combo));
+			    multiplier = (float) (Math.pow(1.2f, eradication.combo));
             }
-			int damage = Random.Int( 4, 10 );
+			int damage = Random.Int( 4 + abyssLevel()*4, 10 + abyssLevel()*8 );
 			if (buff(Shrink.class) != null|| enemy.buff(TimedShrink.class) != null) damage *= 0.6f;
 			
 			int dmg = Math.round(damage * multiplier);

@@ -45,14 +45,14 @@ import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 
-public class BlinkingMan extends Mob {
+public class BlinkingMan extends AbyssalMob {
 
 	private int blinkCooldown = 0;
 
 	{
 		spriteClass = BlinkingManSprite.class;
 
-		HP = HT = 35;
+		HP = HT = 80;
 		defenseSkill = 60;
 		viewDistance = Light.DISTANCE;
 		baseSpeed = 0.75f;
@@ -70,9 +70,14 @@ public class BlinkingMan extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 5, 16 );
+		return Random.NormalIntRange( 5 + abyssLevel()*2, 16 + abyssLevel()*7 );
 	}
-	
+
+	@Override
+	public boolean canSee(int pos) {
+		return new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE).collisionPos == pos;
+	}
+
 	@Override
 	public int attackProc( Char enemy, int damage ) {
 		damage = super.attackProc( enemy, damage );
@@ -153,12 +158,12 @@ public class BlinkingMan extends Mob {
 	
 	@Override
 	public int attackSkill( Char target ) {
-		return 45;
+		return 45 + abyssLevel()*3;
 	}
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 9);
+		return Random.NormalIntRange(0 + abyssLevel()*4, 9 + abyssLevel()*6);
 	}
 
 	@Override

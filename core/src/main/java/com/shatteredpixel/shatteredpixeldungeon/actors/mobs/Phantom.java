@@ -36,7 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.PhantomSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-public class Phantom extends Mob {
+public class Phantom extends AbyssalMob {
 
 	{
 		spriteClass = PhantomSprite.class;
@@ -59,17 +59,17 @@ public class Phantom extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 20, 55 );
+		return Random.NormalIntRange( 20 + abyssLevel()*9, 55 + abyssLevel()*13 );
 	}
 
 	@Override
 	public int attackSkill( Char target ) {
-		return 50;
+		return 50 + abyssLevel()*3;
 	}
 
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(5, 16);
+		return Random.NormalIntRange(5 + abyssLevel()*6, 16 + abyssLevel()*9);
 	}
 
 	@Override

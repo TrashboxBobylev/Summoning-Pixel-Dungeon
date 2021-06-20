@@ -46,7 +46,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-public class DarkestElf extends Mob {
+public class DarkestElf extends AbyssalMob {
 
 	{
 		spriteClass = DarkestElfSprite.class;
@@ -99,7 +99,7 @@ public class DarkestElf extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 5);
+		return Random.NormalIntRange(0 + abyssLevel()*4, 5 + abyssLevel()*7);
 	}
 	
 	@Override
@@ -110,7 +110,7 @@ public class DarkestElf extends Mob {
 
 	@Override
     public void spend(float time) {
-		super.spend(time / 2f);
+		super.spend(time / (2f + abyssLevel()*0.5f));
 	}
 
 	@Override
@@ -184,7 +184,7 @@ public class DarkestElf extends Mob {
 				sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
 			}
 			
-			mySkeleton.HP = Math.min(mySkeleton.HP + 20, mySkeleton.HT);
+			mySkeleton.HP = Math.min(mySkeleton.HP + 20 + abyssLevel()*10, mySkeleton.HT);
 			mySkeleton.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
 			
 			//otherwise give it adrenaline
@@ -194,7 +194,7 @@ public class DarkestElf extends Mob {
 				sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
 			}
 			
-			Buff.affect(mySkeleton, Adrenaline.class, 3f);
+			Buff.affect(mySkeleton, Adrenaline.class, 3f + abyssLevel()*3f);
 		}
 		
 		next();

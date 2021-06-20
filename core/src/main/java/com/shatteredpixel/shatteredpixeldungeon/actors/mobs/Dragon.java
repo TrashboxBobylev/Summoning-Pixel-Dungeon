@@ -46,7 +46,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-public class Dragon extends Mob{
+public class Dragon extends AbyssalMob {
     {
         HP = HT = 320;
         defenseSkill = 45;
@@ -65,17 +65,17 @@ public class Dragon extends Mob{
 
     @Override
     public int damageRoll() {
-        return Random.NormalIntRange( 46, 90 );
+        return Random.NormalIntRange( 46 + abyssLevel()*12, 90 + abyssLevel()*25 );
     }
 
     @Override
     public int attackSkill( Char target ) {
-        return 70;
+        return 70 + abyssLevel()*5;
     }
 
     @Override
     public int drRoll() {
-        return Random.NormalIntRange(20, 35);
+        return Random.NormalIntRange(20 + abyssLevel()*10, 35 + abyssLevel()*10);
     }
 
     private int rangedCooldown = Random.NormalIntRange( 1, 3 );
@@ -326,7 +326,7 @@ public class Dragon extends Mob{
         }
     }
 
-    public static class SmallDragon extends Mob {
+    public static class SmallDragon extends AbyssalMob {
 
         {
             spriteClass = SmallDragonSprite.class;
@@ -344,17 +344,17 @@ public class Dragon extends Mob{
 
         @Override
         public int attackSkill( Char target ) {
-            return 55;
+            return 55 + abyssLevel()*3;
         }
 
         @Override
         public int damageRoll() {
-            return Random.NormalIntRange( 25, 48 );
+            return Random.NormalIntRange( 25 + abyssLevel()*9, 48 + abyssLevel()*16 );
         }
 
         @Override
         public int drRoll() {
-            return Random.NormalIntRange(19, 28);
+            return Random.NormalIntRange(19 + abyssLevel()*4, 28 + abyssLevel()*10);
         }
 
     }

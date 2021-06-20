@@ -55,7 +55,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-public class AbyssalNightmare extends Mob {
+public class AbyssalNightmare extends AbyssalMob {
 
 	{
 		spriteClass = AbyssalSprite.class;
@@ -137,7 +137,7 @@ public class AbyssalNightmare extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 20, 36 );
+		return Random.NormalIntRange( 20 + abyssLevel()*6, 36 + abyssLevel()*14 );
 	}
 
 	@Override
@@ -147,7 +147,7 @@ public class AbyssalNightmare extends Mob {
 	
 	@Override
 	public int attackSkill( Char target ) {
-		return 70;
+		return 70 + abyssLevel()*3;
 	}
 
 	@Override
