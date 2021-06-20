@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Phantom;
 import com.shatteredpixel.shatteredpixeldungeon.effects.*;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
@@ -583,6 +584,11 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		synchronized (EmoIcon.class) {
 			if (emo != null && emo.alive) {
 				emo.visible = visible;
+			}
+		}
+		if (ch != null){
+			for (ChampionEnemy buff : ch.buffs(ChampionEnemy.class)) {
+				hardlight(buff.color);
 			}
 		}
 	}

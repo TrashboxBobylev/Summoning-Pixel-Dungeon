@@ -459,6 +459,11 @@ public abstract class Mob extends Char {
 	}
 
 	protected boolean canAttack( Char enemy ) {
+		for (ChampionEnemy buff : buffs(ChampionEnemy.class)){
+			if (buff.canAttackWithExtraReach( enemy )){
+				return true;
+			}
+		}
 		return Dungeon.level.adjacent( pos, enemy.pos );
 	}
 
@@ -964,6 +969,9 @@ public abstract class Mob extends Char {
 			}
 		}
 		desc += "\n\n" + Messages.get(Mob.class, "stats", HP, HT, attackSkill(Dungeon.hero), defenseSkill);
+		for (Buff b : buffs(ChampionEnemy.class)){
+			desc += "\n\n_" + Messages.titleCase(b.toString()) + "_\n" + b.desc();
+		}
 		return desc;
 	}
 
@@ -1077,7 +1085,10 @@ public abstract class Mob extends Char {
 
 			int oldPos = pos;
 			if (target != -1 && getCloser( target )) {
-				spend( 1 / speed() );
+				if (Dungeon.level.water[pos] && buff(ChampionEnemy.Flowing.class) != null){
+					spend(0.01f / speed());
+				}
+				else spend( 1 / speed() );
 				return moveSprite( oldPos, pos );
 			} else {
 				PerfumeGas perfume = (PerfumeGas) Dungeon.level.blobs.get(PerfumeGas.class);
@@ -1154,7 +1165,10 @@ public abstract class Mob extends Char {
 				int oldPos = pos;
 				if (target != -1 && getCloser( target )) {
 
-					spend( 1 / speed() );
+					if (Dungeon.level.water[pos] && buff(ChampionEnemy.Flowing.class) != null){
+						spend(0.01f / speed());
+					}
+					else spend( 1 / speed() );
 					return moveSprite( oldPos,  pos );
 
 				} else {
@@ -1217,7 +1231,10 @@ public abstract class Mob extends Char {
 			int oldPos = pos;
 			if (target != -1 && getFurther( target )) {
 
-				spend( 1 / speed() );
+				if (Dungeon.level.water[pos] && buff(ChampionEnemy.Flowing.class) != null){
+					spend(0.01f / speed());
+				}
+				else spend( 1 / speed() );
 				return moveSprite( oldPos, pos );
 
 			} else {

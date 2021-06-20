@@ -24,5 +24,85 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
-public class LostSpirit extends Mob {
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.LostSpiritSprite;
+
+import java.util.HashSet;
+
+public class LostSpirit extends AbyssalMob {
+
+    {
+        HP = HT = 300;
+        defenseSkill = 72;
+        spriteClass = LostSpiritSprite.class;
+
+        EXP = 40;
+        maxLvl = 30;
+
+        flying = true;
+        properties.add(Property.BOSS);
+        properties.add(Property.DEMONIC);
+        properties.add(Property.UNDEAD);
+    }
+
+    public Char chooseEnemy() {
+
+        Terror terror = buff( Terror.class );
+        if (terror != null) {
+            Char source = (Char) Actor.findById( terror.object );
+            if (source != null) {
+                return source;
+            }
+        }
+
+        if (hordeHead != -1 && Actor.findById(hordeHead) != null){
+            Mob hordeHead = (Mob) Actor.findById(this.hordeHead);
+            if (hordeHead.isAlive()){
+                return hordeHead.enemy;
+            }
+        }
+
+        //find a new enemy if..
+        boolean newEnemy = false;
+        //we have no enemy, or the current one is dead/missing
+        if ( enemy == null || !enemy.isAlive() || !Actor.chars().contains(enemy) || state == WANDERING) {
+            newEnemy = true;
+        } else if (enemy == Dungeon.hero && !Dungeon.level.adjacent(pos, enemy.pos)){
+            newEnemy = true;
+        }
+
+        if ( newEnemy ) {
+
+            HashSet<Char> enemies = new HashSet<>();
+
+            if (alignment == Alignment.ENEMY) {
+                //look for ally mobs to attack, ignoring the soul flame
+                for (Mob mob :  Dungeon.level.mobs.toArray(new Mob[0]))
+                    if (mob.alignment == Alignment.ENEMY && canSee(mob.pos) && !canBeIgnored(mob))
+                        enemies.add(mob);
+
+                //and look for the hero if there is no minions
+                for (Char minion : enemies){
+                    if (minion instanceof Minion){
+                        if (((Minion) minion).isTanky) return minion;
+                    }
+                }
+
+                if (canSee(Dungeon.hero.pos)) {
+                    if (Dungeon.level.adjacent(pos, Dungeon.hero.pos)) {
+                        enemies.clear();
+                        enemies.add(Dungeon.hero);
+                    }
+                }
+            }
+
+            return chooseClosest(enemies);
+
+        } else
+            return enemy;
+    }
 }

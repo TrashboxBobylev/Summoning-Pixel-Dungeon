@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -253,6 +254,9 @@ public class DarkestElf extends AbyssalMob {
 				mySkeleton.pos = summoningPos;
 				GameScene.add( mySkeleton );
 				Dungeon.level.occupyCell( mySkeleton );
+				for (Buff b : buffs(ChampionEnemy.class)){
+					Buff.affect( mySkeleton, b.getClass());
+				}
 				Sample.INSTANCE.play(Assets.Sounds.BONES);
 				summoningEmitter.burst( Speck.factory( Speck.RATTLE ), 5 );
 				sprite.idle();

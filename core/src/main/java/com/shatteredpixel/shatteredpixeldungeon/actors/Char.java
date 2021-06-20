@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.Wet;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DwarfKing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GhostChicken;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.GnollHunter;
@@ -392,11 +393,17 @@ public abstract class Char extends Actor {
 		if (attacker.buff(Bless.class) != null) acuRoll *= 1.25f;
 		if (attacker.buff(  Hex.class) != null) acuRoll *= 0.8f;
 		if (attacker.buff(Shrink.class)!= null || attacker.buff(TimedShrink.class)!= null) acuRoll *= 0.6f;
+		for (ChampionEnemy buff : attacker.buffs(ChampionEnemy.class)){
+			acuRoll *= buff.evasionAndAccuracyFactor();
+		}
 
 		float defRoll = Random.Float( defStat );
 		if (defender.buff(Bless.class) != null) defRoll *= 1.25f;
 		if (defender.buff(  Hex.class) != null) defRoll *= 0.8f;
 		if (defender.buff(Shrink.class)!= null || defender.buff(TimedShrink.class)!= null) defRoll *= 0.8f;
+		for (ChampionEnemy buff : defender.buffs(ChampionEnemy.class)){
+			defRoll *= buff.evasionAndAccuracyFactor();
+		}
 
 		return (magic ? acuRoll * 2 : acuRoll) >= defRoll;
 	}
@@ -428,6 +435,10 @@ public abstract class Char extends Actor {
 	public int attackProc( Char enemy, int damage ) {
 		if ( buff(Weakness.class) != null ){
 			damage *= 0.67f;
+		}
+		for (ChampionEnemy buff : buffs(ChampionEnemy.class)){
+			damage *= buff.meleeDamageFactor();
+			buff.onAttackProc( enemy );
 		}
 		return damage;
 	}
@@ -475,6 +486,11 @@ public abstract class Char extends Actor {
 		if(isInvulnerable(src.getClass())){
 			sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "invulnerable"));
 			return;
+		}
+		if (!(src instanceof DwarfKing.KingDamager)) {
+			for (ChampionEnemy buff : buffs(ChampionEnemy.class)) {
+				dmg = (int) Math.ceil(dmg * buff.damageTakenFactor());
+			}
 		}
 
 		if (!(src instanceof LifeLink) && buff(LifeLink.class) != null){
@@ -814,7 +830,12 @@ public abstract class Char extends Actor {
 	protected HashSet<Property> properties = new HashSet<>();
 
 	public HashSet<Property> properties() {
-		return new HashSet<>(properties);
+		HashSet<Property> props = new HashSet<>(properties);
+		//TODO any more of these and we should make it a property of the buff, like with resistances/immunities
+		if (buff(ChampionEnemy.Giant.class) != null) {
+			props.add(Property.LARGE);
+		}
+		return props;
 	}
 
 	public void addProperty(Property prop) {properties.add(prop);}
@@ -822,6 +843,7 @@ public abstract class Char extends Actor {
 	public void removeProperty(Property prop) {properties.remove(prop);}
 
 	public enum Property{
+
 		BOSS ( new HashSet<Class>( Arrays.asList(Grim.class, GrimTrap.class, ScrollOfRetribution.class, ScrollOfPsionicBlast.class)),
 				new HashSet<Class>( Arrays.asList(Corruption.class, StoneOfAggression.Aggression.class) )),
 		MINIBOSS ( new HashSet<Class>(),
