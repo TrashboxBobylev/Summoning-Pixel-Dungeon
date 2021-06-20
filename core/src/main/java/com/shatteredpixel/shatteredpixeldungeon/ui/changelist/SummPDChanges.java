@@ -223,8 +223,8 @@ public class SummPDChanges {
                         "_-_ Hunger damage no longer interrupts you.\n" +
                         "_-_ Replaced Potion of Stamina with Potion of Adrenaline."));
 
-        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.STARS, null), "Conjurer buffs, part 1",
-                "_-_ Buffed _Star Blazing:_\n\n" +
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.STARS, null), "Conjurer buffs",
+                "_-_ Buffed _Star Blazing_ and overhauled its visuals:\n\n" +
                         "   _Tier I:_ +33% max damage, +5% scaling\n" +
                         "   _Tier II:_ +25% min damage, +33% max damage, +~28% scaling\n" +
                         "   _Tier III:_ +38% min damage, +46% max damage, +~45% scaling, mana cost: _7_ -> _8_\n\n" +
