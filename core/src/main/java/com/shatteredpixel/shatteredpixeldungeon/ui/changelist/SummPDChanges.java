@@ -35,10 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfStench;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.FroggitStaff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.*;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Image;
@@ -184,6 +181,13 @@ public class SummPDChanges {
     public static void add_1_1_7_Changes(ArrayList<ChangeInfo> changeInfos) {
 
         ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "v1.2.1", true, Window.TITLE_COLOR);
+
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.HUNTRESS, 0, 15, 12, 15), "Huntress changes",
+                "The Huntress recieved brand new starting armor to make her more stylish and strong.\n\n" +
+                        "_-_ With new armor, she can use _Super-Shots_ to shoot stronger arrow which does more damage with distance.\n\n" +
+                        "_-_ This ability has 20 turns cooldown.\n\n" +
+                        "_-_ The armor works as +1 cloak armor, but still can be viable in endgame."));
+
         changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_ABYSS, 0, 64, 16, 16 ), "Abyss and Endless mode",
                 "Changed Abyss levels to be less annoying:\n\n" +
                         "_-_ Abyssal mobs no longer rush at you because of amulet.\n" +
@@ -201,9 +205,23 @@ public class SummPDChanges {
                         "_-_ Rare abyss mobs (nightmares and dragons) drop wealth loot.\n\n" +
                         "Also tweaked the endgame of Shattered:\n\n" +
                         "_-_ Yog cast lasers 2.2x less frequently, abyssal flame walls stay 2 turns longer to compensate."));
+
+        changes.addButton( new ChangeButton(new Image(new RatSprite()), "Hordes",
+                "_-_ Added mob hordes, that can spawn infrequently replacing normal monsters.\n\n" +
+                        "_-_ Horde members are acting as one team, with leaders and followers.\n" +
+                        "_-_ Leaders have double health.\n" +
+                        "_-_ Followers have 50% health, but recieve less damage when leader is alive."
+        ));
+
         changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-                "_-_ Added mouse targeting for Desktop builds.\n\n" +
-                        "_-_ Added quick item use while holding inventory's button."));
+                "_-_ Added mouse targeting for Desktop builds.\n" +
+                        "_-_ Added quick item use while holding inventory's button.\n" +
+                        "_-_ Reworked the visuals for frostburn and webbing objects.\n" +
+                        "_-_ Massively reduced the amount of gold on floors, but also reduced the price in shops from 5x to 2x, making selling more viable as money source.\n" +
+                        "_-_ Player and allies can shoot projectiles through other ally characters.\n" +
+                        "_-_ Adjusted an unintentionally strong Piercing Shot on a bow.\n" +
+                        "_-_ Hunger damage no longer interrupts you.\n" +
+                        "_-_ Replaced Potion of Stamina with Potion of Adrenaline."));
 
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.STARS, null), "Conjurer buffs, part 1",
                 "_-_ Buffed _Star Blazing:_\n\n" +
