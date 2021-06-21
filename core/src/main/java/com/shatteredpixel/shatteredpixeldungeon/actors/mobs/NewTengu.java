@@ -192,6 +192,7 @@ public class NewTengu extends Mob {
 		}
 		
 		GameScene.bossSlain();
+		Dungeon.hero.earnExp( Dungeon.hero.maxExp(), getClass() );
 		super.die( cause );
 		
 		Badges.validateBossSlain();

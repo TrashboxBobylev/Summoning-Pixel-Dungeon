@@ -469,6 +469,7 @@ public class NewDM300 extends Mob {
 	public void die( Object cause ) {
 
 		super.die( cause );
+		Dungeon.hero.earnExp( Dungeon.hero.maxExp(), getClass() );
 
 		GameScene.bossSlain();
 		Dungeon.level.unseal();

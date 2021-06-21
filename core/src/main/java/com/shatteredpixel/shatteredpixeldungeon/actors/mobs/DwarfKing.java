@@ -419,6 +419,7 @@ public class DwarfKing extends Mob {
 		GameScene.bossSlain();
 
 		super.die( cause );
+		Dungeon.hero.earnExp( Dungeon.hero.maxExp(), getClass() );
 
 		if (Dungeon.level.solid[pos]){
 			Heap h = Dungeon.level.heaps.get(pos);

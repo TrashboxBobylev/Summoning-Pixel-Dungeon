@@ -434,6 +434,7 @@ public class YogDzewa extends Mob {
 
 		GameScene.bossSlain();
 		Dungeon.level.unseal();
+		Dungeon.hero.earnExp( Dungeon.hero.maxExp(), getClass() );
 		super.die( cause );
 
 		yell( Messages.get(this, "defeated") );
