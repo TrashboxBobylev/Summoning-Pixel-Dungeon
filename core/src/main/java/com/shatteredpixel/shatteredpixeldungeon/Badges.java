@@ -136,9 +136,14 @@ public class Badges {
 		GAMES_PLAYED_1( 60, true ),
 		GAMES_PLAYED_2( 61, true ),
 		GAMES_PLAYED_3( 62, true ),
-		GAMES_PLAYED_4( 63, true );
+		GAMES_PLAYED_4( 63, true ),
+		NIGHTMARE_SLAIN(64, true, true),
+		DRAGON_SLAIN(65, true, true),
+		SPIRIT_SLAIN(66, true, true),
+		;
 
 		public boolean meta;
+		public boolean abyss = false;
 
 		public int image;
 		
@@ -149,6 +154,12 @@ public class Badges {
 		Badge( int image, boolean meta ) {
 			this.image = image;
 			this.meta = meta;
+		}
+
+		Badge(int image, boolean meta, boolean abyssal){
+			this.image = image;
+			this.meta = meta;
+			this.abyss = abyssal;
 		}
 
 		public String desc(){
@@ -778,6 +789,30 @@ public class Badges {
 		}
 		
 		displayBadge( badge );
+	}
+
+	public static void validateNightmare(){
+		if (!local.contains( Badge.NIGHTMARE_SLAIN )) {
+			Badge badge = Badge.NIGHTMARE_SLAIN;
+			local.add( badge );
+			displayBadge( badge );
+		}
+	}
+
+	public static void validateDragon(){
+		if (!local.contains( Badge.DRAGON_SLAIN )) {
+			Badge badge = Badge.DRAGON_SLAIN;
+			local.add( badge );
+			displayBadge( badge );
+		}
+	}
+
+	public static void validateSpirit(){
+		if (!local.contains( Badge.SPIRIT_SLAIN )) {
+			Badge badge = Badge.SPIRIT_SLAIN;
+			local.add( badge );
+			displayBadge( badge );
+		}
 	}
 	
 	//necessary in order to display the happy end badge in the surface scene

@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -148,6 +149,13 @@ public class AbyssalNightmare extends AbyssalMob {
 	@Override
 	public int attackSkill( Char target ) {
 		return 70 + abyssLevel()*3;
+	}
+
+	@Override
+	public void die(Object cause) {
+		super.die(cause);
+
+		Badges.validateNightmare();
 	}
 
 	@Override

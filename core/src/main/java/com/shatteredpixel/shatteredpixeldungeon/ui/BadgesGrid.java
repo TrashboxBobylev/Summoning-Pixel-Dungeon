@@ -62,7 +62,8 @@ public class BadgesGrid extends Component {
 			ArrayList<Badges.Badge> lockedBadges = new ArrayList<>();
 			for (Badges.Badge badge : Badges.Badge.values()) {
 				if (badge.image != -1 && !Badges.isUnlocked(badge)) {
-					lockedBadges.add(badge);
+					if (!badge.abyss)
+						lockedBadges.add(badge);
 				}
 			}
 			Badges.filterHigherIncrementalBadges(lockedBadges);

@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -98,6 +99,13 @@ public class LostSpirit extends AbyssalMob implements Callback {
                 return true;
             }
         }
+    }
+
+    @Override
+    public void die(Object cause) {
+        super.die(cause);
+
+        Badges.validateSpirit();
     }
 
     private void zap() {

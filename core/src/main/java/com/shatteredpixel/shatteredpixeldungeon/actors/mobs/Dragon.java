@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -99,6 +100,13 @@ public class Dragon extends AbyssalMob {
             RingOfWealth.showFlareForBonusDrop(sprite);
         }
         return null;
+    }
+
+    @Override
+    public void die(Object cause) {
+        super.die(cause);
+
+        Badges.validateDragon();
     }
 
     @Override
