@@ -34,8 +34,10 @@ public abstract class AbyssalMob extends Mob {
     protected boolean act() {
         if (!spawned){
             spawned = true;
-            HP = HT = Math.round(HT * 1.25f * abyssLevel());
-            defenseSkill += abyssLevel()*3;
+            if (abyssLevel() > 0) {
+                HP = HT = Math.round(HT * 1.25f * abyssLevel());
+                defenseSkill += abyssLevel() * 3;
+            }
         }
 
         return super.act();

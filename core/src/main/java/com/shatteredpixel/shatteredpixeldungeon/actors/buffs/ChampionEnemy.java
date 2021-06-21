@@ -95,6 +95,7 @@ public abstract class ChampionEnemy extends Buff {
     }
 
     public static void rollForChampion(Mob m) {
+        if (m.buff(ChampionEnemy.class) != null) return;
 
         switch (Random.Int(12)) {
             case 0:

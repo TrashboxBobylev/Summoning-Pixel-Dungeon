@@ -637,7 +637,9 @@ public abstract class Char extends Actor {
 	//returns an instance of the specific buff class, if it exists. Not just assignable
 	public synchronized <T extends Object> T buff( Class<T> c ) {
 		for (Buff b : buffs) {
-			//first check if we use interface
+			if (c.isAssignableFrom(b.getClass())) {
+				return (T)b;
+			}
 			if (c.isInterface()){
 				Class[] interfaces = b.getClass().getInterfaces();
 				for (Class clazz : interfaces){
@@ -645,10 +647,6 @@ public abstract class Char extends Actor {
 						return (T)b;
 					}
 				}
-			}
-			//more strict check
-			else if (b.getClass().isAssignableFrom(c)) {
-				return (T)b;
 			}
 		}
 		return null;

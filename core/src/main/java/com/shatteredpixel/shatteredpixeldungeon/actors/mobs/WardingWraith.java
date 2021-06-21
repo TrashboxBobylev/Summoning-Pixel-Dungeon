@@ -84,8 +84,6 @@ public class WardingWraith extends Mob implements Callback {
 		return new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos && enraged;
 	}
 
-
-	
 	protected boolean doAttack( Char enemy ) {
 			
 			boolean visible = fieldOfView[pos] || fieldOfView[enemy.pos];

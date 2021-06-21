@@ -79,7 +79,7 @@ public class Bestiary {
 			}
 			return new ArrayList<>(Arrays.asList(
 					SpectreRat.class, DarkestElf.class, GhostChicken.class, Phantom.class, BlinkingMan.class, AbyssalNightmare.class,
-					Dragon.class));
+					Dragon.class, LostSpirit.class, Trappet.class));
 		}
 
 		if (SPDSettings.smalldungeon()){
@@ -175,9 +175,7 @@ public class Bestiary {
 							Scorpio.class,  HellBat.class));
 				default:
 					return new ArrayList<>(Arrays.asList(
-							SpectreRat.class, DarkestElf.class, GhostChicken.class, Phantom.class, BlinkingMan.class,
-							SpectreRat.class, DarkestElf.class, GhostChicken.class, Phantom.class, BlinkingMan.class,
-							SpectreRat.class, DarkestElf.class, GhostChicken.class, Phantom.class, BlinkingMan.class
+							SpectreRat.class, DarkestElf.class, GhostChicken.class, Phantom.class, BlinkingMan.class, Trappet.class
 					));
 			}
 		}
@@ -343,9 +341,7 @@ public class Bestiary {
 							Scorpio.class, Scorpio.class, HellBat.class, HellBat.class));
 				default:
 					return new ArrayList<>(Arrays.asList(
-							SpectreRat.class, DarkestElf.class, GhostChicken.class, Phantom.class, BlinkingMan.class,
-							SpectreRat.class, DarkestElf.class, GhostChicken.class, Phantom.class, BlinkingMan.class,
-							SpectreRat.class, DarkestElf.class, GhostChicken.class, Phantom.class, BlinkingMan.class
+							SpectreRat.class, DarkestElf.class, GhostChicken.class, Phantom.class, BlinkingMan.class, Trappet.class
 					));
 			}
 		} else
@@ -479,7 +475,7 @@ public class Bestiary {
 						Scorpio.class, Scorpio.class, Scorpio.class, HellBat.class, HellBat.class));
 			default:
 				return new ArrayList<>(Arrays.asList(
-						SpectreRat.class, DarkestElf.class, GhostChicken.class, Phantom.class, BlinkingMan.class
+						SpectreRat.class, DarkestElf.class, GhostChicken.class, Phantom.class, BlinkingMan.class, Trappet.class
 				));
 		}
 		
@@ -531,10 +527,12 @@ public class Bestiary {
 					cl = Senior.class;
 				} else if (cl == Scorpio.class) {
 					cl = Acidic.class;
-				} else if (cl == SpectreRat.class || cl == GhostChicken.class || cl == DarkestElf.class){
+				} else if (cl == GhostChicken.class || cl == DarkestElf.class){
 					cl = AbyssalNightmare.class;
-				} else if (cl == BlinkingMan.class || cl == Phantom.class){
+				} else if (cl == BlinkingMan.class || cl == Trappet.class){
 					cl = Dragon.class;
+				} else if (cl == Phantom.class || cl == SpectreRat.class){
+					cl = LostSpirit.class;
 				}
 				rotation.set(i, cl);
 			}

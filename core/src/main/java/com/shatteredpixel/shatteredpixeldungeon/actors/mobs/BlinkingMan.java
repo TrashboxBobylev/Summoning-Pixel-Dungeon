@@ -75,7 +75,9 @@ public class BlinkingMan extends AbyssalMob {
 
 	@Override
 	public boolean canSee(int pos) {
+		if (enemy != null)
 		return new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE).collisionPos == pos;
+		else return new Ballistica( pos, Dungeon.hero.pos, Ballistica.PROJECTILE).collisionPos == pos;
 	}
 
 	@Override

@@ -26,7 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.WardingWraith;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.LostSpirit;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.TextureFilm;
@@ -70,13 +70,13 @@ public class LostSpiritSprite extends MobSprite {
 		play( zap );
 
 		MagicMissile.boltFromChar( parent,
-				MagicMissile.BEACON,
+				MagicMissile.RAINBOW,
 				this,
 				cell,
 				new Callback() {
 					@Override
 					public void call() {
-						((WardingWraith)ch).onZapComplete();
+						((LostSpirit)ch).onZapComplete();
 					}
 				} );
         Sample.INSTANCE.play(Assets.Sounds.ZAP);
@@ -125,7 +125,7 @@ public class LostSpiritSprite extends MobSprite {
 
             }
 
-            float value = phase / glowing.period * 0.3f;
+            float value = phase / glowing.period * 0.9f;
             glowing.tempColor.fromHsv(Random.Float(360), Random.Float(0.15f, 0.5f), 0.9f);
             glowing.red = glowing.tempColor.r;
             glowing.blue = glowing.tempColor.b;

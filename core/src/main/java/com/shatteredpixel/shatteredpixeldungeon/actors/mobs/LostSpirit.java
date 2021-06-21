@@ -27,16 +27,22 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.RainbowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.WhiteParticle;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.LostSpiritSprite;
+import com.watabou.utils.Callback;
 
 import java.util.HashSet;
 
-public class LostSpirit extends AbyssalMob {
+public class LostSpirit extends AbyssalMob implements Callback {
 
     {
-        HP = HT = 300;
+        HP = HT = 145;
         defenseSkill = 72;
         spriteClass = LostSpiritSprite.class;
 
@@ -49,15 +55,84 @@ public class LostSpirit extends AbyssalMob {
         properties.add(Property.UNDEAD);
     }
 
-    public Char chooseEnemy() {
+    @Override
+    protected boolean canAttack( Char enemy ) {
+        return new Ballistica( pos, enemy.pos, Ballistica.STOP_TARGET).collisionPos == enemy.pos;
+    }
 
-        Terror terror = buff( Terror.class );
-        if (terror != null) {
-            Char source = (Char) Actor.findById( terror.object );
-            if (source != null) {
-                return source;
+    @Override
+    public int attackSkill( Char target ) {
+        return 70 + abyssLevel()*3;
+    }
+
+    @Override
+    public void damage(int dmg, Object src) {
+        int distance = Dungeon.level.distance(this.pos, Dungeon.hero.pos) - 1;
+        float multiplier = Math.min(0.2f, 1 / (1.32f * (float)Math.pow(1.2f, distance)));
+        dmg = Math.round(dmg * multiplier);
+        super.damage(dmg, src);
+    }
+
+    protected boolean doAttack(Char enemy ) {
+
+        if (Dungeon.level.adjacent( pos, enemy.pos ) && enemy == Dungeon.hero) {
+
+            if (HP > HT/10) {
+                //do nothing
+            }
+            else {
+                CellEmitter.bottom(pos).burst(WhiteParticle.UP, 20);
+                new SummoningTrap().set( pos ).activate();
+                pos = Dungeon.level.randomRespawnCell(this);
+            }
+            spend(attackDelay());
+            return true;
+
+        } else {
+
+            if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
+                sprite.zap( enemy.pos );
+                return false;
+            } else {
+                zap();
+                return true;
             }
         }
+    }
+
+    private void zap() {
+        spend( 1f );
+
+        if (hit( this, enemy, true )) {
+
+            if (enemy.alignment == Alignment.ENEMY){
+                    ChampionEnemy.rollForChampion((Mob) enemy);
+                    enemy.sprite.emitter().burst( RainbowParticle.BURST, 10);
+                    enemy = null;
+            }
+        } else {
+            enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
+        }
+    }
+
+    public void onZapComplete() {
+        zap();
+        next();
+    }
+
+    @Override
+    public void call() {
+        next();
+    }
+
+    {
+        immunities.add(Charm.class);
+        immunities.add(Terror.class);
+        immunities.add(Amok.class);
+        immunities.add(Sleep.class);
+    }
+
+    public Char chooseEnemy() {
 
         if (hordeHead != -1 && Actor.findById(hordeHead) != null){
             Mob hordeHead = (Mob) Actor.findById(this.hordeHead);
@@ -69,9 +144,13 @@ public class LostSpirit extends AbyssalMob {
         //find a new enemy if..
         boolean newEnemy = false;
         //we have no enemy, or the current one is dead/missing
-        if ( enemy == null || !enemy.isAlive() || !Actor.chars().contains(enemy) || state == WANDERING) {
+        if (enemy != null && enemy.buff(ChampionEnemy.class) != null){
             newEnemy = true;
-        } else if (enemy == Dungeon.hero && !Dungeon.level.adjacent(pos, enemy.pos)){
+        }
+        else if ( enemy == null || !enemy.isAlive() || !Actor.chars().contains(enemy) || state == WANDERING) {
+            newEnemy = true;
+        }
+        else if (enemy == Dungeon.hero && !Dungeon.level.adjacent(pos, enemy.pos)){
             newEnemy = true;
         }
 
@@ -79,30 +158,19 @@ public class LostSpirit extends AbyssalMob {
 
             HashSet<Char> enemies = new HashSet<>();
 
-            if (alignment == Alignment.ENEMY) {
+                if (Dungeon.level.adjacent(pos, Dungeon.hero.pos)) {
+                    return Dungeon.hero;
+                }
                 //look for ally mobs to attack, ignoring the soul flame
                 for (Mob mob :  Dungeon.level.mobs.toArray(new Mob[0]))
-                    if (mob.alignment == Alignment.ENEMY && canSee(mob.pos) && !canBeIgnored(mob))
+                    if (mob.alignment == Alignment.ENEMY && canSee(mob.pos) && mob != this && mob.buff(ChampionEnemy.class) == null)
                         enemies.add(mob);
 
-                //and look for the hero if there is no minions
-                for (Char minion : enemies){
-                    if (minion instanceof Minion){
-                        if (((Minion) minion).isTanky) return minion;
-                    }
-                }
-
-                if (canSee(Dungeon.hero.pos)) {
-                    if (Dungeon.level.adjacent(pos, Dungeon.hero.pos)) {
-                        enemies.clear();
-                        enemies.add(Dungeon.hero);
-                    }
-                }
-            }
-
-            return chooseClosest(enemies);
+                return chooseClosest(enemies);
 
         } else
             return enemy;
     }
+
+
 }
