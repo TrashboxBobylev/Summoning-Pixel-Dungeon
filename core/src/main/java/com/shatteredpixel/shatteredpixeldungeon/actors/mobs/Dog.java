@@ -47,7 +47,7 @@ public class Dog extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 1, 5 );
+		return Random.NormalIntRange( 2, 5 );
 	}
 	
 	@Override
@@ -59,9 +59,4 @@ public class Dog extends Mob {
 	public int drRoll() {
 		return Random.NormalIntRange(0, 2);
 	}
-
-    @Override
-    protected float attackDelay() {
-        return super.attackDelay()*0.75f;
-    }
 }
