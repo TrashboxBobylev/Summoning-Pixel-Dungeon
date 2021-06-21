@@ -439,6 +439,13 @@ public abstract class Level implements Bundlable {
 				depth++;
 			mobsToSpawn = Bestiary.getMobRotation(depth);
 		}
+		if (Dungeon.depth > Dungeon.chapterSize()*5 && Dungeon.bossLevel()){
+			int bossAmount = Random.Int(2, 3 + 2*(Dungeon.depth - Dungeon.chapterSize()*5)/Dungeon.chapterSize());
+			Class[] bosses = new Class[]{AbyssalNightmare.class, Dragon.class, LostSpirit.class};
+			for (int i = 0; i < bossAmount; i++){
+				mobsToSpawn.add(Random.element(bosses));
+			}
+		}
 
 		return Reflection.newInstance(mobsToSpawn.remove(0));
 	}

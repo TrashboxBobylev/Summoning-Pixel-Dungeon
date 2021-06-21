@@ -355,13 +355,7 @@ public class Dungeon {
 	}
 	
 	public static boolean bossLevel( int depth ) {
-		if (!SPDSettings.bigdungeon())
-		return depth == 5 || depth == 10 || depth == 15 || depth == 20 || depth == 25;
-
-		if (SPDSettings.smalldungeon())
-			return depth == 4 || depth == 8 || depth == 12 || depth == 16 || depth == 20;
-
-		return depth == 6 || depth == 12 || depth == 18 || depth == 24 || depth == 30;
+		return depth % Dungeon.chapterSize() == 0;
 	}
 
 	public static void switchLevel( final Level level, int pos ) {
