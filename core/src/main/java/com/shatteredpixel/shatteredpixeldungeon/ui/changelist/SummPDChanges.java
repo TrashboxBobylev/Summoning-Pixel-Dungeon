@@ -203,6 +203,7 @@ public class SummPDChanges {
                         "_-_ Darkest Elf now cast Dark Matter Slimes instead of gaster blasters.\n\n" +
                         "_-_ Added Abyssal Dragons, who breath fire, spawn smaller dragons and attack with sweeping.\n\n" +
                         "_-_ Added Lost Spirit, who empower your enemies with champion abilities.\n\n"+
+                        "_-_ Abyssal bosses can spawn in big amounts on levels before shop.\n\n"+
                         "Also tweaked the endgame of Shattered:\n\n" +
                         "_-_ Yog cast lasers 2.2x less frequently, abyssal flame walls stay 2 turns longer to compensate."));
 
