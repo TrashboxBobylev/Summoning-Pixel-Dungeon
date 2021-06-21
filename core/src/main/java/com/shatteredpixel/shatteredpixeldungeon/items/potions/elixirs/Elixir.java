@@ -26,8 +26,22 @@ package com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 
 public abstract class Elixir extends Potion {
+
+	@Override
+	public void setAction() {
+		defaultAction = AC_CHOOSE;
+	}
+
+	@Override
+	public void doThrow(Hero hero) {
+		GameScene.selectCell(thrower);
+	}
+
+	@Override
+	public abstract void shatter( int cell );
 	
 	public abstract void apply( Hero hero );
 	

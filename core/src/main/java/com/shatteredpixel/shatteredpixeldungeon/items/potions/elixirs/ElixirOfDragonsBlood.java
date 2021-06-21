@@ -25,12 +25,16 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Inferno;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FireImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.AlchemicalCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfDragonsBreath;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 
@@ -39,7 +43,20 @@ public class ElixirOfDragonsBlood extends Elixir {
 	{
 		image = ItemSpriteSheet.ELIXIR_DRAGON;
 	}
-	
+
+	@Override
+	public void shatter(int cell) {
+		if (Dungeon.level.heroFOV[cell]) {
+			setKnown();
+
+			splash( cell );
+			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
+			Sample.INSTANCE.play( Assets.Sounds.GAS );
+		}
+
+		GameScene.add( Blob.seed( cell, 1000, Inferno.class ) );
+	}
+
 	@Override
 	public void apply(Hero hero) {
 		Buff.affect(hero, FireImbue.class).set(FireImbue.DURATION);

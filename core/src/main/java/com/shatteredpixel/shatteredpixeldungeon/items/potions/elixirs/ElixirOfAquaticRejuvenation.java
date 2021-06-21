@@ -44,6 +44,16 @@ public class ElixirOfAquaticRejuvenation extends Elixir {
 	{
 		image = ItemSpriteSheet.ELIXIR_AQUA;
 	}
+
+	@Override
+	public void setAction() {
+		defaultAction = AC_DRINK;
+	}
+
+	@Override
+	public void shatter(int cell) {
+
+	}
 	
 	@Override
 	public void apply(Hero hero) {

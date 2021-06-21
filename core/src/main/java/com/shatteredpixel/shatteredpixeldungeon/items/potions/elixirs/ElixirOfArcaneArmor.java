@@ -36,6 +36,16 @@ public class ElixirOfArcaneArmor extends Elixir {
 	{
 		image = ItemSpriteSheet.ELIXIR_ARCANE;
 	}
+
+	@Override
+	public void setAction() {
+		defaultAction = AC_DRINK;
+	}
+
+	@Override
+	public void shatter(int cell) {
+
+	}
 	
 	@Override
 	public void apply(Hero hero) {

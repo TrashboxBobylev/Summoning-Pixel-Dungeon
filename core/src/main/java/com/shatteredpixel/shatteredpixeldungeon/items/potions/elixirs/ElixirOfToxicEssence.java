@@ -24,20 +24,49 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ToxicImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PoisonParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.AlchemicalCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.PathFinder;
 
 public class ElixirOfToxicEssence extends Elixir {
 	
 	{
 		image = ItemSpriteSheet.ELIXIR_TOXIC;
 	}
-	
+
+	@Override
+	public void shatter(int cell) {
+		if (Dungeon.level.heroFOV[cell]) {
+			splash( cell );
+			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
+		}
+
+		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 3 );
+		for (int i = 0; i < PathFinder.distance.length; i++) {
+			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+				Splash.at( i, 0x000000, 5);
+				Char ch = Actor.findChar(i);
+
+				if (ch != null){
+					Buff.affect(ch, Ooze.class).set( Ooze.DURATION );
+				}
+			}
+		}
+	}
+
 	@Override
 	public void apply(Hero hero) {
 		Buff.affect(hero, ToxicImbue.class).set(ToxicImbue.DURATION);

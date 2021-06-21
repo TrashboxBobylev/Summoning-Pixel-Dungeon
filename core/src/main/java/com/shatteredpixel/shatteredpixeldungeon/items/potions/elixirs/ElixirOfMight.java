@@ -45,7 +45,17 @@ public class ElixirOfMight extends Elixir {
 
 		unique = true;
 	}
-	
+
+	@Override
+	public void setAction() {
+		defaultAction = AC_DRINK;
+	}
+
+	@Override
+	public void shatter(int cell) {
+
+	}
+
 	@Override
 	public void apply( Hero hero ) {
 		setKnown();
