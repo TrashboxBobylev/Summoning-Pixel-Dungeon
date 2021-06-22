@@ -314,6 +314,9 @@ public abstract class Mob extends Char {
 			//we aren't amoked, current enemy is invulnerable to us, and that enemy isn't affect by aggression
 		} else if (buff( Amok.class ) == null && enemy.isInvulnerable(getClass()) && enemy.buff(StoneOfAggression.Aggression.class) == null) {
 			newEnemy = true;
+			//we can't attack our enemy, give up with 50% chance
+		} else if (enemy != null && !canAttack(enemy) && Random.Int(2) == 0){
+			newEnemy = true;
 		}
 
 		if ( newEnemy ) {
@@ -349,7 +352,7 @@ public abstract class Mob extends Char {
 			else if ( alignment == Alignment.ALLY ) {
 				//look for hostile mobs to attack
 				for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
-					if (mob.alignment == Alignment.ENEMY && canSee(mob.pos)
+					if (mob.alignment == Alignment.ENEMY && canSee(mob.pos) && canAttack(mob)
 							&& mob.invisible <= 0 && !mob.isInvulnerable(getClass()) && !canBeIgnored(mob))
 						//intelligent allies do not target mobs which are passive, wandering, or asleep
 						if (!intelligentAlly ||
