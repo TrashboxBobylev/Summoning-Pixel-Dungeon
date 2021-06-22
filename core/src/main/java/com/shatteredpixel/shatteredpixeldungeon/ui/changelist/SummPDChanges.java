@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CleanWater;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfStench;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.FroggitStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.GreyRatStaff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.*;
@@ -272,6 +273,16 @@ public class SummPDChanges {
                         "_-_ HP increased to _15/20/25_ from _10/17/23_.\n" +
                         "_-_ Armor is fixed value of _2/2/4_ instead of 0-1 at all tiers.\n" +
                         "_-_ Increased recharge to 400 turns."));
+
+        changes.addButton(new ChangeButton(new GreyRatStaff(),
+                "Gray Rats at T1 and T2 were too strong against sewers and prison enemies, so I decided to transfer this power to more vulnerable state:\n\n" +
+                        "_-_ Average damage adjusted by _-19%/-4%/8%_.\n" +
+                        "_-_ HP adjusted by _6%/-15%/-40%_.\n" +
+                        "_-_ Attunement cost is 1.5 on all tiers now.\n" +
+                        "_-_ Armor roll have been rebalanced:\n\n" +
+                        "   _Tier I:_ 0-3 -> 0\n" +
+                        "   _Tier II:_ 2-5 -> 2-7\n" +
+                        "   _Tier III:_ 4-10 -> 3-12"));
 
 
         changes = new ChangeInfo("1.2", true, "");
