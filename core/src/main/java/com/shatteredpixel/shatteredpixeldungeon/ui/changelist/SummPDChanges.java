@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.quest.CleanWater;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfStench;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.FroggitStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.GreyRatStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.SlimeStaff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.*;
@@ -283,6 +284,9 @@ public class SummPDChanges {
                         "   _Tier I:_ 0-3 -> 0\n" +
                         "   _Tier II:_ 2-5 -> 2-7\n" +
                         "   _Tier III:_ 4-10 -> 3-12"));
+
+        changes.addButton(new ChangeButton(new SlimeStaff(),
+                "_-_ Ally creatures are able to switch to other targets if current can't be attacked for some reason. This allows Slimes to stall _several enemies at once._"));
 
 
         changes = new ChangeInfo("1.2", true, "");
