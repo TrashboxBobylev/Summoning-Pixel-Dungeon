@@ -41,7 +41,7 @@ public class SheepStaff extends Staff {
 
     @Override
     public void customizeMinion(Minion minion) {
-        minion.baseMinDR = 1 + level();
-        minion.baseMaxDR = 6 + level()*7;
+        minion.baseMinDR = 1 + level()*5;
+        minion.baseMaxDR = 6 + level()*6;
     }
 }

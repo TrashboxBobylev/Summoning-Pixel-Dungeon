@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.quest.CleanWater;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfStench;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.FroggitStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.GreyRatStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.SheepStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.SlimeStaff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
@@ -288,6 +289,12 @@ public class SummPDChanges {
         changes.addButton(new ChangeButton(new SlimeStaff(),
                 "_-_ Ally creatures are able to switch to other targets if current can't be attacked for some reason. This allows Slimes to stall _several enemies at once._"));
 
+        changes.addButton(new ChangeButton(new SheepStaff(),
+                "Sheep's armor on higher tier was much lower than excepted, and higher tiers were underpowered at the best:\n\n" +
+                        "_-_ Attunement cost adjusted to _1/2/3_ from _1/2.25/3.5_.\n" +
+                        "_-_ Armor roll have been rebalanced (rank info was incorrect):\n\n" +
+                        "   _Tier II:_ 2-13 -> 6-12\n" +
+                        "   _Tier III:_ 3-20 -> 11-18"));
 
         changes = new ChangeInfo("1.2", true, "");
         changes.hardlight(Window.TITLE_COLOR);
