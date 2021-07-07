@@ -76,6 +76,8 @@ public class ScoutArmor extends Armor {
 
     @Override
     public void execute(Hero hero, String action) {
+        super.execute(hero, action);
+
         if (action.equals(AC_SPECIAL)){
 
             if (hero.belongings.armor != this){
