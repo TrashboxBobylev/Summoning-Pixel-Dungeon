@@ -33,18 +33,8 @@ public class SkeletonStaff extends Staff {
         image = ItemSpriteSheet.SKELETON_STAFF;
         minionType = Skele.class;
         tier = 3;
-        chargeTurns = 520;
+        chargeTurns = 600;
         setClass(Minion.MinionClass.DEFENSE);
         table = MinionBalanceTable.SKELETON;
-    }
-
-    @Override
-    public int getChargeTurns() {
-        switch (level()){
-            case 0: return 600;
-            case 1: return 300;
-            case 2: return 125;
-        }
-        return 0;
     }
 }

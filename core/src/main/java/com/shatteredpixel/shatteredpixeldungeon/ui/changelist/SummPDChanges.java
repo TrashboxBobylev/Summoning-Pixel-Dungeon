@@ -32,10 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CleanWater;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfStench;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.FroggitStaff;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.GreyRatStaff;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.SheepStaff;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.SlimeStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.*;
@@ -295,6 +292,18 @@ public class SummPDChanges {
                         "_-_ Armor roll have been rebalanced (rank info was incorrect):\n\n" +
                         "   _Tier II:_ 2-13 -> 6-12\n" +
                         "   _Tier III:_ 3-20 -> 11-18"));
+
+        changes.addButton(new ChangeButton(new SkeletonStaff(),
+                "Skeleton's power on higher tiers is too inconsistent to be balanced, and it just feels counterintuitive.\n\n" +
+                        "_-_ Damage roll have been rebalanced:\n\n" +
+                        "   _Tier I:_ 4-8 -> _5-10_\n" +
+                        "   _Tier II:_ 2-6 -> _6-15_\n" +
+                        "   _Tier III:_ 1-4 -> _7-20_\n" +
+                        "_-_ Increased HP by _20%_ on all tiers.\n" +
+                        "_-_ Increased armor from 0-4 to 3-5.\n" +
+                        "_-_ Adjusted recharge to _600 turns_ on all tiers.\n" +
+                        "_-_ Now attacks once per two turns and aggros every mob in 5x5 area.\n" +
+                        "_-_ Adjusted attunement to 1 on all tiers."));
 
         changes = new ChangeInfo("1.2", true, "");
         changes.hardlight(Window.TITLE_COLOR);

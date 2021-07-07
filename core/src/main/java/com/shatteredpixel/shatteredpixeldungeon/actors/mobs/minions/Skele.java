@@ -26,12 +26,15 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SkeletonSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 
@@ -39,10 +42,28 @@ public class Skele extends Minion {
     {
         spriteClass = SkeletonSprite.class;
 
-        baseMaxDR = 4;
+        baseMinDR = 3;
+        baseMaxDR = 5;
 
         properties.add(Property.UNDEAD);
         properties.add(Property.INORGANIC);
+    }
+
+    @Override
+    protected float attackDelay() {
+        return super.attackDelay()*0.5f;
+    }
+
+    @Override
+    public int attackProc(Char enemy, int damage) {
+        PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.solid, null ), 2 );
+        for (int i = 0; i < PathFinder.distance.length; i++) {
+            if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+                Char ch = Actor.findChar(i);
+                if (ch instanceof Mob) ((Mob) ch).aggro(this);
+            }
+        }
+        return super.attackProc(enemy, damage);
     }
 
     @Override
