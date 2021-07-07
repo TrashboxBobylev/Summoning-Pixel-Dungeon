@@ -218,7 +218,6 @@ public abstract class Minion extends Mob {
         int targetPos = defendingPos != -1 ? defendingPos : Dungeon.hero.pos;
         int distance = (this instanceof StationaryMinion || buff(ArmoredShielding.class) != null) ? Integer.MAX_VALUE : independenceRange;
 
-
         //will never attack something far from their target
         if (enemy != null
                 && Dungeon.level.mobs.contains(enemy)

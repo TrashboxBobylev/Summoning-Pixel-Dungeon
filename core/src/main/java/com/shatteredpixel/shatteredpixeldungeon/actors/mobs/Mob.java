@@ -314,8 +314,8 @@ public abstract class Mob extends Char {
 			//we aren't amoked, current enemy is invulnerable to us, and that enemy isn't affect by aggression
 		} else if (buff( Amok.class ) == null && enemy.isInvulnerable(getClass()) && enemy.buff(StoneOfAggression.Aggression.class) == null) {
 			newEnemy = true;
-			//we can't attack our enemy, give up with 50% chance
-		} else if (enemy != null && !canAttack(enemy) && Random.Int(2) == 0){
+			//we can't attack our enemy and we are slime, give up with 50% chance
+		} else if (enemy != null && !canAttack(enemy) && this instanceof Slime && Random.Int(2) == 0){
 			newEnemy = true;
 		}
 

@@ -47,8 +47,10 @@ public class GnollHunter extends Minion {
     @Override
     protected boolean getCloser( int target ) {
         if (state == HUNTING) {
-            return enemySeen && getFurther( target ) && getFurther(target);
+            baseSpeed = enemy.baseSpeed*2;
+            return enemySeen && getFurther( target );
         } else {
+            baseSpeed = 1;
             return super.getCloser( target );
         }
     }

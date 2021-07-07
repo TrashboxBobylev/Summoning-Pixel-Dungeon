@@ -284,7 +284,7 @@ public class SummPDChanges {
                         "   _Tier III:_ 4-10 -> 3-12"));
 
         changes.addButton(new ChangeButton(new SlimeStaff(),
-                "_-_ Ally creatures are able to switch to other targets if current can't be attacked for some reason. This allows Slimes to stall _several enemies at once._"));
+                "_-_ Slimes are able to switch to other targets if current can't be attacked for some reason. This allows Slimes to stall _several enemies at once._"));
 
         changes.addButton(new ChangeButton(new SheepStaff(),
                 "Sheep's armor on higher tier was much lower than excepted, and higher tiers were underpowered at the best:\n\n" +
@@ -321,6 +321,12 @@ public class SummPDChanges {
                         "_-_ Decay changed to _1/3/4_, from _2/2/1_.\n" +
                         "_-_ Can be placed at any spot in hero's FOV, not just adjacent tiles.\n" +
                         "_-_ Fixed the bug with MM's damage being not affected by Soul Sparking."));
+
+        changes.addButton(new ChangeButton(new GnollHunterStaff(),
+                "Gnoll Hunter is also pretty powerful unit, he just needs some boost in late game.\n\n" +
+                        "_-_ HP increased by _0%/25%/78%_.\n" +
+                        "_-_ Now properly ignores armor on any tier.\n" +
+                        "_-_ Now properly can outrun any enemy."));
 
         changes = new ChangeInfo("1.2", true, "");
         changes.hardlight(Window.TITLE_COLOR);

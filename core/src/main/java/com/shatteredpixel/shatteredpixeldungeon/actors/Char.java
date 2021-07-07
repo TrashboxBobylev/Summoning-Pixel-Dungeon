@@ -82,7 +82,7 @@ public abstract class Char extends Actor {
 	public int HT;
 	public int HP;
 	
-	protected float baseSpeed	= 1;
+	public float baseSpeed	= 1;
 	protected PathFinder.Path path;
 
 	public int paralysed	    = 0;
@@ -270,11 +270,7 @@ public abstract class Char extends Actor {
                 }
 			}
 			if (this instanceof GnollHunter){
-				switch (((GnollHunter) this).lvl){
-					case 0: dr *= 0.75f; break;
-					case 1: dr *= 0.50f; break;
-					case 2: dr *= 0.00f; break;
-				}
+				dr = 0;
 			}
 			
 			int dmg;
