@@ -315,6 +315,13 @@ public class SummPDChanges {
                         "_-_ Tier II chickens inflict Crippled.\n" +
                         "_-_ Tier III chickens inflict Terrified."));
 
+        changes.addButton(new ChangeButton(new MagicMissileStaff(),
+                "Magic Missile minion is pretty strong, but can get quickly destroyed by monsters, which puts it at disadvantage to Wand of Warding.\n\n" +
+                        "_-_ HP increased by _150%/247%/300%_.\n" +
+                        "_-_ Decay changed to _1/3/4_, from _2/2/1_.\n" +
+                        "_-_ Can be placed at any spot in hero's FOV, not just adjacent tiles.\n" +
+                        "_-_ Fixed the bug with MM's damage being not affected by Soul Sparking."));
+
         changes = new ChangeInfo("1.2", true, "");
         changes.hardlight(Window.TITLE_COLOR);
         changeInfos.add(changes);

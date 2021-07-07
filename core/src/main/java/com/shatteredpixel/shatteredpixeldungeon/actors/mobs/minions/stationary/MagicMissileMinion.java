@@ -35,7 +35,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MagicMissileSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.utils.PathFinder;
-import com.watabou.utils.Random;
 
 public class MagicMissileMinion extends StationaryMinion {
     {
@@ -69,7 +68,7 @@ public class MagicMissileMinion extends StationaryMinion {
         spend(1f);
 
         if (hit(this, enemy, false)) {
-            int dmg = Random.NormalIntRange(minDamage, maxDamage);
+            int dmg = damageRoll();
             if (Dungeon.hero.buff(Attunement.class) != null) dmg *= Attunement.empowering();
 
             if (lvl > 0) {
@@ -80,17 +79,15 @@ public class MagicMissileMinion extends StationaryMinion {
                         if (Actor.findChar(i) != null) {
                             Char ch = Actor.findChar(i);
                             if (ch != null && ch != Dungeon.hero && ch != this) {
-                                ch.damage(damageRoll(), this);
+                                ch.damage(dmg, this);
                             }
                         }
                     }
                 }
-
-                damage(lvl == 2 ? 1 : 2, this);
             } else {
-                enemy.damage(damageRoll(), this);
-                damage(lvl == 2 ? 1 : 2, this);
+                enemy.damage(dmg, this);
             }
+            damage(lvl * 3 / 2, this);
         } else {
             enemy.sprite.showStatus(CharSprite.NEUTRAL, enemy.defenseVerb());
         }

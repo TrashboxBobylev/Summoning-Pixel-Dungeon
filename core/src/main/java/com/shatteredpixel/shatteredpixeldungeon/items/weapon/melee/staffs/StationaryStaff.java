@@ -41,10 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
-
-import java.util.ArrayList;
 
 public class StationaryStaff extends Staff {
     //because of precise strategy, I need to rewrite some of Staff methods to allow exact placing
@@ -76,17 +73,7 @@ public class StationaryStaff extends Staff {
 
                 final StationaryStaff staff = (StationaryStaff)curItem;
 
-                //searching for available space
-                ArrayList<Integer> spawnPoints = new ArrayList<Integer>();
-
-                for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-                    int p = curUser.pos + PathFinder.NEIGHBOURS8[i];
-                    if (Actor.findChar( p ) == null && Dungeon.level.passable[p] && p == target) {
-                        spawnPoints.add( p );
-                    }
-                }
-
-                if (spawnPoints.size() == 0){
+                if (Actor.findChar( target ) != null || !Dungeon.level.passable[target] || !Dungeon.level.heroFOV[target]){
                     curUser.sprite.zap(0);
                     GLog.i( Messages.get(StationaryStaff.class, "no_space") );
                     return;
