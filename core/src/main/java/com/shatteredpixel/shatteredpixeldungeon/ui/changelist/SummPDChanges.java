@@ -328,6 +328,11 @@ public class SummPDChanges {
                         "_-_ Now properly ignores armor on any tier.\n" +
                         "_-_ Now properly can outrun any enemy."));
 
+        changes.addButton(new ChangeButton(new FrostElementalStaff(),
+                "As lategame minion, Frost Elemental only needs toughness boost, honestly.\n\n" +
+                        "_-_ HP increased by _10%_.\n" +
+                        "_-_ Armor increased to _4-13_, from 2-7."));
+
         changes = new ChangeInfo("1.2", true, "");
         changes.hardlight(Window.TITLE_COLOR);
         changeInfos.add(changes);
