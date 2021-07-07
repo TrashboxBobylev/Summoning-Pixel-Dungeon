@@ -41,9 +41,9 @@ public class ChickenStaff extends Staff {
     @Override
     public int getChargeTurns() {
         switch (level()){
-            case 0: return 90;
-            case 1: return 45;
-            case 2: return 20;
+            case 0: return 33;
+            case 1: return 100;
+            case 2: return 250;
         }
         return 0;
     }

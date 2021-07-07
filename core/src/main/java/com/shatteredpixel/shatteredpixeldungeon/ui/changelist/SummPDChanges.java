@@ -305,6 +305,16 @@ public class SummPDChanges {
                         "_-_ Now attacks once per two turns and aggros every mob in 5x5 area.\n" +
                         "_-_ Adjusted attunement to 1 on all tiers."));
 
+        changes.addButton(new ChangeButton(new ChickenStaff(),
+                "With Runic Shell being greatly nerfed for fragile minions, I can make chickens fun:\n\n" +
+                        "_-_ Average damage decreased by _62%/66%/69%_.\n" +
+                        "_-_ Increased evasion by 3x.\n" +
+                        "_-_ Attunement cost adjusted to _0.25/0.5/1_, from _0.5/0.75/1.25_.\n" +
+                        "_-_ Recharge adjusted to _33/100/250_, from _90/45/20_.\n" +
+                        "_-_ Chickens move and attack at 2x speed.\n" +
+                        "_-_ Tier II chickens inflict Crippled.\n" +
+                        "_-_ Tier III chickens inflict Terrified."));
+
         changes = new ChangeInfo("1.2", true, "");
         changes.hardlight(Window.TITLE_COLOR);
         changeInfos.add(changes);
