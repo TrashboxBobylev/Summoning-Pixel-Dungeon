@@ -58,7 +58,7 @@ public class GasterBlaster extends StationaryMinion {
         float mod = 0;
         switch (lvl){
             case 0: mod = 1.75f; break;
-            case 1: mod = 1.33f; break;
+            case 1: mod = 1.2f; break;
             case 2: mod = 0.66f; break;
         }
         float v = super.attackDelay() * mod;
@@ -116,6 +116,6 @@ public class GasterBlaster extends StationaryMinion {
             case 1: return 6;
             case 2: return 8;
         }
-        return 4;
+        return 2;
     }
 }

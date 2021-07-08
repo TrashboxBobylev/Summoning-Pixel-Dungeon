@@ -380,8 +380,9 @@ public class SummPDChanges {
         changes.addButton(new ChangeButton(new BlasterStaff(),
                 "Gaster Blaster follows the same buffs as other stationary minions.\n\n" +
                         "_-_ HP increased by _50%/77%/100%_.\n" +
-                        "_-_ Increased attack rate by _14%/6%/15%_.\n" +
-                        "_-_ Can be placed at any spot in hero's FOV, not just adjacent tiles.\n"));
+                        "_-_ Increased attack rate by _14%/4%/15%_.\n" +
+                        "_-_ Attunement cost adjusted to _2/2.5/3.25_, from _2/2.25/2.75_.\n" +
+                        "_-_ Can be placed at any spot in hero's FOV, not just adjacent tiles."));
 
 
         changes = new ChangeInfo("1.2", true, "");
