@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -203,15 +204,15 @@ public class GooMinion extends Minion {
 
     public void elementalAttack(){
         pumpedUp = 0;
-        int min = 35, max = 115;
+        int min = 35, max = 75;
         switch (lvl) {
             case 1:
                 min = 60;
-                max = 108;
+                max = 120;
                 break;
             case 2:
                 min = 90;
-                max = 100;
+                max = 150;
                 break;
         }
 
@@ -261,6 +262,14 @@ public class GooMinion extends Minion {
     @Override
     public void damage(int dmg, Object src) {
         boolean bleeding = (HP*2 <= HT);
+        float deferedDmgMulti = 0.5f;
+        if (pumping){
+            dmg *= 3;
+            deferedDmgMulti = 1f;
+        }
+        Viscosity.DeferedDamage deferred = Buff.affect( this, Viscosity.DeferedDamage.class );
+        deferred.prolong((int) (dmg * deferedDmgMulti));
+        dmg = (int) Math.min(dmg - dmg*deferedDmgMulti, 0);
         super.damage(dmg, src);
         if ((HP*2 <= HT) && !bleeding){
             sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "enraged"));

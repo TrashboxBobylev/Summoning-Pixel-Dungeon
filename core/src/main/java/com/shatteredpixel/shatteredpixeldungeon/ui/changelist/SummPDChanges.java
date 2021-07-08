@@ -366,6 +366,17 @@ public class SummPDChanges {
                         "_-_ Added mob aggro with 3 tiles radius.\n"+
                         "_-_ Now can grab ranged enemies to force them fight in melee range."));
 
+        changes.addButton(new ChangeButton(new GooStaff(),
+                "Goo minion suffers a lot from its undesirable toughness, especially for T2 and T3:\n\n" +
+                        "_-_ HP decreased by _36%/31%/23%_.\n" +
+                        "_-_ Charged damage adjusted by _-27%/7%/26%_.\n" +
+                        "_-_ Attunement cost adjusted to _1.75/3/5_, from _2.5/3/4.25_.\n" +
+                        "_-_ Now defers the half of damage done to it (and 3x damage when charging up).\n" +
+                        "_-_ Armor roll have been buffed:\n\n" +
+                        "   _Tier I:_ 5-8 -> 9-14\n" +
+                        "   _Tier II:_ 9-13 -> 14-21\n" +
+                        "   _Tier III:_ 13-18 -> 19-28"));
+
 
         changes = new ChangeInfo("1.2", true, "");
         changes.hardlight(Window.TITLE_COLOR);
