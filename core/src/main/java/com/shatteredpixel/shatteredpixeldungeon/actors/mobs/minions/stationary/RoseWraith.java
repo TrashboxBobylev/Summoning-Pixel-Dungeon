@@ -41,7 +41,7 @@ public class RoseWraith extends StationaryMinion {
 
     @Override
     public int defenseSkill(Char enemy) {
-        int round = Math.round(super.attackSkill(enemy) * 1.8f);
+        int round = Math.round(super.attackSkill(enemy) * 2.25f);
         if (buff(MagicPower.class) != null) round = Math.round(super.attackSkill(enemy) * 1f);
         return round;
     }

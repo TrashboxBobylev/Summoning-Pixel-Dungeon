@@ -347,6 +347,15 @@ public class SummPDChanges {
                         "_-_ Added debuff duration stat.\n" +
                         "_-_ Added magic resistance stat."));
 
+        changes.addButton(new ChangeButton(new RoseStaff(),
+                "Rose Wraith also doesn't need a much of buffs.\n\n" +
+                        "_-_ HP increased by _50%/22%/0%_.\n" +
+                        "_-_ Increased evasion by 25%.\n" +
+                        "_-_ Wraiths die when out of rose wraith's FOV.\n" +
+                        "_-_ Can be placed at any spot in hero's FOV, not just adjacent tiles.\n" +
+                        "_-_ Fixed wrong stats in rank info."));
+
+
         changes = new ChangeInfo("1.2", true, "");
         changes.hardlight(Window.TITLE_COLOR);
         changeInfos.add(changes);

@@ -248,7 +248,7 @@ public abstract class Mob extends Char {
 
 		if (this instanceof Wraith) {
 			if (((Wraith) this).parent != null) {
-				if (Dungeon.level.distance(((Wraith) this).parent.pos, pos) >= 8) {
+				if (!((Wraith) this).parent.fieldOfView[pos]) {
 					die(Doom.class);
 				}
 			}
