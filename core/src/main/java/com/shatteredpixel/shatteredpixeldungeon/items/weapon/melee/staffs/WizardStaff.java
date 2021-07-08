@@ -41,9 +41,9 @@ public class WizardStaff extends Staff{
     @Override
     public int getChargeTurns() {
         switch (level()){
-            case 0: return 500;
-            case 1: return 900;
-            case 2: return 1400;
+            case 0: return 700;
+            case 1: return 500;
+            case 2: return 300;
         }
         return 0;
     }

@@ -37,6 +37,8 @@ import com.watabou.utils.Random;
 
 import java.util.HashMap;
 
+import static com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements.RESISTS;
+
 public class Wizard extends Minion implements Callback {
 	
 	private static final float TIME_TO_ZAP	= 1f;
@@ -46,8 +48,8 @@ public class Wizard extends Minion implements Callback {
 
 		properties.add(Property.UNDEAD);
 
-		baseMaxDR = 5;
-		baseMinDR = 1;
+		baseMaxDR = 10;
+		baseMinDR = 2;
 	}
 	
 	@Override
@@ -83,27 +85,29 @@ public class Wizard extends Minion implements Callback {
 			return !visible;
 		}
 	}
-	
+
+	@Override
+	public void damage(int dmg, Object src) {
+		for (Class c : RESISTS){
+			if (c.isAssignableFrom(src.getClass())){
+				dmg *= 0.75 - lvl*0.15f;
+			}
+		}
+		super.damage(dmg, src);
+	}
+
 	//used so resistances can differentiate between melee and magical attacks
 	public static class DarkBolt{}
 	
 	private void zap() {
-		spend( TIME_TO_ZAP );
+		spend( attackDelay() );
 		
 		if (hit( this, enemy, true )) {
 			if (Random.Int( 1 ) == 0) {
 			    Class<? extends FlavourBuff> buff = (Class<? extends FlavourBuff>) Random.chances(DEBUFFS);
-				Buff.prolong( enemy, buff, 4 );
+				Buff.prolong( enemy, buff, 8 - lvl*3 );
 				if (buff(SupportPower.class) != null) Buff.prolong(enemy, buff, 4);
 			}
-			int minDamage = -1, maxDamage = -1;
-			switch (lvl){
-				case 1: minDamage = 1; maxDamage = 4; break;
-				case 2: minDamage = 2; maxDamage = 6; break;
-			}
-			
-			int dmg = Random.Int( minDamage, maxDamage );
-			enemy.damage( dmg, new DarkBolt() );
 		} else {
 			enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
 		}
@@ -128,8 +132,8 @@ public class Wizard extends Minion implements Callback {
 		float mod = 0;
 		switch (lvl){
 			case 0: mod = 1; break;
-			case 1: mod = 0.75f; break;
-			case 2: mod = 0.66f; break;
+			case 1: mod = 0.66f; break;
+			case 2: mod = 0.5f; break;
 		}
 		return super.attackDelay() * mod;
 	}

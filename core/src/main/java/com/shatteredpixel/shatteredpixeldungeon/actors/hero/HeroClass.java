@@ -48,7 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.FroggitStaff;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.GnollHunterStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.WizardStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnive2;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -234,7 +234,7 @@ public enum HeroClass {
         hero.attunement = 3;
         hero.HP = hero.HT = 10;
         hero.STR = 17;
-        new GnollHunterStaff().identify().collect();
+        new WizardStaff().identify().collect();
 
         Stars star = new Stars();
         star.collect();

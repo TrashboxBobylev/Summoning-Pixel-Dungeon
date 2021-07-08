@@ -100,7 +100,7 @@ public abstract class Minion extends Mob {
         baseMaxDR = bundle.getInt("maxDR");
         strength = bundle.getInt("str");
         attunement = bundle.getInt("att");
-        lvl = bundle.getInt("lvl");
+        lvl = bundle.getInt("level");
         enchantment = (Weapon.Enchantment) bundle.get("enchantment");
         minionClass = bundle.getEnum("class", MinionClass.class);
         timer = bundle.getInt("deathtimer");

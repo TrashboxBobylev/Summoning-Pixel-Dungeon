@@ -224,6 +224,9 @@ public class SummPDChanges {
                         "_-_ Hunger damage no longer interrupts you.\n" +
                         "_-_ Replaced Potion of Stamina with Potion of Adrenaline."));
 
+        changes.addButton( new ChangeButton(new Image(Assets.Interfaces.BUFFS_LARGE, 112, 32, 16, 16), "Tiering",
+                "Fixed a huge issue with minion tier being reset at reload."));
+
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.STARS, null), "Conjurer buffs",
                 "_-_ Buffed _Star Blazing_ and overhauled its visuals:\n\n" +
                         "   _Tier I:_ +33% max damage, +5% scaling\n" +
@@ -332,6 +335,17 @@ public class SummPDChanges {
                 "As lategame minion, Frost Elemental only needs toughness boost, honestly.\n\n" +
                         "_-_ HP increased by _10%_.\n" +
                         "_-_ Armor increased to _4-13_, from 2-7."));
+
+        changes.addButton(new ChangeButton(new WizardStaff(),
+                "T2 and T3 Wizards were very hindered by their lack of toughness and huge recharge, so I decided to make tiering a proper cost reduce:\n\n" +
+                        "_-_ HP increased by _10_ on all tiers.\n" +
+                        "_-_ Armor increased to _2-10_, from 1-5.\n" +
+                        "_-_ Attunement cost adjusted to _2/1.5/0.75_, from _1.5/1/0.75_.\n" +
+                        "_-_ Recharge adjusted to _700/500/300_, from _500/900/1400_.\n" +
+                        "_-_ Adjusted attack rate to _1/1.5/2_, from _1/1.25/1.5_, made it work with magic (bruh)\n"+
+                        "_-_ Removed magic damage from tiering.\n" +
+                        "_-_ Added debuff duration stat.\n" +
+                        "_-_ Added magic resistance stat."));
 
         changes = new ChangeInfo("1.2", true, "");
         changes.hardlight(Window.TITLE_COLOR);
