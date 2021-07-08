@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Hacatu;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
@@ -89,7 +90,7 @@ public class HacatuSprite extends MobSprite {
                 if (n == ch && PathFinder.distance[i] > 1)
                     //the minion is only zapped if they are adjacent
                     continue;
-                else if (n != null && !((Hacatu)ch).affected.contains( n )) {
+                else if (n != null && n.alignment == Char.Alignment.ENEMY && !((Hacatu)ch).affected.contains( n )) {
                     arcs.add(new Lightning.Arc(che.sprite.center(), n.sprite.center()));
                     arc(n);
                 }
@@ -110,7 +111,7 @@ public class HacatuSprite extends MobSprite {
         arcs.clear();
 
         Char che = Actor.findChar(pos);
-        if (che != null) {
+        if (che != null && ch instanceof Mob) {
             arcs.add( new Lightning.Arc(center(), che.sprite.center()));
             arc(che);
         } else {

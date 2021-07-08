@@ -27,7 +27,6 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Attunement;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -50,7 +49,7 @@ public class Hacatu extends Minion implements Callback {
 		
 		properties.add(Property.ELECTRIC);
 		properties.add(Property.RANGED);
-		baseMaxDR = 6;
+		baseMaxDR = 12;
 		baseMinDR = 0;
 		baseSpeed = 1.75f;
 	}
@@ -104,10 +103,11 @@ public class Hacatu extends Minion implements Callback {
                 int max = maxDamage;
 
                 for (Char ch : affected){
-                    if (ch instanceof Hero) ch.damage(Math.round(damageRoll() * multipler * 0.5f), this);
-                    else ch.damage(Math.round(damageRoll() * multipler), this);
+					if (ch.alignment != Alignment.ALLY) {
+						ch.damage(Math.round(damageRoll() * multipler), this);
+					}
 
-                    if (ch == Dungeon.hero) Camera.main.shake( 2, 0.3f );
+					if (ch == Dungeon.hero) Camera.main.shake( 2, 0.3f );
                     ch.sprite.centerEmitter().burst( SparkParticle.FACTORY, 3 );
                     ch.sprite.flash();
                 }

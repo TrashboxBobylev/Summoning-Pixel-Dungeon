@@ -393,6 +393,10 @@ public class SummPDChanges {
                         "_-_ Adjusted imp's HP to _50/25_, from _20/8_.\n" +
                         "_-_ Tier III imp queen no longer spawns imps."));
 
+        changes.addButton(new ChangeButton(new HacatuStaff(),
+                "Hacatu is good enough, but it is quite anti-party with its tremendous collateral damage.\n\n" +
+                        "_-_ No longer deals damage to you and other allies,\n" +
+                        "_-_ Armor increased to _0-12_, from 0-6."));
 
 
         changes = new ChangeInfo("1.2", true, "");
