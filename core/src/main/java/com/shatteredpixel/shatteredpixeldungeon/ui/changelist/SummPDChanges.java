@@ -384,6 +384,16 @@ public class SummPDChanges {
                         "_-_ Attunement cost adjusted to _2/2.5/3.25_, from _2/2.25/2.75_.\n" +
                         "_-_ Can be placed at any spot in hero's FOV, not just adjacent tiles."));
 
+        changes.addButton(new ChangeButton(new ImpQueenStaff(),
+                "For being tanky, Imp Queen was pretty fragile, and imps can get in a way:\n\n" +
+                        "_-_ HP increased to _200/300/400_, from _120/60/20_.\n" +
+                        "_-_ Adjusted magic attack cooldown to _300/200/150_, from _250/150/75_.\n" +
+                        "_-_ Attunement cost adjusted to _3/3.5/4_, from _3/2/1_.\n" +
+                        "_-_ Decreased imp's average damage by _32%/36%/100%_.\n" +
+                        "_-_ Adjusted imp's HP to _50/25_, from _20/8_.\n" +
+                        "_-_ Tier III imp queen no longer spawns imps."));
+
+
 
         changes = new ChangeInfo("1.2", true, "");
         changes.hardlight(Window.TITLE_COLOR);

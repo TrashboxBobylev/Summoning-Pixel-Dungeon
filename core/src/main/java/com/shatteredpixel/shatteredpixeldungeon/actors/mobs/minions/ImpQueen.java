@@ -121,10 +121,10 @@ public class ImpQueen extends Minion {
         if (hit( this, enemy, true ) &&
                 (!enemy.properties().contains(Char.Property.BOSS)
                 && !enemy.properties().contains(Char.Property.MINIBOSS))) {
-            float duration = 250f;
+            float duration = 300f;
             switch (lvl){
-                case 1: duration = 150f; break;
-                case 2: duration = 75f; break;
+                case 1: duration = 200f; break;
+                case 2: duration = 150f; break;
             }
             if (buff(MagicPower.class) != null) duration += 100f;
             Buff.append(this, MorphTimer.class, duration);
@@ -142,27 +142,30 @@ public class ImpQueen extends Minion {
                 }
             }
             Sample.INSTANCE.play(Assets.Sounds.CHARMS);
-
-            Imp imp = new Imp();
-            imp.callToQueen(pos);
-            GameScene.add(imp);
-            ScrollOfTeleportation.appear(imp, impPosition);
-            CellEmitter.center( impPosition ).burst( MagicMissile.WardParticle.UP, Random.IntRange( 8, 15 ) );
-            float impMod = 2.5f;
-            switch (lvl){
-                case 1: impMod = 1.50f; break;
-                case 2: impMod = 0.75f; break;
+            if (lvl < 2) {
+                Imp imp = new Imp();
+                imp.callToQueen(pos);
+                GameScene.add(imp);
+                ScrollOfTeleportation.appear(imp, impPosition);
+                CellEmitter.center(impPosition).burst(MagicMissile.WardParticle.UP, Random.IntRange(8, 15));
+                switch (lvl) {
+                    case 0:
+                        imp.setDamage(25, 35);
+                        break;
+                    case 1:
+                        imp.setDamage(5, 20);
+                        break;
+                }
+                imp.strength = strength;
+                switch (lvl) {
+                    case 0:
+                        imp.setMaxHP(50);
+                        break;
+                    case 1:
+                        imp.setMaxHP(20);
+                        break;
+                }
             }
-            imp.setDamage(
-                   Math.round(minDamage*impMod),
-                    Math.round(maxDamage*impMod));
-            imp.strength = strength;
-            switch (lvl){
-                case 0: impMod = 20; break;
-                case 1: impMod = 8; break;
-                case 2: impMod = 3; break;
-            }
-            imp.setMaxHP((int) impMod);
         } else {
             enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
         }
