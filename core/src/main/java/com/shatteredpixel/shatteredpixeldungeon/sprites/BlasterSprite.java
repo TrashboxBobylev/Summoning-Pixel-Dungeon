@@ -47,7 +47,7 @@ public class BlasterSprite extends MobSprite {
 
         run = idle.clone();
 
-        attack = new Animation( 5, false );
+        attack = new Animation( 7, false );
         attack.frames( frames, 1, 2, 3 );
 
         die = idle.clone();

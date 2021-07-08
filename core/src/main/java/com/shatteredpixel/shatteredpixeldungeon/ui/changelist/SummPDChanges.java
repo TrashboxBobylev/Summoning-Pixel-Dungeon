@@ -377,6 +377,12 @@ public class SummPDChanges {
                         "   _Tier II:_ 9-13 -> 14-21\n" +
                         "   _Tier III:_ 13-18 -> 19-28"));
 
+        changes.addButton(new ChangeButton(new BlasterStaff(),
+                "Gaster Blaster follows the same buffs as other stationary minions.\n\n" +
+                        "_-_ HP increased by _50%/77%/100%_.\n" +
+                        "_-_ Increased attack rate by _14%/6%/15%_.\n" +
+                        "_-_ Can be placed at any spot in hero's FOV, not just adjacent tiles.\n"));
+
 
         changes = new ChangeInfo("1.2", true, "");
         changes.hardlight(Window.TITLE_COLOR);
