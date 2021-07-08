@@ -53,6 +53,7 @@ public class Phantom extends AbyssalMob {
 		properties.add(Property.INORGANIC);
 		properties.add(Property.LARGE);
 		properties.add(Property.UNDEAD);
+		properties.add(Property.RANGED);
 
 		HUNTING = new Hunting();
 	}

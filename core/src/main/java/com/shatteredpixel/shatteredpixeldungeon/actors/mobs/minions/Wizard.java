@@ -47,6 +47,7 @@ public class Wizard extends Minion implements Callback {
 		spriteClass = WizardSprite.class;
 
 		properties.add(Property.UNDEAD);
+		properties.add(Property.RANGED);
 
 		baseMaxDR = 10;
 		baseMinDR = 2;

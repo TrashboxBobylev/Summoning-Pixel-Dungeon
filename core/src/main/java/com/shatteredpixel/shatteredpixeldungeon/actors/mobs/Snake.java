@@ -47,6 +47,7 @@ public class Snake extends Mob {
 		
 		loot = new Dart();
 		lootChance = 0.90f;
+		properties.add(Property.RANGED);
 	}
 
 	{

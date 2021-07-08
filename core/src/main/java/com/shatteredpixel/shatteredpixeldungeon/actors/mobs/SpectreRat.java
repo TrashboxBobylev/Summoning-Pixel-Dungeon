@@ -60,6 +60,7 @@ public class SpectreRat extends AbyssalMob implements Callback {
 		lootChance = 0.33f;
 
 		properties.add(Property.DEMONIC);
+		properties.add(Property.RANGED);
 	}
 	
 	@Override

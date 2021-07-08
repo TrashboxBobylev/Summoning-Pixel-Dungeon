@@ -63,6 +63,7 @@ public class WardingWraith extends Mob implements Callback {
 		lootChance = 1f;
 
 		properties.add(Property.INORGANIC);
+		properties.add(Property.RANGED);
 
 		intelligentAlly = true;
 	}

@@ -48,6 +48,7 @@ public class ExplodingTNT extends Mob {
 		maxLvl = 18;
 		EXP = 10;
 		FLEEING = new Fleeing();
+		properties.add(Property.RANGED);
 	}
 
     //he doesn't attack in melee

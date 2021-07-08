@@ -37,6 +37,7 @@ public class SoulFlame extends Minion {
     {
         spriteClass = SoulFlameSprite.class;
         viewDistance = 8;
+        properties.add(Property.RANGED);
     }
 
     @Override

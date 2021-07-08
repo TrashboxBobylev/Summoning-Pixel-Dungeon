@@ -845,6 +845,7 @@ public abstract class Char extends Actor {
 		UNDEAD (new HashSet<Class>(),
 				new HashSet<Class>( Arrays.asList(Healing.class))),
 		DEMONIC,
+		RANGED,
 		INORGANIC ( new HashSet<Class>(),
 				new HashSet<Class>( Arrays.asList(Bleeding.class, ToxicGas.class, Poison.class) )),
 		FIERY ( new HashSet<Class>( Arrays.asList(WandOfFireblast.class, Elemental.FireElemental.class)),

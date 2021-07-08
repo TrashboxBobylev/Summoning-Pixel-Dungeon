@@ -54,6 +54,7 @@ public class LostSpirit extends AbyssalMob implements Callback {
         properties.add(Property.BOSS);
         properties.add(Property.DEMONIC);
         properties.add(Property.UNDEAD);
+        properties.add(Property.RANGED);
     }
 
     @Override

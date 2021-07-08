@@ -64,6 +64,7 @@ public abstract class YogFist extends Mob {
 
 		properties.add(Property.BOSS);
 		properties.add(Property.DEMONIC);
+		properties.add(Property.RANGED);
 	}
 
 	private float rangedCooldown;

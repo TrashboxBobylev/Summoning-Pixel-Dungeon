@@ -61,6 +61,7 @@ public abstract class Elemental extends Mob {
 		maxLvl = 20;
 		
 		flying = true;
+		properties.add(Property.RANGED);
 	}
 
 	@Override

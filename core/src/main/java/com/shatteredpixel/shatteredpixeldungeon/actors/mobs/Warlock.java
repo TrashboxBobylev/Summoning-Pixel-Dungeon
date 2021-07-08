@@ -60,6 +60,7 @@ public class Warlock extends Mob implements Callback {
 		lootChance = 0.5f;
 
 		properties.add(Property.UNDEAD);
+		properties.add(Property.RANGED);
 	}
 
 	@Override
