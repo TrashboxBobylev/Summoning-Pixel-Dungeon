@@ -812,7 +812,7 @@ public abstract class Mob extends Char {
 				Statistics.qualifiedForNoKilling = false;
 
 				int exp = Dungeon.hero.lvl <= maxLvl ? EXP : 0;
-				if (Dungeon.mode == Dungeon.GameMode.NO_EXP) EXP = 0;
+				if (Dungeon.mode == Dungeon.GameMode.NO_EXP) exp = 0;
 				if (exp > 0) {
 					Dungeon.hero.sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "exp", exp));
 				}
