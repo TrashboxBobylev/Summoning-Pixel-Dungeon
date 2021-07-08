@@ -355,6 +355,16 @@ public class SummPDChanges {
                         "_-_ Can be placed at any spot in hero's FOV, not just adjacent tiles.\n" +
                         "_-_ Fixed wrong stats in rank info."));
 
+        changes.addButton(new ChangeButton(new RoboStaff(),
+                "While DM-150 is a good wall, it was stupid to make them just die over magical attacks:\n\n" +
+                        "_-_ HP decreased by _20%/14%/19%_.\n" +
+                        "_-_ Armor increased to _12-22_, from 10-18.\n" +
+                        "_-_ Damage increased by 5-10 for all tiers..\n" +
+                        "_-_ Attunement cost adjusted to _1.5/2.5/4.25_, from _1.5/2.25/4_.\n" +
+                        "_-_ Adjusted attack rate to _0.29/0.4/0.66_, from _0.33/0.5/1_"+
+                        "_-_ Removed staying still mechanic.\n" +
+                        "_-_ Now can grab ranged enemies to force them fight in melee range."));
+
 
         changes = new ChangeInfo("1.2", true, "");
         changes.hardlight(Window.TITLE_COLOR);

@@ -25,8 +25,14 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Robo;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Chains;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.TextureFilm;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Callback;
 
 public class DM150Sprite extends MobSprite {
     public DM150Sprite() {
@@ -45,6 +51,8 @@ public class DM150Sprite extends MobSprite {
         attack = new Animation( 15, false );
         attack.frames( frames, 4, 5, 6 );
 
+        zap = attack.clone();
+
         die = new Animation( 20, false );
         die.frames( frames, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 8 );
 
@@ -59,6 +67,23 @@ public class DM150Sprite extends MobSprite {
         if (anim == die) {
             emitter().burst( Speck.factory( Speck.WOOL ), 15 );
         }
+        if (anim == zap) {
+            idle();
+        }
+    }
+
+    public void zap( int cell ) {
+
+        turnTo(ch.pos, cell);
+        play(zap);
+        new Item().throwSound();
+        Sample.INSTANCE.play( Assets.Sounds.CHAINS );
+        parent.add(new Chains(center(), DungeonTilemap.raisedTileCenterToWorld(cell), new Callback() {
+            @Override
+            public void call() {
+                ((Robo)ch).onZapComplete();
+            }
+        }));
     }
 
     @Override

@@ -24,30 +24,116 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.DM150Sprite;
+import com.watabou.utils.Callback;
 
 public class Robo extends Minion{
     {
         spriteClass = DM150Sprite.class;
         isTanky = true;
-        baseMinDR = 10;
-        baseMaxDR = 18;
+        baseMinDR = 12;
+        baseMaxDR = 22;
     }
 
     @Override
     protected float attackDelay() {
         float mod = 0;
         switch (lvl){
-            case 0: mod = 3; break;
-            case 1: mod = 2f; break;
-            case 2: mod = 1f; break;
+            case 0: mod = 3.5f; break;
+            case 1: mod = 2.5f; break;
+            case 2: mod = 1.5f; break;
         }
         return super.attackDelay() * mod;
     }
 
     @Override
     protected boolean getCloser(int target) {
-        if (!enemySeen) return super.getCloser(target);
-        else return false;
+        for (Mob mob : Dungeon.level.mobs) {
+            if (mob.paralysed <= 0
+                    && Dungeon.level.distance(pos, mob.pos) <= 3
+                    && mob.state != mob.HUNTING) {
+                mob.beckon( pos );
+            }
+        }
+        return super.getCloser(target);
+    }
+
+    private boolean chain(int target){
+        if (enemy.properties().contains(Property.IMMOVABLE))
+            return false;
+
+        Ballistica chain = new Ballistica(pos, target, Ballistica.FRIENDLY_PROJECTILE);
+
+        if (chain.collisionPos != enemy.pos
+                || chain.path.size() < 2
+                || Dungeon.level.pit[chain.path.get(1)])
+            return false;
+        else {
+            int newPos = -1;
+            for (int i : chain.subPath(1, chain.dist)){
+                if (!Dungeon.level.solid[i] && Actor.findChar(i) == null){
+                    newPos = i;
+                    break;
+                }
+            }
+
+            if (newPos == -1){
+                return false;
+            } else {
+                final int newPosFinal = newPos;
+                this.target = newPos;
+                Actor.addDelayed(new Pushing(enemy, enemy.pos, newPosFinal, new Callback(){
+                    public void call() {
+                        enemy.pos = newPosFinal;
+                        Dungeon.level.occupyCell(enemy);
+                        ((Mob)enemy).aggro(Robo.this);
+                    }
+                }), -1);
+                next();
+            }
+        }
+        return true;
+    }
+
+
+
+    @Override
+    protected boolean canAttack(Char enemy) {
+        return new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE ).collisionPos == enemy.pos;
+    }
+
+    protected boolean doAttack(Char enemy ) {
+
+        if (Dungeon.level.adjacent( pos, enemy.pos )) {
+
+            return super.doAttack( enemy );
+
+        } else if (enemy.properties().contains(Property.RANGED)){
+
+            if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
+                sprite.zap( enemy.pos );
+                return false;
+            } else {
+                zap();
+                return true;
+            }
+        }
+        return super.doAttack(enemy);
+    }
+
+    private void zap() {
+        spend( 1f );
+        chain(enemy.pos);
+    }
+
+    public void onZapComplete() {
+        zap();
+        next();
     }
 }

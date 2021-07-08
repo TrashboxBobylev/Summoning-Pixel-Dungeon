@@ -223,7 +223,6 @@ public abstract class Minion extends Mob {
                 && Dungeon.level.mobs.contains(enemy)
                 && (Dungeon.level.distance(enemy.pos, targetPos) <= distance)
                 && (invisible == 0)){
-            if (!(enemy instanceof Piranha && enemy.HP != enemy.HT))
             return enemy;
         }
 

@@ -187,7 +187,7 @@ public class Bestiary {
 				case 1:
 					//8x rat
 					return new ArrayList<>(Arrays.asList(
-							Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class));
+							Warlock.class, Warlock.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class, Rat.class));
 				case 2:
 					//3x rat, 5x gnoll
 					return new ArrayList<>(Arrays.asList(Rat.class, Rat.class,
