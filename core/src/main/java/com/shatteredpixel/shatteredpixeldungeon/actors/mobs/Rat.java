@@ -37,7 +37,6 @@ public class Rat extends Mob {
 		defenseSkill = 2;
 		
 		maxLvl = 5;
-		properties.contains(Property.RANGED);
 	}
 	
 	@Override
