@@ -51,7 +51,7 @@ public class Skele extends Minion {
 
     @Override
     protected float attackDelay() {
-        return super.attackDelay()*0.5f;
+        return super.attackDelay()*2f;
     }
 
     @Override
