@@ -180,8 +180,15 @@ public class SummPDChanges {
 //    }
     public static void add_1_1_7_Changes(ArrayList<ChangeInfo> changeInfos) {
 
-        ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "v1.2.1", true, Window.TITLE_COLOR);
+        ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "1.2.1", true, Window.TITLE_COLOR);
 
+        changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
+        changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
+                "_-_ Released July 9th, 2021\n" +
+                        "_-_ 30 days after 1.2\n\n" +
+                        "This update was firstly a quick experiment about adding game modes but eventually got into one big 1.2 wrap-up project, so we could move forward and beyond. Thanks for waiting and testing!"));
+
+        changes = ChangesScene.createChangeInfo(changeInfos, "New Content", false, 0x10bb00);
         changes.addButton( new ChangeButton(Icons.get(Icons.ENTER), "Game Modes",
                 "Added game modes, that modify game's rules in some way:\n\n" +
                         "_-_ Moved old Dungeon Size modifier to game modes.\n\n" +
@@ -220,6 +227,7 @@ public class SummPDChanges {
                         "_-_ Leaders have double health.\n" +
                         "_-_ Followers have 50% health, but recieve less damage when leader is alive."
         ));
+        changes = ChangesScene.createChangeInfo(changeInfos, "Changes", false, 0xd1bb00);
 
         changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
                 "_-_ Added mouse targeting for Desktop builds.\n" +

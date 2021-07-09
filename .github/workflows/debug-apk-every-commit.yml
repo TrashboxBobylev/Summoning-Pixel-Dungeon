@@ -24,7 +24,9 @@ jobs:
         id: vars
         shell: bash
         run: |
-          echo "1.2.1-$(git rev-parse --short "$GITHUB_SHA")" > version
+          export version="1.2.1-$(git rev-parse --short "$GITHUB_SHA")"
+          echo $version > version
+
       # 2
       - name: Generate Release APK
         run: ./gradlew android:assembleRelease
@@ -46,9 +48,9 @@ jobs:
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
+          automatic_release_tag: "${{ env.version }}"
           prerelease: true
-          title: "dev build, ech"
+          title: "${{ env.version }}"
           files: |
               android/build/outputs/apk/release/android-release-unsigned-signed.apk
               desktop/build/libs/*.jar
