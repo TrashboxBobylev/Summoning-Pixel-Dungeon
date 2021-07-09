@@ -160,40 +160,50 @@ public class WndHeroInfo extends WndTabbed {
                             new ItemSprite(ItemSpriteSheet.WORN_SHORTSWORD),
                             new ItemSprite(ItemSpriteSheet.WEAPON_HOLDER),
                             new ItemSprite(ItemSpriteSheet.SLINGSHOT),
+                            Icons.get(Icons.ADVENTURER),
+                            new ItemSprite(ItemSpriteSheet.STEWED),
                             new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
                     break;
                 case MAGE:
                     icons = new Image[]{ new ItemSprite(ItemSpriteSheet.MAGES_STAFF),
-                            new ItemSprite(ItemSpriteSheet.WAND_MAGIC_MISSILE),
                             new ItemSprite(ItemSpriteSheet.WAND_HOLDER),
+                            Icons.get(Icons.ADVENTURER),
                             new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
                     break;
                 case ROGUE:
                     icons = new Image[]{ new ItemSprite(ItemSpriteSheet.ARTIFACT_CLOAK),
+                            new Image(Assets.Environment.TERRAIN_FEATURES, 112, 80, 16, 16),
                             Icons.get(Icons.DEPTH),
                             Icons.get(Icons.TALENT),
-                            new ItemSprite(ItemSpriteSheet.DAGGER),
+                            Icons.get(Icons.ADVENTURER),
                             new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
                     break;
                 case HUNTRESS:
                     icons = new Image[]{ new ItemSprite(ItemSpriteSheet.SPIRIT_BOW),
                             new Image(Assets.Environment.TILES_SEWERS, 112, 96, 16, 16),
+                            new ItemSprite(ItemSpriteSheet.THROWING_CLUB),
+                            new ItemSprite(ItemSpriteSheet.ARTIFACT_TALISMAN),
                             new ItemSprite(ItemSpriteSheet.ARMOR_SCOUT),
-                            new ItemSprite(ItemSpriteSheet.GLOVES),
+                            Icons.get(Icons.ADVENTURER),
                             new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
                     break;
                 case CONJURER:
-                    icons = new Image[]{ new ItemSprite(ItemSpriteSheet.FROGGIT_STAFF),
-                            Icons.get(Icons.CONJURER_BOOK),
-                            Icons.get(Icons.CONJURER),
-                            new ItemSprite(ItemSpriteSheet.KNIFE),
+                    icons = new Image[]{ Icons.get(Icons.CONJURER_BOOK),
+                            new ItemSprite(ItemSpriteSheet.FROGGIT_STAFF),
+                            new ItemSprite(ItemSpriteSheet.ARMOR_CONJURER),
+                            new Image(Assets.Interfaces.BUFFS_LARGE, 112, 32, 16, 16),
+                            new Image(Assets.Interfaces.BUFFS_LARGE, 96, 48, 16, 16),
+                            new ItemSprite(ItemSpriteSheet.RATION),
+                            Icons.get(Icons.ADVENTURER),
                             new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
                     break;
                 case ADVENTURER:
                     icons = new Image[]{ new ItemSprite(ItemSpriteSheet.SOMETHING),
-                            Icons.get(Icons.ADVENTURER),
+                            new ItemSprite(ItemSpriteSheet.CHEST),
                             new ItemSprite(ItemSpriteSheet.ARMOR_ROGUE),
-                            new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
+                            new Image(Assets.Interfaces.BUFFS_LARGE, 208, 32, 16, 16),
+                            Icons.get(Icons.ADVENTURER),
+                            new ItemSprite(ItemSpriteSheet.MASTERY)};
                     break;
             }
             for (Image im : icons) {
