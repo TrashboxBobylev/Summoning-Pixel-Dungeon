@@ -217,11 +217,13 @@ public enum HeroClass {
 
         (hero.belongings.weapon = new Knife()).identify();
 
-        new ConjurerBook().collect();
+		ConjurerBook book = new ConjurerBook();
+		book.collect();
 
-        FroggitStaff staff1 = new FroggitStaff();
+		FroggitStaff staff1 = new FroggitStaff();
         staff1.identify().collect();
 
+        Dungeon.quickslot.setSlot(0, book);
         Dungeon.quickslot.setSlot(1, staff1);
 
         hero.belongings.armor = ClassArmor.upgrade(hero, (Armor)(new ClothArmor().identify()));
@@ -238,10 +240,8 @@ public enum HeroClass {
 
         Stars star = new Stars();
         star.collect();
-		Dungeon.quickslot.setSlot(2, star);
 		Heal heal = new Heal();
 		heal.collect();
-		Dungeon.quickslot.setSlot(0, heal);
 		new Zap().collect();
 		new Wave().upgrade(2).collect();
 

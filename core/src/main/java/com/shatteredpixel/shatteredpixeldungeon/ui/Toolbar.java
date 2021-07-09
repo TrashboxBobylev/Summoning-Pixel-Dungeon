@@ -55,7 +55,7 @@ public class Toolbar extends Component {
 	private boolean lastEnabled = true;
 	public boolean examining = false;
 
-	private static Toolbar instance;
+	public static Toolbar instance;
 
 	public enum Mode {
 		SPLIT,
