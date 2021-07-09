@@ -24,7 +24,7 @@ jobs:
         id: vars
         shell: bash
         run: |
-          version="1.2.1-$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_ENV
+          echo "version="1.2.1-$(git rev-parse --short "$GITHUB_SHA")"" >> $GITHUB_ENV
           echo $version > version
 
       # 2
