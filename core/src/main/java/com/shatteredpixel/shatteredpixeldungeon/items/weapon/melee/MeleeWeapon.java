@@ -53,7 +53,14 @@ public class MeleeWeapon extends Weapon {
 		//strength req decreases at +1,+3,+6,+10,etc.
 		return (8 + tier * 2) - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
 	}
-	
+
+	@Override
+	public String getDefaultAction() {
+		if (Dungeon.hero.heroClass == HeroClass.WARRIOR && Dungeon.hero.belongings.weapon != this)
+			return AC_EQUIP;
+		return super.getDefaultAction();
+	}
+
 	@Override
 	public int damageRoll(Char owner) {
 		int damage = augment.damageFactor(super.damageRoll( owner ));

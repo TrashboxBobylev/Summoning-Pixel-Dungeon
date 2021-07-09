@@ -30,6 +30,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -53,26 +55,38 @@ abstract public class KindOfWeapon extends EquipableItem {
 	public boolean doEquip( Hero hero ) {
 
 		detachAll( hero.belongings.backpack );
-		
+		BrokenSeal seal = hero.belongings.weapon instanceof MeleeWeapon ?
+				((MeleeWeapon) hero.belongings.weapon).seal : hero.belongings.getItem(BrokenSeal.class);
+		Weapon previousWeapon = (Weapon) hero.belongings.weapon;
+
 		if (hero.belongings.weapon == null || hero.belongings.weapon.doUnequip( hero, true )) {
-			
+
 			hero.belongings.weapon = this;
+			if (seal != null){
+				if (previousWeapon != null) {
+					previousWeapon.seal = null;
+				}
+				((MeleeWeapon)this).affixSeal(seal);
+			}
+
 			activate( hero );
 
 			updateQuickslot();
-			
+
 			cursedKnown = true;
 			if (cursed) {
 				equipCursed( hero );
 				GLog.negative( Messages.get(KindOfWeapon.class, "equip_cursed") );
+			} else {
+				GLog.i(Messages.get(KindOfWeapon.class, "equip_normal", name()));
 			}
-			
+
 			hero.spendAndNext( TIME_TO_EQUIP );
+
             Hunger.adjustHunger(-5);
 			return true;
-			
+
 		} else {
-			
 			collect( hero.belongings.backpack );
 			return false;
 		}
