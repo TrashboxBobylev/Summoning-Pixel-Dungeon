@@ -33,11 +33,15 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
 
+import java.text.DecimalFormat;
+
 public class Stacks extends Buff {
 
 	public float damage = 0;
+	public int saturation = 0;
 
 	private static final String DAMAGE	= "damage";
+	private static final String SATURATION	= "saturation";
 
 	{
 		type = buffType.POSITIVE;
@@ -48,20 +52,21 @@ public class Stacks extends Buff {
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
 		bundle.put( DAMAGE, damage );
+		bundle.put( SATURATION, saturation);
 	}
 
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
 		damage = bundle.getFloat( DAMAGE );
+		saturation = bundle.getInt(SATURATION);
 	}
 
 	public void add(int stack) {
-		if (this.damage < 30) damage = GameMath.gate(0, damage + stack + 1, 31);
-		if (damage == 11 || damage == 21 || damage == 31) {
-			target.sprite.emitter().burst(SacrificialParticle.FACTORY, 15);
-			Sample.INSTANCE.play(Assets.Sounds.BURNING);
-		}
+		if (this.damage < 5) damage = GameMath.gate(0, damage + stack, 5);
+		saturation = 10;
+		target.sprite.emitter().burst(SacrificialParticle.FACTORY, 15);
+		Sample.INSTANCE.play(Assets.Sounds.BURNING);
 	}
 	
 	@Override
@@ -81,18 +86,21 @@ public class Stacks extends Buff {
 
 	@Override
 	public float iconFadePercent() {
-		return Math.max(0, (30 - damage) / 30);
+		return Math.max(0, (5 - damage) / 5);
 	}
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", (int)damage);
+		return Messages.get(this, "desc", new DecimalFormat("#.#").format(damage));
 	}
 
 	@Override
 	public boolean act() {
 		if (target.isAlive()) {
-			damage--;
+			if (saturation < 0)
+				damage -= 0.2f;
+			else saturation--;
+
 			if (damage < 0){
 				detach();
 			}

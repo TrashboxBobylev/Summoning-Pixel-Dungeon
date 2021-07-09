@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Slingshot;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Projecting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
@@ -223,7 +224,7 @@ abstract public class MissileWeapon extends Weapon {
 	}
 	
 	public void rangedHit( Char enemy, int cell ){
-		if (Dungeon.hero.subClass == HeroSubClass.GLADIATOR) Buff.affect(curUser, Stacks.class).add(5);
+		if (Dungeon.hero.subClass == HeroSubClass.GLADIATOR && !(this instanceof Slingshot.Stone)) Buff.affect(curUser, Stacks.class).add(1);
 		if (Dungeon.hero.buff(Crossbow.DartSpent.class) == null || !(this instanceof Dart)) {
 			decrementDurability(enemy);
 			if (durability > 0) {

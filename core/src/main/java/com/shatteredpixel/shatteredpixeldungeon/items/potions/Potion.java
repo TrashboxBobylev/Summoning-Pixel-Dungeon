@@ -275,7 +275,7 @@ public class Potion extends Item {
 		hero.spend( TIME_TO_DRINK );
 		hero.busy();
 		if (hero.subClass == HeroSubClass.GLADIATOR){
-			Buff.affect(curUser, Stacks.class).add(7);
+			Buff.affect(curUser, Stacks.class).add(1);
 		}
 		apply( hero );
 		

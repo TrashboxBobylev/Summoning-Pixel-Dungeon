@@ -360,7 +360,7 @@ public abstract class Wand extends Item {
 		updateQuickslot();
 
 		if (curUser.subClass == HeroSubClass.GLADIATOR){
-			Buff.affect(curUser, Stacks.class).add(chakraGain);
+			Buff.affect(curUser, Stacks.class).add(1);
 		}
 
 		curUser.spendAndNext( TIME_TO_ZAP );

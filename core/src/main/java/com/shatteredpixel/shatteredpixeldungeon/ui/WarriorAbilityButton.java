@@ -118,7 +118,7 @@ public class WarriorAbilityButton extends Tag {
 
         if (Dungeon.hero.heroClass == HeroClass.WARRIOR) {
             if (Dungeon.hero.belongings.weapon != null && (
-                    (Dungeon.hero.subClass == HeroSubClass.GLADIATOR && Dungeon.hero.buff(Stacks.class) != null && Dungeon.hero.buff(Stacks.class).damage >= 9)
+                    (Dungeon.hero.subClass == HeroSubClass.GLADIATOR && Dungeon.hero.buff(Stacks.class) != null && Dungeon.hero.buff(Stacks.class).damage >= 1)
                     || (!hunger.isHungry() && ((Weapon)Dungeon.hero.belongings.weapon).seal != null) && Dungeon.hero.subClass != HeroSubClass.GLADIATOR)) {
                 visible(true);
                 enable(true);
@@ -200,7 +200,7 @@ public class WarriorAbilityButton extends Tag {
         }
 
         if (Dungeon.hero.subClass == HeroSubClass.GLADIATOR){
-            Dungeon.hero.buff(Stacks.class).damage -= 10;
+            Dungeon.hero.buff(Stacks.class).damage -= 1;
             if (Dungeon.hero.buff(Stacks.class).damage <= 0) Dungeon.hero.buff(Stacks.class).detach();
         } else Hunger.adjustHunger(hungerCost);
 

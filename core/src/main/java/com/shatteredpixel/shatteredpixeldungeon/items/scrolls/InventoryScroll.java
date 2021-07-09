@@ -94,7 +94,7 @@ public abstract class InventoryScroll extends Scroll {
 				((InventoryScroll)curItem).onItemSelected( item );
 				((InventoryScroll)curItem).readAnimation();
 				if (curUser.subClass == HeroSubClass.GLADIATOR){
-					Buff.affect(curUser, Stacks.class).add(6);
+					Buff.affect(curUser, Stacks.class).add(1);
 				}
 				
 				Sample.INSTANCE.play( Assets.Sounds.READ );

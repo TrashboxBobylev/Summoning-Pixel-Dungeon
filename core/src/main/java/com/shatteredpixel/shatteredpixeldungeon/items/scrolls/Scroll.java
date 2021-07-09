@@ -175,7 +175,7 @@ public abstract class Scroll extends Item {
 				curUser = hero;
 				curItem = detach( hero.belongings.backpack );
 				if (!(this instanceof InventoryScroll) && hero.subClass == HeroSubClass.GLADIATOR){
-					Buff.affect(curUser, Stacks.class).add(6);
+					Buff.affect(curUser, Stacks.class).add(1);
 				}
 				doRead();
 			}
