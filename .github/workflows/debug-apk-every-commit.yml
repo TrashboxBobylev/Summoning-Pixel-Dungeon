@@ -50,7 +50,7 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "${{ env.version }}"
           prerelease: true
-          title: "${{ format('Snapshot {1}', env.version) }}"
+          title: "Snapshot for 1.2.1"
           files: |
               android/build/outputs/apk/release/android-release-unsigned-signed.apk
               desktop/build/libs/*.jar
