@@ -24,7 +24,7 @@ jobs:
         id: vars
         shell: bash
         run: |
-          export version="1.2.1-$(git rev-parse --short "$GITHUB_SHA")"
+          version="1.2.1-$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_ENV
           echo $version > version
 
       # 2
@@ -50,7 +50,7 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "${{ env.version }}"
           prerelease: true
-          title: "${{ env.version }}"
+          title: "${{ format('Snapshot {1}', env.version) }}"
           files: |
               android/build/outputs/apk/release/android-release-unsigned-signed.apk
               desktop/build/libs/*.jar
