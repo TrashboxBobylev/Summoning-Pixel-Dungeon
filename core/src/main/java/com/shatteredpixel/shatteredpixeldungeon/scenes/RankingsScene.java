@@ -305,7 +305,7 @@ public class RankingsScene extends PixelScene {
 				flare.point( shield.center() );
 			}
 
-			classIcon.x = x + width - 0 + (16 - classIcon.width())/2f;
+			classIcon.x = x + width - 16 + (16 - classIcon.width())/2f;
 			classIcon.y = shield.y + (16 - classIcon.height())/2f;
 			align(classIcon);
 
@@ -313,7 +313,7 @@ public class RankingsScene extends PixelScene {
 			level.y = classIcon.y + (classIcon.height - level.height()) / 2f + 1;
 			align(level);
 
-			steps.x = x + width - 16 + (16 - steps.width())/2f;
+			steps.x = x + width - 16 - 16 + (16 - steps.width())/2f;
 			steps.y = shield.y + (16 - steps.height())/2f;
 			align(steps);
 
@@ -321,7 +321,7 @@ public class RankingsScene extends PixelScene {
 			depth.y = steps.y + (steps.height - depth.height()) / 2f + 1;
 			align(depth);
 
-			mode.x = x + width - 32 + (18 - mode.width())/2f;
+			mode.x = x + width - 32 - 16 + (18 - mode.width())/2f;
 			mode.y = shield.y + (18 - mode.height())/2f + 1;
 			align(mode);
 
