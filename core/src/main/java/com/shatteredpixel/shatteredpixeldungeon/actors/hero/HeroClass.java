@@ -35,7 +35,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Heal;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Stars;
-import com.shatteredpixel.shatteredpixeldungeon.items.magic.Wave;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Zap;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
@@ -45,7 +44,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.FroggitStaff;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.RoboStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnive2;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -155,7 +153,6 @@ public enum HeroClass {
 
 		new PotionOfHealing().identify();
 		new ScrollOfRage().identify();
-		new TomeOfMastery().collect();
 	}
 
 	private static void initMage( Hero hero ) {
@@ -232,17 +229,14 @@ public enum HeroClass {
 //        hero.belongings.artifact.activate( hero );
 //        Dungeon.quickslot.setSlot(0, hero.belongings.artifact);
 
-        hero.attunement = 3;
+        hero.attunement = 1;
         hero.HP = hero.HT = 10;
-        hero.STR = 17;
-        new RoboStaff().identify().collect();
 
         Stars star = new Stars();
         star.collect();
 		Heal heal = new Heal();
 		heal.collect();
 		new Zap().collect();
-		new Wave().upgrade(2).collect();
 
         hero.mana = 0;
         hero.maxMana = 20;
