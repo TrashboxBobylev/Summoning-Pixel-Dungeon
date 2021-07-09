@@ -24,35 +24,39 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 
 public enum HeroSubClass {
 
-	NONE( null ),
+	NONE( null , 0),
 	
-	GLADIATOR( "gladiator" ),
-	BERSERKER( "berserker" ),
+	GLADIATOR( "gladiator" , 0),
+	BERSERKER( "berserker", 1),
 	
-	WARLOCK( "warlock" ),
-	BATTLEMAGE( "battlemage" ),
+	WARLOCK( "warlock" , 3),
+	BATTLEMAGE( "battlemage", 2 ),
 	
-	ASSASSIN( "assassin" ),
-	FREERUNNER( "freerunner" ),
+	ASSASSIN( "assassin", 4),
+	FREERUNNER( "freerunner", 5 ),
 	
-	SNIPER( "sniper" ),
-	WARDEN( "warden" ),
+	SNIPER( "sniper", 6 ),
+	WARDEN( "warden", 7 ),
 
-	SOUL_REAVER("soul_reaver"),
-    OCCULTIST("occultist"),
+	SOUL_REAVER("soul_reaver", 8),
+    OCCULTIST("occultist", 9),
 
-	NOTHING_1("no_1"),
-	NOTHING_2("no_2");
+	NOTHING_1("no_1", 10),
+	NOTHING_2("no_2", 10);
 	
 	private String title;
+	private int iconNumber;
 	
-	HeroSubClass( String title ) {
+	HeroSubClass( String title, int iconNumber ) {
 		this.title = title;
+		this.iconNumber = iconNumber;
 	}
 	
 	public String title() {
@@ -72,6 +76,10 @@ public enum HeroSubClass {
 	public static HeroSubClass restoreInBundle( Bundle bundle ) {
 		String value = bundle.getString( SUBCLASS );
 		return valueOf( value );
+	}
+
+	public Image icon(){
+		return new Image(Assets.Interfaces.SUBCLASS_ICONS, iconNumber*16, 0, 16, 16);
 	}
 	
 }

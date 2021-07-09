@@ -26,12 +26,8 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.*;
 import com.shatteredpixel.shatteredpixeldungeon.windows.*;
 import com.watabou.gltextures.TextureCache;
@@ -44,7 +40,6 @@ import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameMath;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
 public class HeroSelectScene extends PixelScene {
 
@@ -304,223 +299,223 @@ public class HeroSelectScene extends PixelScene {
 		}
 	}
 
-	private static class WndHeroInfo extends WndTabbed {
-
-		private RenderedTextBlock title;
-		private RenderedTextBlock info;
-		private TalentsPane talents;
-		private RedButton firstSub;
-		private RedButton secondSub;
-
-		private int WIDTH = 136;
-		private int HEIGHT = 200;
-		private int MARGIN = 2;
-		private int INFO_WIDTH = WIDTH - MARGIN*2;
-
-		private static boolean secondSubclass = false;
-
-		public WndHeroInfo( HeroClass cl ){
-
-			title = PixelScene.renderTextBlock(9);
-			title.hardlight(TITLE_COLOR);
-			add(title);
-
-			Tab tab;
-			Image[] tabIcons;
-			switch (cl){
-				case WARRIOR: default:
-					tabIcons = new Image[]{
-							new ItemSprite(ItemSpriteSheet.SEAL, null),
-							new ItemSprite(ItemSpriteSheet.WORN_SHORTSWORD, null),
-							new ItemSprite(ItemSpriteSheet.RATION, null)
-					};
-					break;
-				case MAGE:
-					tabIcons = new Image[]{
-							new ItemSprite(ItemSpriteSheet.MAGES_STAFF, null),
-							new ItemSprite(ItemSpriteSheet.HOLDER, null),
-							new ItemSprite(ItemSpriteSheet.WAND_MAGIC_MISSILE, null)
-					};
-					break;
-				case ROGUE:
-					tabIcons = new Image[]{
-							new ItemSprite(ItemSpriteSheet.ARTIFACT_CLOAK, null),
-							new ItemSprite(ItemSpriteSheet.DAGGER, null),
-							Icons.get(Icons.DEPTH)
-					};
-					break;
-				case HUNTRESS:
-					tabIcons = new Image[]{
-							new ItemSprite(ItemSpriteSheet.SPIRIT_BOW, null),
-							new ItemSprite(ItemSpriteSheet.GLOVES, null),
-							new Image(Assets.Environment.TILES_SEWERS, 112, 96, 16, 16 )
-					};
-					break;
-				case CONJURER:
-					tabIcons = new Image[]{
-							new ItemSprite(ItemSpriteSheet.BOOK, null),
-							new ItemSprite(ItemSpriteSheet.ARMOR_CONJURER, null),
-							new Image(Assets.Interfaces.BUFFS_LARGE, 112, 32, 16, 16)
-					};
-					break;
-				case ADVENTURER:
-					tabIcons = new Image[]{
-							new ItemSprite(ItemSpriteSheet.ARTIFACT_LOVE1, null),
-							new ItemSprite(ItemSpriteSheet.DAGGER, null),
-							Icons.get(Icons.ADVENTURER)
-					};
-					break;
-			}
-
-			ArrayList<LinkedHashMap<Talent, Integer>> talentList = new ArrayList<>();
-			Talent.initClassTalents(cl, talentList);
-			Talent.initSubclassTalents(cl.subClasses()[secondSubclass ? 1 : 0], talentList);
-			talents = new TalentsPane(false, talentList);
-			add(talents);
-			talents.active = talents.visible = false;
-
-			if (cl == HeroClass.ROGUE){
-				firstSub = new RedButton(Messages.titleCase(cl.subClasses()[0].title()), 7){
-					@Override
-					protected void onClick() {
-						super.onClick();
-						if (secondSubclass){
-							secondSubclass = false;
-							hide();
-							WndHeroInfo newWindow = new WndHeroInfo(cl);
-							newWindow.talents.scrollTo(0, talents.content().camera.scroll.y);
-							newWindow.select(3);
-							ShatteredPixelDungeon.scene().addToFront(newWindow);
-						}
-					}
-				};
-				if (!secondSubclass) firstSub.textColor(Window.TITLE_COLOR);
-				firstSub.setSize(40, firstSub.reqHeight()+2);
-				add(firstSub);
-
-				secondSub = new RedButton(Messages.titleCase(cl.subClasses()[1].title()), 7){
-					@Override
-					protected void onClick() {
-						super.onClick();
-						if (!secondSubclass){
-							secondSubclass = true;
-							hide();
-							WndHeroInfo newWindow = new WndHeroInfo(cl);
-							newWindow.talents.scrollTo(0, talents.content().camera.scroll.y);
-							newWindow.select(3);
-							ShatteredPixelDungeon.scene().addToFront(newWindow);
-						}
-					}
-				};
-				if (secondSubclass) secondSub.textColor(Window.TITLE_COLOR);
-				secondSub.setSize(40, secondSub.reqHeight()+2);
-				add(secondSub);
-			}
-
-			tab = new IconTab( tabIcons[0] ){
-				@Override
-				protected void select(boolean value) {
-					super.select(value);
-					if (value){
-						title.text(Messages.titleCase(Messages.get(WndHeroInfo.class, "innate_title")));
-						info.text(Messages.get(cl, cl.name() + "_desc_item"), INFO_WIDTH);
-					}
-				}
-			};
-			add(tab);
-
-			tab = new IconTab( tabIcons[1] ){
-				@Override
-				protected void select(boolean value) {
-					super.select(value);
-					if (value){
-						title.text(Messages.titleCase(Messages.get(WndHeroInfo.class, "loadout_title")));
-						info.text(Messages.get(cl, cl.name() + "_desc_loadout"), INFO_WIDTH);
-					}
-				}
-			};
-			add(tab);
-
-			tab = new IconTab( tabIcons[2] ){
-				@Override
-				protected void select(boolean value) {
-					super.select(value);
-					if (value){
-						title.text(Messages.titleCase(Messages.get(WndHeroInfo.class, "misc_title")));
-						info.text(Messages.get(cl, cl.name() + "_desc_misc"), INFO_WIDTH);
-					}
-				}
-			};
-			add(tab);
-
-			if (cl == HeroClass.ROGUE) {
-				tab = new IconTab(Icons.get(Icons.TALENT)) {
-					@Override
-					protected void select(boolean value) {
-						super.select(value);
-						if (value) {
-							title.text(Messages.titleCase(Messages.get(WndHeroInfo.class, "talents_title")));
-							info.text(Messages.get(WndHeroInfo.class, "talents_desc"), INFO_WIDTH);
-						}
-						talents.visible = talents.active = value;
-						firstSub.visible = firstSub.active = value;
-						secondSub.visible = secondSub.active = value;
-					}
-				};
-				add(tab);
-			}
-
-			tab = new IconTab(new ItemSprite(ItemSpriteSheet.MASTERY, null)){
-				@Override
-				protected void select(boolean value) {
-					super.select(value);
-					if (value){
-						title.text(Messages.titleCase(Messages.get(WndHeroInfo.class, "subclasses_title")));
-						String msg = Messages.get(cl, cl.name() + "_desc_subclasses");
-						for (HeroSubClass sub : cl.subClasses()){
-							msg += "\n\n" + sub.desc();
-						}
-						info.text(msg, INFO_WIDTH);
-					}
-				}
-			};
-			add(tab);
-
-			info = PixelScene.renderTextBlock(6);
-			info.setPos(MARGIN, MARGIN);
-			add(info);
-
-			select(0);
-
-		}
-
-		@Override
-		public void select(Tab tab) {
-			super.select(tab);
-
-			title.setPos((WIDTH-title.width())/2, MARGIN);
-			info.setPos(MARGIN, title.bottom()+2*MARGIN);
-
-			if (firstSub != null)
-			firstSub.setPos((title.left() - firstSub.width()) / 2, 0);
-			if (secondSub != null)
-			secondSub.setPos(title.right() + (WIDTH - title.right() - secondSub.width()) / 2, 0);
-			talents.setRect(0, info.bottom()+MARGIN, WIDTH, HEIGHT - (info.bottom()+MARGIN));
-
-//			if (talents.active){
-//				resize(WIDTH, (int) talents.bottom() + MARGIN);
+//	private static class WndHeroInfo extends WndTabbed {
+//
+//		private RenderedTextBlock title;
+//		private RenderedTextBlock info;
+//		private TalentsPane talents;
+//		private RedButton firstSub;
+//		private RedButton secondSub;
+//
+//		private int WIDTH = 136;
+//		private int HEIGHT = 200;
+//		private int MARGIN = 2;
+//		private int INFO_WIDTH = WIDTH - MARGIN*2;
+//
+//		private static boolean secondSubclass = false;
+//
+//		public WndHeroInfo( HeroClass cl ){
+//
+//			title = PixelScene.renderTextBlock(9);
+//			title.hardlight(TITLE_COLOR);
+//			add(title);
+//
+//			Tab tab;
+//			Image[] tabIcons;
+//			switch (cl){
+//				case WARRIOR: default:
+//					tabIcons = new Image[]{
+//							new ItemSprite(ItemSpriteSheet.SEAL, null),
+//							new ItemSprite(ItemSpriteSheet.WORN_SHORTSWORD, null),
+//							new ItemSprite(ItemSpriteSheet.RATION, null)
+//					};
+//					break;
+//				case MAGE:
+//					tabIcons = new Image[]{
+//							new ItemSprite(ItemSpriteSheet.MAGES_STAFF, null),
+//							new ItemSprite(ItemSpriteSheet.HOLDER, null),
+//							new ItemSprite(ItemSpriteSheet.WAND_MAGIC_MISSILE, null)
+//					};
+//					break;
+//				case ROGUE:
+//					tabIcons = new Image[]{
+//							new ItemSprite(ItemSpriteSheet.ARTIFACT_CLOAK, null),
+//							new ItemSprite(ItemSpriteSheet.DAGGER, null),
+//							Icons.get(Icons.DEPTH)
+//					};
+//					break;
+//				case HUNTRESS:
+//					tabIcons = new Image[]{
+//							new ItemSprite(ItemSpriteSheet.SPIRIT_BOW, null),
+//							new ItemSprite(ItemSpriteSheet.GLOVES, null),
+//							new Image(Assets.Environment.TILES_SEWERS, 112, 96, 16, 16 )
+//					};
+//					break;
+//				case CONJURER:
+//					tabIcons = new Image[]{
+//							new ItemSprite(ItemSpriteSheet.BOOK, null),
+//							new ItemSprite(ItemSpriteSheet.ARMOR_CONJURER, null),
+//							new Image(Assets.Interfaces.BUFFS_LARGE, 112, 32, 16, 16)
+//					};
+//					break;
+//				case ADVENTURER:
+//					tabIcons = new Image[]{
+//							new ItemSprite(ItemSpriteSheet.ARTIFACT_LOVE1, null),
+//							new ItemSprite(ItemSpriteSheet.DAGGER, null),
+//							Icons.get(Icons.ADVENTURER)
+//					};
+//					break;
 //			}
-			if (talents.visible) {
-				resize(WIDTH, /*(int) info.bottom() + MARGIN*20*/HEIGHT);
-				info.setPos(MARGIN, title.bottom()+2*MARGIN);
-//				info.text(Messages.get(WndHeroInfo.class, "talents_desc"), INFO_WIDTH);
-//				info.setSize(info.maxWidth(), info.height());
-				talents.setRect(0, info.bottom()+MARGIN, WIDTH, HEIGHT - (info.bottom()+MARGIN));
-			} else {
-				resize(WIDTH, (int) (info.bottom()+MARGIN));
-			}
-
-			layoutTabs();
-		}
-	}
+//
+//			ArrayList<LinkedHashMap<Talent, Integer>> talentList = new ArrayList<>();
+//			Talent.initClassTalents(cl, talentList);
+//			Talent.initSubclassTalents(cl.subClasses()[secondSubclass ? 1 : 0], talentList);
+//			talents = new TalentsPane(false, talentList);
+//			add(talents);
+//			talents.active = talents.visible = false;
+//
+//			if (cl == HeroClass.ROGUE){
+//				firstSub = new RedButton(Messages.titleCase(cl.subClasses()[0].title()), 7){
+//					@Override
+//					protected void onClick() {
+//						super.onClick();
+//						if (secondSubclass){
+//							secondSubclass = false;
+//							hide();
+//							WndHeroInfo newWindow = new WndHeroInfo(cl);
+//							newWindow.talents.scrollTo(0, talents.content().camera.scroll.y);
+//							newWindow.select(3);
+//							ShatteredPixelDungeon.scene().addToFront(newWindow);
+//						}
+//					}
+//				};
+//				if (!secondSubclass) firstSub.textColor(Window.TITLE_COLOR);
+//				firstSub.setSize(40, firstSub.reqHeight()+2);
+//				add(firstSub);
+//
+//				secondSub = new RedButton(Messages.titleCase(cl.subClasses()[1].title()), 7){
+//					@Override
+//					protected void onClick() {
+//						super.onClick();
+//						if (!secondSubclass){
+//							secondSubclass = true;
+//							hide();
+//							WndHeroInfo newWindow = new WndHeroInfo(cl);
+//							newWindow.talents.scrollTo(0, talents.content().camera.scroll.y);
+//							newWindow.select(3);
+//							ShatteredPixelDungeon.scene().addToFront(newWindow);
+//						}
+//					}
+//				};
+//				if (secondSubclass) secondSub.textColor(Window.TITLE_COLOR);
+//				secondSub.setSize(40, secondSub.reqHeight()+2);
+//				add(secondSub);
+//			}
+//
+//			tab = new IconTab( tabIcons[0] ){
+//				@Override
+//				protected void select(boolean value) {
+//					super.select(value);
+//					if (value){
+//						title.text(Messages.titleCase(Messages.get(WndHeroInfo.class, "innate_title")));
+//						info.text(Messages.get(cl, cl.name() + "_desc_item"), INFO_WIDTH);
+//					}
+//				}
+//			};
+//			add(tab);
+//
+//			tab = new IconTab( tabIcons[1] ){
+//				@Override
+//				protected void select(boolean value) {
+//					super.select(value);
+//					if (value){
+//						title.text(Messages.titleCase(Messages.get(WndHeroInfo.class, "loadout_title")));
+//						info.text(Messages.get(cl, cl.name() + "_desc_loadout"), INFO_WIDTH);
+//					}
+//				}
+//			};
+//			add(tab);
+//
+//			tab = new IconTab( tabIcons[2] ){
+//				@Override
+//				protected void select(boolean value) {
+//					super.select(value);
+//					if (value){
+//						title.text(Messages.titleCase(Messages.get(WndHeroInfo.class, "misc_title")));
+//						info.text(Messages.get(cl, cl.name() + "_desc_misc"), INFO_WIDTH);
+//					}
+//				}
+//			};
+//			add(tab);
+//
+//			if (cl == HeroClass.ROGUE) {
+//				tab = new IconTab(Icons.get(Icons.TALENT)) {
+//					@Override
+//					protected void select(boolean value) {
+//						super.select(value);
+//						if (value) {
+//							title.text(Messages.titleCase(Messages.get(WndHeroInfo.class, "talents_title")));
+//							info.text(Messages.get(WndHeroInfo.class, "talents_desc"), INFO_WIDTH);
+//						}
+//						talents.visible = talents.active = value;
+//						firstSub.visible = firstSub.active = value;
+//						secondSub.visible = secondSub.active = value;
+//					}
+//				};
+//				add(tab);
+//			}
+//
+//			tab = new IconTab(new ItemSprite(ItemSpriteSheet.MASTERY, null)){
+//				@Override
+//				protected void select(boolean value) {
+//					super.select(value);
+//					if (value){
+//						title.text(Messages.titleCase(Messages.get(WndHeroInfo.class, "subclasses_title")));
+//						String msg = Messages.get(cl, cl.name() + "_desc_subclasses");
+//						for (HeroSubClass sub : cl.subClasses()){
+//							msg += "\n\n" + sub.desc();
+//						}
+//						info.text(msg, INFO_WIDTH);
+//					}
+//				}
+//			};
+//			add(tab);
+//
+//			info = PixelScene.renderTextBlock(6);
+//			info.setPos(MARGIN, MARGIN);
+//			add(info);
+//
+//			select(0);
+//
+//		}
+//
+//		@Override
+//		public void select(Tab tab) {
+//			super.select(tab);
+//
+//			title.setPos((WIDTH-title.width())/2, MARGIN);
+//			info.setPos(MARGIN, title.bottom()+2*MARGIN);
+//
+//			if (firstSub != null)
+//			firstSub.setPos((title.left() - firstSub.width()) / 2, 0);
+//			if (secondSub != null)
+//			secondSub.setPos(title.right() + (WIDTH - title.right() - secondSub.width()) / 2, 0);
+//			talents.setRect(0, info.bottom()+MARGIN, WIDTH, HEIGHT - (info.bottom()+MARGIN));
+//
+////			if (talents.active){
+////				resize(WIDTH, (int) talents.bottom() + MARGIN);
+////			}
+//			if (talents.visible) {
+//				resize(WIDTH, /*(int) info.bottom() + MARGIN*20*/HEIGHT);
+//				info.setPos(MARGIN, title.bottom()+2*MARGIN);
+////				info.text(Messages.get(WndHeroInfo.class, "talents_desc"), INFO_WIDTH);
+////				info.setSize(info.maxWidth(), info.height());
+//				talents.setRect(0, info.bottom()+MARGIN, WIDTH, HEIGHT - (info.bottom()+MARGIN));
+//			} else {
+//				resize(WIDTH, (int) (info.bottom()+MARGIN));
+//			}
+//
+//			layoutTabs();
+//		}
+//	}
 }
