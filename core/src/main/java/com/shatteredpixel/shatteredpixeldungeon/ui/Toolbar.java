@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTerrainTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuickBag;
 import com.watabou.input.GameAction;
 import com.watabou.noosa.*;
 import com.watabou.noosa.ui.Button;
@@ -42,7 +43,7 @@ import com.watabou.noosa.ui.Component;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
 
-public class Toolbar extends Component implements WndBag.Listener {
+public class Toolbar extends Component {
 
 	private Tool btnWait;
 	private Tool btnSearch;
@@ -54,13 +55,7 @@ public class Toolbar extends Component implements WndBag.Listener {
 	private boolean lastEnabled = true;
 	public boolean examining = false;
 
-	public static Toolbar instance;
-
-	@Override
-	public void onSelect(Item item) {
-		if (item != null)
-		item.execute(Dungeon.hero);
-	}
+	private static Toolbar instance;
 
 	public enum Mode {
 		SPLIT,
@@ -159,7 +154,7 @@ public class Toolbar extends Component implements WndBag.Listener {
 			
 			@Override
 			protected boolean onLongClick() {
-				GameScene.selectItem(Toolbar.instance, WndBag.Mode.QUICKSLOT, Messages.get(Toolbar.class, "quickuse"));
+				GameScene.show(new WndQuickBag(null));
 				return true;
 			}
 
@@ -181,7 +176,7 @@ public class Toolbar extends Component implements WndBag.Listener {
 	}
 
 
-	
+
 	@Override
 	protected void layout() {
 
