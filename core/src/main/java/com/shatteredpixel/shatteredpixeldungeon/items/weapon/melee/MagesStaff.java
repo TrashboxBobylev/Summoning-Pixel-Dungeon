@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
@@ -348,7 +349,8 @@ public class MagesStaff extends MeleeWeapon {
 										: item.level()
 									: level();
 					GameScene.show(
-							new WndOptions("",
+							new WndOptions(new ItemSprite(item),
+									Messages.titleCase(item.name()),
 									Messages.get(MagesStaff.class, "warning", newLevel),
 									Messages.get(MagesStaff.class, "yes"),
 									Messages.get(MagesStaff.class, "no")) {

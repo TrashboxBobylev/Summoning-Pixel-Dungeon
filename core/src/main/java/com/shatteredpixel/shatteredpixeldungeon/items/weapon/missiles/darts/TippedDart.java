@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.*;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.utils.Reflection;
 
@@ -66,7 +67,8 @@ public abstract class TippedDart extends Dart {
 		super.execute(hero, action);
 		if (action.equals( AC_CLEAN )){
 			
-			GameScene.show(new WndOptions(Messages.get(this, "clean_title"),
+			GameScene.show(new WndOptions(new ItemSprite(this),
+					Messages.titleCase(name()),
 					Messages.get(this, "clean_desc"),
 					Messages.get(this, "clean_all"),
 					Messages.get(this, "clean_one"),

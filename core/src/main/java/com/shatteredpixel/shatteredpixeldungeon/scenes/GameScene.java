@@ -677,7 +677,7 @@ public class GameScene extends PixelScene {
 			}
 		}
 	}
-	
+
 	@Override
 	protected void onBackPressed() {
 		if (!cancel()) {
@@ -1117,8 +1117,10 @@ public class GameScene extends PixelScene {
 		} else if (objects.size() == 1){
 			examineObject(objects.get(0));
 		} else {
-			GameScene.show(new WndOptions(Messages.get(GameScene.class, "choose_examine"),
-					Messages.get(GameScene.class, "multiple_examine"), names.toArray(new String[names.size()])){
+			GameScene.show(new WndOptions(Icons.get(Icons.INFO),
+					Messages.get(GameScene.class, "choose_examine"),
+					Messages.get(GameScene.class, "multiple_examine"),
+					names.toArray(new String[names.size()])){
 				@Override
 				protected void onSelect(int index) {
 					examineObject(objects.get(index));

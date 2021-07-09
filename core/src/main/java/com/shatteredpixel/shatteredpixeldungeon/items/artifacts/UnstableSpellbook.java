@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
@@ -137,7 +138,7 @@ public class UnstableSpellbook extends Artifact {
 					final ExploitHandler handler = Buff.affect(hero, ExploitHandler.class);
 					handler.scroll = scroll;
 
-					GameScene.show(new WndOptions(
+					GameScene.show(new WndOptions(new ItemSprite(this),
 							Messages.get(this, "prompt"),
 							Messages.get(this, "read_empowered"),
 							scroll.trueName(),
