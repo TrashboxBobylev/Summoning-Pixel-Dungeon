@@ -118,6 +118,7 @@ public enum HeroClass {
 			new ScrollOfIdentify().identify();
 		}
 		new Ropes().quantity(5).collect();
+		new DewVial().collect();
 
 		if (Dungeon.mode == Dungeon.GameMode.GAUNTLET){
 			new Amulet().collect();
