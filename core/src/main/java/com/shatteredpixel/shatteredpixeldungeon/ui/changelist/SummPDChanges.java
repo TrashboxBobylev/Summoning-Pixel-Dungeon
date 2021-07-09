@@ -229,7 +229,12 @@ public class SummPDChanges {
                         "_-_ Player and allies can shoot projectiles through other ally characters.\n" +
                         "_-_ Adjusted an unintentionally strong Piercing Shot on a bow.\n" +
                         "_-_ Hunger damage no longer interrupts you.\n" +
-                        "_-_ Replaced Potion of Stamina with Potion of Adrenaline."));
+                        "_-_ Replaced Potion of Stamina with Potion of Adrenaline.\n" +
+                        "_-_ Ported subclass choosing and hero info windows from Shattered 0.9.3.\n" +
+                        "_-_ Ported quick-use inventory from Shattered 0.9.3.\n" +
+                        "_-_ Merged some of elemental potions.\n" +
+                        "_-_ Buffed warrior: now identifies stuff on equip and can equip things from quickslots.\n" +
+                        "_-_ Massively decreased the chakra decay rate, making monk more viable."));
 
         changes.addButton( new ChangeButton(new Image(Assets.Interfaces.BUFFS_LARGE, 112, 32, 16, 16), "Tiering",
                 "Fixed a huge issue with minion tier being reset at reload."));
