@@ -26,18 +26,20 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.knight.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.soulreaver.*;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndChooseWay;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndChooseSubclass;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.particles.Emitter;
 
 import java.util.ArrayList;
 
@@ -60,76 +62,54 @@ public class TomeOfMastery extends Item {
 		actions.add( AC_READ );
 		return actions;
 	}
-	
+
 	@Override
 	public void execute( Hero hero, String action ) {
 
 		super.execute( hero, action );
 
 		if (action.equals( AC_READ )) {
-			
+
 			curUser = hero;
-			
-			HeroSubClass way1 = null;
-			HeroSubClass way2 = null;
-			switch (hero.heroClass) {
-			case WARRIOR:
-				way1 = HeroSubClass.GLADIATOR;
-				way2 = HeroSubClass.BERSERKER;
-				break;
-			case MAGE:
-				way1 = HeroSubClass.BATTLEMAGE;
-				way2 = HeroSubClass.WARLOCK;
-				break;
-			case ROGUE:
-				way1 = HeroSubClass.FREERUNNER;
-				way2 = HeroSubClass.ASSASSIN;
-				break;
-			case HUNTRESS:
-				way1 = HeroSubClass.SNIPER;
-				way2 = HeroSubClass.WARDEN;
-				break;
-                case CONJURER:
-                    way1 = HeroSubClass.SOUL_REAVER;
-                    way2 = HeroSubClass.OCCULTIST;
-                    break;
-			}
-			GameScene.show( new WndChooseWay( this, way1, way2 ) );
-			
+
+			GameScene.show( new WndChooseSubclass( this, hero ) );
+
 		}
 	}
-	
+
 	@Override
 	public boolean doPickUp( Hero hero ) {
 		Badges.validateMastery();
 		return super.doPickUp( hero );
 	}
-	
+
 	@Override
 	public boolean isUpgradable() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isIdentified() {
 		return true;
 	}
-	
+
 	public void choose( HeroSubClass way ) {
-		
+
 		detach( curUser.belongings.backpack );
-		
-		curUser.spend( TomeOfMastery.TIME_TO_READ );
+
+		curUser.spend( Actor.TICK );
 		curUser.busy();
-		
+
 		curUser.subClass = way;
-		
+		Talent.initSubclassTalents(curUser);
+
 		curUser.sprite.operate( curUser.pos );
 		Sample.INSTANCE.play( Assets.Sounds.MASTERY );
-		
-		SpellSprite.show( curUser, SpellSprite.MASTERY );
-		curUser.sprite.emitter().burst( Speck.factory( Speck.MASTERY ), 12 );
-		GLog.warning( Messages.get(this, "way", way.title()) );
+
+		Emitter e = curUser.sprite.centerEmitter();
+		e.pos(e.x-2, e.y-6, 4, 4);
+		e.start(Speck.factory(Speck.MASTERY), 0.05f, 20);
+		GLog.positive( Messages.get(this, "way", way.title()) );
 		if (curUser.subClass == HeroSubClass.OCCULTIST){
 
 			new Boom().collectWithAnnouncing();
@@ -145,6 +125,6 @@ public class TomeOfMastery extends Item {
 			new Ranged().collectWithAnnouncing();
 			new Support().collectWithAnnouncing();
 		}
-		
+
 	}
 }
