@@ -182,6 +182,13 @@ public class SummPDChanges {
 
         ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "v1.2.1", true, Window.TITLE_COLOR);
 
+        changes.addButton( new ChangeButton(Icons.get(Icons.ENTER), "Game Modes",
+                "Added game modes, that modify game's rules in some way:\n\n" +
+                        "_-_ Moved old Dungeon Size modifier to game modes.\n\n" +
+                        "_-_ Some of modes are gimmicky, some of modes are super challenges.\n\n" +
+                        "_-_ Check by yourself, there is a lot of interesting stuff!\n\n" +
+                        "_-_ Older runs will be converted into size mode that was set before update."));
+
         changes.addButton( new ChangeButton(new Image(Assets.Sprites.HUNTRESS, 0, 15, 12, 15), "Huntress changes",
                 "The Huntress recieved brand new starting armor to make her more stylish and strong.\n\n" +
                         "_-_ With new armor, she can use _Super-Shots_ to shoot stronger arrow which does more damage with distance.\n\n" +
