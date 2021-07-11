@@ -97,7 +97,7 @@ public abstract class Scroll extends Item {
 	
 	@SuppressWarnings("unchecked")
 	public static void initLabels() {
-		handler = new ItemStatusHandler<>( (Class<? extends Scroll>[])Generator.Category.SCROLL.classes, runes );
+		handler = new ItemStatusHandler<>( (Class<? extends Scroll>[])scrolls, runes );
 	}
 	
 	public static void save( Bundle bundle ) {
@@ -246,7 +246,7 @@ public abstract class Scroll extends Item {
 	}
 	
 	public static boolean allKnown() {
-		return handler.known().size() == Generator.Category.SCROLL.classes.length;
+		return handler.known().size() == scrolls.length;
 	}
 	
 	@Override
@@ -340,7 +340,8 @@ public abstract class Scroll extends Item {
 			Scroll s = (Scroll) ingredients.get(0);
 			
 			s.quantity(s.quantity() - 1);
-			
+			s.setKnown();
+
 			return Reflection.newInstance(stones.get(s.getClass())).quantity(amnts.get(s.getClass()));
 		}
 		
@@ -349,7 +350,12 @@ public abstract class Scroll extends Item {
 			if (!testIngredients(ingredients)) return null;
 			
 			Scroll s = (Scroll) ingredients.get(0);
-			return Reflection.newInstance(stones.get(s.getClass())).quantity(amnts.get(s.getClass()));
+
+			if (!s.isKnown()){
+				return new Runestone.PlaceHolder();
+			} else {
+				return Reflection.newInstance(stones.get(s.getClass())).quantity(amnts.get(s.getClass()));
+			}
 		}
 	}
 }
