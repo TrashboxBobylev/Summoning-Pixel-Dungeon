@@ -48,9 +48,9 @@ jobs:
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "${{ env.version }}"
-          prerelease: true
-          title: "Snapshot for 1.2.1"
+          automatic_release_tag: "latest"
+          prerelease: false
+          title: "${{ env.version }}"
           files: |
               android/build/outputs/apk/release/android-release-unsigned-signed.apk
               desktop/build/libs/*.jar

@@ -182,6 +182,14 @@ public class SummPDChanges {
 
         ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "1.2.1", true, Window.TITLE_COLOR);
 
+        changes = ChangesScene.createChangeInfo(changeInfos, "1.2.1a", false, Window.WHITE);
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "Fixed:\n" +
+                        "_-_ Project Paradox's item generator affecting all subsequent runs until restart.\n" +
+                        "_-_ Broken Seal extra upgrade infinitely transfering over items.\n" +
+                        "_-_ Broken Seal particle lingering after weapon's hotswap.\n" +
+                        "_-_ Runestones in scroll decomposition being identified even if scroll is unknown."));
+
         changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
         changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
                 "_-_ Released July 9th, 2021\n" +
