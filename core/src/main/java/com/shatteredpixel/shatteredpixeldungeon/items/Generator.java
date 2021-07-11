@@ -747,14 +747,16 @@ public class Generator {
 	private static HashMap<Category,Float> categoryProbs = new LinkedHashMap<>();
 
 	public static void fullReset() {
-		generalReset();
-
-		for (Category cat : Category.values()) {
-			reset(cat);
-		}
 		if (Dungeon.mode == Dungeon.GameMode.CHAOS){
 			chaosDistributionInit();
+		} else {
+			generalReset();
+
+			for (Category cat : Category.values()) {
+				reset(cat);
+			}
 		}
+
 	}
 
 	public static void generalReset(){
