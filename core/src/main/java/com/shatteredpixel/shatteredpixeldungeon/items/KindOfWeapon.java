@@ -66,13 +66,20 @@ abstract public class KindOfWeapon extends EquipableItem {
 
 		if (hero.belongings.weapon == null || hero.belongings.weapon.doUnequip( hero, true )) {
 
-			//FIXME: I suck with references
 			hero.belongings.weapon = this;
 			if (previousWeapon != null) {
 				if (sealLevel > 0){
 					previousWeapon.degrade();
 				}
 				previousWeapon.seal = null;
+				//FIXME: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+				int slot = Dungeon.quickslot.getSlot(previousWeapon);
+				if (slot != -1){
+					Dungeon.quickslot.clearSlot(slot);
+					updateQuickslot();
+					Dungeon.quickslot.setSlot( slot, previousWeapon );
+					updateQuickslot();
+				}
 			}
 			((MeleeWeapon)this).affixSeal(seal);
 			if (sealLevel > 0){
