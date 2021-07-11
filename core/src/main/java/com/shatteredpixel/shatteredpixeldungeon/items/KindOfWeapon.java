@@ -57,17 +57,26 @@ abstract public class KindOfWeapon extends EquipableItem {
 
 		detachAll( hero.belongings.backpack );
 		BrokenSeal seal = hero.belongings.weapon instanceof MeleeWeapon ?
-				((MeleeWeapon) hero.belongings.weapon).seal : hero.belongings.getItem(BrokenSeal.class);
+				((MeleeWeapon) hero.belongings.weapon).checkSeal() : hero.belongings.getItem(BrokenSeal.class);
+		int sealLevel = seal.level();
 		Weapon previousWeapon = (Weapon) hero.belongings.weapon;
+		if (hero.belongings.weapon == this){
+			return false;
+		}
 
 		if (hero.belongings.weapon == null || hero.belongings.weapon.doUnequip( hero, true )) {
 
+			//FIXME: I suck with references
 			hero.belongings.weapon = this;
-			if (seal != null){
-				if (previousWeapon != null) {
-					previousWeapon.seal = null;
+			if (previousWeapon != null) {
+				if (sealLevel > 0){
+					previousWeapon.degrade();
 				}
-				((MeleeWeapon)this).affixSeal(seal);
+				previousWeapon.seal = null;
+			}
+			((MeleeWeapon)this).affixSeal(seal);
+			if (sealLevel > 0){
+				seal.upgrade();
 			}
 			if (hero.heroClass == HeroClass.WARRIOR) identify();
 
