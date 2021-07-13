@@ -215,14 +215,22 @@ public class Bomb extends Item {
 	}
 
 	public static int damageRoll(){
-		//sewers: 8-20
-		//prison: 23-42
-		//caves: 38-72
-		//city: 43-102
-		//halls: 68-112
-		return Random.NormalIntRange(8 + ((Dungeon.depth / 5) * 5 / Dungeon.chapterSize())*15, 12 + ((Dungeon.depth / 5) * 5 / Dungeon.chapterSize())*30);
+		//sewers: 9-25
+		//prison: 24-55
+		//caves: 39-85
+		//city: 44-115
+		//halls: 68-135
+		return Random.NormalIntRange(minDamage(), maxDamage());
 	}
-	
+
+	public static int maxDamage() {
+		return 25 + ((Dungeon.depth / 5) * 5 / Dungeon.chapterSize())*30;
+	}
+
+	public static int minDamage() {
+		return 9 + ((Dungeon.depth / 5) * 5 / Dungeon.chapterSize())*15;
+	}
+
 	@Override
 	public boolean isUpgradable() {
 		return false;
@@ -270,10 +278,12 @@ public class Bomb extends Item {
 	
 	@Override
 	public String desc() {
-		if (fuse == null)
-			return super.desc()+ "\n\n" + Messages.get(this, "desc_fuse");
-		else
-			return super.desc() + "\n\n" + Messages.get(this, "desc_burning");
+		String desc_fuse = Messages.get(this, "desc", minDamage()*5/4, maxDamage()*5/4)+ "\n\n" + Messages.get(this, "desc_fuse");
+		if (fuse != null){
+			desc_fuse = Messages.get(this, "desc", minDamage()*5/4, maxDamage()*5/4) + "\n\n" + Messages.get(this, "desc_burning");
+		}
+
+		return desc_fuse;
 	}
 
 	private static final String FUSE = "fuse";
