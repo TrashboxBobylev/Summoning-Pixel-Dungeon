@@ -60,7 +60,7 @@ public class WandOfConjuration extends Wand {
 
 	@Override
 	protected int initialCharges() {
-		return 4;
+		return 3;
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class WandOfConjuration extends Wand {
 	}
 
 	public int swordCount(int lvl){
-		return 3 + lvl;
+		return 2 + lvl;
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class WandOfConjuration extends Wand {
 	@Override
 	public String statsDesc() {
 		if (!levelKnown)
-			return Messages.get(this, "stats_desc", 3);
+			return Messages.get(this, "stats_desc", 2);
 		else
 			return Messages.get(this, "stats_desc", swordCount(buffedLvl()));
 	}
