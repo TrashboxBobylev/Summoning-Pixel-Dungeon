@@ -228,7 +228,7 @@ public class Bomb extends Item {
 	}
 
 	public static int minDamage() {
-		return 9 + (Dungeon.chapterNumber())*15;
+		return 11 + (Dungeon.chapterNumber())*19;
 	}
 
 	@Override
@@ -278,9 +278,11 @@ public class Bomb extends Item {
 	
 	@Override
 	public String desc() {
-		String desc_fuse = Messages.get(this, "desc", minDamage()*5/4, maxDamage()*5/4)+ "\n\n" + Messages.get(this, "desc_fuse");
+		String desc_fuse = Messages.get(this, "desc",
+				Math.round(minDamage()*0.8), Math.round(maxDamage()*0.8))+ "\n\n" + Messages.get(this, "desc_fuse");
 		if (fuse != null){
-			desc_fuse = Messages.get(this, "desc", minDamage()*5/4, maxDamage()*5/4) + "\n\n" + Messages.get(this, "desc_burning");
+			desc_fuse = Messages.get(this, "desc",
+					Math.round(minDamage()*0.8), Math.round(maxDamage()*0.8)) + "\n\n" + Messages.get(this, "desc_burning");
 		}
 
 		return desc_fuse;
