@@ -224,11 +224,11 @@ public class Bomb extends Item {
 	}
 
 	public static int maxDamage() {
-		return 25 + ((Dungeon.depth / 5) * 5 / Dungeon.chapterSize())*30;
+		return 25 + (Dungeon.chapterNumber())*30;
 	}
 
 	public static int minDamage() {
-		return 9 + ((Dungeon.depth / 5) * 5 / Dungeon.chapterSize())*15;
+		return 9 + (Dungeon.chapterNumber())*15;
 	}
 
 	@Override

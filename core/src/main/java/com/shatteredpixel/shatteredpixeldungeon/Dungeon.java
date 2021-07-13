@@ -354,6 +354,12 @@ public class Dungeon {
 		if (SPDSettings.smalldungeon()) return 4;
 		return SPDSettings.bigdungeon() ? 6 : 5;
 	}
+
+	public static int chapterNumber(){
+		int naiveChapterNumber = depth / chapterSize();
+		if (bossLevel()) naiveChapterNumber--;
+		return naiveChapterNumber;
+	}
 	
 	public static boolean bossLevel( int depth ) {
 		return depth % Dungeon.chapterSize() == 0;

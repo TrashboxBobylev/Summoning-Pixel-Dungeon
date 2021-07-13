@@ -68,7 +68,7 @@ public class AbyssLevel extends RegularLevel {
 	public void create() {
 		addItemToSpawn(Generator.random(Generator.Category.FOOD));
 		addItemToSpawn( new com.shatteredpixel.shatteredpixeldungeon.items.Torch() );
-		for (int i = 0; i < GameMath.gate(1, Dungeon.depth / Dungeon.chapterSize() - 5
+		for (int i = 0; i < GameMath.gate(1, Dungeon.chapterNumber() - 5
 				- (Dungeon.depth % Dungeon.chapterSize() == 0 ? 1 : 0), Integer.MAX_VALUE); i++){
 			addItemToSpawn(new Chaosstone());
 			if (Random.Int(2) == 0) addItemToSpawn(new Chaosstone());

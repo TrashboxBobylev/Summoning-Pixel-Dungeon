@@ -58,7 +58,7 @@ public class GonerField extends Blob {
 					if (ch != null && !ch.isImmune(this.getClass())) {
 						Buff.affect( ch, SoulParalysis.class, 1f);
 						if (cur[cell] % 2 == 1) {
-							ch.damage(Math.round(Random.Float(1 + Dungeon.depth / 10f * (5f / Dungeon.chapterSize()))), this);
+							ch.damage(Math.round(Random.Float(1 + Dungeon.chapterNumber()/2f)), this);
 							SoulCache.investHealth(1f);
 							SoulCache.investSoul(1f);
 						}

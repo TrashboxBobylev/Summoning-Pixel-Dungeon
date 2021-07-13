@@ -58,6 +58,6 @@ public abstract class AbyssalMob extends Mob {
     }
 
     public int abyssLevel(){
-        return Math.max(0, (Dungeon.depth - Dungeon.chapterSize()*5) / 5);
+        return Math.max(0, Dungeon.chapterNumber()-4);
     }
 }

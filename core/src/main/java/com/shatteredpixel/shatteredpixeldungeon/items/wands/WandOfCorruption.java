@@ -146,7 +146,7 @@ public class WandOfCorruption extends Wand {
     public static float getEnemyResist(Char ch, Mob enemy) {
         float enemyResist = 1 + enemy.EXP;
         if (ch instanceof Mimic || ch instanceof Statue){
-            enemyResist = 1 + Dungeon.depth * 5 / Dungeon.chapterSize();
+            enemyResist = 1 + Dungeon.chapterNumber();
         } else if (ch instanceof Piranha || ch instanceof Bee) {
             enemyResist = 1 + Dungeon.depth/2f * 5 / Dungeon.chapterSize();
         } else if (ch instanceof Wraith) {

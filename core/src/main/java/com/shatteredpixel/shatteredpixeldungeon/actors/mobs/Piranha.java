@@ -64,8 +64,8 @@ public class Piranha extends Mob {
 	public Piranha() {
 		super();
 		
-		HP = HT = 10 + Dungeon.depth * 5 * 5 / Dungeon.chapterSize();
-		defenseSkill = 10 + Dungeon.depth * 2 * 5 / Dungeon.chapterSize();
+		HP = HT = 10 + Dungeon.chapterNumber()*5;
+		defenseSkill = 10 + Dungeon.chapterNumber()*5;
 	}
 	
 	@Override
@@ -91,7 +91,7 @@ public class Piranha extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, Dungeon.depth * 5 / Dungeon.chapterSize());
+		return Random.NormalIntRange(0, Dungeon.chapterNumber());
 	}
 
 	@Override

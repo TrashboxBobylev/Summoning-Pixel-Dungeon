@@ -84,9 +84,11 @@ abstract public class KindOfWeapon extends EquipableItem {
 					updateQuickslot();
 				}
 			}
-			((MeleeWeapon)this).affixSeal(seal);
-			if (sealLevel > 0){
-				seal.upgrade();
+			if (seal != null) {
+				((MeleeWeapon) this).affixSeal(seal);
+				if (sealLevel > 0) {
+					seal.upgrade();
+				}
 			}
 			if (hero.heroClass == HeroClass.WARRIOR) identify();
 
