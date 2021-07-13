@@ -356,10 +356,7 @@ public class Dungeon {
 	}
 
 	public static int chapterNumber(){
-		int naiveChapterNumber = (depth + 1) / chapterSize();
-		if (bossLevel()) naiveChapterNumber--;
-		if (naiveChapterNumber < 0) naiveChapterNumber = 0;
-		return naiveChapterNumber;
+		return Math.max(depth / chapterSize(), 0);
 	}
 	
 	public static boolean bossLevel( int depth ) {

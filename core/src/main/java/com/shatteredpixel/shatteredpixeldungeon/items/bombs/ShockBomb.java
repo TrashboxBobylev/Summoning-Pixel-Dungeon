@@ -304,9 +304,14 @@ public class ShockBomb extends Bomb {
 
     @Override
     public String desc() {
-        String info = super.desc();
-        info += "\n\n" + Messages.get(this, "counter", new DecimalFormat("#.##").format(canBreak() * 100f));
-        return info;
+        String desc_fuse = Messages.get(this, "desc",
+                Math.round(minDamage()*0.8* 0.6f * charge), Math.round(maxDamage()*0.8* 0.6f * charge))+ "\n\n" + Messages.get(this, "desc_fuse");
+        if (fuse != null){
+            desc_fuse = Messages.get(this, "desc",
+                    Math.round(minDamage()*0.8* 0.6f * charge), Math.round(maxDamage()*0.8* 0.6f * charge)) + "\n\n" + Messages.get(this, "desc_burning");
+        }
+        desc_fuse += "\n\n" + Messages.get(this, "counter", new DecimalFormat("#.##").format(canBreak() * 100f));
+        return desc_fuse;
     }
 
     @Override

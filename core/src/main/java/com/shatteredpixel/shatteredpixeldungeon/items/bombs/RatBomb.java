@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ExplodingTNT;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
@@ -66,6 +67,18 @@ public class RatBomb extends Bomb{
             }
         }
 
+    }
+
+    @Override
+    public String desc() {
+        String desc_fuse = Messages.get(this, "desc",
+                Math.round(minDamage()*0.8*0.4), Math.round(maxDamage()*0.8*0.4))+ "\n\n" + Messages.get(this, "desc_fuse");
+        if (fuse != null){
+            desc_fuse = Messages.get(this, "desc",
+                    Math.round(minDamage()*0.8*0.4), Math.round(maxDamage()*0.8*0.4)) + "\n\n" + Messages.get(this, "desc_burning");
+        }
+
+        return desc_fuse;
     }
 
     @Override

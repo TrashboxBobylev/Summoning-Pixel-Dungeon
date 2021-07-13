@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.Camera;
@@ -82,7 +83,19 @@ public class HolyBomb extends Bomb {
 		
 		Sample.INSTANCE.play( Assets.Sounds.READ );
 	}
-	
+
+	@Override
+	public String desc() {
+		String desc_fuse = Messages.get(this, "desc",
+				Math.round(minDamage()*0.64), Math.round(maxDamage()*0.64))+ "\n\n" + Messages.get(this, "desc_fuse");
+		if (fuse != null){
+			desc_fuse = Messages.get(this, "desc",
+					Math.round(minDamage()*0.64), Math.round(maxDamage()*0.64)) + "\n\n" + Messages.get(this, "desc_burning");
+		}
+
+		return desc_fuse;
+	}
+
 	@Override
 	public int value() {
 		//prices of ingredients

@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.DoomCloud;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
@@ -136,6 +137,18 @@ public class ArcaneBomb extends Bomb {
         Dungeon.level.cleanWalls();
         Dungeon.observe();
         Sample.INSTANCE.play( Assets.Sounds.BLAST, 18 );
+	}
+
+	@Override
+	public String desc() {
+		String desc_fuse = Messages.get(this, "desc",
+				Math.round(minDamage()*5), Math.round(maxDamage()*5))+ "\n\n" + Messages.get(this, "desc_fuse");
+		if (fuse != null){
+			desc_fuse = Messages.get(this, "desc",
+					Math.round(minDamage()*5), Math.round(maxDamage()*5)) + "\n\n" + Messages.get(this, "desc_burning");
+		}
+
+		return desc_fuse;
 	}
 	
 	@Override

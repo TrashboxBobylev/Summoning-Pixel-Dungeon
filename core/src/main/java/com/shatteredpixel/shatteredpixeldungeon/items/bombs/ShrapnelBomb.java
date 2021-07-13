@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Point;
 
@@ -84,5 +85,17 @@ public class ShrapnelBomb extends Bomb {
 	public int value() {
 		//prices of ingredients
 		return quantity * (35 + 100);
+	}
+
+	@Override
+	public String desc() {
+		String desc_fuse = Messages.get(this, "desc",
+				Math.round(minDamage()*1.6), Math.round(maxDamage()*1.6))+ "\n\n" + Messages.get(this, "desc_fuse");
+		if (fuse != null){
+			desc_fuse = Messages.get(this, "desc",
+					Math.round(minDamage()*1.6), Math.round(maxDamage()*1.6)) + "\n\n" + Messages.get(this, "desc_burning");
+		}
+
+		return desc_fuse;
 	}
 }
