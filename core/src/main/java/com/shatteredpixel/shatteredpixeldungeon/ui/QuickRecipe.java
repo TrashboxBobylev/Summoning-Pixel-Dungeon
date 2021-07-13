@@ -326,6 +326,7 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe(new WildEnergy.Recipe()));
 				result.add(new QuickRecipe(new BeaconOfReturning.Recipe()));
 				result.add(null);
+				result.add(new QuickRecipe(new EnchantParchment.Recipe()));
 				result.add(null);
 				result.add(new QuickRecipe(new AquaBlast.Recipe()));
 				result.add(new QuickRecipe(new FeatherFall.Recipe()));

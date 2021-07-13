@@ -41,9 +41,13 @@ public abstract class InventorySpell extends Spell {
 	@Override
 	protected void onCast(Hero hero) {
 		curItem = detach( hero.belongings.backpack );
-		GameScene.selectItem( itemSelector, mode, inventoryTitle );
+		GameScene.selectItem( itemSelector, getMode(), inventoryTitle );
 	}
-	
+
+	public WndBag.Mode getMode() {
+		return mode;
+	}
+
 	protected abstract void onItemSelected( Item item );
 	
 	protected static WndBag.Listener itemSelector = new WndBag.Listener() {

@@ -49,6 +49,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Slingshot;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Broadsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff;
@@ -85,6 +86,7 @@ public class WndBag extends WndTabbed {
 		ARMOR,
         ARMOR_FOR_IMBUE,
 		ENCHANTABLE,
+		ENCHANTED,
 		WAND,
 		SEED,
 		FOOD,
@@ -493,6 +495,7 @@ public class WndBag extends WndTabbed {
 						mode == Mode.ARMOR && (item instanceof Armor) ||
                         mode == Mode.ARMOR_FOR_IMBUE && (item instanceof Armor && !(item instanceof ConjurerArmor)) ||
 						mode == Mode.ENCHANTABLE && ((item instanceof MeleeWeapon || item instanceof SpiritBow || item instanceof Slingshot || item instanceof Armor || item instanceof Staff) && !(item instanceof Broadsword)) ||
+						mode == Mode.ENCHANTED && ((item instanceof Armor && ((Armor) item).glyph != null) || (item instanceof Weapon && ((Weapon) item).enchantment != null)) ||
 						mode == Mode.WAND && (item instanceof Wand) ||
 						mode == Mode.SEED && SandalsOfNature.canUseSeed(item) ||
 						mode == Mode.FOOD && (item instanceof Food) ||

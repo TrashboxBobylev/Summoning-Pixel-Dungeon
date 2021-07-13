@@ -744,6 +744,7 @@ public class ItemSpriteSheet {
 	public static final int MAGIC_INFUSE    = SPELLS +10;
 	public static final int ALCHEMIZE       = SPELLS +11;
 	public static final int RECYCLE         = SPELLS +12;
+	public static final int ENCHANT         = SPELLS +13;
 	static{
 		assignItemRect(MAGIC_PORTER,    12, 11);
 		assignItemRect(PHASE_SHIFT,     12, 11);
@@ -753,12 +754,13 @@ public class ItemSpriteSheet {
 		assignItemRect(AQUA_BLAST,      11, 11);
 		assignItemRect(FEATHER_FALL,    11, 11);
 		assignItemRect(RECLAIM_TRAP,    11, 11);
-        assignItemRect(ENRAGE,    11, 11);
+        assignItemRect(ENRAGE,          11, 11);
 
 		assignItemRect(CURSE_INFUSE,    10, 15);
 		assignItemRect(MAGIC_INFUSE,    10, 15);
 		assignItemRect(ALCHEMIZE,       10, 15);
 		assignItemRect(RECYCLE,         10, 15);
+		assignItemRect(ENCHANT,         15, 14);
 	}
 	
 	private static final int FOOD       =                                   xy(1, 28);  //16 slots

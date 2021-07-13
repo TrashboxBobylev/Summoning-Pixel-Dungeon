@@ -186,6 +186,7 @@ public abstract class Recipe {
 		new WildEnergy.Recipe(),
         new Enrage.Recipe(),
 		new StewedMeat.twoMeat(),
+		new EnchantParchment.Recipe(),
         new Broadsword.Recipe()
 	};
 
