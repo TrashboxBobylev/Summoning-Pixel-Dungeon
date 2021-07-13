@@ -87,6 +87,7 @@ public class WndBag extends WndTabbed {
         ARMOR_FOR_IMBUE,
 		ENCHANTABLE,
 		ENCHANTED,
+		ENCHANTABLE_WEAPONS,
 		WAND,
 		SEED,
 		FOOD,
@@ -496,7 +497,8 @@ public class WndBag extends WndTabbed {
                         mode == Mode.ARMOR_FOR_IMBUE && (item instanceof Armor && !(item instanceof ConjurerArmor)) ||
 						mode == Mode.ENCHANTABLE && ((item instanceof MeleeWeapon || item instanceof SpiritBow || item instanceof Slingshot || item instanceof Armor || item instanceof Staff) && !(item instanceof Broadsword)) ||
 						mode == Mode.ENCHANTED && ((item instanceof Armor && ((Armor) item).glyph != null) || (item instanceof Weapon && ((Weapon) item).enchantment != null)) ||
-						mode == Mode.WAND && (item instanceof Wand) ||
+								mode == Mode.WAND && (item instanceof Wand) ||
+						mode == Mode.ENCHANTABLE_WEAPONS && ((item instanceof MeleeWeapon || item instanceof SpiritBow || item instanceof Slingshot || item instanceof Staff) && !(item instanceof Broadsword)) ||
 						mode == Mode.SEED && SandalsOfNature.canUseSeed(item) ||
 						mode == Mode.FOOD && (item instanceof Food) ||
 						mode == Mode.POTION && (item instanceof Potion) ||

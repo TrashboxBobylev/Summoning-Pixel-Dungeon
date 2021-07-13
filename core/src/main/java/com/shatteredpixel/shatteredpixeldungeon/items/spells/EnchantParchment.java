@@ -46,7 +46,12 @@ public class EnchantParchment extends InventorySpell {
         if (glyph == null && enchantment == null){
             return WndBag.Mode.ENCHANTED;
         }
-        return WndBag.Mode.ENCHANTABLE;
+        else if (glyph != null){
+            return WndBag.Mode.ARMOR;
+        }
+        else {
+            return WndBag.Mode.ENCHANTABLE_WEAPONS;
+        }
     }
 
     {
@@ -59,6 +64,8 @@ public class EnchantParchment extends InventorySpell {
 
     @Override
     public ItemSprite.Glowing glowing() {
+        if (glyph != null){ return glyph.glowing();}
+        if (enchantment != null) {return enchantment.glowing();}
         return super.glowing();
     }
 
@@ -72,7 +79,7 @@ public class EnchantParchment extends InventorySpell {
                 curItem.collect();
             } else {
                 ((Armor) item).inscribe(glyph);
-                GLog.warning(Messages.get(EnchantParchment.class, "glyph_used", glyph.name()));
+                GLog.positive(Messages.get(EnchantParchment.class, "glyph_used", glyph.name()));
                 glyph = null;
             }
         }
@@ -84,12 +91,19 @@ public class EnchantParchment extends InventorySpell {
                 curItem.collect();
             } else {
                 ((Weapon) item).enchant(enchantment);
-                GLog.warning(Messages.get(EnchantParchment.class, "ench_used", enchantment.name()));
+                GLog.positive(Messages.get(EnchantParchment.class, "ench_used", enchantment.name()));
                 glyph = null;
             }
         }
         Sample.INSTANCE.play(Assets.Sounds.BURNING);
         Dungeon.hero.sprite.emitter().burst(ElmoParticle.FACTORY, 10);
+    }
+
+    @Override
+    public String name() {
+        if (glyph != null) return super.name() + " (" + (glyph.name().toUpperCase()) + ")";
+        if (enchantment != null) return super.name() + " (" + (enchantment.name().toUpperCase()) + ")";
+        return super.name();
     }
 
     private static final String GLYPH = "glyph";
