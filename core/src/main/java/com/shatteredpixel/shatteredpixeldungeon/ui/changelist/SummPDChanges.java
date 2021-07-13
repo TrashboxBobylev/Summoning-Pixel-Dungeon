@@ -29,8 +29,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CleanWater;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.EnchantParchment;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfConjuration;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfStench;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -182,13 +185,28 @@ public class SummPDChanges {
 
         ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "1.2.1", true, Window.TITLE_COLOR);
 
-        changes = ChangesScene.createChangeInfo(changeInfos, "1.2.1a", false, Window.WHITE);
+        changes = ChangesScene.createChangeInfo(changeInfos, "1.2.1b", false, Window.WHITE);
+        changes.addButton(new ChangeButton(new EnchantParchment(),
+                "Added enchantment parchment from legacy era.\n\n" +
+                        "_-_ Allows to transfer enchantments and glyphs between items."));
+        changes.addButton(new ChangeButton(new WandOfConjuration(),
+                "Changed the Wand of Conjuration:\n" +
+                        "\n" +
+                        "_-_ Buffed damage from _2-5_ to _4-8_\n" +
+                        "_-_ Reduced max amount of swords by 1\n" +
+                        "_-_ Reduced max charges to 3\n" +
+                        "_-_ Removed additional damage from enemy's armor\n" +
+                        "This should make it more consistent and less broken in endgame."));
+        changes.addButton(new ChangeButton(new Bomb(),
+                "_-_ Added damage description to every harmful bomb.\n\n" +
+                        "_-_ Buffed bomb's damage by _25%_."));
         changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
                 "Fixed:\n" +
-                        "_-_ Project Paradox's item generator affecting all subsequent runs until restart.\n" +
-                        "_-_ Broken Seal extra upgrade infinitely transfering over items.\n" +
-                        "_-_ Broken Seal particle lingering after weapon's hotswap.\n" +
-                        "_-_ Runestones in scroll decomposition being identified even if scroll is unknown."));
+                        "_-_ The crash when trying to equip any weapon as anybody but Warrior.\n" +
+                        "_-_ Inconsistent dynamic chapter size math.\n" +
+                        "_-_ Conjuration wand allies disappeariance.\n" +
+                        "_-_ Ghost Chickens dealing way more damage than they should."));
+
 
         changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
         changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
@@ -293,7 +311,11 @@ public class SummPDChanges {
                         "_-_ Ghost Chickens being not invisible if summoned.\n" +
                         "_-_ Fixed crash with Stone of Intuition and rings.\n"+
                         "_-_ Soul of Yendor being overcharged from gold.\n" +
-                        "_-_ Removed softlock protection."));
+                        "_-_ Removed softlock protection.\n" +
+                        "_-_ Project Paradox's item generator affecting all subsequent runs until restart.\n" +
+                        "_-_ Broken Seal extra upgrade infinitely transfering over items.\n" +
+                        "_-_ Broken Seal particle lingering after weapon's hotswap.\n" +
+                        "_-_ Runestones in scroll decomposition being identified even if scroll is unknown."));
 
         changes = ChangesScene.createChangeInfo(changeInfos, "Minion Rebalancing", false, 0x5ed8ff);
 
