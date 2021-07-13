@@ -37,8 +37,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DwarfKing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GhostChicken;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.GnollHunter;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GoatClone;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential;
@@ -257,7 +255,7 @@ public abstract class Char extends Actor {
 			
 			int dr = enemy.drRoll();
 			if (enemy.buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dr *= 0.5f;
-			if (this instanceof GoatClone) dr = 0;
+			if (properties.contains(Property.IGNORE_ARMOR)) dr = 0;
 
 			if (this instanceof Hero){
 				Hero h = (Hero)this;
@@ -268,9 +266,6 @@ public abstract class Char extends Actor {
 				} else if (h.belongings.weapon instanceof Slingshot.Stone){
 				    dr = Random.IntRange(0, dr);
                 }
-			}
-			if (this instanceof GnollHunter){
-				dr = 0;
 			}
 			
 			int dmg;
@@ -846,6 +841,7 @@ public abstract class Char extends Actor {
 				new HashSet<Class>( Arrays.asList(Healing.class))),
 		DEMONIC,
 		RANGED,
+		IGNORE_ARMOR,
 		INORGANIC ( new HashSet<Class>(),
 				new HashSet<Class>( Arrays.asList(Bleeding.class, ToxicGas.class, Poison.class) )),
 		FIERY ( new HashSet<Class>( Arrays.asList(WandOfFireblast.class, Elemental.FireElemental.class)),

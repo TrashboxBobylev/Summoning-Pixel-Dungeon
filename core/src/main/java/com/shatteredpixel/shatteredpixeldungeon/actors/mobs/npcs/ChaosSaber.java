@@ -47,8 +47,10 @@ public class ChaosSaber extends NPC {
         baseSpeed = 2f;
 
         WANDERING = new Wandering();
+        actPriority = HERO_PRIO;
 
         HP = HT = 1;
+        properties.add(Property.IGNORE_ARMOR);
         immunities.add(PerfumeGas.Affection.class);
     }
 
@@ -65,12 +67,6 @@ public class ChaosSaber extends NPC {
     @Override
     public int defenseSkill(Char enemy) {
         return (int) (enemy.attackSkill(this)*1.25f);
-    }
-
-    @Override
-    public int attackProc(Char enemy, int damage) {
-//        if (enemy instanceof Mob) ((Mob)enemy).aggro(this);
-        return super.attackProc(enemy, damage) + enemy.drRoll();
     }
 
     {

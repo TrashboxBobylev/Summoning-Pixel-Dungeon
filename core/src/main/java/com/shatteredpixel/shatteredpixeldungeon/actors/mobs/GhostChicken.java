@@ -51,6 +51,7 @@ public class GhostChicken extends AbyssalMob {
 
 		properties.add(Property.DEMONIC);
 		properties.add(Property.UNDEAD);
+		properties.add(Property.IGNORE_ARMOR);
 	}
 
 	@Override
@@ -60,7 +61,6 @@ public class GhostChicken extends AbyssalMob {
 
 	@Override
 	public int attackProc(Char enemy, int damage) {
-		damage += enemy.drRoll()/2;
 		Buff.prolong(enemy, TimedShrink.class, 2.5f + abyssLevel()*2.5f);
 		return super.attackProc(enemy, damage);
 	}

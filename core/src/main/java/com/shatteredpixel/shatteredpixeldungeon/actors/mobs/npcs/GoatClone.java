@@ -53,6 +53,7 @@ public class GoatClone extends NPC {
         baseSpeed = 2f;
         actPriority = MOB_PRIO + 1;
         state = WANDERING;
+        properties.add(Property.IGNORE_ARMOR);
     }
 
     @Override
