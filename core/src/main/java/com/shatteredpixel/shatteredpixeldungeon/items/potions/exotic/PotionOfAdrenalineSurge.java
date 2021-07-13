@@ -24,10 +24,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AdrenalineSurge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CounterBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class PotionOfAdrenalineSurge extends ExoticPotion {
 	
@@ -40,7 +43,38 @@ public class PotionOfAdrenalineSurge extends ExoticPotion {
 	@Override
 	public void apply(Hero hero) {
 		setKnown();
-		Buff.affect(hero, AdrenalineSurge.class).reset(2, 800f);
+		SurgeTracker buff = Buff.affect(hero, SurgeTracker.class);
+		buff.countUp(1);
+		GLog.positive( Messages.get(this, "msg", buff.count() > 4 ? buff.count() / 3 : buff.count()) );
+	}
+
+	public static class SurgeTracker extends CounterBuff{
+		{
+			announced = false;
+		}
+
+		@Override
+		public int icon() {
+			return BuffIndicator.FURY;
+		}
+
+		@Override
+		public String toString() {
+			return Messages.get(this, "name");
+		}
+
+		@Override
+		public String desc() {
+			return Messages.get(this, "desc", damageAmount());
+		}
+
+		public int damageAmount(){
+			int damage = Math.round(count()*(1 + count())/2);
+			if (damage > 10){
+				damage = 10 + Math.round((count()*(1 + count())/2 - 10)/3);
+			}
+			return damage;
+		}
 	}
 	
 }
