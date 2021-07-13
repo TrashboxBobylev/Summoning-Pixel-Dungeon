@@ -63,7 +63,7 @@ public class SwordStorage extends CounterBuff {
             //spawn sword
             int bestPos = -1;
             for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-                int p = hero.pos + PathFinder.NEIGHBOURS8[i];
+                int p = closest.pos + PathFinder.NEIGHBOURS8[i];
                 if (Actor.findChar( p ) == null && Dungeon.level.passable[p]) {
                     if (bestPos == -1 || Dungeon.level.trueDistance(p, closest.pos) < Dungeon.level.trueDistance(bestPos, closest.pos)){
                         bestPos = p;
