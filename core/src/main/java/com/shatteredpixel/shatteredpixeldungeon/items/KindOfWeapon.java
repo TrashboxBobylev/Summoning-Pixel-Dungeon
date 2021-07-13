@@ -58,7 +58,10 @@ abstract public class KindOfWeapon extends EquipableItem {
 		detachAll( hero.belongings.backpack );
 		BrokenSeal seal = hero.belongings.weapon instanceof MeleeWeapon ?
 				((MeleeWeapon) hero.belongings.weapon).checkSeal() : hero.belongings.getItem(BrokenSeal.class);
-		int sealLevel = seal.level();
+		int sealLevel = 0;
+		if (seal != null){
+			sealLevel = seal.level();
+		}
 		Weapon previousWeapon = (Weapon) hero.belongings.weapon;
 		if (hero.belongings.weapon == this){
 			return false;
