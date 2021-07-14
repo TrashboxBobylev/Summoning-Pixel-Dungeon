@@ -60,7 +60,7 @@ public class WarriorAbilityButton extends Tag {
     }
 
     public WarriorAbilityButton() {
-        super(Window.TITLE_COLOR);
+        super(0x808577);
         setSize(24, 24);
         visible( false );
         enable( false );
