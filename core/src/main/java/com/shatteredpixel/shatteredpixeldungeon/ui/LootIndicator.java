@@ -70,7 +70,7 @@ public class LootIndicator extends Tag {
 	protected void layout() {
 		super.layout();
 		
-		slot.setRect( x + 2, y + 3, width - 3, height - 6 );
+		slot.setRect( x + 4, y + 3, width - 3, height - 6 );
 	}
 	
 	@Override

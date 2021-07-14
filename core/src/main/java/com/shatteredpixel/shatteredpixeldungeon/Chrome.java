@@ -60,7 +60,7 @@ public class Chrome {
 		case GREY_BUTTON:
 			return new NinePatch( Asset, 58, 6, 6, 6, 2 );
 		case TAG:
-			return new NinePatch( Asset, 22, 18, 16, 14, 3 );
+			return new NinePatch( Asset, 22, 18, 18, 14, 3 );
 		case GEM:
 			return new NinePatch( Asset, 0, 32, 32, 32, 13 );
 		case GREY_BUTTON_TR:

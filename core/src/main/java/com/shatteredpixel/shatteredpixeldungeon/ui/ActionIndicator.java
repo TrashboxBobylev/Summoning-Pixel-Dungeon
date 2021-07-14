@@ -62,7 +62,7 @@ public class ActionIndicator extends Tag {
 		super.layout();
 		
 		if (icon != null){
-			icon.x = x + (width - icon.width()) / 2;
+			icon.x = x + (width - icon.width()) / 2 + 2;
 			icon.y = y + (height - icon.height()) / 2;
 			PixelScene.align(icon);
 			if (!members.contains(icon))

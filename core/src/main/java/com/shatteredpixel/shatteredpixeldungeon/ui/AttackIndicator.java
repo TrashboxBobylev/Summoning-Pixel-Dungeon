@@ -80,7 +80,7 @@ public class AttackIndicator extends Tag {
 		super.layout();
 		
 		if (sprite != null) {
-			sprite.x = x + (width - sprite.width()) / 2 + 1;
+			sprite.x = x + (width - sprite.width()) / 2 + 2;
 			sprite.y = y + (height - sprite.height()) / 2;
 			PixelScene.align(sprite);
 		}
