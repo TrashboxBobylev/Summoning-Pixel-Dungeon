@@ -58,7 +58,7 @@ public class MeleeWeapon extends Weapon {
 	public String getDefaultAction() {
 		if (Dungeon.hero.heroClass == HeroClass.WARRIOR && Dungeon.hero.belongings.weapon != this)
 			return AC_EQUIP;
-		return "";
+		return defaultAction;
 	}
 
 	@Override
