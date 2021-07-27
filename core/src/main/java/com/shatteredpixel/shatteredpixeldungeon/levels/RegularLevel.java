@@ -158,7 +158,7 @@ public abstract class RegularLevel extends Level {
 	
 	protected Builder builder(){
 		int tryn = Random.Int(2);
-		if (tryn == 0){
+		if (tryn == 0 || Dungeon.mode == Dungeon.GameMode.CHAOS){
 			return new LoopBuilder()
 					.setLoopShape( 3 ,
 							Random.Float(0f, 0.9f),
