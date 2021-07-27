@@ -64,28 +64,24 @@ public class Robo extends Minion{
         return super.getCloser(target);
     }
 
-    private boolean chain(int target){
+    private void chain(int target){
         if (enemy.properties().contains(Property.IMMOVABLE))
-            return false;
+            return;
 
         Ballistica chain = new Ballistica(pos, target, Ballistica.FRIENDLY_PROJECTILE);
 
-        if (chain.collisionPos != enemy.pos
-                || chain.path.size() < 2
-                || Dungeon.level.pit[chain.path.get(1)])
-            return false;
-        else {
-            int newPos = -1;
-            for (int i : chain.subPath(1, chain.dist)){
-                if (!Dungeon.level.solid[i] && Actor.findChar(i) == null){
-                    newPos = i;
-                    break;
-                }
-            }
+        if (chain.collisionPos == enemy.pos
+                && chain.path.size() >= 2
+                && !Dungeon.level.pit[chain.path.get(1)]) {
+                    int newPos = -1;
+                    for (int i : chain.subPath(1, chain.dist)){
+                        if (!Dungeon.level.solid[i] && Actor.findChar(i) == null){
+                            newPos = i;
+                            break;
+                        }
+                    }
 
-            if (newPos == -1){
-                return false;
-            } else {
+            if (newPos != -1) {
                 final int newPosFinal = newPos;
                 this.target = newPos;
                 Actor.addDelayed(new Pushing(enemy, enemy.pos, newPosFinal, new Callback(){
@@ -95,11 +91,12 @@ public class Robo extends Minion{
                         ((Mob)enemy).aggro(Robo.this);
                     }
                 }), -1);
-                next();
             }
+
         }
-        return true;
+        next();
     }
+
 
 
 
