@@ -195,7 +195,7 @@ public abstract class StandardRoom extends Room {
 		}
 		setChances();
 		if (Dungeon.depth >= Dungeon.chapterSize()*5 || Dungeon.mode == Dungeon.GameMode.CHAOS){
-			float[] chance = new float[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+			float[] chance = new float[]{1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 			return Reflection.newInstance(rooms.get(Random.chances(chance)));
 		}
 		else return Reflection.newInstance(rooms.get(Random.chances(chances[Dungeon.depth])));
