@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Surprise;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
+import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor;
@@ -846,6 +847,14 @@ public abstract class Mob extends Char {
 			rollToDropLoot();
 		}
 		else if (Dungeon.mode == Dungeon.GameMode.GAUNTLET && alignment == Alignment.ENEMY){
+			if (this instanceof Thief){
+				if (((Thief) this).item != null) {
+					Dungeon.level.drop( ((Thief) this).item, pos ).sprite.drop();
+					//updates position
+					if (((Thief) this).item instanceof Honeypot.ShatteredPot) ((Honeypot.ShatteredPot)((Thief) this).item).dropPot( this, pos );
+					((Thief) this).item = null;
+				}
+			}
 			boolean mobsAlive = false;
 			for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])){
 				if (mob.isAlive() && mob.alignment == Alignment.ENEMY){
