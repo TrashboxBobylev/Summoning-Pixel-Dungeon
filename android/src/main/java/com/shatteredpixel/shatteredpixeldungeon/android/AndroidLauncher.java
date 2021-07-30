@@ -34,6 +34,7 @@ import android.widget.TextView;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeType;
 import com.badlogic.gdx.utils.GdxNativesLoader;
+import com.rohitss.uceh.UCEHandler;
 
 public class AndroidLauncher extends Activity {
 
@@ -50,6 +51,7 @@ public class AndroidLauncher extends Activity {
 			FreeType.initFreeType();
 
 			Intent intent = new Intent(this, AndroidGame.class);
+			new UCEHandler.Builder(this).setUCEHEnabled(!googlePlay).build();
 			startActivity(intent);
 			finish();
 		} catch (Exception e){
