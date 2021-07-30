@@ -54,7 +54,7 @@ public class Robo extends Minion{
 
     @Override
     protected boolean getCloser(int target) {
-        for (Mob mob : Dungeon.level.mobs) {
+        for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
             if (mob.paralysed <= 0
                     && Dungeon.level.distance(pos, mob.pos) <= 3
                     && mob.state != mob.HUNTING && mob != this) {
@@ -94,15 +94,14 @@ public class Robo extends Minion{
             }
 
         }
-        next();
     }
-
-
-
 
     @Override
     protected boolean canAttack(Char enemy) {
-        return new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE ).collisionPos == enemy.pos;
+        if (enemy.properties().contains(Property.RANGED))
+            return new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE ).collisionPos == enemy.pos;
+        else
+            return super.canAttack(enemy);
     }
 
     protected boolean doAttack(Char enemy ) {
@@ -127,10 +126,10 @@ public class Robo extends Minion{
     private void zap() {
         spend( 1f );
         chain(enemy.pos);
+        next();
     }
 
     public void onZapComplete() {
         zap();
-        next();
     }
 }
