@@ -1108,6 +1108,8 @@ public class Hero extends Char {
 		    damage = wep.proc( this, enemy, damage );
 		    if (buff(FierySlash.class) != null) new Blazing().proc((Weapon) wep,this, enemy, damage);
         }
+
+		damage = Talent.onAttackProc(this, enemy, damage);
 		
 		switch (subClass) {
 		case SNIPER:

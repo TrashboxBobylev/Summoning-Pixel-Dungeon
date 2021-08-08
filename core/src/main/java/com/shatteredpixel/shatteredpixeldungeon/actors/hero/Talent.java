@@ -24,7 +24,11 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CounterBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FrostBurn;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
 
@@ -110,8 +114,20 @@ public enum Talent {
     }
 
     public static class SpecialDeliveryCount extends CounterBuff{};
+    public static class SuckerPunchTracker extends Buff{};
 
     public static final int MAX_TALENT_TIERS = 0;
+
+    public static int onAttackProc(Hero hero, Char enemy, int damage){
+        if (hero.hasTalent(Talent.COLD_FRONT)
+                && enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)
+                && enemy.buff(SuckerPunchTracker.class) == null){
+            int bonus = hero.pointsInTalent(COLD_FRONT)*2;
+            Buff.affect(enemy, FrostBurn.class).reignite(enemy, bonus);
+            Buff.affect(enemy, SuckerPunchTracker.class);
+        }
+        return damage;
+    }
 
     public static void initClassTalents( Hero hero ){
         initClassTalents( hero.heroClass, hero.talents );
