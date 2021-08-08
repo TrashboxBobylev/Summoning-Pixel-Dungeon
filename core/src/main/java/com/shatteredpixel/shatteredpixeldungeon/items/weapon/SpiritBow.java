@@ -70,7 +70,6 @@ public class SpiritBow extends Weapon {
 	}
 	
 	public boolean sniperSpecial = false;
-	private boolean tieringUpdate = false;
 
 	@Override
 	public int throwPos(Hero user, int dst) {
@@ -90,17 +89,11 @@ public class SpiritBow extends Weapon {
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
-		bundle.put("tier", tieringUpdate);
 	}
 
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
-		tieringUpdate = bundle.getBoolean("tier");
-		if (!tieringUpdate){
-			tieringUpdate = true;
-			level(0);
-		}
 	}
 
 	@Override
