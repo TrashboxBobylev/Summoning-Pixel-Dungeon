@@ -68,17 +68,10 @@ public class WndTitledMessage extends Window {
 		comp.add(text);
 		text.setPos(0,GAP);
 		comp.setSize(text.width(),text.height()+GAP*2);
-
 		resize( width, (int)Math.min((int)comp.bottom()+2+titlebar.height()+GAP, (int)(PixelScene.uiCamera.height*0.9)) );
 
 		sp = new ScrollPane(comp);
 		add(sp);
 		sp.setRect(titlebar.left(),titlebar.bottom() + GAP,comp.width(),Math.min((int)comp.bottom()+2, (int)(PixelScene.uiCamera.height*0.9)-titlebar.bottom()-GAP));
-	}
-
-	@Override
-	public void resize(int w, int h) {
-		super.resize(w, h);
-		if(sp!=null)sp.setRect(sp.left(),sp.top(),sp.width(),sp.height());
 	}
 }
