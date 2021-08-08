@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knife;
@@ -81,6 +82,8 @@ public class Item implements Bundlable {
 	private int level = 0;
 
 	public boolean levelKnown = false;
+
+	public boolean collected;
 	
 	public boolean cursed;
 	public boolean cursedKnown;
@@ -198,6 +201,11 @@ public class Item implements Bundlable {
 			return true;
 		}
 
+		if (Dungeon.hero != null && Dungeon.hero.isAlive()) {
+			Badges.validateItemLevelAquired( this );
+			Talent.onItemCollected( Dungeon.hero, this );
+		}
+
 		if (stackable) {
 			for (Item item:items) {
 				if (isSimilar( item )) {
@@ -213,6 +221,7 @@ public class Item implements Bundlable {
 		}
 
 		items.add( this );
+		collected = true;
 		Dungeon.quickslot.replacePlaceholder(this);
 		updateQuickslot();
 		Collections.sort( items, itemComparator );
@@ -389,6 +398,7 @@ public class Item implements Bundlable {
 
 		if (Dungeon.hero != null && Dungeon.hero.isAlive()) {
 			Catalog.setSeen(getClass());
+			if (!isIdentified()) Talent.onItemIdentified(Dungeon.hero, this);
 		}
 		
 		return this;
@@ -479,6 +489,7 @@ public class Item implements Bundlable {
 	}
 	
 	private static final String QUANTITY		= "quantity";
+	private static final String COLLECTED       = "collected";
 	private static final String LEVEL			= "level";
 	private static final String LEVEL_KNOWN		= "levelKnown";
 	private static final String CURSED			= "cursed";
@@ -492,6 +503,7 @@ public class Item implements Bundlable {
 		bundle.put( LEVEL_KNOWN, levelKnown );
 		bundle.put( CURSED, cursed );
 		bundle.put( CURSED_KNOWN, cursedKnown );
+		bundle.put( COLLECTED, collected);
 		if (Dungeon.quickslot.contains(this)) {
 			bundle.put( QUICKSLOT, Dungeon.quickslot.getSlot(this) );
 		}
@@ -511,6 +523,7 @@ public class Item implements Bundlable {
 		}
 		
 		cursed	= bundle.getBoolean( CURSED );
+		collected = bundle.getBoolean(COLLECTED);
 
 		//only want to populate slot on first load.
 		if (Dungeon.hero == null) {

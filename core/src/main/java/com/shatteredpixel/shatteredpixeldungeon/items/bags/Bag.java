@@ -147,7 +147,10 @@ public class Bag extends Item implements Iterable<Item> {
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
 		for (Bundlable item : bundle.getCollection( ITEMS )) {
-			if (item != null) ((Item)item).collect( this );
+			if (item != null) {
+				((Item)item).collected = true;
+				((Item) item).collect(this);
+			}
 		}
 	}
 	

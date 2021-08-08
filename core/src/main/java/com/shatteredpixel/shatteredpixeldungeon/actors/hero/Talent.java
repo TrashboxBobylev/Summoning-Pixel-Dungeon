@@ -29,6 +29,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CounterBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FrostBurn;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
 
@@ -115,6 +117,7 @@ public enum Talent {
 
     public static class SpecialDeliveryCount extends CounterBuff{};
     public static class SuckerPunchTracker extends Buff{};
+    public static class AcutenessTracker extends CounterBuff{};
 
     public static final int MAX_TALENT_TIERS = 0;
 
@@ -127,6 +130,24 @@ public enum Talent {
             Buff.affect(enemy, SuckerPunchTracker.class);
         }
         return damage;
+    }
+
+    public static void onItemCollected( Hero hero, Item item ) {
+        boolean id = false;
+        if (item.isIdentified()) return;
+        if (hero.hasTalent(ACUTENESS)){
+            AcutenessTracker buff = Buff.affect(hero, AcutenessTracker.class);
+            buff.countUp(1);
+            if (buff.count() >= 12 - hero.pointsInTalent(ACUTENESS)*3 && !item.collected){
+                item.identify();
+                id = true;
+            }
+        }
+        if(id && hero.sprite.emitter() != null) hero.sprite.emitter().burst(Speck.factory(Speck.QUESTION),1);
+    }
+
+    public static void onItemIdentified( Hero hero, Item item ){
+
     }
 
     public static void initClassTalents( Hero hero ){
