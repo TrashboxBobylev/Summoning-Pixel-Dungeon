@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Alchemy;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.GonerField;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.PerfumeGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
@@ -1849,6 +1850,10 @@ public class Hero extends Char {
 
 	@Override
 	public boolean isImmune(Class effect) {
+		if (effect == Electricity.class &&
+				hasTalent(Talent.PERDERE_CRIMEN)){
+			return true;
+		}
 		if (effect == Burning.class
 				&& belongings.armor != null
 				&& belongings.armor.hasGlyph(Brimstone.class, this)){

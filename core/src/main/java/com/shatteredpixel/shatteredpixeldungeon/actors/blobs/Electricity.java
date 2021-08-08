@@ -29,7 +29,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -81,6 +84,11 @@ public class Electricity extends Blob {
 								Dungeon.fail( getClass() );
 								GLog.negative( Messages.get(this, "ondeath") );
 							}
+						}
+					} else if (ch instanceof Hero && ch.isImmune(this.getClass())){
+						if (((Hero) ch).pointsInTalent(Talent.PERDERE_CRIMEN) == 2){
+							Dungeon.hero.HP = (int) Math.ceil(Math.min(Dungeon.hero.HT, Dungeon.hero.HP + 1));
+							Dungeon.hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
 						}
 					}
 					
