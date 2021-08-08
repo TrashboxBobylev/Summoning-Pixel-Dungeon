@@ -119,7 +119,7 @@ public enum Talent {
     public static class SuckerPunchTracker extends Buff{};
     public static class AcutenessTracker extends CounterBuff{};
 
-    public static final int MAX_TALENT_TIERS = 0;
+    public static final int MAX_TALENT_TIERS = 1;
 
     public static int onAttackProc(Hero hero, Char enemy, int damage){
         if (hero.hasTalent(Talent.COLD_FRONT)

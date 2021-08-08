@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -33,16 +34,23 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndUseItem;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 
 import java.util.ArrayList;
 
@@ -67,12 +75,30 @@ public class CloakOfShadows extends Artifact {
 	private boolean stealthed = false;
 
 	public static final String AC_STEALTH = "STEALTH";
+	public static final String AC_TELEPORT = "TELEPORT";
+	public static final String AC_CHOOSE = "CHOOSE";
+
+	@Override
+	public String getDefaultAction() {
+		if (charge > 0 && isEquipped(Dungeon.hero) && !cursed){
+			if (!stealthed && Dungeon.hero.hasTalent(Talent.HYPERSPACE)) return AC_CHOOSE;
+			else return AC_STEALTH;
+		}
+		return super.getDefaultAction();
+	}
 
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		if (isEquipped( hero ) && !cursed && (charge > 0 || stealthed))
-			actions.add(AC_STEALTH);
+		if (isEquipped(hero) && !cursed) {
+			if ((charge > 0 || stealthed)) {
+
+				actions.add(AC_STEALTH);
+			}
+			if (charge > 0 && hero.hasTalent(Talent.HYPERSPACE)){
+				actions.add(AC_TELEPORT);
+			}
+		}
 		return actions;
 	}
 
@@ -80,6 +106,10 @@ public class CloakOfShadows extends Artifact {
 	public void execute( Hero hero, String action ) {
 
 		super.execute(hero, action);
+
+		if (action.equals( AC_CHOOSE)){
+			GameScene.show(new WndUseItem(null, this) );
+		}
 
 		if (action.equals( AC_STEALTH )) {
 
@@ -111,7 +141,40 @@ public class CloakOfShadows extends Artifact {
 			}
 
 		}
+
+		if (action.equals(AC_TELEPORT)){
+			GameScene.selectCell(caster);
+		}
 	}
+
+	private CellSelector.Listener caster = new CellSelector.Listener() {
+
+		@Override
+		public void onSelect(Integer target) {
+			if (target != null && (Dungeon.level.visited[target] || Dungeon.level.mapped[target]) && Dungeon.level.passable[target]){
+				int maxDistance = (int) (charge * (0.57f + 0.09f*(Dungeon.hero.pointsInTalent(Talent.HYPERSPACE))));
+				if (Dungeon.level.distance(target, Dungeon.hero.pos) > maxDistance){
+					GLog.warning( Messages.get(CloakOfShadows.class, "cant_reach") );
+				} else {
+					charge -= maxDistance / (0.57f + 0.09f*(Dungeon.hero.pointsInTalent(Talent.HYPERSPACE)));
+					ScrollOfTeleportation.teleportToLocation(Dungeon.hero, target);
+					updateQuickslot();
+				}
+			}
+		}
+
+		@Override
+		public String prompt() {
+			int maxDistance = (int) (charge * (0.57f + 0.09f*(Dungeon.hero.pointsInTalent(Talent.HYPERSPACE))));
+			PathFinder.buildDistanceMap( Dungeon.hero.pos, Dungeon.level.passable, maxDistance );
+			for (int i = 0; i < PathFinder.distance.length; i++) {
+				if (PathFinder.distance[i] < Integer.MAX_VALUE && !Dungeon.level.solid[i]) {
+					Dungeon.hero.sprite.parent.addToBack(new TargetedCell(i, 0xb47ffe));
+				}
+			}
+			return Messages.get(CloakOfShadows.class, "prompt");
+		}
+	};
 
 	@Override
 	public void activate(Char ch){
