@@ -63,7 +63,7 @@ public class Ghoul extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 16, 22 );
+		return Random.NormalIntRange( 14, 20 );
 	}
 
 	@Override

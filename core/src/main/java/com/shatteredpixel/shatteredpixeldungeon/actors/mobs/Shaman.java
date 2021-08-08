@@ -55,7 +55,7 @@ public abstract class Shaman extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 5, 10 );
+		return Random.NormalIntRange( 4, 9 );
 	}
 	
 	@Override
@@ -118,7 +118,7 @@ public abstract class Shaman extends Mob {
 				Sample.INSTANCE.play( Assets.Sounds.DEBUFF );
 			}
 			
-			int dmg = Random.NormalIntRange( 6, 15 );
+			int dmg = Random.NormalIntRange( 5, 13 );
 			if (buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dmg *= 0.6f;
 			enemy.damage( dmg, new EarthenBolt() );
 			

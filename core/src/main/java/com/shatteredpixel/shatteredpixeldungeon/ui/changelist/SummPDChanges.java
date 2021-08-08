@@ -183,7 +183,37 @@ public class SummPDChanges {
 //    }
     public static void add_1_1_7_Changes(ArrayList<ChangeInfo> changeInfos) {
 
-        ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "1.2.1", true, Window.TITLE_COLOR);
+        ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "1.2.2 snapshots", false, Window.WHITE);
+        changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.POTION_CRIMSON, null), "Potion of Healing",
+                "_-_ Reduced base healing by 10 points (up to _-20%_ depending on hero's level).\n" +
+                        "_-_ Reduced healing speed by _20%_.\n" +
+                        "_-_ Enemy damage nerfs:\n" +
+                        "   Skeleton: 2-10 -> 2-9 (melee), 6-12 -> 6-10 (explosion)\n" +
+                        "   Prison Guard: 4-12 -> 3-11\n" +
+                        "   Crazy Thief: 1-10 -> 0-10\n" +
+                        "   DM100: 3-10 -> 2-9 (lightning)\n" +
+                        "   Necromancer: 2-10 -> 1-9 (squashing)\n" +
+                        "   Vampire Bat: 5-18 -> 4-16\n" +
+                        "   Gnoll Brute: 5-25 -> 4-23, 15-40 -> 12-36 (berserker)\n" +
+                        "   Rattlesnake: 8-18 -> 5-16 (ranged)\n" +
+                        "   Gnoll Shaman: 4-10 -> 4-9 (melee), 6-15 -> 5-13 (magic)\n" +
+                        "   DM200: 10-25 -> 7-22\n" +
+                        "   Cave Spinner: 5-15 -> 4-13\n" +
+                        "   Dwarven Ghoul: 16-22 -> 14-20\n" +
+                        "   Elementals: 20-25 -> 17-22\n" +
+                        "   Monk: 12-25 -> 11-20\n" +
+                        "   Warlock: 12-18 -> 11-16 (melee), 12-18 -> 10-16 (magic)\n" +
+                        "   Golem: 25-30 -> 21-26\n" +
+                        "   Armored Vessel: 10-18 -> 8-16\n" +
+                        "   Attunement Spirit: 13-18 -> 11-16\n" +
+                        "   Dark Matter Slime: 18-23 -> 15-20\n" +
+                        "   Succubus: 24-34 -> 21-29\n" +
+                        "   Evil Eye: 18-33 -> 13-28 (melee), 40-65 -> 35-57 (deathgaze)\n" +
+                        "   Hell Bat: 16-17 -> 13-15\n" +
+                        "   Scorpio: 30-40 -> 25-33\n" +
+                        "   Ripper Demon: 15-25 -> 13-22"));
+
+        changes = ChangesScene.createChangeInfo(changeInfos, "1.2.1", true, Window.TITLE_COLOR);
 
         changes = ChangesScene.createChangeInfo(changeInfos, "1.2.1b", false, Window.WHITE);
         changes.addButton(new ChangeButton(new EnchantParchment(),

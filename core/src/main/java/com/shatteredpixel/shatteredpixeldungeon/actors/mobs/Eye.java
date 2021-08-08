@@ -71,7 +71,7 @@ public class Eye extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange(18, 33);
+		return Random.NormalIntRange(13, 28);
 	}
 
 	@Override
@@ -182,7 +182,7 @@ public class Eye extends Mob {
 			}
 
 			if (hit( this, ch, true )) {
-                int damage = Random.NormalIntRange( 40, 65 );
+                int damage = Random.NormalIntRange( 35, 57 );
                 if (buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) damage *= 0.6f;
 				ch.damage(damage , new DeathGaze() );
 

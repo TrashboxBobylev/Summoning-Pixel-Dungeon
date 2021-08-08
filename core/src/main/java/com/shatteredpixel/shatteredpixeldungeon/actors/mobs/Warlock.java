@@ -65,7 +65,7 @@ public class Warlock extends Mob implements Callback {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 12, 18 );
+		return Random.NormalIntRange( 11, 16 );
 	}
 	
 	@Override
@@ -114,7 +114,7 @@ public class Warlock extends Mob implements Callback {
 				Sample.INSTANCE.play( Assets.Sounds.DEBUFF );
 			}
 			
-			int dmg = Random.NormalIntRange( 12, 18 );
+			int dmg = Random.NormalIntRange( 10, 16 );
             if (buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dmg *= 0.6f;
 			enemy.damage( dmg, new DarkBolt() );
 			

@@ -57,7 +57,7 @@ public class Snake extends Mob {
 	@Override
 	public int damageRoll() {
 
-        int i = Random.NormalIntRange(8, 18);
+        int i = Random.NormalIntRange(5, 16);
         if (Dungeon.level.adjacent(pos, enemy.pos)) i = Random.NormalIntRange(4, 7);
         return i;
     }

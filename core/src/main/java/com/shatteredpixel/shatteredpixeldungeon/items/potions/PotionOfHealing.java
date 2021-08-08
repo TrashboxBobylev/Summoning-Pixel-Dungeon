@@ -58,8 +58,8 @@ public class PotionOfHealing extends Potion {
 			pharmacophobiaProc(Dungeon.hero);
 			GLog.positive( Messages.get(PotionOfHealing.class, "poison") );
 		} else {
-			//starts out healing 30 hp, equalizes with hero health total at level 11
-			Buff.affect(ch, Healing.class).setHeal((int) (0.8f * ch.HT + 14), 0.25f, 0);
+			//starts out healing 20 hp, no longer can heal up to full HP
+			Buff.affect(ch, Healing.class).setHeal((int) (0.8f * ch.HT + 4), 0.2f, 0);
 			if (ch == Dungeon.hero){
 				GLog.positive( Messages.get(PotionOfHealing.class, "heal") );
 			}

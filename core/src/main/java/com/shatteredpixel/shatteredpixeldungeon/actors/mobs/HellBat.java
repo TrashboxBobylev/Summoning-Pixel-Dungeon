@@ -54,7 +54,7 @@ public class HellBat extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 16, 17 );
+		return Random.NormalIntRange( 13, 15 );
 	}
 	
 	@Override
