@@ -24,10 +24,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CounterBuff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 
 public enum Talent {
@@ -107,6 +109,8 @@ public enum Talent {
         return Messages.get(this, name() + ".desc");
     }
 
+    public static class SpecialDeliveryCount extends CounterBuff{};
+
     public static final int MAX_TALENT_TIERS = 0;
 
     public static void initClassTalents( Hero hero ){
@@ -118,15 +122,15 @@ public enum Talent {
             talents.add(new LinkedHashMap<>());
         }
 
-//        ArrayList<Talent> tierTalents = new ArrayList<>();
-//
-//        Collections.addAll(tierTalents, SPECIAL_DELIVERY, COLD_FRONT, ACUTENESS, HYPERSPACE, PERDERE_CRIMEN, SCRAP_BRAIN);
-//
-//        for (Talent talent : tierTalents){
-//            talents.get(0).put(talent, 0);
-//        }
-//
-//        tierTalents.clear();
+        ArrayList<Talent> tierTalents = new ArrayList<>();
+
+        Collections.addAll(tierTalents, SPECIAL_DELIVERY, COLD_FRONT, ACUTENESS, HYPERSPACE, PERDERE_CRIMEN, SCRAP_BRAIN);
+
+        for (Talent talent : tierTalents){
+            talents.get(0).put(talent, 0);
+        }
+
+        tierTalents.clear();
 //
 //        Collections.addAll(tierTalents, WELCOME_TO_EARTH, THE_SANDSTORM, TIME_TOGETHER, DIRECTIVE, GOOD_INTENTIONS, LIFE_ON_AXIOM, LETHAL_MOMENTUM);
 //

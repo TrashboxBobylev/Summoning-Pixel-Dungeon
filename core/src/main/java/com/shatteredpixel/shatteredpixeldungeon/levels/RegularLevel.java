@@ -30,14 +30,13 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GoldenMimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.Ropes;
+import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.GuidePage;
@@ -448,6 +447,27 @@ public abstract class RegularLevel extends Level {
 			}
 		}
 
+		if (Dungeon.hero.hasTalent(Talent.SPECIAL_DELIVERY)){
+			Talent.SpecialDeliveryCount dropped = Buff.affect(Dungeon.hero, Talent.SpecialDeliveryCount.class);
+			if (dropped.count() < 1 + Dungeon.hero.pointsInTalent(Talent.SPECIAL_DELIVERY)){
+				int cell;
+				do {
+					cell = randomDropCell(SpecialRoom.class);
+				} while (room(cell) instanceof SecretRoom);
+				if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
+					map[cell] = Terrain.GRASS;
+					losBlocking[cell] = false;
+				}
+				// give anything that is not gold
+				Item droppy;
+				do {
+					droppy = Generator.random();
+				} while (droppy instanceof Gold);
+				drop( droppy, cell).type = Heap.Type.CHEST;
+				dropped.countUp(1);
+			}
+		}
+
 		//guide pages
 		Collection<String> allPages = Document.ADVENTURERS_GUIDE.pages();
 		ArrayList<String> missingPages = new ArrayList<>();
@@ -511,30 +531,36 @@ public abstract class RegularLevel extends Level {
 		
 		return null;
 	}
-	
-	protected int randomDropCell() {
-		while (true) {
-			Room room = randomRoom( StandardRoom.class );
+
+	protected int randomDropCell(){
+		return randomDropCell(StandardRoom.class);
+	}
+
+	protected int randomDropCell( Class<?extends Room> roomType ) {
+		int tries = 100;
+		while (tries-- > 0) {
+			Room room = randomRoom( roomType );
 			if (room != null && room != roomEntrance) {
 				int pos = pointToCell(room.random());
-				if (passable[pos]
+				if (passable[pos] && !solid[pos]
 						&& pos != exit
 						&& heaps.get(pos) == null
 						&& findMob(pos) == null) {
-					
+
 					Trap t = traps.get(pos);
-					
+
 					//items cannot spawn on traps which destroy items
 					if (t == null ||
 							! (t instanceof BurningTrap || t instanceof BlazingTrap
-							|| t instanceof ChillingTrap || t instanceof FrostTrap
-							|| t instanceof ExplosiveTrap || t instanceof DisintegrationTrap)) {
-						
+									|| t instanceof ChillingTrap || t instanceof FrostTrap
+									|| t instanceof ExplosiveTrap || t instanceof DisintegrationTrap)) {
+
 						return pos;
 					}
 				}
 			}
 		}
+		return -1;
 	}
 	
 	@Override
