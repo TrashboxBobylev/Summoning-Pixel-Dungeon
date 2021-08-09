@@ -212,6 +212,9 @@ public class SummPDChanges {
                         "   Hell Bat: 16-17 -> 13-15\n" +
                         "   Scorpio: 30-40 -> 25-33\n" +
                         "   Ripper Demon: 15-25 -> 13-22"));
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.ROGUE, 0, 90, 12, 15), "Rogue",
+                "Added tier 1 Rogue talents, please leave feedback about their power."));
+
 
         changes = ChangesScene.createChangeInfo(changeInfos, "1.2.1", true, Window.TITLE_COLOR);
 
