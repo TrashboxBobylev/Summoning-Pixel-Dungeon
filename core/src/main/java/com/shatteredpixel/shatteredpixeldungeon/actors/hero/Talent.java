@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CounterBuff;
@@ -31,8 +32,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FrostBurn;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.Scrap;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -128,6 +132,10 @@ public enum Talent {
             int bonus = hero.pointsInTalent(COLD_FRONT)*2;
             Buff.affect(enemy, FrostBurn.class).reignite(enemy, bonus);
             Buff.affect(enemy, SuckerPunchTracker.class);
+        }
+        if (hero.hasTalent(SCRAP_BRAIN) && Dungeon.hero.belongings.weapon instanceof MissileWeapon &&
+            enemy.HP - damage <= 0 && Random.Int(3) == 0){
+            Dungeon.level.drop(new Scrap(), enemy.pos).sprite.drop();
         }
         return damage;
     }

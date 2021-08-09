@@ -803,6 +803,7 @@ public class ItemSpriteSheet {
 	public static final int SHARD   = QUEST+8;
 	public static final int GOLD_TOKEN = QUEST+9;
 	public static final int CHAOSSTONE = QUEST+10;
+	public static final int SCRAP      = QUEST+11;
 	static{
 		assignItemRect(SKULL,   16, 11);
 		assignItemRect(DUST,    12, 11);
@@ -815,6 +816,7 @@ public class ItemSpriteSheet {
 		assignItemRect(SHARD,    8, 10);
 		assignItemRect(GOLD_TOKEN, 12, 11);
 		assignItemRect(CHAOSSTONE, 10, 15);
+		assignItemRect(SCRAP,   12, 11);
 	}
 	private static final int POWERS =                                   xy(1, 30);
 	public static final int WARRIOR_POWER = POWERS+0;

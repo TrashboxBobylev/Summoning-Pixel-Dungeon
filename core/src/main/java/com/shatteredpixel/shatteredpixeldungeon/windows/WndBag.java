@@ -491,7 +491,7 @@ public class WndBag extends WndTabbed {
 						mode == Mode.UNIDENTIFED && !item.isIdentified() ||
 						mode == Mode.UNCURSABLE && ScrollOfRemoveCurse.uncursable(item) ||
 						mode == Mode.CURSABLE && ((item instanceof EquipableItem && !(item instanceof MissileWeapon)) || item instanceof Wand) ||
-						mode == Mode.QUICKSLOT && (item.getDefaultAction() != null) ||
+						mode == Mode.QUICKSLOT && (item.getDefaultAction() != null || !item.getDefaultAction().equals("")) ||
 						mode == Mode.WEAPON && (item instanceof MeleeWeapon) ||
 						mode == Mode.ARMOR && (item instanceof Armor) ||
                         mode == Mode.ARMOR_FOR_IMBUE && (item instanceof Armor && !(item instanceof ConjurerArmor)) ||
@@ -547,7 +547,7 @@ public class WndBag extends WndTabbed {
 		
 		@Override
 		protected boolean onLongClick() {
-			if (listener == null && item.getDefaultAction() != null) {
+			if (listener == null && (item.getDefaultAction() != null || !item.getDefaultAction().equals(""))) {
 				hide();
 				Dungeon.quickslot.setSlot( 0 , item );
 				QuickSlotButton.refresh();
