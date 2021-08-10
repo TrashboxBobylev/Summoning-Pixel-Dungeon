@@ -38,10 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SpikyShield;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Phantom;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GoatClone;
-import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.CheckedCell;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
@@ -58,6 +55,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMi
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
@@ -72,6 +70,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
@@ -1967,7 +1967,44 @@ public class Hero extends Char {
 		
 		if (intentional) {
 			sprite.showStatus( CharSprite.DEFAULT, Messages.get(this, "search") );
-			sprite.operate( pos );
+			sprite.operate( pos);
+
+			if (hasTalent(Talent.THE_SANDSTORM)) {
+					Ballistica aim;
+					if (pos % Dungeon.level.width() > 10){
+						aim = new Ballistica(pos, pos - 1, Ballistica.WONT_STOP);
+					} else {
+						aim = new Ballistica(pos, pos + 1, Ballistica.WONT_STOP);
+					}
+					ConeAOE aoe = new ConeAOE(aim, 1.5f, 360, Ballistica.FRIENDLY_PROJECTILE);
+					for (Ballistica ray : aoe.rays){
+						((MagicMissile)sprite.parent.recycle( MagicMissile.class )).reset(
+								MagicMissile.INVISI,
+								sprite,
+								ray.path.get(ray.dist),
+								null
+						);
+					}
+				((MagicMissile)sprite.parent.recycle( MagicMissile.class )).reset(
+						MagicMissile.INVISI,
+						sprite,
+						aoe.rays.get(0).path.get(aoe.rays.get(0).dist),
+						() -> {
+							for (int i : PathFinder.NEIGHBOURS8){
+								CellEmitter.get(pos+i).burst(Speck.factory(Speck.DUST, false), 4);
+								Char ch = Actor.findChar(pos+i);
+								if (ch != null && ch.alignment != alignment){
+									Ballistica trajectory = new Ballistica(ch.pos, ch.pos+i, Ballistica.MAGIC_BOLT);
+									if (trajectory.collisionPos != pos+i && !ch.properties().contains(Property.BOSS)) ch.spend(TIME_TO_SEARCH);
+									if (pointsInTalent(Talent.THE_SANDSTORM) > 1) ch.damage(1 + Dungeon.chapterNumber(), new WandOfBlastWave());
+									WandOfBlastWave.throwChar(ch, trajectory, 1, false, false, true);
+								}
+							}
+							spendAndNext(TIME_TO_SEARCH);
+						}
+				);
+			}
+			if (!hasTalent(Talent.THE_SANDSTORM)) spendAndNext(TIME_TO_SEARCH);
 			if (!Dungeon.level.locked) {
 				if (cursed) {
 					GLog.negative(Messages.get(this, "search_distracted"));
@@ -1976,8 +2013,7 @@ public class Hero extends Char {
 					Hunger.adjustHunger((TIME_TO_SEARCH - HUNGER_FOR_SEARCH));
 				}
 			}
-			spendAndNext(TIME_TO_SEARCH);
-			
+
 		}
 		
 		if (smthFound) {

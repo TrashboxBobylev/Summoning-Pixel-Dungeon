@@ -738,7 +738,7 @@ public class MagicMissile extends Emitter {
 		public static final Emitter.Factory FACTORY = new Factory() {
 			@Override
 			public void emit( Emitter emitter, int index, float x, float y ) {
-				((WardParticle)emitter.recycle( WardParticle.class )).reset( x, y );
+				((InvisibleParticle)emitter.recycle( InvisibleParticle.class )).reset( x, y );
 			}
 			@Override
 			public boolean lightMode() {
@@ -751,7 +751,7 @@ public class MagicMissile extends Emitter {
 		public static final Emitter.Factory SHARD = new Factory() {
 			@Override
 			public void emit( Emitter emitter, int index, float x, float y ) {
-				((WardParticle)emitter.recycle( WardParticle.class )).resetUp( x, y );
+				((WardParticle)emitter.recycle( InvisibleParticle.class )).resetUp( x, y );
 			}
 			@Override
 			public boolean lightMode() {
@@ -764,7 +764,7 @@ public class MagicMissile extends Emitter {
 
 			lifespan = 0.6f;
 
-			color( Random.element(colors) );
+			color( 0x000000 );
 			alpha(0f);
 		}
 
@@ -776,13 +776,13 @@ public class MagicMissile extends Emitter {
 			color( Random.element(colors) );
 
 			left = lifespan;
-			size = 12;
+			size = 0;
 		}
 
 		public void resetUp( float x, float y){
 			reset(x, y);
 
-			size = 8;
+			size = 0;
 		}
 
 		@Override

@@ -115,16 +115,21 @@ public class WandOfBlastWave extends DamageWand {
 	}
 
 	public static void throwChar(final Char ch, final Ballistica trajectory, int power){
-		throwChar(ch, trajectory, power, true);
+		throwChar(ch, trajectory, power, true, true, false);
 	}
 
 	public static void throwChar(final Char ch, final Ballistica trajectory, int power,
 	                             boolean closeDoors) {
-		throwChar(ch, trajectory, power, closeDoors, true);
+		throwChar(ch, trajectory, power, closeDoors, true, false);
 	}
 
 	public static void throwChar(final Char ch, final Ballistica trajectory, int power,
-	                             boolean closeDoors, boolean collideDmg){
+								 boolean closeDoors, boolean collideDmg) {
+		throwChar(ch, trajectory, power, closeDoors, collideDmg, false);
+	}
+
+	public static void throwChar(final Char ch, final Ballistica trajectory, int power,
+	                             boolean closeDoors, boolean collideDmg, boolean trulyCollideDmg){
 		if (ch.properties().contains(Char.Property.BOSS)) {
 			power /= 2;
 		}
@@ -172,7 +177,7 @@ public class WandOfBlastWave extends DamageWand {
 				ch.pos = newPos;
 				if (finalCollided && ch.isAlive()) {
 					ch.damage(Random.NormalIntRange(finalDist, 2*finalDist), this);
-					Paralysis.prolong(ch, Paralysis.class, 1 + finalDist/2f);
+					Paralysis.prolong(ch, Paralysis.class, 1 + finalDist/2);
 				}
 				if (closeDoors && Dungeon.level.map[oldPos] == Terrain.OPEN_DOOR){
 					Door.leave(oldPos);
