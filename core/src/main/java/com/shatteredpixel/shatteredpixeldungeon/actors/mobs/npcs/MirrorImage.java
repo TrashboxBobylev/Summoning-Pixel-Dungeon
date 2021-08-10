@@ -30,12 +30,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.PerfumeGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blocking;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MirrorSprite;
@@ -91,7 +90,53 @@ public class MirrorImage extends NPC {
 		super.storeInBundle( bundle );
 		bundle.put( HEROID, heroID );
 	}
-	
+
+	@Override
+	public int defenseProc(Char enemy, int damage) {
+		if (hero.hasTalent(Talent.TIME_TOGETHER)) {
+			int dmg = damageHero(enemy, damage, 1.5f);
+			if (dmg >= Dungeon.hero.HP)
+				return super.defenseProc(enemy, damage);
+			hero.damage(dmg, this);
+			return super.defenseProc(enemy, 0);
+		}
+		return super.defenseProc(enemy, damage);
+	}
+
+	@Override
+	public void damage(int dmg, Object src) {
+		if (hero.hasTalent(Talent.TIME_TOGETHER)) {
+			if (!(src instanceof Char)) {
+				int dm = damageHero(null, dmg, 0.75f);
+				if (dm >= Dungeon.hero.HP) {
+					super.damage(dmg, src);
+					return;
+				}
+				hero.damage(dm, this);
+				return;
+			}
+		}
+		super.damage(dmg, src);
+	}
+
+	public int damageHero(Char enemy, int damage, float armorPercent) {
+		int dr = Math.round(hero.drRoll() * armorPercent);
+		Barkskin bark = hero.buff(Barkskin.class);
+		if (bark != null)   dr += Random.NormalIntRange( 0 , bark.level() );
+
+		Blocking.BlockBuff block = hero.buff(Blocking.BlockBuff.class);
+		if (block != null)  dr += block.blockingRoll();
+		if (hero.buff(Shrink.class) != null || hero.buff(TimedShrink.class) != null) dr *= 0.5f;
+		if (enemy != null)
+			damage = hero.defenseProc(enemy, damage);
+		damage -= dr;
+		if (damage < 0) damage = 0;
+		if (hero.buff(Vulnerable.class) != null){
+			damage *= 1.333f;
+		}
+		return damage;
+	}
+
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
@@ -112,6 +157,7 @@ public class MirrorImage extends NPC {
 		} else {
 			damage = hero.damageRoll(); //handles ring of force
 		}
+		if (hero.pointsInTalent(Talent.TIME_TOGETHER) > 1) return damage;
 		return (damage+1)/2; //half hero damage, rounded up
 	}
 	
@@ -127,6 +173,7 @@ public class MirrorImage extends NPC {
 			int heroEvasion = hero.defenseSkill(enemy);
 			
 			//if the hero has more/less evasion, 50% of it is applied
+			if (hero.pointsInTalent(Talent.TIME_TOGETHER) > 1) return super.defenseSkill(enemy) * (baseEvasion);
 			return super.defenseSkill(enemy) * (baseEvasion + heroEvasion) / 2;
 		} else {
 			return 0;
@@ -146,7 +193,8 @@ public class MirrorImage extends NPC {
 	@Override
 	public int drRoll() {
 		if (hero != null && hero.belongings.weapon != null){
-			return Random.NormalIntRange(0, hero.belongings.weapon.defenseFactor(this)/2);
+			return Random.NormalIntRange(0, hero.belongings.weapon.defenseFactor(this)/
+					(hero.pointsInTalent(Talent.TIME_TOGETHER) > 1 ? 1 : 2));
 		} else {
 			return 0;
 		}
