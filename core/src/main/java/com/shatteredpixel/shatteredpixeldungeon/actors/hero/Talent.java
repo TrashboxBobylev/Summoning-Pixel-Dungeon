@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CounterBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FrostBurn;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -35,6 +36,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Scrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -119,11 +122,27 @@ public enum Talent {
         return Messages.get(this, name() + ".desc");
     }
 
+    public static abstract class Cooldown extends FlavourBuff {
+        public static <T extends Cooldown> void affectHero(Class<T> cls) {
+            if(cls == Cooldown.class) return;
+            T buff = Buff.affect(Dungeon.hero, cls);
+            buff.spend( buff.duration() );
+        }
+        public abstract float duration();
+        public float iconFadePercent() { return Math.max(0, visualcooldown() / duration()); }
+        public String toString() { return Messages.get(this, "name"); }
+        public String desc() { return Messages.get(this, "desc", dispTurns(visualcooldown())); }
+    }
+    public static class ImprovisedProjectileCooldown extends Cooldown {
+        public float duration() { return Dungeon.hero.pointsInTalent(WELCOME_TO_EARTH) > 1 ? 50 : 80; }
+        public int icon() { return BuffIndicator.SLOW; }
+        public void tintIcon(Image icon) { icon.hardlight(0.15f, 0.2f, 0.5f); }
+    };
     public static class SpecialDeliveryCount extends CounterBuff{};
     public static class SuckerPunchTracker extends Buff{};
     public static class AcutenessTracker extends CounterBuff{};
 
-    public static final int MAX_TALENT_TIERS = 1;
+    public static final int MAX_TALENT_TIERS = 2;
 
     public static int onAttackProc(Hero hero, Char enemy, int damage){
         if (hero.hasTalent(Talent.COLD_FRONT)
@@ -177,14 +196,14 @@ public enum Talent {
         }
 
         tierTalents.clear();
-//
-//        Collections.addAll(tierTalents, WELCOME_TO_EARTH, THE_SANDSTORM, TIME_TOGETHER, DIRECTIVE, GOOD_INTENTIONS, LIFE_ON_AXIOM, LETHAL_MOMENTUM);
-//
-//        for (Talent talent : tierTalents){
-//            talents.get(1).put(talent, 0);
-//        }
-//
-//        tierTalents.clear();
+
+        Collections.addAll(tierTalents, WELCOME_TO_EARTH, THE_SANDSTORM, TIME_TOGETHER, DIRECTIVE, GOOD_INTENTIONS, LIFE_ON_AXIOM, LETHAL_MOMENTUM);
+
+        for (Talent talent : tierTalents){
+            talents.get(1).put(talent, 0);
+        }
+
+        tierTalents.clear();
 //
 //        Collections.addAll(tierTalents, DOG_BREEDING, NUCLEAR_RAGE, SNIPER_PATIENCE, ARCANE_CLOAK, ARMORED_ARMADA, TIMEBENDING, LUST_AND_DUST, TOWER_OF_POWER, JUST_ONE_MORE_TILE, NEVER_GONNA_GIVE_YOU_UP, ASSASSINATION, SPEED_SHOES, BREAD_AND_CIRCUSES, COMET_FALL, SPYDER_MAN, DETERMINED, MY_SUNSHINE, OLYMPIC_SKILLS);
 //       for (Talent talent : tierTalents){
