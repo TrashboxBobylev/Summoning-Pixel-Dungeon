@@ -1363,7 +1363,6 @@ public class Hero extends Char {
 			spend( 1 / speed );
 			justMoved = true;
 
-
 			search(false);
 			
 			if (subClass == HeroSubClass.FREERUNNER){

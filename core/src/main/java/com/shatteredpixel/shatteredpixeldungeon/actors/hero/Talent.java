@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CounterBuff;
@@ -36,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Scrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
@@ -141,6 +143,7 @@ public enum Talent {
     public static class SpecialDeliveryCount extends CounterBuff{};
     public static class SuckerPunchTracker extends Buff{};
     public static class AcutenessTracker extends CounterBuff{};
+    public static class DirectiveTracker extends FlavourBuff{};
 
     public static final int MAX_TALENT_TIERS = 2;
 
@@ -151,6 +154,21 @@ public enum Talent {
             int bonus = hero.pointsInTalent(COLD_FRONT)*2;
             Buff.affect(enemy, FrostBurn.class).reignite(enemy, bonus);
             Buff.affect(enemy, SuckerPunchTracker.class);
+        }
+        if (hero.hasTalent(Talent.DIRECTIVE)
+                && enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)
+                && enemy.buff(DirectiveTracker.class) == null){
+            int bonus = hero.pointsInTalent(DIRECTIVE)-1;
+            Actor.addDelayed(new Actor() {
+                @Override
+                protected boolean act() {
+                    Buff.affect(hero, Swiftthistle.TimeBubble.class).reset(bonus);
+                    diactivate();
+                    return true;
+                }
+            }, 0);
+
+            Buff.affect(enemy, DirectiveTracker.class);
         }
         if (hero.hasTalent(SCRAP_BRAIN) && Dungeon.hero.belongings.weapon instanceof MissileWeapon &&
             enemy.HP - damage <= 0 && Random.Int(3) == 0){
