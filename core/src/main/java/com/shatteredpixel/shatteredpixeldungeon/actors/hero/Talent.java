@@ -149,6 +149,7 @@ public enum Talent {
             if (buff.count() >= 12 - hero.pointsInTalent(ACUTENESS)*3 && !item.collected){
                 item.identify();
                 id = true;
+                buff.detach();
             }
         }
         if(id && hero.sprite.emitter() != null) hero.sprite.emitter().burst(Speck.factory(Speck.QUESTION),1);
