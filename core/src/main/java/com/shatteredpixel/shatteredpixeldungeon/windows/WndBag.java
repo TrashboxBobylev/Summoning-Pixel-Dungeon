@@ -491,7 +491,7 @@ public class WndBag extends WndTabbed {
 						mode == Mode.UNIDENTIFED && !item.isIdentified() ||
 						mode == Mode.UNCURSABLE && ScrollOfRemoveCurse.uncursable(item) ||
 						mode == Mode.CURSABLE && ((item instanceof EquipableItem && !(item instanceof MissileWeapon)) || item instanceof Wand) ||
-						mode == Mode.QUICKSLOT && (item.getDefaultAction() != null || !item.getDefaultAction().equals("")) ||
+						mode == Mode.QUICKSLOT && (!item.getDefaultAction().equals("")) ||
 						mode == Mode.WEAPON && (item instanceof MeleeWeapon) ||
 						mode == Mode.ARMOR && (item instanceof Armor) ||
                         mode == Mode.ARMOR_FOR_IMBUE && (item instanceof Armor && !(item instanceof ConjurerArmor)) ||
