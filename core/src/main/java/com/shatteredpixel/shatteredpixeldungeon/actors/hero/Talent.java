@@ -37,7 +37,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Scrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
@@ -144,6 +143,14 @@ public enum Talent {
     public static class SuckerPunchTracker extends Buff{};
     public static class AcutenessTracker extends CounterBuff{};
     public static class DirectiveTracker extends FlavourBuff{};
+    public static class DirectiveMovingTracker extends CounterBuff{
+        public int duration() { return Dungeon.hero.pointsInTalent(DIRECTIVE);}
+        public float iconFadePercent() { return Math.max(0, 1f - ((count()) / (duration()))); }
+        public String toString() { return Messages.get(this, "name"); }
+        public String desc() { return Messages.get(this, "desc", dispTurns(duration() - (count()))); }
+        public int icon() { return BuffIndicator.MOMENTUM; }
+        public void tintIcon(Image icon) { icon.hardlight(0.15f, 0.7f, 0.5f); }
+    };
 
     public static final int MAX_TALENT_TIERS = 2;
 
@@ -158,11 +165,10 @@ public enum Talent {
         if (hero.hasTalent(Talent.DIRECTIVE)
                 && enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)
                 && enemy.buff(DirectiveTracker.class) == null){
-            int bonus = hero.pointsInTalent(DIRECTIVE)-1;
             Actor.addDelayed(new Actor() {
                 @Override
                 protected boolean act() {
-                    Buff.affect(hero, Swiftthistle.TimeBubble.class).reset(bonus);
+                    Buff.count(hero, DirectiveMovingTracker.class, -1);
                     diactivate();
                     return true;
                 }

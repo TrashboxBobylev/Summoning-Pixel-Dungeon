@@ -623,6 +623,14 @@ public class Hero extends Char {
             Hunger.adjustHunger(-0.35f  * (buff(Shadows.class) != null ? 0.66f : 1f));
 			return false;
 		}
+		if (!(curAction instanceof HeroAction.Move))
+			if (buff(Talent.DirectiveMovingTracker.class) != null) {
+				if (buff(Talent.DirectiveMovingTracker.class).count() > -1) {
+					Buff.detach(this, Talent.DirectiveMovingTracker.class);
+				} else {
+					buff(Talent.DirectiveMovingTracker.class).countUp(1);
+				}
+			}
 		
 		boolean actResult;
 		if (curAction == null) {
@@ -1359,8 +1367,16 @@ public class Hero extends Char {
 			lastMovPos = pos;
 			sprite.move(pos, step);
 			move(step);
-
-			spend( 1 / speed );
+			if (buff(Talent.DirectiveMovingTracker.class) != null){
+				Talent.DirectiveMovingTracker b = buff(Talent.DirectiveMovingTracker.class);
+				b.countUp(1);
+				if (b.count() >= pointsInTalent(Talent.DIRECTIVE)){
+					b.detach();
+				}
+			}
+			else {
+				spend(1 / speed);
+			}
 			justMoved = true;
 
 			search(false);
