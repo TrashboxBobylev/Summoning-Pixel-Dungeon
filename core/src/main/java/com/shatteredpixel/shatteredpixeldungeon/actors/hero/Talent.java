@@ -61,6 +61,7 @@ public enum Talent {
     GOOD_INTENTIONS(54),
     LIFE_ON_AXIOM(55),
     LETHAL_MOMENTUM(56),
+    IRON_WILL(91),
     DOG_BREEDING(82, 3),
     NUCLEAR_RAGE(83, 3),
     SNIPER_PATIENCE(84, 3),
@@ -229,7 +230,7 @@ public enum Talent {
 
         tierTalents.clear();
 
-        Collections.addAll(tierTalents, WELCOME_TO_EARTH, THE_SANDSTORM, TIME_TOGETHER, DIRECTIVE, GOOD_INTENTIONS, LIFE_ON_AXIOM, LETHAL_MOMENTUM);
+        Collections.addAll(tierTalents, WELCOME_TO_EARTH, THE_SANDSTORM, TIME_TOGETHER, DIRECTIVE, GOOD_INTENTIONS, LIFE_ON_AXIOM, LETHAL_MOMENTUM, IRON_WILL, SCRAP_BRAIN, PERDERE_CRIMEN, SPECIAL_DELIVERY, SPEED_SHOES);
 
         for (Talent talent : tierTalents){
             talents.get(1).put(talent, 0);
