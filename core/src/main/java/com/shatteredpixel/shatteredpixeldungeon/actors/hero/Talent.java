@@ -151,6 +151,13 @@ public enum Talent {
         public int icon() { return BuffIndicator.MOMENTUM; }
         public void tintIcon(Image icon) { icon.hardlight(0.15f, 0.7f, 0.5f); }
     };
+    public static class LifeOnAxiomTracker extends FlavourBuff{
+        public String toString() { return Messages.get(this, "name"); }
+        public float iconFadePercent() { return Math.max(0, 1f - (15 / visualcooldown())); }
+        public String desc() { return Messages.get(this, "desc", dispTurns(visualcooldown())); }
+        public int icon() { return BuffIndicator.RAGE; }
+        public void tintIcon(Image icon) { icon.hardlight(0.8f, 0.1f, 0.0f); }
+    };
 
     public static final int MAX_TALENT_TIERS = 2;
 
@@ -221,7 +228,7 @@ public enum Talent {
 
         tierTalents.clear();
 
-        Collections.addAll(tierTalents, WELCOME_TO_EARTH, THE_SANDSTORM, TIME_TOGETHER, DIRECTIVE, GOOD_INTENTIONS/*, LIFE_ON_AXIOM, LETHAL_MOMENTUM*/);
+        Collections.addAll(tierTalents, WELCOME_TO_EARTH, THE_SANDSTORM, TIME_TOGETHER, DIRECTIVE, GOOD_INTENTIONS, LIFE_ON_AXIOM, LETHAL_MOMENTUM);
 
         for (Talent talent : tierTalents){
             talents.get(1).put(talent, 0);

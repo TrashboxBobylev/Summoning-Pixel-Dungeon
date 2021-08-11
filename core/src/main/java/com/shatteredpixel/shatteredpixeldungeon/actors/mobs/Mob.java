@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.SoulFlame;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GoatClone;
@@ -1012,38 +1013,56 @@ public abstract class Mob extends Char {
 
 		@Override
 		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
-			if ((enemyInFOV && Random.Float( distance( enemy ) + enemy.stealth() ) < 1) ||
-					(alignment == Alignment.ALLY && HP == HT && state == SLEEPING)){
 
-				enemySeen = true;
+			if (enemyInFOV) {
 
-				notice();
-				state = alignment == Alignment.ALLY ? WANDERING : HUNTING;
-				target = alignment == Alignment.ALLY ? Dungeon.hero.pos : enemy.pos;
+				float enemyStealth = enemy.stealth();
 
-				if (alignment == Alignment.ENEMY && Dungeon.isChallenged( Challenges.SWARM_INTELLIGENCE )) {
-					for (Mob mob : Dungeon.level.mobs) {
-						if (mob.paralysed <= 0
-								&& Dungeon.level.distance(pos, mob.pos) <= 8 //TODO base on pathfinder distance instead?
-								&& mob.state != mob.HUNTING) {
-							mob.beckon( target );
+				if (enemy instanceof Hero && ((Hero) enemy).hasTalent(Talent.LIFE_ON_AXIOM)){
+					if (Dungeon.level.distance(pos, enemy.pos) >= 3 - ((Hero) enemy).pointsInTalent(Talent.LIFE_ON_AXIOM)) {
+						enemyStealth = Float.POSITIVE_INFINITY;
+						if (Dungeon.level.adjacent(pos, enemy.pos)) {
+							if (buff(Talent.LifeOnAxiomTracker.class) != null) {
+								enemyStealth = -distance(enemy);
+								Buff.detach(Mob.this, Talent.LifeOnAxiomTracker.class);
+							} else if (((Hero) enemy).pointsInTalent(Talent.LIFE_ON_AXIOM) == 2) {
+								sprite.showStatus(CharSprite.NEGATIVE, "sus");
+								Buff.affect(Mob.this, Talent.LifeOnAxiomTracker.class, 15);
+							}
 						}
 					}
 				}
 
-				spend( TIME_TO_WAKE_UP );
+				if (Random.Float( distance( enemy ) + enemyStealth ) < 1) {
+					enemySeen = true;
 
-			} else {
+					notice();
+					state = HUNTING;
+					target = enemy.pos;
 
-				PerfumeGas perfume = (PerfumeGas) Dungeon.level.blobs.get(PerfumeGas.class);
+					if (alignment == Alignment.ENEMY && Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) {
+						for (Mob mob : Dungeon.level.mobs) {
+							if (mob.paralysed <= 0
+									&& Dungeon.level.distance(pos, mob.pos) <= 8 //TODO base on pathfinder distance instead?
+									&& mob.state != mob.HUNTING) {
+								mob.beckon(target);
+							}
+						}
+					}
+
+					spend(TIME_TO_WAKE_UP);
+					return true;
+				}
+
+			}
+
+			PerfumeGas perfume = (PerfumeGas) Dungeon.level.blobs.get(PerfumeGas.class);
 				if (perfume != null && !isImmune(PerfumeGas.Affection.class) && buff(PerfumeGas.Aggression.class) == null){
 					state = WANDERING;
 					spend(TIME_TO_WAKE_UP);
 				}
+			spend( TICK );
 
-				spend( TICK );
-
-			}
 			return true;
 		}
 	}
