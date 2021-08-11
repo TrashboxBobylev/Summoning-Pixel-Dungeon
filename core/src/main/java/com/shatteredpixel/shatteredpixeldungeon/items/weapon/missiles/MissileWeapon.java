@@ -24,9 +24,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WandOfStenchGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
@@ -36,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SpeedyShots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
@@ -47,7 +51,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Projec
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
@@ -187,7 +193,16 @@ abstract public class MissileWeapon extends Weapon {
 		Char enemy = Actor.findChar( cell );
 		if (enemy == null || enemy == curUser || curUser.buff(SoulWeakness.class) != null) {
 				parent = null;
-				super.onThrow( cell );
+				if (Dungeon.hero.hasTalent(Talent.PLAGUEBRINGER)){
+					WandOfStenchGas blob = Blob.seed(cell, 15 * tier + level() * 6 * tier, WandOfStenchGas.class);
+					GameScene.add(blob);
+					Sample.INSTANCE.play(Assets.Sounds.BLAST);
+					blob.minDamage = (Dungeon.chapterNumber() + 1)*Dungeon.hero.pointsInTalent(Talent.PLAGUEBRINGER);
+					blob.maxDamage = (Dungeon.chapterNumber() + 1)*Dungeon.hero.pointsInTalent(Talent.PLAGUEBRINGER);
+				}
+				else {
+					super.onThrow( cell );
+				}
 		} else {
 			if (!curUser.shoot( enemy, this )) {
 				rangedMiss( cell );
