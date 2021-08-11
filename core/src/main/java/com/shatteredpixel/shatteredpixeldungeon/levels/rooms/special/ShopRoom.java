@@ -182,8 +182,8 @@ public class ShopRoom extends SpecialRoom {
 
 		itemsToSpawn.add (new Ropes().quantity(Random.Int(1, 4)));
 
-		if (Dungeon.depth % 2 == 0) itemsToSpawn.add( new ScrollOfUpgrade());
-		if (Dungeon.depth % 3 == 0) itemsToSpawn.add( new PotionOfStrength());
+		if (Dungeon.depth % 2 == 0) itemsToSpawn.add( new ScrollOfUpgrade().identify());
+		if (Dungeon.depth % 3 == 0) itemsToSpawn.add( new PotionOfStrength().identify());
 		if (Dungeon.depth % 3 == 0) itemsToSpawn.add(new CleanWater());
 		if (Dungeon.depth % 4 == 0) itemsToSpawn.add( new ElixirOfAttunement());
 		if (Dungeon.depth % 2 == 0) itemsToSpawn.add( Generator.randomMissile());
@@ -207,9 +207,10 @@ public class ShopRoom extends SpecialRoom {
 				break;
 			case 4:
 				rare = Generator.randomArmor();
-			break;
+				break;
 			case 5:
 				rare = Generator.randomStaff();
+				break;
 			default:
 				rare = new Dewdrop();
 		}
