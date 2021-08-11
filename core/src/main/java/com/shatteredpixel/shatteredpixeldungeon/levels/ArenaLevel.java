@@ -273,8 +273,6 @@ public class ArenaLevel extends RegularLevel {
     public void seal() {
         if (entrance != 0) {
 
-            super.seal();
-
             set( entrance, Terrain.CHASM );
             GameScene.updateMap( entrance );
             GameScene.ripple( entrance );
