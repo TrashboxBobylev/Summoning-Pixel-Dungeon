@@ -264,7 +264,7 @@ public abstract class Mob extends Char {
 	}
 
 	//FIXME this is sort of a band-aid correction for allies needing more intelligent behaviour
-	protected boolean intelligentAlly = false;
+	public boolean intelligentAlly = false;
 
 	public boolean canSee(int pos){
 		return fieldOfView[pos];

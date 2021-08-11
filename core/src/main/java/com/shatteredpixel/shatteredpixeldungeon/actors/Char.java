@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DwarfKing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GhostChicken;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
@@ -306,6 +307,14 @@ public abstract class Char extends Actor {
 				}
 			}
 
+			if (!Dungeon.level.heroFOV[enemy.pos] && Dungeon.hero.hasTalent(Talent.UNSIGHTED)){
+				if (this instanceof Mob && ((Mob) this).intelligentAlly){
+					effectiveDamage *= 1 + Dungeon.hero.pointsInTalent(Talent.UNSIGHTED) * 0.1f;
+				} else if (this instanceof Hero){
+					effectiveDamage *= 1 + Dungeon.hero.pointsInTalent(Talent.UNSIGHTED) * 0.2f;
+				}
+			}
+
             LoveHolder.lul buff = Dungeon.hero.buff(LoveHolder.lul.class);
             if (enemy.buff(Knife.SoulGain.class) != null && buff != null && Dungeon.hero.subClass == HeroSubClass.OCCULTIST && this instanceof Hero){
                 int gain = 2;
@@ -538,13 +547,15 @@ public abstract class Char extends Actor {
         if (this.buff(DefenseDebuff.class) != null){
             dmg *= 1.333f;
         }
+        if (src instanceof Wand && !Dungeon.level.heroFOV[pos] && Dungeon.hero.hasTalent(Talent.UNSIGHTED)){
+        	dmg *= 1 + Dungeon.hero.pointsInTalent(Talent.UNSIGHTED)*0.2f;
+		}
 
 		Class<?> srcClass = src.getClass();
 		if (isImmune( srcClass )) {
 			dmg = 0;
 		} else if (isResist( srcClass)){
-		    if (this instanceof Hero) dmg = 1;
-		    else dmg = (int) Math.round( Math.sqrt(dmg));
+		    dmg = (int) Math.round( Math.sqrt(dmg));
 		}
 		
 		//TODO improve this when I have proper damage source logic
