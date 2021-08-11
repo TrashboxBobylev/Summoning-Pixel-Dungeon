@@ -29,8 +29,13 @@ import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Chaosstone;
@@ -39,8 +44,10 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LoopBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.ArenaPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.sewerboss.SewerBossExitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.*;
@@ -206,6 +213,49 @@ public class ArenaLevel extends RegularLevel {
             } while (pos == entrance);
             drop( item, pos ).setHauntedIfCursed().type = Heap.Type.REMAINS;
         }
+
+        DriedRose rose = Dungeon.hero.belongings.getItem( DriedRose.class );
+        if (rose != null && rose.isIdentified() && !rose.cursed){
+            //aim to drop 1 petal every 2 floors
+            int petalsNeeded = (int) Math.ceil((float)((Dungeon.depth / 2) - rose.droppedPetals) / 3);
+
+            for (int i=1; i <= petalsNeeded; i++) {
+                //the player may miss a single petal and still max their rose.
+                if (rose.droppedPetals < 11) {
+                    item = new DriedRose.Petal();
+                    int cell = randomDropCell();
+                    drop( item, cell ).type = Heap.Type.HEAP;
+                    if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
+                        map[cell] = Terrain.GRASS;
+                        losBlocking[cell] = false;
+                    }
+                    rose.droppedPetals++;
+                }
+            }
+        }
+
+        if (Dungeon.hero.hasTalent(Talent.SPECIAL_DELIVERY)){
+            Talent.SpecialDeliveryCount dropped = Buff.affect(Dungeon.hero, Talent.SpecialDeliveryCount.class);
+            if (dropped.count() < 1 + Dungeon.hero.pointsInTalent(Talent.SPECIAL_DELIVERY)){
+                int cell;
+                do {
+                    cell = randomDropCell(SpecialRoom.class);
+                } while (room(cell) instanceof SecretRoom);
+                if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
+                    map[cell] = Terrain.GRASS;
+                    losBlocking[cell] = false;
+                }
+                // give anything that is not gold
+                Item droppy;
+                do {
+                    droppy = Generator.random();
+                } while (droppy instanceof Gold);
+                drop( droppy, cell).type = Heap.Type.CHEST;
+                dropped.countUp(1);
+            }
+        }
+
+        Random.popGenerator();
     }
 
     @Override
