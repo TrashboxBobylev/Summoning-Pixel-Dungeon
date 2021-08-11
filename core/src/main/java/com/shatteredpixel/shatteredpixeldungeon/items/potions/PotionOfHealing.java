@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.HealGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -93,7 +94,7 @@ public class PotionOfHealing extends Potion {
             Sample.INSTANCE.play( Assets.Sounds.SHATTER );
         }
 
-        GameScene.add( Blob.seed( cell, 500, HealGas.class ) );
+        GameScene.add( Blob.seed( cell, 500 + 75*Dungeon.hero.pointsInTalent(Talent.TOXIC_RELATIONSHIP), HealGas.class ) );
     }
 
 	@Override

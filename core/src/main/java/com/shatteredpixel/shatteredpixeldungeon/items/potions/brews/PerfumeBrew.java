@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.PerfumeGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.AlchemicalCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfAffection;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfTargeting;
@@ -48,7 +49,7 @@ public class PerfumeBrew extends Brew {
 			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 		}
 		
-		GameScene.add( Blob.seed( cell, 750, PerfumeGas.class ) );
+		GameScene.add( Blob.seed( cell, 750+113*Dungeon.hero.pointsInTalent(Talent.TOXIC_RELATIONSHIP), PerfumeGas.class ) );
 	}
 	
 	@Override

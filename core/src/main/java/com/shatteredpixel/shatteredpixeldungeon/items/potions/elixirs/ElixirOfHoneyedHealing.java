@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.HoneyGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bee;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
@@ -60,7 +61,7 @@ public class ElixirOfHoneyedHealing extends Elixir {
             splash( cell );
         }
 
-        GameScene.add( Blob.seed( cell, 200, HoneyGas.class ) );
+        GameScene.add( Blob.seed( cell, 200+30*Dungeon.hero.pointsInTalent(Talent.TOXIC_RELATIONSHIP), HoneyGas.class ) );
 
         Char ch = Actor.findChar(cell);
         if (ch != null){

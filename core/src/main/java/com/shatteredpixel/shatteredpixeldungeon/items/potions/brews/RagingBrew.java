@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.AdrenalineGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.AlchemicalCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHaste;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -50,7 +51,7 @@ public class RagingBrew extends Brew {
 			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 		}
 		
-		GameScene.add( Blob.seed( cell, 400, AdrenalineGas.class ) );
+		GameScene.add( Blob.seed( cell, 400+60*Dungeon.hero.pointsInTalent(Talent.TOXIC_RELATIONSHIP), AdrenalineGas.class ) );
 	}
 	
 	@Override

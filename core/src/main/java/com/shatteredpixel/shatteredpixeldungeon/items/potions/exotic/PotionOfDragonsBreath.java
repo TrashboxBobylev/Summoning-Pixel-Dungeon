@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -126,7 +127,7 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 											if (Dungeon.level.adjacent(bolt.sourcePos, cell) && !Dungeon.level.flamable[cell]){
 												adjacentCells.add(cell);
 											} else {
-												GameScene.add( Blob.seed( cell, 5, Fire.class ) );
+												GameScene.add( Blob.seed( cell, 5 + Dungeon.hero.pointsInTalent(Talent.TOXIC_RELATIONSHIP), Fire.class ) );
 											}
 											
 											Char ch = Actor.findChar( cell );

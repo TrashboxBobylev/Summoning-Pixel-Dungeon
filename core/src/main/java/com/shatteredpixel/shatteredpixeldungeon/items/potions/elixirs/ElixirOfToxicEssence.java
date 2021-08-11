@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ToxicImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PoisonParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.AlchemicalCatalyst;
@@ -61,7 +62,7 @@ public class ElixirOfToxicEssence extends Elixir {
 				Char ch = Actor.findChar(i);
 
 				if (ch != null){
-					Buff.affect(ch, Ooze.class).set( Ooze.DURATION );
+					Buff.affect(ch, Ooze.class).set( Ooze.DURATION*(1+0.15f*Dungeon.hero.pointsInTalent(Talent.TOXIC_RELATIONSHIP)) );
 				}
 			}
 		}
