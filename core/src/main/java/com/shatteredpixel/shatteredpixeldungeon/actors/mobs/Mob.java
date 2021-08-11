@@ -857,13 +857,14 @@ public abstract class Mob extends Char {
 			Dungeon.hero.mana = Math.min(Dungeon.hero.mana + gain, Dungeon.hero.maxMana);
 		}
 
-		if (alignment == Alignment.ENEMY && Dungeon.mode != Dungeon.GameMode.GAUNTLET){
+		if (alignment == Alignment.ENEMY){
 			rollToDropLoot();
 
 			if (cause == Dungeon.hero && canBeLethalMomented()){
 				Buff.affect(Dungeon.hero, Talent.LethalMomentumTracker.class, 1f);
 			}
 		}
+
 		else if (Dungeon.mode == Dungeon.GameMode.GAUNTLET && alignment == Alignment.ENEMY){
 			if (this instanceof Thief){
 				if (((Thief) this).item != null) {
@@ -906,7 +907,7 @@ public abstract class Mob extends Char {
 		float lootChance = this.lootChance;
 		lootChance *= RingOfWealth.dropChanceMultiplier( Dungeon.hero );
 
-		if (Random.Float() < lootChance) {
+		if (Random.Float() < lootChance && Dungeon.mode != Dungeon.GameMode.GAUNTLET) {
 			Item loot = createLoot();
 			if (loot != null) {
 				Dungeon.level.drop(loot, pos).sprite.drop();
@@ -914,7 +915,7 @@ public abstract class Mob extends Char {
 		}
 
 		if (this instanceof Monk || this instanceof Warlock){
-			if (Random.Float() < 0.5f * RingOfWealth.dropChanceMultiplier( Dungeon.hero )){
+			if (Random.Float() < 0.5f * RingOfWealth.dropChanceMultiplier( Dungeon.hero ) && Dungeon.mode != Dungeon.GameMode.GAUNTLET){
 				Dungeon.level.drop(new GoldToken(), pos).sprite.drop();
 			}
 		}
