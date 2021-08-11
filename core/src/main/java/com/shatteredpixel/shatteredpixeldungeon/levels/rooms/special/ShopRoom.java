@@ -218,6 +218,28 @@ public class ShopRoom extends SpecialRoom {
 		itemsToSpawn.add( rare );
 		itemsToSpawn.add( new Bomb().random() );
 
+		TimekeepersHourglass hourglass = Dungeon.hero.belongings.getItem(TimekeepersHourglass.class);
+		if (hourglass != null && hourglass.isIdentified() && !hourglass.cursed){
+			int bags = 0;
+			//creates the given float percent of the remaining bags to be dropped.
+			//this way players who get the hourglass late can still max it, usually.
+			switch (Dungeon.depth) {
+				case 8:
+					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.20f ); break;
+				case 16:
+					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.25f ); break;
+				case 24:
+					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.50f ); break;
+				case 32:
+					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.80f ); break;
+			}
+
+			for(int k = 1; k <= bags; k++){
+				itemsToSpawn.add( new TimekeepersHourglass.sandBag());
+				hourglass.sandBags ++;
+			}
+		}
+
 		Random.pushGenerator(Random.Long());
 		Random.shuffle(itemsToSpawn);
 		Random.popGenerator();
