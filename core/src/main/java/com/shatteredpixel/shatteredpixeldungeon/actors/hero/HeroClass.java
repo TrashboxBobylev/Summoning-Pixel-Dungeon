@@ -111,9 +111,6 @@ public enum HeroClass {
 		hero.attunement = 0;
 
 		Talent.initClassTalents(hero);
-		for (int ii = 0; ii < 7; ii++){
-			new PotionOfExperience().apply(hero);
-		}
 
 		if (hero.heroClass != ADVENTURER) {
 			new ScrollOfIdentify().identify();
