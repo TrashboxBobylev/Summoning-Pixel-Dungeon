@@ -26,8 +26,11 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
@@ -35,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
+import com.watabou.utils.Random;
 
 public class WndTradeItem extends WndInfoItem {
 
@@ -69,6 +73,7 @@ public class WndTradeItem extends WndInfoItem {
 		} else {
 
 			int priceAll= item.value();
+			if (Dungeon.hero.hasTalent(Talent.GOOD_INTENTIONS)) priceAll *= 1.33f;
 			RedButton btnSell1 = new RedButton( Messages.get(this, "sell_1", priceAll / item.quantity()) ) {
 				@Override
 				protected void onClick() {
@@ -179,7 +184,7 @@ public class WndTradeItem extends WndInfoItem {
 		//selling items in the sell interface doesn't spend time
 		hero.spend(-hero.cooldown());
 
-		new Gold( item.value() ).doPickUp( hero );
+		new Gold((int) (item.value() * (hero.hasTalent(Talent.GOOD_INTENTIONS) ? 1.33f : 0))).doPickUp( hero );
 	}
 	
 	private void sellOne( Item item ) {
@@ -203,7 +208,13 @@ public class WndTradeItem extends WndInfoItem {
 		
 		Item item = heap.pickUp();
 		if (item == null) return;
-		
+		boolean restock = Dungeon.hero.pointsInTalent(Talent.GOOD_INTENTIONS) > 1 && Random.Int(3) == 0;
+		if (restock){
+			item.quantity(2);
+			CellEmitter.floor(heap.pos).burst(Speck.factory(Speck.COIN), 15);
+			Dungeon.level.drop(item.split(1), heap.pos).type = Heap.Type.FOR_SALE;
+		}
+
 		int price = Shopkeeper.sellPrice( item );
 		Dungeon.gold -= price;
 		

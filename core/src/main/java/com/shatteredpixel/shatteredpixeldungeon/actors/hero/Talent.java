@@ -221,7 +221,7 @@ public enum Talent {
 
         tierTalents.clear();
 
-        Collections.addAll(tierTalents, WELCOME_TO_EARTH, THE_SANDSTORM, TIME_TOGETHER, DIRECTIVE/*, GOOD_INTENTIONS, LIFE_ON_AXIOM, LETHAL_MOMENTUM*/);
+        Collections.addAll(tierTalents, WELCOME_TO_EARTH, THE_SANDSTORM, TIME_TOGETHER, DIRECTIVE, GOOD_INTENTIONS/*, LIFE_ON_AXIOM, LETHAL_MOMENTUM*/);
 
         for (Talent talent : tierTalents){
             talents.get(1).put(talent, 0);
