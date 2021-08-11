@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.GuaranteedEnchant;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
@@ -41,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger2;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -388,6 +390,11 @@ abstract public class Weapon extends KindOfWeapon {
 		
 			
 		public abstract int proc( Weapon weapon, Char attacker, Char defender, int damage );
+
+		public int accountForMissile(Weapon weapon){
+			if (weapon instanceof MissileWeapon && Dungeon.hero.hasTalent(Talent.WILD_SORCERY)) return 2;
+			return 0;
+		}
 
         public int proc(Minion attacker, Char defender, int damage) {
             Weapon wp = new Weapon() {

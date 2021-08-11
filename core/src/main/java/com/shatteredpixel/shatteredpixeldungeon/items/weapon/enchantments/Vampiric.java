@@ -46,8 +46,10 @@ public class Vampiric extends Weapon.Enchantment {
         //healAmt = Math.min( healAmt, attacker.HT - attacker.HP );
 			
         if (attacker.isAlive()) {
+			int level = Math.max( 0, weapon.buffedLvl() );
+			level += accountForMissile(weapon);
 
-            Buff.affect(attacker, Healing.class).setHeal(Math.round(damage / 2.5f) + weapon.level()*2 + 3, 0.25f, 0);
+            Buff.affect(attacker, Healing.class).setHeal(Math.round(damage / 2.5f) + level*2 + 3, 0.25f, 0);
             //attacker.sprite.showStatus( CharSprite.POSITIVE, Integer.toString( healAmt ) );
         }
 

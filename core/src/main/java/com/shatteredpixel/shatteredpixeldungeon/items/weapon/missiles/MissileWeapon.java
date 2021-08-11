@@ -194,7 +194,7 @@ abstract public class MissileWeapon extends Weapon {
 		if (enemy == null || enemy == curUser || curUser.buff(SoulWeakness.class) != null) {
 				parent = null;
 				if (Dungeon.hero.hasTalent(Talent.PLAGUEBRINGER)){
-					WandOfStenchGas blob = Blob.seed(cell, 15 * tier + level() * 6 * tier, WandOfStenchGas.class);
+					WandOfStenchGas blob = Blob.seed(cell, 15 * tier + buffedLvl() * 6 * tier, WandOfStenchGas.class);
 					GameScene.add(blob);
 					Sample.INSTANCE.play(Assets.Sounds.BLAST);
 					blob.minDamage = (Dungeon.chapterNumber() + 1)*Dungeon.hero.pointsInTalent(Talent.PLAGUEBRINGER);
@@ -265,12 +265,20 @@ abstract public class MissileWeapon extends Weapon {
 			Dungeon.hero.buff(Crossbow.DartSpent.class).detach();
 		}
 	}
-	
+
+	@Override
+	public int buffedLvl() {
+		int boost = 0;
+		if (enchantment != null && Dungeon.hero.pointsInTalent(Talent.WILD_SORCERY) == 2) boost = 1;
+		return super.buffedLvl()+boost;
+	}
+
 	protected float durabilityPerUse(){
 		float usages = baseUses * (float)(Math.pow(3, level()));
 		
 		if (Dungeon.hero.heroClass == HeroClass.HUNTRESS)   usages *= 1.5f;
 		if (holster)                                        usages *= MagicalHolster.HOLSTER_DURABILITY_FACTOR;
+		if (enchantment != null || augment != Augment.NONE) usages *= 3f;
 		
 		usages *= RingOfSharpshooting.durabilityMultiplier( Dungeon.hero );
 		
@@ -383,6 +391,15 @@ abstract public class MissileWeapon extends Weapon {
 			info += " " + Messages.get(Weapon.class, "too_heavy");
 		} else if (Dungeon.hero.STR() > STRReq()){
 			info += " " + Messages.get(Weapon.class, "excess_str", Dungeon.hero.STR() - STRReq());
+		}
+		switch (augment) {
+			case SPEED:
+				info += " " + Messages.get(Weapon.class, "faster");
+				break;
+			case DAMAGE:
+				info += " " + Messages.get(Weapon.class, "stronger");
+				break;
+			case NONE:
 		}
 
 		if (enchantment != null && (cursedKnown || !enchantment.curse())){

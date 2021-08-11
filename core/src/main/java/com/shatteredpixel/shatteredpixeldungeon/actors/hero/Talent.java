@@ -64,6 +64,7 @@ public enum Talent {
     IRON_WILL(91),
     UNSIGHTED(92),
     PLAGUEBRINGER(93),
+    WILD_SORCERY(94),
     DOG_BREEDING(82, 3),
     NUCLEAR_RAGE(83, 3),
     SNIPER_PATIENCE(84, 3),
@@ -232,7 +233,7 @@ public enum Talent {
 
         tierTalents.clear();
 
-        Collections.addAll(tierTalents, WELCOME_TO_EARTH, THE_SANDSTORM, TIME_TOGETHER, DIRECTIVE, GOOD_INTENTIONS, LIFE_ON_AXIOM, LETHAL_MOMENTUM, IRON_WILL, UNSIGHTED, PLAGUEBRINGER, SPECIAL_DELIVERY, SPEED_SHOES);
+        Collections.addAll(tierTalents, WELCOME_TO_EARTH, THE_SANDSTORM, TIME_TOGETHER, DIRECTIVE, GOOD_INTENTIONS, LIFE_ON_AXIOM, LETHAL_MOMENTUM, IRON_WILL, UNSIGHTED, PLAGUEBRINGER, WILD_SORCERY, SPEED_SHOES);
 
         for (Talent talent : tierTalents){
             talents.get(1).put(talent, 0);

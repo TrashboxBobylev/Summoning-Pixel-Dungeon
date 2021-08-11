@@ -40,6 +40,7 @@ public class Elastic extends Weapon.Enchantment {
 	@Override
 	public int proc(Weapon weapon, Char attacker, Char defender, int damage ) {
 		int level = Math.max( 0, weapon.buffedLvl() );
+		level += accountForMissile(weapon);
 
 		// lvl 0 - 20%
 		// lvl 1 - 33%
