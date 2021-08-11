@@ -593,6 +593,12 @@ public class Item implements Bundlable {
 									}
 								}
 							}
+							if (user.buff(Talent.LethalMomentumTracker.class) != null){
+								user.buff(Talent.LethalMomentumTracker.class).detach();
+								user.next();
+							} else {
+								user.spendAndNext(delay);
+							}
 						}
 					});
 		} else {

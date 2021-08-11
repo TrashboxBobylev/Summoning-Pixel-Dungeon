@@ -24,6 +24,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
@@ -67,6 +69,9 @@ public class AdrenalineSurge extends Buff {
 
 	@Override
 	public float iconFadePercent() {
+		if (target instanceof Hero && ((Hero) target).heroClass == HeroClass.ROGUE){
+			return Math.max(0, (5 - visualcooldown()) / 5);
+		}
 		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
 	}
 

@@ -138,11 +138,11 @@ public enum Talent {
         public float duration() { return Dungeon.hero.pointsInTalent(WELCOME_TO_EARTH) > 1 ? 50 : 80; }
         public int icon() { return BuffIndicator.SLOW; }
         public void tintIcon(Image icon) { icon.hardlight(0.15f, 0.2f, 0.5f); }
-    };
-    public static class SpecialDeliveryCount extends CounterBuff{};
-    public static class SuckerPunchTracker extends Buff{};
-    public static class AcutenessTracker extends CounterBuff{};
-    public static class DirectiveTracker extends FlavourBuff{};
+    }
+    public static class SpecialDeliveryCount extends CounterBuff{}
+    public static class SuckerPunchTracker extends Buff{}
+    public static class AcutenessTracker extends CounterBuff{}
+    public static class DirectiveTracker extends FlavourBuff{}
     public static class DirectiveMovingTracker extends CounterBuff{
         public int duration() { return Dungeon.hero.pointsInTalent(DIRECTIVE);}
         public float iconFadePercent() { return Math.max(0, 1f - ((count()) / (duration()))); }
@@ -150,14 +150,15 @@ public enum Talent {
         public String desc() { return Messages.get(this, "desc", dispTurns(duration() - (count()))); }
         public int icon() { return BuffIndicator.MOMENTUM; }
         public void tintIcon(Image icon) { icon.hardlight(0.15f, 0.7f, 0.5f); }
-    };
+    }
     public static class LifeOnAxiomTracker extends FlavourBuff{
         public String toString() { return Messages.get(this, "name"); }
         public float iconFadePercent() { return Math.max(0, 1f - (15 / visualcooldown())); }
         public String desc() { return Messages.get(this, "desc", dispTurns(visualcooldown())); }
         public int icon() { return BuffIndicator.RAGE; }
         public void tintIcon(Image icon) { icon.hardlight(0.8f, 0.1f, 0.0f); }
-    };
+    }
+    public static class LethalMomentumTracker extends FlavourBuff{}
 
     public static final int MAX_TALENT_TIERS = 2;
 
@@ -312,5 +313,4 @@ public enum Talent {
             }
         }
     }
-
 }

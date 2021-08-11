@@ -823,6 +823,19 @@ public abstract class Mob extends Char {
 		}
 	}
 
+	public boolean canBeLethalMomented(){
+		if (Dungeon.hero.hasTalent(Talent.LETHAL_MOMENTUM)){
+			switch (Dungeon.hero.pointsInTalent(Talent.LETHAL_MOMENTUM)) {
+				case 1:
+					return surprisedBy(Dungeon.hero);
+				case 2:
+					Buff.affect(Dungeon.hero, AdrenalineSurge.class).reset(2, 4);
+					return true;
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public void die( Object cause ) {
 
@@ -846,6 +859,10 @@ public abstract class Mob extends Char {
 
 		if (alignment == Alignment.ENEMY && Dungeon.mode != Dungeon.GameMode.GAUNTLET){
 			rollToDropLoot();
+
+			if (cause == Dungeon.hero && canBeLethalMomented()){
+				Buff.affect(Dungeon.hero, Talent.LethalMomentumTracker.class, 1f);
+			}
 		}
 		else if (Dungeon.mode == Dungeon.GameMode.GAUNTLET && alignment == Alignment.ENEMY){
 			if (this instanceof Thief){

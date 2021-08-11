@@ -560,6 +560,11 @@ public class Hero extends Char {
 	}
 	
 	public float attackDelay() {
+		if (buff(Talent.LethalMomentumTracker.class) != null){
+			buff(Talent.LethalMomentumTracker.class).detach();
+			return 0;
+		}
+
 		float adrenalineMod = 1f;
 		if ( buff(Adrenaline.class) != null) adrenalineMod = 1.5f;
 		if (belongings.weapon != null) {
