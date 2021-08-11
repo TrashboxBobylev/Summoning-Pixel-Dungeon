@@ -865,7 +865,7 @@ public abstract class Mob extends Char {
 			}
 		}
 
-		else if (Dungeon.mode == Dungeon.GameMode.GAUNTLET && alignment == Alignment.ENEMY){
+		if (Dungeon.mode == Dungeon.GameMode.GAUNTLET && alignment == Alignment.ENEMY){
 			if (this instanceof Thief){
 				if (((Thief) this).item != null) {
 					Dungeon.level.drop( ((Thief) this).item, pos ).sprite.drop();
