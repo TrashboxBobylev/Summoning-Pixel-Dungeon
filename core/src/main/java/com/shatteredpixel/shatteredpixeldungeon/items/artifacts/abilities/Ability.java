@@ -132,6 +132,7 @@ public abstract class Ability extends Artifact {
                 usesTargeting = false;
                 GLog.warning(Messages.get(this, "low_charge"));
             } else {
+                usesTargeting = useTargeting();
                 use(this, hero);
                 }
             }
