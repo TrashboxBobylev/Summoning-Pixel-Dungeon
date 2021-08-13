@@ -105,7 +105,6 @@ public abstract class RegularLevel extends Level {
 
 		//force max standard rooms and multiple by 1.5x for large levels
 		int standards = standardRooms(feeling == Feeling.LARGE || SPDSettings.bigdungeon());
-		standards *= 2;
 		if (Dungeon.mode == Dungeon.GameMode.CHAOS) standards = Random.Int(0, standards*2);
 		if (feeling == Feeling.LARGE && !SPDSettings.smalldungeon()){
 			standards = (int)Math.ceil(standards * 1.5f);
