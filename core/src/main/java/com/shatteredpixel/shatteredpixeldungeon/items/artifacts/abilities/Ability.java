@@ -44,6 +44,7 @@ public abstract class Ability extends Artifact {
         charge = 0;
         partialCharge = 0;
         chargeCap = 100;
+        defaultAction = AC_USE;
     }
 
     public static final String AC_USE = "USE";
@@ -127,12 +128,15 @@ public abstract class Ability extends Artifact {
             if (!isEquipped( hero )) {
                 usesTargeting = false;
                 GLog.warning( Messages.get(this, "not_equipped") );
+            } else if (charge < chargeUse()) {
+                usesTargeting = false;
+                GLog.warning(Messages.get(this, "low_charge"));
             } else {
                 use(this, hero);
+                }
             }
 
         }
-    }
 
     public class Recharge extends ArtifactBuff {
 

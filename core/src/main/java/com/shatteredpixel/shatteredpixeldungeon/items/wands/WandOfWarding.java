@@ -258,7 +258,7 @@ public class WandOfWarding extends Wand {
 
 		}
 
-		private void wandHeal( int wandLevel ){
+		public void wandHeal( int wandLevel ){
 			if (this.wandLevel < wandLevel){
 				this.wandLevel = wandLevel;
 			}

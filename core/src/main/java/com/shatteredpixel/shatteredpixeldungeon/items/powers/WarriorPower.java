@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRage;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class WarriorPower extends Power {
 
@@ -46,7 +45,6 @@ public class WarriorPower extends Power {
         classBuff = TankHeal.class;
         classBuffDuration = 1;
         featuredClass = Minion.MinionClass.DEFENSE;
-        image = ItemSpriteSheet.WARRIOR_POWER;
     }
 
     @Override

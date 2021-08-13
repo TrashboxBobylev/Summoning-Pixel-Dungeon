@@ -851,7 +851,7 @@ public static void add_1_1_1_Changes(ArrayList<ChangeInfo> changeInfos) {
                         "_-_ Shock Bomb have been redesigned into Electrical Explosive, the charging bomb, that electrocutes creatures in 3x3 area. This bomb can break after long using..\n\n" +
                         "_-_ Holy bombs have been redesigned into Holy Grenades, that can be used as small-AoE ranged weapon with medium damage.\n\n" +
                         "_-_ Arcane Bomb have been reworked into Arcane Nuke, which explode in 11x11 with tremendous damage, destroys obstacles and leaves a harmful cloud of miasma."));
-        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WARRIOR_POWER, null), "Power ups!",
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.POWER_HOLDER, null), "Power ups!",
                 "5 different powers have added as ultimate spells. At cost of transumation scroll and other goodies you can make a very powerful item, that affects your enemies, minions and character.\n\n" +
                         "Each power up have different set of effects, so check for alchemy guide!"
         ));

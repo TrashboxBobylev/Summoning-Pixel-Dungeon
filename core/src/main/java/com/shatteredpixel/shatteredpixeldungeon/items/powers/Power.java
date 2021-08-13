@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 import java.util.ArrayList;
 
@@ -47,7 +46,6 @@ public abstract class Power extends Item {
     {
         stackable = true;
         defaultAction = AC_DRINK;
-        image = ItemSpriteSheet.WARRIOR_POWER;
     }
 
     @Override
