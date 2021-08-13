@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.ElementalBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CleanWater;
@@ -213,7 +214,9 @@ public class SummPDChanges {
                         "   Scorpio: 30-40 -> 25-33\n" +
                         "   Ripper Demon: 15-25 -> 13-22"));
         changes.addButton( new ChangeButton(new Image(Assets.Sprites.ROGUE, 0, 90, 12, 15), "Rogue",
-                "Added tier 1 Rogue talents, please leave feedback about their power."));
+                "Added tier 1 and tier 2 Rogue talents, please leave feedback about their power."));
+        changes.addButton(new ChangeButton(new ElementalBlast(),
+                "Added 4 ability items, which replace armor ability concept."));
 
 
         changes = ChangesScene.createChangeInfo(changeInfos, "1.2.1", true, Window.TITLE_COLOR);
