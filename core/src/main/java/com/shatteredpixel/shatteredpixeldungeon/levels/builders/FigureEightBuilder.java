@@ -215,7 +215,7 @@ public class FigureEightBuilder extends RegularBuilder {
 
 		if (shop != null) {
 			float angle;
-			int tries = 10;
+			int tries = 2;
 			do {
 				angle = placeRoom(rooms, entrance, shop, Random.Float(360f));
 				tries--;

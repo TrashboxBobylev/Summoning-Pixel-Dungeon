@@ -42,6 +42,7 @@ public class StripedRoom extends StandardRoom {
 		for (Door door : connected.values()) {
 			door.set( Door.Type.REGULAR );
 		}
+		Painter.fill( level, this, 1, Terrain.EMPTY );
 		
 		if (sizeCat == SizeCategory.NORMAL) {
 			Painter.fill(level, this, 1, Terrain.EMPTY_SP);

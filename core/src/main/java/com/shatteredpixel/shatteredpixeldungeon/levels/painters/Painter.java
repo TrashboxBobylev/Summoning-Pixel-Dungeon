@@ -59,8 +59,10 @@ public abstract class Painter {
 		int width = level.width();
 		
 		int pos = y * width + x;
-		for (int i=y; i < y + h; i++, pos += width) {
-			Arrays.fill( level.map, pos, pos + w, value );
+		if (pos + w > pos) {
+			for (int i = y; i < y + h; i++, pos += width) {
+				Arrays.fill(level.map, pos, pos + w, value);
+			}
 		}
 	}
 	

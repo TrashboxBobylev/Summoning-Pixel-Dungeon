@@ -185,7 +185,6 @@ public abstract class RegularPainter extends Painter {
 
 		for (Room r : rooms) {
 			for (Room n : r.connected.keySet()) {
-
 				//normal sized rooms can be merged at most once. Large and Giant rooms can be merged many times
 				if (roomMerges.get(r) == n || roomMerges.get(n) == r){
 					continue;

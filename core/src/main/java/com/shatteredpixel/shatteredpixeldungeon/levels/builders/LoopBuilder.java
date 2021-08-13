@@ -101,6 +101,7 @@ public class LoopBuilder extends RegularBuilder {
 			if (tunnels == -1){
 				pathTunnels = pathTunnelChances.clone();
 				tunnels = Random.chances(pathTunnels);
+				if (tunnels == -1) tunnels = 1;
 			}
 			pathTunnels[tunnels]--;
 

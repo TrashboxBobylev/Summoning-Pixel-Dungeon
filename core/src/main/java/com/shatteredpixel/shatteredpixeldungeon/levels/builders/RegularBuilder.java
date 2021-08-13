@@ -183,6 +183,9 @@ public abstract class RegularBuilder extends Builder {
 			if (connectingRooms == -1){
 				connectionChances = connChances.clone();
 				connectingRooms = Random.chances(connectionChances);
+				if (connectingRooms == -1){
+					connectingRooms = 1;
+				}
 			}
 			connectionChances[connectingRooms]--;
 
@@ -215,7 +218,7 @@ public abstract class RegularBuilder extends Builder {
 				continue;
 			}
 
-			tries = 10;
+			tries = 2;
 
 			do {
 				angle = placeRoom(rooms, curr, r, randomBranchAngle(curr));

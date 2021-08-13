@@ -131,7 +131,7 @@ public class Patch {
 				do {
 					cell = Random.Int(1, w - 1) + Random.Int(1, h - 1) * w;
 					tries++;
-				} while (off[cell] != growing && tries * 10 < length);
+				} while (off[cell] != growing && tries * 3 < length);
 
 				for (int i : neighbours) {
 					if (fillDiff != 0 && off[cell + i] != growing) {

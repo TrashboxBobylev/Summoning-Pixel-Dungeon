@@ -37,6 +37,15 @@ public class CellBlockRoom extends StandardRoom {
 		return new float[]{0, 6, 3, 1};
 	}
 
+	//cannot roll even numbers
+	@Override
+	public Rect resize(int w, int h) {
+		super.resize(w, h);
+		if (width() % 2 == 0) right++;
+		if (height() % 2 == 0) bottom++;
+		return this;
+	}
+
 	@Override
 	public void paint(Level level) {
 		Painter.fill( level, this, Terrain.WALL );

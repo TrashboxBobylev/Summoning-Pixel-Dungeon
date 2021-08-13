@@ -45,7 +45,7 @@ public class SegmentedRoom extends StandardRoom {
 	
 	@Override
 	public float[] sizeCatProbs() {
-		return new float[]{18, 7, 2, 1};
+		return new float[]{18, 7, 2, 0};
 	}
 
 	@Override
@@ -61,14 +61,15 @@ public class SegmentedRoom extends StandardRoom {
 		
 		createWalls( level, new Rect(left+1, top+1, right-1, bottom-1));
 	}
-	
+
+	//why do you not work?
 	private void createWalls( Level level, Rect area ){
 		if (Math.max(area.width()+1, area.height()+1) < 5
 				|| Math.min(area.width()+1, area.height()+1) < 3){
 			return;
 		}
 		
-		int tries = 1000;
+		int tries = 4;
 		
 		//splitting top/bottom
 		if (area.width() > area.height() || (area.width() == area.height() && Random.Int(2) == 0)){

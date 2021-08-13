@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.services.updates.Updates;
 import com.shatteredpixel.shatteredpixeldungeon.ui.*;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndError;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
 import com.watabou.gltextures.TextureCache;
@@ -41,6 +42,7 @@ import com.watabou.glwrap.Blending;
 import com.watabou.noosa.*;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.FileUtils;
+import com.watabou.utils.Random;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -318,8 +320,8 @@ public class InterlevelScene extends PixelScene {
 				} );
 				thread = null;
 				error = null;
-			} else if (thread != null && (int)waitingTime == 20){
-				waitingTime = 20f;
+			} else if (thread != null && (int)waitingTime == 3){
+				waitingTime = 3f;
 				String s = "";
 				for (StackTraceElement t : thread.getStackTrace()){
 					s += "\n";
@@ -331,6 +333,10 @@ public class InterlevelScene extends PixelScene {
 								s)
 				);
 				FileUtils.deleteFile(GamesInProgress.depthFile(GamesInProgress.curSlot, Dungeon.depth));
+				if (Dungeon.mode == Dungeon.GameMode.CHAOS) {
+					Dungeon.seed = DungeonSeed.randomSeed();
+					Random.resetGenerators();
+				}
 				Game.resetScene();
 
 			}
