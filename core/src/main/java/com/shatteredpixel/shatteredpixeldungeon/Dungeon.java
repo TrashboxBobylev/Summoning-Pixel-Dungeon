@@ -358,6 +358,11 @@ public class Dungeon {
 	public static int chapterNumber(){
 		return Math.max(depth / chapterSize(), 0);
 	}
+
+	// returns the depth if it is always in normal mode
+	public static int scaledDepth(){
+		return Math.round(depth * 1f / Dungeon.chapterSize() * 5f);
+	}
 	
 	public static boolean bossLevel( int depth ) {
 		return depth % Dungeon.chapterSize() == 0;

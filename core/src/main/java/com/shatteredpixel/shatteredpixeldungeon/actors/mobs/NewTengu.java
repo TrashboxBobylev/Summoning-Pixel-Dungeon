@@ -1066,7 +1066,7 @@ public class NewTengu extends Mob {
 							
 							Char ch = Actor.findChar(cell);
 							if (ch != null && !(ch instanceof NewTengu)){
-								ch.damage(2 + Dungeon.chapterNumber(), new Electricity());
+								ch.damage(2 + Dungeon.scaledDepth(), new Electricity());
 								
 								if (ch == Dungeon.hero && !ch.isAlive()) {
 									Dungeon.fail(NewTengu.class);

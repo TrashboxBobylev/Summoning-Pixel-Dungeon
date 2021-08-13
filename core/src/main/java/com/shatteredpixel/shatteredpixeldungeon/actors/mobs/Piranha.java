@@ -64,8 +64,8 @@ public class Piranha extends Mob {
 	public Piranha() {
 		super();
 		
-		HP = HT = 10 + Dungeon.chapterNumber()*5;
-		defenseSkill = 10 + Dungeon.chapterNumber()*5;
+		HP = HT = 10 + Dungeon.scaledDepth()*5;
+		defenseSkill = 10 + Dungeon.scaledDepth()*5;
 	}
 	
 	@Override
@@ -81,12 +81,12 @@ public class Piranha extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( Dungeon.depth, 4 + Dungeon.depth * 2 * 5 / Dungeon.chapterSize() );
+		return Random.NormalIntRange( Dungeon.scaledDepth(), 4 + Dungeon.scaledDepth() * 2 );
 	}
 	
 	@Override
 	public int attackSkill( Char target ) {
-		return 20 + Dungeon.depth * 2 * 5 / Dungeon.chapterSize();
+		return 20 + Dungeon.scaledDepth() * 2;
 	}
 	
 	@Override
