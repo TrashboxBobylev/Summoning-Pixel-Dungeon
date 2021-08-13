@@ -45,7 +45,7 @@ public class RoguePower extends Power {
         classBuff = GuaranteedEnchant.class;
         classBuffDuration = 5;
         featuredClass = Minion.MinionClass.MELEE;
-        image = ItemSpriteSheet.ROGUE_POWER;
+        image = ItemSpriteSheet.HEROIC_LEAP;
     }
 
     @Override

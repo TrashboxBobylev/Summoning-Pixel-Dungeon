@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.ElementalBlast;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.HeroicLeap;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Heal;
@@ -167,6 +168,7 @@ public enum HeroClass {
 		(hero.belongings.artifact = blast).identify();
 		blast.charge = 50;
 		hero.belongings.artifact.activate( hero );
+		new HeroicLeap().collect();
 
 		Dungeon.quickslot.setSlot(0, staff);
 		Dungeon.quickslot.setSlot(1, blast);

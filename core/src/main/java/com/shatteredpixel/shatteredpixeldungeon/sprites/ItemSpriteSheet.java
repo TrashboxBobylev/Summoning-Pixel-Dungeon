@@ -820,7 +820,7 @@ public class ItemSpriteSheet {
 	}
 	private static final int POWERS =                                   xy(1, 30);
 	public static final int ELEMENTAL_BLAST = POWERS+0;
-    public static final int ROGUE_POWER = POWERS+1;
+    public static final int HEROIC_LEAP = POWERS+1;
     public static final int MAGIC_POWER = POWERS+2;
     public static final int RANGE_POWER = POWERS+3;
     public static final int CONJURER_POWER = POWERS+4;
