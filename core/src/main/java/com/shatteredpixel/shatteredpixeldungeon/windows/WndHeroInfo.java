@@ -166,6 +166,7 @@ public class WndHeroInfo extends WndTabbed {
                     break;
                 case MAGE:
                     icons = new Image[]{ new ItemSprite(ItemSpriteSheet.MAGES_STAFF),
+                            new ItemSprite(ItemSpriteSheet.ELEMENTAL_BLAST),
                             new ItemSprite(ItemSpriteSheet.WAND_HOLDER),
                             Icons.get(Icons.ADVENTURER),
                             new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
