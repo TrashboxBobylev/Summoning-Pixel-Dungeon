@@ -127,6 +127,15 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 		}
 		return step;
 	}
+
+	public ArrayList<Point> points(int m){
+		ArrayList<Point> points = new ArrayList<>();
+		for (int i = left+m; i < right+1-m; i++)
+			for (int j = top+m; i < bottom+1-m; j++)
+				points.add(new Point(i, j));
+
+		return points;
+	}
 	
 	//Width and height are increased by 1 because rooms are inclusive to their right and bottom sides
 	@Override

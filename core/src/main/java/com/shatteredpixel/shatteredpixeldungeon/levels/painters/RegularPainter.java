@@ -39,7 +39,6 @@ import com.watabou.noosa.Game;
 import com.watabou.utils.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public abstract class RegularPainter extends Painter {
@@ -70,9 +69,6 @@ public abstract class RegularPainter extends Painter {
 		nTraps = num;
 		trapClasses = (Class<? extends Trap>[]) classes;
 		trapChances = chances;
-		if (Dungeon.mode == Dungeon.GameMode.CHAOS){
-			Arrays.fill(trapChances, 1);
-		}
 		return this;
 	}
 
@@ -195,10 +191,8 @@ public abstract class RegularPainter extends Painter {
 					continue;
 				} else if (!roomMerges.containsKey(r) && !roomMerges.containsKey(n) &&
 						mergeRooms(l, r, n, r.connected.get(n), Terrain.EMPTY)) {
-					if (Dungeon.mode != Dungeon.GameMode.CHAOS) {
-						if (((StandardRoom) r).sizeCat == StandardRoom.SizeCategory.NORMAL) roomMerges.put(r, n);
-						if (((StandardRoom) n).sizeCat == StandardRoom.SizeCategory.NORMAL) roomMerges.put(n, r);
-					}
+					if (((StandardRoom) r).sizeCat == StandardRoom.SizeCategory.NORMAL) roomMerges.put(r, n);
+					if (((StandardRoom) n).sizeCat == StandardRoom.SizeCategory.NORMAL) roomMerges.put(n, r);
 					continue;
 				}
 

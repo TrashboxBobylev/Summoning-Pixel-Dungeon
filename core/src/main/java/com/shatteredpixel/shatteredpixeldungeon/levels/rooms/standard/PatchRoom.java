@@ -36,6 +36,8 @@ public abstract class PatchRoom extends StandardRoom {
 	protected boolean[] patch;
 
 	protected void setupPatch(Level level, float fill, int clustering, boolean ensurePath){
+		while (fill > .9f) fill /= 1.5f;
+		if (fill < 0) fill = -fill;
 
 		if (ensurePath){
 			PathFinder.setMapSize(width()-2, height()-2);

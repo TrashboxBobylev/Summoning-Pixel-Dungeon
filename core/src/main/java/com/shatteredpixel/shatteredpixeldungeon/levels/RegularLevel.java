@@ -45,6 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.FigureEightBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LoopBuilder;
+import com.shatteredpixel.shatteredpixeldungeon.levels.builders.RegularBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
@@ -77,6 +78,10 @@ public abstract class RegularLevel extends Level {
 	protected boolean build() {
 		
 		builder = builder();
+
+		if (Dungeon.mode == Dungeon.GameMode.BIGGER && builder instanceof RegularBuilder){
+			((RegularBuilder) builder).setExtraConnectionChance(1f);
+		}
 		
 		ArrayList<Room> initRooms = initRooms();
 		Random.shuffle(initRooms);
