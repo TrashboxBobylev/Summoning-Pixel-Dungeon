@@ -32,7 +32,7 @@ import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public abstract class StandardRoom extends Room {
 	
@@ -125,67 +125,129 @@ public abstract class StandardRoom extends Room {
 		return sizeCat.maxDim26;
 	}
 
-	//FIXME this is a very messy way of handing variable standard rooms
-	private static ArrayList<Class<?extends StandardRoom>> rooms = new ArrayList<>();
+	private static HashMap<Class<?extends StandardRoom>, Float> sewerSet = new HashMap<>();
 	static {
-		rooms.add(EmptyRoom.class);
-
-
-		rooms.add(SewerPipeRoom.class);
-		rooms.add(RingRoom.class);
-		rooms.add(CircleBasinRoom.class);
-
-		rooms.add(SegmentedRoom.class);
-		rooms.add(PillarsRoom.class);
-		rooms.add(CellBlockRoom.class);
-
-		rooms.add(CaveRoom.class);
-		rooms.add(CavesFissureRoom.class);
-		rooms.add(CirclePitRoom.class);
-
-		rooms.add(HallwayRoom.class);
-		rooms.add(StatuesRoom.class);
-		rooms.add(SegmentedLibraryRoom.class);
-
-		rooms.add(RuinsRoom.class);
-		rooms.add(ChasmRoom.class);
-		rooms.add(SkullsRoom.class);
-
-
-		rooms.add(PlantsRoom.class);
-		rooms.add(AquariumRoom.class);
-		rooms.add(PlatformRoom.class);
-		rooms.add(BurnedRoom.class);
-		rooms.add(FissureRoom.class);
-		rooms.add(GrassyGraveRoom.class);
-		rooms.add(StripedRoom.class);
-		rooms.add(StudyRoom.class);
-		rooms.add(SuspiciousChestRoom.class);
-		rooms.add(MinefieldRoom.class);
+		sewerSet.put(EmptyRoom.class, 15f);
+		sewerSet.put(SewerPipeRoom.class, 10f);
+		sewerSet.put(RingRoom.class, 10f);
+		sewerSet.put(CircleBasinRoom.class, 5f);
 	}
-	
-	private static float[][] chances = new float[1000][];
-	static void setChances() {
-		for (int i = 0; i <= Dungeon.chapterSize(); i++){
-			chances[i] = new float[]{15, 10, 10, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0};
-		}
-		for (int i = Dungeon.chapterSize()+1; i <= Dungeon.chapterSize()*2; i++){
-			chances[i] = new float[]{15, 0, 0, 0, 10, 10, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0};
-		}
-		for (int i = Dungeon.chapterSize()*2+1; i <= Dungeon.chapterSize()*3; i++){
-			chances[i] = new float[]{20, 0, 0, 0, 0, 0, 0, 10, 10, 5, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0};
-		}
-		for (int i = Dungeon.chapterSize()*3+1; i <= Dungeon.chapterSize()*4; i++){
-			chances[i] = new float[]{15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, 5, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0};
-		}
-		for (int i = Dungeon.chapterSize()*4+1; i <= Dungeon.chapterSize()*5+1; i++){
-			chances[i] = new float[]{15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, 5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0};
-		}
-		chances[1] = new float[]{15, 10, 10, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0};
-		chances[Dungeon.chapterSize()] = new float[]{15, 10, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-	}
+
+	private static HashMap<Class<?extends StandardRoom>, Float> prisonSet = new HashMap<>();
 	static {
-		setChances();
+		prisonSet.put(EmptyRoom.class, 15f);
+		prisonSet.put(SegmentedRoom.class, 10f);
+		prisonSet.put(PillarsRoom.class, 10f);
+		prisonSet.put(CellBlockRoom.class, 5f);
+	}
+
+	private static HashMap<Class<?extends StandardRoom>, Float> cavesSet = new HashMap<>();
+	static {
+		cavesSet.put(EmptyRoom.class, 20f);
+		cavesSet.put(CaveRoom.class, 10f);
+		cavesSet.put(CavesFissureRoom.class, 10f);
+		cavesSet.put(CirclePitRoom.class, 5f);
+	}
+
+	private static HashMap<Class<?extends StandardRoom>, Float> dwarvesSet = new HashMap<>();
+	static {
+		dwarvesSet.put(EmptyRoom.class, 15f);
+		dwarvesSet.put(HallwayRoom.class, 10f);
+		dwarvesSet.put(StatuesRoom.class, 10f);
+		dwarvesSet.put(SegmentedLibraryRoom.class, 5f);
+	}
+
+	private static HashMap<Class<?extends StandardRoom>, Float> hallsSet = new HashMap<>();
+	static {
+		hallsSet.put(EmptyRoom.class, 15f);
+		hallsSet.put(RuinsRoom.class, 10f);
+		hallsSet.put(ChasmRoom.class, 10f);
+		hallsSet.put(SkullsRoom.class, 5f);
+	}
+
+	private static HashMap<Class<?extends StandardRoom>, Float> chaosSet = new HashMap<>();
+	static {
+		chaosSet.put(EmptyRoom.class, 1f);
+
+		chaosSet.put(SewerPipeRoom.class, 1f);
+		chaosSet.put(RingRoom.class, 1f);
+		chaosSet.put(CircleBasinRoom.class, 1f);
+
+		chaosSet.put(SegmentedRoom.class, 1f);
+		chaosSet.put(PillarsRoom.class, 1f);
+		chaosSet.put(CellBlockRoom.class, 1f);
+
+		chaosSet.put(CaveRoom.class, 1f);
+		chaosSet.put(CavesFissureRoom.class, 1f);
+		chaosSet.put(CirclePitRoom.class, 1f);
+
+		chaosSet.put(HallwayRoom.class, 1f);
+		chaosSet.put(StatuesRoom.class, 1f);
+		chaosSet.put(SegmentedLibraryRoom.class, 1f);
+
+		chaosSet.put(RuinsRoom.class, 1f);
+		chaosSet.put(ChasmRoom.class, 1f);
+		chaosSet.put(SkullsRoom.class, 1f);
+	}
+
+	private static HashMap[] allSets = {sewerSet, prisonSet, cavesSet, dwarvesSet, hallsSet, chaosSet};
+	static {
+		for (HashMap<Class<?extends StandardRoom>, Float> set: allSets){
+			set.put(PlantsRoom.class, 1f);
+			set.put(AquariumRoom.class, 1f);
+			set.put(PlatformRoom.class, 1f);
+			set.put(BurnedRoom.class, 1f);
+			set.put(FissureRoom.class, 1f);
+			set.put(GrassyGraveRoom.class, 1f);
+			set.put(StripedRoom.class, 1f);
+			set.put(StudyRoom.class, 1f);
+			set.put(SuspiciousChestRoom.class, 1f);
+			set.put(MinefieldRoom.class, 1f);
+		}
+	}
+
+	private static HashMap<Class<?extends StandardRoom>, Float> firstDepthSet = new HashMap<>();
+	static {
+		firstDepthSet.put(EmptyRoom.class, 15f);
+		firstDepthSet.put(SewerPipeRoom.class, 10f);
+		firstDepthSet.put(RingRoom.class, 10f);
+		firstDepthSet.put(CircleBasinRoom.class, 5f);
+		firstDepthSet.put(PlantsRoom.class, 1f);
+		firstDepthSet.put(PlatformRoom.class, 1f);
+		firstDepthSet.put(FissureRoom.class, 1f);
+		firstDepthSet.put(StripedRoom.class, 1f);
+		firstDepthSet.put(StudyRoom.class, 1f);
+	}
+
+	private static HashMap<Class<?extends StandardRoom>, Float> bossSet = new HashMap<>();
+	static {
+		bossSet.put(EmptyRoom.class, 15f);
+		bossSet.put(SewerPipeRoom.class, 10f);
+		bossSet.put(RingRoom.class, 10f);
+	}
+
+	private static HashMap<Class<?extends StandardRoom>, Float> getFloorRooms(int depth){
+		if (Dungeon.mode == Dungeon.GameMode.CHAOS) return chaosSet;
+		if (depth == 1) return firstDepthSet;
+		if (depth == Dungeon.chapterSize()) return bossSet;
+		if (depth > 0 && depth <= Dungeon.chapterSize()){
+			return sewerSet;
+		}
+		else if (depth <= Dungeon.chapterSize()*2){
+			return prisonSet;
+		}
+		else if (depth <= Dungeon.chapterSize()*3){
+			return cavesSet;
+		}
+		else if (depth <= Dungeon.chapterSize()*4){
+			return dwarvesSet;
+		}
+		else if (depth <= Dungeon.chapterSize()*5){
+			return hallsSet;
+		}
+		else {
+			return chaosSet;
+		}
 	}
 	
 	
@@ -193,12 +255,9 @@ public abstract class StandardRoom extends Room {
 		if (Dungeon.mode == Dungeon.GameMode.GAUNTLET){
 			return Reflection.newInstance(EmptyRoom.class);
 		}
-		setChances();
-		if (Dungeon.depth >= Dungeon.chapterSize()*5 || Dungeon.mode == Dungeon.GameMode.CHAOS){
-			float[] chance = new float[]{1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
-			return Reflection.newInstance(rooms.get(Random.chances(chance)));
-		}
-		else return Reflection.newInstance(rooms.get(Random.chances(chances[Dungeon.depth])));
+
+		HashMap<Class<?extends StandardRoom>, Float> rooms = getFloorRooms(Dungeon.depth);
+		return Reflection.newInstance(Random.chances(rooms));
 	}
 	
 }
