@@ -43,7 +43,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfAttunement;
-import com.shatteredpixel.shatteredpixeldungeon.items.powers.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CleanWater;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
@@ -253,7 +252,6 @@ public class ShopRoom extends SpecialRoom {
 
 		ArrayList<Item> itemsToSpawn = new ArrayList<>();
 		Item i;
-        Item[] powers = {new WarriorPower(), new RoguePower(), new MagePower(), new RangePower(), new ConjurerPower()};
 		if ((SPDSettings.bigdungeon() && Dungeon.depth == 5) || Dungeon.depth == Dungeon.chapterSize() + 1) {
 
 			do {
@@ -271,8 +269,6 @@ public class ShopRoom extends SpecialRoom {
 			i.cursed = false;
 			i.upgrade(1).identify();
 			itemsToSpawn.add(i);
-
-			itemsToSpawn.add(Random.element(powers));
 		}
 
 		if ((SPDSettings.bigdungeon() && Dungeon.depth == 15) || Dungeon.depth == Dungeon.chapterSize()*3 + 1) {
@@ -298,8 +294,6 @@ public class ShopRoom extends SpecialRoom {
             }
 			itemsToSpawn.add( new Torch() );
             itemsToSpawn.add(new CleanWater());
-
-            itemsToSpawn.add(Random.element(powers));
 		}
 
 		if (Random.Float() < 0.6) itemsToSpawn.add(ChooseShopWeapon());

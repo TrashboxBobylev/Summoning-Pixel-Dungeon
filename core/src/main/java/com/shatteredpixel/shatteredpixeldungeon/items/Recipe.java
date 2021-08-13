@@ -26,6 +26,9 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.HeroicLeap;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.SmokeBomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.SpectralBlades;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MeatPie;
@@ -37,13 +40,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.RagingBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.ShockingBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
-import com.shatteredpixel.shatteredpixeldungeon.items.powers.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Broadsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
@@ -187,6 +190,9 @@ public abstract class Recipe {
         new Enrage.Recipe(),
 		new StewedMeat.twoMeat(),
 		new EnchantParchment.Recipe(),
+		new HeroicLeap.Recipe(),
+		new SmokeBomb.Recipe(),
+		new SpectralBlades.Recipe(),
         new Broadsword.Recipe()
 	};
 
@@ -210,11 +216,6 @@ public abstract class Recipe {
 		new ExoticScroll.ScrollToExotic(),
 		new StewedMeat.threeMeat(),
 		new MeatPie.Recipe(),
-        new WarriorPower.Recipe(),
-        new RoguePower.Recipe(),
-        new MagePower.Recipe(),
-        new RangePower.Recipe(),
-        new ConjurerPower.Recipe(),
             new PerfumeBrew.Recipe(),
             new Contain.Recipe(),
 	};
@@ -248,7 +249,7 @@ public abstract class Recipe {
 	
 	public static boolean usableInRecipe(Item item){
 		return !item.cursed
-				&& (item instanceof WornShortsword || !(item instanceof EquipableItem) || (item instanceof AlchemistsToolkit && item.isIdentified()))
+				&& (item instanceof WornShortsword || item instanceof Shuriken || !(item instanceof EquipableItem) || (item instanceof AlchemistsToolkit && item.isIdentified()))
 				&& !(item instanceof Wand);
 	}
 }

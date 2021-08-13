@@ -29,6 +29,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.Ropes;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -101,4 +103,18 @@ public class HeroicLeap extends Ability {
 
     public static class DoubleJumpTracker extends FlavourBuff{};
     public static class TripleJumpTracker extends FlavourBuff{};
+
+    public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
+
+        {
+            inputs =  new Class[]{Ropes.class, ScrollOfUpgrade.class};
+            inQuantity = new int[]{1, 1};
+
+            cost = 7;
+
+            output = HeroicLeap.class;
+            outQuantity = 1;
+        }
+
+    }
 }

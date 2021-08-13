@@ -29,6 +29,9 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.HeroicLeap;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.SmokeBomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.SpectralBlades;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.AlchemicalCatalyst;
@@ -38,7 +41,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.RagingBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.ShockingBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
-import com.shatteredpixel.shatteredpixeldungeon.items.powers.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.*;
@@ -340,11 +342,9 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe(new Recycle.Recipe()));
 				return result;
             case 9:
-                result.add(new QuickRecipe(new WarriorPower.Recipe()));
-                result.add(new QuickRecipe(new RoguePower.Recipe()));
-                result.add(new QuickRecipe(new MagePower.Recipe()));
-                result.add(new QuickRecipe(new RangePower.Recipe()));
-                result.add(new QuickRecipe(new ConjurerPower.Recipe()));
+				result.add(new QuickRecipe(new HeroicLeap.Recipe()));
+				result.add(new QuickRecipe(new SmokeBomb.Recipe()));
+				result.add(new QuickRecipe(new SpectralBlades.Recipe()));
                 return result;
 		}
 	}

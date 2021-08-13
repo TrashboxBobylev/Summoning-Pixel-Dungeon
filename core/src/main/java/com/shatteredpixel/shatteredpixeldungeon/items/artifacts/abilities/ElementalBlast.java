@@ -124,7 +124,7 @@ public class ElementalBlast extends Ability {
             return;
         }
 
-        int aoeSize = 5;
+        int aoeSize = 4;
 
         int projectileProps = Ballistica.STOP_SOLID | Ballistica.STOP_TARGET;
 
