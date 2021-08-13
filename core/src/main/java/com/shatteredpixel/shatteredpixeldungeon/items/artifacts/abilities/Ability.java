@@ -108,10 +108,10 @@ public abstract class Ability extends Artifact {
         return true;
     }
 
-    @Override
-    public boolean isUpgradable() {
-        return level() < 2;
-    }
+//    @Override
+//    public boolean isUpgradable() {
+//        return level() < 2;
+//    }
 
     @Override
     public String status() {
