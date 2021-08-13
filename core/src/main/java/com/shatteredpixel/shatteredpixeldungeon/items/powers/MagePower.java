@@ -48,7 +48,7 @@ public class MagePower extends Power {
         classBuff = MagicPower.class;
         classBuffDuration = 8;
         featuredClass = Minion.MinionClass.MAGIC;
-        image = ItemSpriteSheet.MAGIC_POWER;
+        image = ItemSpriteSheet.SMOKE_BOMB;
     }
 
     @Override
