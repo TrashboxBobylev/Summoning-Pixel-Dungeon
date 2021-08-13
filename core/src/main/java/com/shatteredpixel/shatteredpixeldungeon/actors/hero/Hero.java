@@ -1556,11 +1556,20 @@ public class Hero extends Char {
 			Badges.validateLevelReached();
 		}
 	}
+
+	public float expMod(){
+		switch (Dungeon.mode){
+			case BIGGER:
+				return 1.5f;
+			case GAUNTLET:
+				return 1.25f;
+			default:
+				return 1.0f;
+		}
+	}
 	
 	public int maxExp() {
-		if (Dungeon.mode == Dungeon.GameMode.BIGGER || Dungeon.mode == Dungeon.GameMode.GAUNTLET)
-			return maxExp(lvl) * 3 / 2;
-		return maxExp( lvl );
+		return Math.round(maxExp( lvl )*expMod());
 	}
 	
 	public static int maxExp( int lvl ){
