@@ -829,8 +829,10 @@ public abstract class Mob extends Char {
 				case 1:
 					return surprisedBy(Dungeon.hero);
 				case 2:
-					Buff.affect(Dungeon.hero, AdrenalineSurge.class).reset(2, 4);
-					return true;
+					if (surprisedBy(Dungeon.hero)) {
+						Buff.affect(Dungeon.hero, AdrenalineSurge.class).reset(2, 4);
+						return surprisedBy(Dungeon.hero);
+					}
 			}
 		}
 		return false;
