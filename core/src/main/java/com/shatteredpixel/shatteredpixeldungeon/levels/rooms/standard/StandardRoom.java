@@ -147,9 +147,10 @@ public abstract class StandardRoom extends Room {
 	static {
 		cavesSet.put(EmptyRoom.class, 15f);
 		cavesSet.put(CircleRoom.class, 15f);
-		cavesSet.put(CaveRoom.class, 10f);
-		cavesSet.put(CavesFissureRoom.class, 10f);
-		cavesSet.put(CirclePitRoom.class, 5f);
+		cavesSet.put(CaveRoom.class, 7f);
+		cavesSet.put(CavesFissureRoom.class, 7f);
+		cavesSet.put(BarricadeRoom.class, 7f);
+		cavesSet.put(CirclePitRoom.class, 7f);
 	}
 
 	private static HashMap<Class<?extends StandardRoom>, Float> dwarvesSet = new HashMap<>();
@@ -184,6 +185,7 @@ public abstract class StandardRoom extends Room {
 		chaosSet.put(CellBlockRoom.class, 1f);
 
 		chaosSet.put(CaveRoom.class, 1f);
+		chaosSet.put(BarricadeRoom.class, 1f);
 		chaosSet.put(CavesFissureRoom.class, 1f);
 		chaosSet.put(CirclePitRoom.class, 1f);
 
@@ -217,7 +219,7 @@ public abstract class StandardRoom extends Room {
 		firstDepthSet.put(EmptyRoom.class, 15f);
 		firstDepthSet.put(SewerPipeRoom.class, 10f);
 		firstDepthSet.put(RingRoom.class, 10f);
-		firstDepthSet.put(CircleRoom.class, 7f);
+		firstDepthSet.put(CircleRoom.class, 10f);
 		firstDepthSet.put(CircleBasinRoom.class, 5f);
 		firstDepthSet.put(PlantsRoom.class, 1f);
 		firstDepthSet.put(PlatformRoom.class, 1f);
