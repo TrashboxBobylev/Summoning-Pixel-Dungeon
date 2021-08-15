@@ -824,8 +824,10 @@ public class ItemSpriteSheet {
     public static final int SMOKE_BOMB = POWERS+2;
     public static final int RANGE_POWER = POWERS+3;
     public static final int CONJURER_POWER = POWERS+4;
+    public static final int REVENGE_WAVES = POWERS+5;
+    public static final int TARGET_SUPPORT = POWERS+6;
     static {
-        for (int i = 0; i < 5; i++){
+        for (int i = 0; i < 15; i++){
             assignItemRect(POWERS+i, 14, 14);
         }
     }

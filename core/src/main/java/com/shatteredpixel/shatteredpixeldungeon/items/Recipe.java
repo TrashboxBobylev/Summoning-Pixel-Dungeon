@@ -26,10 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.HeroicLeap;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Overload;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.SmokeBomb;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.SpectralBlades;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MeatPie;
@@ -195,6 +192,7 @@ public abstract class Recipe {
 		new SmokeBomb.Recipe(),
 		new SpectralBlades.Recipe(),
 		new Overload.Recipe(),
+		new RevengeWaves.Recipe(),
         new Broadsword.Recipe()
 	};
 
