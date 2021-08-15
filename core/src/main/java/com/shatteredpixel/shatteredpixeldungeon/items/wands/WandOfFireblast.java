@@ -64,12 +64,12 @@ public class WandOfFireblast extends DamageWand {
 
 	//1x/2x/3x damage
 	public int min(int lvl){
-		return (1+lvl) * chargesPerCast();
+		return (1+lvl) * imaginableChargePerCast();
 	}
 
 	//1x/2x/3x damage
 	public int max(int lvl){
-		return (6+2*lvl) * chargesPerCast();
+		return (6+2*lvl) * imaginableChargePerCast();
 	}
 
 	ConeAOE cone;
@@ -96,7 +96,7 @@ public class WandOfFireblast extends DamageWand {
 			if (Dungeon.level.adjacent(bolt.sourcePos, cell) && !Dungeon.level.flamable[cell]){
 				adjacentCells.add(cell);
 			} else {
-				GameScene.add( Blob.seed( cell, 1+chargesPerCast(), Fire.class ) );
+				GameScene.add( Blob.seed( cell, 1+imaginableChargePerCast(), Fire.class ) );
 			}
 
 			Char ch = Actor.findChar( cell );
@@ -112,17 +112,17 @@ public class WandOfFireblast extends DamageWand {
 				if (Dungeon.level.trueDistance(cell+i, bolt.sourcePos) > Dungeon.level.trueDistance(cell, bolt.sourcePos)
 						&& Dungeon.level.flamable[cell+i]
 						&& Fire.volumeAt(cell+i, Fire.class) == 0){
-					GameScene.add( Blob.seed( cell+i, 1+chargesPerCast(), Fire.class ) );
+					GameScene.add( Blob.seed( cell+i, 1+imaginableChargePerCast(), Fire.class ) );
 				}
 			}
 		}
 
 		for ( Char ch : affectedChars ){
-			processSoulMark(ch, chargesPerCast());
+			processSoulMark(ch, imaginableChargePerCast());
 			ch.damage(damageRoll(), this);
 			if (ch.isAlive()) {
 				Buff.affect(ch, Burning.class).reignite(ch);
-				switch (chargesPerCast()) {
+				switch (imaginableChargePerCast()) {
 					case 1:
 						break; //no effects
 					case 2:
@@ -147,7 +147,7 @@ public class WandOfFireblast extends DamageWand {
 		//need to perform flame spread logic here so we can determine what cells to put flames in.
 
 		// 5/7/9 distance
-		int maxDist = 3 + 2*chargesPerCast();
+		int maxDist = 3 + 2*imaginableChargePerCast();
 		int dist = Math.min(bolt.dist, maxDist);
 
 		cone = new ConeAOE( bolt,
@@ -178,6 +178,11 @@ public class WandOfFireblast extends DamageWand {
 	@Override
 	protected int chargesPerCast() {
 		//consumes 30% of current charges, rounded up, with a minimum of one.
+		return Math.max(1, (int)Math.ceil(curCharges*0.3f));
+	}
+
+	@Override
+	protected int imaginableChargePerCast() {
 		return Math.max(1, (int)Math.ceil(curCharges*0.3f));
 	}
 

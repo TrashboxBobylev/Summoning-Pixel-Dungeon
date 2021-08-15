@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Overload;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
@@ -173,6 +174,7 @@ public abstract class Wand extends Item {
 	}
 
 	protected void processSoulMark(Char target, int chargesUsed){
+		if (chargesUsed == 0) chargesUsed = 1;
 		processSoulMark(target, buffedLvl(), chargesUsed);
 	}
 
@@ -314,6 +316,12 @@ public abstract class Wand extends Item {
 	}
 
 	protected int chargesPerCast() {
+		if (Dungeon.hero.buff(Overload.OverloadTracker.class) != null)
+			return 0;
+		return 1;
+	}
+
+	protected int imaginableChargePerCast() {
 		return 1;
 	}
 	

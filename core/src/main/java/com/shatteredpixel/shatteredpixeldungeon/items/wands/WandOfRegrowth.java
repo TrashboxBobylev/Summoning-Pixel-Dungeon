@@ -87,7 +87,7 @@ public class WandOfRegrowth extends Wand {
 		int overLimit = totChrgUsed - chargeLimit(Dungeon.hero.lvl);
 		float furrowedChance = overLimit > 0 ? (overLimit / (10f + Dungeon.hero.lvl)) : 0;
 
-		int chrgUsed = chargesPerCast();
+		int chrgUsed = imaginableChargePerCast();
 		int grassToPlace = Math.round((3.67f+buffedLvl()/3f)*chrgUsed);
 
 		//ignore cells which can't have anything grow in them.
@@ -116,7 +116,7 @@ public class WandOfRegrowth extends Wand {
 
 		Random.shuffle(cells);
 
-		if (chargesPerCast() >= 3){
+		if (imaginableChargePerCast() >= 3){
 			Lotus l = new Lotus();
 			l.setLevel(buffedLvl());
 			if (cells.contains(target) && Actor.findChar(target) == null){
@@ -202,12 +202,12 @@ public class WandOfRegrowth extends Wand {
 	protected void fx( Ballistica bolt, Callback callback ) {
 
 		// 4/6/8 distance
-		int maxDist = 2 + 2*chargesPerCast();
+		int maxDist = 2 + 2*imaginableChargePerCast();
 		int dist = Math.min(bolt.dist, maxDist);
 
 		cone = new ConeAOE( bolt,
 				maxDist,
-				20 + 10*chargesPerCast(),
+				20 + 10*imaginableChargePerCast(),
 				collisionProperties | Ballistica.STOP_TARGET);
 
 		//cast to cells at the tip, rather than all cells, better performance.
@@ -232,6 +232,11 @@ public class WandOfRegrowth extends Wand {
 	@Override
 	protected int chargesPerCast() {
 		//consumes 30% of current charges, rounded up, with a minimum of one.
+		return Math.max(1, (int)Math.ceil(curCharges*0.3f));
+	}
+
+	@Override
+	protected int imaginableChargePerCast() {
 		return Math.max(1, (int)Math.ceil(curCharges*0.3f));
 	}
 

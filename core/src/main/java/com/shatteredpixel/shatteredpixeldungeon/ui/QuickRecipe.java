@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.HeroicLeap;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Overload;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.SmokeBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.SpectralBlades;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
@@ -345,6 +346,7 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe(new HeroicLeap.Recipe()));
 				result.add(new QuickRecipe(new SmokeBomb.Recipe()));
 				result.add(new QuickRecipe(new SpectralBlades.Recipe()));
+				result.add(new QuickRecipe(new Overload.Recipe()));
                 return result;
 		}
 	}
