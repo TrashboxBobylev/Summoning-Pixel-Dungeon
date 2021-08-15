@@ -585,7 +585,7 @@ public abstract class Char extends Actor {
 			Camera.main.shake(4, 0.25f);
 			Sample.INSTANCE.play(Assets.Sounds.HIT_PARRY);
 			Buff.affect(this, Viscosity.DeferedDamage.class).
-					prolong(dmg * (4 - ((Hero) this).pointsInTalent(Talent.IRON_WILL)));
+					prolong(dmg * (7 - ((Hero) this).pointsInTalent(Talent.IRON_WILL)*2));
 		}
 
 		if (sprite != null) {
