@@ -32,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.ElementalBlast;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.RevengeWaves;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Heal;
@@ -167,7 +166,6 @@ public enum HeroClass {
 		ElementalBlast blast = new ElementalBlast();
 		(hero.belongings.artifact = blast).identify();
 		hero.belongings.artifact.activate( hero );
-		new RevengeWaves().collect();
 		Dungeon.quickslot.setSlot(0, staff);
 		Dungeon.quickslot.setSlot(1, blast);
 

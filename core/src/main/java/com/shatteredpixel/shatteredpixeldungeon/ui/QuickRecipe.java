@@ -345,6 +345,7 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe(new SpectralBlades.Recipe()));
 				result.add(new QuickRecipe(new Overload.Recipe()));
 				result.add(new QuickRecipe(new RevengeWaves.Recipe()));
+				result.add(new QuickRecipe(new TargetedSupport.Recipe()));
                 return result;
 		}
 	}

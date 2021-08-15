@@ -193,6 +193,7 @@ public abstract class Recipe {
 		new SpectralBlades.Recipe(),
 		new Overload.Recipe(),
 		new RevengeWaves.Recipe(),
+		new TargetedSupport.Recipe(),
         new Broadsword.Recipe()
 	};
 
