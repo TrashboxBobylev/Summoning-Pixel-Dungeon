@@ -65,26 +65,29 @@ public abstract class ConnectionRoom extends Room {
 		
 		rooms.add(RingTunnelRoom.class);
 		rooms.add(RingBridgeRoom.class);
+
+		rooms.add(ConnectionRuinsRoom.class);
+		rooms.add(LibraryBridgeRoom.class);
 	}
 	
 	private static float[][] chances = new float[1000][];
 	static void setChances() {
 		for (int i = 0; i <= Dungeon.chapterSize(); i++){
-			chances[i] = new float[]{20, 1, 0, 2, 2, 1};
+			chances[i] = new float[]{14, 2, 0, 3, 4, 2, 1, 1};
 		}
 		for (int i = Dungeon.chapterSize()+1; i <= Dungeon.chapterSize()*2; i++){
-			chances[i] = new float[]{0, 0, 22, 3, 0, 0};
+			chances[i] = new float[]{0, 0, 22, 3, 0, 0, 3, 0};
 		}
 		for (int i = Dungeon.chapterSize()*2+1; i <= Dungeon.chapterSize()*3; i++){
-			chances[i] = new float[]{12, 0, 0, 5, 5, 3};
+			chances[i] = new float[]{12, 0, 0, 5, 5, 3, 2, 2};
 		}
 		for (int i = Dungeon.chapterSize()*3+1; i <= Dungeon.chapterSize()*4; i++){
-			chances[i] = new float[]{0, 0, 18, 3, 3, 1};
+			chances[i] = new float[]{0, 0, 18, 3, 3, 1, 2, 2};
 		}
 		for (int i = Dungeon.chapterSize()*4+1; i <= Dungeon.chapterSize()*5+1; i++){
-			chances[i] = new float[]{15, 4, 0, 2, 3, 2};
+			chances[i] = new float[]{15, 4, 0, 2, 3, 2, 13, 2};
 		}
-		chances[1] = new float[]{20, 1, 0, 2, 2, 1};
+		chances[1] = new float[]{20, 1, 0, 2, 2, 1, 1, 1};
 		chances[Dungeon.chapterSize()] = new float[]{20, 0, 0, 0, 0, 0};
 	}
 

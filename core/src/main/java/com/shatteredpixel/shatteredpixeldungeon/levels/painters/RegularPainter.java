@@ -190,8 +190,8 @@ public abstract class RegularPainter extends Painter {
 					continue;
 				} else if (!roomMerges.containsKey(r) && !roomMerges.containsKey(n) &&
 						mergeRooms(l, r, n, r.connected.get(n), Terrain.EMPTY)) {
-					if (((StandardRoom) r).sizeCat == StandardRoom.SizeCategory.NORMAL) roomMerges.put(r, n);
-					if (((StandardRoom) n).sizeCat == StandardRoom.SizeCategory.NORMAL) roomMerges.put(n, r);
+					if (r instanceof StandardRoom && ((StandardRoom) r).sizeCat == StandardRoom.SizeCategory.NORMAL) roomMerges.put(r, n);
+					if (n instanceof StandardRoom && ((StandardRoom) n).sizeCat == StandardRoom.SizeCategory.NORMAL) roomMerges.put(n, r);
 					continue;
 				}
 
