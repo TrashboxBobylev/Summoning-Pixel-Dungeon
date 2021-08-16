@@ -66,7 +66,7 @@ public class WandOfBounceBeams extends DamageWand{
     }
 
     @Override
-    protected void onZap(Ballistica beam) {
+    public void onZap(Ballistica beam) {
         for (int i : beam.subPath(1, Integer.MAX_VALUE)) {
             affectCell(i);
         }
@@ -139,7 +139,7 @@ public class WandOfBounceBeams extends DamageWand{
     }
 
     @Override
-    protected void fx( Ballistica beam, Callback callback ) {
+    public void fx(Ballistica beam, Callback callback) {
         if (beam.reflectPositions.size() == 0)
             curUser.sprite.parent.add(
                     new Beam.DeathRay(curUser.sprite.center(),

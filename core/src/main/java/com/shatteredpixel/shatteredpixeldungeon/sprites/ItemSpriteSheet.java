@@ -828,6 +828,7 @@ public class ItemSpriteSheet {
     public static final int TARGET_SUPPORT = POWERS+6;
     public static final int ENDURE = POWERS+7;
     public static final int ARCANE_ELEMENT = POWERS+8;
+    public static final int WILD_MAGIC = POWERS+9;
     static {
         for (int i = 0; i < 15; i++){
             assignItemRect(POWERS+i, 14, 14);

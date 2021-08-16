@@ -150,7 +150,7 @@ public class WandOfStars extends DamageWand {
     }
 
     @Override
-	protected void onZap( Ballistica bolt ) {
+    public void onZap(Ballistica bolt) {
 
 	    Heap heap = Dungeon.level.heaps.get(bolt.collisionPos);
 	    if (heap != null){
@@ -205,7 +205,7 @@ public class WandOfStars extends DamageWand {
     }
 
     @Override
-    protected void fx(Ballistica bolt, Callback callback) {
+    public void fx(Ballistica bolt, Callback callback) {
         MagicMissile.boltFromChar(curUser.sprite.parent,
                 MagicMissile.STAR,
                 curUser.sprite,

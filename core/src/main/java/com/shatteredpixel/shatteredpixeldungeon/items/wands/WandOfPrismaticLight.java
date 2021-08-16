@@ -71,7 +71,7 @@ public class WandOfPrismaticLight extends DamageWand {
 	}
 
 	@Override
-	protected void onZap(Ballistica beam) {
+	public void onZap(Ballistica beam) {
 		affectMap(beam);
 		
 		if (Dungeon.level.viewDistance < 6 ){
@@ -152,7 +152,7 @@ public class WandOfPrismaticLight extends DamageWand {
 	}
 
 	@Override
-	protected void fx( Ballistica beam, Callback callback ) {
+    public void fx(Ballistica beam, Callback callback) {
 		curUser.sprite.parent.add(
 				new Beam.LightRay(curUser.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(beam.collisionPos)));
         Sample.INSTANCE.play( Assets.Sounds.RAY );

@@ -116,7 +116,7 @@ public abstract class Wand extends Item {
 		return new Ballistica( user.pos, dst, collisionProperties ).collisionPos;
 	}
 
-	protected abstract void onZap(Ballistica attack );
+	public abstract void onZap(Ballistica attack);
 
 	public abstract void onHit( MagesStaff staff, Char attacker, Char defender, int damage);
 
@@ -325,7 +325,7 @@ public abstract class Wand extends Item {
 		return 1;
 	}
 	
-	protected void fx( Ballistica bolt, Callback callback ) {
+	public void fx(Ballistica bolt, Callback callback) {
 		MagicMissile.boltFromChar( curUser.sprite.parent,
 				MagicMissile.MAGIC_MISSILE,
 				curUser.sprite,
@@ -453,7 +453,7 @@ public abstract class Wand extends Item {
 		availableUsesToID = USES_TO_ID/2f;
 	}
 
-	protected int collisionProperties( int target ){
+	public int collisionProperties(int target){
 		return collisionProperties;
 	}
 

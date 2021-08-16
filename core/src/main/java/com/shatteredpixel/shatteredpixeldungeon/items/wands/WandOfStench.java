@@ -55,7 +55,7 @@ public class WandOfStench extends Wand {
     }
 
     @Override
-    protected void onZap(Ballistica attack) {
+    public void onZap(Ballistica attack) {
         Char ch = Actor.findChar( attack.collisionPos );
         if (ch == null) {
             ch = new Stenchy();
@@ -74,7 +74,7 @@ public class WandOfStench extends Wand {
     }
 
     @Override
-    protected void fx(Ballistica bolt, Callback callback) {
+    public void fx(Ballistica bolt, Callback callback) {
         MagicMissile.boltFromChar(
                 curUser.sprite.parent,
                 MagicMissile.STENCH,

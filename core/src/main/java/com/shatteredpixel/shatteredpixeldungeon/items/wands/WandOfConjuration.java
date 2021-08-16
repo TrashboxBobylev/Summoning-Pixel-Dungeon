@@ -48,7 +48,7 @@ public class WandOfConjuration extends Wand {
 	}
 	
 	@Override
-	protected void onZap( Ballistica bolt ) {
+	public void onZap(Ballistica bolt) {
 
 			Sample.INSTANCE.play( Assets.Sounds.CHARGEUP, 1, Random.Float(0.87f, 1.15f) );
 
@@ -64,7 +64,7 @@ public class WandOfConjuration extends Wand {
 	}
 
 	@Override
-	protected void fx(Ballistica bolt, Callback callback) {
+    public void fx(Ballistica bolt, Callback callback) {
 		callback.call();
 	}
 

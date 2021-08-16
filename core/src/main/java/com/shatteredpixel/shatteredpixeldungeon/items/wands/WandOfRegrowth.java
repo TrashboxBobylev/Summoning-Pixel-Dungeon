@@ -80,7 +80,7 @@ public class WandOfRegrowth extends Wand {
 	}
 
 	@Override
-	protected void onZap( Ballistica bolt ) {
+	public void onZap(Ballistica bolt) {
 
 		ArrayList<Integer> cells = new ArrayList<>(cone.cells);
 
@@ -199,7 +199,7 @@ public class WandOfRegrowth extends Wand {
 		new Blooming().proc(staff, attacker, defender, damage);
 	}
 
-	protected void fx( Ballistica bolt, Callback callback ) {
+	public void fx(Ballistica bolt, Callback callback) {
 
 		// 4/6/8 distance
 		int maxDist = 2 + 2*imaginableChargePerCast();

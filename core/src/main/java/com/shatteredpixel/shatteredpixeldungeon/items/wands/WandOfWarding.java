@@ -58,7 +58,7 @@ public class WandOfWarding extends Wand {
 	}
 
 	@Override
-	protected int collisionProperties(int target) {
+	public int collisionProperties(int target) {
 		if (Dungeon.level.heroFOV[target])  return Ballistica.STOP_TARGET;
 		else                                return Ballistica.PROJECTILE;
 	}
@@ -103,7 +103,7 @@ public class WandOfWarding extends Wand {
 	}
 	
 	@Override
-	protected void onZap(Ballistica bolt) {
+	public void onZap(Ballistica bolt) {
 
 		int target = bolt.collisionPos;
 		Char ch = Actor.findChar(target);
@@ -148,7 +148,7 @@ public class WandOfWarding extends Wand {
 	}
 
 	@Override
-	protected void fx(Ballistica bolt, Callback callback) {
+    public void fx(Ballistica bolt, Callback callback) {
 		MagicMissile m = MagicMissile.boltFromChar(curUser.sprite.parent,
 				MagicMissile.WARD,
 				curUser.sprite,

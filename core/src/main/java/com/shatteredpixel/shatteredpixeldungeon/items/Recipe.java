@@ -196,6 +196,7 @@ public abstract class Recipe {
 		new TargetedSupport.Recipe(),
 		new Endure.Recipe(),
 		new ArcaneElement.Recipe(),
+		new WildMagic.Recipe(),
         new Broadsword.Recipe()
 	};
 

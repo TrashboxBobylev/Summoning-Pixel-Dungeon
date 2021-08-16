@@ -71,7 +71,7 @@ public class WandOfCrystalBullet extends DamageWand {
     }
 	
 	@Override
-	protected void onZap( Ballistica bolt ) {
+    public void onZap(Ballistica bolt) {
         Dungeon.level.pressCell(bolt.collisionPos);
         Splash.at(bolt.collisionPos, Random.Int(0xFFe380e3, 0xFF9485c9), level()*4);
 
@@ -136,7 +136,7 @@ public class WandOfCrystalBullet extends DamageWand {
     }
 
     @Override
-    protected void fx(Ballistica bolt, Callback callback) {
+    public void fx(Ballistica bolt, Callback callback) {
 //        MagicMissile.boltFromChar( curUser.sprite.parent,
 //                MagicMissile.SHADOW,
 //                curUser.sprite,
