@@ -826,6 +826,7 @@ public class ItemSpriteSheet {
     public static final int CONJURER_POWER = POWERS+4;
     public static final int REVENGE_WAVES = POWERS+5;
     public static final int TARGET_SUPPORT = POWERS+6;
+    public static final int ENDURE = POWERS+7;
     static {
         for (int i = 0; i < 15; i++){
             assignItemRect(POWERS+i, 14, 14);

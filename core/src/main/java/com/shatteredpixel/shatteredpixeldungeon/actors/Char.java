@@ -45,6 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LoveHolder;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Endure;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfAdrenalineSurge;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Scrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
@@ -284,6 +285,11 @@ public abstract class Char extends Actor {
 				dmg = damageRoll();
 			}
 
+			Endure.EndureTracker endure = enemy.buff(Endure.EndureTracker.class);
+			if (endure != null){
+				dmg = endure.adjustDamageTaken(dmg);
+			}
+
 			if (enemy.buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dmg *= 1.4f;
 
 			if (buff(PotionOfAdrenalineSurge.SurgeTracker.class) != null){
@@ -500,6 +506,13 @@ public abstract class Char extends Actor {
 			sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "invulnerable"));
 			return;
 		}
+
+		Endure.EndureTracker endure = buff(Endure.EndureTracker.class);
+		//reduce damage here if it isn't coming from a chacter (if it is we already reduced it)
+		if (endure != null && !(src instanceof Char)){
+			dmg = endure.adjustDamageTaken(dmg);
+		}
+
 		if (!(src instanceof DwarfKing.KingDamager)) {
 			for (ChampionEnemy buff : buffs(ChampionEnemy.class)) {
 				dmg = (int) Math.ceil(dmg * buff.damageTakenFactor());
@@ -566,6 +579,10 @@ public abstract class Char extends Actor {
 		
 		if (buff( Paralysis.class ) != null) {
 			buff( Paralysis.class ).processDamage(dmg);
+		}
+
+		if (endure != null){
+			dmg = endure.enforceDamagetakenLimit(dmg);
 		}
 
 		int shielded = dmg;

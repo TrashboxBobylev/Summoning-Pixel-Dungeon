@@ -45,6 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Endure;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.*;
@@ -501,6 +502,10 @@ public class Hero extends Char {
 		
 		Berserk berserk = buff(Berserk.class);
 		if (berserk != null) dmg = berserk.damageFactor(dmg);
+		Endure.EndureTracker endure = buff(Endure.EndureTracker.class);
+		if (endure != null) {
+			dmg = endure.damageFactor(dmg);
+		}
 
 		if (buff(SoulWeakness.class) != null) dmg /= 4;
 		if (subClass == HeroSubClass.SOUL_REAVER) dmg *= 0.75f;
@@ -606,6 +611,10 @@ public class Hero extends Char {
 		
 		//calls to dungeon.observe will also update hero's local FOV.
 		fieldOfView = Dungeon.level.heroFOV;
+
+		if (buff(Endure.EndureTracker.class) != null){
+			buff(Endure.EndureTracker.class).endEnduring();
+		}
 		
 		if (!ready) {
 			//do a full observe (including fog update) if not resting.

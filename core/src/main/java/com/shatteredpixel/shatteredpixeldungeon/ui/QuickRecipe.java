@@ -346,6 +346,7 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe(new Overload.Recipe()));
 				result.add(new QuickRecipe(new RevengeWaves.Recipe()));
 				result.add(new QuickRecipe(new TargetedSupport.Recipe()));
+				result.add(new QuickRecipe(new Endure.Recipe()));
                 return result;
 		}
 	}

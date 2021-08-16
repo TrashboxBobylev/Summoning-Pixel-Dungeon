@@ -194,6 +194,7 @@ public abstract class Recipe {
 		new Overload.Recipe(),
 		new RevengeWaves.Recipe(),
 		new TargetedSupport.Recipe(),
+		new Endure.Recipe(),
         new Broadsword.Recipe()
 	};
 
