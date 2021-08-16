@@ -198,6 +198,7 @@ public abstract class Recipe {
 		new ArcaneElement.Recipe(),
 		new WildMagic.Recipe(),
 		new Graveyard.Recipe(),
+		new DruidBag.Recipe(),
         new Broadsword.Recipe()
 	};
 

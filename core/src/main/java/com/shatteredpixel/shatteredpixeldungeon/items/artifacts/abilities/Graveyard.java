@@ -26,8 +26,10 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Gravery;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
@@ -68,6 +70,11 @@ public class Graveyard extends Ability {
         }
         Sample.INSTANCE.play(Assets.Sounds.BURNING, 1, 0.5f);
         Sample.INSTANCE.play(Assets.Sounds.CURSED, 1, 0.5f);
+
+        charge -= chargeUse();
+        updateQuickslot();
+        Invisibility.dispel();
+        hero.spendAndNext(Actor.TICK);
     }
 
     public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {

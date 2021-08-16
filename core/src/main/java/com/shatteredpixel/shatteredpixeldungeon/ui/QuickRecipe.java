@@ -350,6 +350,7 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe(new ArcaneElement.Recipe()));
 				result.add(new QuickRecipe(new WildMagic.Recipe()));
 				result.add(new QuickRecipe(new Graveyard.Recipe()));
+				result.add(new QuickRecipe(new DruidBag.Recipe()));
                 return result;
 		}
 	}
