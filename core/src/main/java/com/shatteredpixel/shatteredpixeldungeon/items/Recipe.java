@@ -195,6 +195,7 @@ public abstract class Recipe {
 		new RevengeWaves.Recipe(),
 		new TargetedSupport.Recipe(),
 		new Endure.Recipe(),
+		new ArcaneElement.Recipe(),
         new Broadsword.Recipe()
 	};
 

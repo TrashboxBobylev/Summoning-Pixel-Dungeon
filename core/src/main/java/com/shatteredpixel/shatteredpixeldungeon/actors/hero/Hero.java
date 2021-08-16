@@ -1112,6 +1112,10 @@ public class Hero extends Char {
 	public Char enemy(){
 		return enemy;
 	}
+
+	public void setEnemy(Char enemy){
+		this.enemy = enemy;
+	}
 	
 	public void rest( boolean fullRest ) {
 		spendAndNext( TIME_TO_REST );

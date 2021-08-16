@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.GuaranteedEnchant;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -38,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.ArcaneElement;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.*;
@@ -422,6 +424,10 @@ abstract public class Weapon extends KindOfWeapon {
 		protected float procChanceMultiplier( Char attacker ){
 			float multi = 1f;
 			if (attacker instanceof Hero){
+				if (attacker.buff(ArcaneElement.ArcaneTracker.class) != null){
+					Buff.detach(attacker, ArcaneElement.ArcaneTracker.class);
+					return 9999f;
+				}
 				if (((Hero) attacker).belongings.weapon instanceof SpiritBow.SpiritArrow &&
 					!(((SpiritBow.SpiritArrow) ((Hero) attacker).belongings.weapon).hasGoodEnchant())){
 					switch (((Hero) attacker).belongings.weapon.level()){
