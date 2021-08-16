@@ -45,7 +45,7 @@ import java.util.ArrayList;
 public class WildMagic extends Ability {
     {
         baseChargeUse = 35;
-        image = ItemSpriteSheet.WILD_ENERGY;
+        image = ItemSpriteSheet.WILD_MAGIC;
     }
 
     @Override
@@ -151,7 +151,7 @@ public class WildMagic extends Ability {
 
             cost = 7;
 
-            output = SmokeBomb.class;
+            output = WildMagic.class;
             outQuantity = 1;
         }
 
