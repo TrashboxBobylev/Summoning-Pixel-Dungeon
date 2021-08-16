@@ -48,6 +48,11 @@ public class TargetedSupport extends Ability {
     }
 
     @Override
+    public String targetingPrompt() {
+        return Messages.get(this, "prompt");
+    }
+
+    @Override
     protected void activate(Ability ability, Hero hero, Integer target) {
         if (target == null){
             return;
