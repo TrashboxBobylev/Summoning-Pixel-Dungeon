@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Gravery;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.PerfumeGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WandOfStenchGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
@@ -38,10 +39,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.SoulFlame;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GoatClone;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Surprise;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
+import com.shatteredpixel.shatteredpixeldungeon.effects.*;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
@@ -860,7 +859,21 @@ public abstract class Mob extends Char {
 		}
 
 		if (alignment == Alignment.ENEMY){
-			rollToDropLoot();
+			if (!(cause instanceof Gravery)) rollToDropLoot();
+
+			if (Dungeon.hero.lvl <= maxLvl + 2 && cause instanceof Gravery){
+				EXP = 0;
+				if (!(this instanceof Wraith)){
+					Wraith w = Wraith.spawnForcefullyAt(pos);
+					if (w != null) {
+						Buff.affect(w, Corruption.class);
+						if (Dungeon.level.heroFOV[pos]) {
+							CellEmitter.get(pos).burst(ShadowParticle.CURSE, 6);
+							Sample.INSTANCE.play(Assets.Sounds.CURSED);
+						}
+					}
+				}
+			}
 
 			if (cause == Dungeon.hero && canBeLethalMomented()){
 				Buff.affect(Dungeon.hero, Talent.LethalMomentumTracker.class, 1f);
