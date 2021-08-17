@@ -529,6 +529,8 @@ public class Hero extends Char {
 			((HeroSprite)sprite).sprint( 1f + 0.05f*momentum.stacks());
 			speed *= momentum.speedMultiplier();
 		}
+
+		if (Dungeon.isChallenged(Conducts.Conduct.CRIPPLED)) speed/=2;
 		
 		return speed;
 		
