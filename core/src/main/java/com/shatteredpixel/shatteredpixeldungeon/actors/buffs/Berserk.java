@@ -77,6 +77,7 @@ public class Berserk extends Buff {
 				int dmg = 1 + (int)Math.ceil(target.shielding() * 0.1f);
 				if (buff != null && buff.shielding() > 0) {
 					buff.absorbDamage(dmg);
+					if (buff.shielding() == 1) buff.decShield(2);
 				} else {
 					//if there is no shield buff, or it is empty, then try to remove from other shielding buffs
 					for (ShieldBuff s : target.buffs(ShieldBuff.class)){
@@ -106,7 +107,7 @@ public class Berserk extends Buff {
 	}
 
 	public int damageFactor(int dmg){
-		float bonus = Math.min(1.75f, 1f + (power / 2f));
+		float bonus = Math.min(1.75f, 1f + (power / 1.4f));
 		return Math.round(dmg * bonus);
 	}
 
