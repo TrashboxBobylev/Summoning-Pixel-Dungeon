@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
@@ -117,6 +118,7 @@ public class Ghoul extends Mob {
 			
 			if (!candidates.isEmpty()){
 				Ghoul child = new Ghoul();
+				Buff.affect(child, Slow.class, 22000);
 				child.partnerID = this.id();
 				this.partnerID = child.id();
 				if (state != SLEEPING) {
@@ -256,7 +258,7 @@ public class Ghoul extends Mob {
 					}
 				}
 				Actor.add(ghoul);
-				ghoul.spend(-ghoul.cooldown());
+				ghoul.time = Dungeon.hero.time;
 				Dungeon.level.mobs.add(ghoul);
 				Dungeon.level.occupyCell( ghoul );
 				ghoul.sprite.idle();
