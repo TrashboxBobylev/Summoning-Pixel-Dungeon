@@ -46,9 +46,11 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
@@ -112,6 +114,11 @@ public class ElementalBlast extends Ability {
             aim = new Ballistica(hero.pos, hero.pos - 1, Ballistica.WONT_STOP);
         } else {
             aim = new Ballistica(hero.pos, hero.pos + 1, Ballistica.WONT_STOP);
+        }
+
+        if (hero.buff(MagicImmune.class) != null || Dungeon.isChallenged(Conducts.Conduct.NO_MAGIC)){
+            GLog.warning( Messages.get(Wand.class, "no_magic") );
+            return;
         }
 
         final Class<? extends Wand>[] wandCls = new Class[]{null};

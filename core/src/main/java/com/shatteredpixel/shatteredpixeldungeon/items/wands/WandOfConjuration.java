@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -74,6 +75,10 @@ public class WandOfConjuration extends Wand {
 
 	@Override
 	public boolean tryToZap(Hero owner, int target) {
+		if (Dungeon.isChallenged(Conducts.Conduct.NO_MAGIC)){
+			GLog.warning( Messages.get(this, "no_magic") );
+			return false;
+		}
 		SwordStorage swords = Buff.affect(Dungeon.hero, SwordStorage.class);
 		if (swords.count() >= swordCount(buffedLvl())){
 			GLog.warning( Messages.get(this, "no_more_swords"));

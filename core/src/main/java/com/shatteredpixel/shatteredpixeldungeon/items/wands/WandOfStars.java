@@ -102,7 +102,7 @@ public class WandOfStars extends DamageWand {
     @Override
     public boolean tryToZap( Hero owner, int target ){
 
-        if (owner.buff(MagicImmune.class) != null){
+        if (owner.buff(MagicImmune.class) != null || Dungeon.isChallenged(Conducts.Conduct.NO_MAGIC)){
             GLog.warning( Messages.get(this, "no_magic") );
             return false;
         }

@@ -287,6 +287,11 @@ public class Staff extends Weapon {
 
         super.execute(hero, action);
 
+        if (hero.buff(MagicImmune.class) != null || Dungeon.isChallenged(Conducts.Conduct.NO_MAGIC)){
+            GLog.warning( Messages.get(Wand.class, "no_magic") );
+            return;
+        }
+
         if (action.equals(AC_SUMMON) && !(this instanceof StationaryStaff)) {
 
             curUser = hero;

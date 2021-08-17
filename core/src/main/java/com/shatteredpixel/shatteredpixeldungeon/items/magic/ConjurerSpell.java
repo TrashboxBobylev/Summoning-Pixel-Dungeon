@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.magic;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -34,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulWeakness
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
@@ -127,8 +129,8 @@ public abstract class ConjurerSpell extends Item {
 
     public boolean tryToZap( Hero owner){
 
-        if (owner.buff(MagicImmune.class) != null){
-            GLog.warning( Messages.get(this, "no_magic") );
+        if (owner.buff(MagicImmune.class) != null || Dungeon.isChallenged(Conducts.Conduct.NO_MAGIC)){
+            GLog.warning( Messages.get(Wand.class, "no_magic") );
             return false;
         }
         if (owner.buff(SoulWeakness.class) != null){
