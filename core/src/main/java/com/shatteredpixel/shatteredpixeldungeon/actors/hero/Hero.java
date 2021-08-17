@@ -193,6 +193,7 @@ public class Hero extends Char {
 		if (buff(ElixirOfMight.HTBoost.class) != null){
 			HT += buff(ElixirOfMight.HTBoost.class).boost();
 		}
+		if (Dungeon.isChallenged(Conducts.Conduct.WRAITH)) HT = 1;
 		Item.updateQuickslot();
 
 		if (boostHP){
@@ -422,6 +423,8 @@ public class Hero extends Char {
 				accuracy *= 1.5f;
 			}
 		}
+
+		if (Dungeon.isChallenged(Conducts.Conduct.WRAITH)) accuracy *= 1.25f;
 		
 		if (wep != null) {
 			return (int)(attackSkill * accuracy * wep.accuracyFactor( this ));
@@ -449,6 +452,8 @@ public class Hero extends Char {
 		if (belongings.armor != null) {
 			evasion = belongings.armor.evasionFactor(this, evasion);
 		}
+
+		if (Dungeon.isChallenged(Conducts.Conduct.WRAITH)) evasion *= 5;
 
 		if (buff(Block.class) != null) return INFINITE_EVASION;
 
@@ -531,6 +536,7 @@ public class Hero extends Char {
 		}
 
 		if (Dungeon.isChallenged(Conducts.Conduct.CRIPPLED)) speed/=2;
+		if (Dungeon.isChallenged(Conducts.Conduct.WRAITH)) speed *= 1.25f;
 		
 		return speed;
 		

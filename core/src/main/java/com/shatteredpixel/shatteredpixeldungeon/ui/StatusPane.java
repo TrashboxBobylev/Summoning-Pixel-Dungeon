@@ -246,6 +246,10 @@ public class StatusPane extends Component {
 			avatar.tint(ColorMath.interpolate(warning, warningColors), 0.5f );
 		} else {
 			avatar.resetColor();
+			if (Dungeon.challenges != null && Dungeon.isChallenged(Conducts.Conduct.WRAITH)){
+				avatar.alpha(0.5f);
+				avatar.hardlight(0x000000);
+			}
 		}
 
 		hp.scale.x = Math.max( 0, (health-shield)/(float)max);

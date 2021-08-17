@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
@@ -583,6 +584,9 @@ public abstract class Char extends Actor {
 
 		if (endure != null){
 			dmg = endure.enforceDamagetakenLimit(dmg);
+		}
+		if (src instanceof Hunger && Dungeon.isChallenged(Conducts.Conduct.WRAITH)){
+			dmg = 0;
 		}
 
 		int shielded = dmg;

@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.*;
@@ -98,6 +99,8 @@ public enum HeroClass {
 				break;
 
 		}
+
+		if (Dungeon.isChallenged(Conducts.Conduct.WRAITH)) hero.HP = hero.HT = 1;
 
 	}
 

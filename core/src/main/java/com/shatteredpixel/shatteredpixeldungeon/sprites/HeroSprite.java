@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
@@ -143,6 +144,10 @@ public class HeroSprite extends CharSprite {
 	@Override
 	public void update() {
 		sleeping = ch.isAlive() && ((Hero)ch).resting;
+		if (Dungeon.challenges != null && Dungeon.isChallenged(Conducts.Conduct.WRAITH)){
+			alpha(0.5f);
+			hardlight(0x000000);
+		}
 		
 		super.update();
 	}
@@ -167,6 +172,10 @@ public class HeroSprite extends CharSprite {
 		RectF frame = avatar.texture.uvRect( 1, 0, FRAME_WIDTH, FRAME_HEIGHT );
 		frame.shift( patch.left, patch.top );
 		avatar.frame( frame );
+		if (Dungeon.challenges != null && Dungeon.isChallenged(Conducts.Conduct.WRAITH)){
+			avatar.alpha(0.5f);
+			avatar.hardlight(0x000000);
+		}
 		
 		return avatar;
 	}
