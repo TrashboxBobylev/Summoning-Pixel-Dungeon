@@ -452,11 +452,7 @@ public class Dungeon {
 		int souLeftThisSet;
 		int amount = SPDSettings.bigdungeon() ? 4 : 3;
 		//3 SOU each floor set, 1.5 (rounded) on forbidden runes challenge
-		if (isChallenged(Challenges.NO_SCROLLS)){
-			souLeftThisSet = Math.round(amount / 2 - (LimitedDrops.UPGRADE_SCROLLS.count - (depth / Dungeon.chapterSize()) * (amount / 2)));
-		} else {
-			souLeftThisSet = amount - (LimitedDrops.UPGRADE_SCROLLS.count - (depth / Dungeon.chapterSize()) * amount);
-		}
+		souLeftThisSet = amount - (LimitedDrops.UPGRADE_SCROLLS.count - (depth / Dungeon.chapterSize()) * amount);
 		if (souLeftThisSet <= 0) return false;
 
 		int floorThisSet = (depth % Dungeon.chapterSize());

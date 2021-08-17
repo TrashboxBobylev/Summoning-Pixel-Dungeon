@@ -25,7 +25,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -178,8 +177,7 @@ public class CursedWand {
 
 				if (Dungeon.level.map[pos] != Terrain.ALCHEMY
 						&& !Dungeon.level.pit[pos]
-						&& Dungeon.level.traps.get(pos) == null
-						&& !Dungeon.isChallenged(Challenges.NO_HERBALISM)) {
+						&& Dungeon.level.traps.get(pos) == null) {
 					Dungeon.level.plant((Plant.Seed) Generator.randomUsingDefaults(Generator.Category.SEED), pos);
 				} else {
 					return cursedEffect(origin, user, targetPos);

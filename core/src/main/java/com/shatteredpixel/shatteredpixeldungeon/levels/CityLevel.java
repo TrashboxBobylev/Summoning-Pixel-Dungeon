@@ -25,7 +25,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
@@ -99,7 +98,7 @@ public class CityLevel extends RegularLevel {
 	
 	@Override
 	protected void createMobs() {
-        if (!Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) Imp.Quest.spawn( this );
+        Imp.Quest.spawn( this );
 		
 		super.createMobs();
 	}

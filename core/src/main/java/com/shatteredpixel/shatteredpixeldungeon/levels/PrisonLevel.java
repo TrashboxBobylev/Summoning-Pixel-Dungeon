@@ -25,7 +25,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
@@ -53,8 +52,7 @@ public class PrisonLevel extends RegularLevel {
 	
 	@Override
 	protected ArrayList<Room> initRooms() {
-	    if (Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) return super.initRooms();
-        else return Wandmaker.Quest.spawnRoom(super.initRooms());
+		return Wandmaker.Quest.spawnRoom(super.initRooms());
 	}
 	
 	@Override

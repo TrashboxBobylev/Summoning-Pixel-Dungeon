@@ -24,7 +24,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
-import com.shatteredpixel.shatteredpixeldungeon.*;
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
@@ -1073,16 +1076,6 @@ public abstract class Mob extends Char {
 					state = HUNTING;
 					target = enemy.pos;
 
-					if (alignment == Alignment.ENEMY && Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) {
-						for (Mob mob : Dungeon.level.mobs) {
-							if (mob.paralysed <= 0
-									&& Dungeon.level.distance(pos, mob.pos) <= 8 //TODO base on pathfinder distance instead?
-									&& mob.state != mob.HUNTING) {
-								mob.beckon(target);
-							}
-						}
-					}
-
 					spend(TIME_TO_WAKE_UP);
 					return true;
 				}
@@ -1129,16 +1122,6 @@ public abstract class Mob extends Char {
 					mob.state = mob.HUNTING;
 					mob.alerted = true;
 					mob.beckon(target);
-				}
-			}
-
-			if (alignment == Alignment.ENEMY && Dungeon.isChallenged( Challenges.SWARM_INTELLIGENCE )) {
-				for (Mob mob : Dungeon.level.mobs) {
-					if (mob.paralysed <= 0
-							&& Dungeon.level.distance(pos, mob.pos) <= 8 //TODO base on pathfinder distance instead?
-							&& mob.state != mob.HUNTING) {
-						mob.beckon( target );
-					}
 				}
 			}
 

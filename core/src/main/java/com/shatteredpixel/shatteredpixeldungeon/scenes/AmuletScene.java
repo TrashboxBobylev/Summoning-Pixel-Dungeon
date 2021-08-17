@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Chaosstone;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
@@ -69,7 +68,7 @@ public class AmuletScene extends PixelScene {
 			protected void onClick() {
 				if ((Dungeon.mode == Dungeon.GameMode.GAUNTLET && Dungeon.depth > 41) ||
 						(Dungeon.mode.isNormal() && Dungeon.depth > 0)) {
-					Class clazz = Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE) ? Sword.class : Amulet.class;
+					Class clazz = Amulet.class;
 					if (Dungeon.hero.belongings.getSimilar(new Chaosstone()) != null) {
 						clazz = Chaosstone.class;
 					}

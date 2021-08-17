@@ -24,8 +24,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -42,7 +40,7 @@ public class PrisonPainter extends RegularPainter {
 		
 		for (Room r : rooms) {
 			if (r instanceof EntranceRoom) {
-				if (!Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) Wandmaker.Quest.spawnWandmaker(level, r);
+				Wandmaker.Quest.spawnWandmaker(level, r);
 				break;
 			}
 		}

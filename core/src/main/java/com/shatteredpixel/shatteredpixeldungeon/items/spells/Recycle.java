@@ -24,7 +24,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.spells;
 
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Transmuting;
@@ -71,7 +70,7 @@ public class Recycle extends InventorySpell {
 			} else {
 				result = Generator.random(Generator.Category.STONE);
 			}
-		} while (result.getClass() == item.getClass() || Challenges.isItemBlocked(result));
+		} while (result.getClass() == item.getClass());
 		
 		item.detach(curUser.belongings.backpack);
 		GLog.positive(Messages.get(this, "recycled", result.name()));

@@ -25,7 +25,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.potions;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
@@ -55,16 +54,11 @@ public class PotionOfHealing extends Potion {
 	}
 
 	public static void heal( Char ch ){
-		if (ch == Dungeon.hero && Dungeon.isChallenged(Challenges.NO_HEALING)){
-			pharmacophobiaProc(Dungeon.hero);
-			GLog.positive( Messages.get(PotionOfHealing.class, "poison") );
-		} else {
 			//starts out healing 20 hp, no longer can heal up to full HP
 			Buff.affect(ch, Healing.class).setHeal((int) (0.8f * ch.HT + 4), 0.2f, 0);
 			if (ch == Dungeon.hero){
 				GLog.positive( Messages.get(PotionOfHealing.class, "heal") );
 			}
-		}
 	}
 
 	public static void pharmacophobiaProc( Hero hero ){

@@ -24,7 +24,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions;
 
-import com.shatteredpixel.shatteredpixeldungeon.*;
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
@@ -492,8 +495,7 @@ public class Potion extends Item {
 			}
 
 			while (result instanceof PotionOfHealing
-					&& (Dungeon.isChallenged(Challenges.NO_HEALING)
-					|| Random.Int(10) < Dungeon.LimitedDrops.COOKING_HP.count)) {
+					&& (Random.Int(10) < Dungeon.LimitedDrops.COOKING_HP.count)) {
 
 				result = Generator.randomUsingDefaults(Generator.Category.POTION);
 			}

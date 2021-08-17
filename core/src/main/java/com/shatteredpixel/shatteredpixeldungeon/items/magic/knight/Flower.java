@@ -24,7 +24,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.magic.knight;
 
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.FlowersCD;
@@ -48,8 +47,7 @@ public class Flower extends ConjurerSpell {
         int pos = trajectory.collisionPos;
         if ((Dungeon.level.map[pos] != Terrain.ALCHEMY
                 && !Dungeon.level.pit[pos]
-                && Dungeon.level.traps.get(pos) == null
-                && !Dungeon.isChallenged(Challenges.NO_HERBALISM)))
+                && Dungeon.level.traps.get(pos) == null))
         Dungeon.level.plant(new Swiftthistle.Seed(), pos);
         Buff.affect(Dungeon.hero, FlowersCD.class, cooldown());
     }

@@ -22,24 +22,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic;
+package com.shatteredpixel.shatteredpixeldungeon;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+public class NewChallenges {
 
-public class PotionOfShielding extends ExoticPotion {
-	
-	{
-		icon = ItemSpriteSheet.Icons.POTION_SHIELDING;
-	}
-	
-	@Override
-	public void apply(Hero hero) {
-		setKnown();
-
-			//~75% of a potion of healing
-			Buff.affect(hero, Barrier.class).setShield((int) (0.6f * hero.HT + 10));
-	}
 }

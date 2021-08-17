@@ -25,7 +25,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
@@ -53,8 +52,7 @@ public class CavesLevel extends RegularLevel {
 	
 	@Override
 	protected ArrayList<Room> initRooms() {
-        if (Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) return super.initRooms();
-		else return Blacksmith.Quest.spawn(super.initRooms());
+		return Blacksmith.Quest.spawn(super.initRooms());
 	}
 	
 	@Override

@@ -24,8 +24,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret;
 
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.RatKing;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
@@ -60,7 +58,6 @@ public class RatKingRoom extends SecretRoom {
 		entrance.set( Door.Type.HIDDEN );
 		int door = entrance.x + entrance.y * level.width();
 
-        if (!Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) {
             for (int i=left + 1; i < right; i++) {
                 addChest( level, (top + 1) * level.width() + i, door );
                 addChest( level, (bottom - 1) * level.width() + i, door );
@@ -74,7 +71,6 @@ public class RatKingRoom extends SecretRoom {
             RatKing king = new RatKing();
             king.pos = level.pointToCell(random( 2 ));
             level.mobs.add( king );
-        }
 
     }
 	

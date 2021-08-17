@@ -24,8 +24,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -164,7 +162,7 @@ abstract public class ClassArmor extends Armor {
 
 	@Override
 	public int DRMax(int lvl){
-		if (Dungeon.isChallenged(Challenges.NO_ARMOR)){
+		if (false/*Dungeon.isChallenged(Challenges.NO_ARMOR)*/){
 			return 1 + armorTier + lvl + augment.defenseFactor(lvl);
 		}
 

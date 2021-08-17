@@ -94,7 +94,7 @@ public abstract class Level implements Bundlable {
 	public boolean[] mapped;
 	public boolean[] discoverable;
 
-	public int viewDistance = Dungeon.isChallenged( Challenges.DARKNESS ) ? 2 : 8;
+	public int viewDistance = 8;
 	
 	public boolean[] heroFOV;
 	
@@ -158,10 +158,6 @@ public abstract class Level implements Bundlable {
 
 			addItemToSpawn(Generator.random(Generator.Category.FOOD));
 			if (SPDSettings.bigdungeon()) addItemToSpawn(Generator.random(Generator.Category.FOOD));
-
-			if (Dungeon.isChallenged(Challenges.DARKNESS)){
-				addItemToSpawn( new Torch() );
-			}
 
 			if (Dungeon.posNeeded()) {
 				addItemToSpawn( new PotionOfStrength() );
@@ -554,9 +550,6 @@ public abstract class Level implements Bundlable {
 	}
 
 	public float respawnCooldown(){
-		if (Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)){
-			return 32_000_000;
-		}
 		if (Statistics.amuletObtained){
 			return TIME_TO_RESPAWN/2f;
 		} else if (Dungeon.level.feeling == Feeling.DARK){
@@ -852,10 +845,6 @@ public abstract class Level implements Bundlable {
 	}
 	
 	public Plant plant( Plant.Seed seed, int pos ) {
-		
-		if (Dungeon.isChallenged(Challenges.NO_HERBALISM)){
-			return null;
-		}
 
 		Plant plant = plants.get( pos );
 		if (plant != null) {

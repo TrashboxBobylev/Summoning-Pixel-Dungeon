@@ -25,7 +25,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -310,7 +309,7 @@ public class Mimic extends Mob {
                 case 5:
                     reward = Generator.randomStaff();
 			}
-		} while (reward == null || Challenges.isItemBlocked(reward));
+		} while (reward == null);
 		items.add(reward);
 	}
 

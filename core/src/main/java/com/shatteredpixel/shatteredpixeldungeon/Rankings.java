@@ -115,7 +115,6 @@ public enum Rankings {
 	}
 
 	private static int pacifistCheck(boolean win){
-	    if (Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) return Statistics.enemiesSlain * 75;
 	    if (Statistics.enemiesSlain <= 7 && win) return 2500000;
 	    return Statistics.enemiesSlain * 50;
     }
@@ -166,18 +165,6 @@ public enum Rankings {
 	    return 0;
     }
 
-    private static float chalCheckSoJuhWillBeHappy(boolean win){
-	    float juh = 1f;
-	    if (Dungeon.isChallenged(Challenges.NO_HERBALISM)) juh *= 1.1f;
-	    if (Dungeon.isChallenged(Challenges.DARKNESS)) juh *= 1.3f;
-	    if (Dungeon.isChallenged(Challenges.NO_FOOD)) juh *= 1.3f;
-	    if (Dungeon.isChallenged(Challenges.NO_ARMOR)) juh *= 1.4f;
-	    if (Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) juh *= 1.45f;
-	    if (Dungeon.isChallenged(Challenges.NO_SCROLLS)) juh *= 1.6f;
-	    if (Dungeon.isChallenged(Challenges.NO_HEALING)) juh *= 1.8f;
-	    return juh;
-    }
-
 	private int score( boolean win ) {
 		return Math.round((
                         Statistics.goldCollected +
@@ -191,7 +178,7 @@ public enum Rankings {
 						chaosStones(win)+
                         Statistics.foodEaten * 500 +
                         Statistics.potionsCooked * 500) *
-                        (win ? 2 : 1) * chalCheckSoJuhWillBeHappy(win));
+                        (win ? 2 : 1));
 	}
 
 	public static final String HERO = "hero";

@@ -25,7 +25,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
@@ -107,7 +106,7 @@ public class SewerLevel extends RegularLevel {
 	@Override
 	protected void createItems() {
 
-		if (!Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) Ghost.Quest.spawn( this );
+		Ghost.Quest.spawn( this );
 		
 		super.createItems();
 	}

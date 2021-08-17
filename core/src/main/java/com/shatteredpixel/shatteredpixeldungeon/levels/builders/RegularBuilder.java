@@ -24,7 +24,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.builders;
 
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.ConnectionRoom;
@@ -114,7 +113,7 @@ public abstract class RegularBuilder extends Builder {
 				entrance = r;
 			} else if (r instanceof ExitRoom) {
 				exit = r;
-			} else if (r instanceof ShopRoom && r.maxConnections(Room.ALL) == 1 && !Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)){
+			} else if (r instanceof ShopRoom && r.maxConnections(Room.ALL) == 1){
 				shop = r;
 			} else if (r.maxConnections(Room.ALL) > 1){
 				multiConnections.add(r);

@@ -24,8 +24,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions;
 
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
@@ -63,9 +61,6 @@ public class AlchemicalCatalyst extends Potion {
 	@Override
 	public void apply(Hero hero) {
 		Potion p = Reflection.newInstance(Random.chances(potionChances));
-		while (Dungeon.isChallenged(Challenges.NO_HEALING) && p instanceof PotionOfHealing){
-			p = Reflection.newInstance(Random.chances(potionChances));
-		}
 		p.anonymize();
 		p.apply(hero);
 	}

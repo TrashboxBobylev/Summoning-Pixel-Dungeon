@@ -25,7 +25,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -125,7 +124,7 @@ public abstract class RegularLevel extends Level {
 			initRooms.add(s);
 		}
 		
-		if (Dungeon.shopOnLevel() && !Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE))
+		if (Dungeon.shopOnLevel())
 			initRooms.add(new ShopRoom());
 
 		//force max special rooms and add one more for large levels
