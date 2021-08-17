@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -415,6 +416,10 @@ public class SpiritBow extends Weapon {
 
 		@Override
         public void onThrow(int cell) {
+			if ((Dungeon.isChallenged(Conducts.Conduct.PACIFIST))){
+				Splash.at( cell, 0xCC99FFFF, 1 );
+				return;
+			}
 			Char enemy = Actor.findChar( cell );
 			if (enemy == null || enemy == curUser) {
 				parent = null;
@@ -462,13 +467,15 @@ public class SpiritBow extends Weapon {
                                                 }
 
                                                 if (Char.hit( user, ch, false )) {
-                                                    Sample.INSTANCE.play( Assets.Sounds.HIT, 1, 1, Random.Float( 0.8f, 1.25f ) );
-                                                    int damage = (int) (damageRoll(user)*0.9f);
-                                                    ch.sprite.bloodBurstA( user.sprite.center(), damage );
-                                                    ch.sprite.flash();
+													if (!Dungeon.isChallenged(Conducts.Conduct.PACIFIST)) {
+														Sample.INSTANCE.play(Assets.Sounds.HIT, 1, 1, Random.Float(0.8f, 1.25f));
+														int damage = (int) (damageRoll(user) * 0.9f);
+														ch.sprite.bloodBurstA(user.sprite.center(), damage);
+														ch.sprite.flash();
 
-                                                    ch.damage(damage , new SpiritBow.SpiritArrow() );
-                                                    SpiritBow.this.proc(user, ch, damage);
+														ch.damage(damage, new SpiritBow.SpiritArrow());
+														SpiritBow.this.proc(user, ch, damage);
+													}
                                                 } else {
                                                     ch.sprite.showStatus( CharSprite.NEUTRAL,  ch.defenseVerb() );
                                                 }
