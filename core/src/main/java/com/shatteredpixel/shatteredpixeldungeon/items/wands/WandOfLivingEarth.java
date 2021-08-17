@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -332,12 +333,20 @@ public class WandOfLivingEarth extends DamageWand {
 
 		@Override
 		public int drRoll() {
+			if (Dungeon.isChallenged(Conducts.Conduct.NO_ARMOR)){
+				return Random.NormalIntRange(1, 2);
+			} else {
 				return Random.NormalIntRange(1, (int) (4 + wandLevel/4));
+			}
 		}
 
 		@Override
 		public String description() {
-			return Messages.get(this, "desc", 1, 4 + wandLevel/4, HP, HT);
+			if (Dungeon.isChallenged(Conducts.Conduct.NO_ARMOR)){
+				return Messages.get(this, "desc", 1, 2, HP, HT);
+			} else {
+				return Messages.get(this, "desc", 1, 4 + wandLevel/4, HP, HT);
+			}
 		}
 
 		{
