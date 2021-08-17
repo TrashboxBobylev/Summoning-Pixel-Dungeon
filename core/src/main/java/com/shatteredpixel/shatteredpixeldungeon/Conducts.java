@@ -33,7 +33,10 @@ public class Conducts {
         PACIFIST,
         CRIPPLED,
         NO_MAGIC,
-        ZEN;
+        ZEN,
+        BERSERK,
+        WRAITH,
+        SLEEPY;
 
         @Override
         public String toString() {

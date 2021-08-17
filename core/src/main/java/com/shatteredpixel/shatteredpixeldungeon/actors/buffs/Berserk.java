@@ -106,22 +106,21 @@ public class Berserk extends Buff {
 	}
 
 	public int damageFactor(int dmg){
-		float bonus = Math.min(1.5f, 1f + (power / 2f));
+		float bonus = Math.min(1.75f, 1f + (power / 2f));
 		return Math.round(dmg * bonus);
 	}
 
 	public boolean berserking(){
 		if (target.HP == 0 && state == State.NORMAL && power >= 1f){
 
-			WarriorShield shield = target.buff(WarriorShield.class);
-			if (shield != null){
+				Buff.affect(target, WarriorShield.class);
 				state = State.BERSERK;
-				shield.supercharge(shield.maxShield() * 10);
+				WarriorShield shield = target.buff(WarriorShield.class);
+				shield.supercharge((int) (target.HT*0.6f));
 
 				SpellSprite.show(target, SpellSprite.BERSERK);
 				Sample.INSTANCE.play( Assets.Sounds.CHALLENGE );
 				GameScene.flash(0xFF0000);
-			}
 
 		}
 
@@ -129,8 +128,10 @@ public class Berserk extends Buff {
 	}
 	
 	public void damage(int damage){
-		if (state == State.RECOVERING) return;
-		power = Math.min(1.1f, power + (damage/(float)target.HT)/3f );
+		if (state == State.RECOVERING) {
+			power = Math.min(1.1f, power + (damage/(float)target.HT)/1.5f )*0.6f;
+		}
+		else power = Math.min(1.1f, power + (damage/(float)target.HT)/1.5f );
 		BuffIndicator.refreshHero(); //show new power immediately
 	}
 
