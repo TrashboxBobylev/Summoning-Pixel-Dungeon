@@ -24,10 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Statistics;
+import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
@@ -1238,7 +1235,10 @@ public abstract class Mob extends Char {
 					spend( TICK );
 					if (!enemyInFOV) {
 						sprite.showLost();
-						state = WANDERING;
+						if (Dungeon.isChallenged(Conducts.Conduct.SLEEPY)){
+							state = SLEEPING;
+						}
+						else state = WANDERING;
 						target = Dungeon.level.randomDestination( Mob.this );
 						if (hordeHead != -1 && Actor.findById(hordeHead) != null){
 							Mob hordeHead = (Mob) Actor.findById(Mob.this.hordeHead);
