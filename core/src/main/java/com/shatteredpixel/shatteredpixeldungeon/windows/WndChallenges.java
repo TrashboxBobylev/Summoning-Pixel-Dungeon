@@ -37,7 +37,7 @@ import java.util.ArrayList;
 
 public class WndChallenges extends Window {
 
-	private static final int WIDTH		= 120;
+	private static final int WIDTH		= 135;
 	private static final int TTL_HEIGHT    = 18;
 	private static final int BTN_HEIGHT    = 18;
 	private static final int GAP        = 1;
@@ -65,8 +65,9 @@ public class WndChallenges extends Window {
 
 				final String challenge = i.toString();
 
-				ConduitBox cb = new ConduitBox(challenge);
+				ConduitBox cb = new ConduitBox( i == Conducts.Conduct.NULL ? challenge : "       " + challenge);
 				cb.checked(i == conduct);
+				if (i == Conducts.Conduct.NULL && conduct == null) cb.checked(true);
 				cb.active = editable;
 				cb.conduct = i;
 
@@ -93,6 +94,10 @@ public class WndChallenges extends Window {
 					};
 					info.setRect(cb.right(), pos, 16, BTN_HEIGHT);
 					add(info);
+					Image icon = new Image(Assets.Interfaces.SUBCLASS_ICONS, (i.ordinal() - 1) * 16, 16, 16, 16);
+					icon.x = cb.left()+1;
+					icon.y = cb.top()+1;
+					add(icon);
 				}
 
 				pos = cb.bottom();
