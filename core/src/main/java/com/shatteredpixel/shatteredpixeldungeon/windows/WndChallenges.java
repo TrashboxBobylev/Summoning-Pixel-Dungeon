@@ -24,7 +24,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -40,9 +41,10 @@ public class WndChallenges extends Window {
 	private static final int GAP        = 1;
 
 	private boolean editable;
-	private ArrayList<CheckBox> boxes;
+	private ArrayList<ConduitBox> slots = new ArrayList<>();
+	private boolean needsUpdate;
 
-	public WndChallenges( int checked, boolean editable ) {
+	public WndChallenges( Conducts.Conduct conduct, boolean editable ) {
 
 		super();
 
@@ -57,38 +59,37 @@ public class WndChallenges extends Window {
 		PixelScene.align(title);
 		add( title );
 
-		boxes = new ArrayList<>();
-
 		float pos = TTL_HEIGHT;
-		for (int i=0; i < Challenges.NAME_IDS.length; i++) {
+		for (Conducts.Conduct i : Conducts.Conduct.values()) {
+			if (i != Conducts.Conduct.NULL) {
 
-			final String challenge = Challenges.NAME_IDS[i];
-			
-			CheckBox cb = new CheckBox( Messages.get(Challenges.class, challenge) );
-			cb.checked( (checked & Challenges.MASKS[i]) != 0 );
-			cb.active = editable;
+				final String challenge = i.name();
 
-			if (i > 0) {
+				ConduitBox cb = new ConduitBox(Messages.get(Conducts.Conduct.class, challenge));
+				cb.checked(i == conduct);
+				cb.active = editable;
+				cb.conduct = i;
+
 				pos += GAP;
-			}
-			cb.setRect( 0, pos, WIDTH-16, BTN_HEIGHT );
+				cb.setRect(0, pos, WIDTH - 16, BTN_HEIGHT);
 
-			add( cb );
-			boxes.add( cb );
-			
-			IconButton info = new IconButton(Icons.get(Icons.INFO)){
-				@Override
-				protected void onClick() {
-					super.onClick();
-					ShatteredPixelDungeon.scene().add(
-							new WndMessage(Messages.get(Challenges.class, challenge+"_desc"))
-					);
-				}
-			};
-			info.setRect(cb.right(), pos, 16, BTN_HEIGHT);
-			add(info);
-			
-			pos = cb.bottom();
+				add(cb);
+				slots.add(cb);
+
+				IconButton info = new IconButton(Icons.get(Icons.INFO)) {
+					@Override
+					protected void onClick() {
+						super.onClick();
+						ShatteredPixelDungeon.scene().add(
+								new WndMessage(Messages.get(Conducts.class, challenge + "_desc"))
+						);
+					}
+				};
+				info.setRect(cb.right(), pos, 16, BTN_HEIGHT);
+				add(info);
+
+				pos = cb.bottom();
+			}
 		}
 
 		resize( WIDTH, (int)pos );
@@ -98,15 +99,34 @@ public class WndChallenges extends Window {
 	public void onBackPressed() {
 
 		if (editable) {
-			int value = 0;
-			for (int i=0; i < boxes.size(); i++) {
-				if (boxes.get( i ).checked()) {
-					value |= Challenges.MASKS[i];
+			Conducts.Conduct value = null;
+			for (ConduitBox slot : slots) {
+				if (slot.checked()) {
+					value = slot.conduct;
 				}
 			}
-//			SPDSettings.challenges( value );
+			SPDSettings.challenges( value );
 		}
 
 		super.onBackPressed();
+	}
+
+	public class ConduitBox extends CheckBox{
+
+		public Conducts.Conduct conduct;
+
+		public ConduitBox(String label) {
+			super(label);
+		}
+
+		@Override
+		protected void onClick() {
+			super.onClick();
+			if (active){
+				for (CheckBox slot : slots){
+					if (slot != this) slot.checked(false);
+				}
+			}
+		}
 	}
 }

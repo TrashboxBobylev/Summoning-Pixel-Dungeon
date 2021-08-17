@@ -115,7 +115,7 @@ public class WndStartGame extends Window {
 					Icons.get( SPDSettings.challenges() != null ? Icons.CHALLENGE_ON :Icons.CHALLENGE_OFF)){
 				@Override
 				protected void onClick() {
-					/*ShatteredPixelDungeon.scene().addToFront(new WndChallenges(SPDSettings.challenges(), true) {
+					ShatteredPixelDungeon.scene().addToFront(new WndChallenges(SPDSettings.challenges(), true) {
 						public void onBackPressed() {
 							super.onBackPressed();
 							if (parent != null) {
@@ -123,7 +123,7 @@ public class WndStartGame extends Window {
 										Icons.CHALLENGE_ON : Icons.CHALLENGE_OFF));
 							}
 						}
-					} );*/
+					} );
 				}
 				
 				@Override
