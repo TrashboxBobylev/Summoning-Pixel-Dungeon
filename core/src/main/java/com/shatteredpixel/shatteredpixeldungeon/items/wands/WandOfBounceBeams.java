@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -77,7 +78,8 @@ public class WandOfBounceBeams extends DamageWand{
         if (ch != null) {
             processSoulMark(ch, chargesPerCast());
             if (ch != Dungeon.hero) {
-                ch.damage(damageRoll(), this);
+                if (!Dungeon.isChallenged(Conducts.Conduct.PACIFIST))
+                    ch.damage(damageRoll(), this);
                 Buff.prolong(ch, DefenseDebuff.class, 3 + level());
             }
             ch.sprite.centerEmitter().burst(PurpleParticle.BURST, Random.IntRange(1, 2));

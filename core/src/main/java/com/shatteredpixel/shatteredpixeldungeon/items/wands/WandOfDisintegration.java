@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -114,8 +115,10 @@ public class WandOfDisintegration extends DamageWand {
 		
 		int lvl = level + (chars.size()-1) + terrainBonus;
 		for (Char ch : chars) {
-			processSoulMark(ch, chargesPerCast());
-			ch.damage( damageRoll(lvl), this );
+			if (!Dungeon.isChallenged(Conducts.Conduct.PACIFIST)) {
+				processSoulMark(ch, chargesPerCast());
+				ch.damage(damageRoll(lvl), this);
+			}
 			ch.sprite.centerEmitter().burst( PurpleParticle.BURST, Random.IntRange( 1, 2 ) );
 			ch.sprite.flash();
 		}

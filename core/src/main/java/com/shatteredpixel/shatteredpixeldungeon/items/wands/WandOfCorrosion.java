@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -60,12 +61,14 @@ public class WandOfCorrosion extends Wand {
 		CorrosiveGas gas = Blob.seed(bolt.collisionPos, 50 + 10 * buffedLvl(), CorrosiveGas.class);
 		CellEmitter.get(bolt.collisionPos).burst(Speck.factory(Speck.CORROSION), 10 );
 		gas.setStrength(2 + buffedLvl());
+		if ((Dungeon.isChallenged(Conducts.Conduct.PACIFIST)))
+			gas.setStrength(buffedLvl()/3);
 		GameScene.add(gas);
 		Sample.INSTANCE.play(Assets.Sounds.GAS);
 
 		for (int i : PathFinder.NEIGHBOURS9) {
 			Char ch = Actor.findChar(bolt.collisionPos + i);
-			if (ch != null) {
+			if (ch != null && (!Dungeon.isChallenged(Conducts.Conduct.PACIFIST))) {
 				processSoulMark(ch, chargesPerCast());
 			}
 		}

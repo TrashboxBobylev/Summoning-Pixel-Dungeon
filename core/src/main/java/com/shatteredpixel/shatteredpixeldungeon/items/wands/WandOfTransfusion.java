@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -71,8 +72,8 @@ public class WandOfTransfusion extends Wand {
 		Char ch = Actor.findChar(cell);
 
 		if (ch instanceof Mob){
-			
-			processSoulMark(ch, chargesPerCast());
+			if (!Dungeon.isChallenged(Conducts.Conduct.PACIFIST))
+				processSoulMark(ch, chargesPerCast());
 			
 			//this wand does different things depending on the target.
 			
@@ -111,7 +112,7 @@ public class WandOfTransfusion extends Wand {
 					ch.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 3 + buffedLvl()/2 );
 				
 				//harms the undead
-				} else {
+				} else if ((!Dungeon.isChallenged(Conducts.Conduct.PACIFIST))){
 					ch.damage(Random.NormalIntRange(3 + buffedLvl()/2, 6+buffedLvl()), this);
 					ch.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10 + buffedLvl());
 					Sample.INSTANCE.play(Assets.Sounds.BURNING);

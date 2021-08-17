@@ -24,10 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.bombs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -200,7 +197,8 @@ public class Bomb extends Item {
 				dmg -= ch.drRoll();
 
 				if (dmg > 0 && !harmless) {
-					ch.damage(dmg, this);
+					if (ch.alignment != Char.Alignment.ALLY && !(Dungeon.isChallenged(Conducts.Conduct.PACIFIST)))
+						ch.damage(dmg, this);
 				}
 				
 				if (ch == Dungeon.hero && !ch.isAlive()) {

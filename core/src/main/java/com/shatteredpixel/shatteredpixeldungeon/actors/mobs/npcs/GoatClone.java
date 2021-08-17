@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -85,7 +86,9 @@ public class GoatClone extends NPC {
 
     @Override
     public int damageRoll() {
-        return Random.NormalIntRange(Dungeon.hero.lvl / 3, Dungeon.hero.lvl);
+        int i = Random.NormalIntRange(Dungeon.hero.lvl / 3, Dungeon.hero.lvl);
+        if (Dungeon.isChallenged(Conducts.Conduct.PACIFIST)) i /= 3;
+        return i;
     }
 
     @Override

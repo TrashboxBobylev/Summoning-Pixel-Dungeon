@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas;
@@ -61,6 +62,8 @@ public class ChaosSaber extends NPC {
 
     @Override
     public int damageRoll() {
+        if (Dungeon.isChallenged(Conducts.Conduct.PACIFIST))
+            return Random.NormalIntRange(1, 3);
         return Random.NormalIntRange(4, 8);
     }
 

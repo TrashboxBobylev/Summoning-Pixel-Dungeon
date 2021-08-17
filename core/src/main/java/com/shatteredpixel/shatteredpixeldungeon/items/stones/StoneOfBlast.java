@@ -24,6 +24,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.stones;
 
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
@@ -35,7 +37,8 @@ public class StoneOfBlast extends Runestone {
 	
 	@Override
 	protected void activate(int cell) {
-		new Bomb().explode(cell);
+		if (!Dungeon.isChallenged(Conducts.Conduct.PACIFIST))
+			new Bomb().explode(cell);
 	}
 	
 }

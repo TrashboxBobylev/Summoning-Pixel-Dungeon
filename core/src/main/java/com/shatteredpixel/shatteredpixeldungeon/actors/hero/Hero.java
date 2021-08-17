@@ -543,6 +543,7 @@ public class Hero extends Char {
 	}
 
 	public boolean canAttack(Char enemy){
+		if (Dungeon.isChallenged(Conducts.Conduct.PACIFIST)) return false;
         if (buff(SoulWeakness.class) != null) return false;
 		if (enemy == null || pos == enemy.pos) {
 			return false;

@@ -152,10 +152,12 @@ public class WandOfLivingEarth extends DamageWand {
 			if (ch != null) {
 
 				ch.sprite.centerEmitter().burst(MagicMissile.EarthParticle.BURST, 5 + buffedLvl() / 2);
+				if (!Dungeon.isChallenged(Conducts.Conduct.PACIFIST)) {
+					processSoulMark(ch, chargesPerCast());
+					ch.damage(damage, this);
+					Sample.INSTANCE.play( Assets.Sounds.HIT_MAGIC, 1, 0.8f * Random.Float(0.87f, 1.15f) );
+				}
 
-				processSoulMark(ch, chargesPerCast());
-				ch.damage(damage, this);
-				Sample.INSTANCE.play( Assets.Sounds.HIT_MAGIC, 1, 0.8f * Random.Float(0.87f, 1.15f) );
 
 				if (guardian == null) {
 					curUser.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + buffedLvl() / 2);

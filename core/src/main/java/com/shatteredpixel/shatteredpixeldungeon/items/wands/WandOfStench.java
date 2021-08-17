@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -65,6 +66,10 @@ public class WandOfStench extends Wand {
             StenchHolder buff = Buff.affect(ch, StenchHolder.class, 4 + level());
             buff.minDamage = 3 + level();
             buff.maxDamage = 3 + level();
+            if (Dungeon.isChallenged(Conducts.Conduct.PACIFIST)){
+                buff.minDamage = level()/3;
+                buff.maxDamage = level()/3;
+            }
 
             ch.sprite.burst(0xFF1d4636, level() / 2 + 2);
 

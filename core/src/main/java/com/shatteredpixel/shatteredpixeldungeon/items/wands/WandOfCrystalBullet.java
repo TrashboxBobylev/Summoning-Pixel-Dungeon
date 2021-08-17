@@ -24,10 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Statistics;
+import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.EnergyOverload;
@@ -109,9 +106,10 @@ public class WandOfCrystalBullet extends DamageWand {
                             public void call() {
                                 Char ch = Actor.findChar( shardPositions.get(shardPositions.indexOf(dest) ));
                                 if (ch != null) {
-
-                                    processSoulMark(ch, chargesPerCast());
-                                    ch.damage(damageRoll(), new WandOfCrystalBullet());
+                                    if (!Dungeon.isChallenged(Conducts.Conduct.PACIFIST)) {
+                                        processSoulMark(ch, chargesPerCast());
+                                        ch.damage(damageRoll(), new WandOfCrystalBullet());
+                                    }
 
                                     ch.sprite.burst(Random.Int(0xFFe380e3, 0xFF9485c9), level() + 3);
 

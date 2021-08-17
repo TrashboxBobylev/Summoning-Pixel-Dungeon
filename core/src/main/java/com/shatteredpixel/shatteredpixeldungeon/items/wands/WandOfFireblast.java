@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -118,19 +119,21 @@ public class WandOfFireblast extends DamageWand {
 		}
 
 		for ( Char ch : affectedChars ){
-			processSoulMark(ch, imaginableChargePerCast());
-			ch.damage(damageRoll(), this);
-			if (ch.isAlive()) {
-				Buff.affect(ch, Burning.class).reignite(ch);
-				switch (imaginableChargePerCast()) {
-					case 1:
-						break; //no effects
-					case 2:
-						Buff.affect(ch, Cripple.class, 4f);
-						break;
-					case 3:
-						Buff.affect(ch, Paralysis.class, 4f);
-						break;
+			if (!Dungeon.isChallenged(Conducts.Conduct.PACIFIST)) {
+				processSoulMark(ch, imaginableChargePerCast());
+				ch.damage(damageRoll(), this);
+				if (ch.isAlive()) {
+					Buff.affect(ch, Burning.class).reignite(ch);
+					switch (imaginableChargePerCast()) {
+						case 1:
+							break; //no effects
+						case 2:
+							Buff.affect(ch, Cripple.class, 4f);
+							break;
+						case 3:
+							Buff.affect(ch, Paralysis.class, 4f);
+							break;
+					}
 				}
 			}
 		}

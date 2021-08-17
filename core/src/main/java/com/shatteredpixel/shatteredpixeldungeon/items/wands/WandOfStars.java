@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -81,13 +82,14 @@ public class WandOfStars extends DamageWand {
                         }
                     }
                     Sample.INSTANCE.play(Assets.Sounds.ZAP);
-
-                    for (int i : PathFinder.NEIGHBOURS9){
-                        CellEmitter.get(p + i).burst(FrostfireParticle.FACTORY, 8 + 4 * level());
-                        Char ch = Actor.findChar(p + i);
-                        if (ch != null){
-                            ch.damage(damageRoll(), this);
-                            processSoulMark(ch, chargesPerCast());
+                    if (!Dungeon.isChallenged(Conducts.Conduct.PACIFIST)) {
+                        for (int i : PathFinder.NEIGHBOURS9) {
+                            CellEmitter.get(p + i).burst(FrostfireParticle.FACTORY, 8 + 4 * level());
+                            Char ch = Actor.findChar(p + i);
+                            if (ch != null) {
+                                ch.damage(damageRoll(), this);
+                                processSoulMark(ch, chargesPerCast());
+                            }
                         }
                     }
                 }

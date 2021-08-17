@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -93,14 +94,15 @@ public class WandOfFrost extends DamageWand {
 				ch.sprite.burst( 0xFF99CCFF, buffedLvl() * 2 );
                 Buff.affect(ch, Frost.class, freezeDuration());
 			}
+			if ((!Dungeon.isChallenged(Conducts.Conduct.PACIFIST))) {
+				processSoulMark(ch, chargesPerCast());
+				Sample.INSTANCE.play(Assets.Sounds.HIT_MAGIC, 1, 1.1f * Random.Float(0.87f, 1.15f));
+				if (!freeze) {
+					ch.damage(damage, this);
+				}
+			}
 
-			processSoulMark(ch, chargesPerCast());
-			Sample.INSTANCE.play( Assets.Sounds.HIT_MAGIC, 1, 1.1f * Random.Float(0.87f, 1.15f) );
-			if (!freeze) {
-			    ch.damage(damage, this);
-            }
-
-			if (ch.isAlive() && !freeze){
+			if (ch.isAlive() && !freeze && (!Dungeon.isChallenged(Conducts.Conduct.PACIFIST))){
 				if (ch.isWet())
                     Buff.affect( ch, FrostBurn.class ).reignite( ch, 7f);
 				else

@@ -209,12 +209,14 @@ public class Staff extends Weapon {
     }
 
     public int minionMin(int lvl) {
+        int dmg = 0;
         switch (level()) {
-            case 0: return table.min1;
-            case 1: return table.min2;
-            case 2: return table.min3;
+            case 0: dmg = table.min1; break;
+            case 1: dmg = table.min2; break;
+            case 2: dmg = table.min3; break;
         }
-        return 0;
+        if (Dungeon.isChallenged(Conducts.Conduct.PACIFIST)) dmg /= 3;
+        return dmg;
     }
 
     public int minionmax() {
@@ -222,12 +224,14 @@ public class Staff extends Weapon {
     }
 
     public int minionMax(int lvl) {
+        int dmg = 0;
         switch (level()) {
-            case 0: return table.max1;
-            case 1: return table.max2;
-            case 2: return table.max3;
+            case 0: dmg = table.max1; break;
+            case 1: dmg = table.max2; break;
+            case 2: dmg = table.max3; break;
         }
-        return 0;
+        if (Dungeon.isChallenged(Conducts.Conduct.PACIFIST)) dmg /= 3;
+        return dmg;
     }
 
     @Override

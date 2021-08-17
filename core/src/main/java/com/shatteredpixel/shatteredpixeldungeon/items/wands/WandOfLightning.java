@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -77,18 +78,21 @@ public class WandOfLightning extends DamageWand {
 		int max = 6 + 2*level();
 
 		for (Char ch : affected){
-			if (ch == Dungeon.hero) Camera.main.shake( 2, 0.3f );
-			ch.sprite.centerEmitter().burst( SparkParticle.FACTORY, 3 );
-			ch.sprite.flash();
 
-			if (ch != curUser && ch.alignment == curUser.alignment && ch.pos != bolt.collisionPos){
-				continue;
-			}
-			processSoulMark(ch, chargesPerCast());
-			if (ch == curUser) {
-				ch.damage(Math.round(damageRoll() * multipler * 0.5f), this);
-			} else {
-				ch.damage(Math.round(damageRoll() * multipler), this);
+			if ((!Dungeon.isChallenged(Conducts.Conduct.PACIFIST))) {
+				processSoulMark(ch, chargesPerCast());
+				if (ch == curUser) {
+					ch.damage(Math.round(damageRoll() * multipler * 0.5f), this);
+				} else {
+					ch.damage(Math.round(damageRoll() * multipler), this);
+				}
+				if (ch == Dungeon.hero) Camera.main.shake( 2, 0.3f );
+				ch.sprite.centerEmitter().burst( SparkParticle.FACTORY, 3 );
+				ch.sprite.flash();
+
+				if (ch != curUser && ch.alignment == curUser.alignment && ch.pos != bolt.collisionPos){
+					continue;
+				}
 			}
 		}
 

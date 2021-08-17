@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities;
 
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -59,6 +60,10 @@ public class SpectralBlades extends Ability {
     @Override
     protected void activate(Ability ability, Hero hero, Integer target) {
         if (target == null){
+            return;
+        }
+
+        if ((Dungeon.isChallenged(Conducts.Conduct.PACIFIST))){
             return;
         }
 

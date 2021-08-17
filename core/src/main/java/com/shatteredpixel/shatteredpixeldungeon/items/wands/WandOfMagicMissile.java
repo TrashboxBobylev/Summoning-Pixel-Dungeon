@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -61,10 +62,11 @@ public class WandOfMagicMissile extends DamageWand {
 				
 		Char ch = Actor.findChar( bolt.collisionPos );
 		if (ch != null) {
-
-			processSoulMark(ch, chargesPerCast());
-			ch.damage(damageRoll(), this);
-			Sample.INSTANCE.play( Assets.Sounds.HIT_MAGIC, 1, Random.Float(0.87f, 1.15f) );
+			if (!Dungeon.isChallenged(Conducts.Conduct.PACIFIST)) {
+				processSoulMark(ch, chargesPerCast());
+				ch.damage(damageRoll(), this);
+				Sample.INSTANCE.play(Assets.Sounds.HIT_MAGIC, 1, Random.Float(0.87f, 1.15f));
+			}
 
 			ch.sprite.burst(0xFFFFFFFF, buffedLvl() / 2 + 2);
 

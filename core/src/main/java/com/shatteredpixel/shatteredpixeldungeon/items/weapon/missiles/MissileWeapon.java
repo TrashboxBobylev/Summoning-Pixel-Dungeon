@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -190,6 +191,10 @@ abstract public class MissileWeapon extends Weapon {
 
 	@Override
     public void onThrow(int cell) {
+		if (!Dungeon.isChallenged(Conducts.Conduct.PACIFIST)) {
+			super.onThrow(cell);
+			return;
+		}
 		Char enemy = Actor.findChar( cell );
 		if (enemy == null || enemy == curUser || curUser.buff(SoulWeakness.class) != null) {
 				parent = null;
