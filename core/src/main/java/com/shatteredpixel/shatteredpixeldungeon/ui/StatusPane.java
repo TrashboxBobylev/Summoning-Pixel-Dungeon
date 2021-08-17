@@ -24,10 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
-import com.shatteredpixel.shatteredpixeldungeon.Statistics;
+import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -72,6 +69,7 @@ public class StatusPane extends Component {
 	private BuffIndicator buffs;
 	private Compass compass;
 	private Image mode;
+	private Image conduct;
 
 	private JournalButton btnJournal;
 	private MenuButton btnMenu;
@@ -149,6 +147,10 @@ public class StatusPane extends Component {
 
 		mode = new Image(Icons.get(Dungeon.mode.icon));
 		add( mode );
+		if (Dungeon.challenges != null && Dungeon.challenges != Conducts.Conduct.NULL){
+			conduct = new Image(Assets.Interfaces.SUBCLASS_ICONS, (Dungeon.challenges.ordinal() - 1) * 16, 16, 16, 16);
+			add( conduct );
+		}
 
 		danger = new DangerIndicator();
 		add( danger );
@@ -205,6 +207,11 @@ public class StatusPane extends Component {
 
 		mode.x = width - mode.width;
 		mode.y = 5 + mode.height;
+
+		if (conduct != null){
+			conduct.x = mode.x - conduct.width - 1;
+			conduct.y = mode.y;
+		}
 
 		danger.setPos( width - danger.width(), mode.height + 22 );
 

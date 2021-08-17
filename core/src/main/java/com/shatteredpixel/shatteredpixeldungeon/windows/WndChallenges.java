@@ -24,12 +24,14 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.*;
+import com.watabou.noosa.Image;
 
 import java.util.ArrayList;
 
@@ -42,7 +44,6 @@ public class WndChallenges extends Window {
 
 	private boolean editable;
 	private ArrayList<ConduitBox> slots = new ArrayList<>();
-	private boolean needsUpdate;
 
 	public WndChallenges( Conducts.Conduct conduct, boolean editable ) {
 
@@ -61,35 +62,40 @@ public class WndChallenges extends Window {
 
 		float pos = TTL_HEIGHT;
 		for (Conducts.Conduct i : Conducts.Conduct.values()) {
-			if (i != Conducts.Conduct.NULL) {
 
-				final String challenge = i.name();
+				final String challenge = i.toString();
 
-				ConduitBox cb = new ConduitBox(Messages.get(Conducts.Conduct.class, challenge));
+				ConduitBox cb = new ConduitBox(challenge);
 				cb.checked(i == conduct);
 				cb.active = editable;
 				cb.conduct = i;
 
 				pos += GAP;
 				cb.setRect(0, pos, WIDTH - 16, BTN_HEIGHT);
+				if (i == Conducts.Conduct.NULL){
+					cb.setSize(WIDTH, BTN_HEIGHT);
+				}
 
 				add(cb);
 				slots.add(cb);
-
-				IconButton info = new IconButton(Icons.get(Icons.INFO)) {
-					@Override
-					protected void onClick() {
-						super.onClick();
-						ShatteredPixelDungeon.scene().add(
-								new WndMessage(Messages.get(Conducts.class, challenge + "_desc"))
-						);
-					}
-				};
-				info.setRect(cb.right(), pos, 16, BTN_HEIGHT);
-				add(info);
+				if (i != Conducts.Conduct.NULL) {
+					IconButton info = new IconButton(Icons.get(Icons.INFO)) {
+						@Override
+						protected void onClick() {
+							super.onClick();
+							ShatteredPixelDungeon.scene().add(
+									new WndTitledMessage(
+											new Image(Assets.Interfaces.SUBCLASS_ICONS, (i.ordinal() - 1) * 16, 16, 16, 16),
+											challenge,
+											Messages.get(Conducts.class, i.name() + "_desc"))
+							);
+						}
+					};
+					info.setRect(cb.right(), pos, 16, BTN_HEIGHT);
+					add(info);
+				}
 
 				pos = cb.bottom();
-			}
 		}
 
 		resize( WIDTH, (int)pos );
@@ -105,7 +111,7 @@ public class WndChallenges extends Window {
 					value = slot.conduct;
 				}
 			}
-			SPDSettings.challenges( value );
+			SPDSettings.challenges( value == Conducts.Conduct.NULL ? null : value );
 		}
 
 		super.onBackPressed();

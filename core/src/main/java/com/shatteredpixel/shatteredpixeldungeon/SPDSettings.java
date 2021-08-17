@@ -207,7 +207,8 @@ public class SPDSettings extends GameSettings {
 	}
 	
 	public static void challenges( Conducts.Conduct value ) {
-		put( KEY_CHALLENGES, value.name() );
+		if (value == null) put(KEY_CHALLENGES, "");
+		else put( KEY_CHALLENGES, value.name() );
 	}
 	
 	public static Conducts.Conduct challenges() {

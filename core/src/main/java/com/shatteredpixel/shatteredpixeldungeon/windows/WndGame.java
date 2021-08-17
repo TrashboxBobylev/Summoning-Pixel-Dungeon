@@ -24,9 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.*;
 import com.shatteredpixel.shatteredpixeldungeon.services.updates.Updates;
@@ -34,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.Image;
 
 import java.io.IOException;
 
@@ -79,7 +78,9 @@ public class WndGame extends Window {
 				@Override
 				protected void onClick() {
 					hide();
-					GameScene.show( new WndChallenges( Dungeon.challenges, false ) );
+					GameScene.show( new WndTitledMessage(new Image(Assets.Interfaces.SUBCLASS_ICONS, (Dungeon.challenges.ordinal()-1)*16, 16, 16, 16),
+							Dungeon.challenges.toString(),
+							Messages.get(Conducts.class, Dungeon.challenges.name() + "_desc")) );
 				}
 			} );
 			curBtn.icon(Icons.get(Icons.CHALLENGE_ON));

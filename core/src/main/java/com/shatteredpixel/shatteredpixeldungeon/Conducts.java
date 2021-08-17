@@ -24,6 +24,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon;
 
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+
 public class Conducts {
     public enum Conduct {
         NULL,
@@ -31,7 +33,12 @@ public class Conducts {
         PACIFIST,
         CRIPPLED,
         NO_MAGIC,
-        ZEN
+        ZEN;
+
+        @Override
+        public String toString() {
+            return Messages.get(Conducts.class, this.name());
+        }
     }
 
 
