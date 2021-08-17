@@ -29,7 +29,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.*;
-import com.shatteredpixel.shatteredpixeldungeon.windows.*;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndDungeonMode;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndHeroInfo;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndStartGame;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.input.PointerEvent;
 import com.watabou.noosa.Camera;
@@ -142,15 +145,15 @@ public class HeroSelectScene extends PixelScene {
 		}
 
 		challengeButton = new IconButton(
-				Icons.get( SPDSettings.challenges() > 0 ? Icons.CHALLENGE_ON :Icons.CHALLENGE_OFF)){
+				Icons.get( SPDSettings.challenges() != null && SPDSettings.challenges() != Conducts.Conduct.NULL ? Icons.CHALLENGE_ON :Icons.CHALLENGE_OFF)){
 			@Override
 			protected void onClick() {
-				ShatteredPixelDungeon.scene().addToFront(new WndChallenges(SPDSettings.challenges(), true) {
+				/*ShatteredPixelDungeon.scene().addToFront(new WndChallenges(SPDSettings.challenges(), true) {
 					public void onBackPressed() {
 						super.onBackPressed();
 						icon(Icons.get(SPDSettings.challenges() > 0 ? Icons.CHALLENGE_ON : Icons.CHALLENGE_OFF));
 					}
-				} );
+				} );*/
 			}
 
 			@Override
@@ -167,8 +170,8 @@ public class HeroSelectScene extends PixelScene {
 		if (DeviceCompat.isDebug() || Badges.isUnlocked(Badges.Badge.VICTORY)){
 			add(challengeButton);
 		} else {
-			Dungeon.challenges = 0;
-			SPDSettings.challenges(0);
+			Dungeon.challenges = null;
+			SPDSettings.challenges(null);
 		}
 
 		btnExit = new ExitButton();

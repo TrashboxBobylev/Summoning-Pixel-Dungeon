@@ -273,7 +273,8 @@ public enum Rankings {
 
 		Statistics.restoreFromBundle(data.getBundle(STATS));
 		
-		Dungeon.challenges = data.getInt(CHALLENGES);
+		Dungeon.challenges = data.getEnum(CHALLENGES, Conducts.Conduct.class);
+		if (Dungeon.challenges == Conducts.Conduct.NULL) Dungeon.challenges = null;
 		Dungeon.mode = rec.mode;
 
 	}

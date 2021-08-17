@@ -206,12 +206,14 @@ public class SPDSettings extends GameSettings {
 		return getInt( KEY_LAST_CLASS, 0, 0, 3 );
 	}
 	
-	public static void challenges( int value ) {
-		put( KEY_CHALLENGES, value );
+	public static void challenges( Conducts.Conduct value ) {
+		put( KEY_CHALLENGES, value.name() );
 	}
 	
-	public static int challenges() {
-		return getInt( KEY_CHALLENGES, 0, 0, Challenges.MAX_VALUE );
+	public static Conducts.Conduct challenges() {
+		String str = getString( KEY_CHALLENGES, "" );
+		if (str.equals("") || str.equals("0")) return null;
+		return Conducts.Conduct.valueOf(str);
 	}
 
 	public static void supportNagged( boolean value ) {

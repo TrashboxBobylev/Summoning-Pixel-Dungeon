@@ -123,13 +123,14 @@ public class GamesInProgress {
 		}
 	}
 
-	public static void set(int slot, int depth, int challenges, Dungeon.GameMode mode,
-	                       Hero hero) {
+	public static void set(int slot, int depth, Conducts.Conduct challenges, Dungeon.GameMode mode,
+						   Hero hero) {
 		Info info = new Info();
 		info.slot = slot;
 		
 		info.depth = depth;
 		info.challenges = challenges;
+		if (info.challenges == Conducts.Conduct.NULL) info.challenges = null;
 		
 		info.level = hero.lvl;
 		info.str = hero.STR;
@@ -161,7 +162,7 @@ public class GamesInProgress {
 		
 		public int depth;
 		public int version;
-		public int challenges;
+		public Conducts.Conduct challenges;
 		public Dungeon.GameMode mode;
 		
 		public int level;

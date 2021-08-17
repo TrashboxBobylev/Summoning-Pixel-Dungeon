@@ -112,18 +112,18 @@ public class WndStartGame extends Window {
 		
 		if (DeviceCompat.isDebug() || Badges.isUnlocked(Badges.Badge.VICTORY)){
 			IconButton challengeButton = new IconButton(
-					Icons.get( SPDSettings.challenges() > 0 ? Icons.CHALLENGE_ON :Icons.CHALLENGE_OFF)){
+					Icons.get( SPDSettings.challenges() != null ? Icons.CHALLENGE_ON :Icons.CHALLENGE_OFF)){
 				@Override
 				protected void onClick() {
-					ShatteredPixelDungeon.scene().addToFront(new WndChallenges(SPDSettings.challenges(), true) {
+					/*ShatteredPixelDungeon.scene().addToFront(new WndChallenges(SPDSettings.challenges(), true) {
 						public void onBackPressed() {
 							super.onBackPressed();
 							if (parent != null) {
-								icon(Icons.get(SPDSettings.challenges() > 0 ?
+								icon(Icons.get(SPDSettings.challenges() != null ?
 										Icons.CHALLENGE_ON : Icons.CHALLENGE_OFF));
 							}
 						}
-					} );
+					} );*/
 				}
 				
 				@Override
@@ -139,8 +139,8 @@ public class WndStartGame extends Window {
 			add(challengeButton);
 			
 		} else {
-			Dungeon.challenges = 0;
-			SPDSettings.challenges(0);
+			Dungeon.challenges = null;
+			SPDSettings.challenges(null);
 		}
 		
 		resize(WIDTH, HEIGHT);

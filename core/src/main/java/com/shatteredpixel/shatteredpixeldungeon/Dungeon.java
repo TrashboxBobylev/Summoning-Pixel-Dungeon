@@ -59,6 +59,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import static com.shatteredpixel.shatteredpixeldungeon.Conducts.Conduct.NULL;
+
 public class Dungeon {
 
 	//enum of items which have limited spawns, records how many have spawned
@@ -170,7 +172,7 @@ public class Dungeon {
 		}
 	}
 
-	public static int challenges;
+	public static Conducts.Conduct challenges;
 	public static GameMode mode;
 
 	public static Hero hero;
@@ -244,8 +246,8 @@ public class Dungeon {
 		GamesInProgress.selectedClass.initHero( hero );
 	}
 
-	public static boolean isChallenged( int mask ) {
-		return (challenges & mask) != 0;
+	public static boolean isChallenged( Conducts.Conduct mask ) {
+		return challenges == mask;
 	}
 	
 	public static Level newLevel() {
@@ -587,7 +589,7 @@ public class Dungeon {
 		quickslot.reset();
 		QuickSlotButton.reset();
 
-		Dungeon.challenges = bundle.getInt( CHALLENGES );
+		Dungeon.challenges = bundle.getEnum( CHALLENGES, Conducts.Conduct.class );
 		try {
 			Dungeon.mode = GameMode.valueOf(bundle.getString(MODE));
 		} catch (IllegalArgumentException exception){
@@ -709,7 +711,8 @@ public class Dungeon {
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {
 		info.depth = bundle.getInt( DEPTH );
 		info.version = bundle.getInt( VERSION );
-		info.challenges = bundle.getInt( CHALLENGES );
+		info.challenges = bundle.getEnum( CHALLENGES, Conducts.Conduct.class );
+		if (info.challenges == NULL) info.challenges = null;
 		try {
 			info.mode = GameMode.valueOf(bundle.getString(MODE));
 		} catch (IllegalArgumentException exception){

@@ -24,6 +24,15 @@
 
 package com.shatteredpixel.shatteredpixeldungeon;
 
-public class NewChallenges {
+public class Conducts {
+    public enum Conduct {
+        NULL,
+        NO_ARMOR,
+        PACIFIST,
+        CRIPPLED,
+        NO_MAGIC,
+        ZEN
+    }
+
 
 }

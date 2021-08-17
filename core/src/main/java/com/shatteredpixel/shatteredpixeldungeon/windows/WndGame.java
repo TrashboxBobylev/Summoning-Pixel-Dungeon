@@ -74,12 +74,12 @@ public class WndGame extends Window {
 		}
 
 		// Challenges window
-		if (Dungeon.challenges > 0) {
+		if (Dungeon.challenges != null) {
 			addButton( curBtn = new RedButton( Messages.get(this, "challenges") ) {
 				@Override
 				protected void onClick() {
 					hide();
-					GameScene.show( new WndChallenges( Dungeon.challenges, false ) );
+/*					GameScene.show( new WndChallenges( Dungeon.challenges, false ) );*/
 				}
 			} );
 			curBtn.icon(Icons.get(Icons.CHALLENGE_ON));
