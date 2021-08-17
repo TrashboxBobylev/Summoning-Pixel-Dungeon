@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -163,8 +164,10 @@ public abstract class Scroll extends Item {
 
 		if (action.equals( AC_READ )) {
 			
-			if (hero.buff(MagicImmune.class) != null){
-				GLog.warning( Messages.get(this, "no_magic") );
+			if (hero.buff(MagicImmune.class) != null) {
+				GLog.warning(Messages.get(this, "no_magic"));
+			} else if (Dungeon.isChallenged(Conducts.Conduct.ZEN) && !isIdentified()){
+				GLog.warning( Messages.get(this, "zen") );
 			} else if (hero.buff( Blindness.class ) != null) {
 				GLog.warning( Messages.get(this, "blinded") );
 			} else if (hero.buff(UnstableSpellbook.bookRecharge.class) != null

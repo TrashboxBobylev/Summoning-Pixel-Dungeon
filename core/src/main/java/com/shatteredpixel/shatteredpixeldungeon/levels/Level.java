@@ -94,7 +94,10 @@ public abstract class Level implements Bundlable {
 	public boolean[] mapped;
 	public boolean[] discoverable;
 
-	public int viewDistance = 8;
+	//Variable for Amnesia challenge
+	public boolean[] needUpdateFog;
+
+	public int viewDistance = Dungeon.isChallenged(Conducts.Conduct.ZEN) ? 0 : 8;
 	
 	public boolean[] heroFOV;
 	
@@ -1147,6 +1150,17 @@ public abstract class Level implements Bundlable {
 				for (Mob mob : mobs) {
 					int p = mob.pos;
 					if (mob instanceof Minion) {
+
+						if (!fieldOfView[p]){
+							Dungeon.hero.mindVisionEnemies.add(mob);
+						}
+					}
+				}
+			}
+			if (Dungeon.isChallenged(Conducts.Conduct.ZEN) && c == Dungeon.hero) {
+				for (Mob mob : mobs) {
+					int p = mob.pos;
+					if (distance( c.pos, p) <= 5) {
 
 						if (!fieldOfView[p]){
 							Dungeon.hero.mindVisionEnemies.add(mob);
