@@ -95,6 +95,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 
 			activate( hero );
 
+
 			updateQuickslot();
 
 			cursedKnown = true;

@@ -191,6 +191,11 @@ public abstract class Wand extends Weapon {
 		charger.setScaleFactor( chargeScaleFactor );
 	}
 
+	@Override
+	public void activate(Char ch) {
+		charge(ch, 0.75f);
+	}
+
 	protected void processSoulMark(Char target, int chargesUsed){
 		if (chargesUsed == 0) chargesUsed = 1;
 		processSoulMark(target, buffedLvl(), chargesUsed);
