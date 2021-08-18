@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
@@ -496,7 +497,7 @@ public class WndBag extends WndTabbed {
 						mode == Mode.WEAPON && (item instanceof MeleeWeapon) ||
 						mode == Mode.ARMOR && (item instanceof Armor) ||
                         mode == Mode.ARMOR_FOR_IMBUE && (item instanceof Armor && !(item instanceof ConjurerArmor)) ||
-						mode == Mode.ENCHANTABLE && ((item instanceof MeleeWeapon || item instanceof SpiritBow || item instanceof Slingshot || item instanceof Armor || item instanceof Staff || (item instanceof MissileWeapon && Dungeon.hero.hasTalent(Talent.WILD_SORCERY))) && !(item instanceof Broadsword)) ||
+						mode == Mode.ENCHANTABLE && ((item instanceof MeleeWeapon || item instanceof SpiritBow || item instanceof Slingshot || (item instanceof Wand && Dungeon.hero.heroClass == HeroClass.MAGE) || item instanceof Armor || item instanceof Staff || (item instanceof MissileWeapon && Dungeon.hero.hasTalent(Talent.WILD_SORCERY))) && !(item instanceof Broadsword)) ||
 						mode == Mode.ENCHANTED && ((item instanceof Armor && ((Armor) item).glyph != null) || (item instanceof Weapon && ((Weapon) item).enchantment != null)) ||
 								mode == Mode.WAND && (item instanceof Wand) ||
 						mode == Mode.ENCHANTABLE_WEAPONS && ((item instanceof MeleeWeapon || item instanceof SpiritBow || item instanceof Slingshot || item instanceof Staff) && !(item instanceof Broadsword)) ||

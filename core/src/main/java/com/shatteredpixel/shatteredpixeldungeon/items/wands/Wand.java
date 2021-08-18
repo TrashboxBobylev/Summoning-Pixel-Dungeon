@@ -285,7 +285,24 @@ public abstract class Wand extends Weapon {
 		desc += "\n\n" + statsDesc();
 
 		if (Dungeon.hero.heroClass == HeroClass.MAGE){
-			desc += "\n\n" + Messages.get(Wand.class, "melee", min(), max());
+			desc += "\n\n" + Messages.get(Wand.class, "melee",
+					augment.damageFactor(min()),
+					augment.damageFactor(max()));
+		}
+
+		switch (augment) {
+			case SPEED:
+				desc += " " + Messages.get(Weapon.class, "faster");
+				break;
+			case DAMAGE:
+				desc += " " + Messages.get(Weapon.class, "stronger");
+				break;
+			case NONE:
+		}
+
+		if (enchantment != null && (cursedKnown || !enchantment.curse())){
+			desc += "\n\n" + Messages.get(Weapon.class, "enchanted", enchantment.name());
+			desc += " " + Messages.get(enchantment, "desc");
 		}
 
 		if (cursed && cursedKnown) {
