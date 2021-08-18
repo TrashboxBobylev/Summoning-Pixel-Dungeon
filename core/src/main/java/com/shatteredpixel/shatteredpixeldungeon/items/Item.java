@@ -67,6 +67,8 @@ public class Item implements Bundlable {
 	
 	public static final String AC_DROP		= "DROP";
 	public static final String AC_THROW		= "THROW";
+	public static final String AC_DOWNGRADE = "DOWNGRADE";
+	public static final String AC_TIERINFO = "TIERINFO";
 	
 	public String defaultAction = "";
 	public boolean usesTargeting;

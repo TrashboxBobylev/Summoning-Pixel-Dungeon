@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
@@ -66,7 +67,7 @@ public class WndTierInfo extends Window {
         titlebar.label(Messages.get(this, "tier", tier));
         titlebar.color( color );
 
-        final RenderedTextBlock[] txtInfo = {PixelScene.renderTextBlock(Messages.get(item, "tier" + tier), 6)};
+        final RenderedTextBlock[] txtInfo = {PixelScene.renderTextBlock(getTierInfo(item), 6)};
 
         layoutFields(titlebar, txtInfo[0]);
 
@@ -95,9 +96,16 @@ public class WndTierInfo extends Window {
 
     }
 
+    private String getTierInfo(Item item) {
+        if (item instanceof Wand){
+            return ((Wand) item).getTierMessage(tier);
+        }
+        return Messages.get(item, "tier" + tier);
+    }
+
     private void rerender(RenderedTextBlock[] txtInfo, IconTitle titlebar, Item item){
         txtInfo[0].clear();
-        txtInfo[0] = PixelScene.renderTextBlock( Messages.get(item, "tier" + tier), 6);
+        txtInfo[0] = PixelScene.renderTextBlock(getTierInfo(item), 6);
         int color = TITLE_COLOR;
         switch (tier) {
             case 1:

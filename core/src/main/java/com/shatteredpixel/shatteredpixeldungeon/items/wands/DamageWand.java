@@ -27,18 +27,20 @@ package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Random;
 
+import java.text.DecimalFormat;
+
 //for wands that directly damage a target
 //wands with AOE effects count here (e.g. fireblast), but wands with indrect damage do not (e.g. venom, transfusion)
 public abstract class DamageWand extends Wand{
 
 	public int magicalmin(){
-		return magicalmin(buffedLvl());
+		return Math.round(magicalmin(buffedLvl())*powerLevel());
 	}
 
 	public abstract int magicalmin(int lvl);
 
 	public int magicalmax(){
-		return magicalmax(buffedLvl());
+		return Math.round(magicalmax(buffedLvl())*powerLevel());
 	}
 
 	public abstract int magicalmax(int lvl);
@@ -57,5 +59,13 @@ public abstract class DamageWand extends Wand{
 			return Messages.get(this, "stats_desc", magicalmin(), magicalmax());
 		else
 			return Messages.get(this, "stats_desc", magicalmin(0), magicalmax(0));
+	}
+
+	public String getTierMessage(int tier){
+		return Messages.get(this, "tier" + tier,
+				magicalmin(tier-1),
+				magicalmax(tier-1),
+				new DecimalFormat("#.##").format(charger.getTurnsToCharge())
+		);
 	}
 }

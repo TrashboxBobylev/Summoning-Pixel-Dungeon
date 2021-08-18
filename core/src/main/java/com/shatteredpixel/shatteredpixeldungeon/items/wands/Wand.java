@@ -41,12 +41,15 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndTierInfo;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.PixelParticle;
@@ -100,6 +103,8 @@ public abstract class Wand extends Weapon {
 		if (hero.heroClass != HeroClass.MAGE){
 			actions.remove(AC_EQUIP);
 		}
+		if (level() > 0) actions.add(AC_DOWNGRADE);
+		actions.add( AC_TIERINFO );
 
 		return actions;
 	}
@@ -115,7 +120,20 @@ public abstract class Wand extends Weapon {
 			curItem = this;
 			GameScene.selectCell( zapper );
 			
+		} else if (action.equals(AC_DOWNGRADE)){
+			GameScene.flash(0xFFFFFF);
+			Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
+			level(level()-1);
+			GLog.warning( Messages.get(Staff.class, "lower_tier"));
+		} else if (action.equals(AC_TIERINFO)) {
+			ShatteredPixelDungeon.runOnRenderThread(() -> Game.scene().addToFront(new WndTierInfo(Wand.this)));
 		}
+	}
+
+	public String getTierMessage(int tier){
+		return Messages.get(this, "tier" + tier,
+				new DecimalFormat("#.##").format(charger.getTurnsToCharge())
+				);
 	}
 
 	@Override
