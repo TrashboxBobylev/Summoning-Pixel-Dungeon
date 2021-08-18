@@ -54,17 +54,41 @@ public class WandOfBounceBeams extends DamageWand{
     private Ballistica collisionPos;
 
     public int bounceCount(int lvl){
-        return 4 + Math.round(lvl*1.5f);
+        switch (lvl){
+            case 1: return 8;
+            case 2: return 4;
+        }
+        return 2;
     }
 
     @Override
     public int magicalmin(int lvl){
-        return 4 + lvl/3;
+        return (int) ((4 + Dungeon.hero.lvl*0.75f));
     }
 
     @Override
-    public int magicalmax(int lvl){
-        return 8 + lvl/2;
+    public int magicalmax(int lvl) {
+        return (int) (8 + Dungeon.hero.lvl*1.5f);
+    }
+
+    @Override
+    public float powerLevel(int level) {
+        switch (level){
+            case 0: return 1.0f;
+            case 1: return 0.6f;
+            case 2: return 0.3f;
+        }
+        return 0f;
+    }
+
+    @Override
+    public float rechargeModifier(int level) {
+        switch (level){
+            case 0: return 1.0f;
+            case 1: return 1.5f;
+            case 2: return 0.75f;
+        }
+        return 0f;
     }
 
     @Override
@@ -81,6 +105,11 @@ public class WandOfBounceBeams extends DamageWand{
             if (ch != Dungeon.hero) {
                 if (!Dungeon.isChallenged(Conducts.Conduct.PACIFIST))
                     ch.damage(damageRoll(), this);
+                int defenseDebuff = 3;
+                switch (level()){
+                    case 1: defenseDebuff = 1; break;
+                    case 2: defenseDebuff = 7; break;
+                }
                 Buff.prolong(ch, DefenseDebuff.class, 3 + level());
             }
             ch.sprite.centerEmitter().burst(PurpleParticle.BURST, Random.IntRange(1, 2));
