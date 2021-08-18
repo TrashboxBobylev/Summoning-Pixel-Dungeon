@@ -258,7 +258,7 @@ public class ItemSlot extends Button {
 		} else {
 			level.text( null );
 		}
-		if (item instanceof Staff || item instanceof ConjurerSpell || item instanceof SpiritBow || item instanceof Ability){
+		if (item instanceof Staff || item instanceof ConjurerSpell || item instanceof SpiritBow || item instanceof Ability || item instanceof Wand){
 			switch (item.level()){
 				case 0:
 					level.hardlight(BRONZE);

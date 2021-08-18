@@ -254,8 +254,13 @@ public abstract class Wand extends Weapon {
 			charger = null;
 		}
 	}
-	
-	public void level( int value) {
+
+	@Override
+	public boolean isUpgradable() {
+		return level() < 3;
+	}
+
+	public void level(int value) {
 		super.level( value );
 		updateLevel();
 	}
