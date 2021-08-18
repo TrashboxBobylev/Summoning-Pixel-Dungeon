@@ -141,6 +141,15 @@ public abstract class Wand extends Weapon {
 		return 7 + power()*2;
 	}
 
+	public float powerLevel(){
+		switch (level()){
+			case 0: return 1.0f;
+			case 1: return 1.0f;
+			case 2: return 1.0f;
+		}
+		return 0f;
+	}
+
 	@Override
 	public int proc(Char attacker, Char defender, int damage) {
 		if (attacker instanceof Hero && ((Hero)attacker).subClass == HeroSubClass.BATTLEMAGE) {
@@ -620,6 +629,15 @@ public abstract class Wand extends Weapon {
 			return Messages.get(Wand.class, "prompt");
 		}
 	};
+
+	public float rechargeModifier(){
+		switch (level()){
+			case 0: return 1.0f;
+			case 1: return 1.0f;
+			case 2: return 1.0f;
+		}
+		return 0f;
+	}
 	
 	public class Charger extends Buff {
 		
@@ -658,11 +676,7 @@ public abstract class Wand extends Weapon {
 		}
 
 		private void recharge(){
-			int missingCharges = maxCharges - curCharges;
-			missingCharges = Math.max(0, missingCharges);
-
-			float turnsToCharge = (float) (BASE_CHARGE_DELAY
-					+ (SCALING_CHARGE_ADDITION * Math.pow(scalingFactor, missingCharges)));
+			float turnsToCharge = getTurnsToCharge();
 
 			LockedFloor lock = target.buff(LockedFloor.class);
 			if (lock == null || lock.regenOn())
@@ -674,7 +688,15 @@ public abstract class Wand extends Weapon {
 				}
 			}
 		}
-		
+
+		public float getTurnsToCharge() {
+			int missingCharges = maxCharges - curCharges;
+			missingCharges = Math.max(0, missingCharges);
+
+			return (float) (BASE_CHARGE_DELAY
+					+ (SCALING_CHARGE_ADDITION * Math.pow(scalingFactor, missingCharges)))*rechargeModifier();
+		}
+
 		public Wand wand(){
 			return Wand.this;
 		}
