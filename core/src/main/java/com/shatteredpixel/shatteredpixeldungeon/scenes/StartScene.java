@@ -24,10 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Chrome;
-import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -43,7 +40,7 @@ import java.util.ArrayList;
 
 public class StartScene extends PixelScene {
 	
-	private static final int SLOT_WIDTH = 140;
+	private static final int SLOT_WIDTH = 150;
 	private static final int SLOT_HEIGHT = 30;
 	
 	@Override
@@ -126,6 +123,7 @@ public class StartScene extends PixelScene {
 		private Image classIcon;
 		private BitmapText level;
 		private Image mode;
+		private Image conduct;
 		
 		private int slot;
 		private boolean newGame;
@@ -181,6 +179,10 @@ public class StartScene extends PixelScene {
 					add(classIcon);
 					mode = new Image(Icons.get(info.mode.icon));
 					add(mode);
+					if (info.challenges != null) {
+						conduct = new Image(Assets.Interfaces.SUBCLASS_ICONS, (info.challenges.ordinal() - 1) * 16, 16, 16, 16);
+						add(conduct);
+					}
 					level = new BitmapText(PixelScene.pixelFont);
 					add(level);
 				} else {
@@ -231,7 +233,12 @@ public class StartScene extends PixelScene {
 
 				mode.x = x + width - 56 + (16 - mode.width())/2f;
 				mode.y = y + (height - mode.height())/2f;
-				align(classIcon);
+				align(mode);
+				if (conduct != null) {
+					conduct.x = x + width - 72 + (16 - conduct.width()) / 2f;
+					conduct.y = y + (height - conduct.height()) / 2f;
+					align(conduct);
+				}
 				
 				classIcon.x = x + width - 24 + (16 - classIcon.width())/2f;
 				classIcon.y = y + (height - classIcon.height())/2f;

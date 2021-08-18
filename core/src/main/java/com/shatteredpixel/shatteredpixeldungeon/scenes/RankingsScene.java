@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
@@ -180,7 +181,8 @@ public class RankingsScene extends PixelScene {
 		private Image classIcon;
 		private BitmapText level;
 		private Image mode;
-		
+		private Image conduct;
+
 		public Record( int pos, boolean latest, Rankings.Record rec ) {
 			super();
 			
@@ -259,6 +261,10 @@ public class RankingsScene extends PixelScene {
 			}
 
 			mode.copy(Icons.get(rec.mode.icon));
+			if (rec.gameData.getEnum("challenges", Conducts.Conduct.class) != Conducts.Conduct.NULL){
+				conduct.copy(new Image(Assets.Interfaces.SUBCLASS_ICONS, (rec.gameData.getEnum("challenges", Conducts.Conduct.class).ordinal() - 1) * 16, 16, 16, 16));
+			}
+
 		}
 		
 		@Override
@@ -272,7 +278,7 @@ public class RankingsScene extends PixelScene {
 			position = new BitmapText( PixelScene.pixelFont);
 			add( position );
 			
-			desc = renderTextBlock( 7 );
+			desc = renderTextBlock( 6 );
 			add( desc );
 
 			depth = new BitmapText( PixelScene.pixelFont);
@@ -284,6 +290,9 @@ public class RankingsScene extends PixelScene {
 
 			mode = new Image();
 			add( mode );
+
+			conduct = new Image();
+			add( conduct );
 
 			level = new BitmapText( PixelScene.pixelFont);
 		}
@@ -325,7 +334,11 @@ public class RankingsScene extends PixelScene {
 			mode.y = shield.y + (18 - mode.height())/2f + 1;
 			align(mode);
 
-			desc.maxWidth((int)(mode.x - (shield.x + shield.width + GAP)));
+			conduct.x = x + width - 32 - mode.width() - 16 + (18 - conduct.width())/2f;
+			conduct.y = shield.y + (18 - conduct.height())/2f + 1;
+			align(mode);
+
+			desc.maxWidth((int)(conduct.x - (shield.x + shield.width + GAP)));
 			desc.setPos(shield.x + shield.width + GAP, shield.y + (shield.height - desc.height()) / 2f + 1);
 			align(desc);
 		}
