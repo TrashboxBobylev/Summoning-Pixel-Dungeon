@@ -132,7 +132,7 @@ public abstract class Wand extends Weapon {
 
 	public String getTierMessage(int tier){
 		return Messages.get(this, "tier" + tier,
-				new DecimalFormat("#.##").format(charger.getTurnsToCharge())
+				new DecimalFormat("#.##").format(charger.getTurnsToCharge(tier-1))
 				);
 	}
 
@@ -160,13 +160,17 @@ public abstract class Wand extends Weapon {
 		return 7 + power()*2;
 	}
 
-	public float powerLevel(){
-		switch (level()){
+	public float powerLevel(int level){
+		switch (level){
 			case 0: return 1.0f;
 			case 1: return 1.0f;
 			case 2: return 1.0f;
 		}
 		return 0f;
+	}
+
+	public float powerLevel(){
+		return powerLevel(level());
 	}
 
 	@Override
@@ -413,12 +417,6 @@ public abstract class Wand extends Weapon {
 	@Override
 	public int buffedLvl() {
 		int lvl = super.buffedLvl();
-		if (charger != null && charger.target != null) {
-			WandOfMagicMissile.MagicCharge buff = charger.target.buff(WandOfMagicMissile.MagicCharge.class);
-			if (buff != null && buff.level() > lvl){
-				return buff.level();
-			}
-		}
 		return lvl;
 	}
 
@@ -468,6 +466,8 @@ public abstract class Wand extends Weapon {
 		return emitter;
 	}
 
+	protected boolean isMM;
+
 	protected void wandUsed() {
         Statistics.wandUses++;
 		if (!isIdentified() && availableUsesToID >= 1) {
@@ -483,7 +483,7 @@ public abstract class Wand extends Weapon {
 		curCharges -= cursed ? 1 : chargesPerCast();
 
 		WandOfMagicMissile.MagicCharge buff = curUser.buff(WandOfMagicMissile.MagicCharge.class);
-		if (buff != null && buff.level() > super.buffedLvl()){
+		if (buff != null && !isMM){
 			buff.detach();
 		}
 
@@ -655,13 +655,17 @@ public abstract class Wand extends Weapon {
 		}
 	};
 
-	public float rechargeModifier(){
-		switch (level()){
+	public float rechargeModifier(int level){
+		switch (level){
 			case 0: return 1.0f;
 			case 1: return 1.0f;
 			case 2: return 1.0f;
 		}
 		return 0f;
+	}
+
+	public float rechargeModifier(){
+		return rechargeModifier(level());
 	}
 	
 	public class Charger extends Buff {
@@ -720,6 +724,14 @@ public abstract class Wand extends Weapon {
 
 			return (float) (BASE_CHARGE_DELAY
 					+ (SCALING_CHARGE_ADDITION * Math.pow(scalingFactor, missingCharges)))*rechargeModifier();
+		}
+
+		public float getTurnsToCharge(int level) {
+			int missingCharges = maxCharges - curCharges;
+			missingCharges = Math.max(0, missingCharges);
+
+			return (float) (BASE_CHARGE_DELAY
+					+ (SCALING_CHARGE_ADDITION * Math.pow(scalingFactor, missingCharges)))*rechargeModifier(level);
 		}
 
 		public Wand wand(){

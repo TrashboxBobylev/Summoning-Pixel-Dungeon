@@ -39,7 +39,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class WandOfMagicMissile extends DamageWand {
@@ -50,12 +49,12 @@ public class WandOfMagicMissile extends DamageWand {
 
 	@Override
 	public int magicalmin(int lvl){
-		return 4+lvl*2;
+		return (int) ((4 + Dungeon.hero.lvl*0.75f));
 	}
 
 	@Override
-	public int magicalmax(int lvl){
-		return 6+2*lvl;
+	public int magicalmax(int lvl) {
+		return (int) ((6 + Dungeon.hero.lvl*0.75f)*powerLevel());
 	}
 	
 	@Override
@@ -71,17 +70,33 @@ public class WandOfMagicMissile extends DamageWand {
 
 			ch.sprite.burst(0xFFFFFFFF, buffedLvl() / 2 + 2);
 
-			//apply the magic charge buff if we have another wand in inventory of a lower level, or already have the buff
-			for (Wand.Charger wandCharger : curUser.buffs(Wand.Charger.class)){
-				if (wandCharger.wand().buffedLvl() < buffedLvl() || curUser.buff(MagicCharge.class) != null){
-					Buff.prolong(curUser, MagicCharge.class, MagicCharge.DURATION).setLevel(buffedLvl());
-					break;
-				}
+			if (level() > 0 || curUser.buff(MagicCharge.class) != null){
+				Buff.prolong(curUser, MagicCharge.class, MagicCharge.DURATION);
 			}
 
 		} else {
             Dungeon.level.pressCell(bolt.collisionPos);
 		}
+	}
+
+	@Override
+	public float powerLevel(int level) {
+		switch (level){
+			case 0: return 1.0f;
+			case 1: return 0.25f;
+			case 2: return 0.75f;
+		}
+		return 0f;
+	}
+
+	@Override
+	public float rechargeModifier(int level) {
+		switch (level){
+			case 0: return 1.0f;
+			case 1: return 0.8f;
+			case 2: return 1.5f;
+		}
+		return 0f;
 	}
 
 	@Override
@@ -108,20 +123,10 @@ public class WandOfMagicMissile extends DamageWand {
 
 		public static float DURATION = 4f;
 
-		private int level = 0;
-
-		public void setLevel(int level){
-			this.level = Math.max(level, this.level);
-		}
-
 		@Override
 		public void detach() {
 			super.detach();
 			QuickSlotButton.refresh();
-		}
-
-		public int level(){
-			return this.level;
 		}
 
 		@Override
@@ -146,21 +151,7 @@ public class WandOfMagicMissile extends DamageWand {
 
 		@Override
 		public String desc() {
-			return Messages.get(this, "desc", level(), dispTurns());
-		}
-
-		private static final String LEVEL = "level";
-
-		@Override
-		public void storeInBundle(Bundle bundle) {
-			super.storeInBundle(bundle);
-			bundle.put(LEVEL, level);
-		}
-
-		@Override
-		public void restoreFromBundle(Bundle bundle) {
-			super.restoreFromBundle(bundle);
-			level = bundle.getInt(LEVEL);
+			return Messages.get(this, "desc", dispTurns());
 		}
 	}
 

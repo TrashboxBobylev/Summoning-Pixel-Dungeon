@@ -34,13 +34,23 @@ import java.text.DecimalFormat;
 public abstract class DamageWand extends Wand{
 
 	public int magicalmin(){
-		return Math.round(magicalmin(buffedLvl())*powerLevel());
+		int round = Math.round(magicalmin(buffedLvl())*powerLevel());
+		if (!(this instanceof WandOfMagicMissile) && charger != null
+				&& charger.target.buff(WandOfMagicMissile.MagicCharge.class) != null){
+			round *= 1.25f;
+		}
+		return round;
 	}
 
 	public abstract int magicalmin(int lvl);
 
 	public int magicalmax(){
-		return Math.round(magicalmax(buffedLvl())*powerLevel());
+		int round = Math.round(magicalmax(buffedLvl())*powerLevel());
+		if (!(this instanceof WandOfMagicMissile) && charger != null
+				&& charger.target.buff(WandOfMagicMissile.MagicCharge.class) != null){
+			round *= 1.25f;
+		}
+		return round;
 	}
 
 	public abstract int magicalmax(int lvl);
@@ -61,11 +71,12 @@ public abstract class DamageWand extends Wand{
 			return Messages.get(this, "stats_desc", magicalmin(0), magicalmax(0));
 	}
 
+	@Override
 	public String getTierMessage(int tier){
 		return Messages.get(this, "tier" + tier,
-				magicalmin(tier-1),
-				magicalmax(tier-1),
-				new DecimalFormat("#.##").format(charger.getTurnsToCharge())
+				Math.round(magicalmin(tier-1)*powerLevel(tier-1)),
+				Math.round(magicalmax(tier-1)*powerLevel(tier-1)),
+				new DecimalFormat("#.##").format(charger.getTurnsToCharge(tier-1))
 		);
 	}
 }
