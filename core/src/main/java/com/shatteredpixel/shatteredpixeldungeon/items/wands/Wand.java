@@ -55,6 +55,7 @@ import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public abstract class Wand extends Weapon {
@@ -297,6 +298,12 @@ public abstract class Wand extends Weapon {
 		String desc = desc();
 
 		desc += "\n\n" + statsDesc();
+
+		if (charger != null && curCharges < maxCharges){
+			desc += "\n\n" + Messages.get(Wand.class, "recharge",
+					new DecimalFormat("#.##").format(
+							charger.getTurnsToCharge() - partialCharge*charger.getTurnsToCharge()));
+		}
 
 		if (Dungeon.hero.heroClass == HeroClass.MAGE){
 			desc += "\n\n" + Messages.get(Wand.class, "melee",
