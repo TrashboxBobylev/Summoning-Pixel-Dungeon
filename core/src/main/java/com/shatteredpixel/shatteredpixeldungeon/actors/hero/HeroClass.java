@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.magic.Zap;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Slingshot;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
@@ -122,6 +123,7 @@ public enum HeroClass {
 		}
 		new Ropes().quantity(5).collect();
 		new DewVial().collect();
+		new ScrollOfUpgrade().quantity(2).collect();
 
 		if (Dungeon.mode == Dungeon.GameMode.GAUNTLET){
 			new Amulet().collect();
@@ -171,6 +173,7 @@ public enum HeroClass {
 		hero.belongings.artifact.activate( hero );
 		Dungeon.quickslot.setSlot(0, wand);
 		Dungeon.quickslot.setSlot(1, blast);
+		new WandOfBlastWave().identify().collect();
 
 		new ScrollHolder().collect();
 		Dungeon.LimitedDrops.SCROLL_HOLDER.drop();

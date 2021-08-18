@@ -62,12 +62,32 @@ public class WandOfBlastWave extends DamageWand {
 
 	@Override
 	public int magicalmin(int lvl){
-		return 1+lvl;
+		return (int) ((1 + Dungeon.hero.lvl*0.5f));
 	}
 
 	@Override
-	public int magicalmax(int lvl){
-		return 3+3*lvl;
+	public int magicalmax(int lvl) {
+		return (5 + Dungeon.hero.lvl);
+	}
+
+	@Override
+	public float powerLevel(int level) {
+		switch (level){
+			case 0: return 1.0f;
+			case 1: return 2.0f;
+			case 2: return 0.5f;
+		}
+		return 0f;
+	}
+
+	@Override
+	public float rechargeModifier(int level) {
+		switch (level){
+			case 0: return 1.0f;
+			case 1: return 1.25f;
+			case 2: return 1.1f;
+		}
+		return 0f;
 	}
 
 	@Override
@@ -92,7 +112,11 @@ public class WandOfBlastWave extends DamageWand {
 
                         if (ch.isAlive() && ch.pos == bolt.collisionPos + i) {
                             Ballistica trajectory = new Ballistica(ch.pos, ch.pos + i, Ballistica.MAGIC_BOLT);
-                            int strength = 1 + Math.round(buffedLvl() / 2f);
+                            int strength = 2;
+                            switch (level()){
+								case 1: strength = 0; break;
+								case 2: strength = 4; break;
+							}
                             throwChar(ch, trajectory, strength, false);
                         } else if (ch == Dungeon.hero){
                             Dungeon.fail( getClass() );
@@ -109,7 +133,11 @@ public class WandOfBlastWave extends DamageWand {
 
 			if (ch.isAlive() && bolt.path.size() > bolt.dist+1 && ch.pos == bolt.collisionPos) {
 				Ballistica trajectory = new Ballistica(ch.pos, bolt.path.get(bolt.dist + 1), Ballistica.MAGIC_BOLT);
-				int strength = buffedLvl() + 3;
+				int strength = 3;
+				switch (level()){
+					case 1: strength = 0; break;
+					case 2: strength = 6; break;
+				}
 				throwChar(ch, trajectory, strength, false);
 			}
 		}

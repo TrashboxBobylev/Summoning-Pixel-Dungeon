@@ -54,7 +54,7 @@ public class WandOfMagicMissile extends DamageWand {
 
 	@Override
 	public int magicalmax(int lvl) {
-		return (int) ((6 + Dungeon.hero.lvl*0.75f)*powerLevel());
+		return (int) ((6 + Dungeon.hero.lvl*0.75f));
 	}
 	
 	@Override
