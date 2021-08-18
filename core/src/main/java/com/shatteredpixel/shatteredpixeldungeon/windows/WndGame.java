@@ -73,7 +73,7 @@ public class WndGame extends Window {
 		}
 
 		// Challenges window
-		if (Dungeon.challenges != null) {
+		if (Dungeon.challenges != null && Dungeon.challenges != Conducts.Conduct.NULL) {
 			addButton( curBtn = new RedButton( Messages.get(this, "challenges") ) {
 				@Override
 				protected void onClick() {
