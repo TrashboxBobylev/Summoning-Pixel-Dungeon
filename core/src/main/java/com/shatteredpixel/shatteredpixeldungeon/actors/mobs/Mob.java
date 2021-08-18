@@ -55,6 +55,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Lucky;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knife;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
@@ -773,7 +774,7 @@ public abstract class Mob extends Char {
 			alerted = true;
 			for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 				if (mob.hordeHead == id()){
-					mob.state = mob.WANDERING;
+					mob.state = mob.HUNTING;
 					mob.alerted = true;
 				}
 			}
@@ -788,8 +789,13 @@ public abstract class Mob extends Char {
 
 		if (hordeHead != -1 && Actor.findById(hordeHead) != null){
 			Mob hordeHead = (Mob) Actor.findById(this.hordeHead);
-			if (hordeHead.isAlive()){
+			if (hordeHead.isAlive() && !(src instanceof Grim)){
 					super.damage(dmg/2, src);
+					for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+					if (mob.hordeHead == id()){
+						mob.state = state;
+					}
+				}
 					return;
 			}
 		}
