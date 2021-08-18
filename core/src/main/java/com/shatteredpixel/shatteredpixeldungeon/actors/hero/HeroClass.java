@@ -114,6 +114,7 @@ public enum HeroClass {
 		hero.attunement = 0;
 
 		Talent.initClassTalents(hero);
+		Generator.random(Generator.Category.WAND).identify().collect();
 
 		if (hero.heroClass != ADVENTURER) {
 			new ScrollOfIdentify().identify();

@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Overlo
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -54,7 +55,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-public abstract class Wand extends Item {
+public abstract class Wand extends Weapon {
 
 	public static final String AC_ZAP	= "ZAP";
 
@@ -106,6 +107,26 @@ public abstract class Wand extends Item {
 			GameScene.selectCell( zapper );
 			
 		}
+	}
+
+	@Override
+	public int STRReq() {
+		return 10;
+	}
+
+	@Override
+	public int STRReq(int lvl) {
+		return 10;
+	}
+
+	@Override
+	public int min(int lvl) {
+		return 0;
+	}
+
+	@Override
+	public int max(int lvl) {
+		return 0;
 	}
 
 	@Override
