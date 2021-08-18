@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.DefenseDebuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -159,7 +158,7 @@ public class WandOfBounceBeams extends DamageWand{
     }
 
     @Override
-    public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
+    public void onHit(Wand wand, Char attacker, Char defender, int damage) {
 
     }
 
@@ -172,7 +171,7 @@ public class WandOfBounceBeams extends DamageWand{
     }
 
     @Override
-    public void staffFx(MagesStaff.StaffParticle particle) {
+    public void staffFx(StaffParticle particle) {
         particle.color(0x220022);
         particle.am = 0.6f;
         particle.setLifespan(1f);

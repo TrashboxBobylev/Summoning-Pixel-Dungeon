@@ -38,7 +38,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BloodParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -144,7 +143,7 @@ public class WandOfTransfusion extends Wand {
 	}
 
 	@Override
-	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
+	public void onHit(Wand wand, Char attacker, Char defender, int damage) {
 		// lvl 0 - 10%
 		// lvl 1 - 18%
 		// lvl 2 - 25%
@@ -165,7 +164,7 @@ public class WandOfTransfusion extends Wand {
 	}
 
 	@Override
-	public void staffFx(MagesStaff.StaffParticle particle) {
+	public void staffFx(StaffParticle particle) {
 		particle.color( 0xCC0000 );
 		particle.am = 0.6f;
 		particle.setLifespan(1f);

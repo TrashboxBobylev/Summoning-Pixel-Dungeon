@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -99,6 +100,9 @@ public class Belongings implements Iterable<Item> {
 		backpack.restoreFromBundle( bundle );
 		
 		weapon = (KindOfWeapon) bundle.get(WEAPON);
+		if (weapon instanceof MagesStaff){
+			weapon = ((MagesStaff) weapon).wand;
+		}
 		if (weapon != null) {
 			weapon.activate(owner);
 		}

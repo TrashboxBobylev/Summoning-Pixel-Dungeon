@@ -35,7 +35,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Slingshot;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
@@ -63,9 +62,6 @@ public class CurseInfusion extends InventorySpell {
 				w.enchant(Weapon.Enchantment.randomCurse());
 			}
 			w.curseInfusionBonus = true;
-			if (w instanceof MagesStaff){
-				((MagesStaff) w).updateWand(true);
-			}
 		} else if (item instanceof Armor){
 			Armor a = (Armor) item;
 			if (a.glyph != null){

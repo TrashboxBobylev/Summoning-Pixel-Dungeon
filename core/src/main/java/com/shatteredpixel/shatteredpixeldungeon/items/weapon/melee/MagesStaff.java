@@ -33,28 +33,23 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBounceBeams;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfStars;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndUseItem;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.noosa.particles.Emitter;
-import com.watabou.noosa.particles.PixelParticle;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
 public class MagesStaff extends MeleeWeapon {
 
-	private Wand wand;
+	public Wand wand;
 
 	public static final String AC_IMBUE = "IMBUE";
 	public static final String AC_ZAP	= "ZAP";
@@ -141,17 +136,6 @@ public class MagesStaff extends MeleeWeapon {
 		} else {
 			return super.buffedLvl();
 		}
-	}
-
-	@Override
-	public int proc(Char attacker, Char defender, int damage) {
-		if (wand != null &&
-				attacker instanceof Hero && ((Hero)attacker).subClass == HeroSubClass.BATTLEMAGE) {
-			if (wand.curCharges < wand.maxCharges) wand.partialCharge += 0.33f;
-			ScrollOfRecharging.charge((Hero)attacker);
-			wand.onHit(this, attacker, defender, damage);
-		}
-		return super.proc(attacker, defender, damage);
 	}
 
 	@Override
@@ -285,16 +269,6 @@ public class MagesStaff extends MeleeWeapon {
 		return info;
 	}
 
-	@Override
-	public Emitter emitter() {
-		if (wand == null) return null;
-		Emitter emitter = new Emitter();
-		emitter.pos(12.5f, 3);
-		emitter.fillTarget = false;
-		emitter.pour(StaffParticleFactory, 0.1f);
-		return emitter;
-	}
-
 	private static final String WAND = "wand";
 
 	@Override
@@ -331,14 +305,6 @@ public class MagesStaff extends MeleeWeapon {
 		public void onSelect( final Item item ) {
 			if (item != null) {
 
-				if (!item.isIdentified()) {
-					GLog.warning(Messages.get(MagesStaff.class, "id_first"));
-					return;
-				} else if (item.cursed){
-					GLog.warning(Messages.get(MagesStaff.class, "cursed"));
-					return;
-				}
-
 				if (wand == null){
 					applyWand((Wand)item);
 				} else {
@@ -348,20 +314,6 @@ public class MagesStaff extends MeleeWeapon {
 										item.level() + 1
 										: item.level()
 									: level();
-					GameScene.show(
-							new WndOptions(new ItemSprite(item),
-									Messages.titleCase(item.name()),
-									Messages.get(MagesStaff.class, "warning", newLevel),
-									Messages.get(MagesStaff.class, "yes"),
-									Messages.get(MagesStaff.class, "no")) {
-								@Override
-								protected void onSelect(int index) {
-									if (index == 0) {
-										applyWand((Wand)item);
-									}
-								}
-							}
-					);
 				}
 			}
 		}
@@ -375,84 +327,11 @@ public class MagesStaff extends MeleeWeapon {
 
 			wand.detach(curUser.belongings.backpack);
 
-			GLog.positive( Messages.get(MagesStaff.class, "imbue", wand.name()));
 			imbueWand( wand, curUser );
 
 			updateQuickslot();
 		}
 	};
 
-    public final Emitter.Factory StaffParticleFactory = new Emitter.Factory() {
-		@Override
-		//reimplementing this is needed as instance creation of new staff particles must be within this class.
-		public void emit( Emitter emitter, int index, float x, float y ) {
-			StaffParticle c = (StaffParticle)emitter.getFirstAvailable(StaffParticle.class);
-			if (c == null) {
-				c = new StaffParticle();
-				emitter.add(c);
-			}
-			c.reset(x, y);
-		}
 
-		@Override
-		//some particles need light mode, others don't
-		public boolean lightMode() {
-			return !((wand instanceof WandOfDisintegration)
-					|| (wand instanceof WandOfCorruption)
-					|| (wand instanceof WandOfCorrosion)
-					|| (wand instanceof WandOfRegrowth)
-					|| (wand instanceof WandOfLivingEarth));
-		}
-	};
-
-	//determines particle effects to use based on wand the staff owns.
-	public class StaffParticle extends PixelParticle{
-
-		private float minSize;
-		private float maxSize;
-		public float sizeJitter = 0;
-
-		public StaffParticle(){
-			super();
-		}
-
-		public void reset( float x, float y ) {
-			revive();
-
-			speed.set(0);
-
-			this.x = x;
-			this.y = y;
-
-			if (wand != null)
-				wand.staffFx( this );
-
-		}
-
-		public void setSize( float minSize, float maxSize ){
-			this.minSize = minSize;
-			this.maxSize = maxSize;
-		}
-
-		public void setLifespan( float life ){
-			lifespan = left = life;
-		}
-
-		public void shuffleXY(float amt){
-			x += Random.Float(-amt, amt);
-			y += Random.Float(-amt, amt);
-		}
-
-		public void radiateXY(float amt){
-			float hypot = (float)Math.hypot(speed.x, speed.y);
-			this.x += speed.x/hypot*amt;
-			this.y += speed.y/hypot*amt;
-		}
-
-		@Override
-		public void update() {
-			super.update();
-			size(minSize + (left / lifespan)*(maxSize-minSize) + Random.Float(sizeJitter));
-		}
-	}
 }

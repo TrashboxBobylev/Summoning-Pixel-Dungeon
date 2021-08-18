@@ -38,7 +38,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blooming;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -195,8 +194,8 @@ public class WandOfRegrowth extends Wand {
 	}
 
 	@Override
-	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
-		new Blooming().proc(staff, attacker, defender, damage);
+	public void onHit(Wand wand, Char attacker, Char defender, int damage) {
+		new Blooming().proc(wand, attacker, defender, damage);
 	}
 
 	public void fx(Ballistica bolt, Callback callback) {
@@ -246,7 +245,7 @@ public class WandOfRegrowth extends Wand {
 	}
 
 	@Override
-	public void staffFx(MagesStaff.StaffParticle particle) {
+	public void staffFx(StaffParticle particle) {
 		particle.color( ColorMath.random(0x004400, 0x88CC44) );
 		particle.am = 1f;
 		particle.setLifespan(1f);

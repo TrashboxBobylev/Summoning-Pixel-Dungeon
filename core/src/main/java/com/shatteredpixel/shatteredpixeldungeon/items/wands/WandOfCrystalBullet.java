@@ -31,7 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.EnergyOverlo
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -148,7 +147,7 @@ public class WandOfCrystalBullet extends DamageWand {
     }
 
 	@Override
-	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
+	public void onHit(Wand wand, Char attacker, Char defender, int damage) {
 		for (int c : PathFinder.NEIGHBOURS8){
             Char ch = Actor.findChar(defender.pos + c);
             if (ch != null && ch != Dungeon.hero){
@@ -159,7 +158,7 @@ public class WandOfCrystalBullet extends DamageWand {
 	}
 
     @Override
-    public void staffFx(MagesStaff.StaffParticle particle) {
+    public void staffFx(StaffParticle particle) {
         particle.color( Random.Int(0xFFe380e3, 0xFF9485c9) );
         particle.am = 0.5f;
         particle.setLifespan(1f);

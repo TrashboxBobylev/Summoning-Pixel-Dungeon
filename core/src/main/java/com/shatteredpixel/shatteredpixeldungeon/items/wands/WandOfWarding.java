@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -166,9 +165,9 @@ public class WandOfWarding extends Wand {
 	}
 
 	@Override
-	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
+	public void onHit(Wand wand, Char attacker, Char defender, int damage) {
 
-		int level = Math.max( 0, staff.buffedLvl() );
+		int level = Math.max( 0, wand.buffedLvl() );
 
 		// lvl 0 - 20%
 		// lvl 1 - 33%
@@ -176,7 +175,7 @@ public class WandOfWarding extends Wand {
 		if (Random.Int( level + 5 ) >= 4) {
 			for (Char ch : Actor.chars()){
 				if (ch instanceof Ward){
-					((Ward) ch).wandHeal(staff.buffedLvl());
+					((Ward) ch).wandHeal(wand.buffedLvl());
 					ch.sprite.emitter().burst(MagicMissile.WardParticle.UP, ((Ward) ch).tier);
 				}
 			}
@@ -184,7 +183,7 @@ public class WandOfWarding extends Wand {
 	}
 
 	@Override
-	public void staffFx(MagesStaff.StaffParticle particle) {
+	public void staffFx(StaffParticle particle) {
 		particle.color( 0x8822FF );
 		particle.am = 0.3f;
 		particle.setLifespan(3f);

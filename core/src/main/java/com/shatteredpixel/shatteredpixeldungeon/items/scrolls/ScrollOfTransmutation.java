@@ -43,7 +43,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScrol
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
@@ -84,9 +83,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		
 		Item result;
 		
-		if (item instanceof MagesStaff) {
-            result = changeStaff((MagesStaff) item);
-        } else if (item instanceof Staff) {
+		if (item instanceof Staff) {
 		    result = changeStaff( (Staff)item );
 		} else if (item instanceof MeleeWeapon || item instanceof MissileWeapon) {
 			result = changeWeapon( (Weapon)item );
@@ -131,24 +128,6 @@ public class ScrollOfTransmutation extends InventoryScroll {
 			GLog.positive( Messages.get(this, "morph") );
 		}
 		
-	}
-	
-	private MagesStaff changeStaff( MagesStaff staff ){
-		Class<?extends Wand> wandClass = staff.wandClass();
-		
-		if (wandClass == null){
-			return null;
-		} else {
-			Wand n;
-			do {
-				n = (Wand) Generator.random(Generator.Category.WAND);
-			} while (Challenges.isItemBlocked(n) || n.getClass() == wandClass);
-			n.level(0);
-			n.identify();
-			staff.imbueWand(n, null);
-		}
-		
-		return staff;
 	}
 
     private Weapon changeStaff( Staff w ) {

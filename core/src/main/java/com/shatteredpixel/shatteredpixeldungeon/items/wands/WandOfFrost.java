@@ -32,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -134,7 +133,7 @@ public class WandOfFrost extends DamageWand {
 	}
 
 	@Override
-	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
+	public void onHit(Wand wand, Char attacker, Char defender, int damage) {
 		Chill chill = defender.buff(Chill.class);
 		if (chill != null && chill.cooldown() >= Chill.DURATION){
 			//need to delay this through an actor so that the freezing isn't broken by taking damage from the staff hit.
@@ -149,7 +148,7 @@ public class WandOfFrost extends DamageWand {
 	}
 
 	@Override
-	public void staffFx(MagesStaff.StaffParticle particle) {
+	public void staffFx(StaffParticle particle) {
 		particle.color(0x88CCFF);
 		particle.am = 0.6f;
 		particle.setLifespan(2f);

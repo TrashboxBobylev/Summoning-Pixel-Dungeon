@@ -39,8 +39,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Overlo
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
@@ -48,6 +48,8 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.particles.Emitter;
+import com.watabou.noosa.particles.PixelParticle;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
@@ -80,6 +82,9 @@ public abstract class Wand extends Weapon {
 	protected int collisionProperties = Ballistica.FRIENDLY_MAGIC;
 	
 	{
+		hitSound = Assets.Sounds.HIT;
+		hitSoundPitch = 1.1f;
+
 		defaultAction = AC_ZAP;
 		usesTargeting = true;
 		bones = true;
@@ -114,22 +119,47 @@ public abstract class Wand extends Weapon {
 
 	@Override
 	public int STRReq() {
-		return 10;
+		return Dungeon.hero != null ? Dungeon.hero.STR() : 10;
 	}
 
 	@Override
 	public int STRReq(int lvl) {
-		return 10;
+		return Dungeon.hero != null ? Dungeon.hero.STR() : 10;
+	}
+
+	private int power(){
+		return Dungeon.hero != null ? (Dungeon.hero.STR() - 10) : 0;
 	}
 
 	@Override
 	public int min(int lvl) {
-		return 0;
+		return 1 + power();
 	}
 
 	@Override
 	public int max(int lvl) {
-		return 0;
+		return 7 + power()*2;
+	}
+
+	@Override
+	public int proc(Char attacker, Char defender, int damage) {
+		if (attacker instanceof Hero && ((Hero)attacker).subClass == HeroSubClass.BATTLEMAGE) {
+			if (curCharges < maxCharges) partialCharge += 0.33f;
+			ScrollOfRecharging.charge((Hero)attacker);
+			onHit(this, attacker, defender, damage);
+		}
+		return super.proc(attacker, defender, damage);
+	}
+
+	@Override
+	public int reachFactor(Char owner) {
+		int reach = super.reachFactor(owner);
+		if (owner instanceof Hero
+				&& this instanceof WandOfBounceBeams
+				&& ((Hero)owner).subClass == HeroSubClass.BATTLEMAGE){
+			reach += 2;
+		}
+		return reach;
 	}
 
 	@Override
@@ -139,7 +169,7 @@ public abstract class Wand extends Weapon {
 
 	public abstract void onZap(Ballistica attack);
 
-	public abstract void onHit( MagesStaff staff, Char attacker, Char defender, int damage);
+	public abstract void onHit(Wand wand, Char attacker, Char defender, int damage);
 
 	public boolean tryToZap( Hero owner, int target ){
 
@@ -254,6 +284,10 @@ public abstract class Wand extends Weapon {
 
 		desc += "\n\n" + statsDesc();
 
+		if (Dungeon.hero.heroClass == HeroClass.MAGE){
+			desc += "\n\n" + Messages.get(Wand.class, "melee", min(), max());
+		}
+
 		if (cursed && cursedKnown) {
 			desc += "\n\n" + Messages.get(Wand.class, "cursed");
 		} else if (!isIdentified() && cursedKnown){
@@ -360,12 +394,22 @@ public abstract class Wand extends Weapon {
 		Sample.INSTANCE.play( Assets.Sounds.ZAP );
 	}
 
-	public void staffFx( MagesStaff.StaffParticle particle ){
+	public void staffFx( StaffParticle particle ){
 		particle.color(0xFFFFFF); particle.am = 0.3f;
 		particle.setLifespan( 1f);
 		particle.speed.polar( Random.Float(PointF.PI2), 2f );
 		particle.setSize( 1f, 2f );
 		particle.radiateXY(0.5f);
+	}
+
+	@Override
+	public Emitter emitter() {
+		if (!isEquipped(Dungeon.hero)) return null;
+		Emitter emitter = new Emitter();
+		emitter.pos(11.5f, 1.5f);
+		emitter.fillTarget = false;
+		emitter.pour(StaffParticleFactory, 0.1f);
+		return emitter;
 	}
 
 	protected void wandUsed() {
@@ -627,6 +671,79 @@ public abstract class Wand extends Weapon {
 
 		private void setScaleFactor(float value){
 			this.scalingFactor = value;
+		}
+	}
+
+	public final Emitter.Factory StaffParticleFactory = new Emitter.Factory() {
+		@Override
+		//reimplementing this is needed as instance creation of new staff particles must be within this class.
+		public void emit(Emitter emitter, int index, float x, float y ) {
+			StaffParticle c = (StaffParticle)emitter.getFirstAvailable(StaffParticle.class);
+			if (c == null) {
+				c = new StaffParticle();
+				emitter.add(c);
+			}
+			c.reset(x, y);
+		}
+
+		@Override
+		//some particles need light mode, others don't
+		public boolean lightMode() {
+			return !((Wand.this instanceof WandOfDisintegration)
+					|| (Wand.this instanceof WandOfCorruption)
+					|| (Wand.this instanceof WandOfCorrosion)
+					|| (Wand.this instanceof WandOfRegrowth)
+					|| (Wand.this instanceof WandOfLivingEarth));
+		}
+	};
+
+	//determines particle effects to use based on wand the staff owns.
+	public class StaffParticle extends PixelParticle {
+
+		private float minSize;
+		private float maxSize;
+		public float sizeJitter = 0;
+
+		public StaffParticle(){
+			super();
+		}
+
+		public void reset( float x, float y ) {
+			revive();
+
+			speed.set(0);
+
+			this.x = x;
+			this.y = y;
+
+			staffFx( this );
+
+		}
+
+		public void setSize( float minSize, float maxSize ){
+			this.minSize = minSize;
+			this.maxSize = maxSize;
+		}
+
+		public void setLifespan( float life ){
+			lifespan = left = life;
+		}
+
+		public void shuffleXY(float amt){
+			x += Random.Float(-amt, amt);
+			y += Random.Float(-amt, amt);
+		}
+
+		public void radiateXY(float amt){
+			float hypot = (float)Math.hypot(speed.x, speed.y);
+			this.x += speed.x/hypot*amt;
+			this.y += speed.y/hypot*amt;
+		}
+
+		@Override
+		public void update() {
+			super.update();
+			size(minSize + (left / lifespan)*(maxSize-minSize) + Random.Float(sizeJitter));
 		}
 	}
 }

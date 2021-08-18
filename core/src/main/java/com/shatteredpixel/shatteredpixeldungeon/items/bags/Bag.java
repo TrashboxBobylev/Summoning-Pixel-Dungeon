@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuickBag;
 import com.watabou.utils.Bundlable;
@@ -147,7 +148,7 @@ public class Bag extends Item implements Iterable<Item> {
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
 		for (Bundlable item : bundle.getCollection( ITEMS )) {
-			if (item != null) {
+			if (item != null && !(item instanceof MagesStaff)) {
 				((Item)item).collected = true;
 				((Item) item).collect(this);
 			}

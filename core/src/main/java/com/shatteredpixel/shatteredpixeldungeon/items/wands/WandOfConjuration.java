@@ -31,7 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SwordStorage;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -89,7 +88,7 @@ public class WandOfConjuration extends Wand {
 	}
 
 	@Override
-	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
+	public void onHit(Wand wand, Char attacker, Char defender, int damage) {
 		SwordStorage swords = Buff.affect(Dungeon.hero, SwordStorage.class);
 		if (swords.count() - 1 < swordCount(buffedLvl())) {
 			Dungeon.hero.sprite.burst(0x007bdb, 10);
@@ -108,7 +107,7 @@ public class WandOfConjuration extends Wand {
 	}
 
 	@Override
-	public void staffFx(MagesStaff.StaffParticle particle) {
+	public void staffFx(StaffParticle particle) {
 		particle.color( Random.element(Arrays.asList(0xff61ac, 0x007bdb, 0xffffff)));
 		particle.am = 1f;
 		particle.setLifespan(2f);

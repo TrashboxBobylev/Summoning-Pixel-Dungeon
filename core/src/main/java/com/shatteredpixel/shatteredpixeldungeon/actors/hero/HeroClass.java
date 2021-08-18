@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.magic.Stars;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Zap;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Slingshot;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
@@ -160,16 +161,15 @@ public enum HeroClass {
 	}
 
 	private static void initMage( Hero hero ) {
-		MagesStaff staff;
 
-		staff = new MagesStaff(new WandOfMagicMissile());
+		Wand wand = new WandOfMagicMissile();
 
-		(hero.belongings.weapon = staff).identify();
+		(hero.belongings.weapon = wand).identify();
 		hero.belongings.weapon.activate(hero);
 		ElementalBlast blast = new ElementalBlast();
 		(hero.belongings.artifact = blast).identify();
 		hero.belongings.artifact.activate( hero );
-		Dungeon.quickslot.setSlot(0, staff);
+		Dungeon.quickslot.setSlot(0, wand);
 		Dungeon.quickslot.setSlot(1, blast);
 
 		new ScrollHolder().collect();

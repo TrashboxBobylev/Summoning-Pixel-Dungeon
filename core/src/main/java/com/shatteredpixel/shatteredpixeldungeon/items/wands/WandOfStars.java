@@ -40,7 +40,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FrostfireParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -193,7 +192,7 @@ public class WandOfStars extends DamageWand {
     }
 
     @Override
-    public void staffFx(MagesStaff.StaffParticle particle) {
+    public void staffFx(StaffParticle particle) {
         particle.color(0x6de8e4);
         particle.am = 0.6f;
         particle.setLifespan(1.2f);
@@ -219,9 +218,9 @@ public class WandOfStars extends DamageWand {
     }
 
     @Override
-    public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
+    public void onHit(Wand wand, Char attacker, Char defender, int damage) {
 
-        if (Random.Int( staff.level() + 3 ) >= 2) {
+        if (Random.Int( wand.level() + 3 ) >= 2) {
 
             if (defender.buff(FrostBurn.class) != null){
                 Buff.affect(defender, FrostBurn.class).reignite(defender, 8f);
@@ -231,7 +230,7 @@ public class WandOfStars extends DamageWand {
                 Buff.affect(defender, FrostBurn.class).reignite(defender, 8f);
             }
 
-            defender.sprite.emitter().burst( FlameParticle.FACTORY, staff.level() + 1 );
+            defender.sprite.emitter().burst( FlameParticle.FACTORY, wand.level() + 1 );
 
         }
     }

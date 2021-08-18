@@ -37,7 +37,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -187,7 +186,7 @@ public class WandOfLivingEarth extends DamageWand {
 	}
 	
 	@Override
-	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
+	public void onHit(Wand wand, Char attacker, Char defender, int damage) {
 		EarthGuardian guardian = null;
 		for (Mob m : Dungeon.level.mobs){
 			if (m instanceof EarthGuardian){
@@ -208,7 +207,7 @@ public class WandOfLivingEarth extends DamageWand {
 	}
 	
 	@Override
-	public void staffFx(MagesStaff.StaffParticle particle) {
+	public void staffFx(StaffParticle particle) {
 		if (Random.Int(10) == 0){
 			particle.color(ColorMath.random(0xFFF568, 0x80791A));
 		} else {

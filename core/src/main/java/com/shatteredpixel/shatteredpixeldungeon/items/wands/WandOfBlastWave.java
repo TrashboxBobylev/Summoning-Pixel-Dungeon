@@ -35,7 +35,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Effects;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Elastic;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.TenguDartTrap;
@@ -195,8 +194,8 @@ public class WandOfBlastWave extends DamageWand {
 	}
 
 	@Override
-	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
-		new Elastic().proc(staff, attacker, defender, damage);
+	public void onHit(Wand wand, Char attacker, Char defender, int damage) {
+		new Elastic().proc(wand, attacker, defender, damage);
 	}
 
 	@Override
@@ -210,7 +209,7 @@ public class WandOfBlastWave extends DamageWand {
 	}
 
 	@Override
-	public void staffFx(MagesStaff.StaffParticle particle) {
+	public void staffFx(StaffParticle particle) {
 		particle.color( 0x664422 ); particle.am = 0.6f;
 		particle.setLifespan(3f);
 		particle.speed.polar(Random.Float(PointF.PI2), 0.3f);

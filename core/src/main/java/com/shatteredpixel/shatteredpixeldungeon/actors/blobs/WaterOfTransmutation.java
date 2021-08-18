@@ -38,7 +38,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes.Landmark;
@@ -52,9 +51,7 @@ public class WaterOfTransmutation extends WellWater {
 	@Override
 	protected Item affectItem( Item item, int pos ) {
 		
-		if (item instanceof MagesStaff) {
-			item = changeStaff( (MagesStaff)item );
-		} else if (item instanceof MeleeWeapon) {
+		if (item instanceof MeleeWeapon) {
 			item = changeWeapon( (MeleeWeapon)item );
 		} else if (item instanceof Scroll) {
 			item = changeScroll( (Scroll)item );
@@ -95,24 +92,6 @@ public class WaterOfTransmutation extends WellWater {
 	@Override
 	protected Landmark record() {
 		return Landmark.WELL_OF_TRANSMUTATION;
-	}
-
-	private MagesStaff changeStaff( MagesStaff staff ){
-		Class<?extends Wand> wandClass = staff.wandClass();
-
-		if (wandClass == null){
-			return null;
-		} else {
-			Wand n;
-			do {
-				n = (Wand)Generator.random(Category.WAND);
-			} while (n.getClass() == wandClass);
-			n.level(0);
-			n.identify();
-			staff.imbueWand(n, null);
-		}
-
-		return staff;
 	}
 	
 	private Weapon changeWeapon( MeleeWeapon w ) {

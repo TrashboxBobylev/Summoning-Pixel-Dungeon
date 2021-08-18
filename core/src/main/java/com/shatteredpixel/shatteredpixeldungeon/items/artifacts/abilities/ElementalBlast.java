@@ -41,7 +41,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.*;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -123,9 +122,8 @@ public class ElementalBlast extends Ability {
 
         final Class<? extends Wand>[] wandCls = new Class[]{null};
         int minDamage = 0, maxDamage = 0;
-        if (hero.belongings.getItem(MagesStaff.class) != null) {
-            MagesStaff magesStaff = hero.belongings.getItem(MagesStaff.class);
-            wandCls[0] = magesStaff.wandClass();
+        if (hero.belongings.weapon instanceof Wand) {
+            wandCls[0] = (Class<? extends Wand>) hero.belongings.weapon.getClass();
         }
 
         if (wandCls[0] == null){

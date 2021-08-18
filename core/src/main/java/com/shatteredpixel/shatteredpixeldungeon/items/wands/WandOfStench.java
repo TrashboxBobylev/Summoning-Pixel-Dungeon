@@ -39,7 +39,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Stenchy;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.StenchParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -90,7 +89,7 @@ public class WandOfStench extends Wand {
     }
 
     @Override
-    public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
+    public void onHit(Wand wand, Char attacker, Char defender, int damage) {
         if (Random.Int( level() + 3 ) >= 2) {
 
             Buff.affect( attacker, BlobImmunity.class, Random.IntRange(0, level()) );
@@ -100,7 +99,7 @@ public class WandOfStench extends Wand {
     }
 
     @Override
-    public void staffFx(MagesStaff.StaffParticle particle) {
+    public void staffFx(StaffParticle particle) {
         particle.color( ColorMath.random( 0x04733a, 0x009548) );
         particle.am = 0.75f;
         particle.setLifespan( 1.25f );

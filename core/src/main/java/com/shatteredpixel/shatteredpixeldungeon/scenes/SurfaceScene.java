@@ -31,7 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.*;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
@@ -158,16 +157,7 @@ public class SurfaceScene extends PixelScene {
 		
 		int earthLevel = Dungeon.hero.belongings.getItem(WandOfLivingEarth.class) == null ? 0 : Dungeon.hero.belongings.getItem(WandOfLivingEarth.class).level();
 		int wardLevel = Dungeon.hero.belongings.getItem(WandOfWarding.class) == null ? 0 : Dungeon.hero.belongings.getItem(WandOfWarding.class).level();
-		
-		MagesStaff staff = Dungeon.hero.belongings.getItem(MagesStaff.class);
-		if (staff != null){
-			if (staff.wandClass() == WandOfLivingEarth.class){
-				earthLevel = Math.max(earthLevel, staff.level());
-			} else if (staff.wandClass() == WandOfWarding.class){
-				wardLevel = Math.max(wardLevel, staff.level());
-			}
-		}
-		
+
 		if (roseLevel >= 3 && roseLevel >= earthLevel && roseLevel >= wardLevel){
 			allySprite = new GhostSprite();
 			if (dayTime) allySprite.alpha(0.4f);

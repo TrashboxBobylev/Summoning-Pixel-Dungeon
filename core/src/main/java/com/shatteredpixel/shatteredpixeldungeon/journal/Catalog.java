@@ -71,7 +71,6 @@ public enum Catalog {
 		WEAPONS.seen.put( WornShortsword.class,             false);
 		WEAPONS.seen.put( Gloves.class,                     false);
 		WEAPONS.seen.put( Dagger.class,                     false);
-		WEAPONS.seen.put( MagesStaff.class,                 false);
         WEAPONS.seen.put( Knife.class,                 false);
 		WEAPONS.seen.put(FroggitStaff.class, false);
 		//WEAPONS.seen.put( Boomerang.class,                  false);
