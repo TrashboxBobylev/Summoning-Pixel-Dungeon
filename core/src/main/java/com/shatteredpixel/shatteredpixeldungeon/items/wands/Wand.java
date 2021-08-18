@@ -421,7 +421,7 @@ public abstract class Wand extends Weapon {
 
 	@Override
 	public Emitter emitter() {
-		if (!isEquipped(Dungeon.hero)) return null;
+		if (Dungeon.hero == null && !isEquipped(Dungeon.hero)) return null;
 		Emitter emitter = new Emitter();
 		emitter.pos(11.5f, 1.5f);
 		emitter.fillTarget = false;
