@@ -49,11 +49,13 @@ public class WandOfFrost extends DamageWand {
 		image = ItemSpriteSheet.WAND_FROST;
 	}
 
-	public int min(int lvl){
+	@Override
+	public int magicalmin(int lvl){
 		return 2+lvl;
 	}
 
-	public int max(int lvl){
+	@Override
+	public int magicalmax(int lvl){
 		return 5+2*lvl;
 	}
 
@@ -116,9 +118,9 @@ public class WandOfFrost extends DamageWand {
     @Override
     public String statsDesc() {
         if (!levelKnown)
-            return Messages.get(this, "stats_desc", min(0), max(0), new DecimalFormat("#.##").format(20f), new DecimalFormat("#.##").format(2f));
+            return Messages.get(this, "stats_desc", magicalmin(0), magicalmax(0), new DecimalFormat("#.##").format(20f), new DecimalFormat("#.##").format(2f));
         else
-            return Messages.get(this, "stats_desc", min(), max(),  new DecimalFormat("#.##").format(chanceToFreeze()*100f), new DecimalFormat("#.#").format(freezeDuration()));
+            return Messages.get(this, "stats_desc", magicalmin(), magicalmax(),  new DecimalFormat("#.##").format(chanceToFreeze()*100f), new DecimalFormat("#.#").format(freezeDuration()));
     }
 
 	@Override

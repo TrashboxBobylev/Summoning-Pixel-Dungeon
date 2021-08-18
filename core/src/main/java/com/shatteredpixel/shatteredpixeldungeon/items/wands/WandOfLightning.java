@@ -58,11 +58,13 @@ public class WandOfLightning extends DamageWand {
 
 	private ArrayList<Lightning.Arc> arcs = new ArrayList<>();
 
-	public int min(int lvl){
+	@Override
+	public int magicalmin(int lvl){
 		return 2+lvl*2;
 	}
 
-	public int max(int lvl){
+	@Override
+	public int magicalmax(int lvl){
 		return 6+2*lvl;
 	}
 	

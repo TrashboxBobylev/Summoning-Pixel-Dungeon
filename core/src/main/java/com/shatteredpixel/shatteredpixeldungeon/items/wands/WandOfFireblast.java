@@ -64,12 +64,14 @@ public class WandOfFireblast extends DamageWand {
 
 
 	//1x/2x/3x damage
-	public int min(int lvl){
+	@Override
+	public int magicalmin(int lvl){
 		return (1+lvl) * imaginableChargePerCast();
 	}
 
 	//1x/2x/3x damage
-	public int max(int lvl){
+	@Override
+	public int magicalmax(int lvl){
 		return (6+2*lvl) * imaginableChargePerCast();
 	}
 
@@ -192,9 +194,9 @@ public class WandOfFireblast extends DamageWand {
 	@Override
 	public String statsDesc() {
 		if (levelKnown)
-			return Messages.get(this, "stats_desc", chargesPerCast(), min(), max());
+			return Messages.get(this, "stats_desc", chargesPerCast(), magicalmin(), magicalmax());
 		else
-			return Messages.get(this, "stats_desc", chargesPerCast(), min(0), max(0));
+			return Messages.get(this, "stats_desc", chargesPerCast(), magicalmin(0), magicalmax(0));
 	}
 
 	@Override

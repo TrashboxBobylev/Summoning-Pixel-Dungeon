@@ -91,6 +91,9 @@ public abstract class Wand extends Weapon {
 		if (curCharges > 0 || !curChargeKnown) {
 			actions.add( AC_ZAP );
 		}
+		if (hero.heroClass != HeroClass.MAGE){
+			actions.remove(AC_EQUIP);
+		}
 
 		return actions;
 	}

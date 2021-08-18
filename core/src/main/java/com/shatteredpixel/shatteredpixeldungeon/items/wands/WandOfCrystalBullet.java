@@ -55,11 +55,13 @@ public class WandOfCrystalBullet extends DamageWand {
 	public ArrayList<Integer> shardPositions = new ArrayList<>();
     private int collisionPos;
 
-	public int min(int lvl){
+    @Override
+    public int magicalmin(int lvl){
 		return 2+lvl;
 	}
 
-	public int max(int lvl){
+    @Override
+    public int magicalmax(int lvl){
 		return 6+4*lvl;
 	}
 
@@ -169,9 +171,9 @@ public class WandOfCrystalBullet extends DamageWand {
     @Override
     public String statsDesc() {
         if (!levelKnown)
-            return Messages.get(this, "stats_desc", min(0), max(0), 3);
+            return Messages.get(this, "stats_desc", magicalmin(0), magicalmax(0), 3);
         else
-            return Messages.get(this, "stats_desc", min(), max(),  3 + level() / 2);
+            return Messages.get(this, "stats_desc", magicalmin(), magicalmax(),  3 + level() / 2);
     }
 
     @Override

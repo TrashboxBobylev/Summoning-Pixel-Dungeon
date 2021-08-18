@@ -49,11 +49,13 @@ public class WandOfMagicMissile extends DamageWand {
 		image = ItemSpriteSheet.WAND_MAGIC_MISSILE;
 	}
 
-	public int min(int lvl){
+	@Override
+	public int magicalmin(int lvl){
 		return 4+lvl*2;
 	}
 
-	public int max(int lvl){
+	@Override
+	public int magicalmax(int lvl){
 		return 6+2*lvl;
 	}
 	

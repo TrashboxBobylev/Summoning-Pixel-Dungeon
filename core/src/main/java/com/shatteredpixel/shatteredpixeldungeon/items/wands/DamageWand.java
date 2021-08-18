@@ -31,31 +31,31 @@ import com.watabou.utils.Random;
 //wands with AOE effects count here (e.g. fireblast), but wands with indrect damage do not (e.g. venom, transfusion)
 public abstract class DamageWand extends Wand{
 
-	public int min(){
-		return min(buffedLvl());
+	public int magicalmin(){
+		return magicalmin(buffedLvl());
 	}
 
-	public abstract int min(int lvl);
+	public abstract int magicalmin(int lvl);
 
-	public int max(){
-		return max(buffedLvl());
+	public int magicalmax(){
+		return magicalmax(buffedLvl());
 	}
 
-	public abstract int max(int lvl);
+	public abstract int magicalmax(int lvl);
 
 	public int damageRoll(){
-		return Random.NormalIntRange(min(), max());
+		return Random.NormalIntRange(magicalmin(), magicalmax());
 	}
 
 	public int damageRoll(int lvl){
-		return Random.NormalIntRange(min(lvl), max(lvl));
+		return Random.NormalIntRange(magicalmin(lvl), magicalmax(lvl));
 	}
 
 	@Override
 	public String statsDesc() {
 		if (levelKnown)
-			return Messages.get(this, "stats_desc", min(), max());
+			return Messages.get(this, "stats_desc", magicalmin(), magicalmax());
 		else
-			return Messages.get(this, "stats_desc", min(0), max(0));
+			return Messages.get(this, "stats_desc", magicalmin(0), magicalmax(0));
 	}
 }

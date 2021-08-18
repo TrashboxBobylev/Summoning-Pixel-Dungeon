@@ -52,14 +52,14 @@ public class WandOfLivingEarth extends DamageWand {
 	{
 		image = ItemSpriteSheet.WAND_LIVING_EARTH;
 	}
-	
+
 	@Override
-	public int min(int lvl) {
+	public int magicalmin(int lvl) {
 		return 4;
 	}
-	
+
 	@Override
-	public int max(int lvl) {
+	public int magicalmax(int lvl) {
 		return 6 + 2*lvl;
 	}
 	

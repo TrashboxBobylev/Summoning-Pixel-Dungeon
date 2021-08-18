@@ -62,11 +62,13 @@ public class WandOfPrismaticLight extends DamageWand {
 		collisionProperties = Ballistica.FRIENDLY_MAGIC;
 	}
 
-	public int min(int lvl){
+	@Override
+	public int magicalmin(int lvl){
 		return 1+lvl;
 	}
 
-	public int max(int lvl){
+	@Override
+	public int magicalmax(int lvl){
 		return 5+3*lvl;
 	}
 
@@ -89,9 +91,9 @@ public class WandOfPrismaticLight extends DamageWand {
     @Override
     public String statsDesc() {
         if (!levelKnown)
-            return Messages.get(this, "stats_desc", min(0), max(0), new DecimalFormat("#.##").format(40f), 2f);
+            return Messages.get(this, "stats_desc", magicalmin(0), magicalmax(0), new DecimalFormat("#.##").format(40f), 2f);
         else
-            return Messages.get(this, "stats_desc", min(), max(),  new DecimalFormat("#.##").format((1f - (3f / (5f + level())))*100f), 2 + 0.333*level());
+            return Messages.get(this, "stats_desc", magicalmin(), magicalmax(),  new DecimalFormat("#.##").format((1f - (3f / (5f + level())))*100f), 2 + 0.333*level());
     }
 
 	private void affectTarget(Char ch){

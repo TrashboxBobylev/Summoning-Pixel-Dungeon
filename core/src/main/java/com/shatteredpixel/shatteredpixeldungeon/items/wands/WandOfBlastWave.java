@@ -61,11 +61,13 @@ public class WandOfBlastWave extends DamageWand {
 		collisionProperties = Ballistica.FRIENDLY_PROJECTILE;
 	}
 
-	public int min(int lvl){
+	@Override
+	public int magicalmin(int lvl){
 		return 1+lvl;
 	}
 
-	public int max(int lvl){
+	@Override
+	public int magicalmax(int lvl){
 		return 3+3*lvl;
 	}
 

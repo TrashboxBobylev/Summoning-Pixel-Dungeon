@@ -54,11 +54,13 @@ public class WandOfDisintegration extends DamageWand {
 	}
 
 
-	public int min(int lvl){
+	@Override
+	public int magicalmin(int lvl){
 		return 2+lvl;
 	}
 
-	public int max(int lvl){
+	@Override
+	public int magicalmax(int lvl){
 		return 8+4*lvl;
 	}
 	

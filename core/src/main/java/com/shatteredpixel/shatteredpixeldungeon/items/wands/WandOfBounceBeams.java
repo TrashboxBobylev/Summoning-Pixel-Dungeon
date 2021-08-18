@@ -58,11 +58,13 @@ public class WandOfBounceBeams extends DamageWand{
         return 4 + Math.round(lvl*1.5f);
     }
 
-    public int min(int lvl){
+    @Override
+    public int magicalmin(int lvl){
         return 4 + lvl/3;
     }
 
-    public int max(int lvl){
+    @Override
+    public int magicalmax(int lvl){
         return 8 + lvl/2;
     }
 
@@ -164,9 +166,9 @@ public class WandOfBounceBeams extends DamageWand{
     @Override
     public String statsDesc() {
         if (!levelKnown)
-            return Messages.get(this, "stats_desc", min(0), max(0), 2);
+            return Messages.get(this, "stats_desc", magicalmin(0), magicalmax(0), 2);
         else
-            return Messages.get(this, "stats_desc", min(), max(),  bounceCount(level()));
+            return Messages.get(this, "stats_desc", magicalmin(), magicalmax(),  bounceCount(level()));
     }
 
     @Override
