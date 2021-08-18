@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corrosion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
@@ -47,6 +48,8 @@ import com.watabou.utils.ColorMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import java.text.DecimalFormat;
+
 public class WandOfCorrosion extends Wand {
 
 	{
@@ -55,15 +58,58 @@ public class WandOfCorrosion extends Wand {
 		collisionProperties = Ballistica.STOP_TARGET | Ballistica.STOP_SOLID;
 	}
 
+	public int amountOfGas(int level){
+		switch (level){
+			case 1: return 1;
+			case 2: return 100;
+		}
+		return 75;
+	}
+
+	public int gasStrength(int level){
+		switch (level){
+			case 1: return 5 + Dungeon.hero.lvl/3;
+			case 2: return 3 + Dungeon.hero.lvl/2;
+		}
+		return 2 + Dungeon.hero.lvl/4;
+	}
+
+	@Override
+	public float rechargeModifier(int level) {
+		switch (level){
+			case 0: return 1.0f;
+			case 1: return 1.0f;
+			case 2: return 2.2f;
+		}
+		return 0f;
+	}
+
+	@Override
+	public String getTierMessage(int tier){
+		return Messages.get(this, "tier" + tier,
+				new DecimalFormat("#.##").format(charger.getTurnsToCharge(tier-1)),
+				amountOfGas(tier-1),
+				gasStrength(tier-1)
+		);
+	}
+
 	@Override
 	public void onZap(Ballistica bolt) {
-		CorrosiveGas gas = Blob.seed(bolt.collisionPos, 50 + 10 * buffedLvl(), CorrosiveGas.class);
-		CellEmitter.get(bolt.collisionPos).burst(Speck.factory(Speck.CORROSION), 10 );
-		gas.setStrength(2 + buffedLvl());
-		if ((Dungeon.isChallenged(Conducts.Conduct.PACIFIST)))
-			gas.setStrength(buffedLvl()/3);
-		GameScene.add(gas);
+		CellEmitter.get(bolt.collisionPos).burst(Speck.factory(Speck.CORROSION), 10);
 		Sample.INSTANCE.play(Assets.Sounds.GAS);
+		if (level() != 1) {
+			CorrosiveGas gas = Blob.seed(bolt.collisionPos, amountOfGas(level()), CorrosiveGas.class);
+			CellEmitter.get(bolt.collisionPos).burst(Speck.factory(Speck.CORROSION), 10);
+			gas.setStrength(gasStrength(level()));
+			if ((Dungeon.isChallenged(Conducts.Conduct.PACIFIST)))
+				gas.setStrength(level() / 5);
+			GameScene.add(gas);
+		} else {
+			Char ch = Actor.findChar(bolt.collisionPos);
+			if (ch != null){
+				Buff.affect(ch, Corrosion.class).set(5f, gasStrength(1));
+			}
+		}
 
 		for (int i : PathFinder.NEIGHBOURS9) {
 			Char ch = Actor.findChar(bolt.collisionPos + i);
@@ -114,9 +160,9 @@ public class WandOfCorrosion extends Wand {
     @Override
     public String statsDesc() {
         if (!levelKnown)
-            return Messages.get(this, "stats_desc", 1, 50);
+            return Messages.get(this, "stats_desc", 2, 75);
         else
-            return Messages.get(this, "stats_desc", 1 + level(), 50 + level()*10);
+            return Messages.get(this, "stats_desc", gasStrength(level()), amountOfGas(level()));
     }
 
 }
