@@ -26,7 +26,9 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Ability;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.ConjurerSpell;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
@@ -72,7 +74,7 @@ public class WndInfoItem extends Window {
 	private void fillFields( Item item ) {
 		
 		int color = TITLE_COLOR;
-		if (!(item instanceof Staff || item instanceof ConjurerSpell)) {
+		if (!(item instanceof Staff || item instanceof ConjurerSpell || item instanceof Wand || item instanceof Ability)) {
 			if (item.levelKnown && item.level() > 0) {
 				color = ItemSlot.UPGRADED;
 			} else if (item.levelKnown && item.level() < 0) {
