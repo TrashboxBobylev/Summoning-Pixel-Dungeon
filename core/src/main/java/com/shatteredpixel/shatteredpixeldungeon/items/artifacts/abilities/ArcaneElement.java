@@ -95,7 +95,7 @@ public class ArcaneElement extends Ability {
 
             cost = 7;
 
-            output = TargetedSupport.class;
+            output = ArcaneElement.class;
             outQuantity = 1;
         }
 
