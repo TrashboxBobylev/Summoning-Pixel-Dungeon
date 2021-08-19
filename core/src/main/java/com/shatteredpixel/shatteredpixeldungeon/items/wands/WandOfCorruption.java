@@ -24,17 +24,18 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Statistics;
+import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.*;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -42,6 +43,8 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class WandOfCorruption extends Wand {
@@ -51,6 +54,8 @@ public class WandOfCorruption extends Wand {
 
 		chakraGain = 4;
 	}
+
+	ConeAOE cone;
 	
 	//Note that some debuffs here have a 0% chance to be applied.
 	// This is because the wand of corruption considers them to be a certain level of harmful
@@ -93,56 +98,92 @@ public class WandOfCorruption extends Wand {
 	
 	@Override
 	public void onZap(Ballistica bolt) {
-		Char ch = Actor.findChar(bolt.collisionPos);
+		if (level() < 2) {
+			Char ch = Actor.findChar(bolt.collisionPos);
 
-		if (ch != null){
-			
-			if (!(ch instanceof Mob)){
-				return;
-			}
+			if (ch != null) {
 
-			Mob enemy = (Mob) ch;
+				performCorruption(ch);
 
-			float corruptingPower = 3 + buffedLvl()/2f;
-			
-			//base enemy resistance is usually based on their exp, but in special cases it is based on other criteria
-            float enemyResist = getEnemyResist(ch, enemy);
-
-            //100% health: 3x resist   75%: 2.1x resist   50%: 1.5x resist   25%: 1.1x resist
-			enemyResist *= 1 + 2*Math.pow(enemy.HP/(float)enemy.HT, 2);
-
-			//debuffs placed on the enemy reduce their resistance
-			for (Buff buff : enemy.buffs()){
-				if (MAJOR_DEBUFFS.containsKey(buff.getClass()))         enemyResist *= (1f-MAJOR_DEBUFF_WEAKEN);
-				else if (MINOR_DEBUFFS.containsKey(buff.getClass()))    enemyResist *= (1f-MINOR_DEBUFF_WEAKEN);
-				else if (buff.type == Buff.buffType.NEGATIVE)           enemyResist *= (1f-MINOR_DEBUFF_WEAKEN);
-			}
-			
-			//cannot re-corrupt or doom an enemy, so give them a major debuff instead
-			if(enemy.buff(Corruption.class) != null || enemy.buff(Doom.class) != null){
-				corruptingPower = enemyResist - 0.001f;
-			}
-			
-			if (corruptingPower > enemyResist){
-				corruptEnemy(this, enemy );
 			} else {
-				float debuffChance = corruptingPower / enemyResist;
-				if (Random.Float() < debuffChance){
-					debuffEnemy( enemy, MAJOR_DEBUFFS);
-				} else {
-					debuffEnemy( enemy, MINOR_DEBUFFS);
+				Dungeon.level.pressCell(bolt.collisionPos);
+			}
+		} else {
+			ArrayList<Char> affectedChars = new ArrayList<>();
+			for( int cell : cone.cells ){
+
+				//ignore caster cell
+				if (cell == bolt.sourcePos){
+					continue;
+				}
+
+				//knock doors open
+				if (Dungeon.level.map[cell] == Terrain.DOOR){
+					Level.set(cell, Terrain.OPEN_DOOR);
+					GameScene.updateMap(cell);
+				}
+
+				Char ch = Actor.findChar( cell );
+				if (ch != null) {
+					affectedChars.add(ch);
 				}
 			}
 
-			processSoulMark(ch, chargesPerCast());
-			Sample.INSTANCE.play( Assets.Sounds.HIT_MAGIC, 1, 0.8f * Random.Float(0.87f, 1.15f) );
-
-		} else {
-			Dungeon.level.pressCell(bolt.collisionPos);
+			for ( Char ch : affectedChars ){
+				if (!Dungeon.isChallenged(Conducts.Conduct.PACIFIST)) {
+					performCorruption(ch);
+				}
+			}
 		}
 	}
 
-    public static float getEnemyResist(Char ch, Mob enemy) {
+	public void performCorruption(Char ch) {
+		if (!(ch instanceof Mob)){
+			return;
+		}
+
+		Mob enemy = (Mob) ch;
+
+		float corruptingPower = getCorruptingPower();
+
+		//base enemy resistance is usually based on their exp, but in special cases it is based on other criteria
+		float enemyResist = getEnemyResist(ch, enemy);
+
+		//100% health: 3x resist   75%: 2.1x resist   50%: 1.5x resist   25%: 1.1x resist
+		enemyResist *= 1 + 2*Math.pow(enemy.HP/(float)enemy.HT, 2);
+
+		//debuffs placed on the enemy reduce their resistance
+		for (Buff buff : enemy.buffs()){
+			if (MAJOR_DEBUFFS.containsKey(buff.getClass()))         enemyResist *= (1f-MAJOR_DEBUFF_WEAKEN);
+			else if (MINOR_DEBUFFS.containsKey(buff.getClass()))    enemyResist *= (1f-MINOR_DEBUFF_WEAKEN);
+			else if (buff.type == Buff.buffType.NEGATIVE)           enemyResist *= (1f-MINOR_DEBUFF_WEAKEN);
+		}
+
+		//cannot re-corrupt or doom an enemy, so give them a major debuff instead
+		if(enemy.buff(Corruption.class) != null || enemy.buff(Doom.class) != null){
+			corruptingPower = enemyResist - 0.001f;
+		}
+
+		if (corruptingPower > enemyResist && level() != 1){
+			corruptEnemy(this, enemy );
+		} else {
+			float debuffChance = corruptingPower / enemyResist;
+			if (Random.Float() < debuffChance){
+				debuffEnemy( enemy, MAJOR_DEBUFFS);
+			} else {
+				debuffEnemy( enemy, MINOR_DEBUFFS);
+			}
+		}
+
+		processSoulMark(ch, chargesPerCast());
+		Sample.INSTANCE.play( Assets.Sounds.HIT_MAGIC, 1, 0.8f * Random.Float(0.87f, 1.15f) );
+	}
+
+	public int getCorruptingPower() {
+		return 5 + Dungeon.hero.lvl/3;
+	}
+
+	public static float getEnemyResist(Char ch, Mob enemy) {
         float enemyResist = 1 + enemy.EXP;
         if (ch instanceof Mimic || ch instanceof Statue){
             enemyResist = 1 + Dungeon.chapterNumber();
@@ -181,7 +222,7 @@ public class WandOfCorruption extends Wand {
 		Class<?extends FlavourBuff> debuffCls = (Class<? extends FlavourBuff>) Random.chances(debuffs);
 		
 		if (debuffCls != null){
-			Buff.append(enemy, debuffCls, 6 + buffedLvl()*3);
+			Buff.append(enemy, debuffCls, 8);
 		} else {
 			//if no debuff can be applied (all are present), then go up one tier
 			if (category == MINOR_DEBUFFS)          debuffEnemy( enemy, MAJOR_DEBUFFS);
@@ -227,6 +268,24 @@ public class WandOfCorruption extends Wand {
 	}
 
 	@Override
+	public String getTierMessage(int tier){
+		return Messages.get(this, "tier" + tier,
+				new DecimalFormat("#.##").format(charger.getTurnsToCharge(tier-1)),
+				getCorruptingPower()
+		);
+	}
+
+	@Override
+	public float rechargeModifier(int level) {
+		switch (level){
+			case 0: return 1.0f;
+			case 1: return 0.5f;
+			case 2: return 5f;
+		}
+		return 0f;
+	}
+
+	@Override
 	public void onHit(Wand wand, Char attacker, Char defender, int damage) {
 		// lvl 0 - 25%
 		// lvl 1 - 40%
@@ -237,13 +296,48 @@ public class WandOfCorruption extends Wand {
 	}
 
 	@Override
+	public int collisionProperties(int target) {
+		if (level() == 2) return Ballistica.STOP_SOLID | Ballistica.IGNORE_SOFT_SOLID;
+		return super.collisionProperties(target);
+	}
+
+	@Override
     public void fx(Ballistica bolt, Callback callback) {
-		MagicMissile.boltFromChar( curUser.sprite.parent,
-				MagicMissile.SHADOW,
-				curUser.sprite,
-				bolt.collisionPos,
-				callback);
-		Sample.INSTANCE.play( Assets.Sounds.ZAP );
+		if (level() == 2){
+			//need to perform flame spread logic here so we can determine what cells to put flames in.
+			int maxDist = 7;
+			int dist = Math.min(bolt.dist, maxDist);
+
+			cone = new ConeAOE( bolt,
+					maxDist,
+					60,
+					collisionProperties(0) | Ballistica.STOP_TARGET);
+
+			//cast to cells at the tip, rather than all cells, better performance.
+			for (Ballistica ray : cone.rays){
+				((MagicMissile)curUser.sprite.parent.recycle( MagicMissile.class )).reset(
+						MagicMissile.SHADOW_CONE,
+						curUser.sprite,
+						ray.path.get(ray.dist),
+						null
+				);
+			}
+
+			//final zap at half distance, for timing of the actual wand effect
+			MagicMissile.boltFromChar( curUser.sprite.parent,
+					MagicMissile.SHADOW_CONE,
+					curUser.sprite,
+					bolt.path.get(dist/2),
+					callback );
+			Sample.INSTANCE.play( Assets.Sounds.ZAP );
+		} else {
+			MagicMissile.boltFromChar(curUser.sprite.parent,
+					MagicMissile.SHADOW,
+					curUser.sprite,
+					bolt.collisionPos,
+					callback);
+			Sample.INSTANCE.play(Assets.Sounds.ZAP);
+		}
 	}
 
 	@Override

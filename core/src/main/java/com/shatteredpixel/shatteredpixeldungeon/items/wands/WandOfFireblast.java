@@ -60,8 +60,6 @@ public class WandOfFireblast extends DamageWand {
 		collisionProperties = Ballistica.STOP_SOLID | Ballistica.IGNORE_SOFT_SOLID;
 	}
 
-
-
 	//1x/2x/3x damage
 	@Override
 	public int magicalmin(int lvl){
