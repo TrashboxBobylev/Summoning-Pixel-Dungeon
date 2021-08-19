@@ -45,6 +45,7 @@ public class WandOfMagicMissile extends DamageWand {
 
 	{
 		image = ItemSpriteSheet.WAND_MAGIC_MISSILE;
+		isMM = true;
 	}
 
 	@Override
