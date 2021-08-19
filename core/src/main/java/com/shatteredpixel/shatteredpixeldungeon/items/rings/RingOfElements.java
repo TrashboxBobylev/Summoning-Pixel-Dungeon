@@ -78,7 +78,7 @@ public class RingOfElements extends Ring {
 		RESISTS.add( GrimTrap.class );
 
 		RESISTS.add( WandOfBlastWave.class );
-		RESISTS.add( WandOfDisintegration.class );
+		RESISTS.add( WandOfBounceBeams.class );
 		RESISTS.add( WandOfFireblast.class );
 		RESISTS.add( WandOfFrost.class );
 		RESISTS.add( WandOfLightning.class );

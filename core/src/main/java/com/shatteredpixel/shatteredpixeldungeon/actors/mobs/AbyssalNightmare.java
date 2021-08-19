@@ -319,7 +319,7 @@ public class AbyssalNightmare extends AbyssalMob {
 		immunities.add( GrimTrap.class );
 
 		immunities.add( WandOfBlastWave.class );
-		immunities.add( WandOfDisintegration.class );
+		immunities.add( WandOfBounceBeams.class );
 		immunities.add( WandOfFireblast.class );
 		immunities.add( WandOfFrost.class );
 		immunities.add( WandOfLightning.class );

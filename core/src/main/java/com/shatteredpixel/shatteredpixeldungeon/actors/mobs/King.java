@@ -38,7 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisintegration;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBounceBeams;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.levels.OldCityBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -238,7 +238,7 @@ public class King extends Mob {
 	}
 	
 	{
-		resistances.add( WandOfDisintegration.class );
+		resistances.add( WandOfBounceBeams.class );
 		resistances.add( ToxicGas.class );
 		resistances.add( Burning.class );
 	}

@@ -770,8 +770,7 @@ public abstract class Wand extends Weapon {
 		@Override
 		//some particles need light mode, others don't
 		public boolean lightMode() {
-			return !((Wand.this instanceof WandOfDisintegration)
-					|| (Wand.this instanceof WandOfCorruption)
+			return !((Wand.this instanceof WandOfCorruption)
 					|| (Wand.this instanceof WandOfCorrosion)
 					|| (Wand.this instanceof WandOfRegrowth)
 					|| (Wand.this instanceof WandOfLivingEarth));
