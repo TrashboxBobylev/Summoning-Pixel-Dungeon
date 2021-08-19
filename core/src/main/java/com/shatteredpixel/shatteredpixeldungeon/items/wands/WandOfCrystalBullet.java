@@ -27,6 +27,8 @@ package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.TimedShrink;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.EnergyOverload;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
@@ -56,16 +58,41 @@ public class WandOfCrystalBullet extends DamageWand {
 
     @Override
     public int magicalmin(int lvl){
-		return 2+lvl;
+		return 2+Dungeon.hero.lvl/2;
 	}
 
     @Override
     public int magicalmax(int lvl){
-		return 6+4*lvl;
+		return (int) (6+Dungeon.hero.lvl*1.25f);
 	}
 
+    @Override
+    public float powerLevel(int level) {
+        switch (level){
+            case 0: return 1.0f;
+            case 1: return 0.75f;
+            case 2: return 0.75f;
+        }
+        return 0f;
+    }
+
+    @Override
+    public float rechargeModifier(int level) {
+        switch (level){
+            case 0: return 1.0f;
+            case 1: return 1.6f;
+            case 2: return 2.5f;
+        }
+        return 0f;
+    }
+
 	public int shards(int lvl){
-	    return Math.min(3 + lvl/2,8);
+        switch (lvl){
+            case 0: return 3;
+            case 1: return 9;
+            case 2: return 9;
+        }
+        return 0;
     }
 	
 	@Override
@@ -110,6 +137,7 @@ public class WandOfCrystalBullet extends DamageWand {
                                     if (!Dungeon.isChallenged(Conducts.Conduct.PACIFIST)) {
                                         processSoulMark(ch, chargesPerCast());
                                         ch.damage(damageRoll(), new WandOfCrystalBullet());
+                                        if (level() == 2) Buff.affect(ch, TimedShrink.class, 3f);
                                     }
 
                                     ch.sprite.burst(Random.Int(0xFFe380e3, 0xFF9485c9), level() + 3);
@@ -172,7 +200,7 @@ public class WandOfCrystalBullet extends DamageWand {
         if (!levelKnown)
             return Messages.get(this, "stats_desc", magicalmin(0), magicalmax(0), 3);
         else
-            return Messages.get(this, "stats_desc", magicalmin(), magicalmax(),  3 + level() / 2);
+            return Messages.get(this, "stats_desc", magicalmin(), magicalmax(),  shards(level()));
     }
 
     @Override
