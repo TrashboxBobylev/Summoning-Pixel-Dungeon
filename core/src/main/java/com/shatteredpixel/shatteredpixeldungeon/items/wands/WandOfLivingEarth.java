@@ -46,6 +46,8 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.*;
 
+import java.text.DecimalFormat;
+
 public class WandOfLivingEarth extends DamageWand {
 	
 	{
@@ -54,12 +56,32 @@ public class WandOfLivingEarth extends DamageWand {
 
 	@Override
 	public int magicalmin(int lvl) {
-		return 4;
+		return 4 + Dungeon.hero.lvl/2;
 	}
 
 	@Override
 	public int magicalmax(int lvl) {
-		return 6 + 2*lvl;
+		return (int) (6 + Dungeon.hero.lvl*0.8f);
+	}
+
+	@Override
+	public float powerLevel(int level) {
+		switch (level){
+			case 0: return 1.0f;
+			case 1: return 2.0f;
+			case 2: return 4.0f;
+		}
+		return 0f;
+	}
+
+	@Override
+	public float rechargeModifier(int level) {
+		switch (level){
+			case 0: return 1.0f;
+			case 1: return 3.0f;
+			case 2: return 6.5f;
+		}
+		return 0f;
 	}
 	
 	@Override
@@ -84,14 +106,14 @@ public class WandOfLivingEarth extends DamageWand {
 				buff = Buff.affect(curUser, RockArmor.class);
 			}
 			if (buff != null) {
-				buff.addArmor( buffedLvl(), armorToAdd);
+				buff.addArmor((int) (Dungeon.hero.lvl/3*powerLevel()), armorToAdd);
 			}
 		}
 
 		//shooting at the guardian
 		if (guardian != null && guardian == ch){
 			guardian.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + buffedLvl() / 2);
-			guardian.setInfo(curUser, buffedLvl(), armorToAdd);
+			guardian.setInfo(curUser, Dungeon.hero.lvl/3*powerLevel(), armorToAdd);
 			processSoulMark(guardian, chargesPerCast());
 			Sample.INSTANCE.play( Assets.Sounds.HIT_MAGIC, 1, 0.9f * Random.Float(0.87f, 1.15f) );
 
@@ -100,7 +122,7 @@ public class WandOfLivingEarth extends DamageWand {
 
 			//create a new guardian
 			guardian = new EarthGuardian();
-			guardian.setInfo(curUser, buffedLvl(), buff.armor);
+			guardian.setInfo(curUser, Dungeon.hero.lvl/3*powerLevel(), buff.armor);
 
 			//if the collision pos is occupied (likely will be), then spawn the guardian in the
 			//adjacent cell which is closes to the user of the wand.
@@ -162,7 +184,7 @@ public class WandOfLivingEarth extends DamageWand {
 					curUser.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + buffedLvl() / 2);
 				} else {
 					guardian.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + buffedLvl() / 2);
-					guardian.setInfo(curUser, buffedLvl(), armorToAdd);
+					guardian.setInfo(curUser, Dungeon.hero.lvl/3*powerLevel(), armorToAdd);
 					if (ch.alignment == Char.Alignment.ENEMY || ch.buff(Amok.class) != null) {
 						guardian.aggro(ch);
 					}
@@ -220,6 +242,16 @@ public class WandOfLivingEarth extends DamageWand {
 		float dst = Random.Float(11f);
 		particle.x -= dst;
 		particle.y += dst;
+	}
+
+	@Override
+	public String getTierMessage(int tier){
+		return Messages.get(this, "tier" + tier,
+				Math.round(magicalmin(tier-1)*powerLevel(tier-1)),
+				Math.round(magicalmax(tier-1)*powerLevel(tier-1)),
+				Dungeon.hero.lvl/3*powerLevel(tier-1),
+				new DecimalFormat("#.##").format(charger.getTurnsToCharge(tier-1))
+		);
 	}
 
 	public static class RockArmor extends Buff {
@@ -305,10 +337,10 @@ public class WandOfLivingEarth extends DamageWand {
 
 		private int wandLevel = -1;
 
-		public void setInfo(Hero hero, int wandLevel, int healthToAdd){
+		public void setInfo(Hero hero, float wandLevel, int healthToAdd){
 			if (wandLevel > this.wandLevel) {
-				this.wandLevel = wandLevel;
-				HT = 20 + 8 * wandLevel;
+				this.wandLevel = (int) wandLevel;
+				HT = 20 + 8 * (int) wandLevel;
 			}
 			HP = Math.min(HT, HP + healthToAdd);
 			//25% of hero's evasion
