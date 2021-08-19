@@ -366,7 +366,7 @@ public abstract class Mob extends Char {
 			} else if (alignment == Alignment.ENEMY) {
 				//look for ally mobs to attack, ignoring the soul flame
 				for (Mob mob :  Dungeon.level.mobs.toArray(new Mob[0]))
-					if (mob.alignment == Alignment.ALLY && canSee(mob.pos) && !canBeIgnored(mob))
+					if (mob.alignment == Alignment.ALLY && canSee(mob.pos) && !canBeIgnored(mob) && !mob.isInvulnerable(getClass()))
 						enemies.add(mob);
 
 
