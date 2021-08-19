@@ -77,9 +77,9 @@ public class WandOfLivingEarth extends DamageWand {
 	@Override
 	public float rechargeModifier(int level) {
 		switch (level){
-			case 0: return 1.0f;
-			case 1: return 3.0f;
-			case 2: return 6.5f;
+			case 0: return 1.25f;
+			case 1: return 3.5f;
+			case 2: return 9f;
 		}
 		return 0f;
 	}
@@ -249,8 +249,8 @@ public class WandOfLivingEarth extends DamageWand {
 		return Messages.get(this, "tier" + tier,
 				Math.round(magicalmin(tier-1)*powerLevel(tier-1)),
 				Math.round(magicalmax(tier-1)*powerLevel(tier-1)),
-				Dungeon.hero.lvl/3*powerLevel(tier-1),
-				new DecimalFormat("#.##").format(charger.getTurnsToCharge(tier-1))
+				new DecimalFormat("#.##").format(charger.getTurnsToCharge(tier-1)),
+				Dungeon.hero.lvl/3*powerLevel(tier-1)
 		);
 	}
 
@@ -361,7 +361,7 @@ public class WandOfLivingEarth extends DamageWand {
 
 		@Override
 		public int damageRoll() {
-			return Random.NormalIntRange(1 + Dungeon.depth/5 * 5 / Dungeon.chapterSize(), 3 + Dungeon.depth/3 * 5 / Dungeon.chapterSize());
+			return Random.NormalIntRange(1 + Dungeon.scaledDepth()/2, 3 + Dungeon.scaledDepth());
 		}
 
 		@Override
@@ -369,7 +369,7 @@ public class WandOfLivingEarth extends DamageWand {
 			if (Dungeon.isChallenged(Conducts.Conduct.NO_ARMOR)){
 				return Random.NormalIntRange(1, 2);
 			} else {
-				return Random.NormalIntRange(1, (int) (4 + wandLevel/4));
+				return Random.NormalIntRange(4, (int) (8 + wandLevel/2));
 			}
 		}
 
@@ -378,7 +378,7 @@ public class WandOfLivingEarth extends DamageWand {
 			if (Dungeon.isChallenged(Conducts.Conduct.NO_ARMOR)){
 				return Messages.get(this, "desc", 1, 2, HP, HT);
 			} else {
-				return Messages.get(this, "desc", 1, 4 + wandLevel/4, HP, HT);
+				return Messages.get(this, "desc", 4, 8 + wandLevel/2, HP, HT);
 			}
 		}
 
