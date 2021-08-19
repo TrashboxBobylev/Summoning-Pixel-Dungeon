@@ -80,7 +80,7 @@ public class WandOfFrost extends DamageWand {
 	}
 
 	private float chanceToFreeze(){
-	    return Math.min(0.2f + 0.05f * level(), 0.33f);
+	    return Math.min(0.25f + 0.05f * level(), 0.33f);
     }
 
     private float freezeDuration(){
