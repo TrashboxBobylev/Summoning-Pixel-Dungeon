@@ -67,7 +67,7 @@ public abstract class Wand extends Weapon {
 
 	private static final float TIME_TO_ZAP	= 1f;
 	
-	public int maxCharges = initialCharges();
+	public int maxCharges = 5;
 	public int curCharges = maxCharges;
 	public float partialCharge = 0f;
 
@@ -238,7 +238,7 @@ public abstract class Wand extends Weapon {
 	}
 	
 	public void gainCharge( float amt ){
-		partialCharge += amt;
+		partialCharge += amt*rechargeModifier();
 		while (partialCharge >= 1) {
 			curCharges = Math.min(maxCharges, curCharges+1);
 			partialCharge--;
@@ -421,7 +421,7 @@ public abstract class Wand extends Weapon {
 	}
 
 	public void updateLevel() {
-		maxCharges = Math.min( initialCharges() + level(), 10 );
+		maxCharges = 5;
 		curCharges = Math.min( curCharges, maxCharges );
 	}
 	
