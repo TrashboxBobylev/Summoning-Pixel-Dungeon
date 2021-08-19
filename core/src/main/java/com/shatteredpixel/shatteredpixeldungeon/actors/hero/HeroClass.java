@@ -40,7 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.magic.Zap;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFrost;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLightning;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Slingshot;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
@@ -173,7 +173,7 @@ public enum HeroClass {
 		hero.belongings.artifact.activate( hero );
 		Dungeon.quickslot.setSlot(0, wand);
 		Dungeon.quickslot.setSlot(1, blast);
-		new WandOfFrost().identify().collect();
+		new WandOfLightning().identify().collect();
 		for (int i = 0; i < 30; i++){
 			new PotionOfExperience().apply(hero);
 		}

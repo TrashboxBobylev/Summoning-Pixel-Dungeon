@@ -59,12 +59,32 @@ public class WandOfLightning extends DamageWand {
 
 	@Override
 	public int magicalmin(int lvl){
-		return 2+lvl*2;
+		return 2+Dungeon.hero.lvl/2;
 	}
 
 	@Override
 	public int magicalmax(int lvl){
-		return 6+2*lvl;
+		return 6+Dungeon.hero.lvl/2;
+	}
+
+	@Override
+	public float powerLevel(int level) {
+		switch (level){
+			case 0: return 1.0f;
+			case 1: return 2.5f;
+			case 2: return 1.33f;
+		}
+		return 0f;
+	}
+
+	@Override
+	public float rechargeModifier(int level) {
+		switch (level){
+			case 0: return 1.0f;
+			case 1: return 1.6f;
+			case 2: return 2.2f;
+		}
+		return 0f;
 	}
 	
 	@Override
@@ -73,10 +93,10 @@ public class WandOfLightning extends DamageWand {
 		//lightning deals less damage per-target, the more targets that are hit.
 		float multipler = 0.4f + (0.6f/affected.size());
 		//if the main target is in water, all affected take 2x more damage
-		if (Actor.findChar(bolt.collisionPos) != null && Actor.findChar(bolt.collisionPos).isWet()) multipler *= 2f;
-
-		int min = 2 + level()*2;
-		int max = 6 + 2*level();
+		if (Actor.findChar(bolt.collisionPos) != null && Actor.findChar(bolt.collisionPos).isWet()) {
+			if (level() != 1) multipler *= 2f;
+			if (level() == 2) multipler *= 2f;
+		}
 
 		for (Char ch : affected){
 
@@ -112,6 +132,7 @@ public class WandOfLightning extends DamageWand {
 	private void arc( Char ch ) {
 
 		int dist = (ch.isWet() && !ch.flying) ? 2 : 1;
+		if (level() == 2) dist *= 3;
 
 		ArrayList<Char> hitThisArc = new ArrayList<>();
 		PathFinder.buildDistanceMap( ch.pos, BArray.not( Dungeon.level.solid, null ), dist );
@@ -146,7 +167,7 @@ public class WandOfLightning extends DamageWand {
 		if (ch != null) {
 			affected.add( ch );
 			arcs.add( new Lightning.Arc(curUser.sprite.center(), ch.sprite.center()));
-			arc(ch);
+			if (level() != 1) arc(ch);
 		} else {
 			arcs.add( new Lightning.Arc(curUser.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(bolt.collisionPos)));
 			CellEmitter.center( cell ).burst( SparkParticle.FACTORY, 3 );
