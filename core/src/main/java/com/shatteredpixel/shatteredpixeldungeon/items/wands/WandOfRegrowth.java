@@ -50,6 +50,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.LotusSprite;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.*;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -79,15 +80,25 @@ public class WandOfRegrowth extends Wand {
 	}
 
 	@Override
+	public float rechargeModifier(int level) {
+		switch (level){
+			case 0: return 1f;
+			case 1: return 3f;
+			case 2: return 7f;
+		}
+		return 0f;
+	}
+
+	@Override
 	public void onZap(Ballistica bolt) {
 
 		ArrayList<Integer> cells = new ArrayList<>(cone.cells);
 
-		int overLimit = totChrgUsed - chargeLimit(Dungeon.hero.lvl);
+		int overLimit = totChrgUsed - chargeLimit(Dungeon.hero.lvl, level()+1);
 		float furrowedChance = overLimit > 0 ? (overLimit / (10f + Dungeon.hero.lvl)) : 0;
 
 		int chrgUsed = imaginableChargePerCast();
-		int grassToPlace = Math.round((3.67f+buffedLvl()/3f)*chrgUsed);
+		int grassToPlace = Math.round((3.67f+(Dungeon.hero.lvl/2)/3f)*chrgUsed);
 
 		//ignore cells which can't have anything grow in them.
 		for (Iterator<Integer> i = cells.iterator(); i.hasNext();) {
@@ -115,9 +126,9 @@ public class WandOfRegrowth extends Wand {
 
 		Random.shuffle(cells);
 
-		if (imaginableChargePerCast() >= 3){
+		if (imaginableChargePerCast() >= 2){
 			Lotus l = new Lotus();
-			l.setLevel(buffedLvl());
+			l.setLevel(Dungeon.hero.lvl/3);
 			if (cells.contains(target) && Actor.findChar(target) == null){
 				cells.remove((Integer)target);
 				l.pos = target;
@@ -182,13 +193,13 @@ public class WandOfRegrowth extends Wand {
 		}
 	}
 	
-	private int chargeLimit( int heroLvl ){
-		if (level() >= 10){
+	private int chargeLimit( int heroLvl, int level ){
+		if (heroLvl >= 30){
 			return Integer.MAX_VALUE;
 		} else {
 			//8 charges at base, plus:
 			//2/3.33/5/7/10/14/20/30/50/110/infinite charges per hero level, based on wand level
-			float lvl = buffedLvl();
+			float lvl = 3*(level);
 			return Math.round(8 + heroLvl * (2+lvl) * (1f + (lvl/(10 - lvl))));
 		}
 	}
@@ -200,8 +211,8 @@ public class WandOfRegrowth extends Wand {
 
 	public void fx(Ballistica bolt, Callback callback) {
 
-		// 4/6/8 distance
-		int maxDist = 2 + 2*imaginableChargePerCast();
+		// 5/7/9 distance
+		int maxDist = 2 + 3*imaginableChargePerCast();
 		int dist = Math.min(bolt.dist, maxDist);
 
 		cone = new ConeAOE( bolt,
@@ -229,19 +240,22 @@ public class WandOfRegrowth extends Wand {
 	}
 
 	@Override
-	protected int chargesPerCast() {
-		//consumes 30% of current charges, rounded up, with a minimum of one.
-		return Math.max(1, (int)Math.ceil(curCharges*0.3f));
+	protected int imaginableChargePerCast() {
+		return level()+1;
 	}
 
 	@Override
-	protected int imaginableChargePerCast() {
-		return Math.max(1, (int)Math.ceil(curCharges*0.3f));
+	public String getTierMessage(int tier){
+		return Messages.get(this, "tier" + tier,
+				new DecimalFormat("#.##").format(charger.getTurnsToCharge(tier-1)),
+				Math.round((3.67f+(Dungeon.hero.lvl/2)/3f)*(tier)),
+				chargeLimit(Dungeon.hero.lvl, tier)
+		);
 	}
 
 	@Override
 	public String statsDesc() {
-		return Messages.get(this, "stats_desc", chargesPerCast());
+		return Messages.get(this, "stats_desc", chargeLimit(Dungeon.hero.lvl, level()+1)-totChrgUsed);
 	}
 
 	@Override
