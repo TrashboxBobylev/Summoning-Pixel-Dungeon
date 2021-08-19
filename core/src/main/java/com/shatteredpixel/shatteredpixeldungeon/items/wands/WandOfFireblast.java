@@ -48,6 +48,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class WandOfFireblast extends DamageWand {
@@ -63,13 +64,23 @@ public class WandOfFireblast extends DamageWand {
 	//1x/2x/3x damage
 	@Override
 	public int magicalmin(int lvl){
-		return (1+lvl) * imaginableChargePerCast();
+		return (1+Dungeon.hero.lvl) * imaginableChargePerCast();
 	}
 
 	//1x/2x/3x damage
 	@Override
 	public int magicalmax(int lvl){
-		return (6+2*lvl) * imaginableChargePerCast();
+		return (int) ((4+Dungeon.hero.lvl*1.75f) * imaginableChargePerCast());
+	}
+
+	@Override
+	public float rechargeModifier(int level) {
+		switch (level){
+			case 0: return 1.33f;
+			case 1: return 3f;
+			case 2: return 7f;
+		}
+		return 0f;
 	}
 
 	ConeAOE cone;
@@ -112,7 +123,7 @@ public class WandOfFireblast extends DamageWand {
 				if (Dungeon.level.trueDistance(cell+i, bolt.sourcePos) > Dungeon.level.trueDistance(cell, bolt.sourcePos)
 						&& Dungeon.level.flamable[cell+i]
 						&& Fire.volumeAt(cell+i, Fire.class) == 0){
-					GameScene.add( Blob.seed( cell+i, 1+imaginableChargePerCast(), Fire.class ) );
+					GameScene.add( Blob.seed( cell+i, imaginableChargePerCast()*2, Fire.class ) );
 				}
 			}
 		}
@@ -149,7 +160,7 @@ public class WandOfFireblast extends DamageWand {
 		//need to perform flame spread logic here so we can determine what cells to put flames in.
 
 		// 5/7/9 distance
-		int maxDist = 3 + 2*imaginableChargePerCast();
+		int maxDist = 2 + 3*imaginableChargePerCast();
 		int dist = Math.min(bolt.dist, maxDist);
 
 		cone = new ConeAOE( bolt,
@@ -180,20 +191,29 @@ public class WandOfFireblast extends DamageWand {
 	@Override
 	protected int chargesPerCast() {
 		//consumes 30% of current charges, rounded up, with a minimum of one.
-		return Math.max(1, (int)Math.ceil(curCharges*0.3f));
+		return 1;
 	}
 
 	@Override
 	protected int imaginableChargePerCast() {
-		return Math.max(1, (int)Math.ceil(curCharges*0.3f));
+		return level()+1;
+	}
+
+	@Override
+	public String getTierMessage(int tier){
+		return Messages.get(this, "tier" + tier,
+				Math.round(magicalmin(0)/imaginableChargePerCast()*(tier)),
+				Math.round(magicalmax(0)/imaginableChargePerCast()*(tier)),
+				new DecimalFormat("#.##").format(charger.getTurnsToCharge(tier-1))
+		);
 	}
 
 	@Override
 	public String statsDesc() {
 		if (levelKnown)
-			return Messages.get(this, "stats_desc", chargesPerCast(), magicalmin(), magicalmax());
+			return Messages.get(this, "stats_desc", magicalmin(), magicalmax());
 		else
-			return Messages.get(this, "stats_desc", chargesPerCast(), magicalmin(0), magicalmax(0));
+			return Messages.get(this, "stats_desc", magicalmin(0), magicalmax(0));
 	}
 
 	@Override
