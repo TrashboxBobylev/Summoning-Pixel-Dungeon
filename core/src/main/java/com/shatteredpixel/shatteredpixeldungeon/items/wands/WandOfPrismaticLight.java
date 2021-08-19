@@ -51,8 +51,6 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
-import java.text.DecimalFormat;
-
 public class WandOfPrismaticLight extends DamageWand {
 
 	{
@@ -63,12 +61,32 @@ public class WandOfPrismaticLight extends DamageWand {
 
 	@Override
 	public int magicalmin(int lvl){
-		return 1+lvl;
+		return 1+Dungeon.hero.lvl/2;
 	}
 
 	@Override
 	public int magicalmax(int lvl){
-		return 5+3*lvl;
+		return (int) (5+Dungeon.hero.lvl*1.2f);
+	}
+
+	@Override
+	public float powerLevel(int level) {
+		switch (level){
+			case 0: return 1.0f;
+			case 1: return 2.0f;
+			case 2: return 0f;
+		}
+		return 0f;
+	}
+
+	@Override
+	public float rechargeModifier(int level) {
+		switch (level){
+			case 0: return 1f;
+			case 1: return 3f;
+			case 2: return 1.33f;
+		}
+		return 0f;
 	}
 
 	@Override
@@ -87,22 +105,27 @@ public class WandOfPrismaticLight extends DamageWand {
 		}
 	}
 
+	public int blindLength(int level){
+		switch (level){
+			case 1: return 4;
+			case 2: return 8;
+		}
+		return 2;
+	}
+
     @Override
     public String statsDesc() {
         if (!levelKnown)
-            return Messages.get(this, "stats_desc", magicalmin(0), magicalmax(0), new DecimalFormat("#.##").format(40f), 2f);
+            return Messages.get(this, "stats_desc", magicalmin(0), magicalmax(0), blindLength(0));
         else
-            return Messages.get(this, "stats_desc", magicalmin(), magicalmax(),  new DecimalFormat("#.##").format((1f - (3f / (5f + level())))*100f), 2 + 0.333*level());
+            return Messages.get(this, "stats_desc", magicalmin(), magicalmax(),  blindLength(level()));
     }
 
 	private void affectTarget(Char ch){
 		int dmg = damageRoll();
 
-		//three in (5+lvl) chance of failing
-		if (Random.Int(5+buffedLvl()) >= 3) {
-			Buff.prolong(ch, Blindness.class, 2f + (buffedLvl() * 0.333f));
+			Buff.prolong(ch, Blindness.class, blindLength(level()));
 			ch.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 6 );
-		}
 
 		if (ch.properties().contains(Char.Property.DEMONIC) || ch.properties().contains(Char.Property.UNDEAD)){
 			ch.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10+buffedLvl() );
