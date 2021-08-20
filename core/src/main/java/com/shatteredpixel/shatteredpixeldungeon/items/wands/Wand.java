@@ -294,7 +294,6 @@ public abstract class Wand extends Weapon {
 
 	public void level(int value) {
 		super.level( value );
-		updateLevel();
 	}
 	
 	@Override
@@ -400,7 +399,6 @@ public abstract class Wand extends Weapon {
 	public int level() {
 		if (!cursed && curseInfusionBonus){
 			curseInfusionBonus = false;
-			updateLevel();
 		}
 		return super.level() + (curseInfusionBonus ? 1 : 0);
 	}
@@ -414,7 +412,6 @@ public abstract class Wand extends Weapon {
 			cursed = false;
 		}
 
-		updateLevel();
 		curCharges = Math.min( curCharges + 1, maxCharges );
 		updateQuickslot();
 		
@@ -424,8 +421,7 @@ public abstract class Wand extends Weapon {
 	@Override
 	public Item degrade() {
 		super.degrade();
-		
-		updateLevel();
+
 		updateQuickslot();
 		
 		return this;
@@ -433,13 +429,7 @@ public abstract class Wand extends Weapon {
 
 	@Override
 	public int buffedLvl() {
-		int lvl = super.buffedLvl();
-		return lvl;
-	}
-
-	public void updateLevel() {
-		maxCharges = 5;
-		curCharges = Math.min( curCharges, maxCharges );
+		return super.buffedLvl();
 	}
 	
 	protected int initialCharges() {

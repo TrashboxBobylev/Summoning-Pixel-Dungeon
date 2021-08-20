@@ -72,7 +72,6 @@ public class CurseInfusion extends InventorySpell {
 			a.curseInfusionBonus = true;
 		} else if (item instanceof Wand){
 			((Wand) item).curseInfusionBonus = true;
-			((Wand) item).updateLevel();
 		}
 		updateQuickslot();
 	}

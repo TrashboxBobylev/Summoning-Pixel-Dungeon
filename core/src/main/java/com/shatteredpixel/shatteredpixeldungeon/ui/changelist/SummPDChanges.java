@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CleanWater;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.EnchantParchment;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfConjuration;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfStench;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -217,6 +218,15 @@ public class SummPDChanges {
                 "Added tier 1 and tier 2 Rogue talents, please leave feedback about their power."));
         changes.addButton(new ChangeButton(new ElementalBlast(),
                 "Added 4 ability items, which replace armor ability concept."));
+        changes.addButton(new ChangeButton(new WandOfMagicMissile(),
+                "Overhauled wands:\n\n" +
+                        "_-_ Now have tiers.\n" +
+                        "_-_ They have 5 max charge.\n" +
+                        "_-_ Can be used as melee weapon on Mage.\n" +
+                        "_-_ Reworked magical effects to scale from player's level.\n" +
+                        "_-_ Wand's melee damage scales with strength.\n" +
+                        "_-_ Removed Mage's Staff.\n" +
+                        "_-_ _Battlemage stuff is not fully done yet_"));
 
 
         changes = ChangesScene.createChangeInfo(changeInfos, "1.2.1", true, Window.TITLE_COLOR);
