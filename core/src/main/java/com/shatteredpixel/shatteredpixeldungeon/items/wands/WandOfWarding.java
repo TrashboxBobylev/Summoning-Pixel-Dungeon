@@ -49,6 +49,8 @@ import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
+import java.text.DecimalFormat;
+
 public class WandOfWarding extends Wand {
 
 	{
@@ -79,7 +81,7 @@ public class WandOfWarding extends Wand {
 		for (Buff buff : curUser.buffs()){
 			if (buff instanceof Wand.Charger){
 				if (((Charger) buff).wand() instanceof WandOfWarding){
-					maxWardEnergy += 2 + ((Charger) buff).wand().level();
+					maxWardEnergy += 4 * (((Charger) buff).wand().level()+1);
 				}
 			}
 		}
@@ -100,6 +102,26 @@ public class WandOfWarding extends Wand {
 		}
 		
 		return super.tryToZap(owner, target);
+	}
+
+	@Override
+	public float rechargeModifier(int level) {
+		switch (level){
+			case 0: return 1f;
+			case 1: return 0.75f;
+			case 2: return 0.4f;
+		}
+		return 0f;
+	}
+
+	@Override
+	public float powerLevel(int level) {
+		switch (level){
+			case 0: return 1.0f;
+			case 1: return 0.5f;
+			case 2: return 0.33f;
+		}
+		return 0f;
 	}
 	
 	@Override
@@ -138,9 +160,9 @@ public class WandOfWarding extends Wand {
 		} else {
 			Ward ward = new Ward();
 			ward.pos = target;
-			ward.wandLevel = buffedLvl();
+			ward.wandLevel = level()+1;
 			if ((Dungeon.isChallenged(Conducts.Conduct.PACIFIST))){
-				ward.wandLevel = buffedLvl()/4;
+				ward.wandLevel = (level()+1)*3;
 			}
 			GameScene.add(ward, 1f);
 			Dungeon.level.occupyCell(ward);
@@ -195,9 +217,18 @@ public class WandOfWarding extends Wand {
 	@Override
 	public String statsDesc() {
 		if (levelKnown)
-			return Messages.get(this, "stats_desc", level()+2);
+			return Messages.get(this, "stats_desc", 4*(level()+1));
 		else
-			return Messages.get(this, "stats_desc", 2);
+			return Messages.get(this, "stats_desc", 4);
+	}
+
+	@Override
+	public String getTierMessage(int tier){
+		return Messages.get(this, "tier" + tier,
+				new DecimalFormat("#.##").format(charger.getTurnsToCharge(tier-1)),
+				4*(tier),
+				(2 + Dungeon.hero.lvl)/tier, (8 + Dungeon.hero.lvl*2)/tier
+		);
 	}
 
 	public static class Ward extends NPC {
@@ -333,10 +364,10 @@ public class WandOfWarding extends Wand {
 			spend( 1f );
 
 			//always hits
-			int dmg = Random.NormalIntRange( 2 + wandLevel, 8 + 4*wandLevel );
+			int dmg = Random.NormalIntRange((int) (2 + Dungeon.hero.lvl)/wandLevel, (8 + Dungeon.hero.lvl*2)/wandLevel );
 			enemy.damage( dmg, WandOfWarding.class );
 			if (enemy.isAlive()){
-				Wand.processSoulMark(enemy, wandLevel, 1);
+				Wand.processSoulMark(enemy, Dungeon.hero.lvl/3, 1);
 			}
 
 			if (!enemy.isAlive() && enemy == Dungeon.hero) {
@@ -430,7 +461,7 @@ public class WandOfWarding extends Wand {
 
 		@Override
 		public String description() {
-			return Messages.get(this, "desc_" + tier, 2+wandLevel, 8 + 4*wandLevel, tier );
+			return Messages.get(this, "desc_" + tier, (2 + Dungeon.hero.lvl)/wandLevel, (8 + Dungeon.hero.lvl*2)/wandLevel, tier );
 		}
 
 		{
