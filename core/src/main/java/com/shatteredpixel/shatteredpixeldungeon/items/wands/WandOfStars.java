@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FrostBurn;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulWeakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -65,6 +66,26 @@ public class WandOfStars extends DamageWand {
     private boolean detonation = false;
 
     @Override
+    public float powerLevel(int level) {
+        switch (level){
+            case 0: return 1.0f;
+            case 1: return 1.0f;
+            case 2: return 0.5f;
+        }
+        return 0f;
+    }
+
+    @Override
+    public float rechargeModifier(int level) {
+        switch (level){
+            case 0: return 1f;
+            case 1: return 1.5f;
+            case 2: return 1.1f;
+        }
+        return 0f;
+    }
+
+    @Override
     public void execute(Hero hero, String action) {
         super.execute(hero, action);
         if (action.equals(AC_UNLEASH)){
@@ -88,6 +109,7 @@ public class WandOfStars extends DamageWand {
                             if (ch != null) {
                                 ch.damage(damageRoll(), this);
                                 processSoulMark(ch, chargesPerCast());
+                                if (level() == 2) Buff.affect(ch, Vertigo.class, damageRoll());
                             }
                         }
                     }
@@ -130,18 +152,18 @@ public class WandOfStars extends DamageWand {
 
     @Override
     public int magicalmin(int lvl){
-	    if (Dungeon.level == null) return (3+lvl);
+	    if (Dungeon.level == null) return (3+Dungeon.hero.lvl/2);
 	    int num = Dungeon.level.numberOfStars();
 	    if (num < 3) num = 0;
-		return (int) ((3+lvl) * (Math.pow(0.93f, Math.max(0, num - 2))));
+		return (int) ((3+Dungeon.hero.lvl/2) * (Math.pow(0.93f, Math.max(0, num - 2))));
 	}
 
     @Override
     public int magicalmax(int lvl){
-        if (Dungeon.level == null) return (8+lvl*3);
+        if (Dungeon.level == null) return (int) (9+Dungeon.hero.lvl*1.33f);
         int num = Dungeon.level.numberOfStars();
         if (num < 3) num = 0;
-        return (int) ((9+lvl*4) * (Math.pow(0.93f, Math.max(0, num - 2))));
+        return (int) ((9+Dungeon.hero.lvl*1.33f) * (Math.pow(0.93f, Math.max(0, num - 2))));
 	}
 
     @Override
@@ -170,6 +192,10 @@ public class WandOfStars extends DamageWand {
             Star star = new Star();
             Dungeon.level.drop(star, bolt.collisionPos);
             Dungeon.level.pressCell(bolt.collisionPos);
+            if (level() == 1) {
+                detonation = true;
+                execute(Dungeon.hero, AC_UNLEASH);
+            }
         } else {
             GLog.warning( Messages.get(this, "bad_location"));
         }
