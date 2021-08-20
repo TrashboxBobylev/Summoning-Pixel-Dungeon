@@ -409,7 +409,13 @@ public abstract class Char extends Actor {
 			return true;
 		}
 
-		float acuRoll = Random.Float( acuStat );
+		float acuRoll = 0;
+		for (int i = 0; i < defender.attackRolls(); i++) {
+			float roll = Random.Float(acuStat);
+			if (roll > acuRoll){
+				acuRoll = roll;
+			}
+		}
 		if (attacker.buff(Bless.class) != null) acuRoll *= 1.25f;
 		if (attacker.buff(  Hex.class) != null) acuRoll *= 0.8f;
 		if (attacker.buff(Shrink.class)!= null || attacker.buff(TimedShrink.class)!= null) acuRoll *= 0.6f;
@@ -417,7 +423,13 @@ public abstract class Char extends Actor {
 			acuRoll *= buff.evasionAndAccuracyFactor();
 		}
 
-		float defRoll = Random.Float( defStat );
+		float defRoll = 0;
+		for (int i = 0; i < defender.defenseRolls(); i++) {
+			float roll = Random.Float(defStat);
+			if (roll > defRoll){
+				defRoll = roll;
+			}
+		}
 		if (defender.buff(Bless.class) != null) defRoll *= 1.25f;
 		if (defender.buff(  Hex.class) != null) defRoll *= 0.8f;
 		if (defender.buff(Shrink.class)!= null || defender.buff(TimedShrink.class)!= null) defRoll *= 0.8f;
@@ -435,6 +447,9 @@ public abstract class Char extends Actor {
 	public int defenseSkill( Char enemy ) {
 		return 0;
 	}
+
+	public int attackRolls(){ return 1;}
+	public int defenseRolls(){ return 1;}
 	
 	public String defenseVerb() {
 		if (buff(Block.class) != null) return Messages.get(Hero.class, "absorbed");
