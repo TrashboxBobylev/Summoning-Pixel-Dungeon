@@ -86,6 +86,14 @@ public class Stenchy extends NPC {
         return -1;
     }
 
+    @Override
+    public boolean act() {
+
+        GameScene.add( Blob.seed( pos, 20*HP, WandOfStenchGas.class ) );
+
+        return super.act();
+    }
+
     private class Wandering extends Mob.Wandering{
 
         @Override
@@ -106,12 +114,14 @@ public class Stenchy extends NPC {
     @Override
     public int attackProc(Char enemy, int damage ) {
         damage = super.attackProc( enemy, damage );
-
-        destroy();
-        sprite.die();
-        CellEmitter.get(pos).start( Speck.factory(Speck.STENCH_WAND), 0.02f, 20 );
-        GameScene.add(Blob.seed(pos, 50, WandOfStenchGas.class));
-        Sample.INSTANCE.play( Assets.Sounds.BLAST );
+        HP--;
+        if (HP <= 0) {
+            destroy();
+            sprite.die();
+        }
+            CellEmitter.get(pos).start(Speck.factory(Speck.STENCH_WAND), 0.02f, 20);
+            GameScene.add(Blob.seed(pos, 100, WandOfStenchGas.class));
+            Sample.INSTANCE.play(Assets.Sounds.BLAST);
 
         return damage;
     }

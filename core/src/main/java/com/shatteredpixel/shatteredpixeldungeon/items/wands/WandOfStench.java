@@ -29,8 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WandOfStenchGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BlobImmunity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.StenchHolder;
@@ -55,19 +53,39 @@ public class WandOfStench extends Wand {
     }
 
     @Override
+    public float powerLevel(int level) {
+        switch (level){
+            case 0: return 1.0f;
+            case 1: return 2.0f;
+            case 2: return 3.0f;
+        }
+        return 0f;
+    }
+
+    @Override
+    public float rechargeModifier(int level) {
+        switch (level){
+            case 0: return 1f;
+            case 1: return 4f;
+            case 2: return 2f;
+        }
+        return 0f;
+    }
+
+    @Override
     public void onZap(Ballistica attack) {
         Char ch = Actor.findChar( attack.collisionPos );
         if (ch == null) {
             ch = new Stenchy();
+            if (level() == 1) ch.HP = ch.HT = 3;
             ch.pos = attack.collisionPos;
             GameScene.add((Mob) ch);
-            GameScene.add(Blob.seed(ch.pos, 30 + level()*5, WandOfStenchGas.class));
-            StenchHolder buff = Buff.affect(ch, StenchHolder.class, 4 + level());
-            buff.minDamage = 3 + level();
-            buff.maxDamage = 3 + level();
+            StenchHolder buff = Buff.affect(ch, StenchHolder.class, 4*powerLevel());
+            buff.minDamage = 1 + Dungeon.hero.lvl/5;
+            buff.maxDamage = 1 + Dungeon.hero.lvl/5;
             if (Dungeon.isChallenged(Conducts.Conduct.PACIFIST)){
-                buff.minDamage = level()/3;
-                buff.maxDamage = level()/3;
+                buff.minDamage = 1;
+                buff.maxDamage = 1;
             }
 
             ch.sprite.burst(0xFF1d4636, level() / 2 + 2);
