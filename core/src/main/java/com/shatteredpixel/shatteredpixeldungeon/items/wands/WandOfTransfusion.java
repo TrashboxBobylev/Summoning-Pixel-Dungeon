@@ -61,6 +61,26 @@ public class WandOfTransfusion extends Wand {
 	private boolean freeCharge = false;
 
 	@Override
+	public float powerLevel(int level) {
+		switch (level){
+			case 0: return 1.0f;
+			case 1: return 2.0f;
+			case 2: return 0f;
+		}
+		return 0f;
+	}
+
+	@Override
+	public float rechargeModifier(int level) {
+		switch (level){
+			case 0: return 1f;
+			case 1: return 1.25f;
+			case 2: return 0.8f;
+		}
+		return 0f;
+	}
+
+	@Override
 	public void onZap(Ballistica beam) {
 
 		for (int c : beam.subPath(0, beam.dist))
@@ -77,12 +97,13 @@ public class WandOfTransfusion extends Wand {
 			//this wand does different things depending on the target.
 			
 			//heals/shields an ally or a charmed enemy while damaging self
-			if (ch.alignment == Char.Alignment.ALLY || ch.buff(Charm.class) != null){
+			if ((ch.alignment == Char.Alignment.ALLY || ch.buff(Charm.class) != null) && level() != 1){
 				
 				// 10% of max hp
 				int selfDmg = Math.round(curUser.HT*0.10f);
 				
-				int healing = selfDmg + 3*buffedLvl();
+				int healing = (int) (selfDmg*1.25f);
+				if (level() == 2) healing *= 2;
 				int shielding = (ch.HP + healing) - ch.HT;
 				if (shielding > 0){
 					healing -= shielding;
@@ -103,27 +124,33 @@ public class WandOfTransfusion extends Wand {
 				}
 
 			//for enemies...
-			} else {
-				
-				//charms living enemies
-				if (!ch.properties().contains(Char.Property.UNDEAD)) {
-					Buff.affect(ch, Charm.class, Charm.DURATION/2f).object = curUser.id();
-					ch.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 3 + buffedLvl()/2 );
-				
-				//harms the undead
-				} else if ((!Dungeon.isChallenged(Conducts.Conduct.PACIFIST))){
-					ch.damage(Random.NormalIntRange(3 + buffedLvl()/2, 6+buffedLvl()), this);
-					ch.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10 + buffedLvl());
-					Sample.INSTANCE.play(Assets.Sounds.BURNING);
+			} else if (level() != 2){
+
+				if (level() != 1) {
+					//charms living enemies
+					if (!ch.properties().contains(Char.Property.UNDEAD)) {
+						Buff.affect(ch, Charm.class, Charm.DURATION / 2f).object = curUser.id();
+						ch.sprite.centerEmitter().start(Speck.factory(Speck.HEART), 0.2f, 3 + buffedLvl() / 2);
+
+						//harms the undead
+					} else if ((!Dungeon.isChallenged(Conducts.Conduct.PACIFIST))) {
+						ch.damage(Random.NormalIntRange(3 + Dungeon.hero.lvl / 5, 6 + Dungeon.hero.lvl / 2), this);
+						ch.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10 + buffedLvl());
+						Sample.INSTANCE.play(Assets.Sounds.BURNING);
+					}
 				}
 				
 				//and grants a self shield
-				Buff.affect(curUser, Barrier.class).setShield((5 + 2*buffedLvl()));
+				Buff.affect(curUser, Barrier.class).setShield(getShield(level()));
 
 			}
 			
 		}
 		
+	}
+
+	public int getShield(int level) {
+		return (int) ((5 + Dungeon.hero.lvl*0.8f)*powerLevel(level));
 	}
 
 	//this wand costs health too
@@ -177,9 +204,9 @@ public class WandOfTransfusion extends Wand {
 	public String statsDesc() {
 		int selfDMG = Math.round(Dungeon.hero.HT*0.05f);
 		if (levelKnown)
-			return Messages.get(this, "stats_desc", selfDMG, selfDMG + 3*buffedLvl(), 5+buffedLvl(), 3+buffedLvl()/2, 6+ buffedLvl());
+			return Messages.get(this, "stats_desc", selfDMG, (int) (selfDMG*1.25f)*(level() == 2 ? 2 : 1), getShield(level()), 3 + Dungeon.hero.lvl/5, 6 + Dungeon.hero.lvl/2);
 		else
-			return Messages.get(this, "stats_desc", selfDMG, selfDMG, 5, 3, 6);
+			return Messages.get(this, "stats_desc", selfDMG, (int) (selfDMG*1.25f), getShield(0), 3, 6);
 	}
 
 	private static final String FREECHARGE = "freecharge";
