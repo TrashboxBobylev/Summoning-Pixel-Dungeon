@@ -27,10 +27,12 @@ package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SwordStorage;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.ChaosSaber;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -39,12 +41,23 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
+import java.text.DecimalFormat;
 import java.util.Arrays;
 
 public class WandOfConjuration extends Wand {
 
 	{
 		image = ItemSpriteSheet.WAND_CONJURATION;
+	}
+
+	@Override
+	public float rechargeModifier(int level) {
+		switch (level){
+			case 0: return 0.5f;
+			case 1: return 0.75f;
+			case 2: return 1.25f;
+		}
+		return 0f;
 	}
 	
 	@Override
@@ -55,7 +68,9 @@ public class WandOfConjuration extends Wand {
 			Dungeon.hero.sprite.burst(0x007bdb, 10);
 			Dungeon.hero.sprite.burst(0xff61ac, 10);
 
-			Buff.affect(Dungeon.hero, SwordStorage.class).countUp(1);
+		SwordStorage swordStorage = Buff.affect(Dungeon.hero, SwordStorage.class);
+		swordStorage.countUp(1);
+		swordStorage.level = level();
 	}
 
 	@Override
@@ -69,7 +84,7 @@ public class WandOfConjuration extends Wand {
 	}
 
 	public int swordCount(int lvl){
-		return 2 + lvl;
+		return 3;
 	}
 
 	@Override
@@ -78,8 +93,15 @@ public class WandOfConjuration extends Wand {
 			GLog.warning( Messages.get(this, "no_magic") );
 			return false;
 		}
+		int swordCount = 0;
+		for (Char ch : Actor.chars()){
+			if (ch instanceof ChaosSaber){
+				swordCount += 1;
+			}
+		}
 		SwordStorage swords = Buff.affect(Dungeon.hero, SwordStorage.class);
-		if (swords.count() >= swordCount(buffedLvl())){
+		swordCount += swords.count();
+		if (swordCount >= swordCount(buffedLvl())){
 			GLog.warning( Messages.get(this, "no_more_swords"));
 			return false;
 		}
@@ -101,9 +123,18 @@ public class WandOfConjuration extends Wand {
 	@Override
 	public String statsDesc() {
 		if (!levelKnown)
-			return Messages.get(this, "stats_desc", 2);
+			return Messages.get(this, "stats_desc", 3, 4, 8);
 		else
-			return Messages.get(this, "stats_desc", swordCount(buffedLvl()));
+			return Messages.get(this, "stats_desc", 3, 4 + level(), 8 + level());
+	}
+
+	@Override
+	public String getTierMessage(int tier){
+		return Messages.get(this, "tier" + tier,
+				new DecimalFormat("#.##").format(charger.getTurnsToCharge(tier-1)),
+				3 + tier,
+				7 + tier
+		);
 	}
 
 	@Override

@@ -30,12 +30,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.PerfumeGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SwordStorage;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ChaosSaberSprite;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class ChaosSaber extends NPC {
@@ -55,6 +54,8 @@ public class ChaosSaber extends NPC {
         immunities.add(PerfumeGas.Affection.class);
     }
 
+    public int level;
+
     @Override
     public int attackSkill( Char target ) {
         return (int) (target.defenseSkill(this)*1.2f);
@@ -63,8 +64,18 @@ public class ChaosSaber extends NPC {
     @Override
     public int damageRoll() {
         if (Dungeon.isChallenged(Conducts.Conduct.PACIFIST))
-            return Random.NormalIntRange(1, 3);
-        return Random.NormalIntRange(4, 8);
+            return Random.NormalIntRange(1 + level, 3 + level);
+        return Random.NormalIntRange(4 + level, 8 + level);
+    }
+
+    @Override
+    public int attackRolls() {
+        return 1+level;
+    }
+
+    @Override
+    public int defenseRolls() {
+        return 1+level;
     }
 
     @Override
@@ -79,12 +90,26 @@ public class ChaosSaber extends NPC {
         immunities.add(PerfumeGas.Affection.class);
     }
 
+    private static final String LEVEL	= "level";
+
+    @Override
+    public void storeInBundle( Bundle bundle ) {
+        super.storeInBundle( bundle );
+        bundle.put( LEVEL, level );
+
+    }
+
+    @Override
+    public void restoreFromBundle( Bundle bundle ) {
+        super.restoreFromBundle( bundle );
+        level = bundle.getInt( LEVEL );
+    }
+
     private class Wandering extends Mob.Wandering{
 
         @Override
         public boolean act(boolean enemyInFOV, boolean justAlerted) {
             if (!enemyInFOV){
-                Buff.affect(Dungeon.hero, SwordStorage.class).countUp(0.25f);
                 Dungeon.hero.sprite.centerEmitter().burst(MagicMissile.WardParticle.UP, 12);
                 destroy();
                 sprite.die();

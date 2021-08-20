@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 
 public class SwordStorage extends CounterBuff {
@@ -43,6 +44,8 @@ public class SwordStorage extends CounterBuff {
     public int icon() {
         return BuffIndicator.WEAPON;
     }
+
+    public int level;
 
     @Override
     public boolean act() {
@@ -72,6 +75,7 @@ public class SwordStorage extends CounterBuff {
             }
             if (bestPos != -1) {
                 ChaosSaber sword = new ChaosSaber();
+                sword.level = level;
                 sword.state = sword.HUNTING;
                 GameScene.add(sword, -1);
                 ScrollOfTeleportation.appear(sword, bestPos);
@@ -109,5 +113,20 @@ public class SwordStorage extends CounterBuff {
         else {
             target.sprite.remove(CharSprite.State.SWORDS);
         }
+    }
+
+    private static final String LEVEL	= "level";
+
+    @Override
+    public void storeInBundle( Bundle bundle ) {
+        super.storeInBundle( bundle );
+        bundle.put( LEVEL, level );
+
+    }
+
+    @Override
+    public void restoreFromBundle( Bundle bundle ) {
+        super.restoreFromBundle( bundle );
+        level = bundle.getInt( LEVEL );
     }
 }
