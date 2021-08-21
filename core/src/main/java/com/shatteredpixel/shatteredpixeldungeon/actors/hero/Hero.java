@@ -46,6 +46,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Endure;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.*;
@@ -56,6 +57,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMi
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
@@ -1183,6 +1185,21 @@ public class Hero extends Char {
 		if (damage > 0 && Dungeon.isChallenged(Conducts.Conduct.BERSERK)){
 			Berserk berserk = Buff.affect(this, Berserk.class);
 			berserk.damage(damage);
+		}
+		if (Dungeon.isChallenged(Conducts.Conduct.TRANSMUTATION)){
+			for (Item item : belongings) {
+				if (ScrollOfTransmutation.canTransmute(item)) {
+					new ScrollOfTransmutation().onItemSelected(item);
+				}
+				if (item instanceof Bag) {
+					Bag bag = (Bag)item;
+					for (Item item1: bag){
+						if (ScrollOfTransmutation.canTransmute(item)) {
+							new ScrollOfTransmutation().onItemSelected(item);
+						}
+					}
+				}
+			}
 		}
 		
 		if (belongings.armor != null) {

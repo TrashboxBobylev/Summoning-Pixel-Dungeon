@@ -36,7 +36,8 @@ public class Conducts {
         ZEN,
         BERSERK,
         WRAITH,
-        SLEEPY;
+        SLEEPY,
+        TRANSMUTATION;
 
         @Override
         public String toString() {
