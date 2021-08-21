@@ -170,9 +170,6 @@ public enum HeroClass {
 		hero.belongings.artifact.activate( hero );
 		Dungeon.quickslot.setSlot(0, wand);
 		Dungeon.quickslot.setSlot(1, blast);
-		for (int i = 0; i < 25; i++){
-			new PotionOfExperience().apply(hero);
-		}
 
 		new ScrollHolder().collect();
 		Dungeon.LimitedDrops.SCROLL_HOLDER.drop();

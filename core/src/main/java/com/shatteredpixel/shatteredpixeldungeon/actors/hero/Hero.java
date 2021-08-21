@@ -1189,6 +1189,7 @@ public class Hero extends Char {
 		if (Dungeon.isChallenged(Conducts.Conduct.TRANSMUTATION)){
 			for (Item item : belongings) {
 				if (ScrollOfTransmutation.canTransmute(item)) {
+					Item.curUser = this;
 					new ScrollOfTransmutation().onItemSelected(item);
 				}
 				if (item instanceof Bag) {
