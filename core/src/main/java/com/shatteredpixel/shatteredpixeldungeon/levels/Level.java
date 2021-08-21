@@ -97,7 +97,7 @@ public abstract class Level implements Bundlable {
 	//Variable for Amnesia challenge
 	public boolean[] needUpdateFog;
 
-	public int viewDistance = Dungeon.isChallenged(Conducts.Conduct.ZEN) ? 0 : 8;
+	public int viewDistance = Dungeon.isChallenged(Conducts.Conduct.ZEN) ? 1 : 8;
 	
 	public boolean[] heroFOV;
 	
