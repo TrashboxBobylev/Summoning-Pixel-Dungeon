@@ -464,6 +464,14 @@ public class Hero extends Char {
 	}
 
 	@Override
+	public int defenseRolls() {
+		if (Dungeon.isChallenged(Conducts.Conduct.WRAITH)){
+			return 2;
+		}
+		return super.defenseRolls();
+	}
+
+	@Override
 	public String defenseVerb() {
 		return super.defenseVerb();
 	}
