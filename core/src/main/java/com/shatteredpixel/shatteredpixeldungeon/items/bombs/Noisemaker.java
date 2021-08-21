@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -132,13 +131,6 @@ public class Noisemaker extends Bomb {
 						mob.beckon( cell );
 					}
                     for (Heap levelheap : Dungeon.level.heaps.valueList()) {
-                        if (levelheap.type == Heap.Type.MIMIC) {
-                            Mimic m = Mimic.spawnAt( levelheap.pos, levelheap.items );
-                            if (m != null) {
-                                m.beckon( cell );
-                                levelheap.destroy();
-                            }
-                        }
                     }
 					left = 4;
 				}

@@ -31,54 +31,60 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndJournal;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
 
-public abstract class DocumentPage extends Item {
-	
+public class Guidebook extends Item {
+
 	{
 		image = ItemSpriteSheet.MASTERY;
 	}
 
-	public abstract Document document();
-	
-	private String page;
-	
-	public void page( String page ){
-		this.page = page;
-	}
-	
-	public String page(){
-		return page;
-	}
-	
 	@Override
 	public final boolean doPickUp(Hero hero) {
 		GameScene.pickUpJournal(this, hero.pos);
-		GameScene.flashForDocument(page());
-		if (document() == Document.ALCHEMY_GUIDE){
-			WndJournal.last_index = 1;
-			WndJournal.AlchemyTab.currentPageIdx = document().pageIdx(page());
-		} else {
-			WndJournal.last_index = 0;
-		}
-		document().findPage(page);
+		String page = Document.GUIDE_INTRO;
+		Game.runOnRenderThread(new Callback() {
+			@Override
+			public void call() {
+				GameScene.show(new WndStory(WndJournal.GuideTab.iconForPage(page),
+						Document.ADVENTURERS_GUIDE.pageTitle(page),
+						Document.ADVENTURERS_GUIDE.pageBody(page)){
+
+					float elapsed = 0;
+
+					@Override
+					public void update() {
+						elapsed += Game.elapsed;
+						super.update();
+					}
+
+					@Override
+					public void hide() {
+						//prevents accidentally closing
+						if (elapsed >= 1) {
+							super.hide();
+						}
+					}
+				});
+			}
+		});
+		Document.ADVENTURERS_GUIDE.readPage(Document.GUIDE_INTRO);
 		Sample.INSTANCE.play( Assets.Sounds.ITEM );
 		hero.spendAndNext( TIME_TO_PICK_UP );
 		return true;
 	}
-	
-	private static final String PAGE = "page";
-	
+
 	@Override
-	public void storeInBundle(Bundle bundle) {
-		super.storeInBundle(bundle);
-		bundle.put( PAGE, page() );
+	public boolean isUpgradable() {
+		return false;
 	}
-	
+
 	@Override
-	public void restoreFromBundle(Bundle bundle) {
-		super.restoreFromBundle(bundle);
-		page = bundle.getString( PAGE );
+	public boolean isIdentified() {
+		return true;
 	}
+
 }

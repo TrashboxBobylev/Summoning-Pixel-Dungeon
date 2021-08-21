@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.android;
 
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -31,9 +32,12 @@ import android.os.Bundle;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.badlogic.gdx.backends.android.AndroidAudio;
+import com.badlogic.gdx.backends.android.AsynchronousAndroidAudio;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.watabou.noosa.Game;
+import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.FileUtils;
 
 public class AndroidGame extends AndroidApplication {
@@ -80,14 +84,14 @@ public class AndroidGame extends AndroidApplication {
 					ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
 					ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT );
 		}
-		
+
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.depth = 0;
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-			//use rgb888 on more modern devices for better visuals
-			config.r = config.g = config.b = 8;
-		} else {
-			//and rgb565 (default) on older ones for better performance
+		if (DeviceCompat.legacyDevice()) {
+			//use rgb565 on older devices for better performance
+			config.r = 5;
+			config.g = 6;
+			config.b = 5;
 		}
 		
 		config.useCompass = false;
@@ -100,6 +104,11 @@ public class AndroidGame extends AndroidApplication {
 		
 		initialize(new ShatteredPixelDungeon(support), config);
 		
+	}
+
+	@Override
+	public AndroidAudio createAudio(Context context, AndroidApplicationConfiguration config) {
+		return new AsynchronousAndroidAudio(context, config);
 	}
 
 	@Override

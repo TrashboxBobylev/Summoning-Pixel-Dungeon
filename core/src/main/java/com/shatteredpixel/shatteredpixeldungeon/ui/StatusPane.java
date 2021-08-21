@@ -27,12 +27,14 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndGame;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndHero;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndJournal;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
 import com.watabou.input.GameAction;
 import com.watabou.noosa.*;
 import com.watabou.noosa.audio.Sample;
@@ -304,9 +306,9 @@ public class StatusPane extends Component {
 			btnJournal.journalIcon.x + btnJournal.journalIcon.width()/2f,
 			btnJournal.journalIcon.y + btnJournal.journalIcon.height()/2f);
 	}
-	
-	public void flash(){
-		btnJournal.flashing = true;
+
+	public void flashForPage( String page ){
+		btnJournal.flashingPage = page;
 	}
 	
 	public void updateKeys(){
@@ -319,7 +321,7 @@ public class StatusPane extends Component {
 		private Image journalIcon;
 		private KeyDisplay keyIcon;
 		
-		private boolean flashing;
+		private String flashingPage = Document.GUIDE_INTRO;
 
 		public JournalButton() {
 			super();
@@ -367,15 +369,16 @@ public class StatusPane extends Component {
 		}
 
 		private float time;
-		
+		private static final float FLASH_RATE = (float)(Math.PI*1.5f); //1.5 blinks per second
+
 		@Override
 		public void update() {
 			super.update();
 			
-			if (flashing){
-				journalIcon.am = (float)Math.abs(Math.cos( 3 * (time += Game.elapsed) ));
+			if (flashingPage != null){
+				journalIcon.am = (float)Math.abs(Math.cos( FLASH_RATE * (time += Game.elapsed) ));
 				keyIcon.am = journalIcon.am;
-				if (time >= 0.333f*Math.PI) {
+				if (time >= Math.PI/FLASH_RATE) {
 					time = 0;
 				}
 			}
@@ -409,10 +412,21 @@ public class StatusPane extends Component {
 
 		@Override
 		protected void onClick() {
-			flashing = false;
 			time = 0;
 			keyIcon.am = journalIcon.am = 1;
-			GameScene.show( new WndJournal() );
+			if (flashingPage != null){
+				if (Document.ADVENTURERS_GUIDE.pageNames().contains(flashingPage)){
+					GameScene.show( new WndStory( WndJournal.GuideTab.iconForPage(flashingPage),
+							Document.ADVENTURERS_GUIDE.pageTitle(flashingPage),
+							Document.ADVENTURERS_GUIDE.pageBody(flashingPage) ));
+					Document.ADVENTURERS_GUIDE.readPage(flashingPage);
+				} else {
+					GameScene.show( new WndJournal() );
+				}
+				flashingPage = null;
+			} else {
+				GameScene.show( new WndJournal() );
+			}
 		}
 
 	}

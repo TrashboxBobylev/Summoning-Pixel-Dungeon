@@ -43,7 +43,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Arcane
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.*;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger2;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -98,7 +97,7 @@ abstract public class Weapon extends KindOfWeapon {
 	public boolean curseInfusionBonus = false;
 
 	public BrokenSeal seal;
-	
+
 	@Override
 	public int proc( Char attacker, Char defender, int damage ) {
 		
@@ -246,7 +245,7 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 
 	public abstract int STRReq(int lvl);
-	
+
 	@Override
 	public int level() {
 		if (this instanceof SpiritBow || this instanceof SpiritBow.SpiritArrow){
@@ -273,7 +272,7 @@ abstract public class Weapon extends KindOfWeapon {
 	public Item upgrade(boolean enchant ) {
 
 		if (enchant){
-			if (enchantment == null || hasCurseEnchant() && this instanceof Dagger2){
+			if (enchantment == null){
 				enchant(Enchantment.random());
 			}
 		} else {
@@ -288,7 +287,7 @@ abstract public class Weapon extends KindOfWeapon {
 
 		if (seal != null && seal.level() == 0)
 			seal.upgrade();
-		
+
 		return super.upgrade();
 	}
 	
@@ -306,7 +305,7 @@ abstract public class Weapon extends KindOfWeapon {
 		emitter.pour(Speck.factory( Speck.RED_LIGHT ), 0.6f);
 		return emitter;
 	}
-	
+
 	@Override
 	public Item random() {
 		//+0: 75% (3/4)

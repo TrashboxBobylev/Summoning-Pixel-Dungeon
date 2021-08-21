@@ -77,8 +77,8 @@ public class Game implements ApplicationListener {
 	public static float elapsed = 0f;
 	public static float timeTotal = 0f;
 	public static long realTime = 0;
-	
-	protected static InputHandler inputHandler;
+
+	public static InputHandler inputHandler;
 	
 	public static PlatformSupport platform;
 	
@@ -100,14 +100,14 @@ public class Game implements ApplicationListener {
 		density = Gdx.graphics.getDensity();
 		dispHeight = Gdx.graphics.getDisplayMode().height;
 		dispWidth = Gdx.graphics.getDisplayMode().width;
-		
+
 		inputHandler = new InputHandler( Gdx.input );
-		
+
 		//refreshes texture and vertex data stored on the gpu
 		versionContextRef = Gdx.graphics.getGLVersion();
 		Blending.useDefault();
 		TextureCache.reload();
-		Vertexbuffer.refreshAllBuffers();
+		Vertexbuffer.reload();
 	}
 
 	private GLVersion versionContextRef;
@@ -124,11 +124,11 @@ public class Game implements ApplicationListener {
 			versionContextRef = Gdx.graphics.getGLVersion();
 			Blending.useDefault();
 			TextureCache.reload();
-			Vertexbuffer.refreshAllBuffers();
+			Vertexbuffer.reload();
 		}
 		
 		if (height != Game.height || width != Game.width) {
-			
+
 			Game.width = width;
 			Game.height = height;
 			
@@ -244,6 +244,8 @@ public class Game implements ApplicationListener {
 		if (scene != null) {
 			scene.destroy();
 		}
+		//clear any leftover vertex buffers
+		Vertexbuffer.clear();
 		scene = requestedScene;
 		if (onChange != null) onChange.beforeCreate();
 		scene.create();

@@ -39,8 +39,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
+import com.shatteredpixel.shatteredpixeldungeon.items.journal.Guidebook;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
@@ -456,6 +458,11 @@ public class GameScene extends PixelScene {
 			InterlevelScene.mode = InterlevelScene.Mode.NONE;
 
 
+		}
+
+		if (Rankings.INSTANCE.totalNumber > 0 && !Document.ADVENTURERS_GUIDE.pageRead(Document.GUIDE_DIEING)){
+			GLog.positive(Messages.get(Guidebook.class, "hint"));
+			GameScene.flashForDocument(Document.GUIDE_DIEING);
 		}
 
 		fadeIn();
@@ -875,9 +882,9 @@ public class GameScene extends PixelScene {
 	public static void pickUpJournal( Item item, int pos ) {
 		if (scene != null) scene.pane.pickup( item, pos );
 	}
-	
-	public static void flashJournal(){
-		if (scene != null) scene.pane.flash();
+
+	public static void flashForDocument(String page){
+		if (scene != null) scene.pane.flashForPage(page);
 	}
 	
 	public static void updateKeyDisplay(){
@@ -1021,7 +1028,7 @@ public class GameScene extends PixelScene {
 	
 	public static WndBag selectItem( WndBag.Listener listener, WndBag.Mode mode, String title ) {
 		cancelCellSelector();
-		
+
 		WndBag wnd =
 				mode == Mode.SEED ?
 					WndBag.getBag( VelvetPouch.class, listener, mode, title ) :
@@ -1032,7 +1039,7 @@ public class GameScene extends PixelScene {
 				mode == Mode.WAND ?
 					WndBag.getBag( MagicalHolster.class, listener, mode, title ) :
 				WndBag.lastBag( listener, mode, title );
-		
+
 		if (scene != null) scene.addToFront( wnd );
 		
 		return wnd;

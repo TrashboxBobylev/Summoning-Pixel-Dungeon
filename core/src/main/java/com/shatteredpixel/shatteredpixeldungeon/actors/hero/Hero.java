@@ -233,7 +233,7 @@ public class Hero extends Char {
 	public void storeInBundle( Bundle bundle ) {
 
 		super.storeInBundle( bundle );
-		
+
 		heroClass.storeInBundle( bundle );
 		subClass.storeInBundle( bundle );
 		if (heroClass == HeroClass.ROGUE)
@@ -261,7 +261,7 @@ public class Hero extends Char {
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
-		
+
 		heroClass = HeroClass.restoreInBundle( bundle );
 		subClass = HeroSubClass.restoreInBundle( bundle );
 		if (heroClass == HeroClass.ROGUE)
@@ -428,7 +428,7 @@ public class Hero extends Char {
 		}
 
 		if (Dungeon.isChallenged(Conducts.Conduct.WRAITH)) accuracy *= 1.25f;
-		
+
 		if (wep != null) {
 			return (int)(attackSkill * accuracy * wep.accuracyFactor( this ));
 		} else {
@@ -445,7 +445,7 @@ public class Hero extends Char {
 		
 		float evasion = defenseSkill;
 		if (Dungeon.mode == Dungeon.GameMode.EXPLORE) evasion *= 1.2f;
-		
+
 		evasion *= RingOfEvasion.evasionMultiplier( this );
 		
 		if (paralysed > 0) {
@@ -496,7 +496,7 @@ public class Hero extends Char {
 		}
 		Barkskin bark = buff(Barkskin.class);
 		if (bark != null)               dr += Random.NormalIntRange( 0 , bark.level() );
-		
+
 		Blocking.BlockBuff block = buff(Blocking.BlockBuff.class);
 		if (block != null)              dr += block.blockingRoll();
 		
@@ -611,7 +611,7 @@ public class Hero extends Char {
 			freeze.processTime(time);
 			return;
 		}
-		
+
 		super.spend(time);
 
 		if (time > 0) {
@@ -665,7 +665,7 @@ public class Hero extends Char {
 					buff(Talent.DirectiveMovingTracker.class).countUp(1);
 				}
 			}
-		
+
 		boolean actResult;
 		if (curAction == null) {
 			
@@ -751,7 +751,7 @@ public class Hero extends Char {
 
 		AttackIndicator.updateState();
 
-		
+
 		GameScene.ready();
 	}
 	
@@ -1136,7 +1136,7 @@ public class Hero extends Char {
 	public void setEnemy(Char enemy){
 		this.enemy = enemy;
 	}
-	
+
 	public void rest( boolean fullRest ) {
 		spendAndNext( TIME_TO_REST );
 		if (!fullRest && sprite != null) {
@@ -1220,7 +1220,7 @@ public class Hero extends Char {
 			}
 			Item.doNotUseTurnForCollect = false;
 		}
-		
+
 		if (belongings.armor != null) {
 			damage = belongings.armor.proc( enemy, this, damage );
 		}
@@ -1279,6 +1279,8 @@ public class Hero extends Char {
 		super.damage( dmg, src );
 		int postHP = HP + shielding();
 		int effectiveDamage = preHP - postHP;
+
+		if (effectiveDamage <= 0) return;
 
 		//flash red when hit for serious damage.
 		float percentDMG = effectiveDamage / (float)preHP; //percent of current HP that was taken
@@ -1429,7 +1431,7 @@ public class Hero extends Char {
 		}
 
 		if (step != -1) {
-			
+
 			float speed = speed();
 
 			lastMovPos = pos;
@@ -1448,7 +1450,7 @@ public class Hero extends Char {
 			justMoved = true;
 
 			search(false);
-			
+
 			if (subClass == HeroSubClass.FREERUNNER){
 				Buff.affect(this, Momentum.class).gainStack();
 			}
@@ -1544,7 +1546,7 @@ public class Hero extends Char {
 
 		if (SPDSettings.bigdungeon()) MAX_LEVEL = 100;
 		else MAX_LEVEL = 30;
-		
+
 		this.exp += exp;
 		float percent = exp/(float)maxExp();
 
@@ -1630,7 +1632,7 @@ public class Hero extends Char {
 				return 1.0f;
 		}
 	}
-	
+
 	public int maxExp() {
 		return Math.round(maxExp( lvl )*expMod());
 	}
@@ -1716,7 +1718,7 @@ public class Hero extends Char {
 			Sample.INSTANCE.play( Assets.Sounds.TELEPORT );
 			GLog.warning( Messages.get(this, "revive") );
 			Statistics.ankhsUsed++;
-			
+
 			for (Char ch : Actor.chars()){
 				if (ch instanceof DriedRose.GhostHero){
 					((DriedRose.GhostHero) ch).sayAnkh();
@@ -1726,7 +1728,7 @@ public class Hero extends Char {
 
 			return;
 		}
-		
+
 
 		if (Dungeon.mode != Dungeon.GameMode.EXPLORE) {
 			Actor.fixTime();
@@ -1759,7 +1761,7 @@ public class Hero extends Char {
 			});
 		}
 	}
-	
+
 	public void reallyDie(Object cause) {
 
 		if (Dungeon.mode == Dungeon.GameMode.EXPLORE){
@@ -2123,11 +2125,11 @@ public class Hero extends Char {
 	}
 
 	public void resurrect( int resetLevel ) {
-		
+
 		HP = HT;
 		Dungeon.gold = 0;
 		exp = 0;
-		
+
 		belongings.resurrect( resetLevel );
 
 		live();

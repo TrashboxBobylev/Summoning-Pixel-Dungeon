@@ -45,6 +45,8 @@ public enum Icons {
 	DISPLAY,
 	DATA,
 	AUDIO,
+	TALENT,
+	MAGNIFY,
 
 	//ingame UI icons
 	SKULL,
@@ -60,7 +62,7 @@ public enum Icons {
 	POTION_BANDOLIER,
 	WAND_HOLSTER,
 	CONJURER_BOOK,
-	
+
 	//hero & rankings icons
 	DEPTH,
 	WARRIOR,
@@ -78,7 +80,6 @@ public enum Icons {
 	NEWS,
 	CHANGES,
 	SHPX,
-	TALENT,
 	GAUNTLET,
 	SHRINKING,
 	ENLARGEMENT,
@@ -88,7 +89,7 @@ public enum Icons {
 	REAL_TIME,
 	CHAOS,
 	NO_EXP,
-	
+
 	//misc icons
 	LIBGDX,
 	WATA,
@@ -149,6 +150,9 @@ public enum Icons {
 		case AUDIO:
 			icon.frame( icon.texture.uvRect( 64, 16, 78, 30 ) );
 			break;
+		case MAGNIFY:
+			icon.frame( icon.texture.uvRect( 96, 16, 110, 30 ) );
+			break;
 		case SKULL:
 			icon.frame( icon.texture.uvRect( 0, 32, 8, 40 ) );
 			break;
@@ -191,7 +195,7 @@ public enum Icons {
 		case TALENT:
 			icon.frame( icon.texture.uvRect( 102, 17, 116, 31 ) );
 			break;
-			
+
 		case DEPTH:
 			icon.frame( icon.texture.uvRect( 0, 48, 13, 64 ) );
 			break;

@@ -369,14 +369,6 @@ public abstract class Level implements Bundlable {
 
 		buildFlagMaps();
 		cleanWalls();
-
-		//compat with pre-0.8.0 saves
-		for (Heap h : heaps.valueList()){
-			if (h.type == Heap.Type.MIMIC){
-				heaps.remove(h.pos);
-				mobs.add(Mimic.spawnAt(h.pos, h.items));
-			}
-		}
 	}
 	
 	@Override

@@ -31,7 +31,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
+import com.shatteredpixel.shatteredpixeldungeon.items.journal.Guidebook;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
@@ -103,6 +106,10 @@ public class Hunger extends Buff implements Hero.Doom {
 	private static void switchHungerLevel(float energy, Hunger hunger, Char target) {
 		if (hunger.level + 1 > HUNGRY && !hunger.isHungry()){
 			GLog.warning(Messages.get(hunger, "onhungry"));
+			if (!Document.ADVENTURERS_GUIDE.pageRead(Document.GUIDE_FOOD)){
+				GLog.positive(Messages.get(Guidebook.class, "hint"));
+				GameScene.flashForDocument(Document.GUIDE_FOOD);
+			}
 			hunger.level = HUNGRY;
 			return;
 		}
