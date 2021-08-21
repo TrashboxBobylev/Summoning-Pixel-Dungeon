@@ -52,7 +52,7 @@ public class Recycle extends InventorySpell {
 	}
 	
 	@Override
-	protected void onItemSelected(Item item) {
+	public void onItemSelected(Item item) {
 		Item result;
 		do {
 			if (item instanceof Potion) {
@@ -73,7 +73,8 @@ public class Recycle extends InventorySpell {
 		} while (result.getClass() == item.getClass());
 		
 		item.detach(curUser.belongings.backpack);
-		GLog.positive(Messages.get(this, "recycled", result.name()));
+		if (!doNotUseTurnForCollect)
+			GLog.positive(Messages.get(this, "recycled", result.name()));
 		if (!result.collect()){
 			Dungeon.level.drop(result, curUser.pos).sprite.drop();
 		}

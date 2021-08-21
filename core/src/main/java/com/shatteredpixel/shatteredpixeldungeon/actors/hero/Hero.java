@@ -58,6 +58,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.Recycle;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
@@ -1189,15 +1190,22 @@ public class Hero extends Char {
 		if (Dungeon.isChallenged(Conducts.Conduct.TRANSMUTATION)){
 			Item.doNotUseTurnForCollect = true;
 			for (Item item : belongings) {
-				if (ScrollOfTransmutation.canTransmute(item)) {
+				if (ScrollOfTransmutation.canTransmute(item) && !Recycle.isRecyclable(item)) {
 					Item.curUser = this;
 					new ScrollOfTransmutation().onItemSelected(item);
+				} else if (Recycle.isRecyclable(item)) {
+					Item.curUser = this;
+					new Recycle().onItemSelected(item);
 				}
 				if (item instanceof Bag) {
 					Bag bag = (Bag)item;
 					for (Item item1: bag){
-						if (ScrollOfTransmutation.canTransmute(item)) {
-							new ScrollOfTransmutation().onItemSelected(item);
+						if (ScrollOfTransmutation.canTransmute(item1) && !Recycle.isRecyclable(item1)) {
+							Item.curUser = this;
+							new ScrollOfTransmutation().onItemSelected(item1);
+						} else if (Recycle.isRecyclable(item1)) {
+							Item.curUser = this;
+							new Recycle().onItemSelected(item1);
 						}
 					}
 				}
