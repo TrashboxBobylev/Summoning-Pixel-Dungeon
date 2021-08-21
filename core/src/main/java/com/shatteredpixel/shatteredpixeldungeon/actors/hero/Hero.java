@@ -1187,6 +1187,7 @@ public class Hero extends Char {
 			berserk.damage(damage);
 		}
 		if (Dungeon.isChallenged(Conducts.Conduct.TRANSMUTATION)){
+			Item.doNotUseTurnForCollect = true;
 			for (Item item : belongings) {
 				if (ScrollOfTransmutation.canTransmute(item)) {
 					Item.curUser = this;
@@ -1201,6 +1202,7 @@ public class Hero extends Char {
 					}
 				}
 			}
+			Item.doNotUseTurnForCollect = false;
 		}
 		
 		if (belongings.armor != null) {

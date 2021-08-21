@@ -130,7 +130,7 @@ public abstract class KindofMisc extends EquipableItem {
 				equipCursed( hero );
 				GLog.negative( Messages.get(this, "equip_cursed", this) );
 			}
-
+			if (!doNotUseTurnForCollect)
 			hero.spendAndNext( TIME_TO_EQUIP );
 			return true;
 
