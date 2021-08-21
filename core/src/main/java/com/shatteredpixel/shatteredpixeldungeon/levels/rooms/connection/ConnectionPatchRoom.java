@@ -33,6 +33,16 @@ import com.watabou.utils.PathFinder;
 //it's still up to the specific room to implement paint, but utility methods are provided
 public abstract class ConnectionPatchRoom extends ConnectionRoom {
 
+	@Override
+	public int minWidth() {
+		return Math.max(super.minWidth(), 8);
+	}
+
+	@Override
+	public int minHeight() {
+		return Math.max(super.minHeight(), 8);
+	}
+
 	protected boolean[] patch;
 
 	protected void setupPatch(Level level, float fill, int clustering, boolean ensurePath){
