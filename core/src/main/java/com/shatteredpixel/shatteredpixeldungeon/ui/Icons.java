@@ -151,7 +151,7 @@ public enum Icons {
 			icon.frame( icon.texture.uvRect( 64, 16, 78, 30 ) );
 			break;
 		case MAGNIFY:
-			icon.frame( icon.texture.uvRect( 96, 16, 110, 30 ) );
+			icon.frame( icon.texture.uvRect( 48, 80, 62, 94 ) );
 			break;
 		case SKULL:
 			icon.frame( icon.texture.uvRect( 0, 32, 8, 40 ) );
