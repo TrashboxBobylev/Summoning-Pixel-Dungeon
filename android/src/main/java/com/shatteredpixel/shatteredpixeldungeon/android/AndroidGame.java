@@ -84,12 +84,6 @@ public class AndroidGame extends AndroidApplication {
 
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.depth = 0;
-		if (DeviceCompat.legacyDevice()) {
-			//use rgb565 on older devices for better performance
-			config.r = 5;
-			config.g = 6;
-			config.b = 5;
-		}
 		
 		config.useCompass = false;
 		config.useAccelerometer = false;
