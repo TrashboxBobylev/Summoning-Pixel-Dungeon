@@ -155,21 +155,21 @@ public class AndroidPlatformSupport extends PlatformSupport {
 		}
 	}
 
-	@Override
-	public void promptTextInput(final String title, final String hintText, final int maxLen, final boolean multiLine, final String posTxt, final String negTxt, final TextCallback callback) {
-		Game.runOnRenderThread( new Callback() {
-					@Override
-					public void call() {
-						Game.scene().addToFront(new WndAndroidTextInput(title, hintText, maxLen, multiLine, posTxt, negTxt) {
-							@Override
-							protected void onSelect(boolean positive) {
-								callback.onSelect(positive, getText());
-							}
-						});
-					}
-				}
-		);
-	}
+//	@Override
+//	public void promptTextInput(final String title, final String hintText, final int maxLen, final boolean multiLine, final String posTxt, final String negTxt, final TextCallback callback) {
+//		Game.runOnRenderThread( new Callback() {
+//					@Override
+//					public void call() {
+//						Game.scene().addToFront(new WndAndroidTextInput(title, hintText, maxLen, multiLine, posTxt, negTxt) {
+//							@Override
+//							protected void onSelect(boolean positive) {
+//								callback.onSelect(positive, getText());
+//							}
+//						});
+//					}
+//				}
+//		);
+//	}
 
 	//as you can't move touch without holding
 	@Override
