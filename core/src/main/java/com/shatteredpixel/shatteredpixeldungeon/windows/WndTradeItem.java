@@ -184,7 +184,7 @@ public class WndTradeItem extends WndInfoItem {
 		//selling items in the sell interface doesn't spend time
 		hero.spend(-hero.cooldown());
 
-		new Gold((int) (item.value() * (hero.hasTalent(Talent.GOOD_INTENTIONS) ? 1.33f : 0))).doPickUp( hero );
+		new Gold((int) (item.value() * (hero.hasTalent(Talent.GOOD_INTENTIONS) ? 1.33f : 1))).doPickUp( hero );
 	}
 	
 	private void sellOne( Item item ) {
