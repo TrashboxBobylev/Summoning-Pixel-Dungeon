@@ -24,25 +24,43 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Ropes;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.Camera;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
 public class HeroicLeap extends Ability {
     {
         baseChargeUse = 25;
         image = ItemSpriteSheet.HEROIC_LEAP;
+    }
+
+    @Override
+    public float chargeUse() {
+        switch (level()){
+            case 1: return 35;
+            case 2: return 65;
+        }
+        return super.chargeUse();
     }
 
     @Override
@@ -82,6 +100,71 @@ public class HeroicLeap extends Ability {
 
                     Invisibility.dispel();
                     hero.spendAndNext(Actor.TICK);
+                    for (int i : PathFinder.NEIGHBOURS8) {
+                        Char mob = Actor.findChar(hero.pos + i);
+                        if (mob != null && mob != hero && mob.alignment != Char.Alignment.ALLY) {
+                            if (level() == 1){
+                                int damage = hero.drRoll();
+                                damage = (int) (Math.round(damage)*1.5f);
+                                mob.damage(damage, hero);
+                            }
+                        }
+                    }
+                    if (level() == 2){
+                        Ballistica aim = new Ballistica(hero.pos, target, Ballistica.WONT_STOP);
+
+                        int maxDist = 3;
+                        int dist = Math.min(aim.dist, maxDist);
+
+                        ConeAOE cone = new ConeAOE(aim,
+                                dist,
+                                360,
+                                Ballistica.STOP_SOLID | Ballistica.STOP_TARGET);
+
+                        //cast to cells at the tip, rather than all cells, better performance.
+                        for (Ballistica ray : cone.outerRays){
+                            ((MagicMissile)hero.sprite.parent.recycle( MagicMissile.class )).reset(
+                                    MagicMissile.FORCE_CONE,
+                                    hero.sprite,
+                                    ray.path.get(ray.dist),
+                                    null
+                            );
+                        }
+
+                        hero.sprite.zap(target);
+                        Sample.INSTANCE.play(Assets.Sounds.BLAST, 1f, 0.5f);
+                        Camera.main.shake(2, 0.5f);
+                        //final zap at 2/3 distance, for timing of the actual effect
+                        MagicMissile.boltFromChar(hero.sprite.parent,
+                                MagicMissile.FORCE_CONE,
+                                hero.sprite,
+                                cone.coreRay.path.get(dist * 2 / 3),
+                                new Callback() {
+                                    @Override
+                                    public void call() {
+
+                                        for (int cell : cone.cells){
+
+                                            Char ch = Actor.findChar(cell);
+                                            if (ch != null && ch.alignment != hero.alignment){
+                                                int scalingStr = hero.STR()-10;
+                                                int damage = Random.NormalIntRange(7 + scalingStr*2, 13 + 5*scalingStr);
+                                                damage -= ch.drRoll();
+
+                                                ch.damage(damage, hero);
+                                                if (ch.isAlive()){
+                                                    Buff.affect(ch, Cripple.class, 5f);
+                                                }
+
+                                            }
+                                        }
+
+                                        Invisibility.dispel();
+                                        hero.spendAndNext(Actor.TICK);
+
+                                    }
+                                });
+                    }
 
 
 //                    if (hero.buff(DoubleJumpTracker.class) != null){
