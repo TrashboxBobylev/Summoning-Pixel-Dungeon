@@ -24,14 +24,21 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndTierInfo;
+import com.watabou.noosa.Game;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Callback;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -154,7 +161,19 @@ public abstract class Ability extends Artifact {
                 usesTargeting = useTargeting();
                 use(this, hero);
                 }
-            }
+            }else if (action.equals(AC_DOWNGRADE)){
+            GameScene.flash(0xFFFFFF);
+            Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
+            level(level()-1);
+            GLog.warning( Messages.get(Staff.class, "lower_tier"));
+        } else if (action.equals(AC_TIERINFO)){
+            ShatteredPixelDungeon.runOnRenderThread(new Callback() {
+                @Override
+                public void call() {
+                    Game.scene().addToFront(new WndTierInfo(Ability.this));
+                }
+            });
+        }
 
         }
 
