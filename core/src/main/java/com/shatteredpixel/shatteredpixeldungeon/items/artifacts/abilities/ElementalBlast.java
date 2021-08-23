@@ -135,6 +135,8 @@ public class ElementalBlast extends Ability {
         int minDamage = 0, maxDamage = 0;
         if (hero.belongings.weapon instanceof Wand) {
             wandCls[0] = (Class<? extends Wand>) hero.belongings.weapon.getClass();
+            minDamage = hero.belongings.weapon.min();
+            maxDamage = hero.belongings.weapon.max();
         }
 
         if (wandCls[0] == null){
