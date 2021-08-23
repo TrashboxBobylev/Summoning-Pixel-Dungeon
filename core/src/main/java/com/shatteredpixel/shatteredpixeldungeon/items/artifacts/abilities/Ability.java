@@ -53,6 +53,8 @@ public abstract class Ability extends Artifact {
     public ArrayList<String> actions(Hero hero ) {
         ArrayList<String> actions = super.actions( hero );
         if (isEquipped( hero ) && !cursed) actions.add(AC_USE);
+        if (level() > 0) actions.add(AC_DOWNGRADE);
+        actions.add( AC_TIERINFO );
         return actions;
     }
 
@@ -108,10 +110,27 @@ public abstract class Ability extends Artifact {
         return true;
     }
 
-//    @Override
-//    public boolean isUpgradable() {
-//        return level() < 2;
-//    }
+    @Override
+    public boolean isUpgradable() {
+        return level() < 2;
+    }
+
+    @Override
+    public String toString() {
+
+        String name = name();
+        String tier = "";
+        switch (level()){
+            case 0: tier = "I"; break;
+            case 1: tier = "II"; break;
+            case 2: tier = "III"; break;
+        }
+
+        name = Messages.format( "%s %s", name, tier  );
+
+        return name;
+
+    }
 
     @Override
     public String status() {
