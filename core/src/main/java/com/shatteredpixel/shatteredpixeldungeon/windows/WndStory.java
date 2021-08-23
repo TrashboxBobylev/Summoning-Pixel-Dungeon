@@ -102,7 +102,7 @@ public class WndStory extends Window {
 			}
 		} );
 		
-		resize( (int)(tf.width() + MARGIN * 2), (int)Math.min( tf.bottom()+MARGIN, 180 ) );
+		resize( (int)(tf.width() + MARGIN * 2), (int)Math.min( tf.bottom()+MARGIN, 200 ) );
 	}
 	
 	@Override
