@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
@@ -46,20 +47,29 @@ public class Overload extends Ability {
         image = ItemSpriteSheet.CONJURER_POWER;
     }
 
-
+    @Override
+    public float chargeUse() {
+        switch (level()){
+            case 1: return 45;
+            case 2: return 40;
+        }
+        return super.chargeUse();
+    }
 
     @Override
     protected void activate(Ability ability, Hero hero, Integer target) {
-        Buff.prolong(hero, OverloadTracker.class, OverloadTracker.DURATION);
+        Buff.prolong(hero, OverloadTracker.class, OverloadTracker.DURATION - (level() == 2 ? 1 : 0) - level());
         hero.sprite.operate(hero.pos);
         Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);
         hero.sprite.emitter().burst(MagicMissile.WardParticle.FACTORY, 10);
+        if (level() == 2){
+            Buff.affect(hero, Adrenaline.class, 3f);
+        }
 
         charge -= chargeUse();
         updateQuickslot();
         Invisibility.dispel();
         hero.spendAndNext(Actor.TICK);
-
     }
 
     public static class OverloadTracker extends FlavourBuff {
