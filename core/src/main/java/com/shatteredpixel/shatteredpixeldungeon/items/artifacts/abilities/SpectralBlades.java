@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Shortsword;
@@ -50,6 +51,15 @@ public class SpectralBlades extends Ability {
     {
         baseChargeUse = 35;
         image = ItemSpriteSheet.RANGE_POWER;
+    }
+
+    @Override
+    public float chargeUse() {
+        switch (level()){
+            case 1: return 45;
+            case 2: return 60;
+        }
+        return super.chargeUse();
     }
 
     @Override
@@ -85,6 +95,10 @@ public class SpectralBlades extends Ability {
 
         targets.add(enemy);
             int degrees = 30;
+            switch (level()){
+                case 1: degrees = 360; break;
+                case 2: degrees = 90; break;
+            }
             ConeAOE cone = new ConeAOE(b, degrees);
             for (Ballistica ray : cone.rays){
                 // 1/3/5/7/9 up from 0/2/4/6/8
@@ -105,7 +119,12 @@ public class SpectralBlades extends Ability {
             Callback callback = new Callback() {
                 @Override
                 public void call() {
-                    hero.attack( ch );
+                    float damageValue = level() == 1 ? 0.25f : 1f;
+                    hero.attack( ch, damageValue, 0, 0 );
+                    if (level() == 2){
+                        hero.HP = Math.min(hero.HT, hero.HP + 4);
+                        hero.sprite.emitter().start(Speck.factory(Speck.HEALING), 0.5f, 3);
+                    }
                     callbacks.remove( this );
                     if (callbacks.isEmpty()) {
                         Invisibility.dispel();
