@@ -217,16 +217,15 @@ public class SummPDChanges {
         changes.addButton( new ChangeButton(new Image(Assets.Sprites.ROGUE, 0, 90, 12, 15), "Rogue",
                 "Added tier 1 and tier 2 Rogue talents, please leave feedback about their power."));
         changes.addButton(new ChangeButton(new ElementalBlast(),
-                "Added 4 ability items, which replace armor ability concept."));
+                "Added 15 ability items, which replace armor ability concept."));
         changes.addButton(new ChangeButton(new WandOfMagicMissile(),
                 "Overhauled wands:\n\n" +
                         "_-_ Now have tiers.\n" +
                         "_-_ They have 5 max charge.\n" +
                         "_-_ Can be used as melee weapon on Mage.\n" +
                         "_-_ Reworked magical effects to scale from player's level.\n" +
-                        "_-_ Wand's melee damage scales with strength.\n" +
-                        "_-_ Removed Mage's Staff.\n" +
-                        "_-_ _Battlemage stuff is not fully done yet_"));
+                        "_-_ Wand's melee damage and scales with strength.\n" +
+                        "_-_ Removed Mage's Staff.\n"));
 
 
         changes = ChangesScene.createChangeInfo(changeInfos, "1.2.1", true, Window.TITLE_COLOR);
