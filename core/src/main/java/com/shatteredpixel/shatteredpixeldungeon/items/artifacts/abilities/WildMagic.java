@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfMysticalEnergy;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -46,6 +47,15 @@ public class WildMagic extends Ability {
     {
         baseChargeUse = 35;
         image = ItemSpriteSheet.WILD_MAGIC;
+    }
+
+    @Override
+    public float chargeUse() {
+        switch (level()){
+            case 1: return 25;
+            case 2: return 50;
+        }
+        return super.chargeUse();
     }
 
     @Override
@@ -76,6 +86,7 @@ public class WildMagic extends Ability {
         }
 
         int maxWands = 5;
+        if (level() == 2) maxWands = 999;
 
         if (wands.size() < maxWands){
             ArrayList<Wand> dupes = new ArrayList<>(wands);
@@ -106,10 +117,13 @@ public class WildMagic extends Ability {
 
         charge -= chargeUse();
         updateQuickslot();
+        lvl = level();
 
         zapWand(wands, hero, target);
 
     }
+
+    static int lvl;
 
     public static class WildMagicTracker extends FlavourBuff {};
 
@@ -122,7 +136,10 @@ public class WildMagic extends Ability {
         Callback wildMagicCallback = new Callback() {
             @Override
             public void call() {
-                cur.onZap(aim);
+                if (lvl == 1){
+                    CursedWand.cursedEffect(cur, hero, aim.collisionPos);
+                }
+                else cur.onZap(aim);
                 cur.partialCharge -= 0.5f;
                 if (cur.partialCharge < 0) {
                     cur.partialCharge++;
@@ -137,10 +154,14 @@ public class WildMagic extends Ability {
                     Item.updateQuickslot();
                     Invisibility.dispel();
                     hero.spendAndNext(Actor.TICK);
+                    lvl = -1;
                 }
             }
         };
-        cur.fx(aim, wildMagicCallback);
+        if (lvl == 1){
+            CursedWand.cursedZap(cur, hero, aim, wildMagicCallback);
+        }
+        else cur.fx(aim, wildMagicCallback);
     }
 
     public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
