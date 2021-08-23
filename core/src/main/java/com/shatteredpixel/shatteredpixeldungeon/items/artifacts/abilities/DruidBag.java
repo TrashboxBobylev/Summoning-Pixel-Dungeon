@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -55,19 +56,31 @@ public class DruidBag extends Ability {
     }
 
     @Override
+    public float chargeUse() {
+        switch (level()){
+            case 1: return 50;
+            case 2: return 80;
+        }
+        return super.chargeUse();
+    }
+
+    @Override
     protected void activate(Ability ability, Hero hero, Integer target) {
         hero.sprite.operate(hero.pos, () -> {
             hero.sprite.idle();
             hero.spendAndNext(Actor.TICK);
             ArrayList<Integer> grassCells = new ArrayList<>();
-            for (int i : PathFinder.NEIGHBOURS8){
-                grassCells.add(hero.pos+i);
+            PathFinder.buildDistanceMap( hero.pos, BArray.not( Dungeon.level.solid, null ), level()+1 );
+            for (int i = 0; i < PathFinder.distance.length; i++) {
+                if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+                    grassCells.add(i);
+                }
             }
             Random.shuffle(grassCells);
             for (int cell : grassCells){
                 Char ch = Actor.findChar(cell);
                 if (ch != null && ch.alignment == Char.Alignment.ENEMY){
-                    int duration = 4;
+                    int duration = 4-level()*2;
                     Buff.affect(ch, Roots.class, duration);
                 }
                 if (Dungeon.level.map[cell] == Terrain.EMPTY ||
