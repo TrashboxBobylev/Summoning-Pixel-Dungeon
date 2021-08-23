@@ -99,7 +99,7 @@ public class ElementalBlast extends Ability {
         damageFactors.put(WandOfCorruption.class,       0f);
         damageFactors.put(WandOfRegrowth.class,         0f);
         damageFactors.put(WandOfStench.class,           0f);
-        damageFactors.put(WandOfConjuration.class,      0.5f);
+        damageFactors.put(WandOfConjuration.class,      0f);
         damageFactors.put(WandOfStars.class,            0f);
         damageFactors.put(WandOfCrystalBullet.class,    0f);
     }
@@ -110,10 +110,31 @@ public class ElementalBlast extends Ability {
     }
 
     @Override
+    public float chargeUse() {
+        switch (level()){
+            case 1: return 45;
+            case 2: return 60;
+        }
+        return super.chargeUse();
+    }
+
+    static int lvl;
+
+    @Override
     protected void activate(Ability ability, Hero hero, Integer target) {
+        lvl = level();
         castElementalBlast(hero);
         charge -= chargeUse();
         updateQuickslot();
+        lvl = -1;
+    }
+
+    public static float powerLevel(){
+        switch (lvl){
+            case 1: return 0.5f;
+            case 2: return 1.5f;
+        }
+        return 1f;
     }
 
     public static void castElementalBlast(Hero hero) {
@@ -144,6 +165,8 @@ public class ElementalBlast extends Ability {
         }
 
         int aoeSize = 4;
+        if (lvl == 1) aoeSize = 8;
+        if (lvl == 2) aoeSize = 5;
 
         int projectileProps = Ballistica.STOP_SOLID | Ballistica.STOP_TARGET;
 
@@ -173,13 +196,14 @@ public class ElementalBlast extends Ability {
             );
         }
 
-        final float effectMulti = 1f;
-        final int miscEffectMulti = 1;
+        final float effectMulti = powerLevel();
+        final float miscEffectMulti = powerLevel();
 
         //cast a ray 2/3 the way, and do effects
         final Class<? extends Wand>[] finalWandCls = new Class[]{wandCls[0]};
         int finalMinDamage = minDamage;
         int finalMaxDamage = maxDamage;
+        int finalAoe = aoeSize;
         ((MagicMissile)hero.sprite.parent.recycle( MagicMissile.class )).reset(
                 effectTypes.get(wandCls[0]),
                 hero.sprite,
@@ -197,7 +221,7 @@ public class ElementalBlast extends Ability {
                             //*** Wand of Lightning ***
                             if (finalWandCls[0] == WandOfLightning.class){
                                 if (Dungeon.level.water[cell]){
-                                    GameScene.add( Blob.seed( cell, 4 * miscEffectMulti, Electricity.class ) );
+                                    GameScene.add( Blob.seed( cell, (int) (4 * miscEffectMulti), Electricity.class ) );
                                 }
 
                                 //*** Wand of Fireblast ***
@@ -210,7 +234,7 @@ public class ElementalBlast extends Ability {
                                     freeze.clear(cell);
                                 }
                                 if (Dungeon.level.flamable[cell]){
-                                    GameScene.add( Blob.seed( cell, 4 * miscEffectMulti, Fire.class ) );
+                                    GameScene.add( Blob.seed( cell, (int) (4 * miscEffectMulti), Fire.class ) );
                                 }
 
                                 //*** Wand of Frost ***
@@ -290,7 +314,7 @@ public class ElementalBlast extends Ability {
                                 } else if (finalWandCls[0] == WandOfBlastWave.class){
                                     if (mob.alignment != Char.Alignment.ALLY) {
                                         Ballistica aim = new Ballistica(hero.pos, mob.pos, Ballistica.WONT_STOP);
-                                        int knockback = aoeSize + 1 - (int)Dungeon.level.trueDistance(hero.pos, mob.pos);
+                                        int knockback = finalAoe + 1 - (int)Dungeon.level.trueDistance(hero.pos, mob.pos);
                                         knockback *= effectMulti;
                                         WandOfBlastWave.throwChar(mob,
                                                 new Ballistica(mob.pos, aim.collisionPos, Ballistica.MAGIC_BOLT),
