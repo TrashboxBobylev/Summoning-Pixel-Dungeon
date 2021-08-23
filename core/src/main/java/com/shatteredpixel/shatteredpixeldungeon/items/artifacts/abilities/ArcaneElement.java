@@ -57,10 +57,16 @@ public class ArcaneElement extends Ability {
         if (Dungeon.hero.belongings.weapon instanceof MeleeWeapon &&
                 ((MeleeWeapon) Dungeon.hero.belongings.weapon).hasEnchant(Grim.class, Dungeon.hero))
             return 100;
+        switch (level()){
+            case 1: return 60;
+            case 2: return 10;
+        }
         return super.chargeUse();
     }
 
     public static class ArcaneTracker extends Buff{};
+    public static class SecondArcaneTracker extends Buff{};
+    public static class ThirdArcaneTracker extends Buff{};
 
     @Override
     protected void activate(Ability ability, Hero hero, Integer target) {
@@ -74,8 +80,14 @@ public class ArcaneElement extends Ability {
             GLog.warning(Messages.get(this, "no_target"));
             return;
         }
-
-        Buff.affect(hero, ArcaneTracker.class);
+        if (level() == 2){
+            Buff.affect(hero, ThirdArcaneTracker.class);
+        }
+        else Buff.affect(hero, ArcaneTracker.class);
+        if (level() == 1 && (Dungeon.hero.belongings.weapon instanceof MeleeWeapon &&
+                (!((MeleeWeapon) Dungeon.hero.belongings.weapon).hasEnchant(Grim.class, Dungeon.hero)))){
+            Buff.affect(hero, SecondArcaneTracker.class);
+        }
 
         Sample.INSTANCE.play(Assets.Sounds.HIT_MAGIC);
         hero.sprite.emitter().burst(Speck.factory(Speck.CONFUSION), 10);

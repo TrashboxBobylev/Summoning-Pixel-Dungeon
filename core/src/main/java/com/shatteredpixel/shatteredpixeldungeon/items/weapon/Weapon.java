@@ -427,6 +427,14 @@ abstract public class Weapon extends KindOfWeapon {
 					Buff.detach(attacker, ArcaneElement.ArcaneTracker.class);
 					return 9999f;
 				}
+				if (attacker.buff(ArcaneElement.SecondArcaneTracker.class) != null){
+					Buff.detach(attacker, ArcaneElement.SecondArcaneTracker.class);
+					return 9999f;
+				}
+				if (attacker.buff(ArcaneElement.ThirdArcaneTracker.class) != null){
+					Buff.detach(attacker, ArcaneElement.ThirdArcaneTracker.class);
+					return 2f;
+				}
 				if (((Hero) attacker).belongings.weapon instanceof SpiritBow.SpiritArrow &&
 					!(((SpiritBow.SpiritArrow) ((Hero) attacker).belongings.weapon).hasGoodEnchant())){
 					switch (((Hero) attacker).belongings.weapon.level()){
