@@ -48,16 +48,34 @@ public class Endure extends Ability {
     }
 
     @Override
-    protected void activate(Ability ability, Hero hero, Integer target) {
+    public float chargeUse() {
+        switch (level()){
+            case 1: return 30;
+            case 2: return 85;
+        }
+        return super.chargeUse();
+    }
 
-        Buff.prolong(hero, EndureTracker.class, 13f).setup(hero);
+    static boolean endureEX = false;
+
+    @Override
+    protected void activate(Ability ability, Hero hero, Integer target) {
+        int duration = 13;
+        switch (level()){
+            case 1: duration = 3; break;
+            case 2: duration = 17; endureEX = true; break;
+        }
+
+        Buff.prolong(hero, EndureTracker.class, duration).setup(hero);
 
         hero.sprite.operate(hero.pos);
 
         charge -= chargeUse();
         updateQuickslot();
         Invisibility.dispel();
-        hero.spendAndNext(3f);
+        int waiting = 3;
+        if (level() == 2) waiting = 10;
+        hero.spendAndNext(waiting);
     }
 
     public static class EndureTracker extends FlavourBuff {
@@ -113,8 +131,6 @@ public class Endure extends Ability {
             return damage;
         }
 
-
-
         public void endEnduring(){
             if (!enduring){
                 return;
@@ -129,10 +145,9 @@ public class Endure extends Ability {
                     nearby ++;
                 }
             }
-//            damageBonus *= 1f + (nearby*0.05f*Dungeon.hero.pointsInTalent(Talent.EVEN_THE_ODDS, Talent.BLOODFLARE_SKIN));
+//          if (endureEx)  damageBonus *= 1f + (nearby*0.05f*Dungeon.hero.pointsInTalent(Talent.EVEN_THE_ODDS, Talent.BLOODFLARE_SKIN));
 
-            hitsLeft = 1;
-            damageBonus /= hitsLeft;
+            hitsLeft = endureEX ? 5 : 1;
 
             if (damageBonus > 0) {
                 target.sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
@@ -140,6 +155,8 @@ public class Endure extends Ability {
             } else {
                 detach();
             }
+
+            endureEX = false;
         }
 
         public int damageFactor(int damage){
