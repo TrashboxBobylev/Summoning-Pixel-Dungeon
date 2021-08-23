@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Effects;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Elastic;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.TenguDartTrap;
@@ -223,7 +222,15 @@ public class WandOfBlastWave extends DamageWand {
 
 	@Override
 	public void onHit(Wand wand, Char attacker, Char defender, int damage) {
-		new Elastic().proc(wand, attacker, defender, damage);
+		float procChance = (Dungeon.hero.lvl/3+1f)/(Dungeon.hero.lvl/3+5f) * enchantment.procChanceMultiplier(attacker);
+		if (Random.Float() < procChance) {
+			//trace a ballistica to our target (which will also extend past them
+			Ballistica trajectory = new Ballistica(attacker.pos, defender.pos, Ballistica.STOP_TARGET);
+			//trim it to just be the part that goes past them
+			trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size()-1), Ballistica.PROJECTILE);
+			//knock them back along that ballistica
+			WandOfBlastWave.throwChar(defender, trajectory, 2, true);
+		}
 	}
 
 	@Override

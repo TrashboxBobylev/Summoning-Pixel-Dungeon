@@ -36,7 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -47,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -152,7 +153,20 @@ public class WandOfFireblast extends DamageWand {
 	@Override
 	public void onHit(Wand wand, Char attacker, Char defender, int damage) {
 		//acts like blazing enchantment
-		new Blazing().proc(wand, attacker, defender, damage);
+		float procChance = (Dungeon.hero.lvl/3+1f)/(Dungeon.hero.lvl/3+3f) * enchantment.procChanceMultiplier(attacker);
+		if (Random.Float() < procChance) {
+
+			if (defender.buff(Burning.class) != null){
+				Buff.affect(defender, Burning.class).reignite(defender, 8f);
+				int burnDamage = Random.NormalIntRange( 1, 3 + Dungeon.depth/4 * 5 / Dungeon.chapterSize() );
+				defender.damage( Math.round(burnDamage * 0.67f), this );
+			} else {
+				Buff.affect(defender, Burning.class).reignite(defender, 8f);
+			}
+
+			defender.sprite.emitter().burst( FlameParticle.FACTORY, Dungeon.hero.lvl/3 + 1 );
+
+		}
 	}
 
 	@Override

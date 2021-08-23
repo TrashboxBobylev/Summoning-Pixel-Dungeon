@@ -290,7 +290,7 @@ public class WandOfCorruption extends Wand {
 		// lvl 0 - 25%
 		// lvl 1 - 40%
 		// lvl 2 - 50%
-		if (Random.Int( buffedLvl() + 4 ) >= 3){
+		if (Random.Int( Dungeon.hero.lvl/3 + 4 ) >= 3){
 			Buff.prolong( defender, Amok.class, 4+ buffedLvl()*2);
 		}
 	}

@@ -152,12 +152,20 @@ public abstract class Wand extends Weapon {
 
 	@Override
 	public int min(int lvl) {
-		return 1 + power();
+		int power = 1 + power();
+		if (Dungeon.hero.subClass == HeroSubClass.BATTLEMAGE){
+			power += Dungeon.hero.lvl/6;
+		}
+		return power;
 	}
 
 	@Override
 	public int max(int lvl) {
-		return 7 + power()*2;
+		int power = 7 + power() * 2;
+		if (Dungeon.hero.subClass == HeroSubClass.BATTLEMAGE){
+			power += Dungeon.hero.lvl/3;
+		}
+		return power;
 	}
 
 	public float powerLevel(int level){

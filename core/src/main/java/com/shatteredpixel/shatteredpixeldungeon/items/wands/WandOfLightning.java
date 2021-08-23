@@ -29,10 +29,10 @@ import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -123,10 +123,52 @@ public class WandOfLightning extends DamageWand {
 		}
 	}
 
+	private ArrayList<Char> enchaffected = new ArrayList<>();
+
+	private ArrayList<Lightning.Arc> encharcs = new ArrayList<>();
+
+	public static void encharc( Char attacker, Char defender, int dist, ArrayList<Char> affected, ArrayList<Lightning.Arc> arcs ) {
+
+		affected.add(defender);
+
+		defender.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3);
+		defender.sprite.flash();
+
+		PathFinder.buildDistanceMap( defender.pos, BArray.not( Dungeon.level.solid, null ), dist );
+		for (int i = 0; i < PathFinder.distance.length; i++) {
+			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+				Char n = Actor.findChar(i);
+				if (n != null && n != attacker && !affected.contains(n)) {
+					arcs.add(new Lightning.Arc(defender.sprite.center(), n.sprite.center()));
+					encharc(attacker, n, (n.isWet() && !n.flying) ? 2 : 1, affected, arcs);
+				}
+			}
+		}
+	}
+
 	@Override
 	public void onHit(Wand wand, Char attacker, Char defender, int damage) {
 		//acts like shocking enchantment
-		new Shocking().proc(wand, attacker, defender, damage);
+		float procChance = (Dungeon.hero.lvl/3+1f)/(Dungeon.hero.lvl/3+4f) * enchantment.procChanceMultiplier(attacker);
+		if (Random.Float() < procChance) {
+
+			enchaffected.clear();
+			encharcs.clear();
+
+			encharc(attacker, defender, 2, enchaffected, encharcs);
+
+			enchaffected.remove(defender); //defender isn't hurt by lightning
+			if (attacker instanceof Minion) enchaffected.remove(attacker);
+			for (Char ch : enchaffected) {
+				if (ch.alignment != attacker.alignment) {
+					ch.damage(Math.round(damage * 0.4f), this);
+				}
+			}
+
+			attacker.sprite.parent.addToFront( new Lightning( encharcs, null ) );
+			Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
+
+		}
 	}
 
 	private void arc( Char ch ) {

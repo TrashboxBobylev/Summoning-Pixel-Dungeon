@@ -246,7 +246,7 @@ public class WandOfStars extends DamageWand {
     @Override
     public void onHit(Wand wand, Char attacker, Char defender, int damage) {
 
-        if (Random.Int( wand.level() + 3 ) >= 2) {
+        if (Random.Int( Dungeon.hero.lvl/3 + 3 ) >= 2) {
 
             if (defender.buff(FrostBurn.class) != null){
                 Buff.affect(defender, FrostBurn.class).reignite(defender, 8f);
@@ -256,7 +256,7 @@ public class WandOfStars extends DamageWand {
                 Buff.affect(defender, FrostBurn.class).reignite(defender, 8f);
             }
 
-            defender.sprite.emitter().burst( FlameParticle.FACTORY, wand.level() + 1 );
+            defender.sprite.emitter().burst( FlameParticle.FACTORY, Dungeon.hero.lvl/3 + 1 );
 
         }
     }

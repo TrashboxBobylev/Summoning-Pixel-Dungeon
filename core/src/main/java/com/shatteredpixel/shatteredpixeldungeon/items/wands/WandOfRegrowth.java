@@ -34,10 +34,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blooming;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -206,7 +207,41 @@ public class WandOfRegrowth extends Wand {
 
 	@Override
 	public void onHit(Wand wand, Char attacker, Char defender, int damage) {
-		new Blooming().proc(wand, attacker, defender, damage);
+		float procChance = (Dungeon.hero.lvl/3+1f)/(Dungeon.hero.lvl/3+3f) * enchantment.procChanceMultiplier(attacker);
+		if (Random.Float() < procChance) {
+
+			boolean secondPlant = Dungeon.hero.lvl/3 > Random.Int(10);
+			if (plantGrass(defender.pos)){
+				if (secondPlant) secondPlant = false;
+				else return;
+			}
+
+			ArrayList<Integer> positions = new ArrayList<>();
+			for (int i : PathFinder.NEIGHBOURS8){
+				positions.add(i);
+			}
+			Random.shuffle( positions );
+			for (int i : positions){
+				if (plantGrass(defender.pos + i)){
+					if (secondPlant) secondPlant = false;
+					else return;
+				}
+			}
+
+		}
+	}
+
+	private boolean plantGrass(int cell){
+		int t = Dungeon.level.map[cell];
+		if ((t == Terrain.EMPTY || t == Terrain.EMPTY_DECO || t == Terrain.EMBERS
+				|| t == Terrain.GRASS || t == Terrain.FURROWED_GRASS)
+				&& Dungeon.level.plants.get(cell) == null){
+			Level.set(cell, Terrain.HIGH_GRASS);
+			GameScene.updateMap(cell);
+			CellEmitter.get( cell ).burst( LeafParticle.LEVEL_SPECIFIC, 4 );
+			return true;
+		}
+		return false;
 	}
 
 	public void fx(Ballistica bolt, Callback callback) {

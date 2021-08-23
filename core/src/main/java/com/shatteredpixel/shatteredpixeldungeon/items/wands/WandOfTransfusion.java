@@ -174,7 +174,7 @@ public class WandOfTransfusion extends Wand {
 		// lvl 0 - 10%
 		// lvl 1 - 18%
 		// lvl 2 - 25%
-		if (Random.Int( buffedLvl() + 10 ) >= 9){
+		if (Random.Int( Dungeon.hero.lvl/3 + 10 ) >= 9){
 			//grants a free use of the staff
 			freeCharge = true;
 			GLog.positive( Messages.get(this, "charged") );

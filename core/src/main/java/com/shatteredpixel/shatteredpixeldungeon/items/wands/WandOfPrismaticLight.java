@@ -183,7 +183,7 @@ public class WandOfPrismaticLight extends DamageWand {
 	@Override
 	public void onHit(Wand wand, Char attacker, Char defender, int damage) {
 		//cripples enemy
-		Buff.prolong( defender, Cripple.class, 1f+ wand.buffedLvl());
+		Buff.prolong( defender, Cripple.class, 1f+ Dungeon.hero.lvl/3);
 	}
 
 	@Override

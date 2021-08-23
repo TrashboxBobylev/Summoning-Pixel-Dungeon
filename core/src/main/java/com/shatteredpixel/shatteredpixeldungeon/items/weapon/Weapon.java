@@ -420,7 +420,7 @@ abstract public class Weapon extends KindOfWeapon {
             return proc(wp, attacker, defender, damage);
         }
 
-		protected float procChanceMultiplier( Char attacker ){
+		public float procChanceMultiplier(Char attacker){
 			float multi = 1f;
 			if (attacker instanceof Hero){
 				if (attacker.buff(ArcaneElement.ArcaneTracker.class) != null){

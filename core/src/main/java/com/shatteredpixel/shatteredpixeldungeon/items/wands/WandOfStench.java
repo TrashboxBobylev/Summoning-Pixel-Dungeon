@@ -108,9 +108,9 @@ public class WandOfStench extends Wand {
 
     @Override
     public void onHit(Wand wand, Char attacker, Char defender, int damage) {
-        if (Random.Int( level() + 3 ) >= 2) {
+        if (Random.Int( Dungeon.hero.lvl/3 + 3 ) >= 2) {
 
-            Buff.affect( attacker, BlobImmunity.class, Random.IntRange(0, level()) );
+            Buff.affect( attacker, BlobImmunity.class, Random.IntRange(0, Dungeon.hero.lvl/3) );
             CellEmitter.center(defender.pos).burst(StenchParticle.FACTORY, 5 );
 
         }
