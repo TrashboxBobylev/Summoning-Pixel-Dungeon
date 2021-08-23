@@ -32,24 +32,30 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.*;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.ui.Component;
 
 import java.util.ArrayList;
 
 public class WndChallenges extends Window {
 
-	private static final int WIDTH		= 135;
+	private final int WIDTH = Math.min(138, (int) (PixelScene.uiCamera.width * 0.9));
+	private final int HEIGHT = (int) (PixelScene.uiCamera.height * 0.9);
 	private static final int TTL_HEIGHT    = 18;
 	private static final int BTN_HEIGHT    = 18;
 	private static final int GAP        = 1;
 
 	private boolean editable;
-	private ArrayList<ConduitBox> slots = new ArrayList<>();
+	private ArrayList<IconButton> infos = new ArrayList<>();
+	private ArrayList<ConduitBox> boxes = new ArrayList<>();
+	private ScrollPane pane;
 
 	public WndChallenges( Conducts.Conduct conduct, boolean editable ) {
 
 		super();
 
 		this.editable = editable;
+		resize(WIDTH, HEIGHT);
 
 		RenderedTextBlock title = PixelScene.renderTextBlock( Messages.get(this, "title"), 12 );
 		title.hardlight( TITLE_COLOR );
@@ -59,6 +65,38 @@ public class WndChallenges extends Window {
 		);
 		PixelScene.align(title);
 		add( title );
+		Conducts.Conduct[] sorted = Conducts.Conduct.values();
+
+		ScrollPane pane = new ScrollPane(new Component()) {
+			@Override
+			public void onClick(float x, float y) {
+				int size = boxes.size();
+				if (editable) {
+					for (int i = 0; i < size; i++) {
+						if (boxes.get(i).onClick(x, y)) break;
+					}
+				}
+				size = infos.size();
+				for (int i = 1; i < size+1; i++) {
+					if (infos.get(i-1).inside(x, y)) {
+
+						String message = Messages.get(Conducts.class, sorted[i].name() + "_desc");
+						String title = Messages.titleCase(Messages.get(Conducts.class, sorted[i].name()));
+						ShatteredPixelDungeon.scene().add(
+								new WndTitledMessage(
+										new Image(Assets.Interfaces.SUBCLASS_ICONS, (sorted[i].ordinal() - 1) * 16, 16, 16, 16),
+										title, message)
+						);
+
+						break;
+					}
+				}
+			}
+		};
+		add(pane);
+		pane.setRect(0, title.bottom(), WIDTH, HEIGHT - title.bottom() - 2);
+		Component content = pane.content();
+
 
 		float pos = TTL_HEIGHT;
 		for (Conducts.Conduct i : Conducts.Conduct.values()) {
@@ -77,33 +115,29 @@ public class WndChallenges extends Window {
 					cb.setSize(WIDTH, BTN_HEIGHT);
 				}
 
-				add(cb);
-				slots.add(cb);
+				content.add(cb);
+				boxes.add(cb);
 				if (i != Conducts.Conduct.NULL) {
 					IconButton info = new IconButton(Icons.get(Icons.INFO)) {
 						@Override
-						protected void onClick() {
-							super.onClick();
-							ShatteredPixelDungeon.scene().add(
-									new WndTitledMessage(
-											new Image(Assets.Interfaces.SUBCLASS_ICONS, (i.ordinal() - 1) * 16, 16, 16, 16),
-											challenge,
-											Messages.get(Conducts.class, i.name() + "_desc"))
-							);
+						protected void layout() {
+							super.layout();
+							hotArea.y = -5000;
 						}
 					};
 					info.setRect(cb.right(), pos, 16, BTN_HEIGHT);
-					add(info);
+					content.add(info);
+					infos.add(info);
 					Image icon = new Image(Assets.Interfaces.SUBCLASS_ICONS, (i.ordinal() - 1) * 16, 16, 16, 16);
 					icon.x = cb.left()+1;
 					icon.y = cb.top()+1;
-					add(icon);
+					content.add(icon);
 				}
 
 				pos = cb.bottom();
 		}
 
-		resize( WIDTH, (int)pos );
+		content.setSize(WIDTH, pos);
 	}
 
 	@Override
@@ -111,7 +145,7 @@ public class WndChallenges extends Window {
 
 		if (editable) {
 			Conducts.Conduct value = null;
-			for (ConduitBox slot : slots) {
+			for (ConduitBox slot : boxes) {
 				if (slot.checked()) {
 					value = slot.conduct;
 				}
@@ -134,10 +168,23 @@ public class WndChallenges extends Window {
 		protected void onClick() {
 			super.onClick();
 			if (active){
-				for (CheckBox slot : slots){
+				for (CheckBox slot : boxes){
 					if (slot != this) slot.checked(false);
 				}
 			}
+		}
+
+		protected boolean onClick(float x, float y) {
+			if (!inside(x, y)) return false;
+			Sample.INSTANCE.play(Assets.Sounds.CLICK);
+			onClick();
+			return true;
+		}
+
+		@Override
+		protected void layout() {
+			super.layout();
+			hotArea.width = hotArea.height = 0;
 		}
 	}
 }
