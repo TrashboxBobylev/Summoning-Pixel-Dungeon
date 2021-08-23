@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -50,6 +51,15 @@ public class SmokeBomb extends Ability {
 
     {
         image = ItemSpriteSheet.SMOKE_BOMB;
+    }
+
+    @Override
+    public float chargeUse() {
+        switch (level()){
+            case 1: return 28;
+            case 2: return 42;
+        }
+        return super.chargeUse();
     }
 
     @Override
@@ -95,7 +105,7 @@ public class SmokeBomb extends Ability {
             charge -= chargeUse();
             Item.updateQuickslot();
 
-            boolean shadowStepping = /*hero.invisible > 0*/ true /*&& hero.hasTalent(Talent.SHADOW_STEP)*/;
+            boolean shadowStepping = /*hero.invisible > 0*/ level() == 1 /*&& hero.hasTalent(Talent.SHADOW_STEP)*/;
 
             if (!shadowStepping) {
                 blindAdjacentMobs(hero);
@@ -107,7 +117,9 @@ public class SmokeBomb extends Ability {
 //                }
 
             }
-
+            if (level() == 2){
+                Buff.affect(hero, Invisibility.class, 5f);
+            }
             throwSmokeBomb(hero, target);
             if (!shadowStepping) {
                 hero.spendAndNext(Actor.TICK);
