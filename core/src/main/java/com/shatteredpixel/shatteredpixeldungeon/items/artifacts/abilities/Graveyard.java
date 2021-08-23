@@ -49,6 +49,12 @@ public class Graveyard extends Ability {
     }
 
     @Override
+    public float chargeUse() {
+        if (level() > 0) return 50;
+        return super.chargeUse();
+    }
+
+    @Override
     public String targetingPrompt() {
         return Messages.get(this, "prompt");
     }
@@ -59,11 +65,14 @@ public class Graveyard extends Ability {
             return;
         }
 
-        PathFinder.buildDistanceMap( target, BArray.not( Dungeon.level.solid, null ), 2 );
+        PathFinder.buildDistanceMap( target, BArray.not( Dungeon.level.solid, null ), level() == 2 ? 4 : 2 );
         for (int i = 0; i < PathFinder.distance.length; i++) {
             if (PathFinder.distance[i] < Integer.MAX_VALUE) {
                 if (!Dungeon.level.pit[i]) {
-                    GameScene.add(Blob.seed(i, 50, Gravery.class));
+                    int duration = 50;
+                    if (level() == 1) duration = 20;
+                    else if (level() == 2) duration = 2;
+                    GameScene.add(Blob.seed(i, duration, Gravery.class));
                     CellEmitter.get(i).burst(MagicMissile.YogParticle.FACTORY, 3);
                 }
             }
