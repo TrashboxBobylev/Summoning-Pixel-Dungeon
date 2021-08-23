@@ -28,9 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
@@ -49,6 +47,15 @@ public class RevengeWaves extends Ability {
     }
 
     @Override
+    public float chargeUse() {
+        switch (level()){
+            case 1: return 70;
+            case 2: return 100;
+        }
+        return super.chargeUse();
+    }
+
+    @Override
     protected void activate(Ability ability, Hero hero, Integer target) {
         Sample.INSTANCE.play(Assets.Sounds.BLAST);
         WandOfBlastWave.BlastWave.blast(Dungeon.hero.pos);
@@ -60,8 +67,10 @@ public class RevengeWaves extends Ability {
                     //trace a ballistica to our target (which will also extend past them
                     Ballistica trajectory = new Ballistica(Dungeon.hero.pos, mob.pos, Ballistica.WONT_STOP);
                     trajectory = new Ballistica(mob.pos, trajectory.collisionPos, Ballistica.FRIENDLY_MAGIC);
-                    WandOfBlastWave.throwChar(mob, trajectory, 3);
-                    Buff.prolong(mob, Roots.class, 6f);
+                    WandOfBlastWave.throwChar(mob, trajectory, level() == 2 ? 999 : 3, true, level() != 2);
+                    if (level() == 2) Buff.prolong(mob, SoulParalysis.class, 1f);
+                    else Buff.prolong(mob, Roots.class, 6f);
+                    if (level() == 1) Buff.prolong(hero, Empowered.class, 2.5f);
                 }
             }
         }
