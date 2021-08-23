@@ -81,7 +81,7 @@ public abstract class RegularLevel extends Level {
 		if (Dungeon.mode == Dungeon.GameMode.BIGGER && builder instanceof RegularBuilder){
 			((RegularBuilder) builder).setExtraConnectionChance(1f);
 		}
-		
+
 		ArrayList<Room> initRooms = initRooms();
 		Random.shuffle(initRooms);
 		
@@ -476,7 +476,7 @@ public abstract class RegularLevel extends Level {
 		Collection<String> allPages = Document.ADVENTURERS_GUIDE.pageNames();
 		ArrayList<String> missingPages = new ArrayList<>();
 		for ( String page : allPages){
-			if (!Document.ADVENTURERS_GUIDE.findPage(page)){
+			if (!Document.ADVENTURERS_GUIDE.isPageFound(page)){
 				missingPages.add(page);
 			}
 		}

@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.android;
 
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -31,10 +32,11 @@ import android.os.Bundle;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.badlogic.gdx.backends.android.AndroidAudio;
+import com.badlogic.gdx.backends.android.AsynchronousAndroidAudio;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.watabou.noosa.Game;
-import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.FileUtils;
 
 public class AndroidGame extends AndroidApplication {
@@ -84,6 +86,12 @@ public class AndroidGame extends AndroidApplication {
 
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.depth = 0;
+		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+			//use rgb565 on ICS devices for better performance
+			config.r = 5;
+			config.g = 6;
+			config.b = 5;
+		}
 		
 		config.useCompass = false;
 		config.useAccelerometer = false;
@@ -95,6 +103,11 @@ public class AndroidGame extends AndroidApplication {
 		
 		initialize(new ShatteredPixelDungeon(support), config);
 		
+	}
+
+	@Override
+	public AndroidAudio createAudio(Context context, AndroidApplicationConfiguration config) {
+		return new AsynchronousAndroidAudio(context, config);
 	}
 
 	@Override

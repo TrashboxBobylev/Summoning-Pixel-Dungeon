@@ -106,7 +106,7 @@ public class Hunger extends Buff implements Hero.Doom {
 	private static void switchHungerLevel(float energy, Hunger hunger, Char target) {
 		if (hunger.level + 1 > HUNGRY && !hunger.isHungry()){
 			GLog.warning(Messages.get(hunger, "onhungry"));
-			if (!Document.ADVENTURERS_GUIDE.pageRead(Document.GUIDE_FOOD)){
+			if (!Document.ADVENTURERS_GUIDE.isPageRead(Document.GUIDE_FOOD)){
 				GLog.positive(Messages.get(Guidebook.class, "hint"));
 				GameScene.flashForDocument(Document.GUIDE_FOOD);
 			}
