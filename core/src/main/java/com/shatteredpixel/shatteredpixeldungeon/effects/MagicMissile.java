@@ -90,6 +90,9 @@ public class MagicMissile extends Emitter {
 	public static final int PURPLE_CONE     = 111;
 	public static final int SPARK_CONE      = 112;
 	public static final int BLOOD_CONE      = 113;
+	public static final int STENCH_CONE     = 114;
+	public static final int CONJURE_CONE    = 115;
+	public static final int CRYSTAL_CONE    = 117;
 
 	public void reset( int type, int from, int to, Callback callback ) {
 		reset( type,
@@ -275,6 +278,18 @@ public class MagicMissile extends Emitter {
 			case ABYSS:
 				size( 9 );
 				pour( YogParticle.FACTORY, 0.04f );
+				break;
+			case STENCH_CONE:
+				size( 11 );
+				pour(StenchParticle.FACTORY, 0.01f );
+				break;
+			case CONJURE_CONE:
+				size( 10 );
+				pour( Speck.factory(Speck.SWORD), 0.01f );
+				break;
+			case CRYSTAL_CONE:
+				size( 25 );
+				pour( WardParticle.FACTORY, 0.02f );
 				break;
 		}
 

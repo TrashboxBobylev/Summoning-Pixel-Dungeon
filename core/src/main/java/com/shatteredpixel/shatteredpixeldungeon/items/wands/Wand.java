@@ -330,6 +330,7 @@ public abstract class Wand extends Weapon {
 			desc += "\n\n" + Messages.get(Wand.class, "melee",
 					augment.damageFactor(min()),
 					augment.damageFactor(max()));
+			desc += "\n\n" + Messages.get(this, "eleblast_desc");
 		}
 
 		switch (augment) {

@@ -36,9 +36,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FrostfireParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.*;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -74,6 +77,10 @@ public class ElementalBlast extends Ability {
         effectTypes.put(WandOfTransfusion.class,    MagicMissile.BLOOD_CONE);
         effectTypes.put(WandOfCorruption.class,     MagicMissile.SHADOW_CONE);
         effectTypes.put(WandOfRegrowth.class,       MagicMissile.FOLIAGE_CONE);
+        effectTypes.put(WandOfCrystalBullet.class,  MagicMissile.CRYSTAL_CONE);
+        effectTypes.put(WandOfStench.class,         MagicMissile.STENCH_CONE);
+        effectTypes.put(WandOfConjuration.class,    MagicMissile.CONJURE_CONE);
+        effectTypes.put(WandOfStars.class,          MagicMissile.ABYSS);
     }
 
     private static final HashMap<Class<?extends Wand>, Float> damageFactors = new HashMap<>();
@@ -91,6 +98,10 @@ public class ElementalBlast extends Ability {
         damageFactors.put(WandOfTransfusion.class,      0f);
         damageFactors.put(WandOfCorruption.class,       0f);
         damageFactors.put(WandOfRegrowth.class,         0f);
+        damageFactors.put(WandOfStench.class,           0f);
+        damageFactors.put(WandOfConjuration.class,      0.5f);
+        damageFactors.put(WandOfStars.class,            0f);
+        damageFactors.put(WandOfCrystalBullet.class,    0f);
     }
 
     {
@@ -242,7 +253,7 @@ public class ElementalBlast extends Ability {
 
                             //### Deal damage ###
                             Char mob = Actor.findChar(cell);
-                            int damage = Math.round(Random.NormalIntRange(10, 20)
+                            int damage = Math.round(Random.NormalIntRange(finalMinDamage, finalMaxDamage)
                                     * effectMulti
                                     * damageFactors.get(finalWandCls[0]));
                             if (Dungeon.isChallenged(Conducts.Conduct.PACIFIST)) damage = 0;
@@ -347,6 +358,24 @@ public class ElementalBlast extends Ability {
                                         Buff.prolong( mob, Roots.class, effectMulti*Roots.DURATION );
                                         charsHit++;
                                     }
+                                } else if (finalWandCls[0] == WandOfConjuration.class){
+                                    if (mob.alignment != Char.Alignment.ALLY){
+                                        Buff.affect( mob, Viscosity.DeferedDamage.class).prolong((int) (Random.NormalIntRange(finalMinDamage, finalMaxDamage) * effectMulti * 3));
+                                    }
+                                } else if (finalWandCls[0] == WandOfStench.class){
+                                    if (mob.alignment != Char.Alignment.ALLY){
+                                        StenchHolder buff = Buff.affect(mob, StenchHolder.class, 5*effectMulti);
+                                        buff.minDamage = 1 + Dungeon.hero.lvl/5;
+                                        buff.maxDamage = 1 + Dungeon.hero.lvl/5;
+                                    }
+                                } else if (finalWandCls[0] == WandOfStars.class){
+                                    for (int i : PathFinder.NEIGHBOURS9) {
+                                        CellEmitter.get(cell + i).burst(FrostfireParticle.FACTORY, 8);
+                                        Char ch = Actor.findChar(cell + i);
+                                        if (ch != null && ch.alignment != null) {
+                                            ch.damage((int) (Random.NormalIntRange(finalMinDamage, finalMaxDamage) * effectMulti), this);
+                                        }
+                                    }
                                 }
                             }
 
@@ -376,7 +405,8 @@ public class ElementalBlast extends Ability {
                             //*** Wand of Prismatic Light ***
                         } else if (finalWandCls[0] == WandOfPrismaticLight.class){
                             Buff.prolong( hero, Light.class, effectMulti*50f);
-
+                        } else if (finalWandCls[0] == WandOfCrystalBullet.class){
+                            Buff.affect(hero, ArcaneArmor.class).set(Dungeon.hero.lvl/2, (int) (4*effectMulti));
                         }
 
                         hero.spendAndNext(Actor.TICK);
