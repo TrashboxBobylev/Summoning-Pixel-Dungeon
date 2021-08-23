@@ -321,7 +321,7 @@ public class StatusPane extends Component {
 		private Image journalIcon;
 		private KeyDisplay keyIcon;
 		
-		private String flashingPage = Document.GUIDE_INTRO;
+		public String flashingPage = null;
 
 		public JournalButton() {
 			super();
