@@ -146,6 +146,7 @@ public enum Catalog {
 		WANDS.seen.put( WandOfRegrowth.class,               false);
         WANDS.seen.put( WandOfCrystalBullet.class,               false);
         WANDS.seen.put( WandOfStars.class,               false);
+        WANDS.seen.put( WandOfConjuration.class,            false);
 
 		RINGS.seen.put( RingOfAccuracy.class,               false);
 		RINGS.seen.put( RingOfEnergy.class,                 false);
