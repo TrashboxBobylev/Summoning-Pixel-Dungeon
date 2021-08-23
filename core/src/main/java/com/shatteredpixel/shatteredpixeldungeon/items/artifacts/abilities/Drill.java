@@ -53,6 +53,14 @@ public class Drill extends Ability {
     }
 
     @Override
+    public float chargeUse() {
+        if (level() > 0){
+            return 25;
+        }
+        return super.chargeUse();
+    }
+
+    @Override
     public String targetingPrompt() {
         return Messages.get(this, "prompt");
     }
@@ -97,6 +105,8 @@ public class Drill extends Ability {
     }
 
     public boolean canMine(int tile, int pos){
+        if (Dungeon.level.solid[pos] && level() == 1) return false;
+        if (Dungeon.level.passable[pos] && level() == 2) return false;
         if (tile == Terrain.EXIT || tile == Terrain.LOCKED_DOOR
                 || tile == Terrain.ENTRANCE || tile == Terrain.AVOID ||
             tile == Terrain.CHASM || tile == Terrain.UNLOCKED_EXIT || tile == Terrain.ALCHEMY) return false;
