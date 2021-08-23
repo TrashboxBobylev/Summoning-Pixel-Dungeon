@@ -25,26 +25,44 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfAttunement;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
+
+import java.util.ArrayList;
 
 public class TargetedSupport extends Ability {
     {
         image = ItemSpriteSheet.TARGET_SUPPORT;
         baseChargeUse = 25;
+    }
+
+    @Override
+    public float chargeUse() {
+        switch (level()){
+            case 1: return 30;
+            case 2: return 60;
+        }
+        return super.chargeUse();
     }
 
     @Override
@@ -85,7 +103,46 @@ public class TargetedSupport extends Ability {
                 hero.sprite,
                 minion.pos,
                 () -> {
-                    Buff.affect(minion, finalBuff, 10);
+                    if (level() != 2)
+                        Buff.affect(minion, finalBuff, 10);
+                    if (level() == 1){
+                        Buff.affect(minion, Barrier.class).setShield(minion.HT / 3);
+                    }
+                    if (level() == 2){
+                        ArrayList<Integer> candidates = new ArrayList<>();
+                        boolean[] solid = Dungeon.level.solid;
+
+                        int[] neighbours = {minion.pos + 1, minion.pos - 1, minion.pos + Dungeon.level.width(), minion.pos - Dungeon.level.width()};
+                        for (int n : neighbours) {
+                            if (!solid[n] && Actor.findChar( n ) == null) {
+                                candidates.add( n );
+                            }
+                        }
+
+                        if (candidates.size() > 0) {
+
+                            Minion  clone = (Minion) Reflection.newInstance(minion.getClass());
+                            GameScene.add(clone);
+                            ScrollOfTeleportation.appear(minion, candidates.get(Random.index(candidates)));
+                            clone.setDamage(
+                                    ((Minion) minion).minDamage,
+                                    ((Minion) minion).maxDamage);
+                            clone.HP = clone.HT = minion.HP = minion.HT = minion.HT / 2;
+                            clone.pos = Random.element( candidates );
+                            clone.state = clone.HUNTING;
+                            clone.hordeHead = minion.id();
+                            ((Minion) minion).hordeSpawned = true;
+                            clone.hordeSpawned = true;
+                            clone.strength = ((Minion) minion).strength;
+                            clone.lvl = ((Minion) minion).lvl;
+                            clone.enchantment = ((Minion) minion).enchantment;
+
+                            Dungeon.level.occupyCell(clone);
+
+                            GameScene.add( clone, 0 );
+                            Actor.addDelayed( new Pushing( clone, minion.pos, clone.pos ), -1 );
+                        }
+                    }
                 });
         Sample.INSTANCE.play(Assets.Sounds.ZAP);
 
