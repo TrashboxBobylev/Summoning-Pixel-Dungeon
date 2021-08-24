@@ -63,6 +63,8 @@ public abstract class StandardRoom extends Room {
 	
 	public SizeCategory sizeCat;
 	{ setSizeCat(); }
+
+	public boolean noMobs = false;
 	
 	//Note that if a room wishes to allow itself to be forced to a certain size category,
 	//but would (effectively) never roll that size category, consider using Float.MIN_VALUE
@@ -132,6 +134,7 @@ public abstract class StandardRoom extends Room {
 		sewerSet.put(SewerPipeRoom.class, 10f);
 		sewerSet.put(RingRoom.class, 10f);
 		sewerSet.put(CircleBasinRoom.class, 5f);
+		sewerSet.put(GnollTribeRoom.class, 1f);
 	}
 
 	private static HashMap<Class<?extends StandardRoom>, Float> prisonSet = new HashMap<>();
