@@ -41,10 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.GuidePage;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
-import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
-import com.shatteredpixel.shatteredpixeldungeon.levels.builders.FigureEightBuilder;
-import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LoopBuilder;
-import com.shatteredpixel.shatteredpixeldungeon.levels.builders.RegularBuilder;
+import com.shatteredpixel.shatteredpixeldungeon.levels.builders.*;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
@@ -160,18 +157,23 @@ public abstract class RegularLevel extends Level {
 	}
 	
 	protected Builder builder(){
-		int tryn = Random.Int(2);
+		int tryn = Random.Int(3);
 		if (tryn == 0 || Dungeon.mode == Dungeon.GameMode.CHAOS){
 			return new LoopBuilder()
 					.setLoopShape( 3 ,
 							Random.Float(0f, 0.9f),
 							Random.Float(0f, 0.7f));
 		}
-		else {
+		else if (tryn == 1){
 			return new FigureEightBuilder()
 					.setLoopShape( 3 ,
 							Random.Float(0.2f, 1.5f),
 							0f);
+		} else {
+			return new ClumpyLoopBuilder()
+					.setLoopShape( 3 ,
+							Random.Float(0f, 0.4f),
+							Random.Float(0f, 0.6f));
 		}
 
 	}

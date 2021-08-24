@@ -189,7 +189,7 @@ public abstract class RegularBuilder extends Builder {
 			connectionChances[connectingRooms]--;
 
 			for (int j = 0; j < connectingRooms; j++){
-				ConnectionRoom t = r instanceof SecretRoom ? new MazeConnectionRoom() : ConnectionRoom.createRoom();
+				Room t = r instanceof SecretRoom ? new MazeConnectionRoom() : (this instanceof ClumpyLoopBuilder ? StandardRoom.createRoom() : ConnectionRoom.createRoom());
 				tries = 3;
 
 				do {
