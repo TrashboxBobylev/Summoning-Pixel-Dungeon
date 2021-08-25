@@ -94,11 +94,10 @@ public class WndChallenges extends Window {
 			}
 		};
 		add(pane);
-		pane.setRect(0, title.bottom(), WIDTH, HEIGHT - title.bottom() - 2);
+		pane.setRect(0, title.bottom()+2, WIDTH, HEIGHT - title.bottom() - 2);
 		Component content = pane.content();
 
-
-		float pos = TTL_HEIGHT;
+		float pos = 2;
 		for (Conducts.Conduct i : Conducts.Conduct.values()) {
 
 				final String challenge = i.toString();
