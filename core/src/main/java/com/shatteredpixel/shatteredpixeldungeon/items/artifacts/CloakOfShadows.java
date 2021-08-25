@@ -44,9 +44,10 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndUseItem;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.Bundle;
@@ -54,7 +55,7 @@ import com.watabou.utils.PathFinder;
 
 import java.util.ArrayList;
 
-public class CloakOfShadows extends Artifact {
+public class CloakOfShadows extends Artifact implements ActionIndicator.Action {
 
 	{
 		image = ItemSpriteSheet.ARTIFACT_CLOAK;
@@ -81,8 +82,7 @@ public class CloakOfShadows extends Artifact {
 	@Override
 	public String getDefaultAction() {
 		if (charge > 0 && isEquipped(Dungeon.hero) && !cursed){
-			if (!stealthed && Dungeon.hero.hasTalent(Talent.HYPERSPACE)) return AC_CHOOSE;
-			else return AC_STEALTH;
+			return AC_STEALTH;
 		}
 		return super.getDefaultAction();
 	}
@@ -106,10 +106,6 @@ public class CloakOfShadows extends Artifact {
 	public void execute( Hero hero, String action ) {
 
 		super.execute(hero, action);
-
-		if (action.equals( AC_CHOOSE)){
-			GameScene.show(new WndUseItem(null, this) );
-		}
 
 		if (action.equals( AC_STEALTH )) {
 
@@ -269,12 +265,36 @@ public class CloakOfShadows extends Artifact {
 				cooldown --;
 
 			updateQuickslot();
+			if ((int) (charge * (0.57f + 0.09f*(Dungeon.hero.pointsInTalent(Talent.HYPERSPACE)))) >= 1){
+				ActionIndicator.setAction(CloakOfShadows.this);
+			} else {
+				ActionIndicator.clearAction(CloakOfShadows.this);
+			}
 
 			spend( TICK );
 
 			return true;
 		}
 
+		@Override
+		public void detach() {
+			super.detach();
+			ActionIndicator.clearAction(CloakOfShadows.this);
+		}
+	}
+
+	@Override
+	public Image getIcon() {
+		Image actionIco = new Image(Assets.Sprites.ITEM_ICONS);
+		actionIco.frame(ItemSpriteSheet.Icons.film.get(ItemSpriteSheet.Icons.SCROLL_TELEPORT));
+		actionIco.scale.set(2f);
+		actionIco.hardlight(0xc44dd6);
+		return actionIco;
+	}
+
+	@Override
+	public void doAction() {
+		execute(Dungeon.hero, AC_TELEPORT);
 	}
 
 	public class cloakStealth extends ArtifactBuff{
