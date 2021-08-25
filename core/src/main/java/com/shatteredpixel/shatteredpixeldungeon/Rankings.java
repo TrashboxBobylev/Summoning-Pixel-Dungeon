@@ -75,7 +75,7 @@ public enum Rankings {
 		rec.armorTier	= Dungeon.hero.tier();
 		rec.herolevel	= Dungeon.hero.lvl;
 		rec.depth		= Dungeon.depth;
-		if (Dungeon.mode != Dungeon.GameMode.EXPLORE) {
+		if (Dungeon.mode != Dungeon.GameMode.EXPLORE && !Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
 			rec.score = Statistics.score = score(win);
 		} else {
 			rec.score = 0;

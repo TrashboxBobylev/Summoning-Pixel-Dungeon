@@ -1072,7 +1072,7 @@ public class Hero extends Char {
 			
 			if (Dungeon.depth == 1) {
 				
-				if (belongings.getItem( Amulet.class ) == null || Dungeon.mode == Dungeon.GameMode.GAUNTLET) {
+				if (belongings.getItem( Amulet.class ) == null || Dungeon.mode == Dungeon.GameMode.GAUNTLET || Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
 					Game.runOnRenderThread(new Callback() {
 						@Override
 						public void call() {

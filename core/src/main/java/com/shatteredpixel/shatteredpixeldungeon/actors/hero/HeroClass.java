@@ -122,6 +122,38 @@ public enum HeroClass {
 		new Ropes().quantity(5).collect();
 		new DewVial().collect();
 
+		if (Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)){
+			(hero.belongings.armor = new ScoutArmor()).identify();
+			new SpiritBow().identify().collect();
+			new WandOfMagicMissile().identify().collect();
+			Slingshot stones = new Slingshot();
+			stones.charge = 1;
+			stones.identify().collect();
+			new BrokenSeal().collect();
+			new ElementalBlast().identify().collect();
+			new CloakOfShadows().identify().collect();
+			hero.attunement = 1;
+			ThrowingKnife knives = new ThrowingKnife();
+			knives.quantity(1).collect();
+			ConjurerBook book = new ConjurerBook();
+			book.collect();
+			FroggitStaff staff1 = new FroggitStaff();
+			staff1.identify().collect();
+			Stars star = new Stars();
+			star.collect();
+			Heal heal = new Heal();
+			heal.collect();
+			new Zap().collect();
+			new PotionBandolier().collect();
+			Dungeon.LimitedDrops.POTION_BANDOLIER.drop();
+			new ScrollHolder().collect();
+			Dungeon.LimitedDrops.SCROLL_HOLDER.drop();
+			new VelvetPouch().collect();
+			Dungeon.LimitedDrops.VELVET_POUCH.drop();
+			new MagicalHolster().collect();
+			Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
+		}
+
 		if (Dungeon.mode == Dungeon.GameMode.GAUNTLET){
 			new Amulet().collect();
 		}
@@ -151,9 +183,10 @@ public enum HeroClass {
 		if (hero.belongings.weapon != null){
 			((Weapon)hero.belongings.weapon).affixSeal(new BrokenSeal());
 		}
-
-		new PotionBandolier().collect();
-		Dungeon.LimitedDrops.POTION_BANDOLIER.drop();
+		if (!Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
+			new PotionBandolier().collect();
+			Dungeon.LimitedDrops.POTION_BANDOLIER.drop();
+		}
 
 		new PotionOfHealing().identify();
 		new ScrollOfRage().identify();
@@ -171,8 +204,10 @@ public enum HeroClass {
 		Dungeon.quickslot.setSlot(0, wand);
 		Dungeon.quickslot.setSlot(1, blast);
 
-		new ScrollHolder().collect();
-		Dungeon.LimitedDrops.SCROLL_HOLDER.drop();
+		if (!Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
+			new ScrollHolder().collect();
+			Dungeon.LimitedDrops.SCROLL_HOLDER.drop();
+		}
 
 		new ScrollOfUpgrade().identify();
 		new PotionOfLiquidFlame().identify();
@@ -191,8 +226,10 @@ public enum HeroClass {
 		Dungeon.quickslot.setSlot(0, cloak);
 		Dungeon.quickslot.setSlot(1, knives);
 
-		new VelvetPouch().collect();
-		Dungeon.LimitedDrops.VELVET_POUCH.drop();
+		if (!Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
+			new VelvetPouch().collect();
+			Dungeon.LimitedDrops.VELVET_POUCH.drop();
+		}
 
 		new ScrollOfMagicMapping().identify();
 		new PotionOfInvisibility().identify();
@@ -207,9 +244,10 @@ public enum HeroClass {
 
 		Dungeon.quickslot.setSlot(0, bow);
 		Dungeon.quickslot.setSlot(1, hero.belongings.armor);
-
-		new VelvetPouch().collect();
-		Dungeon.LimitedDrops.VELVET_POUCH.drop();
+		if (!Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
+			new VelvetPouch().collect();
+			Dungeon.LimitedDrops.VELVET_POUCH.drop();
+		}
 
 		new PotionOfMindVision().identify();
 		new ScrollOfLullaby().identify();
@@ -262,15 +300,16 @@ public enum HeroClass {
 		ThrowingKnive2 knives = new ThrowingKnive2();
 		knives.quantity(2).collect();
 		Dungeon.quickslot.setSlot(0, knives);
-
-		new PotionBandolier().collect();
-		Dungeon.LimitedDrops.POTION_BANDOLIER.drop();
-		new ScrollHolder().collect();
-		Dungeon.LimitedDrops.SCROLL_HOLDER.drop();
-		new VelvetPouch().collect();
-		Dungeon.LimitedDrops.VELVET_POUCH.drop();
-		new MagicalHolster().collect();
-		Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
+		if (!Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
+			new PotionBandolier().collect();
+			Dungeon.LimitedDrops.POTION_BANDOLIER.drop();
+			new ScrollHolder().collect();
+			Dungeon.LimitedDrops.SCROLL_HOLDER.drop();
+			new VelvetPouch().collect();
+			Dungeon.LimitedDrops.VELVET_POUCH.drop();
+			new MagicalHolster().collect();
+			Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
+		}
 	}
 
 	public String title() {
