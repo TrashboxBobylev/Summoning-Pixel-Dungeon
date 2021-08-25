@@ -51,6 +51,7 @@ public class CleanWater extends Item {
     {
         image = ItemSpriteSheet.CLEAN_WATER;
 		bones = true;
+		stackable = true;
 	}
 
     @Override
