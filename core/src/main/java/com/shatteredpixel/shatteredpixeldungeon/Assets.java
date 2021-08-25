@@ -291,6 +291,7 @@ public class Assets {
 		public static final String BLASTER = "sprites/blaster.png";
 		public static final String DM150 = "sprites/dm150.png";
 		public static final String DOG = "sprites/doggy.png";
+		public static final String WOLF = "sprites/wolf.png";
 		public static final String EXPLODING_TNT_ARE_YOU_A_MOUSE = "sprites/explodingmouse.png";
 		public static final String FINAL_FROGGIT = "sprites/final_froggit.png";
 		public static final String CHAOS_SABER = "sprites/chaossaber.png";
