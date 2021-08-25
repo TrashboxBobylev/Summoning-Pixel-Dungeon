@@ -175,6 +175,7 @@ public abstract class StandardRoom extends Room {
 		hallsSet.put(RuinsRoom.class, 10f);
 		hallsSet.put(ChasmRoom.class, 10f);
 		hallsSet.put(SkullsRoom.class, 5f);
+		hallsSet.put(BoomRoom.class, 1f);
 	}
 
 	private static HashMap<Class<?extends StandardRoom>, Float> chaosSet = new HashMap<>();

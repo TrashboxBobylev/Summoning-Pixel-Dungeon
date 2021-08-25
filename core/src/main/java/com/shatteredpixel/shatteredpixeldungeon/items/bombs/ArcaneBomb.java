@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Miasma;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.DoomCloud;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -106,7 +107,7 @@ public class ArcaneBomb extends Bomb {
 				    float chance = 1;
 				    if (Dungeon.level.distance(cell, i) > 3) chance = 0.6f;
 				    if (Dungeon.level.distance(cell, i) > 4) chance = 0.4f;
-				    if (Random.Float() < chance){
+				    if (Random.Float() < chance && Dungeon.level.insideMap(i)){
                         Level.set( i, Terrain.EMPTY );
 
                     }
@@ -116,9 +117,13 @@ public class ArcaneBomb extends Bomb {
 				if (ch != null){
 					affected.add(ch);
 				}
-
+				Heap heap = Dungeon.level.heaps.get(i);
+				if (heap != null)
+					heap.explode();
 
                 GameScene.add(Blob.seed(i, Random.NormalIntRange(100, 150), Miasma.class));
+
+
 			}
 		
 		for (Char ch : affected){
