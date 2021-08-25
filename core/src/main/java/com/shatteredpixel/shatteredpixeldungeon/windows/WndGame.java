@@ -72,20 +72,6 @@ public class WndGame extends Window {
 			curBtn.icon(Icons.get(Icons.CHANGES));
 		}
 
-		// Challenges window
-		if (Dungeon.challenges != null && Dungeon.challenges != Conducts.Conduct.NULL) {
-			addButton( curBtn = new RedButton( Messages.get(this, "challenges") ) {
-				@Override
-				protected void onClick() {
-					hide();
-					GameScene.show( new WndTitledMessage(new Image(Assets.Interfaces.SUBCLASS_ICONS, (Dungeon.challenges.ordinal()-1)*16, 16, 16, 16),
-							Dungeon.challenges.toString(),
-							Messages.get(Conducts.class, Dungeon.challenges.name() + "_desc")) );
-				}
-			} );
-			curBtn.icon(Icons.get(Icons.CHALLENGE_ON));
-		}
-
 		// Restart
 		if (Dungeon.hero == null || !Dungeon.hero.isAlive()) {
 
@@ -111,9 +97,36 @@ public class WndGame extends Window {
 			curBtn.icon(Icons.get(Icons.RANKINGS));
 		}
 
-		addButtons(
+		// Challenges window
+		if (Dungeon.challenges != null && Dungeon.challenges != Conducts.Conduct.NULL) {
+			addButton( curBtn = new RedButton( Dungeon.challenges.toString(), 7 ) {
+				@Override
+				protected void onClick() {
+					hide();
+					GameScene.show( new WndTitledMessage(new Image(Assets.Interfaces.SUBCLASS_ICONS, (Dungeon.challenges.ordinal()-1)*16, 16, 16, 16),
+							Dungeon.challenges.toString(),
+							Messages.get(Conducts.class, Dungeon.challenges.name() + "_desc")) );
+				}
+			} );
+			curBtn.icon(new Image(Assets.Interfaces.SUBCLASS_ICONS, (Dungeon.challenges.ordinal()-1)*16, 16, 16, 16));
+		}
+
+		if (Dungeon.mode != null) {
+			Image ic = Icons.get(Dungeon.mode.icon);
+			RedButton mode = new RedButton(Dungeon.mode.desc(), 6){
+				{
+					enable(false);
+				}
+			};
+			mode.icon(ic);
+			mode.multiline = true;
+			addButton(mode);
+			mode.setSize(WIDTH, mode.reqHeight());
+			pos += mode.reqHeight() - BTN_HEIGHT;
+		}
+		addButton(
 				// Main menu
-				new RedButton( Messages.get(this, "menu") ) {
+				curBtn = new RedButton( Messages.get(this, "menu") ) {
 					@Override
 					protected void onClick() {
 						try {
@@ -123,28 +136,9 @@ public class WndGame extends Window {
 						}
 						Game.switchScene(TitleScene.class);
 					}
-				},
-				// Quit
-				new RedButton( Messages.get(this, "exit") ) {
-					@Override
-					protected void onClick() {
-						try {
-							Dungeon.saveAll();
-						} catch (IOException e) {
-							ShatteredPixelDungeon.reportException(e);
-						}
-						Game.instance.finish();
-					}
 				}
 		);
-
-		// Cancel
-		addButton( new RedButton( Messages.get(this, "return") ) {
-			@Override
-			protected void onClick() {
-				hide();
-			}
-		} );
+		curBtn.icon(Icons.get(Icons.DISPLAY));
 		
 		resize( WIDTH, pos );
 	}
