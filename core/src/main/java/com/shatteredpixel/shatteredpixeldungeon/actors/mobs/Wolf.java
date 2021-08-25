@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfAttunement;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.WolfSprite;
 import com.watabou.utils.Random;
@@ -61,7 +62,7 @@ public class Wolf extends Mob {
             state = HUNTING;
         }
 
-        if (!(src instanceof Hero) && !(src instanceof Wand) && !(src instanceof Trap))
+        if (!(src instanceof Hero) && !(src instanceof Wand && !(src instanceof WandOfWarding)) && !(src instanceof Trap))
         super.damage( dmg, src );
     }
 
