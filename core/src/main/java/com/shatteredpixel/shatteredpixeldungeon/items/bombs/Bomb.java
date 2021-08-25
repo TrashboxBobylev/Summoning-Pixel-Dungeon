@@ -197,7 +197,7 @@ public class Bomb extends Item {
 				dmg -= ch.drRoll();
 
 				if (dmg > 0 && !harmless) {
-					if (ch.alignment != Char.Alignment.ALLY && !(Dungeon.isChallenged(Conducts.Conduct.PACIFIST)))
+					if (!(Dungeon.isChallenged(Conducts.Conduct.PACIFIST)) || ch.alignment == Char.Alignment.ALLY)
 						ch.damage(dmg, this);
 				}
 				
