@@ -124,15 +124,25 @@ public enum HeroClass {
 
 		if (Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)){
 			(hero.belongings.armor = new ScoutArmor()).identify();
-			new SpiritBow().identify().collect();
-			new WandOfMagicMissile().identify().collect();
+			SpiritBow bow = new SpiritBow();
+			bow.identify().collect();
+			Dungeon.quickslot.setSlot(3, bow);
+			WandOfMagicMissile wandOfMagicMissile = new WandOfMagicMissile();
+			wandOfMagicMissile.identify().collect();
+			Dungeon.quickslot.setSlot(2, wandOfMagicMissile);
 			Slingshot stones = new Slingshot();
 			stones.charge = 1;
 			stones.identify().collect();
+			Dungeon.quickslot.setSlot(0, stones);
 			new BrokenSeal().collect();
-			new ElementalBlast().identify().collect();
-			new CloakOfShadows().identify().collect();
+			ElementalBlast blast = new ElementalBlast();
+			(hero.belongings.artifact = blast).identify();
+			CloakOfShadows cloakOfShadows = new CloakOfShadows();
+			(hero.belongings.misc = cloakOfShadows).identify();
+			Dungeon.quickslot.setSlot(1, cloakOfShadows);
 			hero.attunement = 1;
+			hero.mana = 0;
+			hero.maxMana = 20;
 			ThrowingKnife knives = new ThrowingKnife();
 			knives.quantity(1).collect();
 			ConjurerBook book = new ConjurerBook();
@@ -175,10 +185,12 @@ public enum HeroClass {
 
 	private static void initWarrior( Hero hero ) {
 		(hero.belongings.weapon = new WornShortsword()).identify();
-		Slingshot stones = new Slingshot();
-		stones.charge = 1;
-		stones.identify().collect();
-		Dungeon.quickslot.setSlot(0, stones);
+		if (!Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
+			Slingshot stones = new Slingshot();
+			stones.charge = 1;
+			stones.identify().collect();
+			Dungeon.quickslot.setSlot(0, stones);
+		}
 
 		if (hero.belongings.weapon != null){
 			((Weapon)hero.belongings.weapon).affixSeal(new BrokenSeal());
@@ -195,14 +207,15 @@ public enum HeroClass {
 	private static void initMage( Hero hero ) {
 
 		Wand wand = new WandOfMagicMissile();
-
-		(hero.belongings.weapon = wand).identify();
-		hero.belongings.weapon.activate(hero);
-		ElementalBlast blast = new ElementalBlast();
-		(hero.belongings.artifact = blast).identify();
-		hero.belongings.artifact.activate( hero );
-		Dungeon.quickslot.setSlot(0, wand);
-		Dungeon.quickslot.setSlot(1, blast);
+		if (!Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
+			(hero.belongings.weapon = wand).identify();
+			hero.belongings.weapon.activate(hero);
+			ElementalBlast blast = new ElementalBlast();
+			(hero.belongings.artifact = blast).identify();
+			hero.belongings.artifact.activate(hero);
+			Dungeon.quickslot.setSlot(0, wand);
+			Dungeon.quickslot.setSlot(1, blast);
+		}
 
 		if (!Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
 			new ScrollHolder().collect();
@@ -215,16 +228,18 @@ public enum HeroClass {
 
 	private static void initRogue( Hero hero ) {
 		(hero.belongings.weapon = new Dagger()).identify();
-
 		CloakOfShadows cloak = new CloakOfShadows();
-		(hero.belongings.artifact = cloak).identify();
-		hero.belongings.artifact.activate( hero );
+		if (!Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
+			(hero.belongings.artifact = cloak).identify();
+			hero.belongings.artifact.activate(hero);
+		}
 
-		ThrowingKnife knives = new ThrowingKnife();
-		knives.quantity(1).collect();
-
-		Dungeon.quickslot.setSlot(0, cloak);
-		Dungeon.quickslot.setSlot(1, knives);
+		if (!Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
+			ThrowingKnife knives = new ThrowingKnife();
+			knives.quantity(1).collect();
+			Dungeon.quickslot.setSlot(0, cloak);
+			Dungeon.quickslot.setSlot(1, knives);
+		}
 
 		if (!Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
 			new VelvetPouch().collect();
@@ -238,12 +253,14 @@ public enum HeroClass {
 	private static void initHuntress( Hero hero ) {
 
 		(hero.belongings.weapon = new Gloves()).identify();
-		(hero.belongings.armor = new ScoutArmor()).identify();
-		SpiritBow bow = new SpiritBow();
-		bow.identify().collect();
+		if (!Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
+			(hero.belongings.armor = new ScoutArmor()).identify();
+			SpiritBow bow = new SpiritBow();
+			bow.identify().collect();
 
-		Dungeon.quickslot.setSlot(0, bow);
-		Dungeon.quickslot.setSlot(1, hero.belongings.armor);
+			Dungeon.quickslot.setSlot(0, bow);
+			Dungeon.quickslot.setSlot(1, hero.belongings.armor);
+		}
 		if (!Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
 			new VelvetPouch().collect();
 			Dungeon.LimitedDrops.VELVET_POUCH.drop();
@@ -256,15 +273,16 @@ public enum HeroClass {
     private static void initConjurer( Hero hero ) {
 
         (hero.belongings.weapon = new Knife()).identify();
+		if (!Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
+			ConjurerBook book = new ConjurerBook();
+			book.collect();
 
-		ConjurerBook book = new ConjurerBook();
-		book.collect();
+			FroggitStaff staff1 = new FroggitStaff();
+			staff1.identify().collect();
 
-		FroggitStaff staff1 = new FroggitStaff();
-        staff1.identify().collect();
-
-        Dungeon.quickslot.setSlot(0, book);
-        Dungeon.quickslot.setSlot(1, staff1);
+			Dungeon.quickslot.setSlot(0, book);
+			Dungeon.quickslot.setSlot(1, staff1);
+		}
 
         hero.belongings.armor = ClassArmor.upgrade(hero, (Armor)(new ClothArmor().identify()));
 
@@ -275,12 +293,13 @@ public enum HeroClass {
 
         hero.attunement = 1;
         hero.HP = hero.HT = 10;
-
-        Stars star = new Stars();
-        star.collect();
-		Heal heal = new Heal();
-		heal.collect();
-		new Zap().collect();
+		if (!Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
+			Stars star = new Stars();
+			star.collect();
+			Heal heal = new Heal();
+			heal.collect();
+			new Zap().collect();
+		}
 
         hero.mana = 0;
         hero.maxMana = 20;

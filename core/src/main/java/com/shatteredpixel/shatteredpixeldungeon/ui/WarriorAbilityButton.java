@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -116,7 +117,7 @@ public class WarriorAbilityButton extends Tag {
         Hunger hunger = Dungeon.hero.buff(Hunger.class);
         if (hunger == null) return;
 
-        if (Dungeon.hero.heroClass == HeroClass.WARRIOR) {
+        if (Dungeon.hero.heroClass == HeroClass.WARRIOR || Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
             if (Dungeon.hero.belongings.weapon != null && (
                     (Dungeon.hero.subClass == HeroSubClass.GLADIATOR && Dungeon.hero.buff(Stacks.class) != null && Dungeon.hero.buff(Stacks.class).damage >= 1)
                     || (!hunger.isHungry() && ((Weapon)Dungeon.hero.belongings.weapon).seal != null) && Dungeon.hero.subClass != HeroSubClass.GLADIATOR)) {

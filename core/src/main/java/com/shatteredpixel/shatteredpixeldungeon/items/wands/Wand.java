@@ -100,7 +100,7 @@ public abstract class Wand extends Weapon {
 		if (curCharges > 0 || !curChargeKnown) {
 			actions.add( AC_ZAP );
 		}
-		if (hero.heroClass != HeroClass.MAGE){
+		if (hero.heroClass != HeroClass.MAGE && !Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)){
 			actions.remove(AC_EQUIP);
 		}
 		if (level() > 0) actions.add(AC_DOWNGRADE);
@@ -334,7 +334,7 @@ public abstract class Wand extends Weapon {
 							charger.getTurnsToCharge() - partialCharge*charger.getTurnsToCharge()));
 		}
 
-		if (Dungeon.hero.heroClass == HeroClass.MAGE){
+		if (Dungeon.hero.heroClass == HeroClass.MAGE || Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)){
 			desc += "\n\n" + Messages.get(Wand.class, "melee",
 					augment.damageFactor(min()),
 					augment.damageFactor(max()));
