@@ -152,8 +152,26 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action {
 				if (Dungeon.level.distance(target, Dungeon.hero.pos) > maxDistance){
 					GLog.warning( Messages.get(CloakOfShadows.class, "cant_reach") );
 				} else {
-					charge -= maxDistance / (0.57f + 0.09f*(Dungeon.hero.pointsInTalent(Talent.HYPERSPACE)));
+					float chargeCost = maxDistance / (0.57f + 0.09f * (Dungeon.hero.pointsInTalent(Talent.HYPERSPACE)));
+					CloakOfShadows.this.charge -= chargeCost;
 					ScrollOfTeleportation.teleportToLocation(Dungeon.hero, target);
+					//target hero level is 1 + 2*cloak level
+					int lvlDiffFromTarget = Dungeon.hero.lvl - (1+level()*2);
+					//plus an extra one for each level after 6
+					if (level() >= 7){
+						lvlDiffFromTarget -= level()-6;
+					}
+					if (lvlDiffFromTarget >= 0){
+						exp += Math.round(10f * Math.pow(1.1f, lvlDiffFromTarget))*chargeCost;
+					} else {
+						exp += Math.round(10f * Math.pow(0.75f, -lvlDiffFromTarget))*chargeCost;
+					}
+
+					if (exp >= (level() + 1) * 50 && level() < levelCap) {
+						upgrade();
+						exp -= level() * 50;
+						GLog.positive(Messages.get(this, "levelup"));
+					}
 					updateQuickslot();
 				}
 			}
