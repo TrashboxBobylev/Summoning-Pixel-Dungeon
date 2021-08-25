@@ -203,6 +203,12 @@ public abstract class StandardRoom extends Room {
 		chaosSet.put(RuinsRoom.class, 1f);
 		chaosSet.put(ChasmRoom.class, 1f);
 		chaosSet.put(SkullsRoom.class, 1f);
+
+		chaosSet.put(GnollTribeRoom.class, 1f);
+		chaosSet.put(GuardRoom.class, 1f);
+		chaosSet.put(SpectralShamanRoom.class, 1f);
+		chaosSet.put(WolfRoom.class, 1f);
+		chaosSet.put(BoomRoom.class, 1f);
 	}
 
 	private static HashMap[] allSets = {sewerSet, prisonSet, cavesSet, dwarvesSet, hallsSet, chaosSet};
