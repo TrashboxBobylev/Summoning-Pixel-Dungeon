@@ -149,7 +149,8 @@ public class Dungeon {
 		HELL("hell", Icons.HELL_CHEST),
 		REALTIME("realtime", Icons.REAL_TIME),
 		CHAOS("chaos", Icons.CHAOS),
-		NO_EXP("no_exp", Icons.NO_EXP);
+		NO_EXP("no_exp", Icons.NO_EXP),
+		LOL("lol", Icons.GOLD);
 
 		public String saveName;
 		public Icons icon;

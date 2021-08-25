@@ -818,7 +818,7 @@ public abstract class Mob extends Char {
 				Badges.validateMonstersSlain();
 				Statistics.qualifiedForNoKilling = false;
 
-				int exp = Dungeon.hero.lvl <= maxLvl ? EXP : 0;
+				int exp = Dungeon.hero.lvl <= maxLvl || Dungeon.mode == Dungeon.GameMode.LOL ? EXP : 0;
 				if (Dungeon.mode == Dungeon.GameMode.NO_EXP) exp = 0;
 				if (exp > 0) {
 					Dungeon.hero.sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "exp", exp));
@@ -867,7 +867,7 @@ public abstract class Mob extends Char {
 		if (alignment == Alignment.ENEMY){
 			if (!(cause instanceof Gravery)) rollToDropLoot();
 
-			if (Dungeon.hero.lvl <= maxLvl + 2 && cause instanceof Gravery){
+			if ((Dungeon.hero.lvl <= maxLvl + 2 || Dungeon.mode == Dungeon.GameMode.LOL) && cause instanceof Gravery){
 				EXP = 0;
 				if (!(this instanceof Wraith)){
 					Wraith w = Wraith.spawnForcefullyAt(pos);
@@ -923,7 +923,7 @@ public abstract class Mob extends Char {
 	}
 
 	public void rollToDropLoot(){
-		if (Dungeon.hero.lvl > maxLvl + 2) return;
+		if (Dungeon.hero.lvl > maxLvl + 2 && Dungeon.mode != Dungeon.GameMode.LOL) return;
 
 		float lootChance = this.lootChance;
 		lootChance *= RingOfWealth.dropChanceMultiplier( Dungeon.hero );
@@ -933,6 +933,10 @@ public abstract class Mob extends Char {
 			if (loot != null) {
 				Dungeon.level.drop(loot, pos).sprite.drop();
 			}
+		}
+
+		if (Dungeon.mode == Dungeon.GameMode.LOL && Random.Float() < 0.4f){
+			Dungeon.level.drop(Generator.random(), pos).sprite.drop();
 		}
 
 		if (this instanceof Monk || this instanceof Warlock){
@@ -954,7 +958,7 @@ public abstract class Mob extends Char {
 		}
 
 		//lucky enchant logic
-		if (Dungeon.hero.lvl <= maxLvl && buff(Lucky.LuckProc.class) != null){
+		if ((Dungeon.hero.lvl <= maxLvl || Dungeon.mode == Dungeon.GameMode.LOL) && buff(Lucky.LuckProc.class) != null){
 			Dungeon.level.drop(Lucky.genLoot(), pos).sprite.drop();
 			Lucky.showFlare(sprite);
 		}

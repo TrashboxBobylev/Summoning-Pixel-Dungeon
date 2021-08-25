@@ -256,7 +256,7 @@ public class WandOfCorruption extends Wand {
 			Statistics.enemiesSlain++;
 			Badges.validateMonstersSlain();
 			Statistics.qualifiedForNoKilling = false;
-			if (Dungeon.mode == Dungeon.GameMode.NO_EXP || (enemy.EXP > 0 && curUser.lvl <= enemy.maxLvl)) {
+			if (Dungeon.mode == Dungeon.GameMode.NO_EXP || (enemy.EXP > 0 && (curUser.lvl <= enemy.maxLvl || Dungeon.mode == Dungeon.GameMode.LOL))) {
 				curUser.sprite.showStatus(CharSprite.POSITIVE, Messages.get(enemy, "exp", enemy.EXP));
 				curUser.earnExp(enemy.EXP, enemy.getClass());
 			} else {

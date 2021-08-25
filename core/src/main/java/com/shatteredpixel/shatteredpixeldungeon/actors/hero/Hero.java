@@ -58,6 +58,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Recycle;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
@@ -158,6 +159,7 @@ public class Hero extends Char {
 	
 	public int lvl = 1;
 	public int exp = 0;
+	public int totalExp = 0;
 	
 	public int HTBoost = 0;
 
@@ -229,6 +231,7 @@ public class Hero extends Char {
 	private static final String LASTMOVE = "last_move";
 	private static final String MANA = "mana";
 	private static final String MAX_MANA = "max_mana";
+	private static final String TOTAL_EXP = "totalExp";
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 
@@ -254,6 +257,7 @@ public class Hero extends Char {
 
 		bundle.put( MANA, mana);
 		bundle.put( MAX_MANA, maxMana);
+		bundle.put( TOTAL_EXP, totalExp);
 
 		belongings.storeInBundle( bundle );
 	}
@@ -274,6 +278,7 @@ public class Hero extends Char {
 
 		lvl = bundle.getInt( LEVEL );
 		exp = bundle.getInt( EXPERIENCE );
+		totalExp = bundle.getInt( TOTAL_EXP);
 		attunement = bundle.getFloat(ATTUNEMENT);
         usedAttunement = bundle.getFloat(USED_ATTUNEMENT);
 
@@ -1546,8 +1551,10 @@ public class Hero extends Char {
 
 		if (SPDSettings.bigdungeon()) MAX_LEVEL = 100;
 		else MAX_LEVEL = 30;
+		if (Dungeon.mode == Dungeon.GameMode.LOL) MAX_LEVEL = Integer.MAX_VALUE;
 
 		this.exp += exp;
+		this.totalExp += exp;
 		float percent = exp/(float)maxExp();
 
 		EtherealChains.chainsRecharge chains = buff(EtherealChains.chainsRecharge.class);
@@ -1566,6 +1573,23 @@ public class Hero extends Char {
 			for (Item i : belongings) {
 				i.onHeroGainExp(percent, this);
 			}
+		}
+
+		if (totalExp >= 100 && Dungeon.mode == Dungeon.GameMode.LOL){
+			boolean souAnnounced = false;
+
+			while (totalExp >= 100 ) {
+				totalExp -= 100;
+				ScrollOfUpgrade sou = new ScrollOfUpgrade();
+
+				if (!sou.collect()){
+					Dungeon.level.drop(sou, pos);
+				} else if (!souAnnounced){
+					GLog.positive( Messages.get(this, "you_now_have", sou.name()) );
+					souAnnounced = true;
+				}
+			}
+			new Flare(6, 28).color(0x38FF48, true).show(sprite, 3.67f);
 		}
 		
 		boolean levelUp = false;
