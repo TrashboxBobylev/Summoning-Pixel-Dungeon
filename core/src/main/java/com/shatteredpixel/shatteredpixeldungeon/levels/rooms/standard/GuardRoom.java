@@ -24,7 +24,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.MajesticGuard;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfShroudingFog;
@@ -91,7 +90,7 @@ public class GuardRoom extends StandardRoom {
 		int pos;
 		do {
 			pos = level.pointToCell(random());
-		} while (!Dungeon.level.adjacent(pos, guard.pos));
+		} while (!level.adjacent(pos, guard.pos));
 		level.drop( Random.Int(2) == 0 ? new ScrollOfAffection() : new PotionOfShroudingFog(), pos );
 	}
 }
