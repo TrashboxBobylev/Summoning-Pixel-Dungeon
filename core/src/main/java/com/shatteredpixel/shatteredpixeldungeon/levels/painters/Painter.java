@@ -77,6 +77,10 @@ public abstract class Painter {
 	public static void fill( Level level, Rect rect, int l, int t, int r, int b, int value ) {
 		fill( level, rect.left + l, rect.top + t, rect.width() - (l + r), rect.height() - (t + b), value );
 	}
+
+	public static void fillRelative( Level level, Rect rect, int l, int t, int w, int h, int value ) {
+		fill( level, rect.left + l, rect.top + t, w, h, value );
+	}
 	
 	public static void drawLine( Level level, Point from, Point to, int value){
 		float x = from.x;

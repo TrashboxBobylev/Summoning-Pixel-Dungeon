@@ -194,7 +194,7 @@ public class WandOfCorruption extends Wand {
             enemyResist = 0.5f + Dungeon.depth/8f * 5 / Dungeon.chapterSize();
         } else if (ch instanceof Yog.BurningFist || ch instanceof Yog.RottingFist) {
             enemyResist = 1 + 30;
-        } else if (ch instanceof Yog.Larva || ch instanceof King.Undead){
+        } else if (ch instanceof Yog.Larva){
             enemyResist = 1 + 5;
         } else if (ch instanceof Swarm){
             //child swarms don't give exp, so we force this here.

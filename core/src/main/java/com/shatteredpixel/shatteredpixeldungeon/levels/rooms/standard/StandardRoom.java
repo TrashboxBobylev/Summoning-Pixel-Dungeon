@@ -155,6 +155,7 @@ public abstract class StandardRoom extends Room {
 		cavesSet.put(CavesFissureRoom.class, 7f);
 		cavesSet.put(BarricadeRoom.class, 7f);
 		cavesSet.put(CirclePitRoom.class, 7f);
+		cavesSet.put(SpectralShamanRoom.class, 1f);
 	}
 
 	private static HashMap<Class<?extends StandardRoom>, Float> dwarvesSet = new HashMap<>();
