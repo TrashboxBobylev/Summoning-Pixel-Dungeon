@@ -265,7 +265,8 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action {
 				cooldown --;
 
 			updateQuickslot();
-			if ((int) (charge * (0.57f + 0.09f*(Dungeon.hero.pointsInTalent(Talent.HYPERSPACE)))) >= 1){
+			if ((int) (charge * (0.57f + 0.09f*(Dungeon.hero.pointsInTalent(Talent.HYPERSPACE)))) >= 1
+				&& Dungeon.hero.hasTalent(Talent.HYPERSPACE)){
 				ActionIndicator.setAction(CloakOfShadows.this);
 			} else {
 				ActionIndicator.clearAction(CloakOfShadows.this);
