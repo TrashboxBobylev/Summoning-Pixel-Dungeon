@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -133,7 +134,9 @@ abstract public class KindOfWeapon extends EquipableItem {
 	}
 
 	public int min(){
-		return min(buffedLvl());
+		int min = min(buffedLvl());
+		if (Dungeon.isChallenged(Conducts.Conduct.KING)) min += 3;
+		return min;
 	}
 
 	public int max(){

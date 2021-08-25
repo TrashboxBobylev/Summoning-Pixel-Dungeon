@@ -154,7 +154,7 @@ public class Hero extends Char {
 	public int maxMana = 0;
 
 	public float attunement(){
-	    return attunement + RingOfAttunement.attunementMultiplier(this) + (subClass == HeroSubClass.SOUL_REAVER ? 1 : 0);
+	    return attunement + RingOfAttunement.attunementMultiplier(this) + (subClass == HeroSubClass.SOUL_REAVER ? 1 : 0) + (Dungeon.isChallenged(Conducts.Conduct.KING) ? 1 : 0);
     }
 	
 	public int lvl = 1;
@@ -422,6 +422,7 @@ public class Hero extends Char {
 		
 		float accuracy = 1;
 		if (Dungeon.mode == Dungeon.GameMode.EXPLORE) accuracy = 1.2f;
+		if (Dungeon.isChallenged(Conducts.Conduct.KING)) accuracy = 1.1f;
 		accuracy *= RingOfAccuracy.accuracyMultiplier( this );
 		
 		if (wep instanceof MissileWeapon || (wep instanceof Knife && ((Knife) wep).ranged)){
@@ -504,6 +505,8 @@ public class Hero extends Char {
 
 		Blocking.BlockBuff block = buff(Blocking.BlockBuff.class);
 		if (block != null)              dr += block.blockingRoll();
+
+		if (Dungeon.isChallenged(Conducts.Conduct.KING)) dr += Random.NormalIntRange(0, Dungeon.hero.lvl/2);
 		
 		return dr;
 	}

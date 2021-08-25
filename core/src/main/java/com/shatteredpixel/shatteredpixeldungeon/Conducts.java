@@ -37,7 +37,8 @@ public class Conducts {
         BERSERK,
         WRAITH,
         SLEEPY,
-        TRANSMUTATION;
+        TRANSMUTATION,
+        KING;
 
         @Override
         public String toString() {

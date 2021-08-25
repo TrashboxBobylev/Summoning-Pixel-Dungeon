@@ -305,6 +305,9 @@ public abstract class Char extends Actor {
 			int effectiveDamage = enemy.defenseProc( this, dmg );
 			effectiveDamage = Math.max( effectiveDamage - dr, 0 );
 
+			if (Dungeon.isChallenged(Conducts.Conduct.KING) && alignment == Alignment.ALLY && this != Dungeon.hero){
+				effectiveDamage *= 1.5f;
+			}
 
 			if ( enemy.buff( Vulnerable.class ) != null){
 				effectiveDamage *= 1.33f;

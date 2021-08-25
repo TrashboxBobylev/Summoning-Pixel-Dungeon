@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -56,6 +57,7 @@ public class Regeneration extends Buff {
 			RegenerationBuff regenBuff = Dungeon.hero.buff( RegenerationBuff.class);
 
 			float delay = REGENERATION_DELAY;
+			if (Dungeon.isChallenged(Conducts.Conduct.KING)) delay /= 2.5f;
 			if (regenBuff != null) {
 				if (regenBuff.isCursed()) {
 					delay *= 1.5f;
