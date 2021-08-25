@@ -144,6 +144,7 @@ public abstract class StandardRoom extends Room {
 		prisonSet.put(SegmentedRoom.class, 10f);
 		prisonSet.put(PillarsRoom.class, 10f);
 		prisonSet.put(CellBlockRoom.class, 5f);
+		prisonSet.put(GuardRoom.class, 1f);
 	}
 
 	private static HashMap<Class<?extends StandardRoom>, Float> cavesSet = new HashMap<>();
