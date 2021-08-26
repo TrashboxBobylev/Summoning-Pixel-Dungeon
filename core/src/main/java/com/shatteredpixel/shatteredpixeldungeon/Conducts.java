@@ -40,7 +40,8 @@ public class Conducts {
         TRANSMUTATION,
         KING,
         EVERYTHING,
-        EXPLOSIONS;
+        EXPLOSIONS,
+        INVISIBLE;
 
         @Override
         public String toString() {

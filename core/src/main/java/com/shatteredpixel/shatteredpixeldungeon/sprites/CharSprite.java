@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
@@ -547,9 +548,12 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 			curAnim = null;
 			listener.onComplete(cur);
 		}
+		if (Dungeon.isChallenged(Conducts.Conduct.INVISIBLE)){
+			alpha(0.0f);
+		}
 		
 		super.update();
-		
+
 		if (flashTime > 0 && (flashTime -= Game.elapsed) <= 0) {
 			resetColor();
 		}
@@ -581,9 +585,11 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		} else {
 			hideSleep();
 		}
-		synchronized (EmoIcon.class) {
-			if (emo != null && emo.alive) {
-				emo.visible = visible;
+		if (!Dungeon.isChallenged(Conducts.Conduct.INVISIBLE)) {
+			synchronized (EmoIcon.class) {
+				if (emo != null && emo.alive) {
+					emo.visible = visible;
+				}
 			}
 		}
 		if (ch != null){
