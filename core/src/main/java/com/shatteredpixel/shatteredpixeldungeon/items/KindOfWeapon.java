@@ -86,7 +86,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 				}
 			}
 			if (seal != null) {
-				((MeleeWeapon) this).affixSeal(seal);
+				((Weapon) this).affixSeal(seal);
 				if (Dungeon.hero.belongings.contains(seal)) seal.detachAll(Dungeon.hero.belongings.backpack);
 				if (sealLevel > 0) {
 					seal.upgrade();
