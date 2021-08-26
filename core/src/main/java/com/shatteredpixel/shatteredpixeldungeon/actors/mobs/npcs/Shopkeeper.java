@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -110,7 +111,7 @@ public class Shopkeeper extends NPC {
 		if (Dungeon.depth > Dungeon.chapterSize()*5){
 			return Math.round(item.value() * 2.5f * (Dungeon.depth * 3 / Dungeon.chapterSize() + 1));
 		}
-		return Math.round(item.value() * 2.5f * (Dungeon.chapterNumber()));
+		return Math.round(item.value() * 2.5f * (Dungeon.chapterNumber() + (SPDSettings.bigdungeon() ? 1 : 0)));
 	}
 	
 	public static WndBag sell() {
