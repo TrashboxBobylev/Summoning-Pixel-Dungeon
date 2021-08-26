@@ -41,7 +41,8 @@ public class Conducts {
         KING,
         EVERYTHING,
         EXPLOSIONS,
-        INVISIBLE;
+        INVISIBLE,
+        REGENERATION;
 
         @Override
         public String toString() {

@@ -245,6 +245,10 @@ public abstract class Mob extends Char {
 			state = FLEEING;
 		}
 
+		if (Dungeon.isChallenged(Conducts.Conduct.REGENERATION)){
+			Buff.affect(this, Regeneration.class);
+		}
+
 		enemy = chooseEnemy();
 
 		boolean enemyInFOV = enemy != null && enemy.isAlive() && fieldOfView[enemy.pos] && enemy.invisible <= 0;

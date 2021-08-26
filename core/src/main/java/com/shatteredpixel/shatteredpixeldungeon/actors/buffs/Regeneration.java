@@ -26,8 +26,10 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 
 public class Regeneration extends Buff {
@@ -39,17 +41,26 @@ public class Regeneration extends Buff {
 	}
 	
 	private static final float REGENERATION_DELAY = 10;
+
+	public boolean canHeal(){
+		if (target instanceof Hero){
+			return !((Hero)target).isStarving() && ((Hero) target).subClass != HeroSubClass.OCCULTIST;
+		} else if (target.alignment == Char.Alignment.ENEMY && Dungeon.isChallenged(Conducts.Conduct.REGENERATION)){
+			return true;
+		}
+		return false;
+	}
 	
 	@Override
 	public boolean act() {
 		if (target.isAlive()) {
 
-			if (target.HP < regencap() && !((Hero)target).isStarving() && ((Hero) target).subClass != HeroSubClass.OCCULTIST) {
+			if (target.HP < regencap() && canHeal()) {
 				LockedFloor lock = target.buff(LockedFloor.class);
 				if (target.HP > 0 && (lock == null || lock.regenOn())) {
 					target.HP += 1;
 					if (target.HP == regencap()) {
-						((Hero) target).resting = false;
+						if (target instanceof Hero) ((Hero) target).resting = false;
 					}
 				}
 			}
@@ -58,7 +69,8 @@ public class Regeneration extends Buff {
 
 			float delay = REGENERATION_DELAY;
 			if (Dungeon.isChallenged(Conducts.Conduct.KING)) delay /= 2.5f;
-			if (regenBuff != null) {
+			if (target instanceof Mob) delay /= 3;
+			if (regenBuff != null && target.alignment != Char.Alignment.ENEMY) {
 				if (regenBuff.isCursed()) {
 					delay *= 1.5f;
 				} else {
