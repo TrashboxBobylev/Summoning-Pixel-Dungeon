@@ -25,6 +25,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.keys;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
@@ -81,7 +83,7 @@ public abstract class Key extends Item {
 	
 	@Override
 	public boolean isIdentified() {
-		return true;
+		return !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
 	}
 
 }

@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.stones;
 
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -55,7 +56,7 @@ public abstract class Runestone extends Item {
 	
 	@Override
 	public boolean isIdentified() {
-		return true;
+		return !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
 	}
 	
 	@Override

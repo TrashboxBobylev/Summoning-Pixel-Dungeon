@@ -236,7 +236,7 @@ public class Bomb extends Item {
 	
 	@Override
 	public boolean isIdentified() {
-		return true;
+		return !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
 	}
 
 	private Class<? extends Bomb>[] enhancedBombs = new Class[] {

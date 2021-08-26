@@ -64,7 +64,7 @@ public abstract class ConjurerSpell extends Item {
 
     @Override
     public boolean isIdentified() {
-        return true;
+        return !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
     }
 
     @Override

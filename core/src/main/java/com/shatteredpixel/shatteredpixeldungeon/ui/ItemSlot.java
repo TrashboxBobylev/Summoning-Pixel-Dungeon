@@ -221,9 +221,9 @@ public class ItemSlot extends Button {
 			itemIcon.frame(ItemSpriteSheet.Icons.film.get(item.icon));
 			add(itemIcon);
 
-		}  else if ((item instanceof Weapon && !(item instanceof Wand)) || item instanceof Armor) {
+		}  else if ((item instanceof Weapon && !(item instanceof Wand) && !(item instanceof Staff)) || item instanceof Armor) {
 
-			if (item.levelKnown){
+			if (item.isIdentified()){
 				int str = item instanceof Weapon ? ((Weapon)item).STRReq() : ((Armor)item).STRReq();
 				extra.text( Messages.format( TXT_STRENGTH, str ) );
 				if (str > Dungeon.hero.STR()) {
@@ -273,11 +273,16 @@ public class ItemSlot extends Button {
 			level.measure();
 			if (item instanceof Staff) {
 				int str = ((Weapon)item).STRReq();
-				staffStr.text( Messages.format( TXT_STRENGTH, str ) );
-				if (str > Dungeon.hero.STR()) {
-					staffStr.hardlight( DEGRADED );
+				if (item.levelKnown) {
+					staffStr.text(Messages.format(TXT_STRENGTH, str));
+					if (str > Dungeon.hero.STR()) {
+						staffStr.hardlight(DEGRADED);
+					} else {
+						staffStr.resetColor();
+					}
 				} else {
-					staffStr.resetColor();
+					staffStr.text( Messages.format( TXT_TYPICAL_STR, str ) );
+					staffStr.hardlight( WARNING );
 				}
 			}
 		} else {

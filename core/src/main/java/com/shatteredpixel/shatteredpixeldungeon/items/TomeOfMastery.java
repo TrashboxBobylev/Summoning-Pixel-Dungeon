@@ -26,6 +26,8 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -90,7 +92,7 @@ public class TomeOfMastery extends Item {
 
 	@Override
 	public boolean isIdentified() {
-		return true;
+		return !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
 	}
 
 	public void choose( HeroSubClass way ) {

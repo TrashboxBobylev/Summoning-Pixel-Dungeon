@@ -25,6 +25,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.spells;
 
 
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -68,7 +70,7 @@ public abstract class Spell extends Item {
 	
 	@Override
 	public boolean isIdentified() {
-		return true;
+		return !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
 	}
 	
 	@Override

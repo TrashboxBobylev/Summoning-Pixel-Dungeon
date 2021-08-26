@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.ArmorKit;
@@ -70,7 +71,7 @@ public class Broadsword extends MeleeWeapon {
 
     @Override
     public boolean isIdentified() {
-        return true;
+        return !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
     }
 
     @Override

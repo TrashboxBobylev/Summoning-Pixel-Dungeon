@@ -42,7 +42,8 @@ public class Conducts {
         EVERYTHING,
         EXPLOSIONS,
         INVISIBLE,
-        REGENERATION;
+        REGENERATION,
+        UNKNOWN;
 
         @Override
         public String toString() {

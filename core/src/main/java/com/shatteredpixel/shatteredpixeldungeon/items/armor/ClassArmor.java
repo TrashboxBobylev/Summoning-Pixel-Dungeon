@@ -178,7 +178,7 @@ abstract public class ClassArmor extends Armor {
 	
 	@Override
 	public boolean isIdentified() {
-		return true;
+		return !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
 	}
 	
 	@Override

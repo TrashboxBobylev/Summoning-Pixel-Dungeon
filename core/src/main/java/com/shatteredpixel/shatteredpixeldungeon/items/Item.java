@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -394,13 +395,15 @@ public class Item implements Bundlable {
 	}
 	
 	public Item identify() {
+		if (!Dungeon.isChallenged(Conducts.Conduct.UNKNOWN)) {
 
-		levelKnown = true;
-		cursedKnown = true;
+			levelKnown = true;
+			cursedKnown = true;
 
-		if (Dungeon.hero != null && Dungeon.hero.isAlive()) {
-			Catalog.setSeen(getClass());
-			if (!isIdentified()) Talent.onItemIdentified(Dungeon.hero, this);
+			if (Dungeon.hero != null && Dungeon.hero.isAlive()) {
+				Catalog.setSeen(getClass());
+				if (!isIdentified()) Talent.onItemIdentified(Dungeon.hero, this);
+			}
 		}
 		
 		return this;

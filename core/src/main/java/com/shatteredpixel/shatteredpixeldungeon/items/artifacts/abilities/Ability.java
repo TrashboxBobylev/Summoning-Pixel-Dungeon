@@ -25,6 +25,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -114,7 +116,7 @@ public abstract class Ability extends Artifact {
 
     @Override
     public boolean isIdentified() {
-        return true;
+        return !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
     }
 
     @Override
@@ -141,7 +143,9 @@ public abstract class Ability extends Artifact {
 
     @Override
     public String status() {
+        if (isIdentified())
         return Messages.format( "%.0f%%", Math.floor(charge) );
+        return "";
     }
 
     @Override

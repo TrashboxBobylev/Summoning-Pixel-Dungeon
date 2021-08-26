@@ -414,8 +414,8 @@ public class WndBag extends WndTabbed {
 
 		@Override
 		public boolean isIdentified() {
-			return true;
-		}
+		return true;
+	}
 		
 		@Override
 		public boolean isEquipped( Hero hero ) {

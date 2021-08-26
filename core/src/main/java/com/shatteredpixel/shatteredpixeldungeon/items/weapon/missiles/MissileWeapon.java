@@ -378,7 +378,7 @@ abstract public class MissileWeapon extends Weapon {
 	
 	@Override
 	public boolean isIdentified() {
-		return true;
+		return !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
 	}
 	
 	@Override

@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.powers;
 
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -79,7 +80,7 @@ public abstract class Power extends Item {
 
     @Override
     public boolean isIdentified() {
-        return true;
+        return !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
     }
 
     Class<? extends FlavourBuff> playerBuff;

@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -249,7 +250,7 @@ public class Slingshot extends Weapon {
 
     @Override
     public boolean isIdentified() {
-        return true;
+        return !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
     }
 
 

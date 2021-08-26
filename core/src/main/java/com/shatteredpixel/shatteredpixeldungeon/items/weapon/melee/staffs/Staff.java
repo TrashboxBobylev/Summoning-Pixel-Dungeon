@@ -127,7 +127,7 @@ public class Staff extends Weapon {
             if (curCharges == 0) return Messages.format( "%d%%", (int)(partialCharge * 100));
             else return "100%";
         } else {
-            return null;
+            return "";
         }
     }
 
@@ -165,7 +165,6 @@ public class Staff extends Weapon {
 
     @Override
     public Item identify() {
-        levelKnown = true;
         super.identify();
 
         updateQuickslot();
@@ -243,7 +242,7 @@ public class Staff extends Weapon {
 
     @Override
     public boolean isIdentified() {
-        return true;
+        return !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
     }
 
     public float requiredAttunement(){

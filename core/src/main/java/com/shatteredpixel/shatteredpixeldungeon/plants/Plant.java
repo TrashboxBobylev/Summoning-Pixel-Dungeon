@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.plants;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -186,8 +187,8 @@ public abstract class Plant implements Bundlable {
 		
 		@Override
 		public boolean isIdentified() {
-			return true;
-		}
+		return !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
+	}
 		
 		@Override
 		public int value() {
