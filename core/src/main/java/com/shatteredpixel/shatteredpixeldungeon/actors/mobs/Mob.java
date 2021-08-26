@@ -48,6 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.ConjurerSpell;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.GoldToken;
@@ -923,6 +924,10 @@ public abstract class Mob extends Char {
 	}
 
 	public void rollToDropLoot(){
+		if (Dungeon.isChallenged(Conducts.Conduct.EXPLOSIONS)){
+			((Bomb)(new Bomb().random())).explode(pos);
+		}
+
 		if (Dungeon.hero.lvl > maxLvl + 2 && Dungeon.mode != Dungeon.GameMode.LOL) return;
 
 		float lootChance = this.lootChance;

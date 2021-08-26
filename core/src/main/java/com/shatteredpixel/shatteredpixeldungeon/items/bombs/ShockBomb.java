@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLightning;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Camera;
@@ -200,7 +201,7 @@ public class ShockBomb extends Bomb {
         for (int i : PathFinder.NEIGHBOURS9) {
             Char ch = Actor.findChar(cell + i);
             if (ch != null) {
-                arcs.add(new Lightning.Arc(h.sprite.center(), ch.sprite.center()));
+                arcs.add(new Lightning.Arc(DungeonTilemap.raisedTileCenterToWorld(cell), ch.sprite.center()));
                 arc(ch, affected, arcs);
             } else {
 //                arcs.add(new Lightning.Arc(h.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(cell)));

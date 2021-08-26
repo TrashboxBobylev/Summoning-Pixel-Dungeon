@@ -254,6 +254,20 @@ public class Bomb extends Item {
 	
 	@Override
 	public Item random() {
+		if (Dungeon.isChallenged(Conducts.Conduct.EXPLOSIONS)) {
+			switch (Random.Int(15)) {
+				case 0:
+				case 4:
+				case 5:
+					return this;
+				case 1:
+				case 2:
+				case 3:
+					return new DoubleBomb();
+				default:
+					return Reflection.newInstance(Random.element(enhancedBombs));
+			}
+		}
 		switch(Random.Int( 15 )){
 			case 0: case 1: case 2: case 3: case 4:
 				return new DoubleBomb();

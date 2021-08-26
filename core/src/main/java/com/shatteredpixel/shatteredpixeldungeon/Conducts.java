@@ -39,7 +39,8 @@ public class Conducts {
         SLEEPY,
         TRANSMUTATION,
         KING,
-        EVERYTHING;
+        EVERYTHING,
+        EXPLOSIONS;
 
         @Override
         public String toString() {
