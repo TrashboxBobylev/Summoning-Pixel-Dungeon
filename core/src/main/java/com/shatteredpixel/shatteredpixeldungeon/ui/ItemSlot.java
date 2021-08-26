@@ -270,6 +270,10 @@ public class ItemSlot extends Button {
 					level.hardlight(GOLD);
 					level.text("III"); break;
 			}
+			if (!item.isIdentified()){
+				level.hardlight(BRONZE);
+				level.text("I");
+			}
 			level.measure();
 			if (item instanceof Staff) {
 				int str = ((Weapon)item).STRReq();
