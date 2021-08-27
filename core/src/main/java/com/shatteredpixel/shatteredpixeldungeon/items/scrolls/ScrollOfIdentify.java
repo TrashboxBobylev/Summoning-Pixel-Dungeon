@@ -30,15 +30,18 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 
 public class ScrollOfIdentify extends InventoryScroll {
 
 	{
 		icon = ItemSpriteSheet.Icons.SCROLL_IDENTIFY;
-		mode = WndBag.Mode.UNIDENTIFED;
 
 		bones = true;
+	}
+
+	@Override
+	protected boolean usableOnItem(Item item) {
+		return !item.isIdentified();
 	}
 
 	@Override

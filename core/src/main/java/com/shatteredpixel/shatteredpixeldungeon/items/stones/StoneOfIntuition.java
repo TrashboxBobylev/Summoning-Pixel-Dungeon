@@ -43,7 +43,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Reflection;
 
@@ -51,13 +50,12 @@ import java.util.ArrayList;
 
 public class StoneOfIntuition extends InventoryStone {
 	
-	
 	{
-		mode = WndBag.Mode.INTUITIONABLE;
 		image = ItemSpriteSheet.STONE_INTUITION;
 	}
 
-	public static boolean isIntuitionable( Item item ){
+	@Override
+	protected boolean usableOnItem(Item item) {
 		if (item instanceof Ring){
 			return !((Ring) item).isKnown();
 		} else if (item instanceof Potion){

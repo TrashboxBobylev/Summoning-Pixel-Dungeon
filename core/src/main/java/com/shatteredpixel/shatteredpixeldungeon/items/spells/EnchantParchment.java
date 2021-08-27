@@ -30,27 +30,28 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 
 public class EnchantParchment extends InventorySpell {
 
+
     @Override
-    public WndBag.Mode getMode() {
+    protected boolean usableOnItem(Item item) {
         if (glyph == null && enchantment == null){
-            return WndBag.Mode.ENCHANTED;
+            return ((item instanceof Armor && ((Armor) item).glyph != null) || (item instanceof Weapon && ((Weapon) item).enchantment != null));
         }
         else if (glyph != null){
-            return WndBag.Mode.ARMOR;
+            return item instanceof Armor;
         }
         else {
-            return WndBag.Mode.ENCHANTABLE_WEAPONS;
+            return ScrollOfEnchantment.enchantable(item);
         }
     }
 
