@@ -121,8 +121,7 @@ public abstract class RegularPainter extends Painter {
 			placeDoors( r );
 			r.paint( level );
 		}
-
-		paintDoors( level, rooms );
+			paintDoors( level, rooms );
 
 		if (waterFill > 0f) {
 			paintWater( level, rooms );
@@ -218,29 +217,37 @@ public abstract class RegularPainter extends Painter {
 						d.type = Room.Door.Type.HIDDEN;
 					}
 				}
-
-				switch (d.type) {
-					case EMPTY:
-						l.map[door] = Terrain.EMPTY;
-						break;
-					case TUNNEL:
-						l.map[door] = l.tunnelTile();
-						break;
-					case WATER:
-						l.map[door] = Terrain.WATER;
-						break;
-					case UNLOCKED:
-						l.map[door] = Terrain.DOOR;
-						break;
-					case HIDDEN:
-						l.map[door] = Terrain.SECRET_DOOR;
-						break;
-					case BARRICADE:
-						l.map[door] = Terrain.BARRICADE;
-						break;
-					case LOCKED:
-						l.map[door] = Terrain.LOCKED_DOOR;
-						break;
+				if (Dungeon.mode != Dungeon.GameMode.CAVES) {
+					switch (d.type) {
+						case EMPTY:
+							l.map[door] = Terrain.EMPTY;
+							break;
+						case TUNNEL:
+							l.map[door] = l.tunnelTile();
+							break;
+						case WATER:
+							l.map[door] = Terrain.WATER;
+							break;
+						case UNLOCKED:
+							l.map[door] = Terrain.DOOR;
+							break;
+						case HIDDEN:
+							l.map[door] = Terrain.SECRET_DOOR;
+							break;
+						case BARRICADE:
+							l.map[door] = Terrain.BARRICADE;
+							break;
+						case LOCKED:
+							l.map[door] = Terrain.LOCKED_DOOR;
+							break;
+					}
+				} else {
+					l.map[door] = Terrain.EMPTY;
+					for (int i : PathFinder.NEIGHBOURS4){
+						if (l.insideMap(door+i) && l.map[door+i] == Terrain.WALL && Random.Int(4) == 0){
+							l.map[door+i] = Terrain.EMPTY;
+						}
+					}
 				}
 			}
 		}

@@ -89,6 +89,7 @@ public enum Icons {
 	REAL_TIME,
 	CHAOS,
 	NO_EXP,
+	CAVES,
 
 	//misc icons
 	LIBGDX,
@@ -300,6 +301,9 @@ public enum Icons {
 				break;
 			case NO_EXP:
 				icon.frame( icon.texture.uvRect( 64, 160, 77, 173 ) );
+				break;
+			case CAVES:
+				icon.frame( icon.texture.uvRect( 80, 160, 95, 177 ) );
 				break;
 		}
 		return icon;

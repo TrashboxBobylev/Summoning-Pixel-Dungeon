@@ -143,6 +143,7 @@ public class Dungeon {
 		NORMAL("normal", Icons.ENTER),
 		SMALL("small", Icons.SHRINKING),
 		BIGGER("bigger", Icons.ENLARGEMENT),
+		CAVES("caves", Icons.CAVES),
 		GAUNTLET("gauntlet", Icons.GAUNTLET),
 		EXPLORE( "explore", Icons.EXPLORE),
 		NO_SOU("no_sou", Icons.SOULLESS),

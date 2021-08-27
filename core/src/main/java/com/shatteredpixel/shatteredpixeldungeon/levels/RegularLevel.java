@@ -48,9 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.PitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.*;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.*;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -96,14 +94,22 @@ public abstract class RegularLevel extends Level {
 	
 	protected ArrayList<Room> initRooms() {
 		ArrayList<Room> initRooms = new ArrayList<>();
-		initRooms.add ( roomEntrance = new EntranceRoom());
-		initRooms.add( roomExit = new ExitRoom());
+		if (Dungeon.mode == Dungeon.GameMode.CAVES) {
+			initRooms.add(roomEntrance = new CaveEntrance());
+			initRooms.add(roomExit = new CaveExit());
+		} else {
+			initRooms.add(roomEntrance = new EntranceRoom());
+			initRooms.add(roomExit = new ExitRoom());
+		}
 
 		//force max standard rooms and multiple by 1.5x for large levels
 		int standards = standardRooms(feeling == Feeling.LARGE || SPDSettings.bigdungeon());
-		if (Dungeon.mode == Dungeon.GameMode.CHAOS) standards = Random.Int(0, standards*2);
-		if (feeling == Feeling.LARGE && !SPDSettings.smalldungeon()){
-			standards = (int)Math.ceil(standards * 1.5f);
+		if (Dungeon.mode == Dungeon.GameMode.CHAOS) standards = Random.Int(0, standards * 2);
+		if (feeling == Feeling.LARGE && !SPDSettings.smalldungeon()) {
+			standards = (int) Math.ceil(standards * 1.5f);
+		}
+		if (Dungeon.mode == Dungeon.GameMode.CAVES){
+			standards *= 1.33f;
 		}
 		for (int i = 0; i < standards; i++) {
 			StandardRoom s;
@@ -111,32 +117,32 @@ public abstract class RegularLevel extends Level {
 			do {
 				s = StandardRoom.createRoom();
 				if (SPDSettings.bigdungeon()) {
-					roomSizeCon = !s.setSizeCat(1, (int)(standards * 1.25f) - i);
-				}
-				else {
-					roomSizeCon = !s.setSizeCat( standards-i );
+					roomSizeCon = !s.setSizeCat(1, (int) (standards * 1.25f) - i);
+				} else {
+					roomSizeCon = !s.setSizeCat(standards - i);
 				}
 			} while (roomSizeCon);
-			i += s.sizeCat.roomValue-1;
+			i += s.sizeCat.roomValue - 1;
 			initRooms.add(s);
 		}
-		
+
 		if (Dungeon.shopOnLevel())
 			initRooms.add(new ShopRoom());
 
 		//force max special rooms and add one more for large levels
 		int specials = specialRooms(feeling == Feeling.LARGE || SPDSettings.bigdungeon());
-		if (feeling == Feeling.LARGE){
+		if (feeling == Feeling.LARGE) {
 			specials++;
 		}
 		if (Dungeon.mode == Dungeon.GameMode.CHAOS) specials = Random.Int(1, specials);
 		SpecialRoom.initForFloor();
-		for (int i = 0; i < specials; i++) {
-			SpecialRoom s = SpecialRoom.createRoom();
-			if (s instanceof PitRoom) specials++;
-			initRooms.add(s);
-		}
-		
+		if (Dungeon.mode != Dungeon.GameMode.CAVES){
+			for (int i = 0; i < specials; i++) {
+				SpecialRoom s = SpecialRoom.createRoom();
+				if (s instanceof PitRoom) specials++;
+				initRooms.add(s);
+			}
+
 		int secrets = SecretRoom.secretsForFloor(Dungeon.depth);
 		//one additional secret for secret levels
 		if (feeling == Feeling.SECRETS) secrets++;
@@ -144,6 +150,7 @@ public abstract class RegularLevel extends Level {
 		for (int i = 0; i < secrets; i++) {
 			initRooms.add(SecretRoom.createRoom());
 		}
+	}
 
 		return initRooms;
 	}
@@ -169,13 +176,13 @@ public abstract class RegularLevel extends Level {
 					.setLoopShape( 3 ,
 							Random.Float(0.2f, 1.5f),
 							0f);
-		} else {
+		} else if (tryn == 2 || Dungeon.mode == Dungeon.GameMode.CAVES){
 			return new ClumpyLoopBuilder()
 					.setLoopShape( 3 ,
 							Random.Float(0f, 0.4f),
 							Random.Float(0f, 0.6f));
 		}
-
+		return null;
 	}
 	
 	protected abstract Painter painter();

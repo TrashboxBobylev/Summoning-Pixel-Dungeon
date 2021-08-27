@@ -30,9 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.Connecti
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.MazeConnectionRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.*;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -109,9 +107,9 @@ public abstract class RegularBuilder extends Builder {
 		singleConnections.clear();
 		multiConnections.clear();
 		for (Room r : rooms){
-			if (r instanceof EntranceRoom){
+			if (r instanceof EntranceRoom || r instanceof CaveEntrance){
 				entrance = r;
-			} else if (r instanceof ExitRoom) {
+			} else if (r instanceof ExitRoom || r instanceof CaveExit) {
 				exit = r;
 			} else if (r instanceof ShopRoom && r.maxConnections(Room.ALL) == 1){
 				shop = r;
@@ -190,6 +188,9 @@ public abstract class RegularBuilder extends Builder {
 
 			for (int j = 0; j < connectingRooms; j++){
 				Room t = r instanceof SecretRoom ? new MazeConnectionRoom() : (this instanceof ClumpyLoopBuilder ? StandardRoom.createRoom() : ConnectionRoom.createRoom());
+				if (Dungeon.mode == Dungeon.GameMode.CAVES){
+					t = new CaveRoom();
+				}
 				tries = 3;
 
 				do {

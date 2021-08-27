@@ -22,39 +22,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.watabou.utils.Point;
 
-public class ConnectionRuinsRoom extends ConnectionPatchRoom {
+public class CaveEntrance extends PatchRoom {
 
-	@Override
-	public boolean canMerge(Level l, Point p, int mergeTerrain) {
-		return true;
+	{
+		noMobs = true;
 	}
 
+	@Override
+	public float[] sizeCatProbs() {
+		return new float[]{8, 4, 1, 0};
+	}
+	
 	@Override
 	public void paint(Level level) {
 		Painter.fill( level, this, Terrain.WALL );
 		Painter.fill( level, this, 1 , Terrain.EMPTY );
 		for (Door door : connected.values()) {
-			door.set( Door.Type.TUNNEL );
-		}
-
-		//fill scales from ~20% at 4x4, to ~50% at 18x18
-		// normal   ~20% to ~30%
-		// large    ~30% to ~40%
-		// giant    ~40% to ~50%
-		float fill = 0.45f + (width()*height())/512f;
-		if (Dungeon.mode == Dungeon.GameMode.CAVES){
-			fill = 0.30f + (width()*height())/1024f;
+			door.set( Door.Type.REGULAR );
 		}
 		
-		setupPatch(level, fill, 0, true);
+		//fill scales from ~30% at 4x4, to ~60% at 18x18
+		// normal   ~30% to ~40%
+		// large    ~40% to ~50%
+		// giant    ~50% to ~60%
+		float fill = 0.30f + (width()*height())/1024f;
+		
+		setupPatch(level, fill, 3, true);
 		cleanDiagonalEdges();
 		
 		for (int i = top + 1; i < bottom; i++) {
@@ -65,5 +64,10 @@ public class ConnectionRuinsRoom extends ConnectionPatchRoom {
 				}
 			}
 		}
+		do {
+			level.entrance = level.pointToCell(random(2));
+		} while (level.findMob(level.entrance) != null && (level.map[level.entrance] == Terrain.WALL || level.map[level.entrance] == Terrain.WALL_DECO));
+		Painter.set( level, level.entrance, Terrain.ENTRANCE );
 	}
+	
 }

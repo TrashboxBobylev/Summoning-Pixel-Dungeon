@@ -274,6 +274,9 @@ public abstract class StandardRoom extends Room {
 	
 	
 	public static StandardRoom createRoom(){
+		if (Dungeon.mode == Dungeon.GameMode.CAVES){
+			return Reflection.newInstance(CaveRoom.class);
+		}
 		if (Dungeon.mode == Dungeon.GameMode.GAUNTLET){
 			return Reflection.newInstance(EmptyRoom.class);
 		}

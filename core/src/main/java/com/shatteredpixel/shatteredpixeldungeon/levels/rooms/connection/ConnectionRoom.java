@@ -97,6 +97,9 @@ public abstract class ConnectionRoom extends Room {
 	
 	public static ConnectionRoom createRoom(){
 		setChances();
+		if (Dungeon.mode == Dungeon.GameMode.CAVES){
+			return Reflection.newInstance(ConnectionRuinsRoom.class);
+		}
 		if (Dungeon.mode == Dungeon.GameMode.GAUNTLET){
 			return Reflection.newInstance(TunnelRoom.class);
 		}
