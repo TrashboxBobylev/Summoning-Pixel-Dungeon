@@ -355,6 +355,7 @@ public abstract class RegularLevel extends Level {
 			if (Dungeon.hero.heroClass == HeroClass.ADVENTURER) nItems *= 1.5f;
 		}
 		else if (Dungeon.hero.heroClass == HeroClass.ADVENTURER) nItems *= 2f;
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT) nItems *= 1.5f;
 
 		if (Dungeon.mode == Dungeon.GameMode.CHAOS) nItems = Random.Int(0 ,nItems);
 
