@@ -127,8 +127,16 @@ public class Wraith extends Mob {
 			}
 		}
 	}
-	
-	public static Wraith spawnAt( int pos ) {
+
+	@Override
+	public void spend(float time) {
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+			super.spend(time*0.75f);
+		}
+		else super.spend(time);
+	}
+
+	public static Wraith spawnAt(int pos ) {
 		if (Dungeon.level.passable[pos] && Actor.findChar( pos ) == null) {
 			
 			Wraith w = new Wraith();

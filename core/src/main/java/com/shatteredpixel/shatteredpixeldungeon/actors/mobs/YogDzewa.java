@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DistortionTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -85,13 +86,34 @@ public class YogDzewa extends Mob {
 	private static final int MAX_SUMMON_CD = 15;
 	private boolean needCrossBeam;
 
+	private static Class getPairedFist(Class fist){
+		if (fist == YogFist.BurningFist.class) return YogFist.SoiledFist.class;
+		if (fist == YogFist.SoiledFist.class) return YogFist.BurningFist.class;
+		if (fist == YogFist.RottingFist.class) return YogFist.RustedFist.class;
+		if (fist == YogFist.RustedFist.class) return YogFist.RottingFist.class;
+		if (fist == YogFist.BrightFist.class) return YogFist.DarkFist.class;
+		if (fist == YogFist.DarkFist.class) return YogFist.BrightFist.class;
+		return null;
+	}
+
 	private ArrayList<Class> fistSummons = new ArrayList<>();
+	private ArrayList<Class> challengeSummons = new ArrayList<>();
 	{
 		Random.pushGenerator(Dungeon.seedCurDepth());
-			fistSummons.add(Random.Int(2) == 0 ? YogFist.BurningFist.class : YogFist.SoiledFist.class);
-			fistSummons.add(Random.Int(2) == 0 ? YogFist.RottingFist.class : YogFist.RustedFist.class);
-			fistSummons.add(Random.Int(2) == 0 ? YogFist.BrightFist.class : YogFist.DarkFist.class);
-			Random.shuffle(fistSummons);
+		fistSummons.add(Random.Int(2) == 0 ? YogFist.BurningFist.class : YogFist.SoiledFist.class);
+		fistSummons.add(Random.Int(2) == 0 ? YogFist.RottingFist.class : YogFist.RustedFist.class);
+		fistSummons.add(Random.Int(2) == 0 ? YogFist.BrightFist.class : YogFist.DarkFist.class);
+		Random.shuffle(fistSummons);
+		//randomly place challenge summons so that two fists of a pair can never spawn together
+		if (Random.Int(2) == 0){
+			challengeSummons.add(getPairedFist(fistSummons.get(1)));
+			challengeSummons.add(getPairedFist(fistSummons.get(2)));
+			challengeSummons.add(getPairedFist(fistSummons.get(0)));
+		} else {
+			challengeSummons.add(getPairedFist(fistSummons.get(2)));
+			challengeSummons.add(getPairedFist(fistSummons.get(0)));
+			challengeSummons.add(getPairedFist(fistSummons.get(1)));
+		}
 		Random.popGenerator();
 	}
 
@@ -198,8 +220,10 @@ public class YogDzewa extends Mob {
 						if (eradication != null) {
 							multiplier = (float) (Math.pow(1.15f, eradication.combo));
 						}
-
-						ch.damage((int) (Random.NormalIntRange(20, 30) * multiplier), new Eye.DeathGaze());
+						if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+							ch.damage((int) (Random.NormalIntRange(45, 75) * multiplier), new Eye.DeathGaze());
+						}
+						else ch.damage((int) (Random.NormalIntRange(20, 30) * multiplier), new Eye.DeathGaze());
 
 						if (Dungeon.level.heroFOV[pos]) {
 							ch.sprite.flash();
@@ -294,6 +318,9 @@ public class YogDzewa extends Mob {
 				}
 
 				if (spawnPos != -1) {
+					if (Dungeon.mode == Dungeon.GameMode.DIFFICULT && Random.Int(2) == 0){
+						new DistortionTrap().set(pos).activate();
+					}
 					summon.pos = spawnPos;
 					GameScene.add( summon );
 					Actor.addDelayed( new Pushing( summon, pos, summon.pos ), -1 );
@@ -365,8 +392,11 @@ public class YogDzewa extends Mob {
 			GLog.negative(Messages.get(this, "darkness"));
 			sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "invulnerable"));
 
-			YogFist fist = (YogFist) Reflection.newInstance(fistSummons.remove(0));
-			fist.pos = Dungeon.level.exit;
+			addFist((YogFist)Reflection.newInstance(fistSummons.remove(0)));
+
+			if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+				addFist((YogFist)Reflection.newInstance(challengeSummons.remove(0)));
+			}
 
 			CellEmitter.get(Dungeon.level.exit-1).burst(ShadowParticle.UP, 25);
 			CellEmitter.get(Dungeon.level.exit).burst(ShadowParticle.UP, 100);
@@ -375,23 +405,38 @@ public class YogDzewa extends Mob {
 			if (abilityCooldown < 5) abilityCooldown = 5;
 			if (summonCooldown < 5) summonCooldown = 5;
 
-			int targetPos = Dungeon.level.exit + Dungeon.level.width();
-			if (Actor.findChar(targetPos) == null){
-				fist.pos = targetPos;
-			} else if (Actor.findChar(targetPos-1) == null){
-				fist.pos = targetPos-1;
-			} else if (Actor.findChar(targetPos+1) == null){
-				fist.pos = targetPos+1;
-			}
-
-			GameScene.add(fist, 4);
-			Actor.addDelayed( new Pushing( fist, Dungeon.level.exit, fist.pos ), -1 );
-			phase++;
 		}
 
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
 		if (lock != null) lock.addTime(dmgTaken);
 
+	}
+
+	public void addFist(YogFist fist){
+		fist.pos = Dungeon.level.exit;
+
+		CellEmitter.get(Dungeon.level.exit-1).burst(ShadowParticle.UP, 25);
+		CellEmitter.get(Dungeon.level.exit).burst(ShadowParticle.UP, 100);
+		CellEmitter.get(Dungeon.level.exit+1).burst(ShadowParticle.UP, 25);
+
+		if (abilityCooldown < 5) abilityCooldown = 5;
+		if (summonCooldown < 5) summonCooldown = 5;
+
+		int targetPos = Dungeon.level.exit + Dungeon.level.width();
+
+		if (Dungeon.mode != Dungeon.GameMode.DIFFICULT
+				&& Actor.findChar(targetPos) == null){
+			fist.pos = targetPos;
+		} else if (Actor.findChar(targetPos-1) == null){
+			fist.pos = targetPos-1;
+		} else if (Actor.findChar(targetPos+1) == null){
+			fist.pos = targetPos+1;
+		} else if (Actor.findChar(targetPos) == null){
+			fist.pos = targetPos;
+		}
+
+		GameScene.add(fist, 4);
+		Actor.addDelayed( new Pushing( fist, Dungeon.level.exit, fist.pos ), -1 );
 	}
 
 	private YogFist findFist(){
@@ -486,6 +531,7 @@ public class YogDzewa extends Mob {
 
 	private static final String FIST_SUMMONS = "fist_summons";
 	private static final String REGULAR_SUMMONS = "regular_summons";
+	private static final String CHALLENGE_SUMMONS = "challenges_summons";
 
 	private static final String TARGETED_CELLS = "targeted_cells";
 	private static final String NEED_CROSS = "needCross";
@@ -500,6 +546,7 @@ public class YogDzewa extends Mob {
 
 		bundle.put(FIST_SUMMONS, fistSummons.toArray(new Class[0]));
 		bundle.put(REGULAR_SUMMONS, regularSummons.toArray(new Class[0]));
+		bundle.put(CHALLENGE_SUMMONS, challengeSummons.toArray(new Class[0]));
 
 		int[] bundleArr = new int[targetedCells.size()];
 		for (int i = 0; i < targetedCells.size(); i++){
@@ -520,6 +567,9 @@ public class YogDzewa extends Mob {
 
 		fistSummons.clear();
 		Collections.addAll(fistSummons, bundle.getClassArray(FIST_SUMMONS));
+		challengeSummons.clear();
+		Collections.addAll(challengeSummons, bundle.getClassArray(CHALLENGE_SUMMONS));
+
 		regularSummons.clear();
 		Collections.addAll(regularSummons, bundle.getClassArray(REGULAR_SUMMONS));
 

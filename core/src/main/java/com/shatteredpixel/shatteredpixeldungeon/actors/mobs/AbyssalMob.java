@@ -58,6 +58,9 @@ public abstract class AbyssalMob extends Mob {
     }
 
     public int abyssLevel(){
-        return Math.max(0, Dungeon.chapterNumber()-4);
+        if (Dungeon.mode == Dungeon.GameMode.DIFFICULT)
+            return Math.max(0, Dungeon.chapterNumber()-4);
+
+        return 0;
     }
 }

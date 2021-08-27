@@ -27,6 +27,10 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Block;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
@@ -88,6 +92,19 @@ public class Skeleton extends Mob {
 			Dungeon.fail( getClass() );
 			GLog.negative( Messages.get(this, "explo_kill") );
 		}
+	}
+
+	@Override
+	protected boolean act() {
+		boolean act = super.act();
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT) {
+			Hero.arrangeBlast(pos, sprite, MagicMissile.BEACON);
+			if (Dungeon.level.distance(pos, Dungeon.hero.pos) > 1 && Dungeon.hero == enemy){
+				Buff.affect(this, Block.class, 5f);
+				spend(1 / speed());
+			}
+		}
+		return act;
 	}
 
 	@Override

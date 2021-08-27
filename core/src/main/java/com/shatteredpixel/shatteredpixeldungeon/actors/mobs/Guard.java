@@ -115,8 +115,17 @@ public class Guard extends Mob {
 				}));
 			}
 		}
-		chainsUsed = true;
+		if (Dungeon.mode != Dungeon.GameMode.DIFFICULT)
+			chainsUsed = true;
 		return true;
+	}
+
+	@Override
+	public void damage(int dmg, Object src) {
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+			dmg *= 0.75;
+		}
+		super.damage(dmg, src);
 	}
 
 	@Override

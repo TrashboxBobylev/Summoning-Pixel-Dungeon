@@ -48,6 +48,8 @@ public class Brute extends Mob {
 		
 		EXP = 8;
 		maxLvl = 16;
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT)
+		baseSpeed = 1.2f;
 		
 		loot = new Gold().goldFromEnemy();
 		lootChance = 0.5f;
@@ -80,6 +82,14 @@ public class Brute extends Mob {
 		if (cause == Chasm.class){
 			hasRaged = true; //don't let enrage trigger for chasm deaths
 		}
+	}
+
+	@Override
+	public void damage(int dmg, Object src) {
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT && buff(BruteRage.class) != null){
+			buff(BruteRage.class).incShield(dmg);
+		}
+		else super.damage(dmg, src);
 	}
 
 	@Override

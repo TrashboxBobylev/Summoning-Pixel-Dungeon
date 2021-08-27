@@ -184,7 +184,11 @@ public class DwarfKing extends Mob {
 					Sample.INSTANCE.play( Assets.Sounds.CHALLENGE );
 					yell(Messages.get(this, "wave_1"));
 				}
-				summonSubject(3, DKGhoul.class);
+				if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+					summonSubject(3, Random.Int(2) == 0 ? DKMonk.class : DKWarlock.class);
+				} else {
+					summonSubject(3, DKGhoul.class);
+				}
 				spend(3*TICK);
 				summonsMade++;
 				return true;
@@ -194,11 +198,20 @@ public class DwarfKing extends Mob {
 					Sample.INSTANCE.play( Assets.Sounds.CHALLENGE );
 					yell(Messages.get(this, "wave_2"));
 				}
-				if (summonsMade == 7){
-					summonSubject(3, Random.Int(2) == 0 ? DKMonk.class : DKWarlock.class);
+				if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+					if (summonsMade == 7) {
+						summonSubject(3, Random.Int(2) == 0 ? DKGolem.class : DKVessels.class);
+					} else {
+						summonSubject(3, Random.Int(2) == 0 ? DKMonk.class : DKWarlock.class);
+					}
 				} else {
-					summonSubject(3, DKGhoul.class);
+					if (summonsMade == 7) {
+						summonSubject(3, Random.Int(2) == 0 ? DKMonk.class : DKWarlock.class);
+					} else {
+						summonSubject(3, DKGhoul.class);
+					}
 				}
+
 				summonsMade++;
 				spend(TICK);
 				return true;
@@ -206,10 +219,18 @@ public class DwarfKing extends Mob {
 				sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.4f, 2 );
 				Sample.INSTANCE.play( Assets.Sounds.CHALLENGE );
 				yell(Messages.get(this, "wave_3"));
-				summonSubject(4, DKWarlock.class);
-				summonSubject(4, DKMonk.class);
-				summonSubject(4, DKGhoul.class);
-				summonSubject(4, DKGhoul.class);
+				if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+					summonSubject(3, DKVessels.class);
+					summonSubject(3, DKGolem.class);
+					summonSubject(3, DKVessels.class);
+					summonSubject(3, DKGolem.class);
+				}
+				else {
+					summonSubject(4, DKWarlock.class);
+					summonSubject(4, DKMonk.class);
+					summonSubject(4, DKGhoul.class);
+					summonSubject(4, DKGhoul.class);
+				}
 				summonsMade = 12;
 				spend(TICK);
 				return true;
@@ -226,6 +247,13 @@ public class DwarfKing extends Mob {
 
 	private boolean summonSubject( int delay ){
 		//4th summon is always a monk or warlock, otherwise ghoul
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+			if (summonsMade % 4 == 3){
+				return summonSubject( delay, Random.Int(2) == 0 ? DKGolem.class : DKVessels.class );
+			} else {
+				return summonSubject( delay, Random.Int(2) == 0 ? DKMonk.class : DKWarlock.class );
+			}
+		}
 		if (summonsMade % 4 == 3){
 			return summonSubject( delay, Random.Int(2) == 0 ? DKMonk.class : DKWarlock.class );
 		} else {
@@ -485,6 +513,18 @@ public class DwarfKing extends Mob {
 		}
 	}
 
+	public static class DKGolem extends Golem {
+		{
+			state = HUNTING;
+		}
+	}
+
+	public static class DKVessels extends DwarfGuardMob {
+		{
+			state = HUNTING;
+		}
+	}
+
 	public static class Summoning extends Buff {
 
 		private int delay;
@@ -606,7 +646,7 @@ public class DwarfKing extends Mob {
 			super.detach();
 			for (Mob m : Dungeon.level.mobs){
 				if (m instanceof DwarfKing){
-					m.damage(m.HT/12, this);
+					m.damage(m.HT/ 12, this);
 				}
 			}
 		}

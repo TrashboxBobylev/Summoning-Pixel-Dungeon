@@ -114,7 +114,8 @@ public class Slime extends Mob {
 				
 				Slime clone = split();
                 HP = HT;
-				HT *= 0.8f;
+                if (Dungeon.mode != Dungeon.GameMode.DIFFICULT)
+					HT *= 0.8f;
 				clone.HT = clone.HP = HT;
 				clone.pos = Random.element( candidates );
 				clone.state = clone.HUNTING;

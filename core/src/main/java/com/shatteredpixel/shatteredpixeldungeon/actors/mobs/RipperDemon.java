@@ -134,7 +134,7 @@ public class RipperDemon extends Mob {
 		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
 
 			if (leapPos != -1){
-
+				if (Dungeon.mode != Dungeon.GameMode.DIFFICULT)
 				leapCooldown = Random.NormalIntRange(2, 4);
 				Ballistica b = new Ballistica(pos, leapPos, Ballistica.STOP_TARGET | Ballistica.STOP_SOLID);
 

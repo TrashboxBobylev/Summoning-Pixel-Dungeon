@@ -24,7 +24,11 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollSprite;
 import com.watabou.utils.Random;
@@ -57,5 +61,17 @@ public class Gnoll extends Mob {
 	@Override
 	public int drRoll() {
 		return Random.NormalIntRange(0, 2);
+	}
+
+	@Override
+	protected boolean act() {
+		boolean act = super.act();
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT) {
+			Hero.arrangeBlast(pos, sprite, MagicMissile.EARTH);
+			if (Dungeon.level.distance(pos, Dungeon.hero.pos) < 2){
+				Hunger.adjustHunger(-5f);
+			}
+		}
+		return act;
 	}
 }

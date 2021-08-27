@@ -135,8 +135,8 @@ public abstract class Elemental extends Mob {
 		} else {
 			enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
 		}
-
-		rangedCooldown = Random.NormalIntRange( 3, 5 );
+		if (Dungeon.mode != Dungeon.GameMode.DIFFICULT)
+			rangedCooldown = Random.NormalIntRange( 3, 5 );
 	}
 
 	public void onZapComplete() {
@@ -147,7 +147,10 @@ public abstract class Elemental extends Mob {
 	@Override
 	public void add( Buff buff ) {
 		if (harmfulBuffs.contains( buff.getClass() )) {
-			damage( Random.NormalIntRange( HT/2, HT * 3/5 ), buff );
+			if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+				damage(Random.NormalIntRange( HT/10, HT * 3/10 ), buff);
+			}
+			else damage( Random.NormalIntRange( HT/2, HT * 3/5 ), buff );
 		} else {
 			super.add( buff );
 		}

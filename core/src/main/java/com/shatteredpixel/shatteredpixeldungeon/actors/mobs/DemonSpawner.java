@@ -46,6 +46,9 @@ public class DemonSpawner extends Mob {
 		spriteClass = SpawnerSprite.class;
 
 		HP = HT = 120;
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+			HP = HT = 250;
+		}
 		defenseSkill = 0;
 
 		EXP = 25;

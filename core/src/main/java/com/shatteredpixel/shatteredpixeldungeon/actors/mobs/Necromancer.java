@@ -28,10 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
@@ -83,6 +80,19 @@ public class Necromancer extends Mob {
 			updateSpriteState();
 		}
 		return super.act();
+	}
+
+	@Override
+	public void damage(int dmg, Object src) {
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+			if (HP - dmg <= 0 && (src instanceof Burning || src instanceof FrostBurn)){
+				super.damage(dmg, src);
+			} else {
+				return;
+			}
+		}
+
+		super.damage(dmg, src);
 	}
 
 	@Override

@@ -37,7 +37,7 @@ public class Buff extends Actor {
 	
 	public Char target;
 
-	{
+    {
 		actPriority = BUFF_PRIO; //low priority, towards the end of a turn
 	}
 

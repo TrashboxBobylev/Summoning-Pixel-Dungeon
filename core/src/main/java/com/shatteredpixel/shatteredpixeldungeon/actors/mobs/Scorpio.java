@@ -56,6 +56,9 @@ public class Scorpio extends Mob {
 
 		properties.add(Property.DEMONIC);
 		properties.add(Property.RANGED);
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+			properties.add(Property.IGNORE_ARMOR);
+		}
 	}
 
 	@Override

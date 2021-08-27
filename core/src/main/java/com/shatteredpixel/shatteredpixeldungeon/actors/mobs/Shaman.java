@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -85,6 +86,22 @@ public abstract class Shaman extends Mob {
 	protected Item createLoot() {
 		Dungeon.LimitedDrops.SHAMAN_WAND.count++;
 		return super.createLoot();
+	}
+
+	@Override
+	public int attackProc(Char enemy, int damage) {
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+				damage = super.attackProc( enemy, damage );
+
+					Ballistica trajectory = new Ballistica(pos, enemy.pos, Ballistica.STOP_TARGET);
+					//trim it to just be the part that goes past them
+					trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size()-1), Ballistica.PROJECTILE);
+					//knock them back along that ballistica
+					WandOfBlastWave.throwChar(enemy, trajectory, Random.Int(1, 3), true);
+
+				return damage;
+			}
+		return super.attackProc(enemy, damage);
 	}
 
 	protected boolean doAttack(Char enemy ) {

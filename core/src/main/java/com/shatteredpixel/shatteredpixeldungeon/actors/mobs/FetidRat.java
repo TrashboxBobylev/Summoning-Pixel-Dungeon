@@ -24,8 +24,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StenchGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
@@ -74,6 +76,11 @@ public class FetidRat extends Rat {
 	public int defenseProc( Char enemy, int damage ) {
 
 		GameScene.add(Blob.seed(pos, 20, StenchGas.class));
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+			CorrosiveGas seed = Blob.seed(pos, 20, CorrosiveGas.class);
+			seed.setStrength(2);
+			GameScene.add(seed);
+		}
 
 		return super.defenseProc(enemy, damage);
 	}

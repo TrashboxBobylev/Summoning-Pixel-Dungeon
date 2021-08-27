@@ -28,10 +28,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -147,6 +146,18 @@ public class Succubus extends Mob {
 		ScrollOfTeleportation.appear( this, cell );
 
 		blinkCooldown = Random.IntRange(4, 6);
+	}
+
+	@Override
+	protected boolean act() {
+		boolean act = super.act();
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT) {
+			Hero.arrangeBlast(pos, sprite, MagicMissile.SHADOW_CONE, 5f);
+			if (Dungeon.level.distance(pos, Dungeon.hero.pos) < 5 && enemy == Dungeon.hero){
+				Buff.affect(enemy, TimedShrink.class, 2f);
+			}
+		}
+		return act;
 	}
 	
 	@Override

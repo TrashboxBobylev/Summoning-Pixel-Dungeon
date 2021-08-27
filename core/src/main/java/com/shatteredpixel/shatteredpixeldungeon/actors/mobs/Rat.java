@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RatSprite;
 import com.watabou.utils.Random;
@@ -52,5 +53,22 @@ public class Rat extends Mob {
 	@Override
 	public int drRoll() {
 		return Random.NormalIntRange(0, 1);
+	}
+
+	@Override
+	public float spawningWeight() {
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT) return 0f;
+		return super.spawningWeight();
+	}
+
+	@Override
+	public int attackProc(Char enemy, int damage) {
+		for (Char ch : Dungeon.level.mobs.toArray(new Mob[0])){
+			if (ch instanceof Rat){
+				((Rat) ch).aggro(enemy);
+				((Rat) ch).beckon(enemy.pos);
+			}
+		}
+		return super.attackProc(enemy, damage);
 	}
 }

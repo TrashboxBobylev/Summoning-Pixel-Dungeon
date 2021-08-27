@@ -50,6 +50,9 @@ public class SpectralShaman extends Mob {
 		HP = HT = 125;
 		EXP = 12;
 		defenseSkill = 16;
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+			defenseSkill = 22;
+		}
 		baseSpeed = 2f;
 
 		loot = Generator.Category.WAND;
@@ -80,16 +83,25 @@ public class SpectralShaman extends Mob {
 	
 	@Override
 	public int damageRoll() {
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+			return Random.NormalIntRange( 7, 20 );
+		}
 		return Random.NormalIntRange( 4, 11 );
 	}
 	
 	@Override
 	public int attackSkill( Char target ) {
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+			return 40;
+		}
 		return 20;
 	}
 	
 	@Override
 	public int drRoll() {
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+			return Random.NormalIntRange(4, 12);
+		}
 		return Random.NormalIntRange(0, 8);
 	}
 

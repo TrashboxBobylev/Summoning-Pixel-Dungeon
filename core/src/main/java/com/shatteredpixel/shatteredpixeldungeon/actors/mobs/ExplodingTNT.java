@@ -28,8 +28,10 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Timer;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Flashbang;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Noisemaker;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.RatBomb;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -69,12 +71,22 @@ public class ExplodingTNT extends Mob {
     }
 
     @Override
+    public void die(Object cause) {
+        super.die(cause);
+        if (Dungeon.mode == Dungeon.GameMode.DIFFICULT) {
+            Item.curUser = null;
+            new Noisemaker().cast(this, pos);
+        }
+    }
+
+    @Override
     protected boolean doAttack(Char enemy) {
         boolean visible = Dungeon.level.heroFOV[pos];
 	    if (!attack) {
             return super.doAttack(enemy);
         } else {
             final ExplodingTNT mouse = this;
+            Item.curUser = null;
 //            Callback call = new Callback() {
 //                @Override
 //                public void call() {

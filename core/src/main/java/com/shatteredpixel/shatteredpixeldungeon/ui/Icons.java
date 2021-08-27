@@ -90,6 +90,7 @@ public enum Icons {
 	CHAOS,
 	NO_EXP,
 	CAVES,
+	DARK_AMU,
 
 	//misc icons
 	LIBGDX,
@@ -303,7 +304,10 @@ public enum Icons {
 				icon.frame( icon.texture.uvRect( 64, 160, 77, 173 ) );
 				break;
 			case CAVES:
-				icon.frame( icon.texture.uvRect( 80, 160, 95, 177 ) );
+				icon.frame( icon.texture.uvRect( 80, 160, 96, 176 ) );
+				break;
+			case DARK_AMU:
+				icon.frame( icon.texture.uvRect( 96, 160, 112, 176 ) );
 				break;
 		}
 		return icon;

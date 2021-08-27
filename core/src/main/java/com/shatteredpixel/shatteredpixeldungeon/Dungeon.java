@@ -148,6 +148,7 @@ public class Dungeon {
 		EXPLORE( "explore", Icons.EXPLORE),
 		NO_SOU("no_sou", Icons.SOULLESS),
 		HELL("hell", Icons.HELL_CHEST),
+		DIFFICULT("oh_my_is_this_eternity_mode", Icons.DARK_AMU),
 		REALTIME("realtime", Icons.REAL_TIME),
 		CHAOS("chaos", Icons.CHAOS),
 		NO_EXP("no_exp", Icons.NO_EXP),

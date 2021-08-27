@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
@@ -118,7 +117,6 @@ public class Ghoul extends Mob {
 			
 			if (!candidates.isEmpty()){
 				Ghoul child = new Ghoul();
-				Buff.affect(child, Slow.class, 22000);
 				child.partnerID = this.id();
 				this.partnerID = child.id();
 				if (state != SLEEPING) {
@@ -149,7 +147,9 @@ public class Ghoul extends Mob {
 				beingLifeLinked = true;
 				Actor.remove(this);
 				Dungeon.level.mobs.remove( this );
-				timesDowned++;
+				if (Dungeon.mode != Dungeon.GameMode.DIFFICULT)
+					timesDowned++;
+				else timesDowned = 1;
 				Buff.append(nearby, GhoulLifeLink.class).set(timesDowned*5, this);
 				((GhoulSprite)sprite).crumple();
 				beingLifeLinked = false;
@@ -238,7 +238,6 @@ public class Ghoul extends Mob {
 
 			turnsToRevive--;
 			if (turnsToRevive <= 0){
-				ghoul.HP = Math.round(ghoul.HT/10f);
 				if (Actor.findChar( ghoul.pos ) != null) {
 					ArrayList<Integer> candidates = new ArrayList<>();
 					for (int n : PathFinder.NEIGHBOURS8) {
@@ -256,6 +255,10 @@ public class Ghoul extends Mob {
 						spend(TICK);
 						return true;
 					}
+				}
+				ghoul.HP = Math.round(ghoul.HT/10f);
+				if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+					ghoul.HP = Math.round(ghoul.HT/2f);
 				}
 				Actor.add(ghoul);
 				ghoul.time = Dungeon.hero.time;

@@ -37,10 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.*;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SmokeParticle;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.TomeOfMastery;
@@ -66,6 +63,8 @@ import com.watabou.utils.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.GameMode.DIFFICULT;
 
 public class NewTengu extends Mob {
 	
@@ -467,11 +466,13 @@ public class NewTengu extends Mob {
 		int abilityToUse = -1;
 		
 		while (!abilityUsed){
-			
+
 			if (abilitiesUsed == 0){
 				abilityToUse = BOMB_ABILITY;
 			} else if (abilitiesUsed == 1){
 				abilityToUse = SHOCKER_ABILITY;
+			} else if (Dungeon.mode == DIFFICULT) {
+				abilityToUse = Random.Int(2)*2; //0 or 2, can't roll fire ability with challenge
 			} else {
 				abilityToUse = Random.Int(3);
 			}
@@ -499,15 +500,27 @@ public class NewTengu extends Mob {
 						}
 						break;
 				}
+				//always use the fire ability with the bosses challenge
+				if (abilityUsed && abilityToUse != FIRE_ABILITY && Dungeon.mode == DIFFICULT){
+					throwFire(NewTengu.this, enemy);
+				}
 			}
 			
 		}
-		
-		//spend only 1 turn if seriously behind on ability uses
-		if (targetAbilityUses() - abilitiesUsed >= 4){
-			spend(TICK);
+
+		//spend 1 less turn if seriously behind on ability uses
+		if (Dungeon.mode == DIFFICULT){
+			if (targetAbilityUses() - abilitiesUsed >= 4) {
+				//spend no time
+			} else {
+				spend(TICK);
+			}
 		} else {
-			spend(2 * TICK);
+			if (targetAbilityUses() - abilitiesUsed >= 4) {
+				spend(TICK);
+			} else {
+				spend(2 * TICK);
+			}
 		}
 		
 		lastAbility = abilityToUse;
@@ -523,15 +536,13 @@ public class NewTengu extends Mob {
 	public static boolean throwBomb(final Char thrower, final Char target){
 		
 		int targetCell = -1;
-		
-		//Targets closest cell which is adjacent to target, and at least 3 tiles away
+
+		//Targets closest cell which is adjacent to target
 		for (int i : PathFinder.NEIGHBOURS8){
 			int cell = target.pos + i;
-			if (Dungeon.level.distance(cell, thrower.pos) >= 3 && !Dungeon.level.solid[cell]){
-				if (targetCell == -1 ||
-						Dungeon.level.trueDistance(cell, thrower.pos) < Dungeon.level.trueDistance(targetCell, thrower.pos)){
-					targetCell = cell;
-				}
+			if (targetCell == -1 ||
+					Dungeon.level.trueDistance(cell, thrower.pos) < Dungeon.level.trueDistance(targetCell, thrower.pos)){
+				targetCell = cell;
 			}
 		}
 		
@@ -889,7 +900,10 @@ public class NewTengu extends Mob {
 							
 							Char ch = Actor.findChar( cell );
 							if (ch != null && !ch.isImmune(Fire.class) && !(ch instanceof NewTengu)) {
-								Buff.affect( ch, Burning.class ).reignite( ch );
+								if (Dungeon.mode == DIFFICULT){
+									Buff.affect(ch, FrostBurn.class).reignite(ch);
+								}
+								else Buff.affect( ch, Burning.class ).reignite( ch );
 							}
 							
 							if (Dungeon.level.flamable[cell]){
@@ -900,7 +914,10 @@ public class NewTengu extends Mob {
 							}
 							
 							burned = true;
-							CellEmitter.get(cell).start(FlameParticle.FACTORY, 0.03f, 10);
+							if (Dungeon.mode == DIFFICULT){
+								CellEmitter.get(cell).start(FrostfireParticle.FACTORY, 0.05f, 10);
+							}
+							else CellEmitter.get(cell).start(FlameParticle.FACTORY, 0.03f, 10);
 						}
 					}
 				}

@@ -25,9 +25,14 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife;
 import com.watabou.noosa.TextureFilm;
+import com.watabou.utils.Callback;
 
 public class SwarmSprite extends MobSprite {
+
+	protected Animation cast;
 	
 	public SwarmSprite() {
 		super();
@@ -44,11 +49,35 @@ public class SwarmSprite extends MobSprite {
 		
 		attack = new Animation( 20, false );
 		attack.frames( frames, 6, 7, 8, 9 );
+
+		cast = attack.clone();
 		
 		die = new Animation( 15, false );
 		die.frames( frames, 10, 11, 12, 13, 14 );
 		
 		play( idle );
+	}
+
+	@Override
+	public void attack( int cell ) {
+		if (!Dungeon.level.adjacent(cell, ch.pos)) {
+
+			((MissileSprite)parent.recycle( MissileSprite.class )).
+					reset( this, cell, new ThrowingKnife(), new Callback() {
+						@Override
+						public void call() {
+							ch.onAttackComplete();
+						}
+					} );
+
+			play( cast );
+			turnTo( ch.pos , cell );
+
+		} else {
+
+			super.attack( cell );
+
+		}
 	}
 	
 	@Override

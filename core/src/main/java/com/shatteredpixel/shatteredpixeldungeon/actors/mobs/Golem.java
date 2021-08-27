@@ -63,7 +63,15 @@ public class Golem extends Mob {
 	public int damageRoll() {
 		return Random.NormalIntRange( 21, 26 );
 	}
-	
+
+	@Override
+	protected boolean canAttack(Char enemy) {
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+			return Dungeon.level.distance(pos, enemy.pos) < 3;
+		}
+		return super.canAttack(enemy);
+	}
+
 	@Override
 	public int attackSkill( Char target ) {
 		return 28;
@@ -127,6 +135,9 @@ public class Golem extends Mob {
 			if (Actor.findChar(target) == null && Dungeon.level.openSpace[target]) {
 				ScrollOfTeleportation.appear(this, target);
 				selfTeleCooldown = 30;
+				if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+					selfTeleCooldown = 10;
+				}
 			} else {
 				target = Dungeon.level.randomDestination(this);
 			}
@@ -167,6 +178,9 @@ public class Golem extends Mob {
 		}
 
 		enemyTeleCooldown = 20;
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+			enemyTeleCooldown = 7;
+		}
 	}
 
 	private class Wandering extends Mob.Wandering{

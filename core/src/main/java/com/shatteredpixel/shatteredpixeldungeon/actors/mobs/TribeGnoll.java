@@ -26,7 +26,9 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TribeGnollSprite;
 import com.watabou.utils.Random;
@@ -59,6 +61,14 @@ public class TribeGnoll extends Mob {
 	@Override
 	public int drRoll() {
 		return Random.NormalIntRange(0, 3);
+	}
+
+	@Override
+	public int attackProc(Char enemy, int damage) {
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+			Buff.affect(enemy, Cripple.class, 3f);
+		}
+		return super.attackProc(enemy, damage);
 	}
 
 	@Override

@@ -85,7 +85,7 @@ public class Warlock extends Mob implements Callback {
 	
 	protected boolean doAttack( Char enemy ) {
 
-		if (Dungeon.level.adjacent( pos, enemy.pos )) {
+		if (Dungeon.level.adjacent( pos, enemy.pos ) && Dungeon.mode != Dungeon.GameMode.DIFFICULT) {
 			
 			return super.doAttack( enemy );
 			

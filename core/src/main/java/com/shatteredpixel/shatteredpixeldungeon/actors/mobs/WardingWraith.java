@@ -47,7 +47,7 @@ import java.util.HashSet;
 
 public class WardingWraith extends Mob implements Callback {
 	
-	private static final float TIME_TO_ZAP	= 0.5f;
+	private static final float TIME_TO_ZAP	= Dungeon.mode == Dungeon.GameMode.DIFFICULT ? 0.33f : 0.5f;
 	public boolean enraged = false;
 	
 	{
@@ -109,6 +109,9 @@ public class WardingWraith extends Mob implements Callback {
 			if (alignment == Alignment.ALLY) dmg = Random.Int(15, 20);
             if (buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dmg *= 0.6f;
 			enemy.damage( dmg, new DarkBolt() );
+			if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+			    Buff.affect(enemy, Chill.class, 5f);
+            }
 			
 			if (!enemy.isAlive() && enemy == Dungeon.hero) {
 				Dungeon.fail( getClass() );

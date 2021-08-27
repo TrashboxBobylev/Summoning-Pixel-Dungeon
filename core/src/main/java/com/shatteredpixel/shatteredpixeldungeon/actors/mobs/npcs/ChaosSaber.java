@@ -96,13 +96,14 @@ public class ChaosSaber extends NPC {
     public void storeInBundle( Bundle bundle ) {
         super.storeInBundle( bundle );
         bundle.put( LEVEL, level );
-
+        bundle.put( "align", alignment);
     }
 
     @Override
     public void restoreFromBundle( Bundle bundle ) {
         super.restoreFromBundle( bundle );
         level = bundle.getInt( LEVEL );
+        alignment = bundle.getEnum("align", Alignment.class);
     }
 
     private class Wandering extends Mob.Wandering{

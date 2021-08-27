@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.DogSprite;
@@ -54,7 +55,15 @@ public class Dog extends Mob {
 	public int attackSkill( Char target ) {
 		return 12;
 	}
-	
+
+	@Override
+	protected float attackDelay() {
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+			return 0.7f*super.attackDelay();
+		}
+		return super.attackDelay();
+	}
+
 	@Override
 	public int drRoll() {
 		return Random.NormalIntRange(0, 2);

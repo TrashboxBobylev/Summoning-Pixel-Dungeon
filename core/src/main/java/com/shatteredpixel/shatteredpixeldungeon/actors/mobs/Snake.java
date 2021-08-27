@@ -28,6 +28,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Unstable;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ShakeSprite;
@@ -66,7 +68,35 @@ public class Snake extends Mob {
 	public int attackSkill( Char target ) {
 		return 18;
 	}
-	
+
+	@Override
+	public int attackProc(Char enemy, int damage) {
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT && !Dungeon.level.adjacent(pos, enemy.pos)){
+			damage = new Unstable().proc(new Weapon() {
+				@Override
+				public int STRReq(int lvl) {
+					return 0;
+				}
+
+				@Override
+				public int min(int lvl) {
+					return 5;
+				}
+
+				@Override
+				public int max(int lvl) {
+					return 16;
+				}
+
+				@Override
+				public int level() {
+					return 6;
+				}
+			}, this, enemy, damage);
+		}
+		return super.attackProc(enemy, damage);
+	}
+
 	@Override
 	public int drRoll() {
 		return Random.NormalIntRange(0, 8);

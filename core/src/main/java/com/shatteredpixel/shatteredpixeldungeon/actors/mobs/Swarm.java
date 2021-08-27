@@ -79,9 +79,20 @@ public class Swarm extends Mob {
 	
 	@Override
 	public int damageRoll() {
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+			return Random.NormalIntRange(0, 3);
+		}
 		return Random.NormalIntRange( 1, 4 );
 	}
-	
+
+	@Override
+	protected boolean canAttack(Char enemy) {
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+			return canSee(enemy.pos);
+		}
+		return super.canAttack(enemy);
+	}
+
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
 

@@ -113,7 +113,7 @@ public class Eye extends Mob {
 			sprite.idle();
 		}
 		if (beam == null && beamTarget != -1) {
-			beam = new Ballistica(pos, beamTarget, Ballistica.STOP_SOLID);
+			beam = new Ballistica(pos, beamTarget, Dungeon.mode == Dungeon.GameMode.DIFFICULT ? Ballistica.WONT_STOP : Ballistica.STOP_SOLID);
 			sprite.turnTo(pos, beamTarget);
 		}
 		if (beamCooldown > 0)
@@ -135,7 +135,7 @@ public class Eye extends Mob {
 
 			spend( attackDelay() );
 			
-			beam = new Ballistica(pos, beamTarget, Ballistica.STOP_SOLID);
+			beam = new Ballistica(pos, beamTarget, Dungeon.mode == Dungeon.GameMode.DIFFICULT ? Ballistica.WONT_STOP : Ballistica.STOP_SOLID);
 			if (Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[beam.collisionPos] ) {
 				sprite.zap( beam.collisionPos );
 				return false;
@@ -163,6 +163,9 @@ public class Eye extends Mob {
 
 		beamCharged = false;
 		beamCooldown = Random.IntRange(4, 6);
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+			beamCooldown = Random.IntRange(5, 8);
+		}
 
 		boolean terrainAffected = false;
 
@@ -183,6 +186,9 @@ public class Eye extends Mob {
 
 			if (hit( this, ch, true )) {
                 int damage = Random.NormalIntRange( 35, 57 );
+                if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+					damage = Random.NormalIntRange( 64, 89 );
+				}
                 if (buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) damage *= 0.6f;
 				ch.damage(damage , new DeathGaze() );
 

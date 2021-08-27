@@ -1034,6 +1034,9 @@ public abstract class Mob extends Char {
 				desc += "\n\n" + Messages.get(Mob.class, "horde");
 			}
 		}
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+			desc += "\n\n" + Messages.get(this, "harder");
+		}
 		desc += "\n\n" + Messages.get(Mob.class, "stats", HP, HT, attackSkill(Dungeon.hero), defenseSkill);
 		for (Buff b : buffs(ChampionEnemy.class)){
 			desc += "\n\n_" + Messages.titleCase(b.toString()) + "_\n" + b.desc();

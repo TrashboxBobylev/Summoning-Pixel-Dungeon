@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.GooBlob;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -59,6 +60,9 @@ public class Goo extends Mob {
 		properties.add(Property.BOSS);
 		properties.add(Property.DEMONIC);
 		properties.add(Property.ACIDIC);
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+			flying = true;
+		}
 	}
 
 	private int pumpedUp = 0;
@@ -115,9 +119,16 @@ public class Goo extends Mob {
 
 	@Override
 	protected boolean canAttack( Char enemy ) {
-		return (pumpedUp > 0) ? distance( enemy ) <= 2 : super.canAttack(enemy);
+		if (pumpedUp > 0){
+			//we check both from and to in this case as projectile logic isn't always symmetrical.
+			//this helps trim out BS edge-cases
+			return Dungeon.level.distance(enemy.pos, pos) <= (Dungeon.mode == Dungeon.GameMode.DIFFICULT ? 3 : 2)
+					&& new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE).collisionPos == enemy.pos
+					&& new Ballistica( enemy.pos, pos, Ballistica.PROJECTILE).collisionPos == pos;
+		} else {
+			return super.canAttack(enemy);
+		}
 	}
-
 	@Override
 	public int attackProc( Char enemy, int damage ) {
 		damage = super.attackProc( enemy, damage );

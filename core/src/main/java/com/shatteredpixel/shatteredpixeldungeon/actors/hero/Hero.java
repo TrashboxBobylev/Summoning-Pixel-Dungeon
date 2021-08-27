@@ -2132,14 +2132,18 @@ public class Hero extends Char {
 		return smthFound;
 	}
 
-	public static ConeAOE arrangeBlast(int pos, CharSprite sprite, int type) {
+	public static ConeAOE arrangeBlast(int pos, CharSprite sprite, int type){
+		return arrangeBlast(pos, sprite, type, 1.5f);
+	}
+
+	public static ConeAOE arrangeBlast(int pos, CharSprite sprite, int type, float range) {
 		Ballistica aim;
 		if (pos % Dungeon.level.width() > 10){
 			aim = new Ballistica(pos, pos - 1, Ballistica.WONT_STOP);
 		} else {
 			aim = new Ballistica(pos, pos + 1, Ballistica.WONT_STOP);
 		}
-		ConeAOE aoe = new ConeAOE(aim, 1.5f, 360, Ballistica.FRIENDLY_PROJECTILE);
+		ConeAOE aoe = new ConeAOE(aim, range, 360, Ballistica.FRIENDLY_PROJECTILE);
 		for (Ballistica ray : aoe.rays){
 			((MagicMissile)sprite.parent.recycle( MagicMissile.class )).reset(
 					type,

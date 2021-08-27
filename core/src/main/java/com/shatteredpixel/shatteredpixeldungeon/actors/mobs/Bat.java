@@ -26,6 +26,10 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
@@ -76,6 +80,18 @@ public class Bat extends Mob {
 		}
 		
 		return damage;
+	}
+
+	@Override
+	protected boolean act() {
+		boolean act = super.act();
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT) {
+			Hero.arrangeBlast(pos, sprite, MagicMissile.BLOOD_CONE);
+			if (Dungeon.level.distance(pos, Dungeon.hero.pos) < 3){
+				Buff.affect(this, Bleeding.class).setForcefully(2f);
+			}
+		}
+		return act;
 	}
 	
 	@Override

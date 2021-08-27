@@ -60,6 +60,9 @@ public class Spinner extends Mob {
 
 		loot = new MysteryMeat();
 		lootChance = 0.125f;
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+			baseSpeed = 3f;
+		}
 
 		FLEEING = new Fleeing();
 		HUNTING = new Hunting();
@@ -188,6 +191,9 @@ public class Spinner extends Mob {
             }
         }
         Buff.affect(this, RoseWraith.Timer.class, 10f);
+	    if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+	    	spend(-cooldown());
+		}
 	    return true;
     }
 
