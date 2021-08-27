@@ -146,13 +146,13 @@ public class Dungeon {
 		CAVES("caves", Icons.CAVES),
 		GAUNTLET("gauntlet", Icons.GAUNTLET),
 		EXPLORE( "explore", Icons.EXPLORE),
+		LOL("lol", Icons.GOLD),
 		NO_SOU("no_sou", Icons.SOULLESS),
+		NO_EXP("no_exp", Icons.NO_EXP),
 		HELL("hell", Icons.HELL_CHEST),
 		DIFFICULT("oh_my_is_this_eternity_mode", Icons.DARK_AMU),
 		REALTIME("realtime", Icons.REAL_TIME),
-		CHAOS("chaos", Icons.CHAOS),
-		NO_EXP("no_exp", Icons.NO_EXP),
-		LOL("lol", Icons.GOLD);
+		CHAOS("chaos", Icons.CHAOS);
 
 		public String saveName;
 		public Icons icon;
