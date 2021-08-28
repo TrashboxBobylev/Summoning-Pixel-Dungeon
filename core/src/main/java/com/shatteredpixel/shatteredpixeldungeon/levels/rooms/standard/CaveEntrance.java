@@ -66,7 +66,7 @@ public class CaveEntrance extends PatchRoom {
 		}
 		do {
 			level.entrance = level.pointToCell(random(2));
-		} while (level.findMob(level.entrance) != null && (level.map[level.entrance] == Terrain.WALL || level.map[level.entrance] == Terrain.WALL_DECO));
+		} while (level.findMob(level.entrance) != null || level.map[level.entrance] == Terrain.WALL || level.map[level.entrance] == Terrain.WALL_DECO);
 		Painter.set( level, level.entrance, Terrain.ENTRANCE );
 	}
 	

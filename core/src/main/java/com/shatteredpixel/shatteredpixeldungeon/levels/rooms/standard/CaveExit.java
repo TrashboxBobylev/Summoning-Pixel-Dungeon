@@ -65,8 +65,8 @@ public class CaveExit extends PatchRoom {
 		}
 
 		do {
-			level.exit = level.pointToCell(random(2));
-		} while ((level.map[level.exit] == Terrain.WALL || level.map[level.exit] == Terrain.WALL_DECO));
+			level.exit = level.pointToCell(random(1));
+		} while (level.findMob(level.exit) != null || level.map[level.exit] == Terrain.WALL || level.map[level.exit] == Terrain.WALL_DECO);
 		Painter.set( level, level.exit, Terrain.EXIT );
 
 
