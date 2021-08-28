@@ -73,6 +73,7 @@ public enum Catalog {
 		WEAPONS.seen.put( Dagger.class,                     false);
         WEAPONS.seen.put( Knife.class,                 false);
 		WEAPONS.seen.put(FroggitStaff.class, false);
+		WEAPONS.seen.put(Dagger2.class, false);
 		//WEAPONS.seen.put( Boomerang.class,                  false);
 		WEAPONS.seen.put( Shortsword.class,                 false);
 		WEAPONS.seen.put( HandAxe.class,                    false);
@@ -120,7 +121,9 @@ public enum Catalog {
         WEAPONS.seen.put(HacatuStaff.class, false);
 
 		ARMOR.seen.put( ClothArmor.class,                   false);
+		ARMOR.seen.put( ScoutArmor.class,                   false);
 		ARMOR.seen.put( LeatherArmor.class,                 false);
+		ARMOR.seen.put( SyntheticArmor.class,               false);
 		ARMOR.seen.put( MailArmor.class,                    false);
 		ARMOR.seen.put( ScaleArmor.class,                   false);
 		ARMOR.seen.put( PlateArmor.class,                   false);
@@ -170,7 +173,6 @@ public enum Catalog {
 		//ARTIFACTS.seen.put( LloydsBeacon.class,             false);
 		ARTIFACTS.seen.put( MasterThievesArmband.class,     false);
 		ARTIFACTS.seen.put( SandalsOfNature.class,          false);
-        ARTIFACTS.seen.put( LoveHolder.class,          false);
 		ARTIFACTS.seen.put( TalismanOfForesight.class,      false);
 		ARTIFACTS.seen.put( TimekeepersHourglass.class,     false);
 		ARTIFACTS.seen.put( UnstableSpellbook.class,        false);
