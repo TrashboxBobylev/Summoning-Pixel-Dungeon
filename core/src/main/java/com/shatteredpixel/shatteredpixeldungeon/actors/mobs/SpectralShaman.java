@@ -35,7 +35,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBounceBeams;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ShamanSprite;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -207,8 +206,6 @@ public class SpectralShaman extends Mob {
 				dist++;
 			} while (dist < undeadsToSummon);
 		}
-		
-		yell( Messages.get(this, "arise") );
 		spend( TICK );
 	}
 	
