@@ -54,8 +54,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
             dependencies {
-                releaseImplementation project(':services:updates:debugUpdates')
-                releaseImplementation project(':services:news:shatteredNews')
+                releaseImplementation project(':services:updates:githubUpdates')
+                releaseImplementation project(':services:news:debugNews')
             }
         }
     }

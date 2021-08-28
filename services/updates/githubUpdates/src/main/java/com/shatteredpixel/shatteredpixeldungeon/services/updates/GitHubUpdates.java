@@ -32,7 +32,6 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.DeviceCompat;
 
 import javax.net.ssl.SSLProtocolException;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GitHubUpdates extends UpdateService {
@@ -45,6 +44,8 @@ public class GitHubUpdates extends UpdateService {
 		return true;
 	}
 
+	public boolean acceptSnapshots = true;
+
 	@Override
 	public void checkForUpdate(boolean useMetered, UpdateResultCallback callback) {
 
@@ -54,44 +55,45 @@ public class GitHubUpdates extends UpdateService {
 		}
 
 		Net.HttpRequest httpGet = new Net.HttpRequest(Net.HttpMethods.GET);
-		httpGet.setUrl("https://api.github.com/repos/00-Evan/shattered-pixel-dungeon/releases");
+		httpGet.setUrl("https://api.github.com/repos/TrashboxBobylev/Summoning-Pixel-Dungeon/releases");
 		httpGet.setHeader("Accept", "application/vnd.github.v3+json");
 
 		Gdx.net.sendHttpRequest(httpGet, new Net.HttpResponseListener() {
 			@Override
 			public void handleHttpResponse(Net.HttpResponse httpResponse) {
 				try {
-					Bundle latestRelease = null;
-					int latestVersionCode = Game.versionCode;
 
-					boolean includePrereleases = Game.version.contains("-BETA-") || Game.version.contains("-RC-");
+					boolean found = false;
+					String versionCode = "";
+					String changelog = "";
+					String versionURL = "";
 
 					for (Bundle b : Bundle.read( httpResponse.getResultAsStream() ).getBundleArray()){
-						Matcher m = versionCodePattern.matcher(b.getString("body"));
-
-						if (m.find()){
-							int releaseVersion = Integer.parseInt(m.group(1));
-							if (releaseVersion > latestVersionCode
-									&& (includePrereleases || !b.getBoolean("prerelease"))){
-								latestRelease = b;
-								latestVersionCode = releaseVersion;
+						if ((b.getString("tag_name").equals("latest") && acceptSnapshots) ||
+								(!acceptSnapshots && !b.getBoolean("prerelease")) &&
+										!b.getString("name").equals(Game.version)){
+							found = true;
+							versionCode = b.getString("name");
+							changelog = b.getString("body").substring(10);
+							if (DeviceCompat.isDesktop()){
+								versionURL = b.getBundleArray("assets")[1].getString("browser_download_url");
+							} else {
+								versionURL = b.getBundleArray("assets")[0].getString("browser_download_url");
 							}
+							break;
 						}
-
 					}
 
-					if (latestRelease == null){
+					if (!found){
 						callback.onNoUpdateFound();
 					} else {
 
 						AvailableUpdateData update = new AvailableUpdateData();
 
-						update.versionName = latestRelease.getString("name");
-						update.versionCode = latestVersionCode;
-						Matcher m = descPattern.matcher(latestRelease.getString("body"));
-						m.find();
-						update.desc = m.group(1);
-						update.URL = latestRelease.getString("html_url");
+						update.versionName = versionCode;
+						update.versionCode = Game.versionCode;
+						update.desc = changelog;
+						update.URL = versionURL;
 
 						callback.onUpdateAvailable(update);
 					}

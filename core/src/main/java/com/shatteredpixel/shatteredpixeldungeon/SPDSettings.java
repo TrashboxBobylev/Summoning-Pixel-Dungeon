@@ -316,7 +316,7 @@ public class SPDSettings extends GameSettings {
 	}
 
 	public static boolean updates(){
-		return getBoolean(KEY_UPDATES, true);
+		return true;
 	}
 
 	public static void WiFi(boolean value){
