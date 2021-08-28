@@ -156,10 +156,18 @@ public class Dungeon {
 
 		public String saveName;
 		public Icons icon;
+		public float scoreMod;
 
 		GameMode(String saveName, Icons icon) {
 			this.saveName = saveName;
 			this.icon = icon;
+			this.scoreMod = 1.0f;
+		}
+
+		GameMode(String saveName, Icons icon, float scoreMod) {
+			this.saveName = saveName;
+			this.icon = icon;
+			this.scoreMod = scoreMod;
 		}
 
 		public String desc(){
