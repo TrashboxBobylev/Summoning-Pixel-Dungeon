@@ -442,6 +442,14 @@ public class Hero extends Char {
 		}
 	}
 
+	@Override
+	public int attackRolls() {
+		if ((Dungeon.hero.subClass == HeroSubClass.SNIPER) && (belongings.weapon instanceof MissileWeapon)){
+			return 2;
+		}
+		return super.attackRolls();
+	}
+
 	public int getAttackSkill(){
 	    return attackSkill;
     }

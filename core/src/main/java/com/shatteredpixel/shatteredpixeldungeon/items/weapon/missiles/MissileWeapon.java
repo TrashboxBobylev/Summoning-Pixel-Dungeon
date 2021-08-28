@@ -31,10 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WandOfStenchGas;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Stacks;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulWeakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SpeedyShots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -47,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Slingshot;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Projecting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
@@ -168,15 +166,36 @@ abstract public class MissileWeapon extends Weapon {
 	}
 
 	@Override
+	public int proc(Char attacker, Char defender, int damage) {
+		if (attacker == Dungeon.hero && (Dungeon.hero.subClass == HeroSubClass.SNIPER && Random.Int(2) == 0)){
+				SpiritBow bow = Dungeon.hero.belongings.getItem(SpiritBow.class);
+				if (bow != null && bow.enchantment != null && Dungeon.hero.buff(MagicImmune.class) == null) {
+					damage = bow.enchantment.proc(this, attacker, defender, damage);
+				}
+			}
+
+		return super.proc(attacker, defender, damage);
+	}
+
+	@Override
 	public boolean collect(Bag container) {
 		if (container instanceof MagicalHolster) holster = true;
 		return super.collect(container);
 	}
-	
+
 	@Override
 	public int throwPos(Hero user, int dst) {
-		if (hasEnchant(Projecting.class, user)
-				&& !Dungeon.level.solid[dst] && Dungeon.level.distance(user.pos, dst) <= 4){
+
+		boolean projecting = hasEnchant(Projecting.class, user);
+		if (!projecting && (Dungeon.hero.subClass == HeroSubClass.SNIPER && Random.Int(2) == 0)) {
+
+				SpiritBow bow = Dungeon.hero.belongings.getItem(SpiritBow.class);
+				if (bow != null && bow.hasEnchant(Projecting.class, user)) {
+					projecting = true;
+				}
+		}
+
+		if (projecting && !Dungeon.level.solid[dst] && Dungeon.level.distance(user.pos, dst) <= 4){
 			return dst;
 		} else {
 			return super.throwPos(user, dst);
