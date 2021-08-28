@@ -63,10 +63,12 @@ public class Rat extends Mob {
 
 	@Override
 	public int attackProc(Char enemy, int damage) {
-		for (Char ch : Dungeon.level.mobs.toArray(new Mob[0])){
-			if (ch instanceof Rat){
-				((Rat) ch).aggro(enemy);
-				((Rat) ch).beckon(enemy.pos);
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT) {
+			for (Char ch : Dungeon.level.mobs.toArray(new Mob[0])) {
+				if (ch instanceof Rat) {
+					((Rat) ch).aggro(enemy);
+					((Rat) ch).beckon(enemy.pos);
+				}
 			}
 		}
 		return super.attackProc(enemy, damage);
