@@ -58,6 +58,9 @@ public class ChaosSaber extends NPC {
 
     @Override
     public int attackSkill( Char target ) {
+        if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+            return (int) (target.defenseSkill(this)*0.9f);
+        }
         return (int) (target.defenseSkill(this)*1.2f);
     }
 
@@ -83,6 +86,9 @@ public class ChaosSaber extends NPC {
 
     @Override
     public int defenseSkill(Char enemy) {
+        if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+            return (int) (enemy.attackSkill(this)*0.9f);
+        }
         return (int) (enemy.attackSkill(this)*1.25f);
     }
 

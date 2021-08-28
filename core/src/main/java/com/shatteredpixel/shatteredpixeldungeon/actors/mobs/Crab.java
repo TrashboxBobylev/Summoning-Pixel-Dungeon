@@ -80,19 +80,20 @@ public class Crab extends Mob {
 			if (canSee(Dungeon.hero.pos) && Dungeon.hero == enemy){
 				int bestPos = -1;
 				for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-					int p = Dungeon.hero.pos + PathFinder.NEIGHBOURS8[i];
+					int p = pos + PathFinder.NEIGHBOURS8[i];
 					if (Actor.findChar( p ) == null && Dungeon.level.passable[p]) {
-						if (bestPos == -1 || Dungeon.level.trueDistance(p, Dungeon.hero.pos) < Dungeon.level.trueDistance(bestPos, Dungeon.hero.pos)){
+						if (bestPos == -1 || Dungeon.level.trueDistance(p, pos) < Dungeon.level.trueDistance(bestPos, pos)){
 							bestPos = p;
 						}
 					}
 				}
+				int count = 0;
 				for (Char ch : Actor.chars()){
 					if (ch instanceof ChaosSaber && ch.alignment == Alignment.ENEMY){
-						bestPos = -1;
+						count++;
 					}
 				}
-				if (bestPos != -1) {
+				if (bestPos != -1 && count < 2) {
 					ChaosSaber sword = new ChaosSaber();
 					sword.level = 0;
 					sword.alignment = Alignment.ENEMY;
