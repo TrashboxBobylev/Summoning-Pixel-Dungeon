@@ -192,7 +192,7 @@ public class GamesInProgress {
 					hs.goldCollected +
 							hs.maxDepth * hs.level * 100) *
 					hs.mode.scoreMod *
-					hs.challenges.scoreMod);
+					(hs.challenges != null ? hs.challenges.scoreMod : 1f));
 		}
 	};
 }
