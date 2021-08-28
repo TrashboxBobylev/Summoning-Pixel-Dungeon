@@ -2144,13 +2144,15 @@ public class Hero extends Char {
 			aim = new Ballistica(pos, pos + 1, Ballistica.WONT_STOP);
 		}
 		ConeAOE aoe = new ConeAOE(aim, range, 360, Ballistica.FRIENDLY_PROJECTILE);
-		for (Ballistica ray : aoe.rays){
-			((MagicMissile)sprite.parent.recycle( MagicMissile.class )).reset(
-					type,
-					sprite,
-					ray.path.get(ray.dist),
-					null
-			);
+		if (sprite.visible) {
+			for (Ballistica ray : aoe.rays) {
+				((MagicMissile) sprite.parent.recycle(MagicMissile.class)).reset(
+						type,
+						sprite,
+						ray.path.get(ray.dist),
+						null
+				);
+			}
 		}
 		return aoe;
 	}

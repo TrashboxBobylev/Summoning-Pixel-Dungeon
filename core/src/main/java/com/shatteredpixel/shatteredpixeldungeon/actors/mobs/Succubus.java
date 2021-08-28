@@ -152,9 +152,9 @@ public class Succubus extends Mob {
 	protected boolean act() {
 		boolean act = super.act();
 		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT) {
-			Hero.arrangeBlast(pos, sprite, MagicMissile.SHADOW_CONE, 5f);
 			if (Dungeon.level.distance(pos, Dungeon.hero.pos) < 5 && enemy == Dungeon.hero){
 				Buff.affect(enemy, TimedShrink.class, 2f);
+				Hero.arrangeBlast(pos, sprite, MagicMissile.SHADOW_CONE, 5f);
 			}
 		}
 		return act;

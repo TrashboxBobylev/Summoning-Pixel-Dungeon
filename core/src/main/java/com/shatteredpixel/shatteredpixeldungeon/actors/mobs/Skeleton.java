@@ -98,9 +98,9 @@ public class Skeleton extends Mob {
 	protected boolean act() {
 		boolean act = super.act();
 		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT) {
-			Hero.arrangeBlast(pos, sprite, MagicMissile.BEACON);
 			if (Dungeon.level.distance(pos, Dungeon.hero.pos) > 1 && Dungeon.hero == enemy){
 				Buff.affect(this, Block.class, 5f);
+				Hero.arrangeBlast(pos, sprite, MagicMissile.BEACON, 5f);
 				spend(1 / speed());
 			}
 		}
