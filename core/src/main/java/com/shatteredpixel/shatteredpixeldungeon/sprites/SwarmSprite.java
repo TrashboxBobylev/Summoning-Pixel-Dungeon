@@ -66,6 +66,7 @@ public class SwarmSprite extends MobSprite {
 					reset( this, cell, new ThrowingKnife(), new Callback() {
 						@Override
 						public void call() {
+							idle();
 							ch.onAttackComplete();
 						}
 					} );
