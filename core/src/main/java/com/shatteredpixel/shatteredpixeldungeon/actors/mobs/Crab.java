@@ -42,7 +42,7 @@ public class Crab extends Mob {
 		
 		HP = HT = 15;
 		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
-			HP = HT = 7;
+			HP = HT = 9;
 		}
 		defenseSkill = 1;
 		baseSpeed = 0.8f;
@@ -85,6 +85,11 @@ public class Crab extends Mob {
 						if (bestPos == -1 || Dungeon.level.trueDistance(p, Dungeon.hero.pos) < Dungeon.level.trueDistance(bestPos, Dungeon.hero.pos)){
 							bestPos = p;
 						}
+					}
+				}
+				for (Char ch : Actor.chars()){
+					if (ch instanceof ChaosSaber && ch.alignment == Alignment.ENEMY){
+						bestPos = -1;
 					}
 				}
 				if (bestPos != -1) {
