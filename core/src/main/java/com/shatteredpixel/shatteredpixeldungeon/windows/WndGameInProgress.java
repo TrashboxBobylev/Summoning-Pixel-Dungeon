@@ -24,7 +24,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.*;
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -97,7 +100,7 @@ public class WndGameInProgress extends Window {
 					Game.scene().add( new WndTitledMessage(
 							new Image(Assets.Interfaces.SUBCLASS_ICONS, (info.challenges.ordinal()-1)*16, 16, 16, 16),
 							info.challenges.toString(),
-							Messages.get(Conducts.class, info.challenges.name() + "_desc"))
+							info.challenges.desc())
 					);
 				}
 			};

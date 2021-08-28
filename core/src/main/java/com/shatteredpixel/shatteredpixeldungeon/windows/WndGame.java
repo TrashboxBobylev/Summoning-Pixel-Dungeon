@@ -105,7 +105,7 @@ public class WndGame extends Window {
 					hide();
 					GameScene.show( new WndTitledMessage(new Image(Assets.Interfaces.SUBCLASS_ICONS, (Dungeon.challenges.ordinal()-1)*16, 16, 16, 16),
 							Dungeon.challenges.toString(),
-							Messages.get(Conducts.class, Dungeon.challenges.name() + "_desc")) );
+							Dungeon.challenges.desc()) );
 				}
 			} );
 			curBtn.icon(new Image(Assets.Interfaces.SUBCLASS_ICONS, (Dungeon.challenges.ordinal()-1)*16, 16, 16, 16));

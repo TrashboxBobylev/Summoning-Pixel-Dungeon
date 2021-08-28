@@ -56,6 +56,7 @@ import com.watabou.noosa.Game;
 import com.watabou.utils.*;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -171,7 +172,8 @@ public class Dungeon {
 		}
 
 		public String desc(){
-			return "_" + toString() + "_: " + Messages.get(Dungeon.class, "mode_desc_" + saveName);
+			return "_" + toString() + "_: " + Messages.get(Dungeon.class, "mode_desc_" + saveName) + "\n" +
+					Messages.get(Dungeon.class, "score", new DecimalFormat("#.##").format(scoreMod));
 		}
 
 		public boolean isNormal() {

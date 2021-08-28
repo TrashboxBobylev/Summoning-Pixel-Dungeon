@@ -80,7 +80,7 @@ public class WndChallenges extends Window {
 				for (int i = 1; i < size+1; i++) {
 					if (infos.get(i-1).inside(x, y)) {
 
-						String message = Messages.get(Conducts.class, sorted[i].name() + "_desc");
+						String message = sorted[i].desc();
 						String title = Messages.titleCase(Messages.get(Conducts.class, sorted[i].name()));
 						ShatteredPixelDungeon.scene().add(
 								new WndTitledMessage(

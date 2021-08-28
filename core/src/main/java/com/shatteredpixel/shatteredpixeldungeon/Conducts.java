@@ -26,6 +26,8 @@ package com.shatteredpixel.shatteredpixeldungeon;
 
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 
+import java.text.DecimalFormat;
+
 public class Conducts {
     public enum Conduct {
         NULL,
@@ -58,6 +60,10 @@ public class Conducts {
         @Override
         public String toString() {
             return Messages.get(Conducts.class, this.name());
+        }
+
+        public String desc(){
+            return Messages.get(Conducts.class, name() + "_desc") + "\n\n" + Messages.get(Dungeon.class, "score", new DecimalFormat("#.##").format(scoreMod));
         }
     }
 
