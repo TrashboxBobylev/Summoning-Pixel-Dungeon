@@ -29,21 +29,31 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 public class Conducts {
     public enum Conduct {
         NULL,
-        NO_ARMOR,
-        PACIFIST,
-        CRIPPLED,
-        NO_MAGIC,
-        ZEN,
-        BERSERK,
-        WRAITH,
-        SLEEPY,
-        TRANSMUTATION,
-        KING,
-        EVERYTHING,
-        EXPLOSIONS,
-        INVISIBLE,
-        REGENERATION,
-        UNKNOWN;
+        NO_ARMOR(1.1f),
+        PACIFIST(1.7f),
+        CRIPPLED(1.5f),
+        NO_MAGIC(1.5f),
+        ZEN(2.0f),
+        BERSERK(1.03f),
+        WRAITH(1.33f),
+        SLEEPY(0.6f),
+        TRANSMUTATION(1.66f),
+        KING(1.33f),
+        EVERYTHING(0f),
+        EXPLOSIONS(1.2f),
+        INVISIBLE(1.8f),
+        REGENERATION(1.33f),
+        UNKNOWN(1.4f);
+
+        public float scoreMod;
+
+        Conduct(){
+            scoreMod = 1f;
+        }
+
+        Conduct(float scoreMod){
+            this.scoreMod = scoreMod;
+        }
 
         @Override
         public String toString() {

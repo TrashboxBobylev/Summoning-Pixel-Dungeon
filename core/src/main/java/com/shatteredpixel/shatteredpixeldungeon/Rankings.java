@@ -75,7 +75,7 @@ public enum Rankings {
 		rec.armorTier	= Dungeon.hero.tier();
 		rec.herolevel	= Dungeon.hero.lvl;
 		rec.depth		= Dungeon.depth;
-		if (Dungeon.mode != Dungeon.GameMode.EXPLORE && !Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
+		if (!Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
 			rec.score = Statistics.score = score(win);
 		} else {
 			rec.score = 0;
@@ -178,7 +178,9 @@ public enum Rankings {
 						chaosStones(win)+
                         Statistics.foodEaten * 500 +
                         Statistics.potionsCooked * 500) *
-                        (win ? 2 : 1));
+                        (win ? 2 : 1) *
+						Dungeon.mode.scoreMod *
+						Dungeon.challenges.scoreMod);
 	}
 
 	public static final String HERO = "hero";

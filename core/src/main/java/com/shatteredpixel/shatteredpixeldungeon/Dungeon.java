@@ -141,18 +141,18 @@ public class Dungeon {
 
 	public enum GameMode {
 		NORMAL("normal", Icons.ENTER),
-		SMALL("small", Icons.SHRINKING),
-		BIGGER("bigger", Icons.ENLARGEMENT),
-		CAVES("caves", Icons.CAVES),
-		GAUNTLET("gauntlet", Icons.GAUNTLET),
-		EXPLORE( "explore", Icons.EXPLORE),
-		LOL("lol", Icons.GOLD),
-		NO_SOU("no_sou", Icons.SOULLESS),
-		NO_EXP("no_exp", Icons.NO_EXP),
-		HELL("hell", Icons.HELL_CHEST),
-		DIFFICULT("oh_my_is_this_eternity_mode", Icons.DARK_AMU),
-		REALTIME("realtime", Icons.REAL_TIME),
-		CHAOS("chaos", Icons.CHAOS);
+		SMALL("small", Icons.SHRINKING, 1.1f),
+		BIGGER("bigger", Icons.ENLARGEMENT, 1.2f),
+		CAVES("caves", Icons.CAVES, 1.09f),
+		GAUNTLET("gauntlet", Icons.GAUNTLET, 1.33f),
+		EXPLORE( "explore", Icons.EXPLORE, 0f),
+		LOL("lol", Icons.GOLD, 0.33f),
+		NO_SOU("no_sou", Icons.SOULLESS, 2.0f),
+		NO_EXP("no_exp", Icons.NO_EXP, 3.0f),
+		HELL("hell", Icons.HELL_CHEST, 4.0f),
+		DIFFICULT("oh_my_is_this_eternity_mode", Icons.DARK_AMU, 1.8f),
+		REALTIME("realtime", Icons.REAL_TIME, 2.0f),
+		CHAOS("chaos", Icons.CHAOS, 1.33f);
 
 		public String saveName;
 		public Icons icon;
