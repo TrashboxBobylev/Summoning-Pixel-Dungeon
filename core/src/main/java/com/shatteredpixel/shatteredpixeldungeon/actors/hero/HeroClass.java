@@ -137,8 +137,10 @@ public enum HeroClass {
 			new BrokenSeal().collect();
 			ElementalBlast blast = new ElementalBlast();
 			(hero.belongings.artifact = blast).identify();
+			hero.belongings.artifact.activate(hero);
 			CloakOfShadows cloakOfShadows = new CloakOfShadows();
 			(hero.belongings.misc = cloakOfShadows).identify();
+			hero.belongings.misc.activate(hero);
 			Dungeon.quickslot.setSlot(1, cloakOfShadows);
 			hero.attunement = 1;
 			hero.mana = 0;
