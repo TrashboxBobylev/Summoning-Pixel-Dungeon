@@ -69,7 +69,7 @@ public class Gnoll extends Mob {
 		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT) {
 			if (Dungeon.level.distance(pos, Dungeon.hero.pos) < 2){
 				Hero.arrangeBlast(pos, sprite, MagicMissile.EARTH);
-				Hunger.adjustHunger(-5f);
+				Hunger.adjustHunger(-7f);
 			}
 		}
 		return act;

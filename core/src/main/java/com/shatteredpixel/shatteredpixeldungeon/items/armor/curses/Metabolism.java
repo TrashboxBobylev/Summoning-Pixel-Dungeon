@@ -55,7 +55,7 @@ public class Metabolism extends Glyph {
 				
 				if (!hunger.isStarving()) {
 					
-					hunger.adjustHunger( healing * -10 );
+					hunger.adjustHunger( healing * -35 );
 					BuffIndicator.refreshHero();
 					
 					defender.HP += healing;

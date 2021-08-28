@@ -116,7 +116,7 @@ public class Item implements Bundlable {
 			
 			GameScene.pickUp( this, hero.pos );
 			Sample.INSTANCE.play( Assets.Sounds.ITEM );
-            Hunger.adjustHunger(-1);
+            Hunger.adjustHunger(-3);
 			hero.spendAndNext( TIME_TO_PICK_UP );
 			return true;
 			
@@ -559,7 +559,7 @@ public class Item implements Bundlable {
 		final int cell = throwPos( user, dst );
 		user.sprite.zap( cell );
 		user.busy();
-		Hunger.adjustHunger(-3*castDelay(user, dst));
+		Hunger.adjustHunger(-5*castDelay(user, dst));
 
 		throwSound();
 

@@ -96,7 +96,7 @@ public class Monk extends Mob {
 		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT) {
 			if (Dungeon.level.distance(pos, Dungeon.hero.pos) < 2){
 				Hero.arrangeBlast(pos, sprite, MagicMissile.EARTH_CONE);
-				Hunger.adjustHunger(-16f);
+				Hunger.adjustHunger(-18f);
 				HP = Math.min(HT, HP+2);
 			}
 		}

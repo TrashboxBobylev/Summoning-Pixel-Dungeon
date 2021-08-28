@@ -124,7 +124,7 @@ public class Hero extends Char {
 	
 	private static final float TIME_TO_REST		    = 1f;
 	private static final float TIME_TO_SEARCH	    = 2f;
-	private static final float HUNGER_FOR_SEARCH	= 6f;
+	private static final float HUNGER_FOR_SEARCH	= 15f;
 	
 	public HeroClass heroClass = HeroClass.ROGUE;
 	public HeroSubClass subClass = HeroSubClass.NONE;
@@ -791,7 +791,7 @@ public class Hero extends Char {
 	private boolean actMove( HeroAction.Move action ) {
 
 		if (getCloser( action.dst )) {
-			Hunger.adjustHunger(-1/speed());
+			Hunger.adjustHunger(-2/speed());
 			return true;
 
 		} else {
@@ -1045,7 +1045,7 @@ public class Hero extends Char {
 		} else if ((Dungeon.level.map[pos] == Terrain.EXIT || Dungeon.level.map[pos] == Terrain.UNLOCKED_EXIT)) {
 			
 			curAction = null;
-			Hunger.adjustHunger(-20/speed());
+			Hunger.adjustHunger(-35/speed());
 			lastMovPos = -1;
 
 			TimekeepersHourglass.TimeFreezing timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.TimeFreezing.class );
@@ -1098,7 +1098,7 @@ public class Hero extends Char {
 			} else {
 				
 				curAction = null;
-				Hunger.adjustHunger(-20/speed());
+				Hunger.adjustHunger(-35/speed());
 				lastMovPos = -1;
 
 				TimekeepersHourglass.TimeFreezing timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.TimeFreezing.class );
@@ -1910,7 +1910,7 @@ public class Hero extends Char {
 		
 		Invisibility.dispel();
 		spend( attackDelay() );
-        Hunger.adjustHunger(-2f*attackDelay());
+        Hunger.adjustHunger(-4.5f*attackDelay());
 
 		curAction = null;
 
@@ -1945,7 +1945,7 @@ public class Hero extends Char {
                     Level.set(doorCell, door == Terrain.LOCKED_DOOR ? Terrain.DOOR : Terrain.UNLOCKED_EXIT);
                     GameScene.updateMap(doorCell);
                     spend(Key.TIME_TO_UNLOCK);
-                    Hunger.adjustHunger(-2);
+                    Hunger.adjustHunger(-4.5f);
                 }
             }
 
@@ -1967,7 +1967,7 @@ public class Hero extends Char {
                     GameScene.updateKeyDisplay();
                     heap.open(this);
                     spend(Key.TIME_TO_UNLOCK);
-                    Hunger.adjustHunger(-3);
+                    Hunger.adjustHunger(-5f);
                 }
             }
 
