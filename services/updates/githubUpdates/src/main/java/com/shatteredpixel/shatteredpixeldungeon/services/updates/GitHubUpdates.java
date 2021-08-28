@@ -71,7 +71,7 @@ public class GitHubUpdates extends UpdateService {
 					for (Bundle b : Bundle.read( httpResponse.getResultAsStream() ).getBundleArray()){
 						if ((b.getString("tag_name").equals("latest") && acceptSnapshots) ||
 								(!acceptSnapshots && !b.getBoolean("prerelease")) &&
-										!b.getString("name").equals(Game.version.substring(1))){
+										!b.getString("name").equals(Game.version)){
 							found = true;
 							versionCode = b.getString("name");
 							changelog = b.getString("body").substring(10);
