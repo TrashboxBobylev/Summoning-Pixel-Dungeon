@@ -67,12 +67,65 @@ public abstract class Minion extends Mob {
     public int baseMaxDR = 0;
 
     public int strength = 9;
-    public int defendingPos = -1;
+    protected int defendingPos = -1;
+    protected boolean movingToDefendPos = false;
+
+    public void defendPos( int cell ){
+        aggro(null);
+        state = WANDERING;
+        defendingPos = cell;
+        movingToDefendPos = true;
+    }
+
+    public void clearDefensingPos(){
+        defendingPos = -1;
+        movingToDefendPos = false;
+    }
+
+    public void followHero(){
+        aggro(null);
+        state = WANDERING;
+        defendingPos = -1;
+        movingToDefendPos = false;
+    }
+
+    public void targetChar( Char ch ){
+        aggro(ch);
+        target = ch.pos;
+        defendingPos = -1;
+        movingToDefendPos = false;
+    }
+
+    public void directTocell( int cell ){
+        if (!Dungeon.level.heroFOV[cell]
+                || Actor.findChar(cell) == null
+                || (Actor.findChar(cell) != Dungeon.hero && Actor.findChar(cell).alignment != Char.Alignment.ENEMY)){
+            defendPos( cell );
+            return;
+        }
+
+        //TODO commenting this out for now, it should be pointless??
+		/*if (fieldOfView == null || fieldOfView.length != Dungeon.level.length()){
+			fieldOfView = new boolean[Dungeon.level.length()];
+		}
+		Dungeon.level.updateFieldOfView( this, fieldOfView );*/
+
+        if (Actor.findChar(cell) == Dungeon.hero){
+            followHero();
+
+        } else if (Actor.findChar(cell).alignment == Char.Alignment.ENEMY){
+            targetChar(Actor.findChar(cell));
+
+        }
+    }
 
     public boolean isTanky = false;
     public Weapon.Enchantment enchantment;
     public int lvl;
     public int timer = -1;
+
+    private static final String DEFEND_POS = "defend_pos";
+    private static final String MOVING_TO_DEFEND = "moving_to_defend";
 
     @Override
     public void storeInBundle(Bundle bundle) {
@@ -88,6 +141,8 @@ public abstract class Minion extends Mob {
         bundle.put("class", minionClass);
         bundle.put("deathtimer", timer);
         bundle.put("partialhp", partialHealing);
+        bundle.put(DEFEND_POS, defendingPos);
+        bundle.put(MOVING_TO_DEFEND, movingToDefendPos);
     }
 
     @Override
@@ -105,6 +160,8 @@ public abstract class Minion extends Mob {
         minionClass = bundle.getEnum("class", MinionClass.class);
         timer = bundle.getInt("deathtimer");
         partialHealing = bundle.getFloat("partialHealing");
+        if (bundle.contains(DEFEND_POS)) defendingPos = bundle.getInt(DEFEND_POS);
+        movingToDefendPos = bundle.getBoolean(MOVING_TO_DEFEND);
     }
 
     public float attunement = 1;
@@ -359,7 +416,7 @@ public abstract class Minion extends Mob {
         public boolean act( boolean enemyInFOV, boolean justAlerted ) {
 
             //Ensure there is direct line of sight from ally to enemy, and the distance is small. This is enforced so that allies don't end up trailing behind when following hero.
-            if ( enemyInFOV/* Dungeon.level.distance(pos, enemy.pos) < 5*/) {
+            if ( enemyInFOV && !movingToDefendPos) {
 
                 enemySeen = true;
 
@@ -374,14 +431,18 @@ public abstract class Minion extends Mob {
                 enemySeen = false;
                 Char toFollow = toFollow(Dungeon.hero);
                 int oldPos = pos;
+                target = defendingPos != -1 ? defendingPos : toFollow.pos;
                 //always move towards the target when wandering
-                if (getCloser( target = toFollow.pos )) {
-                    if (!Dungeon.level.adjacent(toFollow.pos, pos) && Actor.findChar(pos) == null) {
-                        getCloser( target = toFollow.pos );
-                    }
+                if (getCloser( target)) {
                     spend( 1 / speed() );
+                    if (pos == defendingPos) movingToDefendPos = false;
                     return moveSprite( oldPos, pos );
                 } else {
+                    //if it can't move closer to defending pos, then give up and defend current position
+                    if (movingToDefendPos){
+                        defendingPos = pos;
+                        movingToDefendPos = false;
+                    }
                     spend( TICK );
                 }
 
