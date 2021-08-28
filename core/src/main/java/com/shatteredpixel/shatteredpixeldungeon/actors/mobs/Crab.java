@@ -41,6 +41,9 @@ public class Crab extends Mob {
 		spriteClass = CrabSprite.class;
 		
 		HP = HT = 15;
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+			HP = HT = 7;
+		}
 		defenseSkill = 1;
 		baseSpeed = 0.8f;
 		
@@ -74,7 +77,7 @@ public class Crab extends Mob {
 	protected boolean act() {
 		boolean act = super.act();
 		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT) {
-			if (canSee(Dungeon.hero.pos)){
+			if (canSee(Dungeon.hero.pos) && Dungeon.hero == enemy){
 				int bestPos = -1;
 				for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
 					int p = Dungeon.hero.pos + PathFinder.NEIGHBOURS8[i];

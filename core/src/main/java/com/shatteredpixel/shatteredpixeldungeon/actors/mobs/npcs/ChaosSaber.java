@@ -63,6 +63,9 @@ public class ChaosSaber extends NPC {
 
     @Override
     public int damageRoll() {
+        if (Dungeon.mode == Dungeon.GameMode.DIFFICULT && alignment == Alignment.ENEMY){
+            return Random.NormalIntRange(1 + level, 4 + level);
+        }
         if (Dungeon.isChallenged(Conducts.Conduct.PACIFIST))
             return Random.NormalIntRange(1 + level, 3 + level);
         return Random.NormalIntRange(4 + level, 8 + level);
