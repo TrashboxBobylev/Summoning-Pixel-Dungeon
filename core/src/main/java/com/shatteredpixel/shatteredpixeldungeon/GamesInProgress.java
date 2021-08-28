@@ -182,9 +182,17 @@ public class GamesInProgress {
 	public static final Comparator<GamesInProgress.Info> scoreComparator = new Comparator<GamesInProgress.Info>() {
 		@Override
 		public int compare(GamesInProgress.Info lhs, GamesInProgress.Info rhs ) {
-			int lScore = (lhs.level * lhs.maxDepth * 100) + lhs.goldCollected;
-			int rScore = (rhs.level * rhs.maxDepth * 100) + rhs.goldCollected;
+			int lScore = score(lhs);
+			int rScore = score(rhs);
 			return (int)Math.signum( rScore - lScore );
+		}
+
+		private int score( GamesInProgress.Info hs ) {
+			return Math.round((
+					hs.goldCollected +
+							hs.maxDepth * hs.level * 100) *
+					hs.mode.scoreMod *
+					hs.challenges.scoreMod);
 		}
 	};
 }
