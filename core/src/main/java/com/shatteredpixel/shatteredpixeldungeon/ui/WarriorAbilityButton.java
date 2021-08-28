@@ -205,14 +205,20 @@ public class WarriorAbilityButton extends Tag {
             if (Dungeon.hero.buff(Stacks.class).damage <= 0) Dungeon.hero.buff(Stacks.class).detach();
         } else Hunger.adjustHunger(hungerCost);
 
-        int dmg; float delay;
+        int dmg; float delay; boolean weaponExist = true;
+        MeleeWeapon weapon = (MeleeWeapon) Dungeon.hero.belongings.weapon;
         if (Dungeon.hero.belongings.weapon == null){
             dmg = Dungeon.hero.damageRoll();
             delay = 1.5f;
+            weaponExist = false;
         }
         else {
-            dmg = ((MeleeWeapon)Dungeon.hero.belongings.weapon).warriorAttack(Dungeon.hero.damageRoll(), enemy);
-            delay = ((MeleeWeapon)Dungeon.hero.belongings.weapon).warriorDelay(Dungeon.hero.belongings.weapon.speedFactor(Dungeon.hero), enemy);
+            dmg = weapon.warriorAttack(Dungeon.hero.damageRoll(), enemy);
+            delay = weapon.warriorDelay(Dungeon.hero.belongings.weapon.speedFactor(Dungeon.hero), enemy);
+        }
+        if (Dungeon.hero.subClass == HeroSubClass.BERSERKER &&
+                weaponExist && weapon.STRReq() < Dungeon.hero.STR()){
+            dmg *= 1.22f + 0.33f*(Dungeon.hero.STR() - weapon.STRReq());
         }
         dmg = enemy.defenseProc(Dungeon.hero, dmg);
         dmg -= enemy.drRoll();
