@@ -44,7 +44,7 @@ import java.util.HashSet;
 public class RingOfElements extends Ring {
 
 	{
-		icon = ItemSpriteSheet.Icons.RING_TENACITY;
+		icon = ItemSpriteSheet.Icons.RING_ELEMENTS;
 	}
 	
 	public String statsInfo() {

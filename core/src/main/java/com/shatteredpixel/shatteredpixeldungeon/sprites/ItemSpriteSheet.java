@@ -890,7 +890,7 @@ public class ItemSpriteSheet {
 		public static final int RING_UNUSED     = RINGS+11;
 		static {
 			assignIconRect( RING_ACCURACY,      7, 7 );
-			assignIconRect( RING_ELEMENTS,      7, 7 );
+			assignIconRect( RING_ELEMENTS,      5, 5 );
 			assignIconRect( RING_ENERGY,        7, 5 );
 			assignIconRect( RING_EVASION,       7, 7 );
 			assignIconRect( RING_FORCE,         5, 6 );
