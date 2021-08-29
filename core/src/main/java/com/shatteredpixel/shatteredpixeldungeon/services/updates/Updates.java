@@ -24,7 +24,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.services.updates;
 
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.watabou.utils.Callback;
 
 import java.util.Date;
@@ -48,7 +47,7 @@ public class Updates {
 		if (!isUpdateable()) return;
 		if (lastCheck != null && (new Date().getTime() - lastCheck.getTime()) < CHECK_DELAY) return;
 
-		service.checkForUpdate(!SPDSettings.WiFi(), new UpdateService.UpdateResultCallback() {
+		service.checkForUpdate(false, new UpdateService.UpdateResultCallback() {
 			@Override
 			public void onUpdateAvailable(AvailableUpdateData update) {
 				lastCheck = new Date();
