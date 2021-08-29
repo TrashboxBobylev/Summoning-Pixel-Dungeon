@@ -278,7 +278,7 @@ public abstract class Wand extends Weapon {
 		if (target != Dungeon.hero &&
 				Dungeon.hero.subClass == HeroSubClass.WARLOCK &&
 				//standard 1 - 0.92^x chance, plus 7%. Starts at 15%
-				Random.Float() > (Math.pow(0.94f, (Dungeon.hero.lvl/3*chargesUsed)+1) - 0.4f)){
+				Random.Float() > (Math.pow(0.94f, (Dungeon.hero.lvl/3*chargesUsed)+1) - 0.07f)){
 			SoulMark.prolong(target, SoulMark.class, SoulMark.DURATION + wandLevel);
 		}
 	}
