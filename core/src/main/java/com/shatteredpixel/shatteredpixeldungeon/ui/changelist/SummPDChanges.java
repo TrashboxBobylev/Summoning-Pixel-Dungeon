@@ -29,13 +29,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.ElementalBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CleanWater;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.EnchantParchment;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfConjuration;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfStench;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -71,121 +69,48 @@ public class SummPDChanges {
 		add_Minor_Changes(changeInfos);
 	}
 
-//    public static void add_Beta_Changes( ArrayList<ChangeInfo> changeInfos ){
-//        ChangeInfo changes = new ChangeInfo("Beta Information", false, "");
-//        changes.hardlight(Window.TITLE_COLOR);
-//        changeInfos.add(changes);
-//
-//        changes.addButton( new ChangeButton(Icons.get(Icons.CONJURER), "Closed Beta",
-//                "_-_ Closed beta started October 18th, 2019\n" +
-//                        "_-_ 42 days after beginning of development\n" +
-//                        "\n" +
-//                        "This is pre-release version of Summoning PD. I except to test them for 5-8 days, if nothing major will happen, that version will be released as final."));
-//
-//        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-2",
-//                "Fixed:\n" +
-//                        "_-_ Traps was not correctly revealed, non-hidden traps was crashing the game.\n" +
-//                        "_-_ LOVE Holder was able to have negative strength.\n" +
-//                        "_-_ Conjurer's icon was bit out of center\n"+
-//                        "_-_ Changes buttons was not enough long.\n"+
-//                        "_-_ Ring of Attunement was displaying incorrect numbers.\n\n"+
-//                        "Changed:\n" +
-//                        "_-_ Buffed melee damage for staffs, but lowered recharge rate by 50%."));
-//
-//        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-3",
-//                "Fixed:\n" +
-//                        "_-_ Rendering of cleared Tengu floor was wrong\n" +
-//                        "_-_ Conjurer was starting with 10 strength\n" +
-//                        "_-_ Sometimes the new badges were crashing the game\n"+
-//                        "_-_ Gaster Blaster had 1 attunement requirement, but consumed the 2 attunement on summoning\n"+
-//                        "_-_ In some cases staff's descriptions were crashing the game\n"+
-//                        "_-_ Sewers had test tier drop rate list\n\n"+
-//                        "Changed:\n" +
-//                        "_-_ New sprites for Conjurer's avatar and froggit\n"+
-//                        "_-_ Staff's default action were changed to SUMMON"));
-//        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-4",
-//                "Fixed:\n" +
-//                        "_-_ Player was able to use staffs with negative charges\n" +
-//                        "_-_ Soul Reaver's abilities were reducing minion's life to 1\n" +
-//                        "_-_ Chicken staff was displaying the bonus HP from robe\n"+
-//                        "_-_ Froggit were having the wrong frame animations\n"+
-//                        "_-_ Love Holder doesn't crash on reading +10's description\n"+
-//                        "_-_ Minions was not able to wake up after magical sleep\n\n"+
-//                        "Changed:\n" +
-//                        "_-_ Minions now have the stats description"));
-//        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-5",
-//                "Fixed:\n" +
-//                        "_-_ Froggit was using the death animation for attacking and vice versa\n" +
-//                        "_-_ Heroes were not able to open heaps standing on them\n" +
-//                        "_-_ All heroes was having 9 strength\n\n"+
-//                        "Changed:\n" +
-//                "_-_ Changes slighty the weight of items, staffs should appear more often.\n\n"+
-//                "_-_ Reworked the Vial of Perfume: now attracts enemies from whole depth, but attacking them dispells the perfume affection.\n"+
-//                "_-_ Changed the Containing: chance to collect the mob depends on their HP and EXP, if not successful, the enemy will get damage, equal to 50% current HP.\n"+
-//                "_-_ Rebalanced most broken or underused staffs.\n"+
-//                "_-_ Removed the unstable from Worn Shortsword."));
-//
-//        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-6",
-//                "Fixed:\n" +
-//                        "_-_ Staffs were not transmutable\n" +
-//                        "_-_ Message from stone of aggression was !!!NO TEXT FOUND!!!\n" +
-//                        "_-_ Conjurer's amor had a wrong prompt on imbuing\n\n"+
-//                        "Changed:\n" +
-//                        "_-_ Staffs now decrease strength requirement with every upgrade.\n"+
-//                        "_-_ Chaos Saber now collect a lot of soul, if hero is Soul Reaver.\n"+
-//                        "_-_ Necromancer now affect their skeleton with Empowered.\n"+
-//                        "_-_ Reworked the resistance for monsters: damage now get sqrted rather that halfed.\n"+
-//                        "_-_ Buffed the Ring of Attunement.\n"+
-//                        "_-_ Scroll of Attunement now weakens the enemies.\n"+
-//                        "_-_ Minion show their base DR alongside with additional DR in description.\n"+
-//                        "_-_ Necromancers now drop the random staff with 1/8 chance.\n"+
-//                        "_-_ Removed nerfs from Cleaver, but adjusted the chance to behead."));
-//
-//        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-7",
-//                "Changed:\n"+
-//                                        "_-_ Throwing knifes and kunai doesn't consume a durability with right uses\n"+
-//                                        "_-_ Added the slingshot with removal of throwing stones as standalone weapon\n"+
-//                                        "_-_ Fixed weird non-opaque spots in graphics\n"+
-//                                        "_-_ Reworked the runic blade\n"+
-//                                        "_-_ Changed the visuals of fireball and main menu buttons\n"+
-//                                        "_-_ Buffed the rattle snake's evasion and damage\n"+
-//                                        "_-_ Massively adjusted charge rate of most staves; froggit staff will stay with old stats, most of staves recharges in 400 turns, tank staves recharge even longer\n" +
-//                                        "_-_ Brand new icon for the mod!"
-//        ));
-//        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "BETA-7.1",
-//                "Fixed:\n" +
-//                        "_-_ Runic Blade's emitter were placed in wrong place and didn't updated\n" +
-//                        "_-_ On shooting, Runic Blade was able to target something different from target\n\n" +
-//                        "Changed:\n" +
-//                        "_-_ New menu button appearance"));
-//        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "RC-1",
-//                        "Changed:\n" +
-//                        "_-_ Mod's icon are more contrast now\n" +
-//                                "_-_ Adjusted Soul Reaver's offensive ability: now it consumes 2x more soul\n" +
-//                                "_-_ Added Slimes and Final Froggits into Demon Halls\n\n" +
-//                                "We are almost finished. If nothing major will happen with new mobs, I will publish the release."));
-//        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "RC-2",
-//                "Changed:\n" +
-//                        "_-_ Shops have been reworked again\n" +
-//                        "_-_ You need to kill Final Froggits to proceed to next floor\n" +
-//                        "_-_ Slimes now occupy cell rather that levitating\n" +
-//                        "_-_ Changed the about scene\n" +
-//                        "_-_ Froggit staff are included into quickslots\n" +
-//                        "_-_ Added Gold Token, just for selling\n\n"+
-//                        "We are almost finished. If nothing major will happen with shop, I will publish the release."));
-//        changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "RC-3",
-//                "Fixed:\n" +
-//                        "_-_ Shops were selling the cursed items and unidentified wands and rings\n" +
-//                        "_-_ You weren't able to descend, if you killed all final froggits\n" +
-//                        "_-_ Minions are weren't able to awake (not sure about this one)\n" +
-//                        "Changed:\n" +
-//                        "_-_ Rankings score now have completely new formula\n" +
-//                        "_-_ Added the article about allies into Adventurer Guide\n"+
-//                        "We are almost finished. If nothing major will happen with this damn sleepy minions, I will publish the release."));
-//    }
     public static void add_1_1_7_Changes(ArrayList<ChangeInfo> changeInfos) {
 
-        ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "1.2.2 snapshots", false, Window.WHITE);
+        ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "1.2.2", false, Window.TITLE_COLOR);
+        changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
+                "_-_ Released September th, 2021\n" +
+                        "_-_ X days after 1.2.1\n\n" +
+                        ""));
+        changes = ChangesScene.createChangeInfo(changeInfos, "New Content", false, 0x10bb00);
+        changes.addButton(new ChangeButton(Icons.get(Icons.CHALLENGE_ON), "Conducts",
+                "_Conducts_ are replacing challenges as new way of setting run modifiers.\n\n" +
+                        "_-_ You can choose only one conduct.\n\n" +
+                        "_-_ They can not only increase the difficulty, but also be beneficial to your character.\n\n" +
+                        "_-_ There is 15 conducts to try out right now!"));
+        changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.ELEMENTAL_BLAST, null), "Abilities",
+                "_Abilities_ are new Scroll of Upgrade-based artifacts, acting like active ability.\n\n" +
+                        "_-_ They have charge cost and recharge to full in _500 turns_.\n\n" +
+                        "_-_ Their effects can be modified with tiering mechanic.\n\n" +
+                        "_-_ There is 13 available abilities, 12 of which are made with alchemy."));
+        changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.WAND_MAGIC_MISSILE, null), "Wands rework",
+                "Overhauled wands to make them compatible with tiering and more variative overall:\n\n" +
+                        "_-_ Now have tiers, like abilities, bow and summoning staves.\n" +
+                        "_-_ The max charge is always 5, regardless of wand or tier of it.\n" +
+                        "_-_ Can be used as melee weapon on Mage, their melee damage scales with hero's strength.\n" +
+                        "_-_ Reworked magical effects to scale from player's level.\n" +
+                        "_-_ _Battlemage_ have been changed to scale with hero's level.\n" +
+                        "_-_ _Warlock_ have been changed to have much greater soul mark chance that scales with hero's level, as wands do not upgrade traditionally anymore." +
+                        "_-_ _Removed_ Mage's Staff. All existing instances of staff will be replaced with corresponding wand.\n"));
+        changes.addButton(new ChangeButton(Icons.get(Icons.ENTER), "New game modes",
+                "Added three new game modes:\n\n" +
+                        "_-_ _Increased Difficulty_ makes every monster stronger by giving them various abilities and attack overhauls.\n\n" +
+                        "_-_ _Proficient Polygon Catacombs_ turns the game into slightly-grindy RPG: you can grind XP and loot forever, without most of limits.\n\n" +
+                        "_-_ _Subterranean Diversity_ uses cave-like level generator, creating the feel of more traditional roguelikes."));
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.ROGUE, 0, 90, 12, 15), "Rogue rework (part 1)",
+                "Added tier 1 and tier 2 Rogue talents!\n\n" +
+                        "_-_ This makes him the only hero that can recieve talents, as his gameplay mechanic.\n\n" +
+                        "_-_ Tier 1 includes 6 talents, and tier 2 introduces whooping 12 talents! Choose your own style of gameplay.\n\n" +
+                        "_-_ The balance issues are possible, so please report about them."));
+        changes.addButton( new ChangeButton(Icons.get(Icons.DEPTH), "Level gen",
+                "_-_ Added _5 new thematic rooms_, one for each stage!\n\n" +
+                        "_-_ Added new level generator that replaces tunnels with more regular rooms."));
+
+        changes = ChangesScene.createChangeInfo(changeInfos, "Changes", false, 0xd1bb00);
         changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.POTION_CRIMSON, null), "Potion of Healing",
                 "_-_ Reduced base healing by 10 points (up to _-20%_ depending on hero's level).\n" +
                         "_-_ Reduced healing speed by _20%_.\n" +
@@ -214,18 +139,38 @@ public class SummPDChanges {
                         "   Hell Bat: 16-17 -> 13-15\n" +
                         "   Scorpio: 30-40 -> 25-33\n" +
                         "   Ripper Demon: 15-25 -> 13-22"));
-        changes.addButton( new ChangeButton(new Image(Assets.Sprites.ROGUE, 0, 90, 12, 15), "Rogue",
-                "Added tier 1 and tier 2 Rogue talents, please leave feedback about their power."));
-        changes.addButton(new ChangeButton(new ElementalBlast(),
-                "Added 15 ability items, which replace armor ability concept."));
-        changes.addButton(new ChangeButton(new WandOfMagicMissile(),
-                "Overhauled wands:\n\n" +
-                        "_-_ Now have tiers.\n" +
-                        "_-_ They have 5 max charge.\n" +
-                        "_-_ Can be used as melee weapon on Mage.\n" +
-                        "_-_ Reworked magical effects to scale from player's level.\n" +
-                        "_-_ Wand's melee damage and scales with strength.\n" +
-                        "_-_ Removed Mage's Staff.\n"));
+        changes.addButton( new ChangeButton(new Image(new RatSprite()), "Hordes",
+                "_-_ Fixed some bugs making horde members extra stupid.\n\n" +
+                        "_-_ Hordes cannot spawn around creatures that are already fight in masses."
+        ));
+        changes.addButton(new ChangeButton(Icons.get(Icons.ENTER), "Game Mode Changes",
+                "_-_ Greatly improved the stability for Project Paradox.\n\n" +
+                        "_-_ Removed a lot of limitations for Gauntlet Mode and removed traps from it.\n\n" +
+                        "_-_ Changed the order in game mode list."));
+        changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.MASTERY, null), "Subclasses",
+                "_-_ Buffed Sniper: now has less chance to miss and can use thrown weapons to proc enchantments from the bow.\n\n" +
+                        "_-_ Buffed Robinson: now gets extra damage with specials."));
+        changes.addButton(new ChangeButton(Icons.get(Icons.SHPX), "ShatteredPD",
+                "_-_ Ported many technical changes from ShPD 1.0.1."));
+        changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+                "_-_ Adjusted gold spawning again.\n\n" +
+                        "_-_ Wands now show their recharge time in description.\n\n" +
+                        "_-_ Abyss shops get sandbags.\n\n" +
+                        "_-_ Re-added GitHub updates.\n\n" +
+                        "_-_ Game modes affect the score now.\n\n" +
+                        "_-_ Games in progress are getting ordered by their Summoning's score formula.\n\n" +
+                        "_-_ Increased the hunger rates, but decreased the starving rates.\n\n" +
+                        "_-_ Massively decreased the amount of items generated in dungeon.\n\n" +
+                        "_-_ Changed the look for buttons again."));
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "Fixed:\n" +
+                        "_-_ Rat bombs not working half of the time.\n" +
+                        "_-_ Frequent freezes with chaotic level gen.\n" +
+                        "_-_ Change windows not being scrollable.\n" +
+                        "_-_ Wrong icon for Ring of Endurance.\n" +
+                        "_-_ Stone of Targeting being not useful.\n" +
+                        "_-_ Some minions falling despite levitating in their appearance."));
+
 
 
         changes = ChangesScene.createChangeInfo(changeInfos, "1.2.1", true, Window.TITLE_COLOR);
