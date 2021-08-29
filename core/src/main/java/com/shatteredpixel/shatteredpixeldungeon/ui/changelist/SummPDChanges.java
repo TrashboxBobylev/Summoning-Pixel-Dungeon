@@ -71,7 +71,8 @@ public class SummPDChanges {
 
     public static void add_1_1_7_Changes(ArrayList<ChangeInfo> changeInfos) {
 
-        ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "1.2.2", false, Window.TITLE_COLOR);
+        ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "1.2.2", true, Window.TITLE_COLOR);
+        changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
         changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
                 "_-_ Released September th, 2021\n" +
                         "_-_ X days after 1.2.1\n\n" +
