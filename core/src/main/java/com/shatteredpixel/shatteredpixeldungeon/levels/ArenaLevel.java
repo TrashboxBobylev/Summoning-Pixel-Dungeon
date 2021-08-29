@@ -130,12 +130,12 @@ public class ArenaLevel extends RegularLevel {
 
     @Override
     protected int nTraps() {
-        return (int) (super.nTraps());
+        return 0;
     }
 
     @Override
     public int nMobs() {
-        return (int) (super.nMobs()/2.2f);
+        return (int) (super.nMobs()/1.5f);
     }
 
     @Override
