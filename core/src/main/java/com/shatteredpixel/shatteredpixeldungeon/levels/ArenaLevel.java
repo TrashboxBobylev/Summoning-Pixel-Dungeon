@@ -36,7 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Chaosstone;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
@@ -186,7 +186,7 @@ public class ArenaLevel extends RegularLevel {
             addItemToSpawn(new Chaosstone());
             if (Random.Int(2) == 0) addItemToSpawn(new Chaosstone());
         }
-        if (Dungeon.depth % 2 == 0) addItemToSpawn(new ChargrilledMeat());
+        if (Dungeon.depth % 2 == 0) addItemToSpawn(new Food());
 
         super.create();
     }
