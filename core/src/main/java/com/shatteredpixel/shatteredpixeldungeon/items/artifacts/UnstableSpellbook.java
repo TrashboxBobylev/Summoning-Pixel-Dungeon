@@ -314,7 +314,7 @@ public class UnstableSpellbook extends Artifact {
 
 		@Override
 		public boolean itemSelectable(Item item) {
-			return item instanceof Scroll && !scrolls.contains(item.getClass());
+			return item instanceof Scroll && scrolls.contains(item.getClass());
 		}
 
 		@Override
