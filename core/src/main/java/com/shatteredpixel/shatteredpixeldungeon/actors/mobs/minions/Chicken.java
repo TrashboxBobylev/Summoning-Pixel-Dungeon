@@ -37,6 +37,7 @@ public class Chicken extends Minion {
         spriteClass = ChickenSprite.class;
         attunement = 0.5f;
         baseSpeed = 2;
+        flying = true;
     }
 
     @Override

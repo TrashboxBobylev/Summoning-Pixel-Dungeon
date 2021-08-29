@@ -51,6 +51,7 @@ public class ImpQueen extends Minion {
         spriteClass = ImpQueenSprite.class;
         attunement = 3f;
         isTanky = true;
+        flying = true;
         properties.add(Property.RANGED);
     }
 

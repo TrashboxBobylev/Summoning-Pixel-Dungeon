@@ -39,6 +39,7 @@ public class FrostElemental extends Minion {
         properties.add(Property.INORGANIC);
         baseMinDR = 4;
         baseMaxDR = 13;
+        flying = true;
     }
 
     @Override

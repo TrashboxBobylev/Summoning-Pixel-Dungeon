@@ -37,6 +37,7 @@ public class SoulFlame extends Minion {
     {
         spriteClass = SoulFlameSprite.class;
         viewDistance = 8;
+        flying = true;
         properties.add(Property.RANGED);
     }
 
