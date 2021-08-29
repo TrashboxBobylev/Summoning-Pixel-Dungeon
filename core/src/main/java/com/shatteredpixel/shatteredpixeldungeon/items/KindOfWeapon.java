@@ -109,7 +109,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 			if (!doNotUseTurnForCollect)
 			hero.spendAndNext( TIME_TO_EQUIP );
 
-            Hunger.adjustHunger(-8);
+            Hunger.adjustHunger(-17);
 			return true;
 
 		} else {
@@ -123,7 +123,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 		if (super.doUnequip( hero, collect, single )) {
 
 			hero.belongings.weapon = null;
-            Hunger.adjustHunger(-10);
+            Hunger.adjustHunger(-17);
 			return true;
 
 		} else {
