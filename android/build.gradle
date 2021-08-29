@@ -43,6 +43,11 @@ android {
     }
 
     buildTypes {
+        debug {
+            dependencies {
+                implementation project(':services:updates:githubUpdates')
+            }
+        }
         release {
 
             //These lines enable R8, which is a code shrinker/optimizer/obfuscator.

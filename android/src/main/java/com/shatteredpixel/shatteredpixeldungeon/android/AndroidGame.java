@@ -36,6 +36,8 @@ import com.badlogic.gdx.backends.android.AndroidAudio;
 import com.badlogic.gdx.backends.android.AsynchronousAndroidAudio;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.services.updates.UpdateImpl;
+import com.shatteredpixel.shatteredpixeldungeon.services.updates.Updates;
 import com.watabou.noosa.Game;
 import com.watabou.utils.FileUtils;
 
@@ -100,6 +102,10 @@ public class AndroidGame extends AndroidApplication {
 		else                 support.reloadGenerators();
 		
 		support.updateSystemUI();
+
+		if (UpdateImpl.supportsUpdates()){
+			Updates.service = UpdateImpl.getUpdateService();
+		}
 		
 		initialize(new ShatteredPixelDungeon(support), config);
 		
