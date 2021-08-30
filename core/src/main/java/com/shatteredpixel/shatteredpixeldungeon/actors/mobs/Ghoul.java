@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
@@ -59,6 +60,16 @@ public class Ghoul extends Mob {
 		lootChance = 0.2f;
 		
 		properties.add(Property.UNDEAD);
+	}
+
+	{
+		immunities.add(ChampionEnemy.Blazing.class);
+		immunities.add(ChampionEnemy.Splintering.class);
+		immunities.add(ChampionEnemy.Giant.class);
+		immunities.add(ChampionEnemy.Paladin.class);
+		immunities.add(ChampionEnemy.Explosive.class);
+		immunities.add(ChampionEnemy.Stone.class);
+		immunities.add(ChampionEnemy.Voodoo.class);
 	}
 
 	@Override

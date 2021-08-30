@@ -27,10 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.GooBlob;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
@@ -60,6 +57,17 @@ public class Slime extends Mob {
 		properties.add(Property.ACIDIC);
 		properties.add(Property.DEMONIC);
 		properties.add(Property.INORGANIC);
+	}
+
+	{
+		immunities.add(ChampionEnemy.Blazing.class);
+		immunities.add(ChampionEnemy.Splintering.class);
+		immunities.add(ChampionEnemy.Giant.class);
+		immunities.add(ChampionEnemy.Paladin.class);
+		immunities.add(ChampionEnemy.Explosive.class);
+		immunities.add(ChampionEnemy.Flowing.class);
+		immunities.add(ChampionEnemy.Stone.class);
+		immunities.add(ChampionEnemy.Voodoo.class);
 	}
 
 	private static final float SPLIT_DELAY	= 1f;

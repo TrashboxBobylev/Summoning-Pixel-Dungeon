@@ -53,6 +53,10 @@ public class HellBat extends Mob {
 		lootChance = 0.5f;
 	}
 
+	{
+		immunities.add(ChampionEnemy.Flowing.class);
+	}
+
 	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange( 13, 15 );

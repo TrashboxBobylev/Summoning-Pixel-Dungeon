@@ -68,6 +68,12 @@ public class Succubus extends Mob {
 		properties.add(Property.DEMONIC);
 	}
 
+	{
+		immunities.add(ChampionEnemy.Projecting.class);
+		immunities.add(ChampionEnemy.Blessed.class);
+		immunities.add(ChampionEnemy.Growing.class);
+	}
+
 	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange( 21, 29 );

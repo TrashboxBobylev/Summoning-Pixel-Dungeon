@@ -27,10 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
@@ -56,6 +53,17 @@ public class Swarm extends Mob {
 
 		loot = new PotionOfHealing();
 		lootChance = 0.1667f; //by default, see rollToDropLoot()
+	}
+
+	{
+		immunities.add(ChampionEnemy.Blazing.class);
+		immunities.add(ChampionEnemy.Splintering.class);
+		immunities.add(ChampionEnemy.Giant.class);
+		immunities.add(ChampionEnemy.Paladin.class);
+		immunities.add(ChampionEnemy.Explosive.class);
+		immunities.add(ChampionEnemy.Flowing.class);
+		immunities.add(ChampionEnemy.Stone.class);
+		immunities.add(ChampionEnemy.Voodoo.class);
 	}
 
 	private static final float SPLIT_DELAY	= 1f;

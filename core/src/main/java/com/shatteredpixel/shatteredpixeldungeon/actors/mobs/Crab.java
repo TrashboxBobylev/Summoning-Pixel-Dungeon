@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.ChaosSaber;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -51,6 +52,13 @@ public class Crab extends Mob {
 		maxLvl = 6;
 		loot = new MysteryMeat();
 		lootChance = 0.4f;
+	}
+
+	{
+		immunities.add(ChampionEnemy.Giant.class);
+		immunities.add(ChampionEnemy.AntiMagic.class);
+		immunities.add(ChampionEnemy.Growing.class);
+		immunities.add(ChampionEnemy.Stone.class);
 	}
 
 	@Override

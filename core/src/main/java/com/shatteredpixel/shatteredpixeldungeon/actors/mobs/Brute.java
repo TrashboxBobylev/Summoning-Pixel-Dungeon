@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ShieldBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
@@ -55,6 +56,10 @@ public class Brute extends Mob {
 		lootChance = 0.5f;
 	}
 
+	{
+		immunities.add(ChampionEnemy.Projecting.class);
+		immunities.add(ChampionEnemy.Swiftness.class);
+	}
 
 	protected boolean hasRaged = false;
 	

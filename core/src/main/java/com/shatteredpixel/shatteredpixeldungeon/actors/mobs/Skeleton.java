@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Block;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -57,6 +58,12 @@ public class Skeleton extends Mob {
 
 		properties.add(Property.UNDEAD);
 		properties.add(Property.INORGANIC);
+	}
+
+	{
+		immunities.add(ChampionEnemy.Explosive.class);
+		immunities.add(ChampionEnemy.Reflective.class);
+		immunities.add(ChampionEnemy.AntiMagic.class);
 	}
 	
 	@Override

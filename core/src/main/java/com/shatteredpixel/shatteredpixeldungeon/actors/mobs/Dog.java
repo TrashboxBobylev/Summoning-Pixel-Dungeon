@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.DogSprite;
 import com.watabou.utils.Random;
@@ -44,6 +45,12 @@ public class Dog extends Mob {
 		
 		loot = Generator.random();
 		lootChance = 0.1f;
+	}
+
+	{
+		immunities.add(ChampionEnemy.Blazing.class);
+		immunities.add(ChampionEnemy.Swiftness.class);
+		immunities.add(ChampionEnemy.Blessed.class);
 	}
 
 	@Override
