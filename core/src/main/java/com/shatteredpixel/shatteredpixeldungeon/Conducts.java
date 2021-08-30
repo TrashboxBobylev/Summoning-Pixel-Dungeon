@@ -47,7 +47,10 @@ public class Conducts {
         REGENERATION(1.33f),
         UNKNOWN(1.4f),
         NO_STR(2f),
-        CHAMPS(1.4f);
+        CHAMPS(1.4f),
+        NO_REGEN(1.4f),
+        CURSE(1.33f),
+        ALLSIGHT(1.33f);
 
         public float scoreMod;
 

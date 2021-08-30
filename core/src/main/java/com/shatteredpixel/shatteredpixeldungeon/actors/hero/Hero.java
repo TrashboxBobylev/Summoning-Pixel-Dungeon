@@ -376,7 +376,8 @@ public class Hero extends Char {
 	}
 
 	public void live() {
-		Buff.affect( this, Regeneration.class );
+		if (!Dungeon.isChallenged(Conducts.Conduct.NO_REGEN))
+			Buff.affect( this, Regeneration.class );
 		Buff.affect( this, Hunger.class );
 	}
 	
