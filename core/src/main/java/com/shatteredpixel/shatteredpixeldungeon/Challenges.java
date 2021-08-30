@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.RegrowthBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfHoneyedHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfShielding;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
@@ -70,6 +71,9 @@ public class Challenges {
 	public static boolean isItemBlocked( Item item ){
 
 		if (Dungeon.mode == Dungeon.GameMode.NO_SOU && item instanceof ScrollOfUpgrade){
+			return true;
+		}
+		if (Dungeon.isChallenged(Conducts.Conduct.NO_STR) && item instanceof PotionOfStrength){
 			return true;
 		}
 		if (Dungeon.mode == Dungeon.GameMode.HELL && (
