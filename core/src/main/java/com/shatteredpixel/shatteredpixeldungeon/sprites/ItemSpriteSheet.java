@@ -851,7 +851,7 @@ public class ItemSpriteSheet {
 		assignItemRect(HOLDER,      16, 16);
 		assignItemRect(BANDOLIER,   15, 16);
 		assignItemRect(HOLSTER,     15, 16);
-		assignItemRect(BOOK,        16, 13);
+		assignItemRect(BOOK,        13, 16);
 	}
 
 	                                                                                    //16 free slots
