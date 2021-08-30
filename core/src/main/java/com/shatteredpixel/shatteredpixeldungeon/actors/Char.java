@@ -45,7 +45,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LoveHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Endure;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfAdrenalineSurge;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Scrap;
@@ -61,7 +60,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Slingshot;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knife;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.ShockingDart;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -328,14 +326,6 @@ public abstract class Char extends Actor {
 					effectiveDamage *= 1 + Dungeon.hero.pointsInTalent(Talent.UNSIGHTED) * 0.2f;
 				}
 			}
-
-            LoveHolder.lul buff = Dungeon.hero.buff(LoveHolder.lul.class);
-            if (enemy.buff(Knife.SoulGain.class) != null && buff != null && Dungeon.hero.subClass == HeroSubClass.OCCULTIST && this instanceof Hero){
-                int gain = 2;
-                if (Dungeon.hero.belongings.weapon instanceof Knife && !((Knife) Dungeon.hero.belongings.weapon).ranged) gain = 0;
-                int charge = buff.gainCharge(gain);
-                if (charge == 0 && gain != 0) sprite.showStatus(CharSprite.DEFAULT, "+%d♥", gain);
-            }
 
 			// If the enemy is already dead, interrupt the attack.
 			// This matters as defence procs can sometimes inflict self-damage, such as armor glyphs.
