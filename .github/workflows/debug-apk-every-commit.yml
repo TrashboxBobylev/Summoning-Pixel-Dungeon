@@ -44,6 +44,9 @@ jobs:
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
 
+      - name: Rename APK
+          run: mv android/build/outputs/apk/release/android-release-unsigned-signed.apk android/build/outputs/apk/release/android-release.apk
+
       - name: Upload as Pre-release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
@@ -52,7 +55,7 @@ jobs:
           prerelease: false
           title: "${{ env.version }}"
           files: |
-              android/build/outputs/apk/release/android-release-unsigned-signed.apk
+              android/build/outputs/apk/release/android-release.apk
               desktop/build/libs/*.jar
       - name: Remove unsigned apk
         run: rm android/build/outputs/apk/release/android-release-unsigned.apk
@@ -65,9 +68,6 @@ jobs:
 
       - name: Remove output.json
         run: rm android/build/outputs/apk/release/output.json
-
-      - name: Rename APK
-        run: mv android/build/outputs/apk/release/android-release-unsigned-signed.apk android/build/outputs/apk/release/android-release.apk
 
       - name: Upload to itch.io
         uses: josephbmanley/butler-publish-itchio-action@master
