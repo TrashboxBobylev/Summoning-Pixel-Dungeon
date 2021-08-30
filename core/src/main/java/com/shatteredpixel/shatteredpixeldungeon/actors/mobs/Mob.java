@@ -55,6 +55,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.quest.GoldToken;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Lucky;
@@ -64,6 +65,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -833,6 +835,10 @@ public abstract class Mob extends Char {
 				Statistics.enemiesSlain++;
 				Badges.validateMonstersSlain();
 				Statistics.qualifiedForNoKilling = false;
+				if (Dungeon.isChallenged(Conducts.Conduct.CURSE)){
+					Dungeon.hero.busy();
+					CursedWand.cursedZap(null, enemy, new Ballistica(enemy.pos, pos, Ballistica.MAGIC_BOLT), () -> {});
+				}
 
 				int exp = Dungeon.hero.lvl <= maxLvl || Dungeon.mode == Dungeon.GameMode.LOL ? EXP : 0;
 				if (Dungeon.mode == Dungeon.GameMode.NO_EXP) exp = 0;

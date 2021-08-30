@@ -535,6 +535,9 @@ public abstract class Wand extends Weapon {
 		if (Random.Float() < 0.3f) {
 			cursed = true;
 		}
+		if (Dungeon.isChallenged(Conducts.Conduct.CURSE)){
+			cursed = true;
+		}
 
 		return this;
 	}
