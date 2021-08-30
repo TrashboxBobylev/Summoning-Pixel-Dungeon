@@ -188,6 +188,7 @@ public class Dungeon {
 
 	public static Conducts.Conduct challenges;
 	public static GameMode mode;
+	public static int mobsToChampion;
 
 	public static Hero hero;
 	public static Level level;
@@ -235,6 +236,7 @@ public class Dungeon {
 		
 		depth = 0;
 		gold = 0;
+		mobsToChampion = -1;
 		if (Dungeon.mode == GameMode.GAUNTLET){
 			gold = 100;
 		}
@@ -493,6 +495,7 @@ public class Dungeon {
 	private static final String HERO		= "hero";
 	private static final String GOLD		= "gold";
 	private static final String DEPTH		= "depth";
+	private static final String MOBS_TO_CHAMPION	= "mobs_to_champion";
 	private static final String DROPPED     = "dropped%d";
 	private static final String PORTED      = "ported%d";
 	private static final String LEVEL		= "level";
@@ -509,6 +512,7 @@ public class Dungeon {
 			bundle.put( VERSION, version );
 			bundle.put( SEED, seed );
 			bundle.put( CHALLENGES, challenges );
+			bundle.put( MOBS_TO_CHAMPION, mobsToChampion );
 			bundle.put( HERO, hero );
 			bundle.put( GOLD, gold );
 			bundle.put( DEPTH, depth );
@@ -603,6 +607,8 @@ public class Dungeon {
 		quickslot.reset();
 		QuickSlotButton.reset();
 
+
+
 		Dungeon.challenges = bundle.getEnum( CHALLENGES, Conducts.Conduct.class );
 		try {
 			Dungeon.mode = GameMode.valueOf(bundle.getString(MODE));
@@ -612,6 +618,7 @@ public class Dungeon {
 							GameMode.NORMAL);
 
 		}
+		Dungeon.mobsToChampion = bundle.getInt( MOBS_TO_CHAMPION );
 		
 		Dungeon.level = null;
 		Dungeon.depth = -1;

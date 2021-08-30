@@ -94,10 +94,19 @@ public abstract class ChampionEnemy extends Buff {
         return 1f;
     }
 
-    public static void rollForChampion(Mob m) {
-        if (m.buff(ChampionEnemy.class) != null) return;
+    public static void rollForChampion(Mob m){
+        if (Dungeon.mobsToChampion <= 0) Dungeon.mobsToChampion = 5;
 
-        switch (Random.Int(12)) {
+        Dungeon.mobsToChampion--;
+
+        if (Dungeon.mobsToChampion <= 0){
+            makeChampion(m);
+            m.state = m.WANDERING;
+        }
+    }
+
+    private static void makeChampion(Mob m) {
+        switch (Random.Int(15)) {
             case 0:
             default:
                 Buff.affect(m, Blazing.class);
@@ -135,11 +144,58 @@ public abstract class ChampionEnemy extends Buff {
             case 11:
                 Buff.affect(m, Explosive.class);
                 break;
+            case 12:
+                Buff.affect(m, Swiftness.class);
+                break;
+            case 13:
+                Buff.affect(m, Reflective.class);
+                break;
+            case 14:
+                Buff.affect(m, Paladin.class);
+                break;
         }
+    }
 
+    public static void rollForChampionInstantly(Mob m){
+        makeChampion(m);
         m.state = m.WANDERING;
     }
 
+    public static class Swiftness extends ChampionEnemy {
+        {
+            color = 0x2900ff;
+        }
+
+        @Override
+        public boolean attachTo(Char target) {
+            Buff.affect(target, Shrink.class);
+            Buff.affect(target, Adrenaline.class, 1000);
+            return super.attachTo(target);
+        }
+    }
+
+    public static class Paladin extends ChampionEnemy {
+        {
+            color = 0xfff2aa;
+        }
+
+        @Override
+        public boolean attachTo(Char target) {
+            target.viewDistance = 8;
+            return super.attachTo(target);
+        }
+
+        @Override
+        public float damageTakenFactor() {
+            return 0.5f;
+        }
+    }
+
+    public static class Reflective extends ChampionEnemy {
+        {
+            color = 0x981a47;
+        }
+    }
 
 
     public static class Blazing extends ChampionEnemy {

@@ -430,6 +430,10 @@ public abstract class Level implements Bundlable {
 				depth++;
 			mobsToSpawn = Bestiary.getMobRotation(depth);
 		}
+		Mob mob = Reflection.newInstance(mobsToSpawn.remove(0));
+		if (Dungeon.isChallenged(Conducts.Conduct.CHAMPS)){
+			ChampionEnemy.rollForChampion(mob);
+		}
 		if (Dungeon.depth > Dungeon.chapterSize()*5 && Dungeon.bossLevel()){
 			int bossAmount = Random.Int(2, 3 + 2*(Dungeon.depth - Dungeon.chapterSize()*5)/Dungeon.chapterSize());
 			Class[] bosses = new Class[]{AbyssalNightmare.class, Dragon.class, LostSpirit.class};
@@ -438,7 +442,7 @@ public abstract class Level implements Bundlable {
 			}
 		}
 
-		return Reflection.newInstance(mobsToSpawn.remove(0));
+		return mob;
 	}
 
 	abstract protected void createMobs();
@@ -530,6 +534,9 @@ public abstract class Level implements Bundlable {
 					GameScene.add( mob );
 					if (Statistics.amuletObtained && Dungeon.depth < Dungeon.chapterSize() * 5 + 2) {
 						mob.beckon( Dungeon.hero.pos );
+					}
+					if (!mob.buffs(ChampionEnemy.class).isEmpty()){
+						GLog.warning(Messages.get(ChampionEnemy.class, "warn"));
 					}
 					spend(Dungeon.level.respawnCooldown());
 				} else {

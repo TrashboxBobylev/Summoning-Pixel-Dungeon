@@ -473,6 +473,9 @@ public abstract class Mob extends Char {
 			if (buff.canAttackWithExtraReach( enemy )){
 				return true;
 			}
+			if (buff.getClass() == ChampionEnemy.Paladin.class){
+				return false;
+			}
 		}
 		return Dungeon.level.adjacent( pos, enemy.pos );
 	}
@@ -480,6 +483,10 @@ public abstract class Mob extends Char {
 	protected boolean getCloser( int target ) {
 
 		if (rooted || target == pos) {
+			return false;
+		}
+
+		if (buff(ChampionEnemy.Paladin.class) != null){
 			return false;
 		}
 
@@ -739,6 +746,10 @@ public abstract class Mob extends Char {
 				Dungeon.hero.HP = (int) Math.ceil(Math.min(Dungeon.hero.HT, Dungeon.hero.HP + (restoration * 0.4f)));
 				Dungeon.hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
 			}
+		}
+
+		if (buff(ChampionEnemy.Reflective.class) != null){
+			enemy.damage((int) (damage*0.5f), this);
 		}
 
 		if (buff(Chungus.class) != null) damage *= 0.6f;

@@ -45,7 +45,9 @@ public class Conducts {
         EXPLOSIONS(1.2f),
         INVISIBLE(1.8f),
         REGENERATION(1.33f),
-        UNKNOWN(1.4f);
+        UNKNOWN(1.4f),
+        NO_STR(2f),
+        CHAMPS(1.4f);
 
         public float scoreMod;
 
