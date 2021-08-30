@@ -391,6 +391,11 @@ public abstract class Minion extends Mob {
         return super.getFurther(target);
     }
 
+    @Override
+    public float speed() {
+        return super.speed()*Dungeon.hero.speed();
+    }
+
     //ported from DriedRose.java
     //minions will always move towards hero if enemies not here
     public class Wandering extends Mob.Wandering implements AiState{
