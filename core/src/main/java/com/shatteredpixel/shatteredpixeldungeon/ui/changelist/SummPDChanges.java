@@ -95,7 +95,7 @@ public class SummPDChanges {
                         "_-_ Can be used as melee weapon on Mage, their melee damage scales with hero's strength.\n" +
                         "_-_ Reworked magical effects to scale from player's level.\n" +
                         "_-_ _Battlemage_ have been changed to scale with hero's level.\n" +
-                        "_-_ _Warlock_ have been changed to have much greater soul mark chance that scales with hero's level, as wands do not upgrade traditionally anymore." +
+                        "_-_ _Warlock_ have been changed to have much greater soul mark chance that scales with hero's level, as wands do not upgrade traditionally anymore.\n" +
                         "_-_ _Removed_ Mage's Staff. All existing instances of staff will be replaced with corresponding wand.\n"));
         changes.addButton(new ChangeButton(Icons.get(Icons.ENTER), "New game modes",
                 "Added three new game modes:\n\n" +
@@ -159,6 +159,7 @@ public class SummPDChanges {
                         "_-_ Abyss shops get sandbags.\n\n" +
                         "_-_ Re-added GitHub updates.\n\n" +
                         "_-_ Game modes affect the score now.\n\n" +
+                        "_-_ Minions follow hero at hero's speed.\n\n" +
                         "_-_ Games in progress are getting ordered by their Summoning's score formula.\n\n" +
                         "_-_ Increased the hunger rates, but decreased the starving rates.\n\n" +
                         "_-_ Massively decreased the amount of items generated in dungeon.\n\n" +
@@ -170,7 +171,8 @@ public class SummPDChanges {
                         "_-_ Change windows not being scrollable.\n" +
                         "_-_ Wrong icon for Ring of Endurance.\n" +
                         "_-_ Stone of Targeting being not useful.\n" +
-                        "_-_ Some minions falling despite levitating in their appearance."));
+                        "_-_ Some minions falling despite levitating in their appearance.\n" +
+                        "_-_ Gauntlet mode mobs dropping additional loot when rest of them have died already."));
 
 
 
