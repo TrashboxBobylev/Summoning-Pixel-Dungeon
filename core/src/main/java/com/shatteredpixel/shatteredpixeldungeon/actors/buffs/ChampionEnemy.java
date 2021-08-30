@@ -101,7 +101,10 @@ public abstract class ChampionEnemy extends Buff {
 
         if (Dungeon.mobsToChampion <= 0){
             makeChampion(m);
-            m.state = m.WANDERING;
+            if (m.buffs(ChampionEnemy.class).isEmpty()){
+                Dungeon.mobsToChampion++;
+            }
+            else m.state = m.WANDERING;
         }
     }
 
