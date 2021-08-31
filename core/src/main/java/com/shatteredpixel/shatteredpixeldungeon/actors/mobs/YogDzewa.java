@@ -384,6 +384,8 @@ public class YogDzewa extends Mob {
 
 		if (phase < 4 && HP <= HT - 300*phase){
 
+			phase++;
+
 			Dungeon.level.viewDistance = Math.max(1, Dungeon.level.viewDistance-1);
 			if (Dungeon.hero.buff(Light.class) == null){
 				Dungeon.hero.viewDistance = Dungeon.level.viewDistance;
