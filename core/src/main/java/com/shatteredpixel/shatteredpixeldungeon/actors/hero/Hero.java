@@ -1081,7 +1081,7 @@ public class Hero extends Char {
 			
 			if (Dungeon.depth == 1) {
 				
-				if (belongings.getItem( Amulet.class ) == null || Dungeon.mode == Dungeon.GameMode.GAUNTLET || Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
+				if (belongings.getItem( Amulet.class ) == null) {
 					Game.runOnRenderThread(new Callback() {
 						@Override
 						public void call() {
@@ -1527,7 +1527,7 @@ public class Hero extends Char {
 			curAction = new HeroAction.Unlock( cell );
 
         } else if ((cell == Dungeon.level.exit || Dungeon.level.map[cell] == Terrain.EXIT || Dungeon.level.map[cell] == Terrain.UNLOCKED_EXIT)
-                && Dungeon.depth != Dungeon.chapterSize()*5+1) {
+                &&  (Dungeon.depth != Dungeon.chapterSize()*5 + 1 || Dungeon.mode == Dungeon.GameMode.GAUNTLET)) {
 		        boolean canDo = true;
                 if ((Dungeon.depth > Dungeon.chapterSize()*4) && (Dungeon.depth < Dungeon.chapterSize()*5)) {
 					if (Dungeon.level.checkForFroggits()) {
@@ -1538,7 +1538,7 @@ public class Hero extends Char {
                 if (canDo) curAction = new HeroAction.Descend(cell);
                 else GLog.warning(Messages.get(Level.class, "seal"));
 
-        } else if (cell == Dungeon.level.entrance || Dungeon.level.map[cell] == Terrain.ENTRANCE && Dungeon.depth != Dungeon.chapterSize()*5 + 2) {
+        } else if (cell == Dungeon.level.entrance || Dungeon.level.map[cell] == Terrain.ENTRANCE && (Dungeon.depth != Dungeon.chapterSize()*5 + 2 || Dungeon.mode == Dungeon.GameMode.GAUNTLET)) {
 			
 			curAction = new HeroAction.Ascend( cell );
 			

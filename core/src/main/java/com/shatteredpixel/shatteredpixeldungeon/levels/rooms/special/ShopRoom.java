@@ -186,6 +186,7 @@ public class ShopRoom extends SpecialRoom {
 		if (Dungeon.depth % 3 == 0) itemsToSpawn.add(new CleanWater());
 		if (Dungeon.depth % 4 == 0) itemsToSpawn.add( new ElixirOfAttunement());
 		if (Dungeon.depth % 2 == 0) itemsToSpawn.add( Generator.randomMissile());
+		if (Dungeon.depth == Dungeon.chapterSize()*5+1) itemsToSpawn.add(new Amulet());
 		if (Dungeon.hero.lvl >= 12 && Dungeon.hero.subClass == null && Dungeon.hero.heroClass != HeroClass.ADVENTURER) itemsToSpawn.add( new TomeOfMastery());
 		if (Dungeon.hero.lvl >= 21 && Dungeon.hero.belongings.armor != null &&
 			!(Dungeon.hero.belongings.armor instanceof ClassArmor) && Dungeon.hero.heroClass != HeroClass.ADVENTURER) itemsToSpawn.add( new ArmorKit());
