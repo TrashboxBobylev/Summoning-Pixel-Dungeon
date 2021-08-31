@@ -36,7 +36,6 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.PointerArea;
-import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameMath;
 
 import java.util.ArrayList;
@@ -164,12 +163,8 @@ public class HeroSelectScene extends PixelScene {
 		challengeButton.setRect(heroBtnleft + 16, Camera.main.height-HeroBtn.HEIGHT-16, 21, 21);
 		challengeButton.visible = false;
 
-		if (DeviceCompat.isDebug() || Badges.isUnlocked(Badges.Badge.VICTORY)){
-			add(challengeButton);
-		} else {
-			Dungeon.challenges = null;
-			SPDSettings.challenges(null);
-		}
+
+		add(challengeButton);
 
 		btnExit = new ExitButton();
 		btnExit.setPos( Camera.main.width - btnExit.width(), 0 );
