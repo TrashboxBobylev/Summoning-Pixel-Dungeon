@@ -96,7 +96,7 @@ public class GooSprite extends MobSprite {
 			pumpUpEmitters.clear();
 		} else {
 			play(pump);
-			PathFinder.buildDistanceMap(ch.pos, BArray.not(Dungeon.level.solid, null), 2);
+			PathFinder.buildDistanceMap(ch.pos, BArray.not(Dungeon.level.solid, null), Dungeon.mode == Dungeon.GameMode.DIFFICULT ? 3 : 2);
 			for (int i = 0; i < PathFinder.distance.length; i++) {
 				if (PathFinder.distance[i] <= warnDist) {
 					Emitter e = CellEmitter.get(i);
