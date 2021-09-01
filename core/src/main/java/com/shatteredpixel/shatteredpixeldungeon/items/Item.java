@@ -339,8 +339,7 @@ public class Item implements Bundlable {
 	}
 	
 	public Item upgrade() {
-		if (isUpgradable())
-			this.level++;
+		this.level++;
 
 		updateQuickslot();
 		

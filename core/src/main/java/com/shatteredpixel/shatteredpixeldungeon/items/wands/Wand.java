@@ -415,6 +415,7 @@ public abstract class Wand extends Weapon {
 	@Override
 	public Item upgrade() {
 
+		if (isUpgradable())
 		super.upgrade();
 
 		if (Random.Int(3) == 0) {

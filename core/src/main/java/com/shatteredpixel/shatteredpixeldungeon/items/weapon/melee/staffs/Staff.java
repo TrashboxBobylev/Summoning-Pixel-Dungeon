@@ -139,8 +139,8 @@ public class Staff extends Weapon {
 
     @Override
     public Item upgrade() {
-
-        super.upgrade();
+        if (isUpgradable())
+            super.upgrade();
 
         updateLevel();
         curCharges = Math.min( curCharges + 1, 1);
