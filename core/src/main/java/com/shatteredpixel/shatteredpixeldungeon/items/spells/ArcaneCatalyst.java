@@ -87,8 +87,8 @@ public class ArcaneCatalyst extends Spell {
 					secondary = true;
 					//if it is a regular or exotic potion
 				} else if (ExoticScroll.regToExo.containsKey(i.getClass())
-						|| ExoticScroll.regToExo.containsValue(i.getClass()) && i.getClass() != ScrollOfUpgrade.class) {
-					scroll = true;
+						|| ExoticScroll.regToExo.containsValue(i.getClass())) {
+					scroll = i.getClass() != ScrollOfUpgrade.class;
 				}
 			}
 			
