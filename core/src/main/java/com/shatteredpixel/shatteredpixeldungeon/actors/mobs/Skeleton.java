@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SkeletonSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -81,13 +82,17 @@ public class Skeleton extends Mob {
 		boolean heroKilled = false;
 		for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
 			Char ch = findChar( pos + PathFinder.NEIGHBOURS8[i] );
-			if (ch != null && ch.isAlive()) {
-				int damage = Random.NormalIntRange(6, 10);
-				damage = Math.max( 0,  damage - (ch.drRoll() + ch.drRoll()) );
-				ch.damage( damage, this );
-				if (ch == Dungeon.hero && !ch.isAlive()) {
-					heroKilled = true;
+			if (hit(this, ch, true)) {
+				if (ch != null && ch.isAlive()) {
+					int damage = Random.NormalIntRange(6, 10);
+					damage = Math.max(0, damage - (ch.drRoll() + ch.drRoll()));
+					ch.damage(damage, this);
+					if (ch == Dungeon.hero && !ch.isAlive()) {
+						heroKilled = true;
+					}
 				}
+			} else if (ch != null){
+				ch.sprite.showStatus( CharSprite.NEUTRAL,  ch.defenseVerb() );
 			}
 		}
 		
