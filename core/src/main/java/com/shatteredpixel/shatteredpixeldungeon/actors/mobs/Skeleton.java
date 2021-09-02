@@ -93,7 +93,7 @@ public class Skeleton extends Mob {
 					}
 				}
 			}
-			} else{
+			} else if (ch !=null){
 				ch.sprite.showStatus( CharSprite.NEUTRAL,  ch.defenseVerb() );
 			}
 		}
