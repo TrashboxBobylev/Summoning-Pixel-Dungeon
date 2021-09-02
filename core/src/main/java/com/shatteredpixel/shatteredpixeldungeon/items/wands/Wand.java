@@ -67,7 +67,7 @@ public abstract class Wand extends Weapon {
 
 	private static final float TIME_TO_ZAP	= 1f;
 	
-	public int maxCharges = 5;
+	public int maxCharges = 3;
 	public int curCharges = maxCharges;
 	public float partialCharge = 0f;
 
@@ -587,6 +587,10 @@ public abstract class Wand extends Weapon {
 		availableUsesToID = bundle.getInt( AVAILABLE_USES );
 
 		curCharges = bundle.getInt( CUR_CHARGES );
+		if (curCharges > maxCharges) {
+			curCharges = maxCharges;
+			partialCharge = 0f;
+		}
 		curChargeKnown = bundle.getBoolean( CUR_CHARGE_KNOWN );
 		partialCharge = bundle.getFloat( PARTIALCHARGE );
 		curseInfusionBonus = bundle.getBoolean(CURSE_INFUSION_BONUS);
