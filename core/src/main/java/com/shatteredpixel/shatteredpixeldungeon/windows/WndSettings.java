@@ -120,12 +120,9 @@ public class WndSettings extends WndTabbed {
 			protected void select(boolean value) {
 				super.select(value);
 				audio.visible = audio.active = value;
-				if (value) last_index = 3;
+				if (value) last_index = 2;
 			}
 		});
-
-
-
 
 		resize(width, (int)Math.ceil(height));
 
