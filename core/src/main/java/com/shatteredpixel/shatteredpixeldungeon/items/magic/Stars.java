@@ -113,7 +113,7 @@ public class Stars extends ConjurerSpell {
                 Item sprite = new ProjectileStar();
                 PointF starDest = DungeonTilemap.tileCenterToWorld(bolt.collisionPos);
                 PointF starSource = DungeonTilemap.raisedTileCenterToWorld(Dungeon.hero.pos);
-                starSource.y -= 200;
+                starSource.y -= 150;
 
                 starSprite.reset( starSource, starDest, sprite, callback);
             }

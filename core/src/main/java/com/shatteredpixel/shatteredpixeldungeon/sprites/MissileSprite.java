@@ -169,6 +169,7 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 			speed *= 1.5f;
 		}
 		if (item instanceof Stars.ProjectileStar){
+			speed *= 2f;
 			parent.addToFront(this);
 		}
 		
