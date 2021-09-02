@@ -192,7 +192,7 @@ public abstract class Mob extends Char {
 		boolean justAlerted = alerted;
 		alerted = false;
 
-		if (!hordeSpawned && (EXP > 0 && !(this instanceof Ghoul) && !(this instanceof Slime)) && Random.Int(Math.max(3, 8 - Dungeon.chapterNumber())) == 0 && !Dungeon.bossLevel() && alignment == Alignment.ENEMY){
+		if (!hordeSpawned && hordeException() && Random.Int(Math.max(3, 8 - Dungeon.chapterNumber())) == 0 && !Dungeon.bossLevel() && alignment == Alignment.ENEMY){
 
 			int hordeSize = Random.IntRange(1, Dungeon.depth / 8);
 			for (int i = 0; i < hordeSize; i++) {
@@ -268,6 +268,13 @@ public abstract class Mob extends Char {
 		}
 
 		return state.act( enemyInFOV, justAlerted );
+	}
+
+	private boolean hordeException() {
+		return EXP > 0 &&
+				!(this instanceof Ghoul) && !(this instanceof Slime) &&
+				!(this instanceof WardingWraith) && !(this instanceof Necromancer.NecroSkeleton) &&
+				!(this instanceof RipperDemon);
 	}
 
 	//FIXME this is sort of a band-aid correction for allies needing more intelligent behaviour
