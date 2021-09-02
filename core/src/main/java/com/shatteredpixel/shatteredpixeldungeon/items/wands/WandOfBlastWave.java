@@ -61,20 +61,20 @@ public class WandOfBlastWave extends DamageWand {
 
 	@Override
 	public int magicalmin(int lvl){
-		return (int) ((1 + Dungeon.hero.lvl*0.5f));
+		return (int) ((1 + Dungeon.hero.lvl*0.25f));
 	}
 
 	@Override
 	public int magicalmax(int lvl) {
-		return (5 + Dungeon.hero.lvl);
+		return (int) (3 + Dungeon.hero.lvl*0.75f);
 	}
 
 	@Override
 	public float powerLevel(int level) {
 		switch (level){
 			case 0: return 1.0f;
-			case 1: return 2.0f;
-			case 2: return 0.5f;
+			case 1: return 2.75f;
+			case 2: return 0.75f;
 		}
 		return 0f;
 	}
