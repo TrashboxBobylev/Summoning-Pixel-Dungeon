@@ -91,6 +91,10 @@ public class GooMinion extends Minion {
             }
             HP++;
         }
+        if (pumpedUp < 0){
+            pumping = false;
+            pumpedUp = 0;
+        }
 
         return super.act();
     }
@@ -263,14 +267,16 @@ public class GooMinion extends Minion {
     @Override
     public void damage(int dmg, Object src) {
         boolean bleeding = (HP*2 <= HT);
-        float deferedDmgMulti = 0.5f;
-        if (pumping){
-            dmg *= 3;
-            deferedDmgMulti = 1f;
+        if (!(src instanceof Viscosity.DeferedDamage)) {
+            float deferedDmgMulti = 0.5f;
+            if (pumping) {
+                dmg *= 3;
+                deferedDmgMulti = 1f;
+            }
+            Viscosity.DeferedDamage deferred = Buff.affect(this, Viscosity.DeferedDamage.class);
+            deferred.prolong((int) (dmg * deferedDmgMulti));
+            dmg = (int) Math.min(dmg - dmg * deferedDmgMulti, 0);
         }
-        Viscosity.DeferedDamage deferred = Buff.affect( this, Viscosity.DeferedDamage.class );
-        deferred.prolong((int) (dmg * deferedDmgMulti));
-        dmg = (int) Math.min(dmg - dmg*deferedDmgMulti, 0);
         super.damage(dmg, src);
         if ((HP*2 <= HT) && !bleeding){
             sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "enraged"));
