@@ -63,7 +63,7 @@ public class WandOfCrystalBullet extends DamageWand {
 
     @Override
     public int magicalmax(int lvl){
-		return (int) (6+Dungeon.hero.lvl*1.25f);
+		return (int) (7+Dungeon.hero.lvl*1.5f);
 	}
 
     @Override
