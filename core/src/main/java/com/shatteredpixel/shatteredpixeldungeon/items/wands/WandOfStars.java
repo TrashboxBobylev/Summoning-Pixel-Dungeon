@@ -79,7 +79,7 @@ public class WandOfStars extends DamageWand {
     public float rechargeModifier(int level) {
         switch (level){
             case 0: return 1f;
-            case 1: return 1.5f;
+            case 1: return 1.65f;
             case 2: return 1.1f;
         }
         return 0f;
