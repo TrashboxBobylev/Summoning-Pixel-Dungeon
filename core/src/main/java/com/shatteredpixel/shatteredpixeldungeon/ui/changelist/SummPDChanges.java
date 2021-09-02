@@ -178,6 +178,7 @@ public class SummPDChanges {
                         "_-_ Some minions falling despite levitating in their appearance.\n" +
                         "_-_ Goo minion killing allies.\n" +
                         "_-_ Getting stuck in wall if you used amulet in Gauntlet in certain way.\n" +
+                        "_-_ Goo minion not being able to attack after unsuccessful pump attack.\n" +
                         "_-_ Gauntlet mode mobs dropping additional loot when rest of them have died already."));
 
 
