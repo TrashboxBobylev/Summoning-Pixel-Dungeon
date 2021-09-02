@@ -180,7 +180,7 @@ public class WandOfCorruption extends Wand {
 	}
 
 	public int getCorruptingPower() {
-		return 5 + Dungeon.hero.lvl/3;
+		return (int) (7 + Dungeon.hero.lvl/2.5f);
 	}
 
 	public static float getEnemyResist(Char ch, Mob enemy) {
