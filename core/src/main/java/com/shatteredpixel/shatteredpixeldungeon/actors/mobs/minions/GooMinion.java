@@ -227,8 +227,9 @@ public class GooMinion extends Minion {
             if (PathFinder.distance[i] < Integer.MAX_VALUE) {
                 CellEmitter.get(i).burst(ElmoParticle.FACTORY, 10);
 
-                if (Actor.findChar(i) != null && Actor.findChar(i) != Dungeon.hero && Actor.findChar(i) != this) {
-                    Actor.findChar(i).damage(Random.NormalIntRange(min, max), Dungeon.hero);
+                Char ch = Actor.findChar(i);
+                if (ch != null && ch.alignment == Alignment.ENEMY) {
+                    ch.damage(Random.NormalIntRange(min, max), Dungeon.hero);
                 }
             }
         }
