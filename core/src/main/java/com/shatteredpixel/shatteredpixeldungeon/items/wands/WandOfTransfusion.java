@@ -204,7 +204,8 @@ public class WandOfTransfusion extends Wand {
 	public String statsDesc() {
 		int selfDMG = Math.round(Dungeon.hero.HT*0.05f);
 		if (levelKnown)
-			return Messages.get(this, "stats_desc", selfDMG, (int) (selfDMG*1.25f)*(level() == 2 ? 2 : 1), getShield(level()), 3 + Dungeon.hero.lvl/5, 6 + Dungeon.hero.lvl/2);
+			return Messages.get(this, "stats_desc", selfDMG*(level() == 2 ? 1 : (level() == 1 ? 0 : 1)), (int) (selfDMG*1.25f)*(level() == 2 ? 2 : (level() == 1 ? 0 : 1)), getShield(level()),
+					level() != 3 ? 3 + Dungeon.hero.lvl/5 : 0, level() != 3 ? 6 + Dungeon.hero.lvl/2 : 0);
 		else
 			return Messages.get(this, "stats_desc", selfDMG, (int) (selfDMG*1.25f), getShield(0), 3, 6);
 	}
