@@ -33,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.DewVial;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Ropes;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.*;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.ElementalBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.*;
@@ -43,7 +42,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.magic.Stars;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Zap;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Slingshot;
@@ -126,9 +124,6 @@ public enum HeroClass {
 		}
 		new Ropes().quantity(5).collect();
 		new DewVial().collect();
-		new AlchemistsToolkit().identify().collect();
-		new ScrollOfUpgrade().collect();
-		new StoneOfBlast().collect();
 
 		if (Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)){
 			(hero.belongings.armor = new ScoutArmor()).identify();
