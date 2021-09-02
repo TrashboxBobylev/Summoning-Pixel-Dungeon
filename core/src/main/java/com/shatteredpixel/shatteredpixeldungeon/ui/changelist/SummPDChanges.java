@@ -91,12 +91,12 @@ public class SummPDChanges {
         changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.WAND_MAGIC_MISSILE, null), "Wands rework",
                 "Overhauled wands to make them compatible with tiering and more variative overall:\n\n" +
                         "_-_ Now have tiers, like abilities, bow and summoning staves.\n" +
-                        "_-_ The max charge is always 5, regardless of wand or tier of it.\n" +
+                        "_-_ The max charge is always 3, regardless of wand or tier of it.\n" +
                         "_-_ Can be used as melee weapon on Mage, their melee damage scales with hero's strength.\n" +
                         "_-_ Reworked magical effects to scale from player's level.\n" +
                         "_-_ _Battlemage_ have been changed to scale with hero's level.\n" +
                         "_-_ _Warlock_ have been changed to have much greater soul mark chance that scales with hero's level, as wands do not upgrade traditionally anymore.\n" +
-                        "_-_ _Removed_ Mage's Staff. All existing instances of staff will be replaced with corresponding wand.\n"));
+                        "_-_ _Removed_ Mage's Staff. All existing instances of staff will be replaced with corresponding wand."));
         changes.addButton(new ChangeButton(Icons.get(Icons.ENTER), "New game modes",
                 "Added three new game modes:\n\n" +
                         "_-_ _Increased Difficulty_ makes every monster stronger by giving them various abilities and attack overhauls.\n\n" +
@@ -142,7 +142,7 @@ public class SummPDChanges {
                         "   Ripper Demon: 15-25 -> 13-22"));
         changes.addButton( new ChangeButton(new Image(new RatSprite()), "Hordes",
                 "_-_ Fixed some bugs making horde members extra stupid.\n\n" +
-                        "_-_ Hordes cannot spawn around creatures that are already fight in masses."
+                        "_-_ Hordes cannot spawn around creatures that already fight in masses."
         ));
         changes.addButton(new ChangeButton(Icons.get(Icons.ENTER), "Game Mode Changes",
                 "_-_ Greatly improved the stability for Project Paradox.\n\n" +
