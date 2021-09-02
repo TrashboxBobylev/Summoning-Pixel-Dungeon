@@ -415,7 +415,7 @@ public class NewDM300 extends Mob {
 
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
 		if (lock != null && !isImmune(src.getClass())) lock.addTime(dmg);
-		if (dmg > 15){
+		if (dmg > 15 && Dungeon.mode == Dungeon.GameMode.DIFFICULT){
 			ArrayList<Integer> candidates = new ArrayList<>();
 
 			int[] neighbours = {pos + 1, pos - 1, pos + Dungeon.level.width(), pos - Dungeon.level.width()};
