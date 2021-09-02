@@ -32,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -126,8 +125,7 @@ public class Shopkeeper extends NPC {
 
 		@Override
 		public boolean itemSelectable(Item item) {
-			if (Dungeon.mode == Dungeon.GameMode.GAUNTLET && !(item instanceof Food))                      return false;
-		if (item.value() < 0)                                              return false;
+			if (item.value() < 0)                                              return false;
 			if (item.unique && !item.stackable)                                 return false;
 			if (item instanceof Weapon && ((Weapon) item).checkSeal() != null)    return false;
 			if (item.isEquipped(Dungeon.hero) && item.cursed)                   return false;

@@ -73,6 +73,7 @@ public class WndTradeItem extends WndInfoItem {
 		} else {
 
 			int priceAll= item.value();
+			if (Dungeon.mode == Dungeon.GameMode.GAUNTLET) priceAll = 35*item.quantity();
 			if (Dungeon.hero.hasTalent(Talent.GOOD_INTENTIONS)) priceAll *= 1.33f;
 			RedButton btnSell1 = new RedButton( Messages.get(this, "sell_1", priceAll / item.quantity()) ) {
 				@Override
