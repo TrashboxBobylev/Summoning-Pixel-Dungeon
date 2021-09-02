@@ -173,13 +173,15 @@ public class ShopRoom extends SpecialRoom {
 	protected static ArrayList<Item> generateItemsGauntlet(){
 		ArrayList<Item> itemsToSpawn = new ArrayList<>();
 
-		itemsToSpawn.add(Generator.random(Generator.Category.POTION).identify());
-		itemsToSpawn.add(Generator.random(Generator.Category.SCROLL).identify());
-		itemsToSpawn.add(Generator.random(Generator.Category.STONE));
+		for (int i = 0; i < 2; i++) {
+			itemsToSpawn.add(Generator.random(Generator.Category.POTION).identify());
+			itemsToSpawn.add(Generator.random(Generator.Category.SCROLL).identify());
+			itemsToSpawn.add(Generator.random(Generator.Category.STONE));
+		}
 
-		itemsToSpawn.add( TippedDart.randomTipped(1) );
+		itemsToSpawn.add( TippedDart.randomTipped(2) );
 
-		itemsToSpawn.add (new Ropes().quantity(Random.Int(1, 4)));
+		itemsToSpawn.add (new Ropes().quantity(Random.Int(2, 6)));
 
 		if (Dungeon.depth % 2 == 0) itemsToSpawn.add( new ScrollOfUpgrade().identify());
 		if (Dungeon.depth % 3 == 0) itemsToSpawn.add( new PotionOfStrength().identify());
@@ -217,6 +219,25 @@ public class ShopRoom extends SpecialRoom {
 		rare.identify();
 		itemsToSpawn.add( rare );
 		itemsToSpawn.add( new Bomb().random() );
+		if (Random.Int(2) == 0){
+			Item additionalRare;
+			switch (Dungeon.hero.heroClass){
+				case WARRIOR: case ROGUE:
+					additionalRare = Generator.randomWeapon(); break;
+				case MAGE:
+					additionalRare = Generator.random(Generator.Category.WAND); break;
+				case HUNTRESS:
+					additionalRare = Generator.randomMissile(); break;
+				case CONJURER:
+					additionalRare = Generator.randomStaff(); break;
+				case ADVENTURER:
+					additionalRare = Generator.random(); break;
+				default:
+					additionalRare = new Dewdrop();
+			}
+			additionalRare.identify();
+			itemsToSpawn.add( additionalRare );
+		}
 
 		TimekeepersHourglass hourglass = Dungeon.hero.belongings.getItem(TimekeepersHourglass.class);
 		if (hourglass != null && hourglass.isIdentified() && !hourglass.cursed){
