@@ -146,7 +146,11 @@ public class SummPDChanges {
         ));
         changes.addButton(new ChangeButton(Icons.get(Icons.ENTER), "Game Mode Changes",
                 "_-_ Greatly improved the stability for Project Paradox.\n\n" +
-                        "_-_ Removed a lot of limitations for Gauntlet Mode and removed traps from it.\n\n" +
+                        "_-_ Removed a lot of limitations for Gauntlet Mode and removed traps from it.\n" +
+                        "   - Floor is longer getting locked.\n" +
+                        "   - You can't ascend.\n" +
+                        "   - You can sell everything.\n" +
+                        "   - You can get class-oriented weapons and bags.\n" +
                         "_-_ Changed the order in game mode list."));
         changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.MASTERY, null), "Subclasses",
                 "_-_ Buffed Sniper: now has less chance to miss and can use thrown weapons to proc enchantments from the bow.\n\n" +
@@ -172,6 +176,8 @@ public class SummPDChanges {
                         "_-_ Wrong icon for Ring of Endurance.\n" +
                         "_-_ Stone of Targeting being not useful.\n" +
                         "_-_ Some minions falling despite levitating in their appearance.\n" +
+                        "_-_ Goo minion killing allies.\n" +
+                        "_-_ Getting stuck in wall if you used amulet in Gauntlet in certain way.\n" +
                         "_-_ Gauntlet mode mobs dropping additional loot when rest of them have died already."));
 
 
