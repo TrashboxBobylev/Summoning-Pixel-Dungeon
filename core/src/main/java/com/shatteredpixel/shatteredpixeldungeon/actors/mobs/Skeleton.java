@@ -82,8 +82,9 @@ public class Skeleton extends Mob {
 		boolean heroKilled = false;
 		for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
 			Char ch = findChar( pos + PathFinder.NEIGHBOURS8[i] );
+			if (ch != null){
 			if (hit(this, ch, true)) {
-				if (ch != null && ch.isAlive()) {
+				if (ch.isAlive()){
 					int damage = Random.NormalIntRange(6, 10);
 					damage = Math.max(0, damage - (ch.drRoll() + ch.drRoll()));
 					ch.damage(damage, this);
@@ -91,7 +92,8 @@ public class Skeleton extends Mob {
 						heroKilled = true;
 					}
 				}
-			} else if (ch != null){
+			}
+			} else{
 				ch.sprite.showStatus( CharSprite.NEUTRAL,  ch.defenseVerb() );
 			}
 		}
