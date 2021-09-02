@@ -83,7 +83,7 @@ public class WandOfBlastWave extends DamageWand {
 	public float rechargeModifier(int level) {
 		switch (level){
 			case 0: return 1.0f;
-			case 1: return 1.25f;
+			case 1: return 1.55f;
 			case 2: return 1.1f;
 		}
 		return 0f;
