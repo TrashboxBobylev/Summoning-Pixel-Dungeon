@@ -30,7 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class ThrowingKnive2 extends MissileWeapon {
 	
 	{
-		image = ItemSpriteSheet.THROWING_KNIFE;
+		image = ItemSpriteSheet.LIGHT_KNIFE;
 		hitSound = Assets.Sounds.HIT_STAB;
 		hitSoundPitch = 1f;
 		

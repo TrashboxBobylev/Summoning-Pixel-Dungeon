@@ -30,7 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class Dagger2 extends MeleeWeapon {
 
 	{
-		image = ItemSpriteSheet.DAGGER;
+		image = ItemSpriteSheet.A_STABBER;
 		hitSound = Assets.Sounds.HIT_STAB;
 		hitSoundPitch = 1.1f;
 

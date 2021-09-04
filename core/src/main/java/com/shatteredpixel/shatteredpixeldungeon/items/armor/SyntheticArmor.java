@@ -29,7 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class SyntheticArmor extends Armor {
 
 	{
-		image = ItemSpriteSheet.ARMOR_ROGUE;
+		image = ItemSpriteSheet.ARMOR_ADVENTURER;
 
 		bones = false;
 	}
