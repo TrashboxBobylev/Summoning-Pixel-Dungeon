@@ -57,7 +57,14 @@ public class EnchantParchment extends InventorySpell {
 
     {
         image = ItemSpriteSheet.ENCHANT;
-        stackable = false;
+        stackable = true;
+    }
+
+    @Override
+    public boolean isSimilar(Item item) {
+        return super.isSimilar(item) && (
+                (glyph == ((EnchantParchment)(item)).glyph && enchantment == null) ||
+                (enchantment == ((EnchantParchment)(item)).enchantment && glyph == null));
     }
 
     protected Armor.Glyph glyph;
