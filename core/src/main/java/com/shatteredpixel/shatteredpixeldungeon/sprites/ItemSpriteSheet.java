@@ -234,6 +234,7 @@ public class ItemSpriteSheet {
 	public static final int DIRK            = WEP_TIER2+4;
     public static final int CLEAVER            = WEP_TIER2+5;
     public static final int STONE_HAMMER = WEP_TIER2+6;
+	public static final int A_STABBER      = WEP_TIER2+7;
 	static{
 		assignItemRect(SHORTSWORD,      13, 13);
 		assignItemRect(HAND_AXE,        12, 14);
@@ -242,6 +243,7 @@ public class ItemSpriteSheet {
 		assignItemRect(DIRK,            13, 14);
         assignItemRect(CLEAVER,            15, 16);
         assignItemRect(STONE_HAMMER,            16, 16);
+		assignItemRect(A_STABBER, 12, 13);
 	}
 
 	private static final int WEP_TIER3      =                               xy(1, 8);   //8 slots
@@ -303,12 +305,10 @@ public class ItemSpriteSheet {
 	public static final int KNIVE_MK2      = WEP_TIER5+13;
 	public static final int KNIVE_MK3      = WEP_TIER5+14;
 	public static final int KNIVE_MK4      = WEP_TIER5+12;
-	public static final int A_STABBER        = WEP_TIER2+7;
 	{
 		assignItemRect(KNIVE_MK2, 11, 11);
 		assignItemRect(KNIVE_MK3, 13, 16);
 		assignItemRect(KNIVE_MK4, 16, 16);
-		assignItemRect(A_STABBER, 12, 13);
 	}
 
 	                                                                                    //8 free slots
