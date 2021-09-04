@@ -162,11 +162,14 @@ public class SummPDChanges {
                         "_-_ Wands now show their recharge time in description.\n\n" +
                         "_-_ Abyss shops get sandbags.\n\n" +
                         "_-_ Re-added GitHub updates.\n\n" +
+                        "_-_ Added unique sprites for Adventurer starter items.\n\n" +
                         "_-_ Game modes affect the score now.\n\n" +
                         "_-_ Minions follow hero at hero's speed.\n\n" +
                         "_-_ Games in progress are getting ordered by their Summoning's score formula.\n\n" +
                         "_-_ Increased the hunger rates, but decreased the starving rates.\n\n" +
                         "_-_ Massively decreased the amount of items generated in dungeon.\n\n" +
+                        "_-_ Skeleton explosions can be dodged.\n\n" +
+                        "_-_ Enchant parchments with same enchantments can stack.\n\n" +
                         "_-_ Changed the look for buttons again."));
         changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
                 "Fixed:\n" +
@@ -179,7 +182,8 @@ public class SummPDChanges {
                         "_-_ Goo minion killing allies.\n" +
                         "_-_ Getting stuck in wall if you used amulet in Gauntlet in certain way.\n" +
                         "_-_ Goo minion not being able to attack after unsuccessful pump attack.\n" +
-                        "_-_ Gauntlet mode mobs dropping additional loot when rest of them have died already."));
+                        "_-_ Gauntlet mode mobs dropping additional loot when rest of them have died already.\n\n" +
+                        "_-_ Soul of Yendor yielding disproportional numbers for sandals and armband components."));
 
 
 
