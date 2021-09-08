@@ -214,7 +214,6 @@ public class Generator {
 
 			Category.STONE.classes = new Class<?>[]{
 					StoneOfEnchantment.class,   //1 is guaranteed to drop on floors 6-19
-					StoneOfAugmentation.class,  //1 is sold in each shop
 					StoneOfIntuition.class,     //1 additional stone is also dropped on floors 1-3
 					StoneOfAggression.class,
 					StoneOfTargeting.class,
@@ -224,7 +223,8 @@ public class Generator {
 					StoneOfDeepenedSleep.class,
 					StoneOfDisarming.class,
 					StoneOfFlock.class,
-					StoneOfShock.class
+					StoneOfShock.class,
+					StoneOfAugmentation.class,  //1 is sold in each shop
 			};
 			Category.STONE.defaultProbs = new float[]{ 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0 };
 			Category.STONE.probs = Category.STONE.defaultProbs.clone();
