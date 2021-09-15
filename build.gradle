@@ -22,14 +22,12 @@ allprojects {
 
     apply plugin: "com.palantir.git-version"
 
-    def details = versionDetails()
-
     ext {
         appName = 'Summoning Pixel Dungeon'
         appPackageName = 'com.trashboxbobylev.summoningpixeldungeon'
 
         appVersionCode = 407
-        appVersionName = '1.2.2-' + details.gitHash.substring(0, 7)
+        appVersionName = '1.2.2'
 
         appAndroidCompileSDK = 30
         appAndroidMinSDK = 15

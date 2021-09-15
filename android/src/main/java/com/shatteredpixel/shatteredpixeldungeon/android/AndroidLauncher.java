@@ -39,7 +39,7 @@ import com.rohitss.uceh.UCEHandler;
 public class AndroidLauncher extends Activity {
 
 	public static AndroidApplication instance;
-	public boolean googlePlay = false;
+	public boolean googlePlay = true;
 
 	@SuppressLint("SetTextI18n")
 	@Override
