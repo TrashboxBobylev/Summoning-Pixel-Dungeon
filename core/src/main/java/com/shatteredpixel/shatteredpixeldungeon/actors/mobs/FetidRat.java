@@ -50,6 +50,9 @@ public class FetidRat extends Rat {
 
 		properties.add(Property.MINIBOSS);
 		properties.add(Property.DEMONIC);
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+			immunities.add(CorrosiveGas.class);
+		}
 	}
 
 	@Override
