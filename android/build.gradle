@@ -69,7 +69,7 @@ android {
             //See here: https://developer.android.com/studio/build/shrink-code#decode-stack-trace
             shrinkResources false
             minifyEnabled false
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.config
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
             dependencies {
