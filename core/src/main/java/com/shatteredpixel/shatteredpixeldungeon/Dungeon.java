@@ -186,7 +186,14 @@ public class Dungeon {
 		}
 	}
 
-	public static Conducts.Conduct challenges;
+	public static ArrayList<Conducts.Conduct> challenges = new ArrayList<>();
+
+	public static Conducts.Conduct challenge() {
+		if (!challenges.isEmpty())
+			return challenges.get(0);
+		return null;
+	}
+
 	public static GameMode mode;
 	public static int mobsToChampion;
 
@@ -210,7 +217,7 @@ public class Dungeon {
 	public static void init() {
 
 		version = Game.versionCode;
-		challenges = SPDSettings.challenges();
+		challenges.addAll(SPDSettings.challenges());
 
 		seed = DungeonSeed.randomSeed();
 
@@ -263,7 +270,7 @@ public class Dungeon {
 	}
 
 	public static boolean isChallenged( Conducts.Conduct mask ) {
-		return challenges == mask;
+		return challenges.contains(mask);
 	}
 	
 	public static Level newLevel() {
@@ -511,7 +518,12 @@ public class Dungeon {
 			version = Game.versionCode;
 			bundle.put( VERSION, version );
 			bundle.put( SEED, seed );
-			bundle.put( CHALLENGES, challenges );
+			StringBuilder chalBuilder = new StringBuilder();
+			for (Conducts.Conduct conduct : Dungeon.challenges){
+				chalBuilder.append(conduct.name()).append(",");
+			}
+			chalBuilder.deleteCharAt(chalBuilder.length()-1);
+			bundle.put( CHALLENGES, chalBuilder.toString());
 			bundle.put( MOBS_TO_CHAMPION, mobsToChampion );
 			bundle.put( HERO, hero );
 			bundle.put( GOLD, gold );
@@ -585,7 +597,7 @@ public class Dungeon {
 			saveGame( GamesInProgress.curSlot );
 			saveLevel( GamesInProgress.curSlot );
 
-			GamesInProgress.set( GamesInProgress.curSlot, depth, challenges, mode, hero );
+			GamesInProgress.set( GamesInProgress.curSlot, depth, challenge(), mode, hero );
 
 		}
 	}
@@ -606,10 +618,18 @@ public class Dungeon {
 
 		quickslot.reset();
 		QuickSlotButton.reset();
+		Dungeon.challenges.clear();
 
 
+		String str = bundle.getString( CHALLENGES);
+		if (str.equals("") || str.equals("0")) Dungeon.challenges = new ArrayList<>();
+		else {
+			String[] allChals = str.split(",");
+			for (String ch : allChals){
+				Dungeon.challenges.add(Conducts.Conduct.valueOf(ch));
+			}
+		}
 
-		Dungeon.challenges = bundle.getEnum( CHALLENGES, Conducts.Conduct.class );
 		try {
 			Dungeon.mode = GameMode.valueOf(bundle.getString(MODE));
 		} catch (IllegalArgumentException exception){
