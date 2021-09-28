@@ -186,6 +186,7 @@ public class SPDSettings extends GameSettings {
 	
 	public static final String KEY_LAST_CLASS	= "last_class";
 	public static final String KEY_CHALLENGES	= "challenges";
+	public static final String KEY_ONE_CONDUCT  = "one_conduct";
 	public static final String KEY_INTRO		= "intro";
 
 	public static final String KEY_SUPPORT_NAGGED= "support_nagged";
@@ -212,6 +213,12 @@ public class SPDSettings extends GameSettings {
 	
 	public static Conducts.ConductStorage challenges() {
 		return getBundlable(KEY_CHALLENGES, new Conducts.ConductStorage());
+	}
+
+	public static boolean oneConduct() {return getBoolean(KEY_ONE_CONDUCT, true);}
+
+	public static void oneConduct(boolean value){
+		put(KEY_ONE_CONDUCT, value);
 	}
 
 	public static void supportNagged( boolean value ) {

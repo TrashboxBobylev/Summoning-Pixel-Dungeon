@@ -175,7 +175,7 @@ public class WndChallenges extends Window {
 			super.onClick();
 			if (active){
 				for (CheckBox slot : boxes){
-					if (slot != this && boxes.indexOf(slot) == 0) slot.checked(false);
+					if (slot != this && (SPDSettings.oneConduct() || boxes.indexOf(slot) == 0)) slot.checked(false);
 				}
 			}
 		}
