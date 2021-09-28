@@ -152,7 +152,7 @@ public class WndChallenges extends Window {
 		if (editable) {
 			Conducts.ConductStorage value = new Conducts.ConductStorage();
 			for (ConduitBox slot : boxes) {
-				if (slot.checked()) {
+				if (slot.checked() && slot.conduct != Conducts.Conduct.NULL) {
 					value.conducts.add(slot.conduct);
 				}
 			}

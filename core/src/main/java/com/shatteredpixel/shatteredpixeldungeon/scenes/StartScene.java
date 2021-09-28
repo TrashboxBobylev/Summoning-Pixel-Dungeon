@@ -197,7 +197,7 @@ public class StartScene extends PixelScene {
 				level.text(Integer.toString(info.level));
 				level.measure();
 				
-				if (info.challenges != null){
+				if (info.challenges.isConductedAtAll()){
 					name.hardlight(Window.TITLE_COLOR);
 					depth.hardlight(Window.TITLE_COLOR);
 					level.hardlight(Window.TITLE_COLOR);

@@ -180,7 +180,7 @@ public enum Rankings {
                         Statistics.potionsCooked * 500) *
                         (win ? 2 : 1) *
 						Dungeon.mode.scoreMod *
-				(Dungeon.challenges != null ? Dungeon.challenges.scoreMod() : 1));
+				(Dungeon.challenges.isConductedAtAll() ? Dungeon.challenges.scoreMod() : 1));
 	}
 
 	public static final String HERO = "hero";
