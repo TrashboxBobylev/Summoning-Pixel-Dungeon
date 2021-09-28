@@ -119,7 +119,7 @@ public class WndStartGame extends Window {
 						public void onBackPressed() {
 							super.onBackPressed();
 							if (parent != null) {
-								icon(Icons.get(!SPDSettings.challenges().isEmpty() ?
+								icon(Icons.get(SPDSettings.challenges().isConductedAtAll() ?
 										Icons.CHALLENGE_ON : Icons.CHALLENGE_OFF));
 							}
 						}
@@ -139,8 +139,8 @@ public class WndStartGame extends Window {
 			add(challengeButton);
 			
 		} else {
-			Dungeon.challenges = null;
-			SPDSettings.challenges(null);
+			Dungeon.challenges = new Conducts.ConductStorage();
+			SPDSettings.challenges(new Conducts.ConductStorage());
 		}
 		
 		resize(WIDTH, HEIGHT);

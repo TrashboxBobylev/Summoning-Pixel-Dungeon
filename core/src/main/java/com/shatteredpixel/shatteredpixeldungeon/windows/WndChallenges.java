@@ -36,6 +36,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class WndChallenges extends Window {
 
@@ -51,12 +52,10 @@ public class WndChallenges extends Window {
 	private ScrollPane pane;
 
 	public WndChallenges( Conducts.Conduct conduct, boolean editable){
-		ArrayList<Conducts.Conduct> singleton = new ArrayList<>();
-		singleton.add(conduct);
-		new WndChallenges(singleton, editable);
+		new WndChallenges(Conducts.ConductStorage.createFromConducts(conduct), editable);
 	}
 
-	public WndChallenges( ArrayList<Conducts.Conduct> conduct, boolean editable ) {
+	public WndChallenges(Conducts.ConductStorage conducts, boolean editable ) {
 
 		super();
 
@@ -71,7 +70,9 @@ public class WndChallenges extends Window {
 		);
 		PixelScene.align(title);
 		add( title );
-		Conducts.Conduct[] sorted = Conducts.Conduct.values();
+		ArrayList<Conducts.Conduct> allConducts = editable ?
+				new ArrayList<>(Arrays.asList(Conducts.Conduct.values())) :
+				conducts.conducts;
 
 		ScrollPane pane = new ScrollPane(new Component()) {
 			@Override
@@ -86,11 +87,11 @@ public class WndChallenges extends Window {
 				for (int i = 1; i < size+1; i++) {
 					if (infos.get(i-1).inside(x, y)) {
 
-						String message = sorted[i].desc();
-						String title = Messages.titleCase(Messages.get(Conducts.class, sorted[i].name()));
+						String message = allConducts.get(i-1).desc();
+						String title = Messages.titleCase(Messages.get(Conducts.class, allConducts.get(i-1).name()));
 						ShatteredPixelDungeon.scene().add(
 								new WndTitledMessage(
-										new Image(Assets.Interfaces.SUBCLASS_ICONS, (sorted[i].ordinal() - 1) * 16, 16, 16, 16),
+										new Image(Assets.Interfaces.SUBCLASS_ICONS, (allConducts.get(i-1).ordinal() - 1) * 16, 16, 16, 16),
 										title, message)
 						);
 
@@ -104,13 +105,13 @@ public class WndChallenges extends Window {
 		Component content = pane.content();
 
 		float pos = 2;
-		for (Conducts.Conduct i : Conducts.Conduct.values()) {
+		for (Conducts.Conduct i : allConducts) {
 
 				final String challenge = i.toString();
 
 				ConduitBox cb = new ConduitBox( i == Conducts.Conduct.NULL ? challenge : "       " + challenge);
-				cb.checked(conduct.contains(i));
-				if (i == Conducts.Conduct.NULL && conduct.isEmpty()) cb.checked(true);
+				cb.checked(conducts.isConducted(i));
+				if (i == Conducts.Conduct.NULL && !conducts.isConductedAtAll()) cb.checked(true);
 				cb.active = editable;
 				cb.conduct = i;
 
@@ -149,10 +150,10 @@ public class WndChallenges extends Window {
 	public void onBackPressed() {
 
 		if (editable) {
-			ArrayList<Conducts.Conduct> value = new ArrayList<>();
+			Conducts.ConductStorage value = new Conducts.ConductStorage();
 			for (ConduitBox slot : boxes) {
 				if (slot.checked()) {
-					value.add(slot.conduct);
+					value.conducts.add(slot.conduct);
 				}
 			}
 			SPDSettings.challenges( value );
@@ -173,9 +174,9 @@ public class WndChallenges extends Window {
 		protected void onClick() {
 			super.onClick();
 			if (active){
-//				for (CheckBox slot : boxes){
-//					if (slot != this) slot.checked(false);
-//				}
+				for (CheckBox slot : boxes){
+					if (slot != this && boxes.indexOf(slot) == 0) slot.checked(false);
+				}
 			}
 		}
 
@@ -190,6 +191,7 @@ public class WndChallenges extends Window {
 		protected void layout() {
 			super.layout();
 			hotArea.width = hotArea.height = 0;
+			if (!editable) icon.alpha(0f);
 		}
 	}
 }

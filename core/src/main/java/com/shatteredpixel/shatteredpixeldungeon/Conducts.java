@@ -25,8 +25,12 @@
 package com.shatteredpixel.shatteredpixeldungeon;
 
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.watabou.utils.Bundlable;
+import com.watabou.utils.Bundle;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Conducts {
     public enum Conduct {
@@ -72,5 +76,77 @@ public class Conducts {
         }
     }
 
+    public static class ConductStorage implements Bundlable {
 
+        public ArrayList<Conduct> conducts;
+
+        public ConductStorage() {
+            conducts = new ArrayList<>();
+        }
+
+        public static ConductStorage createFromConducts(Conduct... conducts){
+            ConductStorage storage = new ConductStorage();
+            storage.conducts = new ArrayList<>(Arrays.asList(conducts));
+            return storage;
+        }
+
+        public static ConductStorage createFromConducts(ConductStorage storage){
+            ConductStorage storage1 = new ConductStorage();
+            storage1.conducts = new ArrayList<>(storage.conducts);
+            return storage;
+        }
+
+        @Override
+        public void storeInBundle(Bundle bundle) {
+            ArrayList<String> conductIds = new ArrayList<>();
+            for (Conduct conduct: conducts){
+                conductIds.add(conduct.name());
+            }
+            bundle.put("conduct", conductIds.toArray(new String[0]));
+        }
+
+        @Override
+        public void restoreFromBundle(Bundle bundle) {
+            if (bundle.getStringArray("conduct") != null) {
+                String[] conductIds = bundle.getStringArray("conduct");
+                for (String conduct : conductIds) {
+                    conducts.add(Conduct.valueOf(conduct));
+                }
+            }
+        }
+
+        public String getDebugString(){
+            StringBuilder str = new StringBuilder();
+            for (Conduct conduct : conducts){
+                str.append(conduct.name()).append(",");
+            }
+            str.delete(str.length() - 2, str.length() - 1);
+            return str.toString();
+        }
+
+        public boolean isConductedAtAll(){
+            return !conducts.isEmpty();
+        }
+
+        public boolean oneConduct(){
+            return conducts.size() == 1;
+        }
+
+        public float scoreMod(){
+            float total = 1;
+            for (Conduct conduct : conducts){
+                total *= conduct.scoreMod;
+            }
+            return total;
+        }
+
+        public boolean isConducted(Conduct mask){
+            return isConductedAtAll() && conducts.contains(mask);
+        }
+
+        public Conduct getFirst(){
+            if (isConductedAtAll()) return conducts.get(0);
+            return null;
+        }
+    }
 }

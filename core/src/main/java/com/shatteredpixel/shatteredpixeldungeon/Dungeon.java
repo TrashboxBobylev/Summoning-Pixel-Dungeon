@@ -60,7 +60,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import static com.shatteredpixel.shatteredpixeldungeon.Conducts.Conduct.NULL;
 import static com.shatteredpixel.shatteredpixeldungeon.Conducts.Conduct.ZEN;
 
 public class Dungeon {
@@ -186,11 +185,11 @@ public class Dungeon {
 		}
 	}
 
-	public static ArrayList<Conducts.Conduct> challenges = new ArrayList<>();
+	public static Conducts.ConductStorage challenges = new Conducts.ConductStorage();
 
 	public static Conducts.Conduct challenge() {
-		if (!challenges.isEmpty())
-			return challenges.get(0);
+		if (challenges.isConductedAtAll())
+			return challenges.getFirst();
 		return null;
 	}
 
@@ -217,7 +216,7 @@ public class Dungeon {
 	public static void init() {
 
 		version = Game.versionCode;
-		challenges.addAll(SPDSettings.challenges());
+		challenges = Conducts.ConductStorage.createFromConducts(SPDSettings.challenges());
 
 		seed = DungeonSeed.randomSeed();
 
@@ -270,7 +269,7 @@ public class Dungeon {
 	}
 
 	public static boolean isChallenged( Conducts.Conduct mask ) {
-		return challenges.contains(mask);
+		return challenges.isConducted(mask);
 	}
 	
 	public static Level newLevel() {
@@ -518,12 +517,7 @@ public class Dungeon {
 			version = Game.versionCode;
 			bundle.put( VERSION, version );
 			bundle.put( SEED, seed );
-			StringBuilder chalBuilder = new StringBuilder();
-			for (Conducts.Conduct conduct : Dungeon.challenges){
-				chalBuilder.append(conduct.name()).append(",");
-			}
-			chalBuilder.deleteCharAt(chalBuilder.length()-1);
-			bundle.put( CHALLENGES, chalBuilder.toString());
+			challenges.storeInBundle(bundle);
 			bundle.put( MOBS_TO_CHAMPION, mobsToChampion );
 			bundle.put( HERO, hero );
 			bundle.put( GOLD, gold );
@@ -597,7 +591,7 @@ public class Dungeon {
 			saveGame( GamesInProgress.curSlot );
 			saveLevel( GamesInProgress.curSlot );
 
-			GamesInProgress.set( GamesInProgress.curSlot, depth, challenge(), mode, hero );
+			GamesInProgress.set( GamesInProgress.curSlot, depth, challenges, mode, hero );
 
 		}
 	}
@@ -618,17 +612,7 @@ public class Dungeon {
 
 		quickslot.reset();
 		QuickSlotButton.reset();
-		Dungeon.challenges.clear();
-
-
-		String str = bundle.getString( CHALLENGES);
-		if (str.equals("") || str.equals("0")) Dungeon.challenges = new ArrayList<>();
-		else {
-			String[] allChals = str.split(",");
-			for (String ch : allChals){
-				Dungeon.challenges.add(Conducts.Conduct.valueOf(ch));
-			}
-		}
+		challenges.restoreFromBundle(bundle);
 
 		try {
 			Dungeon.mode = GameMode.valueOf(bundle.getString(MODE));
@@ -752,8 +736,7 @@ public class Dungeon {
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {
 		info.depth = bundle.getInt( DEPTH );
 		info.version = bundle.getInt( VERSION );
-		info.challenges = bundle.getEnum( CHALLENGES, Conducts.Conduct.class );
-		if (info.challenges == NULL) info.challenges = null;
+		info.challenges.restoreFromBundle(bundle);
 		try {
 			info.mode = GameMode.valueOf(bundle.getString(MODE));
 		} catch (IllegalArgumentException exception){

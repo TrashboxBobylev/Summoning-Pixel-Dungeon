@@ -101,18 +101,23 @@ public class WndGame extends Window {
 		}
 
 		// Challenges window
-		if (!Dungeon.challenges.isEmpty()) {
-			addButton( curBtn = new RedButton( Dungeon.challenge().toString(), 7 ) {
+		if (Dungeon.challenges.isConductedAtAll()) {
+			addButton( curBtn = new RedButton( Dungeon.challenges.oneConduct() ?
+					Dungeon.challenge().toString() : Messages.get(WndChallenges.class, "title"), 7 ) {
 				@Override
 				protected void onClick() {
 					hide();
-					ShatteredPixelDungeon.scene().addToFront(new WndChallenges(Dungeon.challenges, false));
-//					GameScene.show( new WndTitledMessage(new Image(Assets.Interfaces.SUBCLASS_ICONS, (Dungeon.challenge().ordinal()-1)*16, 16, 16, 16),
-//							Dungeon.challenge().toString(),
-//							Dungeon.challenge().desc()) );
+					if (!Dungeon.challenges.oneConduct()) {
+						ShatteredPixelDungeon.scene().addToFront(new WndChallenges(Dungeon.challenges, false));
+					} else
+					GameScene.show( new WndTitledMessage(new Image(Assets.Interfaces.SUBCLASS_ICONS, (Dungeon.challenge().ordinal()-1)*16, 16, 16, 16),
+							Dungeon.challenge().toString(),
+							Dungeon.challenge().desc()) );
 				}
 			} );
-			curBtn.icon(new Image(Assets.Interfaces.SUBCLASS_ICONS, (Dungeon.challenge().ordinal()-1)*16, 16, 16, 16));
+			curBtn.icon(Dungeon.challenges.oneConduct() ?
+					new Image(Assets.Interfaces.SUBCLASS_ICONS, (Dungeon.challenge().ordinal()-1)*16, 16, 16, 16) :
+					Icons.get(Icons.CHALLENGE_ON));
 		}
 
 		if (Dungeon.mode != null) {

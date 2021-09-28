@@ -141,7 +141,7 @@ public class HeroSelectScene extends PixelScene {
 		}
 
 		challengeButton = new IconButton(
-				Icons.get( SPDSettings.challenges() != null && !SPDSettings.challenges().isEmpty() ? Icons.CHALLENGE_ON :Icons.CHALLENGE_OFF)){
+				Icons.get( SPDSettings.challenges() != null && SPDSettings.challenges().isConductedAtAll() ? Icons.CHALLENGE_ON :Icons.CHALLENGE_OFF)){
 			@Override
 			protected void onClick() {
 				ShatteredPixelDungeon.scene().addToFront(new WndChallenges(SPDSettings.challenges(), true) {

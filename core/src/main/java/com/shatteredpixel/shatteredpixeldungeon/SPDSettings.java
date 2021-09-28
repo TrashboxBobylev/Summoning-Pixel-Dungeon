@@ -32,7 +32,6 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.GameSettings;
 import com.watabou.utils.Point;
 
-import java.util.ArrayList;
 import java.util.Locale;
 
 public class SPDSettings extends GameSettings {
@@ -207,26 +206,12 @@ public class SPDSettings extends GameSettings {
 		return getInt( KEY_LAST_CLASS, 0, 0, 3 );
 	}
 	
-	public static void challenges( ArrayList<Conducts.Conduct> value ) {
-		StringBuilder chalBuilder = new StringBuilder();
-		for (Conducts.Conduct conduct : value){
-			chalBuilder.append(conduct.name()).append(",");
-		}
-		chalBuilder.deleteCharAt(chalBuilder.length()-1);
-		put( KEY_CHALLENGES, chalBuilder.toString());
+	public static void challenges( Conducts.ConductStorage value ) {
+		put( KEY_CHALLENGES, value);
 	}
 	
-	public static ArrayList<Conducts.Conduct> challenges() {
-		ArrayList<Conducts.Conduct> conducts = new ArrayList<>();
-		String str = getString( KEY_CHALLENGES, "" );
-		if (str.equals("") || str.equals("0")) return null;
-		else {
-			String[] allChals = str.split(",");
-			for (String ch : allChals){
-				conducts.add(Conducts.Conduct.valueOf(ch));
-			}
-		}
-		return conducts;
+	public static Conducts.ConductStorage challenges() {
+		return getBundlable(KEY_CHALLENGES, new Conducts.ConductStorage());
 	}
 
 	public static void supportNagged( boolean value ) {

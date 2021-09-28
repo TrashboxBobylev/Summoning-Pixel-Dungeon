@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
@@ -36,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.StartScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.*;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Button;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.FileUtils;
@@ -79,7 +81,7 @@ public class WndGameInProgress extends Window {
 					ShatteredPixelDungeon.scene().addToFront(new WndMessage("_Debug Info:_\n\n" +
 							"Version: " + Game.version + " (" + Game.versionCode + ")\n" +
 							"Seed: " + bundle.getLong("seed") + "\n" +
-							"Challenge Mask: " + info.challenges));
+							"Challenge Mask: " + info.challenges.getDebugString()));
 				} catch (IOException ignored) { }
 				return true;
 			}
@@ -95,12 +97,14 @@ public class WndGameInProgress extends Window {
 			RedButton btnChallenges = new RedButton( Messages.get(this, "challenges") ) {
 				@Override
 				protected void onClick() {
+					if (info.challenges.oneConduct()){
+						Game.scene().add( new WndTitledMessage(
+							new Image(Assets.Interfaces.SUBCLASS_ICONS, (info.challenges.getFirst().ordinal()-1)*16, 16, 16, 16),
+							info.challenges.getFirst().toString(),
+							info.challenges.getFirst().desc())
+					);
+					} else
 					ShatteredPixelDungeon.scene().addToFront(new WndChallenges(info.challenges, false));
-//					Game.scene().add( new WndTitledMessage(
-//							new Image(Assets.Interfaces.SUBCLASS_ICONS, (info.challenges.ordinal()-1)*16, 16, 16, 16),
-//							info.challenges.toString(),
-//							info.challenges.desc())
-//					);
 				}
 			};
 			btnChallenges.icon(Icons.get(Icons.CHALLENGE_ON));
