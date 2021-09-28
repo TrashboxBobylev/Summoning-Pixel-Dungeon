@@ -24,7 +24,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.*;
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.*;
 import com.shatteredpixel.shatteredpixeldungeon.services.updates.Updates;
@@ -98,17 +101,18 @@ public class WndGame extends Window {
 		}
 
 		// Challenges window
-		if (Dungeon.challenges != null && Dungeon.challenges != Conducts.Conduct.NULL) {
-			addButton( curBtn = new RedButton( Dungeon.challenges.toString(), 7 ) {
+		if (!Dungeon.challenges.isEmpty()) {
+			addButton( curBtn = new RedButton( Dungeon.challenge().toString(), 7 ) {
 				@Override
 				protected void onClick() {
 					hide();
-					GameScene.show( new WndTitledMessage(new Image(Assets.Interfaces.SUBCLASS_ICONS, (Dungeon.challenges.ordinal()-1)*16, 16, 16, 16),
-							Dungeon.challenges.toString(),
-							Dungeon.challenges.desc()) );
+					ShatteredPixelDungeon.scene().addToFront(new WndChallenges(Dungeon.challenges, false));
+//					GameScene.show( new WndTitledMessage(new Image(Assets.Interfaces.SUBCLASS_ICONS, (Dungeon.challenge().ordinal()-1)*16, 16, 16, 16),
+//							Dungeon.challenge().toString(),
+//							Dungeon.challenge().desc()) );
 				}
 			} );
-			curBtn.icon(new Image(Assets.Interfaces.SUBCLASS_ICONS, (Dungeon.challenges.ordinal()-1)*16, 16, 16, 16));
+			curBtn.icon(new Image(Assets.Interfaces.SUBCLASS_ICONS, (Dungeon.challenge().ordinal()-1)*16, 16, 16, 16));
 		}
 
 		if (Dungeon.mode != null) {

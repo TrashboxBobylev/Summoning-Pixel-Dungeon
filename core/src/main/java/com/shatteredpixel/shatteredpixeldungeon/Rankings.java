@@ -180,7 +180,7 @@ public enum Rankings {
                         Statistics.potionsCooked * 500) *
                         (win ? 2 : 1) *
 						Dungeon.mode.scoreMod *
-				(Dungeon.challenges != null ? Dungeon.challenges.scoreMod : 1));
+				(Dungeon.challenge() != null ? Dungeon.challenge().scoreMod : 1));
 	}
 
 	public static final String HERO = "hero";
@@ -250,7 +250,7 @@ public enum Rankings {
 		belongings.backpack.items = allItems;
 		
 		//save challenges
-		rec.gameData.put( CHALLENGES, Dungeon.challenges );
+		rec.gameData.put( CHALLENGES, Dungeon.challenge());
 	}
 
 	public void loadGameData(Record rec){
@@ -274,9 +274,16 @@ public enum Rankings {
 		Dungeon.hero = (Hero)data.get(HERO);
 
 		Statistics.restoreFromBundle(data.getBundle(STATS));
-		
-		Dungeon.challenges = data.getEnum(CHALLENGES, Conducts.Conduct.class);
-		if (Dungeon.challenges == Conducts.Conduct.NULL) Dungeon.challenges = null;
+
+		String str = data.getString( CHALLENGES);
+		if (str.equals("") || str.equals("0")) Dungeon.challenges = new ArrayList<>();
+		else {
+			String[] allChals = str.split(",");
+			for (String ch : allChals){
+				Dungeon.challenges.add(Conducts.Conduct.valueOf(ch));
+			}
+		}
+		if (Dungeon.challenge() == Conducts.Conduct.NULL) Dungeon.challenges = new ArrayList<>();
 		Dungeon.mode = rec.mode;
 
 	}

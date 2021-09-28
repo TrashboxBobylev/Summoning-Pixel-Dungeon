@@ -119,7 +119,7 @@ public class WndStartGame extends Window {
 						public void onBackPressed() {
 							super.onBackPressed();
 							if (parent != null) {
-								icon(Icons.get(SPDSettings.challenges() != null ?
+								icon(Icons.get(!SPDSettings.challenges().isEmpty() ?
 										Icons.CHALLENGE_ON : Icons.CHALLENGE_OFF));
 							}
 						}

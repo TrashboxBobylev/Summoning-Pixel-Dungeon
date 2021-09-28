@@ -50,7 +50,13 @@ public class WndChallenges extends Window {
 	private ArrayList<ConduitBox> boxes = new ArrayList<>();
 	private ScrollPane pane;
 
-	public WndChallenges( Conducts.Conduct conduct, boolean editable ) {
+	public WndChallenges( Conducts.Conduct conduct, boolean editable){
+		ArrayList<Conducts.Conduct> singleton = new ArrayList<>();
+		singleton.add(conduct);
+		new WndChallenges(singleton, editable);
+	}
+
+	public WndChallenges( ArrayList<Conducts.Conduct> conduct, boolean editable ) {
 
 		super();
 
@@ -103,8 +109,8 @@ public class WndChallenges extends Window {
 				final String challenge = i.toString();
 
 				ConduitBox cb = new ConduitBox( i == Conducts.Conduct.NULL ? challenge : "       " + challenge);
-				cb.checked(i == conduct);
-				if (i == Conducts.Conduct.NULL && conduct == null) cb.checked(true);
+				cb.checked(conduct.contains(i));
+				if (i == Conducts.Conduct.NULL && conduct.isEmpty()) cb.checked(true);
 				cb.active = editable;
 				cb.conduct = i;
 
@@ -143,13 +149,13 @@ public class WndChallenges extends Window {
 	public void onBackPressed() {
 
 		if (editable) {
-			Conducts.Conduct value = null;
+			ArrayList<Conducts.Conduct> value = new ArrayList<>();
 			for (ConduitBox slot : boxes) {
 				if (slot.checked()) {
-					value = slot.conduct;
+					value.add(slot.conduct);
 				}
 			}
-			SPDSettings.challenges( value == Conducts.Conduct.NULL ? null : value );
+			SPDSettings.challenges( value );
 		}
 
 		super.onBackPressed();
@@ -167,9 +173,9 @@ public class WndChallenges extends Window {
 		protected void onClick() {
 			super.onClick();
 			if (active){
-				for (CheckBox slot : boxes){
-					if (slot != this) slot.checked(false);
-				}
+//				for (CheckBox slot : boxes){
+//					if (slot != this) slot.checked(false);
+//				}
 			}
 		}
 
