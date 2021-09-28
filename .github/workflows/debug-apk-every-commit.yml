@@ -1,10 +1,10 @@
 ## 1
-name: Upload thing when pushing something
+name: Autobuild for Google Play
 
 on:
   push:
     branches:
-      - "master"
+      - "googleplay"
 
 jobs:
   build:
@@ -20,71 +20,58 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Create dynamic version number
-        id: vars
-        shell: bash
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.6'
+
+      - name: Cache Ruby - Bundler
+        uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+
+      - name: Cache Gradle
+        uses: actions/cache@v1
+        with:
+          path: ~/.gradle/caches/
+          key: cache-clean-gradle-${{ matrix.os }}-${{ matrix.jdk }}
+
+      - name: Cache Gradle Wrapper
+        uses: actions/cache@v1
+        with:
+          path: ~/.gradle/wrapper/
+          key: cache-clean-wrapper-${{ matrix.os }}-${{ matrix.jdk }}
+
+      - name: Grant Permission to Execute
+        run: chmod +x gradlew
+
+      - name: Install bundle
         run: |
-          echo "version="1.2.2-$(git rev-parse --short "$GITHUB_SHA")"" >> $GITHUB_ENV
-          echo "1.2.1-$(git rev-parse --short "$GITHUB_SHA")" > version
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
 
-      # 2
-      - name: Generate Release APK
-        run: ./gradlew android:assembleRelease
-      - name: Generate Release JAR
-        run: ./gradlew desktop:release
-      # 3
-      - name: Sign APK
-        uses: r0adkll/sign-android-release@v1
-        # ID used to access action output
-        id: sign_app
-        with:
-          releaseDirectory: android/build/outputs/apk/release
-          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-          alias: ${{ secrets.ALIAS }}
-          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-          keyPassword: ${{ secrets.KEY_PASSWORD }}
-
-      - name: Rename APK
-        run: mv android/build/outputs/apk/release/android-release-unsigned-signed.apk android/build/outputs/apk/release/android-release.apk
-
-      - name: Upload as Pre-release
-        uses: "marvinpinto/action-automatic-releases@latest"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
-          prerelease: false
-          title: "${{ env.version }}"
-          files: |
-              android/build/outputs/apk/release/android-release.apk
-              desktop/build/libs/*.jar
-      - name: Remove unsigned apk
-        run: rm android/build/outputs/apk/release/android-release-unsigned.apk
-
-      - name: Remove unsigned apk
-        run: rm android/build/outputs/apk/release/android-release-unsigned-aligned.apk
-
-      - name: Remove signing key
-        run: rm android/build/outputs/apk/release/signingKey.jks
-
-      - name: Remove output.json
-        run: rm android/build/outputs/apk/release/output.json
-
-      - name: Upload to itch.io
-        uses: josephbmanley/butler-publish-itchio-action@master
+      - name: Configure Keystore
+        run: |
+          echo "$ANDROID_KEYSTORE_FILE" > keystore.jks.b64
+          base64 -d -i keystore.jks.b64 > app/keystore.jks
+          echo "storeFile=keystore.jks" >> keystore.properties
+          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> keystore.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> keystore.properties
+          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> keystore.properties
         env:
-          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_KEY }}
-          CHANNEL: win-linux-mac-stable
-          ITCH_GAME: summoning-pixel-dungeon
-          ITCH_USER: TrashboxBobylev
-          PACKAGE: desktop/build/libs
-          VERSION_FILE: version
+          ANDROID_KEYSTORE_FILE: ${{ secrets.SIGNING_KEY }}
+          KEYSTORE_KEY_ALIAS: ${{ secrets.ALIAS }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          KEYSTORE_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
 
-      - name: Upload to itch.io (android)
-        uses: josephbmanley/butler-publish-itchio-action@master
+      - name: Create Google Play Config file
+        run: |
+          echo "$PLAY_CONFIG_JSON" > play_config.json.b64
+          base64 -d -i play_config.json.b64 > play_config.json
         env:
-          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_KEY }}
-          CHANNEL: android-stable
-          ITCH_GAME: summoning-pixel-dungeon
-          ITCH_USER: TrashboxBobylev
-          PACKAGE: android/build/outputs/apk/release
-          VERSION_FILE: version
+          PLAY_CONFIG_JSON: ${{ secrets.PLAY_CONFIG_JSON }}
+
+      - name: Distribute app to Production 🚀
+          run: bundle exec fastlane production
