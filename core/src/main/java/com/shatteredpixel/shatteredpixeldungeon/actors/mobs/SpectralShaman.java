@@ -174,7 +174,8 @@ public class SpectralShaman extends Mob {
 		
 		sprite.centerEmitter().start( Speck.factory( Speck.SMOKE ), 0.01f, 10 );
 		Sample.INSTANCE.play( Assets.Sounds.CURSED );
-		sprite.turnTo(pos, enemy.pos);
+		if (enemy != null)
+			sprite.turnTo(pos, enemy.pos);
 		
 		boolean[] passable = Dungeon.level.passable.clone();
 		for (Char c : Actor.chars()) {

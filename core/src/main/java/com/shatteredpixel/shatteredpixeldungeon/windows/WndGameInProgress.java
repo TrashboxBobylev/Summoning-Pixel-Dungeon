@@ -81,7 +81,7 @@ public class WndGameInProgress extends Window {
 					ShatteredPixelDungeon.scene().addToFront(new WndMessage("_Debug Info:_\n\n" +
 							"Version: " + Game.version + " (" + Game.versionCode + ")\n" +
 							"Seed: " + bundle.getLong("seed") + "\n" +
-							"Challenge Mask: " + info.challenges));
+							"Challenge Mask: " + info.challenges.getDebugString()));
 				} catch (IOException ignored) { }
 				return true;
 			}
@@ -89,19 +89,22 @@ public class WndGameInProgress extends Window {
 		debug.setRect(0, 0, title.imIcon.width(), title.imIcon.height);
 		add(debug);
 		
-		if (info.challenges != null) GAP -= 2;
+		if (info.challenges.isConductedAtAll()) GAP -= 2;
 		
 		pos = title.bottom() + GAP;
 		
-		if (info.challenges != null) {
+		if (info.challenges.isConductedAtAll()) {
 			RedButton btnChallenges = new RedButton( Messages.get(this, "challenges") ) {
 				@Override
 				protected void onClick() {
-					Game.scene().add( new WndTitledMessage(
-							new Image(Assets.Interfaces.SUBCLASS_ICONS, (info.challenges.ordinal()-1)*16, 16, 16, 16),
-							info.challenges.toString(),
-							info.challenges.desc())
+					if (info.challenges.oneConduct()){
+						Game.scene().add( new WndTitledMessage(
+							new Image(Assets.Interfaces.SUBCLASS_ICONS, (info.challenges.getFirst().ordinal()-1)*16, 16, 16, 16),
+							info.challenges.getFirst().toString(),
+							info.challenges.getFirst().desc())
 					);
+					} else
+					ShatteredPixelDungeon.scene().addToFront(new WndChallenges(info.challenges, false));
 				}
 			};
 			btnChallenges.icon(Icons.get(Icons.CHALLENGE_ON));

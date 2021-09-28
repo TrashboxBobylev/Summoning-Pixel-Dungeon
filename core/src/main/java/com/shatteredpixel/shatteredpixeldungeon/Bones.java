@@ -54,7 +54,7 @@ public class Bones {
 		depth = Dungeon.depth;
 
 		//heroes which have won the game, who die far above their farthest depth, or who are challenged drop no bones.
-		if (Statistics.amuletObtained || (Statistics.deepestFloor - 5) >= depth || Dungeon.challenges != null) {
+		if (Statistics.amuletObtained || (Statistics.deepestFloor - 5) >= depth || Dungeon.challenges.isConductedAtAll()) {
 			depth = -1;
 			return;
 		}
@@ -143,7 +143,7 @@ public class Bones {
 
 		} else {
 			//heroes who are challenged cannot find bones
-			if (depth == Dungeon.depth && Dungeon.challenges == null) {
+			if (depth == Dungeon.depth && !Dungeon.challenges.isConductedAtAll()) {
 				FileUtils.deleteFile( BONES_FILE );
 				depth = 0;
 				

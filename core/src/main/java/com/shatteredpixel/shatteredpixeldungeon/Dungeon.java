@@ -60,7 +60,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import static com.shatteredpixel.shatteredpixeldungeon.Conducts.Conduct.NULL;
 import static com.shatteredpixel.shatteredpixeldungeon.Conducts.Conduct.ZEN;
 
 public class Dungeon {
@@ -186,7 +185,14 @@ public class Dungeon {
 		}
 	}
 
-	public static Conducts.Conduct challenges;
+	public static Conducts.ConductStorage challenges = new Conducts.ConductStorage();
+
+	public static Conducts.Conduct challenge() {
+		if (challenges.isConductedAtAll())
+			return challenges.getFirst();
+		return null;
+	}
+
 	public static GameMode mode;
 	public static int mobsToChampion;
 
@@ -210,7 +216,7 @@ public class Dungeon {
 	public static void init() {
 
 		version = Game.versionCode;
-		challenges = SPDSettings.challenges();
+		challenges = Conducts.ConductStorage.createFromConducts(SPDSettings.challenges());
 
 		seed = DungeonSeed.randomSeed();
 
@@ -263,7 +269,7 @@ public class Dungeon {
 	}
 
 	public static boolean isChallenged( Conducts.Conduct mask ) {
-		return challenges == mask;
+		return challenges.isConducted(mask);
 	}
 	
 	public static Level newLevel() {
@@ -511,7 +517,7 @@ public class Dungeon {
 			version = Game.versionCode;
 			bundle.put( VERSION, version );
 			bundle.put( SEED, seed );
-			bundle.put( CHALLENGES, challenges );
+			challenges.storeInBundle(bundle);
 			bundle.put( MOBS_TO_CHAMPION, mobsToChampion );
 			bundle.put( HERO, hero );
 			bundle.put( GOLD, gold );
@@ -606,10 +612,8 @@ public class Dungeon {
 
 		quickslot.reset();
 		QuickSlotButton.reset();
+		challenges.restoreFromBundle(bundle);
 
-
-
-		Dungeon.challenges = bundle.getEnum( CHALLENGES, Conducts.Conduct.class );
 		try {
 			Dungeon.mode = GameMode.valueOf(bundle.getString(MODE));
 		} catch (IllegalArgumentException exception){
@@ -732,8 +736,7 @@ public class Dungeon {
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {
 		info.depth = bundle.getInt( DEPTH );
 		info.version = bundle.getInt( VERSION );
-		info.challenges = bundle.getEnum( CHALLENGES, Conducts.Conduct.class );
-		if (info.challenges == NULL) info.challenges = null;
+		info.challenges.restoreFromBundle(bundle);
 		try {
 			info.mode = GameMode.valueOf(bundle.getString(MODE));
 		} catch (IllegalArgumentException exception){

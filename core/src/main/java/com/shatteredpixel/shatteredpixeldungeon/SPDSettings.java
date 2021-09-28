@@ -186,6 +186,7 @@ public class SPDSettings extends GameSettings {
 	
 	public static final String KEY_LAST_CLASS	= "last_class";
 	public static final String KEY_CHALLENGES	= "challenges";
+	public static final String KEY_ONE_CONDUCT  = "one_conduct";
 	public static final String KEY_INTRO		= "intro";
 
 	public static final String KEY_SUPPORT_NAGGED= "support_nagged";
@@ -206,15 +207,18 @@ public class SPDSettings extends GameSettings {
 		return getInt( KEY_LAST_CLASS, 0, 0, 3 );
 	}
 	
-	public static void challenges( Conducts.Conduct value ) {
-		if (value == null) put(KEY_CHALLENGES, "");
-		else put( KEY_CHALLENGES, value.name() );
+	public static void challenges( Conducts.ConductStorage value ) {
+		put( KEY_CHALLENGES, value);
 	}
 	
-	public static Conducts.Conduct challenges() {
-		String str = getString( KEY_CHALLENGES, "" );
-		if (str.equals("") || str.equals("0")) return null;
-		return Conducts.Conduct.valueOf(str);
+	public static Conducts.ConductStorage challenges() {
+		return getBundlable(KEY_CHALLENGES, new Conducts.ConductStorage());
+	}
+
+	public static boolean oneConduct() {return getBoolean(KEY_ONE_CONDUCT, true);}
+
+	public static void oneConduct(boolean value){
+		put(KEY_ONE_CONDUCT, value);
 	}
 
 	public static void supportNagged( boolean value ) {

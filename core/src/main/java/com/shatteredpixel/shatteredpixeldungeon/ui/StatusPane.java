@@ -149,8 +149,8 @@ public class StatusPane extends Component {
 
 		mode = new Image(Icons.get(Dungeon.mode.icon));
 		add( mode );
-		if (Dungeon.challenges != null && Dungeon.challenges != Conducts.Conduct.NULL){
-			conduct = new Image(Assets.Interfaces.SUBCLASS_ICONS, (Dungeon.challenges.ordinal() - 1) * 16, 16, 16, 16);
+		if (Dungeon.challenges.isConductedAtAll()){
+			conduct = new Image(Assets.Interfaces.SUBCLASS_ICONS, (Dungeon.challenge().ordinal() - 1) * 16, 16, 16, 16);
 			add( conduct );
 		}
 
@@ -248,7 +248,7 @@ public class StatusPane extends Component {
 			avatar.tint(ColorMath.interpolate(warning, warningColors), 0.5f );
 		} else {
 			avatar.resetColor();
-			if (Dungeon.challenges != null && Dungeon.isChallenged(Conducts.Conduct.WRAITH)){
+			if (Dungeon.challenges.isConductedAtAll() && Dungeon.isChallenged(Conducts.Conduct.WRAITH)){
 				avatar.alpha(0.5f);
 				avatar.hardlight(0x000000);
 			}

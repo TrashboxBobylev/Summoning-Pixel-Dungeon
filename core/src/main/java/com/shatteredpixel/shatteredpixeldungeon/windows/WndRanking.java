@@ -156,7 +156,7 @@ public class WndRanking extends WndTabbed {
 		public StatsTab() {
 			super();
 
-			if (Dungeon.challenges != null) GAP--;
+			if (Dungeon.challenges.isConductedAtAll()) GAP--;
 
 			String heroClass = Dungeon.hero.className();
 			
@@ -200,13 +200,16 @@ public class WndRanking extends WndTabbed {
 				pos = btnTalents.bottom();
 			}
 
-			if (Dungeon.challenges != null) {
+			if (Dungeon.challenges.isConductedAtAll()) {
 				RedButton btnChallenges = new RedButton( Messages.get(this, "challenges") ) {
 					@Override
 					protected void onClick() {
-						Game.scene().add( new WndTitledMessage(new Image(Assets.Interfaces.SUBCLASS_ICONS, (Dungeon.challenges.ordinal()-1)*16, 16, 16, 16),
-								Dungeon.challenges.toString(),
-								Dungeon.challenges.desc()));
+						if (Dungeon.challenges.oneConduct()){
+							Game.scene().add( new WndTitledMessage(new Image(Assets.Interfaces.SUBCLASS_ICONS, (Dungeon.challenge().ordinal()-1)*16, 16, 16, 16),
+								Dungeon.challenge().toString(),
+								Dungeon.challenge().desc()));
+						} else
+						ShatteredPixelDungeon.scene().addToFront(new WndChallenges(Dungeon.challenges, false));
 					}
 				};
 				float btnW = btnChallenges.reqWidth() + 2;

@@ -141,13 +141,13 @@ public class HeroSelectScene extends PixelScene {
 		}
 
 		challengeButton = new IconButton(
-				Icons.get( SPDSettings.challenges() != null && SPDSettings.challenges() != Conducts.Conduct.NULL ? Icons.CHALLENGE_ON :Icons.CHALLENGE_OFF)){
+				Icons.get( SPDSettings.challenges().isConductedAtAll() ? Icons.CHALLENGE_ON :Icons.CHALLENGE_OFF)){
 			@Override
 			protected void onClick() {
 				ShatteredPixelDungeon.scene().addToFront(new WndChallenges(SPDSettings.challenges(), true) {
 					public void onBackPressed() {
 						super.onBackPressed();
-						icon(Icons.get(SPDSettings.challenges() != null ? Icons.CHALLENGE_ON : Icons.CHALLENGE_OFF));
+						icon(Icons.get(SPDSettings.challenges().isConductedAtAll() ? Icons.CHALLENGE_ON : Icons.CHALLENGE_OFF));
 					}
 				} );
 			}

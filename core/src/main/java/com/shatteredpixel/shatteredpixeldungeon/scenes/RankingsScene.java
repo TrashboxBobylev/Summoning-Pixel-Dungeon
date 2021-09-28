@@ -263,6 +263,12 @@ public class RankingsScene extends PixelScene {
 			mode.copy(Icons.get(rec.mode.icon));
 			if (rec.gameData.getEnum("challenges", Conducts.Conduct.class) != Conducts.Conduct.NULL){
 				conduct.copy(new Image(Assets.Interfaces.SUBCLASS_ICONS, (rec.gameData.getEnum("challenges", Conducts.Conduct.class).ordinal() - 1) * 16, 16, 16, 16));
+			} else {
+				if (rec.gameData.get("conduct") != null){
+					Conducts.ConductStorage storage = new Conducts.ConductStorage();
+					storage.restoreFromBundle(rec.gameData);
+					conduct.copy(new Image(Assets.Interfaces.SUBCLASS_ICONS, (storage.getFirst().ordinal() - 1) * 16, 16, 16, 16));
+				}
 			}
 
 		}

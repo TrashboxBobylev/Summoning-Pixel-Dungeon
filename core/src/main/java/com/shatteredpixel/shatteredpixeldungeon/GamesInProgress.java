@@ -123,14 +123,13 @@ public class GamesInProgress {
 		}
 	}
 
-	public static void set(int slot, int depth, Conducts.Conduct challenges, Dungeon.GameMode mode,
+	public static void set(int slot, int depth, Conducts.ConductStorage challenges, Dungeon.GameMode mode,
 						   Hero hero) {
 		Info info = new Info();
 		info.slot = slot;
 		
 		info.depth = depth;
 		info.challenges = challenges;
-		if (info.challenges == Conducts.Conduct.NULL) info.challenges = null;
 		
 		info.level = hero.lvl;
 		info.str = hero.STR;
@@ -162,7 +161,7 @@ public class GamesInProgress {
 		
 		public int depth;
 		public int version;
-		public Conducts.Conduct challenges;
+		public Conducts.ConductStorage challenges;
 		public Dungeon.GameMode mode;
 		
 		public int level;
@@ -192,7 +191,7 @@ public class GamesInProgress {
 					hs.goldCollected +
 							hs.maxDepth * hs.level * 100) *
 					hs.mode.scoreMod *
-					(hs.challenges != null ? hs.challenges.scoreMod : 1f));
+					(hs.challenges.isConductedAtAll() ? hs.challenges.scoreMod() : 1f));
 		}
 	};
 }

@@ -179,8 +179,8 @@ public class StartScene extends PixelScene {
 					add(classIcon);
 					mode = new Image(Icons.get(info.mode.icon));
 					add(mode);
-					if (info.challenges != null) {
-						conduct = new Image(Assets.Interfaces.SUBCLASS_ICONS, (info.challenges.ordinal() - 1) * 16, 16, 16, 16);
+					if (info.challenges.isConductedAtAll()) {
+						conduct = new Image(Assets.Interfaces.SUBCLASS_ICONS, (info.challenges.getFirst().ordinal() - 1) * 16, 16, 16, 16);
 						add(conduct);
 					}
 					level = new BitmapText(PixelScene.pixelFont);
@@ -197,7 +197,7 @@ public class StartScene extends PixelScene {
 				level.text(Integer.toString(info.level));
 				level.measure();
 				
-				if (info.challenges != null){
+				if (info.challenges.isConductedAtAll()){
 					name.hardlight(Window.TITLE_COLOR);
 					depth.hardlight(Window.TITLE_COLOR);
 					level.hardlight(Window.TITLE_COLOR);

@@ -120,6 +120,17 @@ public class GameSettings {
 			return defValue;
 		}
 	}
+
+	private static final String BUNDLABLE="b";
+
+	public static <T extends Bundlable> T getBundlable(String key, T defValue){
+		try {
+			Bundle b = Bundle.fromString(getString(key,""));
+			return (T)b.get(BUNDLABLE);
+		} catch (Exception e) {
+			return defValue;
+		}
+	}
 	
 	public static void put( String key, int value ) {
 		get().putInteger(key, value);
@@ -139,6 +150,12 @@ public class GameSettings {
 	public static void put( String key, String value ) {
 		get().putString(key, value);
 		get().flush();
+	}
+
+	public static void put( String key, Bundlable value ) {
+		Bundle b = new Bundle();
+		b.put(BUNDLABLE,value);
+		put(key,b.toString());
 	}
 	
 }

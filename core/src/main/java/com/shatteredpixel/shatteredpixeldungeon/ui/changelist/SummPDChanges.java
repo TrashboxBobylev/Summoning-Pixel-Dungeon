@@ -72,10 +72,17 @@ public class SummPDChanges {
     public static void add_1_1_7_Changes(ArrayList<ChangeInfo> changeInfos) {
 
         ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "1.2.2", true, Window.TITLE_COLOR);
+
+        changes = ChangesScene.createChangeInfo(changeInfos, "1.2.2a", false, Window.WHITE);
+        changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+                "_-_ Fixed the crash for Spectral Shaman.\n\n" +
+                        "_-_ Added experimental toggle to allow multiple conducts. Trust me, it's not balanced.\n\n" +
+                        "_-_ Adjusted the chance for hordes to 1/6 at any stage and limited max horde members to 3. This should make endgame massively less spammy."));
+
         changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
         changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
-                "_-_ Released September th, 2021\n" +
-                        "_-_ X days after 1.2.1\n\n" +
+                "_-_ Released September 20th, 2021\n" +
+                        "_-_ 73 days after 1.2.1\n\n" +
                         ""));
         changes = ChangesScene.createChangeInfo(changeInfos, "New Content", false, 0x10bb00);
         changes.addButton(new ChangeButton(Icons.get(Icons.CHALLENGE_ON), "Conducts",
