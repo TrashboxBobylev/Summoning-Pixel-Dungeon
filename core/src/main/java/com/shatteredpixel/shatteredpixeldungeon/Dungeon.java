@@ -736,6 +736,7 @@ public class Dungeon {
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {
 		info.depth = bundle.getInt( DEPTH );
 		info.version = bundle.getInt( VERSION );
+		info.challenges = new Conducts.ConductStorage();
 		info.challenges.restoreFromBundle(bundle);
 		try {
 			info.mode = GameMode.valueOf(bundle.getString(MODE));

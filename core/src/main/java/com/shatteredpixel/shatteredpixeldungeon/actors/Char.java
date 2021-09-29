@@ -546,8 +546,17 @@ public abstract class Char extends Actor {
 			if (buff(SubtilitasSigil.Recharge.class) != null && buff(SubtilitasSigil.Recharge.class).isCursed()){
 				dmg *= 1.5f;
 			}
-			if (MirrorOfFates.isMirrorActive(this) ){
-				buff(MirrorOfFates.MirrorShield.class).destroy();
+		}
+
+		if ((src instanceof Char || src instanceof Mob.MagicalAttack) && MirrorOfFates.isMirrorActive(this)){
+			MirrorOfFates.MirrorShield shield = buff(MirrorOfFates.MirrorShield.class);
+			int reflectDamage = shield.damage(dmg);
+			Char victim = src instanceof Mob.MagicalAttack ?
+					((Mob.MagicalAttack) src).caster : (Char) src;
+			victim.damage(dmg - reflectDamage, this);
+			dmg = reflectDamage;
+			if (dmg <= 0){
+				return;
 			}
 		}
 

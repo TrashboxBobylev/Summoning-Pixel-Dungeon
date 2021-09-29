@@ -46,6 +46,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Endure;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MirrorOfFates;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Barrier;
@@ -55,10 +56,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.*;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Recycle;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
@@ -1269,6 +1267,10 @@ public class Hero extends Char {
 			return;
 		}
 
+		if (buff(MirrorOfFates.mirrorExp.class) != null && buff(MirrorOfFates.mirrorExp.class).isCursed() && Random.Int(5) == 0) {
+			ScrollOfTeleportation.teleportHero(Dungeon.hero);
+		}
+
 		if (!(src instanceof Hunger || src instanceof Viscosity.DeferedDamage) && damageInterrupt) {
 			interrupt();
 			resting = false;
@@ -1474,6 +1476,10 @@ public class Hero extends Char {
 
 			if (subClass == HeroSubClass.FREERUNNER){
 				Buff.affect(this, Momentum.class).gainStack();
+			}
+			if (MirrorOfFates.isMirrorActive(this)){
+				MirrorOfFates.MirrorShield shield = buff(MirrorOfFates.MirrorShield.class);
+				shield.damage(shield.maxPotency / 4);
 			}
 
 			return true;
