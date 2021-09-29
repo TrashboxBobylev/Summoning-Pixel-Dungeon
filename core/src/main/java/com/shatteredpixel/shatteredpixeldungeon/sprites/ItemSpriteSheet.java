@@ -858,7 +858,7 @@ public class ItemSpriteSheet {
 		assignItemRect(BOOK,        13, 16);
 	}
 	private static final int NEW_ARTIFACTS = xy(1, 32);
-	public static final int ARTIFACT_SIGIL = NEW_ARTIFACTS+1;
+	public static final int ARTIFACT_SIGIL = NEW_ARTIFACTS+0;
 
 	static {
 		assignItemRect(ARTIFACT_SIGIL, 14, 12);

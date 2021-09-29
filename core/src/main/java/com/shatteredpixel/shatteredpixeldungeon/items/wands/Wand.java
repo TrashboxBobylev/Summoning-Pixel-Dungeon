@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Overload;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SubtilitasSigil;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
@@ -512,6 +513,10 @@ public abstract class Wand extends Weapon {
 
 		if (curUser.subClass == HeroSubClass.GLADIATOR){
 			Buff.affect(curUser, Stacks.class).add(1);
+		}
+		SubtilitasSigil.Recharge sigilCharge = curUser.buff(SubtilitasSigil.Recharge.class);
+		if (sigilCharge != null){
+			sigilCharge.gainExp(1);
 		}
 
 		curUser.spendAndNext( TIME_TO_ZAP );
