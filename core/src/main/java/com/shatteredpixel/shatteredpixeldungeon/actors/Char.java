@@ -46,6 +46,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Endure;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MirrorOfFates;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SubtilitasSigil;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfAdrenalineSurge;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Scrap;
@@ -544,6 +545,9 @@ public abstract class Char extends Actor {
 			}
 			if (buff(SubtilitasSigil.Recharge.class) != null && buff(SubtilitasSigil.Recharge.class).isCursed()){
 				dmg *= 1.5f;
+			}
+			if (MirrorOfFates.isMirrorActive(this) ){
+				buff(MirrorOfFates.MirrorShield.class).destroy();
 			}
 		}
 

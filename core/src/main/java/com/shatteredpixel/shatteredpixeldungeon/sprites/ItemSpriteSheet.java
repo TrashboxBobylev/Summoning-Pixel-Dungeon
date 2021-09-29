@@ -859,9 +859,11 @@ public class ItemSpriteSheet {
 	}
 	private static final int NEW_ARTIFACTS = xy(1, 32);
 	public static final int ARTIFACT_SIGIL = NEW_ARTIFACTS+0;
+	public static final int ARTIFACT_MIRROR = NEW_ARTIFACTS+1;
 
 	static {
 		assignItemRect(ARTIFACT_SIGIL, 14, 12);
+		assignItemRect(ARTIFACT_MIRROR, 14, 14);
 	}
 
 	                                                                                    //16 free slots
