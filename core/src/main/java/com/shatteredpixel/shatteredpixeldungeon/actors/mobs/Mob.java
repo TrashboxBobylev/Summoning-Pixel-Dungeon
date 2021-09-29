@@ -1406,6 +1406,15 @@ public abstract class Mob extends Char {
 
 	}
 
+	public static class MagicalAttack {
+		public Mob caster;
+		public int damage;
+
+		public MagicalAttack(Mob attacker, int damage){
+			caster = attacker;
+			this.damage = damage;
+		}
+	}
 
 	private static ArrayList<Mob> heldAllies = new ArrayList<>();
 
