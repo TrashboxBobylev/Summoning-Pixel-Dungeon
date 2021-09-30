@@ -29,7 +29,7 @@ allprojects {
         appPackageName = 'com.trashboxbobylev.summoningpixeldungeon'
 
         appVersionCode = 409
-        appVersionName = '1.2.2b-' + details.gitHash.substring(0, 7)
+        appVersionName = '1.2.2c-' + details.gitHash.substring(0, 7)
 
         appAndroidCompileSDK = 30
         appAndroidMinSDK = 15
