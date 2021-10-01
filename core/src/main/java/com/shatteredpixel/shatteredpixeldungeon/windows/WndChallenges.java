@@ -175,8 +175,9 @@ public class WndChallenges extends Window {
 		protected void onClick() {
 			super.onClick();
 			if (active){
+				boolean disableEverything = this.conduct == Conducts.Conduct.NULL || SPDSettings.oneConduct();
 				for (CheckBox slot : boxes){
-					if (slot != this && (SPDSettings.oneConduct() || boxes.indexOf(slot) == 0)) slot.checked(false);
+					if (slot != this && disableEverything) slot.checked(false);
 				}
 			}
 		}
