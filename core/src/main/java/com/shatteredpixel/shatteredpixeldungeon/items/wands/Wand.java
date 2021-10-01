@@ -316,7 +316,7 @@ public abstract class Wand extends Weapon {
 	}
 	
 	public void onHeroGainExp( float levelPercent, Hero hero ){
-		if (!isIdentified() && availableUsesToID <= USES_TO_ID/2f) {
+		if (!isIdentified() && availableUsesToID <= USES_TO_ID/2f && !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN)) {
 			//gains enough uses to ID over 1 level
 			availableUsesToID = Math.min(USES_TO_ID/2f, availableUsesToID + levelPercent * USES_TO_ID/2f);
 		}

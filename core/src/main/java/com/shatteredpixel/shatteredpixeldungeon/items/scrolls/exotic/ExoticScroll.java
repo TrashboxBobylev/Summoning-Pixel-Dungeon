@@ -24,6 +24,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic;
 
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
@@ -86,7 +88,7 @@ public abstract class ExoticScroll extends Scroll {
 	
 	@Override
 	public void setKnown() {
-		if (!isKnown()) {
+		if (!isKnown() && !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN)) {
 			handler.know(exoToReg.get(this.getClass()));
 			updateQuickslot();
 		}

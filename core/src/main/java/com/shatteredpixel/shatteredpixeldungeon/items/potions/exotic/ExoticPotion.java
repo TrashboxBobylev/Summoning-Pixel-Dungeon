@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic;
 
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
@@ -87,7 +88,7 @@ public class ExoticPotion extends Potion {
 	
 	@Override
 	public void setKnown() {
-		if (!isKnown()) {
+		if (!isKnown() && !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN)) {
 			handler.know(exoToReg.get(this.getClass()));
 			updateQuickslot();
 			Potion p = Dungeon.hero.belongings.getItem(getClass());

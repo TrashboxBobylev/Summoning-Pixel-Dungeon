@@ -86,12 +86,13 @@ public class WndChallenges extends Window {
 				size = infos.size();
 				for (int i = 1; i < size+1; i++) {
 					if (infos.get(i-1).inside(x, y)) {
+						int index = allConducts.contains(Conducts.Conduct.NULL) ? i : i-1;
 
-						String message = allConducts.get(i-1).desc();
-						String title = Messages.titleCase(Messages.get(Conducts.class, allConducts.get(i-1).name()));
+						String message = allConducts.get(index).desc();
+						String title = Messages.titleCase(Messages.get(Conducts.class, allConducts.get(index).name()));
 						ShatteredPixelDungeon.scene().add(
 								new WndTitledMessage(
-										new Image(Assets.Interfaces.SUBCLASS_ICONS, (allConducts.get(i-1).ordinal() - 1) * 16, 16, 16, 16),
+										new Image(Assets.Interfaces.SUBCLASS_ICONS, (allConducts.get(index).ordinal() - 1) * 16, 16, 16, 16),
 										title, message)
 						);
 
@@ -174,8 +175,9 @@ public class WndChallenges extends Window {
 		protected void onClick() {
 			super.onClick();
 			if (active){
+				boolean disableEverything = this.conduct == Conducts.Conduct.NULL || SPDSettings.oneConduct();
 				for (CheckBox slot : boxes){
-					if (slot != this && (SPDSettings.oneConduct() || boxes.indexOf(slot) == 0)) slot.checked(false);
+					if (slot != this && disableEverything) slot.checked(false);
 				}
 			}
 		}

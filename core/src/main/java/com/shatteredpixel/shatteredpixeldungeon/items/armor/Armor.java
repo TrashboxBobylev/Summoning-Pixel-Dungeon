@@ -151,9 +151,10 @@ public class Armor extends EquipableItem {
 			
 			((HeroSprite)hero.sprite).updateArmor();
 			activate(hero);
-			Hunger.adjustHunger(-17);
-			if (!doNotUseTurnForCollect)
-			hero.spendAndNext( time2equip( hero ) );
+			if (!doNotUseTurnForCollect) {
+				hero.spendAndNext(time2equip(hero));
+				Hunger.adjustHunger(-17);
+			}
 			return true;
 			
 		} else {
@@ -340,7 +341,7 @@ public class Armor extends EquipableItem {
 	
 	@Override
 	public void onHeroGainExp(float levelPercent, Hero hero) {
-		if (!levelKnown && isEquipped(hero) && availableUsesToID <= USES_TO_ID/2f) {
+		if (!levelKnown && isEquipped(hero) && availableUsesToID <= USES_TO_ID/2f && !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN)) {
 			//gains enough uses to ID over 0.5 levels
 			availableUsesToID = Math.min(USES_TO_ID/2f, availableUsesToID + levelPercent * USES_TO_ID);
 		}
