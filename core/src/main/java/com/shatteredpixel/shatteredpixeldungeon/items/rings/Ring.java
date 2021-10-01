@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -291,7 +292,7 @@ public class Ring extends KindofMisc {
 	}
 	
 	public void onHeroGainExp( float levelPercent, Hero hero ){
-		if (isIdentified() || !isEquipped(hero)) return;
+		if (isIdentified() || !isEquipped(hero) || Dungeon.isChallenged(Conducts.Conduct.UNKNOWN)) return;
 		//becomes IDed after 1 level
 		levelsToID -= levelPercent;
 		if (levelsToID <= 0){
