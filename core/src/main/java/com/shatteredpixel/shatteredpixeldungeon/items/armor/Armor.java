@@ -178,7 +178,8 @@ public class Armor extends EquipableItem {
 			hero.belongings.armor = null;
 			((HeroSprite)hero.sprite).updateArmor();
             Statistics.clothArmorForWarrior = false;
-			Hunger.adjustHunger(-17);
+			if (!doNotUseTurnForCollect)
+				Hunger.adjustHunger(-17);
 
 			return true;
 
