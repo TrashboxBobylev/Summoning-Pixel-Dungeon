@@ -30,11 +30,13 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Transmuting;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.Brew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.Elixir;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -51,8 +53,8 @@ public class Recycle extends InventorySpell {
 
 	@Override
 	protected boolean usableOnItem(Item item) {
-		return (item instanceof Potion && !(item instanceof Elixir || item instanceof Brew)) ||
-				item instanceof Scroll ||
+		return (item instanceof Potion && !(item instanceof Elixir || item instanceof Brew || item instanceof PotionOfStrength)) ||
+				(item instanceof Scroll && !(item instanceof ScrollOfUpgrade)) ||
 				item instanceof Plant.Seed ||
 				item instanceof Runestone;
 	}
@@ -85,11 +87,11 @@ public class Recycle extends InventorySpell {
 		item.detach(curUser.belongings.backpack);
 		if (!doNotUseTurnForCollect)
 			GLog.positive(Messages.get(this, "recycled", result.name()));
+		Transmuting.show(curUser, item, result);
+		curUser.sprite.emitter().start(Speck.factory(Speck.CHANGE), 0.2f, 10);
 		if (!result.collect()){
 			Dungeon.level.drop(result, curUser.pos).sprite.drop();
 		}
-		Transmuting.show(curUser, item, result);
-		curUser.sprite.emitter().start(Speck.factory(Speck.CHANGE), 0.2f, 10);
 	}
 	
 	@Override
