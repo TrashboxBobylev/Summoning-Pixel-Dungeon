@@ -24,6 +24,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -45,8 +47,8 @@ public class ScoutArmor extends Armor {
     protected static SpiritBow bow;
 
     {
-        levelKnown = true;
-        cursedKnown = true;
+        levelKnown = !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
+        cursedKnown = !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
         defaultAction = AC_SPECIAL;
         image = ItemSpriteSheet.ARMOR_SCOUT;
 

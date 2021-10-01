@@ -200,7 +200,7 @@ public abstract class Scroll extends Item {
 	}
 	
 	public void setKnown() {
-		if (!anonymous) {
+		if (!anonymous && !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN)) {
 			if (!isKnown()) {
 				handler.know(this);
 				updateQuickslot();
