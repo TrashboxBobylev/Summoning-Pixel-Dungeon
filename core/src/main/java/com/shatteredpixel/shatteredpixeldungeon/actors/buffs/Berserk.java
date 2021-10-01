@@ -114,9 +114,8 @@ public class Berserk extends Buff {
 	public boolean berserking(){
 		if (target.HP == 0 && state == State.NORMAL && power >= 1f){
 
-				Buff.affect(target, WarriorShield.class);
+				WarriorShield shield = Buff.affect(target, WarriorShield.class);
 				state = State.BERSERK;
-				WarriorShield shield = target.buff(WarriorShield.class);
 				shield.supercharge((int) (target.HT*0.6f));
 
 				SpellSprite.show(target, SpellSprite.BERSERK);
