@@ -106,10 +106,11 @@ abstract public class KindOfWeapon extends EquipableItem {
 			} else {
 				GLog.i(Messages.get(KindOfWeapon.class, "equip_normal", name()));
 			}
-			if (!doNotUseTurnForCollect)
-			hero.spendAndNext( TIME_TO_EQUIP );
+			if (!doNotUseTurnForCollect) {
+				hero.spendAndNext(TIME_TO_EQUIP);
 
-            Hunger.adjustHunger(-17);
+				Hunger.adjustHunger(-17);
+			}
 			return true;
 
 		} else {
