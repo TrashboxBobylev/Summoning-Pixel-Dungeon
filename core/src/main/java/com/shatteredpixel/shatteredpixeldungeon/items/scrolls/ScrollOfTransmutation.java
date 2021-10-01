@@ -128,10 +128,11 @@ public class ScrollOfTransmutation extends InventoryScroll {
 			if (result.isIdentified()){
 				Catalog.setSeen(result.getClass());
 			}
-			Transmuting.show(curUser, item, result);
-			curUser.sprite.emitter().start(Speck.factory(Speck.CHANGE), 0.2f, 10);
-			if (!doNotUseTurnForCollect)
-			GLog.positive( Messages.get(this, "morph") );
+			if (!doNotUseTurnForCollect) {
+				GLog.positive(Messages.get(this, "morph"));
+				Transmuting.show(curUser, item, result);
+				curUser.sprite.emitter().start(Speck.factory(Speck.CHANGE), 0.2f, 10);
+			}
 		}
 		
 	}

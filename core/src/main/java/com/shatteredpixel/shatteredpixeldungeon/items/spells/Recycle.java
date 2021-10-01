@@ -85,11 +85,11 @@ public class Recycle extends InventorySpell {
 		item.detach(curUser.belongings.backpack);
 		if (!doNotUseTurnForCollect)
 			GLog.positive(Messages.get(this, "recycled", result.name()));
+		Transmuting.show(curUser, item, result);
+		curUser.sprite.emitter().start(Speck.factory(Speck.CHANGE), 0.2f, 10);
 		if (!result.collect()){
 			Dungeon.level.drop(result, curUser.pos).sprite.drop();
 		}
-		Transmuting.show(curUser, item, result);
-		curUser.sprite.emitter().start(Speck.factory(Speck.CHANGE), 0.2f, 10);
 	}
 	
 	@Override
