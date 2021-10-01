@@ -73,10 +73,15 @@ public class SummPDChanges {
 
         ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "1.2.2", true, Window.TITLE_COLOR);
 
-        changes = ChangesScene.createChangeInfo(changeInfos, "1.2.2a & b & c", false, Window.WHITE);
+        changes = ChangesScene.createChangeInfo(changeInfos, "1.2.2a & b & c & d", false, Window.WHITE);
+        changes.addButton(new ChangeButton(Icons.get(Icons.CHALLENGE_ON), "Conducts",
+                "_-_ Fixed Innate Rage crashing when player is dying.\n\n" +
+                        "_-_ Added experimental toggle to allow multiple conducts. Trust me, it's not balanced.\n\n" +
+                        "_-_ Conducts window's info buttons show correct descriptions for conducts.\n\n" +
+                        "_-_ Selecting a null conduct deselects all the other for convenience.\n\n" +
+                        "_-_ Goldfish Memory properly now blocks any identification."));
         changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
                 "_-_ Fixed the crash for Spectral Shaman.\n\n" +
-                        "_-_ Added experimental toggle to allow multiple conducts. Trust me, it's not balanced.\n\n" +
                         "_-_ Adjusted the chance for hordes to 1/6 at any stage and limited max horde members to 3. This should make endgame massively less spammy.\n\n" +
                         "_-_ Slightly buffed wand recharge.\n\n" +
                         "_-_ Fixed the crash when game couldn't read conducts from save file."));
