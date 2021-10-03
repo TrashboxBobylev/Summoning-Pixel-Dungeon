@@ -124,7 +124,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 		if (super.doUnequip( hero, collect, single )) {
 
 			hero.belongings.weapon = null;
-			if (doNotUseTurnForCollect)
+			if (!doNotUseTurnForCollect)
             Hunger.adjustHunger(-17);
 			return true;
 
