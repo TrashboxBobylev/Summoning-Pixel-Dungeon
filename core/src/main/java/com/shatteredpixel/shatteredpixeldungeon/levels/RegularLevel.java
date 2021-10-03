@@ -104,7 +104,7 @@ public abstract class RegularLevel extends Level {
 
 		//force max standard rooms and multiple by 1.5x for large levels
 		int standards = standardRooms(feeling == Feeling.LARGE || SPDSettings.bigdungeon());
-		if (Dungeon.mode == Dungeon.GameMode.CHAOS) standards = Random.Int(0, standards * 2);
+		if (Dungeon.mode == Dungeon.GameMode.CHAOS) standards = Random.Int(1, standards * 2);
 		if (feeling == Feeling.LARGE && !SPDSettings.smalldungeon()) {
 			standards = (int) Math.ceil(standards * 1.5f);
 		}
@@ -195,7 +195,7 @@ public abstract class RegularLevel extends Level {
 			return Random.NormalIntRange( 1, 3 + (Dungeon.depth/5) );
 
 		int i = Random.NormalIntRange(3, 5 + (Dungeon.depth / 3));
-		if (Dungeon.mode == Dungeon.GameMode.CHAOS) i = Random.Int(0, i);
+		if (Dungeon.mode == Dungeon.GameMode.CHAOS) i = Random.Int(1, i);
 		return i;
 	}
 	
@@ -357,7 +357,7 @@ public abstract class RegularLevel extends Level {
 		else if (Dungeon.hero.heroClass == HeroClass.ADVENTURER) nItems *= 2f;
 		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT) nItems *= 1.5f;
 
-		if (Dungeon.mode == Dungeon.GameMode.CHAOS) nItems = Random.Int(0 ,nItems);
+		if (Dungeon.mode == Dungeon.GameMode.CHAOS) nItems = Random.Int(1 ,nItems);
 
 		for (int i=0; i < nItems; i++) {
 
