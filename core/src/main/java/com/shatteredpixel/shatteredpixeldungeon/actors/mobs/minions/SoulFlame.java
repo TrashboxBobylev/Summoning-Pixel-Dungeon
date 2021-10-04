@@ -51,6 +51,7 @@ public class SoulFlame extends Minion {
         HP--;
         if (!isAlive()) {
             die(null);
+            return true;
         }
         return super.act();
     }
