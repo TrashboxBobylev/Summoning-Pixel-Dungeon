@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -136,7 +137,7 @@ public abstract class RegularLevel extends Level {
 		}
 		if (Dungeon.mode == Dungeon.GameMode.CHAOS) specials = Random.Int(1, specials);
 		SpecialRoom.initForFloor();
-		if (Dungeon.mode != Dungeon.GameMode.CAVES){
+		if (Dungeon.mode != Dungeon.GameMode.CAVES && !Dungeon.isChallenged(Conducts.Conduct.NO_LOOT)){
 			for (int i = 0; i < specials; i++) {
 				SpecialRoom s = SpecialRoom.createRoom();
 				if (s instanceof PitRoom) specials++;
@@ -358,6 +359,10 @@ public abstract class RegularLevel extends Level {
 		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT) nItems *= 1.5f;
 
 		if (Dungeon.mode == Dungeon.GameMode.CHAOS) nItems = Random.Int(1 ,nItems);
+		if (Dungeon.isChallenged(Conducts.Conduct.NO_LOOT)){
+			nItems = 1;
+			if (Dungeon.hero.heroClass == HeroClass.ADVENTURER) nItems = 2;
+		}
 
 		for (int i=0; i < nItems; i++) {
 
