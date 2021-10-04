@@ -82,7 +82,7 @@ public class Shards extends AdHocSpell {
                         targets.remove( this );
                         if (targets.isEmpty()) {
                             Invisibility.dispel();
-                            curUser.spendAndNext( curUser.attackDelay() );
+                            hero.spendAndNext( hero.attackDelay() );
                         }
                     }
                 };
