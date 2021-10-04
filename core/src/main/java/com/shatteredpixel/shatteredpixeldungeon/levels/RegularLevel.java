@@ -219,6 +219,7 @@ public abstract class RegularLevel extends Level {
 		if (SPDSettings.bigdungeon()) mobs *= 1.5f;
 		if (SPDSettings.smalldungeon()) mobs /= 3;
 		if (Dungeon.mode == Dungeon.GameMode.CHAOS) mobs = Random.Int(0, mobs);
+		if (Dungeon.isChallenged(Conducts.Conduct.LIMITED_MONSTERS)) mobs *= 0.75f;
 
 		return mobs;
 	}

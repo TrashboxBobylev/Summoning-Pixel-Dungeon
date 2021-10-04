@@ -553,6 +553,9 @@ public abstract class Level implements Bundlable {
 	}
 
 	public float respawnCooldown(){
+		if (Dungeon.isChallenged(Conducts.Conduct.LIMITED_MONSTERS)){
+			return Integer.MAX_VALUE-1;
+		}
 		if (Statistics.amuletObtained){
 			return TIME_TO_RESPAWN/2f;
 		} else if (Dungeon.level.feeling == Feeling.DARK){
