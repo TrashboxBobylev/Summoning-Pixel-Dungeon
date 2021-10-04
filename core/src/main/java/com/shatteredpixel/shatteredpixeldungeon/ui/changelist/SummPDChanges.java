@@ -80,12 +80,17 @@ public class SummPDChanges {
                         "_-_ Conducts window's info buttons show correct descriptions for conducts.\n\n" +
                         "_-_ Selecting a null conduct deselects all the other for convenience.\n\n" +
                         "_-_ Goldfish Memory properly now blocks any identification.\n\n" +
+                        "_-_ Endless Potential characters can gather mana now.\n\n" +
+                        "_-_ Added new conduct, that minimizes the loot from dungeon.\n\n" +
                         "_-_ Entropy Drive doesn't consume additional hunger anymore, converts progression items or uses transmutation animation."));
         changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
                 "_-_ Fixed the crash for Spectral Shaman.\n\n" +
                         "_-_ Adjusted the chance for hordes to 1/6 at any stage and limited max horde members to 3. This should make endgame massively less spammy.\n\n" +
                         "_-_ Slightly buffed wand recharge.\n\n" +
-                        "_-_ Fixed the crash when game couldn't read conducts from save file."));
+                        "_-_ Fixed more crashes for Project Paradox.\n\n" +
+                        "_-_ Fixed the crash when game couldn't read conducts from save file.\n\n" +
+                        "_-_ Fixed the crash for one of Knight's spell.\n\n" +
+                        "_-_ Changed how potion of strength is generated in Fast Adventure."));
 
         changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
         changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
