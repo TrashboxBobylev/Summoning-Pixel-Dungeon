@@ -104,7 +104,7 @@ public class ShockBomb extends Bomb {
         }
     }
 
-	public float charge;
+	public float charge = 100;
     public int numberOfUses;
     public Charger charger;
 
