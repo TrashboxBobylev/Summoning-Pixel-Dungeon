@@ -117,11 +117,14 @@ public class Conducts {
         }
 
         public String getDebugString(){
+            if (conducts.isEmpty()){
+                return "NULL";
+            }
             StringBuilder str = new StringBuilder();
             for (Conduct conduct : conducts){
                 str.append(conduct.name()).append(",");
             }
-            str.delete(str.length() - 2, str.length() - 1);
+            str.delete(str.length() - 1, str.length());
             return str.toString();
         }
 
