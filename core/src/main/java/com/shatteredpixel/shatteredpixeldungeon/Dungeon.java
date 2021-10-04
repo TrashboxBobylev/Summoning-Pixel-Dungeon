@@ -60,6 +60,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import static com.shatteredpixel.shatteredpixeldungeon.Conducts.Conduct.HUGE;
 import static com.shatteredpixel.shatteredpixeldungeon.Conducts.Conduct.ZEN;
 
 public class Dungeon {
@@ -374,9 +375,23 @@ public class Dungeon {
 	}
 
 	public static int chapterSize(){
-		if (Dungeon.mode == GameMode.GAUNTLET) return 8;
-		if (SPDSettings.smalldungeon()) return 4;
-		return SPDSettings.bigdungeon() ? 6 : 5;
+		int i;
+		if (Dungeon.mode == GameMode.GAUNTLET) {
+			i = 8;
+		}
+		else if (SPDSettings.smalldungeon()){
+			i = 4;
+		}
+		else if (SPDSettings.bigdungeon()){
+			i = 6;
+		}
+		else {
+			i = 5;
+		}
+		if (Dungeon.isChallenged(HUGE)){
+			i *= 2;
+		}
+		return i;
 	}
 
 	public static int chapterNumber(){

@@ -149,7 +149,7 @@ public class WandOfLightning extends DamageWand {
 	@Override
 	public void onHit(Wand wand, Char attacker, Char defender, int damage) {
 		//acts like shocking enchantment
-		float procChance = (Dungeon.hero.lvl/3+1f)/(Dungeon.hero.lvl/3+4f) * enchantment.procChanceMultiplier(attacker);
+		float procChance = (Dungeon.hero.lvl/3+1f)/(Dungeon.hero.lvl/3+4f);
 		if (Random.Float() < procChance) {
 
 			enchaffected.clear();

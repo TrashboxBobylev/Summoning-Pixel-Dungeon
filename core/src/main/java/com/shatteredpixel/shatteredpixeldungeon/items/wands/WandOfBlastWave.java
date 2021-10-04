@@ -222,7 +222,7 @@ public class WandOfBlastWave extends DamageWand {
 
 	@Override
 	public void onHit(Wand wand, Char attacker, Char defender, int damage) {
-		float procChance = (Dungeon.hero.lvl/3+1f)/(Dungeon.hero.lvl/3+5f) * enchantment.procChanceMultiplier(attacker);
+		float procChance = (Dungeon.hero.lvl/3+1f)/(Dungeon.hero.lvl/3+5f);
 		if (Random.Float() < procChance) {
 			//trace a ballistica to our target (which will also extend past them
 			Ballistica trajectory = new Ballistica(attacker.pos, defender.pos, Ballistica.STOP_TARGET);

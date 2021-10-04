@@ -81,8 +81,12 @@ public class SummPDChanges {
                         "_-_ Selecting a null conduct deselects all the other for convenience.\n\n" +
                         "_-_ Goldfish Memory properly now blocks any identification.\n\n" +
                         "_-_ Endless Potential characters can gather mana now.\n\n" +
-                        "_-_ Added new conduct, that minimizes the loot from dungeon.\n\n" +
-                        "_-_ Entropy Drive doesn't consume additional hunger anymore, converts progression items or uses transmutation animation."));
+                        "_-_ Added new conduct that minimizes the loot from dungeon.\n\n" +
+                        "_-_ Entropy Drive doesn't consume additional hunger anymore, converts progression items or uses transmutation animation.\n\n" +
+                        "_-_ Added new conduct that makes monsters a limited resource.\n\n" +
+                        "_-_ Fixed the debug string gathering for conducts." +
+                        "_-_ Added new conduct that significantly increases dungeon's size.\n\n" +
+                        "_-_ Increased the score modifier for certain conducts."));
         changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
                 "_-_ Fixed the crash for Spectral Shaman.\n\n" +
                         "_-_ Adjusted the chance for hordes to 1/6 at any stage and limited max horde members to 3. This should make endgame massively less spammy.\n\n" +
@@ -90,6 +94,9 @@ public class SummPDChanges {
                         "_-_ Fixed more crashes for Project Paradox.\n\n" +
                         "_-_ Fixed the crash when game couldn't read conducts from save file.\n\n" +
                         "_-_ Fixed the crash for one of Knight's spell.\n\n" +
+                        "_-_ Fixed the crash with Electrical Explosive and made it charged from beginning.\n\n" +
+                        "_-_ Fixed the error with attunement consumption for Soul Flame.\n\n" +
+                        "_-_ Fixed the crash for some of Battlemage effects.\n\n" +
                         "_-_ Changed how potion of strength is generated in Fast Adventure."));
 
         changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);

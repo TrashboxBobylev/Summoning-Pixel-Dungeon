@@ -104,7 +104,7 @@ public class ShockBomb extends Bomb {
         }
     }
 
-	public float charge;
+	public float charge = 100;
     public int numberOfUses;
     public Charger charger;
 
@@ -217,7 +217,7 @@ public class ShockBomb extends Bomb {
 //		    Dungeon.hero.sprite.parent.addToFront(new Lightning(arcs, null));
 		    Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
             CellEmitter.center(cell).burst(SparkParticle.FACTORY, 20);
-            if (h != null) {
+            if (h.sprite != null) {
                 h.sprite.parent.addToFront(new Lightning(arcs, null));
             }
         }

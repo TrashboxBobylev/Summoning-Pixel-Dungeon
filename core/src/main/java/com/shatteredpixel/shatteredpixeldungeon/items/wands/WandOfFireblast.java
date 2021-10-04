@@ -153,7 +153,7 @@ public class WandOfFireblast extends DamageWand {
 	@Override
 	public void onHit(Wand wand, Char attacker, Char defender, int damage) {
 		//acts like blazing enchantment
-		float procChance = (Dungeon.hero.lvl/3+1f)/(Dungeon.hero.lvl/3+3f) * enchantment.procChanceMultiplier(attacker);
+		float procChance = (Dungeon.hero.lvl/3+1f)/(Dungeon.hero.lvl/3+3f);
 		if (Random.Float() < procChance) {
 
 			if (defender.buff(Burning.class) != null){
