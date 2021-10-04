@@ -53,8 +53,8 @@ public class Recycle extends InventorySpell {
 
 	@Override
 	protected boolean usableOnItem(Item item) {
-		return (item instanceof Potion && !(item instanceof Elixir || item instanceof Brew || item instanceof PotionOfStrength)) ||
-				(item instanceof Scroll && !(item instanceof ScrollOfUpgrade)) ||
+		return (item instanceof Potion && !(item instanceof Elixir || item instanceof Brew)) ||
+				(item instanceof Scroll) ||
 				item instanceof Plant.Seed ||
 				item instanceof Runestone;
 	}
@@ -82,7 +82,7 @@ public class Recycle extends InventorySpell {
 			} else {
 				result = Generator.random(Generator.Category.STONE);
 			}
-		} while (result.getClass() == item.getClass());
+		} while (result.getClass() == item.getClass() || result.getClass() == PotionOfStrength.class || result.getClass() == ScrollOfUpgrade.class);
 		
 		item.detach(curUser.belongings.backpack);
 		if (!doNotUseTurnForCollect)

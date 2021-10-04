@@ -54,7 +54,8 @@ public class Conducts {
         CHAMPS(1.4f),
         NO_REGEN(1.4f),
         CURSE(1.33f),
-        ALLSIGHT(1.33f);
+        ALLSIGHT(1.33f),
+        NO_LOOT(1.7f);
 
         public float scoreMod;
 

@@ -114,16 +114,6 @@ public enum Rankings {
 		save();
 	}
 
-	private static int pacifistCheck(boolean win){
-	    if (Statistics.enemiesSlain <= 7 && win) return 2500000;
-	    return Statistics.enemiesSlain * 50;
-    }
-
-    private static int noSoUCheck(boolean win){
-	    if (Statistics.upgradesUsed == 0 && win) return 2500000;
-	    return 0;
-    }
-
     private static int noAnkhCheck(boolean win){
 	    if (Statistics.ankhsUsed == 0 && win) return 500;
 	    return 0;
@@ -169,13 +159,11 @@ public enum Rankings {
 		return Math.round((
                         Statistics.goldCollected +
                         Statistics.deepestFloor * Dungeon.hero.lvl * 100 +
-                        pacifistCheck(win) +
-                        noSoUCheck(win) +
                         noAnkhCheck(win) +
                         memeUpgCheck(win) +
                         noMoneyCheck(win) +
                         noClassUniqueItemCheck(win) +
-						chaosStones(win)+
+						chaosStones(win) +
                         Statistics.foodEaten * 500 +
                         Statistics.potionsCooked * 500) *
                         (win ? 2 : 1) *

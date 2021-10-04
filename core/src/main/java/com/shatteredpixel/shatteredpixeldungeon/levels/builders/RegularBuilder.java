@@ -133,7 +133,7 @@ public abstract class RegularBuilder extends Builder {
 			Room r = multiConnections.remove(0);
 			if (r instanceof StandardRoom){
 				if (Dungeon.mode == Dungeon.GameMode.CHAOS){
-					roomsOnMainPath -= Random.Int(0, ((StandardRoom) r).sizeCat.roomValue);
+					roomsOnMainPath -= Random.Int(1, ((StandardRoom) r).sizeCat.roomValue);
 				}
 				roomsOnMainPath -= ((StandardRoom) r).sizeCat.roomValue;
 			} else {

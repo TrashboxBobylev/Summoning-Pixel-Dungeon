@@ -885,7 +885,7 @@ public abstract class Mob extends Char {
 			EXP /= 2;
 		}
 
-		if ((((cause instanceof Minion || cause instanceof GoatClone) && Dungeon.hero.heroClass == HeroClass.CONJURER)
+		if ((((cause instanceof Minion || cause instanceof GoatClone) && (Dungeon.hero.heroClass == HeroClass.CONJURER || Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)))
 				|| (cause instanceof Hero && buff(Knife.SoulGain.class) != null)) ||
 					cause instanceof ConjurerSpell){
 			int gain = (int) Math.floor(EXP*(Dungeon.hero.subClass == HeroSubClass.SOUL_REAVER ? 2.25f : 1.5f));
