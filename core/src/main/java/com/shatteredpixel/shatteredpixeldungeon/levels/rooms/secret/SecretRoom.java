@@ -24,10 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.watabou.utils.Bundle;
@@ -115,8 +112,8 @@ public abstract class SecretRoom extends SpecialRoom {
 		}
 		
 		r = Reflection.newInstance(runSecrets.get( index ));
-		
-		runSecrets.add(runSecrets.remove(index));
+		if (!Dungeon.isChallenged(Conducts.Conduct.HUGE))
+			runSecrets.add(runSecrets.remove(index));
 		
 		return r;
 	}
