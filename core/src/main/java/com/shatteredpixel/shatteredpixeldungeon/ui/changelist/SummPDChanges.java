@@ -84,8 +84,7 @@ public class SummPDChanges {
                         "_-_ Added new conduct that minimizes the loot from dungeon.\n\n" +
                         "_-_ Entropy Drive doesn't consume additional hunger anymore, converts progression items or uses transmutation animation.\n\n" +
                         "_-_ Added new conduct that makes monsters a limited resource.\n\n" +
-                        "_-_ Fixed the debug string gathering for conducts." +
-                        "_-_ Added new conduct that significantly increases dungeon's size.\n\n" +
+                        "_-_ Fixed the debug string gathering for conducts.\n\n" +
                         "_-_ Increased the score modifier for certain conducts."));
         changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
                 "_-_ Fixed the crash for Spectral Shaman.\n\n" +
