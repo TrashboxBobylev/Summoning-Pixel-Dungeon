@@ -24,7 +24,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
-import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
@@ -137,8 +136,7 @@ public abstract class SpecialRoom extends Room {
 			return new PitRoom();
 			
 		} else if (floorSpecials.contains(LaboratoryRoom.class)) {
-			if (!Dungeon.isChallenged(Conducts.Conduct.HUGE))
-				useType(LaboratoryRoom.class);
+			useType(LaboratoryRoom.class);
 			return new LaboratoryRoom();
 		
 		} else {
@@ -159,8 +157,7 @@ public abstract class SpecialRoom extends Room {
 			if (r instanceof WeakFloorRoom){
 				pitNeededDepth = Dungeon.depth + 1;
 			}
-			if (!Dungeon.isChallenged(Conducts.Conduct.HUGE))
-				useType( r.getClass() );
+			useType( r.getClass() );
 			return (SpecialRoom)r;
 		
 		}

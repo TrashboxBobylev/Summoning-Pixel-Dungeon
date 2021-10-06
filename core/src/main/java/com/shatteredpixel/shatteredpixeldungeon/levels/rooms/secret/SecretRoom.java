@@ -24,7 +24,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret;
 
-import com.shatteredpixel.shatteredpixeldungeon.*;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.watabou.utils.Bundle;
@@ -74,9 +76,9 @@ public abstract class SecretRoom extends SpecialRoom {
 	}
 	
 	public static int secretsForFloor(int depth){
-		int constant = SPDSettings.bigdungeon() ? 6 : 5;
+		int constant = Dungeon.chapterSize();
 		if (depth == 1) return 0;
-		if (depth == (SPDSettings.bigdungeon() ? 24 : 20)) return 0;
+		if (depth == Dungeon.chapterSize()*5-1) return 0;
 		
 		int region = depth/constant;
 		int floor = depth%constant;
@@ -112,8 +114,7 @@ public abstract class SecretRoom extends SpecialRoom {
 		}
 		
 		r = Reflection.newInstance(runSecrets.get( index ));
-		if (!Dungeon.isChallenged(Conducts.Conduct.HUGE))
-			runSecrets.add(runSecrets.remove(index));
+		runSecrets.add(runSecrets.remove(index));
 		
 		return r;
 	}
