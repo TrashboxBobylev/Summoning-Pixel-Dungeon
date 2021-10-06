@@ -60,7 +60,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import static com.shatteredpixel.shatteredpixeldungeon.Conducts.Conduct.HUGE;
 import static com.shatteredpixel.shatteredpixeldungeon.Conducts.Conduct.ZEN;
 
 public class Dungeon {
@@ -387,9 +386,6 @@ public class Dungeon {
 		}
 		else {
 			i = 5;
-		}
-		if (Dungeon.isChallenged(HUGE)){
-			i *= 2;
 		}
 		return i;
 	}
