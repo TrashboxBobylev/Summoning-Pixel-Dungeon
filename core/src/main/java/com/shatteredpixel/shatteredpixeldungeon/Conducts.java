@@ -56,8 +56,7 @@ public class Conducts {
         CURSE(1.33f),
         ALLSIGHT(1.33f),
         NO_LOOT(1.7f),
-        LIMITED_MONSTERS(1.4f),
-        HUGE(2f);
+        LIMITED_MONSTERS(1.4f);
 
         public float scoreMod;
 
