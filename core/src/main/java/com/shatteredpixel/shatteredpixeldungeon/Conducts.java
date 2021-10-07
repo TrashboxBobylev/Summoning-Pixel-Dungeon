@@ -87,17 +87,9 @@ public class Conducts {
             conducts = new ArrayList<>();
         }
 
-        public static ConductStorage createFromConducts(Conduct... conducts){
-            ConductStorage storage = new ConductStorage();
-            storage.conducts = new ArrayList<>(Arrays.asList(conducts));
-            return storage;
-        }
+        public ConductStorage(Conduct... conducts) {this.conducts = new ArrayList<>(Arrays.asList(conducts));}
 
-        public static ConductStorage createFromConducts(ConductStorage storage){
-            ConductStorage storage1 = new ConductStorage();
-            storage1.conducts = new ArrayList<>(storage.conducts);
-            return storage;
-        }
+        public ConductStorage(ConductStorage storage) {this.conducts = new ArrayList<>(storage.conducts);}
 
         @Override
         public void storeInBundle(Bundle bundle) {

@@ -265,7 +265,7 @@ public enum Rankings {
 		Dungeon.challenges = new Conducts.ConductStorage();
 		Dungeon.challenges.restoreFromBundle(rec.gameData);
 		if (rec.gameData.getEnum("challenges", Conducts.Conduct.class) != Conducts.Conduct.NULL){
-			Dungeon.challenges = Conducts.ConductStorage.createFromConducts(
+			Dungeon.challenges = new Conducts.ConductStorage(
 					rec.gameData.getEnum("challenges", Conducts.Conduct.class));
 		}
 		Dungeon.mode = rec.mode;
