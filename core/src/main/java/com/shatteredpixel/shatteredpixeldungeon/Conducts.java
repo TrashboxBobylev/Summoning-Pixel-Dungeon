@@ -110,6 +110,7 @@ public class Conducts {
 
         @Override
         public void restoreFromBundle(Bundle bundle) {
+            conducts.clear();
             if (bundle.getStringArray("conduct") != null) {
                 String[] conductIds = bundle.getStringArray("conduct");
                 for (String conduct : conductIds) {
