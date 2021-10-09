@@ -91,6 +91,7 @@ public class SummPDChanges {
                         "_-_ Adjusted the chance for hordes to 1/6 at any stage and limited max horde members to 3. This should make endgame massively less spammy.\n\n" +
                         "_-_ Slightly buffed wand recharge.\n\n" +
                         "_-_ Fixed more crashes for Project Paradox.\n\n" +
+                        "_-_ Changed how minions act and follow the hero.\n\n" +
                         "_-_ Fixed the crash when game couldn't read conducts from save file.\n\n" +
                         "_-_ Fixed the crash for one of Knight's spell.\n\n" +
                         "_-_ Fixed the crash with Electrical Explosive and made it charged from beginning.\n\n" +
