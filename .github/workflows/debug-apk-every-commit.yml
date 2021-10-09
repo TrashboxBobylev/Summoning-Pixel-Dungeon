@@ -24,8 +24,8 @@ jobs:
         id: vars
         shell: bash
         run: |
-          echo "version="1.2.2i-$(git rev-parse --short "$GITHUB_SHA")"" >> $GITHUB_ENV
-          echo "1.2.2i-$(git rev-parse --short "$GITHUB_SHA")" > version
+          echo "version="1.2.2j-$(git rev-parse --short "$GITHUB_SHA")"" >> $GITHUB_ENV
+          echo "1.2.2j-$(git rev-parse --short "$GITHUB_SHA")" > version
 
       # 2
       - name: Generate Release APK
