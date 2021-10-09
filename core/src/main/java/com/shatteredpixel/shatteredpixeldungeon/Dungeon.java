@@ -216,7 +216,7 @@ public class Dungeon {
 	public static void init() {
 
 		version = Game.versionCode;
-		challenges = Conducts.ConductStorage.createFromConducts(SPDSettings.challenges());
+		challenges = new Conducts.ConductStorage(SPDSettings.challenges());
 
 		seed = DungeonSeed.randomSeed();
 

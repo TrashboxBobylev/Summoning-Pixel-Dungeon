@@ -52,7 +52,7 @@ public class WndChallenges extends Window {
 	private ScrollPane pane;
 
 	public WndChallenges( Conducts.Conduct conduct, boolean editable){
-		new WndChallenges(Conducts.ConductStorage.createFromConducts(conduct), editable);
+		new WndChallenges(new Conducts.ConductStorage(conduct), editable);
 	}
 
 	public WndChallenges(Conducts.ConductStorage conducts, boolean editable ) {
