@@ -42,7 +42,7 @@ public class StatuesRoom extends StandardRoom {
 
 	@Override
 	public float[] sizeCatProbs() {
-		return new float[]{18, 7, 2, 1};
+		return new float[]{18, 7, 0, 0};
 	}
 
 	@Override
