@@ -85,6 +85,7 @@ public class SummPDChanges {
                         "_-_ Entropy Drive doesn't consume additional hunger anymore, converts progression items or uses transmutation animation.\n\n" +
                         "_-_ Added new conduct that makes monsters a limited resource.\n\n" +
                         "_-_ Fixed the debug string gathering for conducts.\n\n" +
+                        "_-_ Fixed the softlock for Erupting Darkness.\n\n" +
                         "_-_ Increased the score modifier for certain conducts."));
         changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
                 "_-_ Fixed the crash for Spectral Shaman.\n\n" +
@@ -97,6 +98,17 @@ public class SummPDChanges {
                         "_-_ Fixed the crash with Electrical Explosive and made it charged from beginning.\n\n" +
                         "_-_ Fixed the error with attunement consumption for Soul Flame.\n\n" +
                         "_-_ Fixed the crash for some of Battlemage effects.\n\n" +
+                        "_-_ Fixed the crash for certain level builders.\n\n" +
+                        "_-_ Fixed the items in walls for pylon room.\n\n" +
+                        "_-_ Fixed the issue when Stars t2 couldn't consume charges.\n\n" +
+                        "_-_ Fixed the rare crash for transmutations.\n\n" +
+                        "_-_ Fixed the electrical explosive's damage.\n\n" +
+                        "_-_ Fixed the exploit with ropes and chests.\n\n" +
+                        "_-_ Fixed some exploits and issues with chalice regen.\n\n" +
+                        "_-_ Fixed the issue with 4/3 wands.\n\n" +
+                        "_-_ Fixed the issue with TNT mouse and NPCs.\n\n" +
+                        "_-_ Fixed some Increased Difficulty enemies.\n\n" +
+                        "_-_ Fixed missile being stuck in a wall in rare cases for gnoll tribe room.\n\n" +
                         "_-_ Changed how potion of strength is generated in Fast Adventure."));
 
         changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
