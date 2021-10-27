@@ -199,6 +199,11 @@ public class Ropes extends Item {
 
         final int newHeroPos = chain.collisionPos;
 
+        if (heap.type != Heap.Type.HEAP){
+            GLog.i( Messages.get(Ropes.class, "locked_item"));
+            return;
+        }
+
         hero.busy();
         hero.sprite.parent.add(new Chains(hero.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(newHeroPos), new Callback() {
             public void call() {
