@@ -30,8 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Block;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
@@ -113,8 +112,8 @@ public class Skeleton extends Mob {
 		boolean act = super.act();
 		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT) {
 			if (Dungeon.level.distance(pos, Dungeon.hero.pos) > 1 && Dungeon.hero == enemy){
-				Buff.affect(this, Block.class, 5f);
-				Hero.arrangeBlast(pos, sprite, MagicMissile.BEACON, 5f);
+				Buff.affect(this, Block.class, 1f);
+				SpellSprite.show(this, SpellSprite.SHIELD);
 				spend(1 / speed());
 			}
 		}
