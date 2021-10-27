@@ -58,11 +58,6 @@ public class WandOfStars extends DamageWand {
 		collisionProperties = Ballistica.STOP_TARGET | Ballistica.STOP_SOLID;
 	}
 
-    @Override
-    protected int initialCharges() {
-        return 3;
-    }
-
     private boolean detonation = false;
 
     @Override
@@ -89,7 +84,8 @@ public class WandOfStars extends DamageWand {
     public void execute(Hero hero, String action) {
         super.execute(hero, action);
         if (action.equals(AC_UNLEASH)){
-            charger.gainCharge(1f);
+            if (level() != 1)
+                charger.gainCharge(1f);
             SparseArray<Star> stars = Dungeon.level.stars();
             int[] pos = stars.keyArray();
             boolean effect = false;

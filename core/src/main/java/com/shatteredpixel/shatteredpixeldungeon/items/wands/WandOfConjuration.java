@@ -73,12 +73,7 @@ public class WandOfConjuration extends Wand {
 		swordStorage.level = level();
 	}
 
-	@Override
-	protected int initialCharges() {
-		return 3;
-	}
-
-	@Override
+    @Override
     public void fx(Ballistica bolt, Callback callback) {
 		callback.call();
 	}

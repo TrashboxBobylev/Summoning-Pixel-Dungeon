@@ -844,7 +844,7 @@ public abstract class Mob extends Char {
 				Statistics.qualifiedForNoKilling = false;
 				if (Dungeon.isChallenged(Conducts.Conduct.CURSE)){
 					Dungeon.hero.busy();
-					CursedWand.cursedZap(null, enemy != null ? enemy : Dungeon.hero, new Ballistica((enemy != null ? enemy : Dungeon.hero).pos, pos, Ballistica.MAGIC_BOLT), () -> {});
+					CursedWand.cursedZap(null, enemy != null ? enemy : Dungeon.hero, new Ballistica((enemy != null ? enemy : Dungeon.hero).pos, pos, Ballistica.MAGIC_BOLT), Dungeon.hero::ready);
 				}
 
 				int exp = Dungeon.hero.lvl <= maxLvl || Dungeon.mode == Dungeon.GameMode.LOL ? EXP : 0;

@@ -68,13 +68,13 @@ public class Regeneration extends Buff {
 			RegenerationBuff regenBuff = Dungeon.hero.buff( RegenerationBuff.class);
 
 			float delay = REGENERATION_DELAY;
-			if (Dungeon.isChallenged(Conducts.Conduct.KING)) delay /= 2.5f;
+			if (Dungeon.isChallenged(Conducts.Conduct.KING) && target instanceof Hero) delay /= 2.5f;
 			if (target instanceof Mob) delay /= 3;
-			if (regenBuff != null && target.alignment != Char.Alignment.ENEMY) {
+			if (regenBuff != null && target == Dungeon.hero) {
 				if (regenBuff.isCursed()) {
 					delay *= 1.5f;
 				} else {
-					delay -= regenBuff.itemLevel()*0.9f;
+					delay *= 1f - 0.1f*regenBuff.itemLevel();
 					delay /= RingOfEnergy.artifactChargeMultiplier(target);
 				}
 			}
