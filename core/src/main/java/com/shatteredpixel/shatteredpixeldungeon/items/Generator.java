@@ -258,7 +258,7 @@ public class Generator {
 					Gloves.class,
 					Dagger.class
 			};
-			Category.WEP_T1.probs = new float[]{ 1, 1, 1, 0 };
+			Category.WEP_T1.probs = new float[]{ 1, 1, 1 };
 
 			Category.WEP_T2.classes = new Class<?>[]{
 					Shortsword.class,
