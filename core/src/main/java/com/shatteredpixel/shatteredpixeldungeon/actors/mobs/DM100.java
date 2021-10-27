@@ -64,6 +64,9 @@ public class DM100 extends Mob implements Callback {
 		properties.add(Property.ELECTRIC);
 		properties.add(Property.INORGANIC);
 		properties.add(Property.RANGED);
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+			immunities.add(Electricity.class);
+		}
 	}
 
 	@Override
