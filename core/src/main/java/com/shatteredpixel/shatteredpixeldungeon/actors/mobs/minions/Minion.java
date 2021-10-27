@@ -70,6 +70,12 @@ public abstract class Minion extends Mob {
     protected int defendingPos = -1;
     protected boolean movingToDefendPos = false;
 
+    {
+        immunities.add(Corruption.class);
+        immunities.add(Shrink.class);
+        immunities.add(TimedShrink.class);
+    }
+
     public void defendPos( int cell ){
         aggro(null);
         state = WANDERING;
