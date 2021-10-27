@@ -110,10 +110,6 @@ public class WandOfMagicMissile extends DamageWand {
 		}
 
 	}
-	
-	protected int initialCharges() {
-		return 3;
-	}
 
 	public static class MagicCharge extends FlavourBuff {
 

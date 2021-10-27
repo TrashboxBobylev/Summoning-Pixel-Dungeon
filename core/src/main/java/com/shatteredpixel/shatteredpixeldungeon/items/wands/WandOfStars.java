@@ -58,11 +58,6 @@ public class WandOfStars extends DamageWand {
 		collisionProperties = Ballistica.STOP_TARGET | Ballistica.STOP_SOLID;
 	}
 
-    @Override
-    protected int initialCharges() {
-        return 3;
-    }
-
     private boolean detonation = false;
 
     @Override

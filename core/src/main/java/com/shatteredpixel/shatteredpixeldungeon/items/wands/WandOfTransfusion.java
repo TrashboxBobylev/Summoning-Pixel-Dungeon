@@ -165,11 +165,6 @@ public class WandOfTransfusion extends Wand {
 	}
 
 	@Override
-	protected int initialCharges() {
-		return 1;
-	}
-
-	@Override
 	public void onHit(Wand wand, Char attacker, Char defender, int damage) {
 		// lvl 0 - 10%
 		// lvl 1 - 18%

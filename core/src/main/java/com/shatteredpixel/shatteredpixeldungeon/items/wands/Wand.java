@@ -441,10 +441,6 @@ public abstract class Wand extends Weapon {
 	public int buffedLvl() {
 		return super.buffedLvl();
 	}
-	
-	protected int initialCharges() {
-		return 2;
-	}
 
 	protected int chargesPerCast() {
 		if (Dungeon.hero.buff(Overload.OverloadTracker.class) != null)
@@ -530,7 +526,7 @@ public abstract class Wand extends Weapon {
 			}
 		}
 		level(n);
-		curCharges += n;
+		curCharges = 3;
 
 		//30% chance to be cursed
 		if (Random.Float() < 0.3f) {
