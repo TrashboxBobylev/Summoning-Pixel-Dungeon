@@ -53,7 +53,7 @@ public class RatBomb extends Bomb{
             if (ch.fieldOfView != null && ch.fieldOfView[cell]){
                 int power = 25 - 8*l.distance(ch.pos, cell);
                 if (power > 0){
-                    if (ch instanceof Mob && !(ch instanceof ExplodingTNT)){
+                    if (ch instanceof Mob && !(ch instanceof ExplodingTNT) && ch.alignment != Char.Alignment.ENEMY){
                         Buff.prolong(ch, Blindness.class, power);
                         Buff.prolong(ch, Cripple.class, power);
                         ((Mob) ch).enemy = null;
