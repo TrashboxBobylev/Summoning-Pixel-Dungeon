@@ -108,6 +108,15 @@ public class MajesticGuard extends Mob {
 	}
 
 	@Override
+	public void add(Buff buff) {
+		if (buff instanceof Charm){
+			die(Dungeon.hero);
+			return;
+		}
+		super.add(buff);
+	}
+
+	@Override
 	public int attackSkill( Char target ) {
 		return 9999;
 	}

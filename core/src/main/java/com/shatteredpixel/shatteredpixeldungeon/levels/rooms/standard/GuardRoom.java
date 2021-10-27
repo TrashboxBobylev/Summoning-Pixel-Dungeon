@@ -26,13 +26,11 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.MajesticGuard;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfShroudingFog;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfAffection;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Point;
-import com.watabou.utils.Random;
 
 public class GuardRoom extends StandardRoom {
 
@@ -91,6 +89,6 @@ public class GuardRoom extends StandardRoom {
 		do {
 			pos = level.pointToCell(random());
 		} while (!level.adjacent(pos, guard.pos));
-		level.drop( Random.Int(2) == 0 ? new ScrollOfAffection() : new PotionOfShroudingFog(), pos );
+		level.drop( new ScrollOfAffection(), pos );
 	}
 }
