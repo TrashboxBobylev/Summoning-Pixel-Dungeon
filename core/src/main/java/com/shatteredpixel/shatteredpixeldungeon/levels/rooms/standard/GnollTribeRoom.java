@@ -63,13 +63,13 @@ public class GnollTribeRoom extends StandardRoom {
 			Painter.drawInside(level, this, door, 2, Terrain.EMPTY_SP);
 			door.set( Door.Type.REGULAR );
 		}
-		
-		Point center = center();
-		Painter.set( level, center, Terrain.EMBERS );
+
 		int obstacles = Random.Int(4 * sizeCat.roomValue, 12 * sizeCat.roomValue);
 		for (int i = 0; i < obstacles; i++){
 			Painter.set(level, level.pointToCell(random(1)), Terrain.BARRICADE);
 		}
+		Point center = center();
+		Painter.set( level, center, Terrain.EMBERS );
 		int tribemans = Random.Int(2, 4);
 		for (int i = 0; i < tribemans; i++){
 			TribeGnoll npc = new TribeGnoll();
