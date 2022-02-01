@@ -425,6 +425,7 @@ public class Staff extends Weapon {
             if (Statistics.summonedMinions != 0 && !Document.ADVENTURERS_GUIDE.isPageFound("Summoning")){
                 GLog.positive(Messages.get(Guidebook.class, "hint"));
                 GameScene.flashForDocument("Summoning");
+                Document.ADVENTURERS_GUIDE.readPage("Summoning");
             }
             minion.strength = STRReq();
             this.customizeMinion(minion);
