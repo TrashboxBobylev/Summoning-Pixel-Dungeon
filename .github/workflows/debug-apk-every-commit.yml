@@ -69,22 +69,21 @@ jobs:
       - name: Remove output.json
         run: rm android/build/outputs/apk/release/output.json
 
-      - name: Upload to itch.io
-        uses: TrashboxBobylev/butler-publish-itchio-action@master
-        env:
-          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_KEY }}
-          CHANNEL: win-linux-mac-stable
-          ITCH_GAME: summoning-pixel-dungeon
-          ITCH_USER: TrashboxBobylev
-          PACKAGE: desktop/build/libs
-          VERSION_FILE: version
+      - uses: KikimoraGames/itch-publish@v0.0.3
+        with:
+          butlerApiKey: ${{secrets.BUTLER_KEY}}
+          gameData: ./desktop/build/libs
+          itchUsername: TrashboxBobylev
+          itchGameId: summoning-pixel-dungeon
+          buildChannel: win-linux-mac-stable
+          buildNumberFile: ./version
 
-      - name: Upload to itch.io (android)
-        uses: TrashboxBobylev/butler-publish-itchio-action@master
-        env:
-          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_KEY }}
-          CHANNEL: android-stable
-          ITCH_GAME: summoning-pixel-dungeon
-          ITCH_USER: TrashboxBobylev
-          PACKAGE: android/build/outputs/apk/release
-          VERSION_FILE: version
+      - uses: KikimoraGames/itch-publish@v0.0.3
+        with:
+          butlerApiKey: ${{secrets.BUTLER_KEY}}
+          gameData: ./android/build/outputs/apk/release
+          itchUsername: TrashboxBobylev
+          itchGameId: summoning-pixel-dungeon
+          buildChannel: android-stable
+          buildNumberFile: ./version
+
