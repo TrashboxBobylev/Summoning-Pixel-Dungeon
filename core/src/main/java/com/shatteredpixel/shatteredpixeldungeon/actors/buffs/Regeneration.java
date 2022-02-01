@@ -74,7 +74,7 @@ public class Regeneration extends Buff {
 				if (regenBuff.isCursed()) {
 					delay *= 1.5f;
 				} else {
-					delay *= 1f - 0.1f*regenBuff.itemLevel();
+					delay *= 1f - 0.09f*regenBuff.itemLevel();
 					delay /= RingOfEnergy.artifactChargeMultiplier(target);
 				}
 			}
