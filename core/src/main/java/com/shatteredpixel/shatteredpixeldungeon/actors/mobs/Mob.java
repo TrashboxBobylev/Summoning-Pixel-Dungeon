@@ -338,7 +338,6 @@ public abstract class Mob extends Char {
 		if ( newEnemy ) {
 
 			HashSet<Char> enemies = new HashSet<>();
-			boolean minionsAreHere = false;
 
 			//if the mob is amoked...
 			if ( buff(Amok.class) != null) {
@@ -368,13 +367,9 @@ public abstract class Mob extends Char {
 			else if ( alignment == Alignment.ALLY ) {
 				//look for hostile mobs to attack
 				for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
-					if (mob.alignment == Alignment.ENEMY && canSee(mob.pos) && canAttack(mob)
+					if (mob.alignment == Alignment.ENEMY && canSee(mob.pos)
 							&& mob.invisible <= 0 && !mob.isInvulnerable(getClass()) && !canBeIgnored(mob))
-						//intelligent allies do not target mobs which are passive, wandering, or asleep
-						if (!intelligentAlly ||
-								((mob.state != mob.SLEEPING && mob.state != mob.PASSIVE && mob.state != mob.WANDERING) || mob instanceof Yog)) {
 							enemies.add(mob);
-						}
 
 				//if the mob is an enemy...
 			} else if (alignment == Alignment.ENEMY) {
