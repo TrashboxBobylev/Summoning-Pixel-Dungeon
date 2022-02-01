@@ -70,7 +70,7 @@ jobs:
         run: rm android/build/outputs/apk/release/output.json
 
       - name: Upload to itch.io
-        uses: josephbmanley/butler-publish-itchio-action@master
+        uses: TrashboxBobylev/butler-publish-itchio-action@master
         env:
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_KEY }}
           CHANNEL: win-linux-mac-stable
@@ -80,7 +80,7 @@ jobs:
           VERSION_FILE: version
 
       - name: Upload to itch.io (android)
-        uses: josephbmanley/butler-publish-itchio-action@master
+        uses: TrashboxBobylev/butler-publish-itchio-action@master
         env:
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_KEY }}
           CHANNEL: android-stable
