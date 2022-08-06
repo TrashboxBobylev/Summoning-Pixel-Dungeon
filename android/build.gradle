@@ -22,6 +22,10 @@
 apply plugin: 'com.android.application'
 
 android {
+    packagingOptions {
+        doNotStrip '**/*.so'
+    }
+
     compileSdkVersion appAndroidCompileSDK
     compileOptions.sourceCompatibility = compileOptions.targetCompatibility = appJavaCompatibility
 
