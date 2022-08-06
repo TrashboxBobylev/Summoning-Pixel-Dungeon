@@ -82,7 +82,7 @@ public class GuardRoom extends StandardRoom {
 			int pos;
 			do {
 				pos = level.pointToCell(random());
-			} while (level.map[pos] == Terrain.EMPTY_SP || level.solid[pos]);
+			} while (level.map[pos] != Terrain.EMPTY_SP);
 			level.drop( prize, pos );
 		}
 		int pos;
