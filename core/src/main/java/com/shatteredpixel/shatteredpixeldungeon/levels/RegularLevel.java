@@ -471,7 +471,7 @@ public abstract class RegularLevel extends Level {
 				int cell;
 				do {
 					cell = randomDropCell(SpecialRoom.class);
-				} while (room(cell) instanceof SecretRoom);
+				} while (room(cell) instanceof SecretRoom || !Dungeon.level.insideMap(cell));
 				if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
 					map[cell] = Terrain.GRASS;
 					losBlocking[cell] = false;
