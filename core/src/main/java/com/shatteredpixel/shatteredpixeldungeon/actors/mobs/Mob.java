@@ -257,7 +257,7 @@ public abstract class Mob extends Char {
 
 		if (this instanceof Wraith) {
 			if (((Wraith) this).parent != null) {
-				if (!((Wraith) this).parent.fieldOfView[pos]) {
+				if (((Wraith) this).parent.fieldOfView != null && !((Wraith) this).parent.fieldOfView[pos]) {
 					die(Doom.class);
 				}
 			}
