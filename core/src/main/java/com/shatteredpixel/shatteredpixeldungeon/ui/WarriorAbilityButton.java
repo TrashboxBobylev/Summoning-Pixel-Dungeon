@@ -206,13 +206,14 @@ public class WarriorAbilityButton extends Tag {
         } else Hunger.adjustHunger(hungerCost);
 
         int dmg; float delay; boolean weaponExist = true;
-        MeleeWeapon weapon = (MeleeWeapon) Dungeon.hero.belongings.weapon;
-        if (Dungeon.hero.belongings.weapon == null){
+        MeleeWeapon weapon = null;
+        if (!(Dungeon.hero.belongings.weapon instanceof MeleeWeapon)){
             dmg = Dungeon.hero.damageRoll();
             delay = 1.5f;
             weaponExist = false;
         }
         else {
+            weapon = (MeleeWeapon) Dungeon.hero.belongings.weapon;
             dmg = weapon.warriorAttack(Dungeon.hero.damageRoll(), enemy);
             delay = weapon.warriorDelay(Dungeon.hero.belongings.weapon.speedFactor(Dungeon.hero), enemy);
         }

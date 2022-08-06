@@ -49,8 +49,9 @@ public class Chicken extends Minion {
     public int attackProc(Char enemy, int damage) {
         if (lvl == 1) Buff.affect(enemy, Cripple.class, 2f);
         if (lvl == 2) {
-            Buff.affect(enemy, Terror.class, 2f).object = Dungeon.hero.id();
-            enemy.buff(Terror.class).ignoreNextHit = true;
+            Terror terror = Buff.affect(enemy, Terror.class, 2f);
+            terror.object = Dungeon.hero.id();
+            terror.ignoreNextHit = true;
         }
         return super.attackProc(enemy, damage);
     }

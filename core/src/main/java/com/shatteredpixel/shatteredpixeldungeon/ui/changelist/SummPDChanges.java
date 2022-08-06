@@ -109,7 +109,14 @@ public class SummPDChanges {
                         "_-_ Fixed the issue with TNT mouse and NPCs.\n\n" +
                         "_-_ Fixed some Increased Difficulty enemies.\n\n" +
                         "_-_ Fixed missile being stuck in a wall in rare cases for gnoll tribe room.\n\n" +
-                        "_-_ Changed how potion of strength is generated in Fast Adventure."));
+                        "_-_ Changed how potion of strength is generated in Fast Adventure.\n\n" +
+                        "_-_ Fixed the crash for Warrior's special attacks.\n\n" +
+                        "_-_ Fixed the crashes for dungeon generation.\n\n" +
+                        "_-_ Fixed the crash for t3 chicken.\n\n" +
+                        "_-_ Fixed the crash for wraiths that have rose as parent.\n\n" +
+                        "_-_ Fixed the crash with Special Delivery spawning items out of bounds.\n\n" +
+                        "_-_ Fixed Conjurer's Armor being removable by any means.\n\n" +
+                        "_-_ Fixed Majestic Guard's room spawning items in walls."));
 
         changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
         changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",

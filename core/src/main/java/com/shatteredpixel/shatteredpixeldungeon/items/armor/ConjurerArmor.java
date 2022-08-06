@@ -42,6 +42,7 @@ public class ConjurerArmor extends ClassArmor {
 	
 	{
 		image = ItemSpriteSheet.ARMOR_CONJURER;
+        unique = true;
 	}
 
     @Override
@@ -87,7 +88,7 @@ public class ConjurerArmor extends ClassArmor {
 
     @Override
     public int DRMax(int lvl){
-        return 2;
+        return 2 + lvl;
     }
 
 }
