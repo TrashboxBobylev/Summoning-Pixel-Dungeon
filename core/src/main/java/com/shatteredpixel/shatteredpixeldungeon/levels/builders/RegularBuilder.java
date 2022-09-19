@@ -91,12 +91,6 @@ public abstract class RegularBuilder extends Builder {
 	protected ArrayList<Room> singleConnections = new ArrayList<>();
 
 	protected void setupRooms(ArrayList<Room> rooms){
-		if (Dungeon.mode == Dungeon.GameMode.CHAOS){
-			setPathVariance(Random.Float(60f));
-			setPathLength(Random.Float(0.5f), new float[]{Random.Int(2), Random.Int(2), Random.Int(2), Random.Int(3)});
-			setTunnelLength(new float[]{Random.Int(2), Random.Int(4), Random.Int(2)}, new float[]{Random.Int(3), Random.Int(3), Random.Int(2)});
-			setExtraConnectionChance(Random.Float(0.5f));
-		}
 
 		for(Room r : rooms){
 			r.setEmpty();
