@@ -733,7 +733,7 @@ public abstract class Wand extends Weapon {
 
 			for (Recharging bonus : target.buffs(Recharging.class)){
 				if (bonus != null && bonus.remainder() > 0f) {
-					partialCharge += CHARGE_BUFF_BONUS * bonus.remainder()*rechargeModifier();
+					partialCharge += CHARGE_BUFF_BONUS * bonus.remainder()/rechargeModifier();
 				}
 			}
 		}
