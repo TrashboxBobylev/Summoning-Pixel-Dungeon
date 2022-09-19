@@ -184,7 +184,7 @@ public abstract class Wand extends Weapon {
 	@Override
 	public int proc(Char attacker, Char defender, int damage) {
 		if (attacker instanceof Hero && ((Hero)attacker).subClass == HeroSubClass.BATTLEMAGE) {
-			if (curCharges < maxCharges) partialCharge += 0.33f;
+			if (curCharges < maxCharges) partialCharge += 0.5f*rechargeModifier();
 			ScrollOfRecharging.charge((Hero)attacker);
 			onHit(this, attacker, defender, damage);
 		}
