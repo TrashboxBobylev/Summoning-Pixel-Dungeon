@@ -401,12 +401,11 @@ public class Generator {
 					RingOfForce.class,
 					RingOfFuror.class,
 					RingOfHaste.class,
-					RingOfEnergy.class,
 					RingOfMight.class,
 					RingOfSharpshooting.class,
 					RingOfAttunement.class,
 					RingOfWealth.class};
-			Category.RING.probs = new float[]{ 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+			Category.RING.probs = new float[]{ 1, 1, 1, 1, 1, 1, 1, 1 };
 
 			Category.ARTIFACT.classes = new Class<?>[]{
 					CapeOfThorns.class,
