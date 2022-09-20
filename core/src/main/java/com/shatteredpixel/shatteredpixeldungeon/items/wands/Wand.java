@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Overload;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.FuelContainer;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SubtilitasSigil;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
@@ -226,8 +227,12 @@ public abstract class Wand extends Weapon {
 		if ( curCharges >= (cursed ? 1 : chargesPerCast())){
 			return true;
 		} else {
-			GLog.warning(Messages.get(this, "fizzles"));
-			return false;
+			if (owner.buff(FuelContainer.fuelBuff.class) != null){
+				return owner.buff(FuelContainer.fuelBuff.class).canUseCharge(this, (cursed ? 1 : chargesPerCast()));
+			} else {
+				GLog.warning(Messages.get(this, "fizzles"));
+				return false;
+			}
 		}
 	}
 
@@ -497,8 +502,16 @@ public abstract class Wand extends Weapon {
 				Badges.validateItemLevelAquired( this );
 			}
 		}
-		
-		curCharges -= cursed ? 1 : chargesPerCast();
+
+		boolean fuelUsed = false;
+
+		if (curCharges > 0)
+			curCharges -= cursed ? 1 : chargesPerCast();
+		else if (curUser.buff(FuelContainer.fuelBuff.class) != null){
+			fuelUsed = true;
+			curUser.buff(FuelContainer.fuelBuff.class).useCharge(this, (cursed ? 1 : chargesPerCast()));
+		}
+
 
 		WandOfMagicMissile.MagicCharge buff = curUser.buff(WandOfMagicMissile.MagicCharge.class);
 		if (buff != null && !isMM){
@@ -506,7 +519,7 @@ public abstract class Wand extends Weapon {
 		}
 
 		Invisibility.dispel();
-		if (Dungeon.hero.buff(EnergyOverload.class) != null && !cursed) curCharges += chargesPerCast();
+		if (Dungeon.hero.buff(EnergyOverload.class) != null && !cursed && !fuelUsed) curCharges += chargesPerCast();
 
 		if (curUser.heroClass == HeroClass.MAGE) levelKnown = true;
 		updateQuickslot();
@@ -715,7 +728,11 @@ public abstract class Wand extends Weapon {
 		}
 		@Override
 		public boolean act() {
-			if (curCharges < maxCharges)
+			boolean canCharge = true;
+			FuelContainer.fuelBuff fuelBuff = target.buff(FuelContainer.fuelBuff.class);
+			if (fuelBuff != null && fuelBuff.isCursed())
+				canCharge = false;
+			if (curCharges < maxCharges && canCharge)
 				recharge();
 			
 			while (partialCharge >= 1 && curCharges < maxCharges) {

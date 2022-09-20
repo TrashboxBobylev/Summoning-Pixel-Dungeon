@@ -24,17 +24,31 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.watabou.noosa.audio.Sample;
 
 import java.util.ArrayList;
 
 public class FuelContainer extends Artifact {
     {
         image = ItemSpriteSheet.ARTIFACT_FUEL;
-        levelCap = 10;
+        levelCap = 5;
         defaultAction = AC_USE;
+        charge = 0;
+        chargeCap = 40 + level()*10;
     }
 
     public static final String AC_USE = "USE";
@@ -47,6 +61,106 @@ public class FuelContainer extends Artifact {
         return actions;
     }
 
+    @Override
+    public void execute(Hero hero, String action) {
+        super.execute(hero, action);
+        if (action.equals(AC_USE)){
+            if (!isEquipped( hero ))             GLog.i( Messages.get(Artifact.class, "need_to_equip") );
+            else if (charge == chargeCap)        GLog.i( Messages.get(this, "full_charge") );
+            else if (cursed)                     GLog.i( Messages.get(this, "cursed") );
+            else {
+                GameScene.selectItem(itemSelector);
+            }
+        }
+    }
 
+    @Override
+    public String desc() {
+        String desc = super.desc();
 
+        if (isEquipped(Dungeon.hero)) {
+            if (cursed) {
+                desc += "\n\n" + Messages.get(this, "desc_cursed");
+            }
+            else {
+                desc += "\n\n" + Messages.get(this, "desc_equipped");
+            }
+        }
+
+        return desc;
+    }
+
+    @Override
+    public void level(int value) {
+        super.level(value);
+        chargeCap = 40 + level()*10;
+    }
+
+    @Override
+    public Item upgrade() {
+        super.upgrade();
+        chargeCap = 40 + level()*10;
+        return this;
+    }
+
+    @Override
+    protected ArtifactBuff passiveBuff() {
+        return new fuelBuff();
+    }
+
+    public class fuelBuff extends ArtifactBuff {
+        public boolean canUseCharge(Wand wand, int charges){
+            if (charge >= wand.rechargeModifier() * charges * 10) {
+                return true;
+            } else {
+                GLog.warning(Messages.get(Wand.class, "fizzles"));
+                return false;
+            }
+        }
+
+        public void useCharge(Wand wand, int charges){
+            float usedCharge = wand.rechargeModifier() * charges * 10;
+            charge -= usedCharge;
+            exp += charge;
+            if (exp >= 40 + level()*20 && level() < levelCap){
+                exp -= 40 + level()*20;
+                upgrade();
+                GLog.positive(Messages.get(FuelContainer.class, "levelup"));
+            }
+        }
+    }
+
+    protected WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
+
+        @Override
+        public String textPrompt() {
+            return Messages.get(FuelContainer.class, "prompt");
+        }
+
+        @Override
+        public Class<?extends Bag> preferredBag(){
+            return MagicalHolster.class;
+        }
+
+        @Override
+        public boolean itemSelectable(Item item) {
+            return item instanceof Wand && ((Wand) item).curCharges > 0;
+        }
+
+        @Override
+        public void onSelect(Item item) {
+            if (itemSelectable(item)){
+                Wand wand = (Wand)item;
+                Hero hero = Dungeon.hero;
+                hero.sprite.operate( hero.pos );
+                hero.busy();
+                hero.spend( 2f );
+                charge = Math.min(chargeCap, charge + Math.round(wand.curCharges*10*wand.rechargeModifier()));
+                wand.curCharges = 0;
+                Sample.INSTANCE.play(Assets.Sounds.BURNING);
+                Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);
+                ScrollOfRecharging.charge(hero);
+            }
+        }
+    };
 }
