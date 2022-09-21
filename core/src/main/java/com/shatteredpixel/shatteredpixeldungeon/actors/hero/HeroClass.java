@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Ropes;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.ElementalBlast;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.ParchmentOfElbereth;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Heal;
@@ -217,6 +218,7 @@ public enum HeroClass {
 			Dungeon.quickslot.setSlot(0, wand);
 			Dungeon.quickslot.setSlot(1, blast);
 		}
+		new ParchmentOfElbereth().identify().collect();
 
 		if (!Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
 			new ScrollHolder().collect();

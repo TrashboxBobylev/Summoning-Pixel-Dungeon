@@ -47,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Endure;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MirrorOfFates;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.ParchmentOfElbereth;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Barrier;
@@ -1289,6 +1290,9 @@ public class Hero extends Char {
 		if (Dungeon.mode == Dungeon.GameMode.EXPLORE){
 			dmg *= 0.75f;
 		}
+		if (buff(ParchmentOfElbereth.parchmentPraying.class) != null){
+			dmg *= 0.8f;
+		}
 
 		dmg = (int)Math.ceil(dmg * RingOfElements.damageMultiplier( this ));
 
@@ -1727,6 +1731,9 @@ public class Hero extends Char {
 		
 		if (belongings.armor != null){
 			stealth = belongings.armor.stealthFactor(this, stealth);
+		}
+		if (buff(ParchmentOfElbereth.parchmentCharge.class) != null && buff(ParchmentOfElbereth.parchmentCharge.class).isCursed()){
+			stealth = -Float.NEGATIVE_INFINITY;
 		}
 		
 		return stealth;
