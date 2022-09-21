@@ -555,11 +555,13 @@ public class Hero extends Char {
 		if (belongings.armor != null) {
 			speed = belongings.armor.speedFactor(this, speed);
 		}
-		
+
 		Momentum momentum = buff(Momentum.class);
 		if (momentum != null){
-			((HeroSprite)sprite).sprint( 1f + 0.05f*momentum.stacks());
+			((HeroSprite)sprite).sprint( momentum.freerunning() ? 1.5f : 1f );
 			speed *= momentum.speedMultiplier();
+		} else {
+			((HeroSprite)sprite).sprint( 1f );
 		}
 
 		if (Dungeon.isChallenged(Conducts.Conduct.CRIPPLED)) speed/=2;
