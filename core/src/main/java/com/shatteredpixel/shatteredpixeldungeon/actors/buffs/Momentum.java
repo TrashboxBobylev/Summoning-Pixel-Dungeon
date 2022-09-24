@@ -26,9 +26,9 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MomentumBoots;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIcon;
@@ -58,12 +58,6 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 		if (freerunCooldown > 0){
 			freerunCooldown--;
 		}
-		if(freerunCooldown > 0 && freerunTurns == 0 && target.invisible > 0 && Dungeon.hero.pointsInTalent(Talent.SPEEDY_STEALTH) >= 2) freerunCooldown--; // reduce an extra time.
-
-//		if (freerunCooldown == 0 && !freerunning() && target.invisible > 0 && Dungeon.hero.pointsInTalent(Talent.SPEEDY_STEALTH,Talent.RK_FREERUNNER) >= 1){
-//			momentumStacks = Math.min(momentumStacks + (Dungeon.hero.hasTalent(Talent.SPEEDY_STEALTH)?3:2), getMaxMomentum());
-//			movedLastTurn = true;
-//		}
 
 		if (freerunTurns > 0){
 				freerunTurns--;
@@ -76,6 +70,7 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 			}
 		}
 		movedLastTurn = false;
+		if (MomentumBoots.instance == null) detach();
 
 		spend(TICK);
 		return true;
@@ -91,11 +86,11 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 	}
 
 	public int getMaxMomentum() {
-		return 10;
+		return 5 + MomentumBoots.instance.itemLevel()*2;
 	}
 
 	public boolean freerunning(){
-		return freerunTurns > 0 || Dungeon.hero.pointsInTalent(Talent.SPEEDY_STEALTH) == 3 && target.invisible > 0;
+		return freerunTurns > 0 && MomentumBoots.instance != null;
 	}
 
 	public float speedMultiplier(){
@@ -106,9 +101,17 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 		}
 	}
 
+	public float furorMultiplier(){
+		if (freerunning()){
+			return 1.5f;
+		} else {
+			return 1f;
+		}
+	}
+
 	public int evasionBonus( int heroLvl, int excessArmorStr ){
 		if (freerunning()) {
-			return heroLvl/2;
+			return heroLvl/2 + MomentumBoots.instance.itemLevel()*3;
 		} else {
 			return 0;
 		}
@@ -134,10 +137,10 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 	@Override
 	public float iconFadePercent() {
 		if (freerunTurns > 0){
-			int duration = (int)Math.ceil((20));
+			int duration = (int)Math.ceil(getMaxMomentum()*1.5f);
 			return (duration - freerunTurns) / (float)duration;
 		} else if (freerunCooldown > 0){
-			return (freerunCooldown) / (30f*cooldownScaling());
+			return (freerunCooldown) / (50f*cooldownScaling());
 		} else {
 			return (getMaxMomentum() - momentumStacks) / (getMaxMomentum() * 1f);
 		}
@@ -162,7 +165,7 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 		} else if (freerunCooldown > 0){
 			return Messages.get(this, "resting_desc", cls, freerunCooldown);
 		} else {
-			return Messages.get(this, "momentum_desc", cls, momentumStacks);
+			return Messages.get(this, "momentum_desc", cls, momentumStacks, getMaxMomentum());
 		}
 	}
 
@@ -198,15 +201,15 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 	}
 
 	public float cooldownScaling(){
-		return 1f;
+		return 1f - MomentumBoots.instance.itemLevel()*0.1f;
 	}
 
 	@Override
 	public void doAction() {
 		// 20 / 24 / 27 / 30 at max.
-		freerunTurns = (int)Math.ceil(2*momentumStacks);
-		//cooldown is functionally 10+2*stacks when active effect ends
-		freerunCooldown = Math.round((10 + 2*momentumStacks + freerunTurns)*cooldownScaling());
+		freerunTurns = (int)Math.ceil(1.5f*momentumStacks);
+		//cooldown is functionally 20+3*stacks when active effect ends
+		freerunCooldown = Math.round((20 + 3*momentumStacks + freerunTurns)*cooldownScaling());
 		Sample.INSTANCE.play(Assets.Sounds.MISS, 1f, 0.8f);
 		target.sprite.emitter().burst(Speck.factory(Speck.JET), 5+ momentumStacks);
 		momentumStacks = 0;

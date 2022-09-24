@@ -47,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Endure;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MirrorOfFates;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MomentumBoots;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.ParchmentOfElbereth;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.*;
@@ -556,6 +557,10 @@ public class Hero extends Char {
 			speed = belongings.armor.speedFactor(this, speed);
 		}
 
+		if (MomentumBoots.instance != null && speed > 1){
+			MomentumBoots.instance.getExp(speed);
+		}
+
 		Momentum momentum = buff(Momentum.class);
 		if (momentum != null){
 			((HeroSprite)sprite).sprint( momentum.freerunning() ? 1.5f : 1f );
@@ -566,6 +571,11 @@ public class Hero extends Char {
 
 		if (Dungeon.isChallenged(Conducts.Conduct.CRIPPLED)) speed/=2;
 		if (Dungeon.isChallenged(Conducts.Conduct.WRAITH)) speed *= 1.25f;
+
+		if (Dungeon.hero.buff(MomentumBoots.momentumBuff.class) != null
+				&& Dungeon.hero.buff(MomentumBoots.momentumBuff.class).isCursed()){
+			speed = Math.min(1f, speed);
+		}
 		
 		return speed;
 		
@@ -610,15 +620,21 @@ public class Hero extends Char {
 
 		float adrenalineMod = 1f;
 		if ( buff(Adrenaline.class) != null) adrenalineMod = 1.5f;
+		if ( buff(Momentum.class) != null) adrenalineMod *= buff(Momentum.class).furorMultiplier();
+		float attackSpeed;
 		if (belongings.weapon != null) {
-			return belongings.weapon.speedFactor( this )/adrenalineMod;
-			
+			attackSpeed = belongings.weapon.speedFactor( this )/adrenalineMod;
 		} else {
 			//Normally putting furor speed on unarmed attacks would be unnecessary
 			//But there's going to be that one guy who gets a furor+force ring combo
 			//This is for that one guy, you shall get your fists of fury!
-			return RingOfFuror.attackDelayMultiplier(this)/adrenalineMod;
+			attackSpeed = RingOfFuror.attackDelayMultiplier(this)/adrenalineMod;
 		}
+		if (Dungeon.hero.buff(MomentumBoots.momentumBuff.class) != null
+				&& Dungeon.hero.buff(MomentumBoots.momentumBuff.class).isCursed()){
+			attackSpeed = Math.max(1f, attackSpeed);
+		}
+		return attackSpeed;
 	}
 
 	@Override
@@ -1480,7 +1496,7 @@ public class Hero extends Char {
 
 			search(false);
 
-			if (subClass == HeroSubClass.FREERUNNER){
+			if (subClass == HeroSubClass.FREERUNNER || MomentumBoots.instance != null){
 				Buff.affect(this, Momentum.class).gainStack();
 			}
 			if (MirrorOfFates.isMirrorActive(this)){

@@ -24,8 +24,60 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class MomentumBoots extends Artifact {
+    {
+        image = ItemSpriteSheet.ARTIFACT_MOMENTUM;
+        levelCap = 4;
+    }
 
+    public static momentumBuff instance = null;
+
+    @Override
+    protected ArtifactBuff passiveBuff() {
+        momentumBuff buff = new momentumBuff();
+        if (!cursed)
+            instance = buff;
+        return buff;
+    }
+
+    @Override
+    public String desc() {
+        String desc = super.desc();
+
+        if ( isEquipped( Dungeon.hero ) ){
+            if (!cursed) {
+                desc += "\n\n" + Messages.get(this, "desc_worn");
+
+            } else {
+                desc += "\n\n" + Messages.get(this, "desc_cursed");
+            }
+        }
+
+        return desc;
+    }
+
+    @Override
+    public boolean doUnequip(Hero hero, boolean collect, boolean single) {
+        boolean unequip = super.doUnequip(hero, collect, single);
+        instance = null;
+        return unequip;
+    }
+
+    public class momentumBuff extends ArtifactBuff{
+        public void getExp(float experience){
+            exp += experience;
+            if (exp >= 60 + itemLevel()*45 && level() < levelCap){
+                exp -= 60 + itemLevel()*45;
+                upgrade();
+                GLog.positive(Messages.get(MomentumBoots.class, "levelup"));
+            }
+        }
+    }
 }

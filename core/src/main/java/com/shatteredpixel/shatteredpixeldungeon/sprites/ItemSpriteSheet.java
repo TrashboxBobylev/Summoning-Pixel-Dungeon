@@ -862,12 +862,14 @@ public class ItemSpriteSheet {
 	public static final int ARTIFACT_MIRROR = NEW_ARTIFACTS+1;
 	public static final int ARTIFACT_FUEL  = NEW_ARTIFACTS+2;
 	public static final int ARTIFACT_PARCHMENT = NEW_ARTIFACTS+3;
+	public static final int ARTIFACT_MOMENTUM = NEW_ARTIFACTS+4;
 
 	static {
 		assignItemRect(ARTIFACT_SIGIL, 14, 12);
 		assignItemRect(ARTIFACT_MIRROR, 14, 14);
 		assignItemRect(ARTIFACT_FUEL, 14, 13);
 		assignItemRect(ARTIFACT_PARCHMENT, 15, 14);
+		assignItemRect(ARTIFACT_MOMENTUM, 13, 12);
 	}
 
 	                                                                                    //16 free slots
