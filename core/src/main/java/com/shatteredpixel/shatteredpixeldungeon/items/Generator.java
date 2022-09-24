@@ -28,10 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.*;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.FuelContainer;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MirrorOfFates;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.ParchmentOfElbereth;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SubtilitasSigil;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
@@ -399,13 +396,11 @@ public class Generator {
 
 			Category.RING.classes = new Class<?>[]{
 					RingOfForce.class,
-					RingOfFuror.class,
-					RingOfHaste.class,
 					RingOfMight.class,
 					RingOfSharpshooting.class,
 					RingOfAttunement.class,
 					RingOfWealth.class};
-			Category.RING.probs = new float[]{ 1, 1, 1, 1, 1, 1, 1 };
+			Category.RING.probs = new float[]{ 1, 1, 1, 1, 1 };
 
 			Category.ARTIFACT.classes = new Class<?>[]{
 					CapeOfThorns.class,
@@ -424,9 +419,10 @@ public class Generator {
 					SubtilitasSigil.class,
 					MirrorOfFates.class,
 					FuelContainer.class,
-					ParchmentOfElbereth.class
+					ParchmentOfElbereth.class,
+					MomentumBoots.class
 			};
-			Category.ARTIFACT.defaultProbs = new float[]{ 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1};
+			Category.ARTIFACT.defaultProbs = new float[]{ 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1};
 			Category.ARTIFACT.probs = Category.ARTIFACT.defaultProbs.clone();
 		}
 	}
