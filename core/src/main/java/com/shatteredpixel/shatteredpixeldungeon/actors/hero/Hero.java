@@ -46,6 +46,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Endure;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.BadgeOfBravery;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MirrorOfFates;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MomentumBoots;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.ParchmentOfElbereth;
@@ -66,6 +67,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blocking;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Unstable;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Cleaver;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knife;
@@ -1186,9 +1188,50 @@ public class Hero extends Char {
 		KindOfWeapon wep = belongings.weapon;
 
 		if (wep != null) {
-		    damage = wep.proc( this, enemy, damage );
-		    if (buff(FierySlash.class) != null) new Blazing().proc((Weapon) wep,this, enemy, damage);
+			if (buff(BadgeOfBravery.braveryBuff.class) != null && buff(BadgeOfBravery.braveryBuff.class).isCursed()){
+				Weapon.Enchantment curse = Weapon.Enchantment.randomCurse();
+				damage = curse.proc((Weapon) wep, this, enemy, damage);
+				if (Random.Int(4) == 0) damage(damage/3, this);
+			} else {
+				damage = wep.proc(this, enemy, damage);
+				if (buff(FierySlash.class) != null) new Blazing().proc((Weapon) wep, this, enemy, damage);
+			}
         }
+
+		if (buff(BadgeOfBravery.braveryBuff.class) != null){
+			BadgeOfBravery.braveryBuff buff = buff(BadgeOfBravery.braveryBuff.class);
+			if (!buff.isCursed()){
+				int chance = buff.itemLevel() == 4 ? 4 : 5;
+				if (Random.Int(chance) == 0){
+					int braveryDmg = Random.NormalIntRange((buff.itemLevel() + 1)*2, (buff.itemLevel()+1)*5);
+					if (buff.itemLevel() == 4)
+						braveryDmg = Random.NormalIntRange((buff.itemLevel() + 1)*3, (buff.itemLevel()+1)*5);
+					enemy.damage(braveryDmg, new BadgeOfBravery());
+					Sample.INSTANCE.play(Assets.Sounds.HIT_MAGIC);
+					new Unstable().proc(new Weapon() {
+						@Override
+						public int STRReq(int lvl) {
+							return 0;
+						}
+
+						@Override
+						public int min(int lvl) {
+							return (buff.itemLevel()+1);
+						}
+
+						@Override
+						public int max(int lvl) {
+							return (buff.itemLevel()+1)*4;
+						}
+
+						@Override
+						public int level() {
+							return buff.itemLevel()*2;
+						}
+					}, this, enemy, braveryDmg);
+				}
+			}
+		}
 
 		damage = Talent.onAttackProc(this, enemy, damage);
 		
