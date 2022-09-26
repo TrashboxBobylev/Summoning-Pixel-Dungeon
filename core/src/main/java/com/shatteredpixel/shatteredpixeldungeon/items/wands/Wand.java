@@ -374,10 +374,18 @@ public abstract class Wand extends Weapon {
 
 		String name = name();
 		String tier = "";
-		switch (level()){
-			case 0: tier = "I"; break;
-			case 1: tier = "II"; break;
-			case 2: tier = "III"; break;
+		if (levelKnown) {
+			switch (level()) {
+				case 0:
+					tier = "I";
+					break;
+				case 1:
+					tier = "II";
+					break;
+				case 2:
+					tier = "III";
+					break;
+			}
 		}
 
 		name = Messages.format( "%s %s", name, tier  );

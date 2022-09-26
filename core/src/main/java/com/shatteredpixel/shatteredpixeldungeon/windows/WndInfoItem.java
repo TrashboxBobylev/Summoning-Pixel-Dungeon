@@ -81,10 +81,20 @@ public class WndInfoItem extends Window {
 				color = ItemSlot.DEGRADED;
 			}
 		} else {
-			switch (item.level()){
-				case 0: color = ItemSlot.BRONZE; break;
-				case 1: color = ItemSlot.SILVER; break;
-				case 2: color = ItemSlot.GOLD; break;
+			if (item.levelKnown) {
+				switch (item.level()) {
+					case 0:
+						color = ItemSlot.BRONZE;
+						break;
+					case 1:
+						color = ItemSlot.SILVER;
+						break;
+					case 2:
+						color = ItemSlot.GOLD;
+						break;
+				}
+			} else {
+				color = ItemSlot.BRONZE;
 			}
 		}
 
