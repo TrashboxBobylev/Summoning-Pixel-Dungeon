@@ -864,6 +864,7 @@ public class ItemSpriteSheet {
 	public static final int ARTIFACT_PARCHMENT = NEW_ARTIFACTS+3;
 	public static final int ARTIFACT_MOMENTUM = NEW_ARTIFACTS+4;
 	public static final int ARTIFACT_BADGE = NEW_ARTIFACTS+5;
+	public static final int ARTIFACT_FLAIL = NEW_ARTIFACTS+6;
 
 	static {
 		assignItemRect(ARTIFACT_SIGIL, 14, 12);
@@ -872,6 +873,7 @@ public class ItemSpriteSheet {
 		assignItemRect(ARTIFACT_PARCHMENT, 15, 14);
 		assignItemRect(ARTIFACT_MOMENTUM, 13, 12);
 		assignItemRect(ARTIFACT_BADGE, 14, 14);
+		assignItemRect(ARTIFACT_FLAIL, 11, 12);
 	}
 
 	                                                                                    //16 free slots

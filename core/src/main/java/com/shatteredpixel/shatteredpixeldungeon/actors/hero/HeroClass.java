@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.ElementalBlast;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.HeavyFlail;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MomentumBoots;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
@@ -241,6 +242,7 @@ public enum HeroClass {
 		}
 		new TomeOfMastery().collect();
 		new MomentumBoots().collect();
+		new HeavyFlail().upgrade(10).collect();
 
 		if (!Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
 			new VelvetPouch().collect();
