@@ -41,7 +41,8 @@ public class Effects {
         DOOM_CLOUD,
 		ROPE,
 		SQUARE,
-		CIRCLE
+		CIRCLE,
+		HEAVY_CHAIN
 	};
 	
 	public static Image get( Type type ) {
@@ -82,6 +83,9 @@ public class Effects {
 				break;
 			case CIRCLE:
 				icon.frame(icon.texture.uvRect(41, 0, 50, 9));
+				break;
+			case HEAVY_CHAIN:
+				icon.frame(icon.texture.uvRect(6, 23, 11, 29));
 				break;
 		}
 		return icon;

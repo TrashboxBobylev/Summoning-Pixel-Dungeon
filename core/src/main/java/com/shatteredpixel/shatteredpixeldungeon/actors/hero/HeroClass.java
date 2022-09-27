@@ -28,13 +28,12 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
-import com.shatteredpixel.shatteredpixeldungeon.items.DewVial;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.Ropes;
+import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.ElementalBlast;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.HeavyFlail;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MomentumBoots;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Heal;
@@ -241,6 +240,9 @@ public enum HeroClass {
 			Dungeon.quickslot.setSlot(0, cloak);
 			Dungeon.quickslot.setSlot(1, knives);
 		}
+		new TomeOfMastery().collect();
+		new MomentumBoots().collect();
+		new HeavyFlail().upgrade(10).collect();
 
 		if (!Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
 			new VelvetPouch().collect();

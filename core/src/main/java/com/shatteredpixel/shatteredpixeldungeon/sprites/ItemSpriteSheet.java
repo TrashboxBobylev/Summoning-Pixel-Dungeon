@@ -857,6 +857,24 @@ public class ItemSpriteSheet {
 		assignItemRect(HOLSTER,     15, 16);
 		assignItemRect(BOOK,        13, 16);
 	}
+	private static final int NEW_ARTIFACTS = xy(1, 32);
+	public static final int ARTIFACT_SIGIL = NEW_ARTIFACTS+0;
+	public static final int ARTIFACT_MIRROR = NEW_ARTIFACTS+1;
+	public static final int ARTIFACT_FUEL  = NEW_ARTIFACTS+2;
+	public static final int ARTIFACT_PARCHMENT = NEW_ARTIFACTS+3;
+	public static final int ARTIFACT_MOMENTUM = NEW_ARTIFACTS+4;
+	public static final int ARTIFACT_BADGE = NEW_ARTIFACTS+5;
+	public static final int ARTIFACT_FLAIL = NEW_ARTIFACTS+6;
+
+	static {
+		assignItemRect(ARTIFACT_SIGIL, 14, 12);
+		assignItemRect(ARTIFACT_MIRROR, 14, 14);
+		assignItemRect(ARTIFACT_FUEL, 14, 13);
+		assignItemRect(ARTIFACT_PARCHMENT, 15, 14);
+		assignItemRect(ARTIFACT_MOMENTUM, 13, 12);
+		assignItemRect(ARTIFACT_BADGE, 14, 14);
+		assignItemRect(ARTIFACT_FLAIL, 11, 12);
+	}
 
 	                                                                                    //16 free slots
 

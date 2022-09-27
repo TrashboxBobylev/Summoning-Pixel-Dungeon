@@ -444,7 +444,11 @@ public abstract class YogFist extends Mob {
 		}
 
 		//used so resistances can differentiate between melee and magical attacks
-		public static class LightBeam{}
+		public static class LightBeam extends MagicalAttack{
+			public LightBeam(Mob attacker, int damage) {
+				super(attacker, damage);
+			}
+		}
 
 		@Override
 		protected void zap() {
@@ -457,7 +461,8 @@ public abstract class YogFist extends Mob {
 					multiplier = (float) (Math.pow(1.15f, eradication.combo));
 				}
 
-				enemy.damage((int) (Random.NormalIntRange(10, 20)*multiplier), new LightBeam() );
+				int dmg = (int) (Random.NormalIntRange(10, 20) * multiplier);
+				enemy.damage(dmg, new LightBeam(this, dmg) );
 				Buff.prolong( enemy, Blindness.class, Blindness.DURATION/2f );
 
 				if (!enemy.isAlive() && enemy == Dungeon.hero) {
@@ -512,7 +517,11 @@ public abstract class YogFist extends Mob {
 		}
 
 		//used so resistances can differentiate between melee and magical attacks
-		public static class DarkBolt{}
+		public static class DarkBolt extends MagicalAttack{
+			public DarkBolt(Mob attacker, int damage) {
+				super(attacker, damage);
+			}
+		}
 
 		@Override
 		protected void zap() {
@@ -525,7 +534,8 @@ public abstract class YogFist extends Mob {
 					multiplier = (float) (Math.pow(1.15f, eradication.combo));
 				}
 
-				enemy.damage((int) (Random.NormalIntRange(10, 20)*multiplier), new DarkBolt() );
+				int dmg = (int) (Random.NormalIntRange(10, 20) * multiplier);
+				enemy.damage(dmg, new DarkBolt(this, dmg) );
 
 				Light l = enemy.buff(Light.class);
 				if (l != null){

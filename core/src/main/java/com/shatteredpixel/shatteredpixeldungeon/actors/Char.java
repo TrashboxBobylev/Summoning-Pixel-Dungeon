@@ -46,6 +46,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Endure;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MirrorOfFates;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SubtilitasSigil;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfAdrenalineSurge;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Scrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
@@ -423,6 +425,7 @@ public abstract class Char extends Actor {
 		if (attacker.buff(Bless.class) != null) acuRoll *= 1.25f;
 		if (attacker.buff(  Hex.class) != null) acuRoll *= 0.8f;
 		if (attacker.buff(Shrink.class)!= null || attacker.buff(TimedShrink.class)!= null) acuRoll *= 0.6f;
+		if (attacker.buff(SubtilitasSigil.EnrageBuff.class) != null) acuRoll *= 1.33f;
 		for (ChampionEnemy buff : attacker.buffs(ChampionEnemy.class)){
 			acuRoll *= buff.evasionAndAccuracyFactor();
 		}
@@ -536,6 +539,24 @@ public abstract class Char extends Actor {
 		if (!(src instanceof DwarfKing.KingDamager)) {
 			for (ChampionEnemy buff : buffs(ChampionEnemy.class)) {
 				dmg = (int) Math.ceil(dmg * buff.damageTakenFactor());
+			}
+			if ( buff(SubtilitasSigil.EnrageBuff.class) != null){
+				dmg *= 2f;
+			}
+			if (buff(SubtilitasSigil.Recharge.class) != null && buff(SubtilitasSigil.Recharge.class).isCursed()){
+				dmg *= 1.5f;
+			}
+		}
+
+		if ((src instanceof Char || src instanceof Mob.MagicalAttack) && MirrorOfFates.isMirrorActive(this)){
+			MirrorOfFates.MirrorShield shield = buff(MirrorOfFates.MirrorShield.class);
+			int reflectDamage = shield.damage(dmg);
+			Char victim = src instanceof Mob.MagicalAttack ?
+					((Mob.MagicalAttack) src).caster : (Char) src;
+			victim.damage(dmg - reflectDamage, this);
+			dmg = reflectDamage;
+			if (dmg <= 0){
+				return;
 			}
 		}
 
