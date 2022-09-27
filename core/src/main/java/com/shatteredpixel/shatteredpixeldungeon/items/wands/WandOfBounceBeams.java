@@ -110,60 +110,11 @@ public class WandOfBounceBeams extends DamageWand{
                     case 1: defenseDebuff = 1; break;
                     case 2: defenseDebuff = 7; break;
                 }
-                Buff.prolong(ch, DefenseDebuff.class, 3 + level());
+                Buff.prolong(ch, DefenseDebuff.class, defenseDebuff);
             }
             ch.sprite.centerEmitter().burst(PurpleParticle.BURST, Random.IntRange(1, 2));
         }
     }
-
-    /*@Override
-    protected void wandUsed() {
-        Statistics.wandUses++;
-        if (!isIdentified() && availableUsesToID >= 1) {
-            availableUsesToID--;
-            usesLeftToID--;
-            if (usesLeftToID <= 0) {
-                identify();
-                GLog.positive( Messages.get(Wand.class, "identify") );
-                Badges.validateItemLevelAquired( this );
-            }
-        }
-
-        curCharges -= cursed ? 1 : chargesPerCast();
-        if (Dungeon.hero.buff(EnergyOverload.class) != null && !cursed) curCharges += chargesPerCast();
-
-        if (curUser.heroClass == HeroClass.MAGE) levelKnown = true;
-        updateQuickslot();
-        int bounces = bounceCount(level());
-
-        if (!cursed) {
-            while (--bounces > 0) {
-                int collPos = collisionPos.collisionPos;
-                int randomDir = PathFinder.NEIGHBOURS8[Random.Int(PathFinder.NEIGHBOURS8.length)];
-                while (!Dungeon.level.passable[collPos + randomDir]){
-                    randomDir = PathFinder.NEIGHBOURS8[Random.Int(PathFinder.NEIGHBOURS8.length)];
-                }
-                    final Ballistica dest = new Ballistica(collPos, collPos + randomDir , Ballistica.MAGIC_BOLT);
-
-                    curUser.sprite.parent.add(
-                            new Beam.DeathRay(DungeonTilemap.raisedTileCenterToWorld(collPos), DungeonTilemap.raisedTileCenterToWorld(dest.collisionPos)));
-                            Char ch = Actor.findChar(dest.collisionPos);
-                            if (ch != null) {
-                                processSoulMark(ch, chargesPerCast());
-                                if (ch != Dungeon.hero) ch.damage(damageRoll(), this);
-                                else ch.damage((int) (damageRoll()*0.66f), this);
-                                Buff.prolong(ch, DefenseDebuff.class, 3 + level());
-
-                                ch.sprite.centerEmitter().burst( PurpleParticle.BURST, Random.IntRange( 1, 2 ) );
-                            } else {
-                                Dungeon.level.pressCell(dest.collisionPos);
-                            }
-                            collisionPos = dest;
-            }
-        }
-
-        curUser.spendAndNext(1f);
-    }*/
 
     @Override
     public boolean tryToZap(Hero owner, int target) {
