@@ -294,7 +294,7 @@ public enum HeroClass {
 //        Dungeon.quickslot.setSlot(0, hero.belongings.artifact);
 
         hero.attunement = 1;
-        hero.HP = hero.HT = 10;
+        hero.HP = hero.HT = 13;
 		if (!Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
 			Stars star = new Stars();
 			star.collect();
