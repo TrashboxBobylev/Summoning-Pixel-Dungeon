@@ -1,4 +1,4 @@
-package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
+package com.zrp200.rkpd2.items.scrolls;
 
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Reflection;
