@@ -206,6 +206,8 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 
 	@Override
 	public void doAction() {
+		if (MomentumBoots.instance == null)
+			return;
 		// 20 / 24 / 27 / 30 at max.
 		freerunTurns = (int)Math.ceil(1.5f*momentumStacks);
 		//cooldown is functionally 20+3*stacks when active effect ends
