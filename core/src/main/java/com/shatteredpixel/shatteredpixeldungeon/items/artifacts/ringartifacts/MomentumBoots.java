@@ -25,6 +25,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -66,6 +68,7 @@ public class MomentumBoots extends Artifact {
     @Override
     public boolean doUnequip(Hero hero, boolean collect, boolean single) {
         boolean unequip = super.doUnequip(hero, collect, single);
+        Buff.detach(hero, Momentum.class);
         instance = null;
         return unequip;
     }
