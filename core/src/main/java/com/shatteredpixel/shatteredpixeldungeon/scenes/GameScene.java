@@ -58,7 +58,6 @@ import com.watabou.noosa.*;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
-import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Random;
 import com.zrp200.scrollofdebug.ScrollOfDebug;
@@ -392,7 +391,7 @@ public class GameScene extends PixelScene {
 
 		// debug logic...
 		ScrollOfDebug debug = Dungeon.hero.belongings.getItem(ScrollOfDebug.class);
-		boolean supported = DeviceCompat.isDebug();
+		boolean supported = true;
 		if(supported) {
 			if(debug == null) {
 				debug = new ScrollOfDebug();
