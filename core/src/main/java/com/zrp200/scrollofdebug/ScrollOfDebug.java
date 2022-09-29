@@ -1,15 +1,9 @@
 package com.zrp200.scrollofdebug;
 
-import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.*;
-import static java.util.Arrays.copyOfRange;
-
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.StringBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-// Commands
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
@@ -20,34 +14,32 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-// needed for HelpWindow
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
-import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-// WndTextInput (added in v0.9.4)
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndTextInput;
-// Output
+import com.shatteredpixel.shatteredpixeldungeon.ui.*;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Reflection;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.level;
+import static java.util.Arrays.copyOfRange;
 
 /**
  * Scroll of Debug uses ClassLoader to get every class that can be directly created and provides a command interface with which to interact with them.
@@ -133,7 +125,7 @@ public class ScrollOfDebug extends Scroll {
     @Override
     public void doRead() {
         collect(); // you don't lose scroll of debug.
-        GameScene.show(new WndTextInput("Enter Command:", null, "", 100, false,
+        GameScene.show(new WndTextInput("Enter Command:", "", 100, false,
                 "Execute", "Cancel") {
             @Override public void onSelect(boolean positive, String text) {
                 if(!positive) return;
@@ -154,7 +146,7 @@ public class ScrollOfDebug extends Scroll {
 
                 Command command; try { command = Command.valueOf(input[0].toUpperCase()); }
                 catch (Exception e) {
-                    GLog.w("\""+input[0]+"\" is not a valid command.");
+                    GLog.warning("\""+input[0]+"\" is not a valid command.");
                     return;
                 }
 
@@ -276,7 +268,7 @@ public class ScrollOfDebug extends Scroll {
                                         : cls != null && canInstantiate(cls) ? Reflection.newInstance(cls)
                                         : null,
                                 cls, input, 2)) {
-                            GLog.w(String.format("No method '%s' was found for %s", input[2], cls));
+                            GLog.warning(String.format("No method '%s' was found for %s", input[2], cls));
                         }
                         return;
                     }
@@ -315,14 +307,14 @@ public class ScrollOfDebug extends Scroll {
                                                 || level.solid[cell]
                                                 || !level.openSpace[cell] && mob.properties().contains(Char.Property.LARGE)
                                         ) {
-                                            GLog.w("You cannot place %s here.", mob.name());
+                                            GLog.warning("You cannot place %s here.", mob.name());
                                             return;
                                         }
                                         mob.pos = cell;
                                         GameScene.add(mob);
                                         // doing this means that I can't actually let you select cells for methods; it'll be immediately cancelled.
                                         executeMethod(mob,input,3);
-                                        GLog.w("Summoned " + mob.name());
+                                        GLog.warning("Summoned " + mob.name());
                                     }
                                 });
                             } else {
@@ -337,7 +329,7 @@ public class ScrollOfDebug extends Scroll {
                                     if(canExecute) canExecute = executeMethod(m, input, qSpecified?3:2);
                                 }
                                 spawned--;
-                                GLog.w("Summoned "
+                                GLog.warning("Summoned "
                                         + mob.name()
                                         + (spawned == 1 ? "" : " x" + spawned)
                                 );
@@ -380,7 +372,7 @@ public class ScrollOfDebug extends Scroll {
                                 }
                                 else {
                                     if(!executeMethod(item,input,i)) {
-                                        GLog.w("Unrecognized option or method '%s'", input[i]);
+                                        GLog.warning("Unrecognized option or method '%s'", input[i]);
                                         onSelect(true, "help " + input[0]);
                                         return;
                                     }
@@ -398,11 +390,11 @@ public class ScrollOfDebug extends Scroll {
                                 // ripped from Hero#actPickUp, kinda.
                                 boolean important = item.unique && (item instanceof Scroll || item instanceof Potion);
                                 String pickupMessage = Messages.get(curUser, "you_now_have", item);
-                                if(important) GLog.p(pickupMessage); else GLog.i(pickupMessage);
+                                if(important) GLog.positive(pickupMessage); else GLog.i(pickupMessage);
                                 // attempt to nullify turn usage.
                                 curUser.spend(-curUser.cooldown());
                             } else {
-                                GLog.n(Messages.get(curUser, "you_cant_have", item.name()));
+                                GLog.negative(Messages.get(curUser, "you_cant_have", item.name()));
                             }
                             break;
                         case AFFECT:
@@ -446,7 +438,7 @@ public class ScrollOfDebug extends Scroll {
                                         if(!success &&
                                                 index < input.length
                                                 && !executeMethod(added, input, index)
-                                        ) GLog.w("Warning: No supported method matching "+input[index]+" was found.");
+                                        ) GLog.warning("Warning: No supported method matching "+input[index]+" was found.");
                                     }
                                     if(added == null) {
                                         added = Buff.affect(target, cls);
@@ -483,7 +475,7 @@ public class ScrollOfDebug extends Scroll {
                                     GameScene.add(Blob.seed(cell, amount, (Class<Blob>)cls));
                                 }
                             });
-                    } else GLog.w( "%s \"%s\" not found.", command.paramClass.getSimpleName(), input[1]);
+                    } else GLog.warning( "%s \"%s\" not found.", command.paramClass.getSimpleName(), input[1]);
                 } else onSelect(true, "help " + text); // lazy me, I know.
             }
         });
@@ -571,7 +563,7 @@ public class ScrollOfDebug extends Scroll {
     static void printMethodOutput(Class cls, Member m, int modifiers, Object result, Object... arguments) {
         String argsAsString = Arrays.deepToString(arguments);
         String argFormat = m instanceof Method ? "(%5$s):" : " =";
-        GLog.w("%s%s%s"+argFormat+" %4$s",
+        GLog.warning("%s%s%s"+argFormat+" %4$s",
                 cls.getSimpleName(),
                 Modifier.isStatic(modifiers) ? '.' : '#',
                 m.getName(),
@@ -693,7 +685,7 @@ public class ScrollOfDebug extends Scroll {
     public static PackageTrie trie = null; // loaded when needed.
     static {
         try {
-            trie = PackageTrie.getClassesForPackage(ROOT);
+            trie = ShatteredPixelDungeon.platform.findClasses(ROOT);
         } catch (ClassNotFoundException e) { ShatteredPixelDungeon.reportException(e); }
     }
 
@@ -753,12 +745,12 @@ public class ScrollOfDebug extends Scroll {
             }
         }
 
-        @Override // this should be removed for pre-v1.2 builds, this method was added in v1.2
-        public void offset(int xOffset, int yOffset) {
-            super.offset(xOffset, yOffset);
-            // this prevents issues in the full ui mode.
-            if(scrollPane != null) scrollPane.setSize(scrollPane.width(), scrollPane.height());
-        }
+//        @Override // this should be removed for pre-v1.2 builds, this method was added in v1.2
+//        public void offset(int xOffset, int yOffset) {
+//            super.offset(xOffset, yOffset);
+//            // this prevents issues in the full ui mode.
+//            if(scrollPane != null) scrollPane.setSize(scrollPane.width(), scrollPane.height());
+//        }
     }
 
     /** this checks if we can create this class using Reflection. **/
