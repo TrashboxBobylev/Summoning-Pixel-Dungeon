@@ -155,7 +155,10 @@ public class Hero extends Char {
 	public int maxMana = 0;
 
 	public float attunement(){
-	    return attunement + RingOfAttunement.attunementMultiplier(this) + (subClass == HeroSubClass.SOUL_REAVER ? 1 : 0) + (Dungeon.isChallenged(Conducts.Conduct.KING) ? 1 : 0);
+	    return attunement +
+				RingOfAttunement.attunementMultiplier(this) +
+				(subClass == HeroSubClass.SOUL_REAVER ? 1 : 0) +
+				(Dungeon.isChallenged(Conducts.Conduct.KING) ? 1 : 0);
     }
 	
 	public int lvl = 1;
@@ -186,8 +189,8 @@ public class Hero extends Char {
 	public void updateHT( boolean boostHP ){
 		int curHT = HT;
 
-		float adjustHT = heroClass == HeroClass.CONJURER ? 10 : 20;
-        float adjustScaling = heroClass == HeroClass.CONJURER ? 2 : 5;
+		float adjustHT = heroClass == HeroClass.CONJURER ? 13 : 20;
+        float adjustScaling = heroClass == HeroClass.CONJURER ? 3 : 5;
         if (heroClass == HeroClass.ADVENTURER){
         	adjustHT = 30;
 		}
