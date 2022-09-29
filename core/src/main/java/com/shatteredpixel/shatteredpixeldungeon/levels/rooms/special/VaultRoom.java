@@ -99,6 +99,6 @@ public class VaultRoom extends SpecialRoom {
 	
 	private ArrayList<Generator.Category> prizeClasses = new ArrayList<>(
 			Arrays.asList(Generator.Category.WAND,
-					Generator.Category.RING,
+					Generator.Category.STAFFS,
 					Generator.Category.ARTIFACT));
 }

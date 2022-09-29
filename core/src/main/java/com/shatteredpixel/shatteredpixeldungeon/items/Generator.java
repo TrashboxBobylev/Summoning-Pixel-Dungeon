@@ -35,7 +35,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Pasty;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.*;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAttunement;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.*;
@@ -79,8 +80,8 @@ public class Generator {
         STF_T5  ( 0,    Staff.class ),
 
 		WAND	( 2,    Wand.class ),
-		RING	( 1,    Ring.class ),
-		ARTIFACT( 1,    Artifact.class),
+		RING	( 0,    Ring.class ),
+		ARTIFACT( 2,    Artifact.class),
 		
 		FOOD	( 0,    Food.class ),
 		
@@ -395,9 +396,8 @@ public class Generator {
 			Category.FOOD.probs = new float[]{ 4, 1, 0 };
 
 			Category.RING.classes = new Class<?>[]{
-					RingOfAttunement.class,
-					RingOfWealth.class};
-			Category.RING.probs = new float[]{1, 1 };
+					RingOfAttunement.class};
+			Category.RING.probs = new float[]{1 };
 
 			Category.ARTIFACT.classes = new Class<?>[]{
 					CapeOfThorns.class,
@@ -704,16 +704,10 @@ public class Generator {
 					MysteryMeat.class };
 			Category.FOOD.probs = new float[]{ 1, 1, 1 };
 
-			Category.RING.prob = 1;
+			Category.RING.prob = 0;
 			Category.RING.classes = new Class<?>[]{
-					RingOfForce.class,
-					RingOfFuror.class,
-					RingOfHaste.class,
-					RingOfMight.class,
-					RingOfSharpshooting.class,
-					RingOfAttunement.class,
-					RingOfWealth.class};
-			Category.RING.probs = new float[]{ 1, 1, 1, 1, 1, 1, 1 };
+					RingOfAttunement.class};
+			Category.RING.probs = new float[]{ 1 };
 
 			Category.ARTIFACT.prob = 1;
 			Category.ARTIFACT.classes = new Class<?>[]{
@@ -733,9 +727,13 @@ public class Generator {
 					SubtilitasSigil.class,
 					MirrorOfFates.class,
 					FuelContainer.class,
-					ParchmentOfElbereth.class
+					ParchmentOfElbereth.class,
+					MomentumBoots.class,
+					BadgeOfBravery.class,
+					HeavyFlail.class,
+					SilkyQuiver.class
 			};
-			Category.ARTIFACT.defaultProbs = new float[]{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1};
+			Category.ARTIFACT.defaultProbs = new float[]{ 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 			Category.ARTIFACT.probs = Category.ARTIFACT.defaultProbs.clone();
 		}
 	}

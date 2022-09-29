@@ -69,7 +69,7 @@ public class PitRoom extends SpecialRoom {
 		do {
 			switch (Random.Int(3)){
 				case 0:
-					mainLoot = Generator.random(Generator.Category.RING);
+					mainLoot = Generator.random(Generator.Category.WAND);
 					break;
 				case 1:
 					mainLoot = Generator.random(Generator.Category.ARTIFACT);
