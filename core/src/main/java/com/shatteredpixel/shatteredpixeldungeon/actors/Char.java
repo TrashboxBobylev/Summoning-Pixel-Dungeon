@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.PerfumeGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.QuiverMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.Wet;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -268,8 +269,13 @@ public abstract class Char extends Actor {
 		} else if (hit( this, enemy, accMulti )) {
 			
 			int dr = enemy.drRoll();
+			boolean quivered = false;
 			if (enemy.buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dr *= 0.5f;
 			if (properties.contains(Property.IGNORE_ARMOR)) dr = 0;
+			if (enemy.buff(QuiverMark.class) != null && this instanceof Hero && ((Hero) this).belongings.weapon instanceof MissileWeapon) {
+				quivered = true;
+				dr = 0;
+			}
 
 			if (this instanceof Hero){
 				Hero h = (Hero)this;
@@ -312,6 +318,7 @@ public abstract class Char extends Actor {
 			if ( enemy.buff( Vulnerable.class ) != null){
 				effectiveDamage *= 1.33f;
 			}
+			if (quivered) dmg *= 1.33f;
 
 			effectiveDamage = attackProc( enemy, effectiveDamage );
 			

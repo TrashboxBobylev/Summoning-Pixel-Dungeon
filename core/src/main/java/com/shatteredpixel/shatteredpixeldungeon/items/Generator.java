@@ -395,10 +395,9 @@ public class Generator {
 			Category.FOOD.probs = new float[]{ 4, 1, 0 };
 
 			Category.RING.classes = new Class<?>[]{
-					RingOfSharpshooting.class,
 					RingOfAttunement.class,
 					RingOfWealth.class};
-			Category.RING.probs = new float[]{1, 1, 1 };
+			Category.RING.probs = new float[]{1, 1 };
 
 			Category.ARTIFACT.classes = new Class<?>[]{
 					CapeOfThorns.class,
@@ -420,9 +419,10 @@ public class Generator {
 					ParchmentOfElbereth.class,
 					MomentumBoots.class,
 					BadgeOfBravery.class,
-					HeavyFlail.class
+					HeavyFlail.class,
+					SilkyQuiver.class
 			};
-			Category.ARTIFACT.defaultProbs = new float[]{ 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1};
+			Category.ARTIFACT.defaultProbs = new float[]{ 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 			Category.ARTIFACT.probs = Category.ARTIFACT.defaultProbs.clone();
 		}
 	}

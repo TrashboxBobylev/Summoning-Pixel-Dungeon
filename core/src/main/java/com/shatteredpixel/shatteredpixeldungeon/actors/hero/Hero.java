@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.GonerField;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.PerfumeGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.FierySlash;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.QuiverMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulWeakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SpikyShield;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -46,10 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Endure;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.BadgeOfBravery;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MirrorOfFates;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MomentumBoots;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.ParchmentOfElbereth;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Barrier;
@@ -428,9 +426,15 @@ public class Hero extends Char {
 		if (Dungeon.mode == Dungeon.GameMode.EXPLORE) accuracy = 1.2f;
 		if (Dungeon.isChallenged(Conducts.Conduct.KING)) accuracy = 1.1f;
 		accuracy *= RingOfAccuracy.accuracyMultiplier( this );
+
+		if (belongings.weapon instanceof MissileWeapon &&
+				target.buff(QuiverMark.class) != null) return INFINITE_ACCURACY;
 		
 		if (wep instanceof MissileWeapon || (wep instanceof Knife && ((Knife) wep).ranged)){
-			if (Dungeon.level.adjacent( pos, target.pos )) {
+			SilkyQuiver.quiverBuff buff = buff(SilkyQuiver.quiverBuff.class);
+			if (buff != null && buff.isCursed()){
+				accuracy *= 0.33f;
+			} else if (Dungeon.level.adjacent( pos, target.pos )) {
 				accuracy *= 0.5f;
 			} else {
 				accuracy *= 1.5f;
@@ -587,6 +591,9 @@ public class Hero extends Char {
 	public boolean canSurpriseAttack(){
 		if (belongings.weapon == null || !(belongings.weapon instanceof Weapon))    return true;
 		if (STR() < ((Weapon)belongings.weapon).STRReq())                           return false;
+		if (belongings.weapon instanceof MissileWeapon &&
+				buff(SilkyQuiver.quiverBuff.class) != null &&
+					buff(SilkyQuiver.quiverBuff.class).isCursed()) return false;
 		if (belongings.weapon instanceof Flail || belongings.weapon instanceof Cleaver)                                     return false;
 
 		return true;

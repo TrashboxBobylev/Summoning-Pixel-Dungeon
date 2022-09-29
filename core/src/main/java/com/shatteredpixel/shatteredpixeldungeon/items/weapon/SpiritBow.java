@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SilkyQuiver;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.ConjurerSpell;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
@@ -427,6 +428,10 @@ public class SpiritBow extends Weapon {
 			} else {
 				if (!curUser.shoot( enemy, this )) {
 					Splash.at(cell, 0xCC99FFFF, 1);
+				}
+				SilkyQuiver.quiverBuff buff = Dungeon.hero.buff(SilkyQuiver.quiverBuff.class);
+				if (buff != null){
+					buff.gainCharge(0.125f);
 				}
 				if (sniperSpecial && SpiritBow.this.augment != Augment.SPEED) sniperSpecial = false;
 			}

@@ -374,10 +374,12 @@ public class ItemSpriteSheet {
 	public static final int HOLY_DART       = TIPPED_DARTS+9;
 	public static final int DISPLACING_DART = TIPPED_DARTS+10;
 	public static final int BLINDING_DART   = TIPPED_DARTS+11;
+	public static final int QUIVER_ARROW    = TIPPED_DARTS+13;
 	static {
 		for (int i = TIPPED_DARTS; i < TIPPED_DARTS+16; i++)
 			assignItemRect(i, 15, 15);
 		assignItemRect(LIGHT_KNIFE, 11, 12);
+		assignItemRect(QUIVER_ARROW, 13, 13);
 	}
 	
 	private static final int ARMOR          =                               xy(1, 12);  //16 slots
@@ -865,6 +867,7 @@ public class ItemSpriteSheet {
 	public static final int ARTIFACT_MOMENTUM = NEW_ARTIFACTS+4;
 	public static final int ARTIFACT_BADGE = NEW_ARTIFACTS+5;
 	public static final int ARTIFACT_FLAIL = NEW_ARTIFACTS+6;
+	public static final int ARTIFACT_QUIVER = NEW_ARTIFACTS+7;
 
 	static {
 		assignItemRect(ARTIFACT_SIGIL, 14, 12);
@@ -874,6 +877,7 @@ public class ItemSpriteSheet {
 		assignItemRect(ARTIFACT_MOMENTUM, 13, 12);
 		assignItemRect(ARTIFACT_BADGE, 14, 14);
 		assignItemRect(ARTIFACT_FLAIL, 11, 12);
+		assignItemRect(ARTIFACT_QUIVER, 15, 14);
 	}
 
 	                                                                                    //16 free slots

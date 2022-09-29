@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SilkyQuiver;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
@@ -316,6 +317,10 @@ abstract public class MissileWeapon extends Weapon {
 	protected void decrementDurability(Char enemy){
 		//if this weapon was thrown from a source stack, degrade that stack.
 		//unless a weapon is about to break, then break the one being thrown
+		SilkyQuiver.quiverBuff buff = Dungeon.hero.buff(SilkyQuiver.quiverBuff.class);
+		if (buff != null){
+			buff.gainCharge();
+		}
         if (enemy != null && !((Mob)enemy).enemySeen && sneaky) return;
 		if (parent != null){
 			if (parent.durability <= parent.durabilityPerUse()){
