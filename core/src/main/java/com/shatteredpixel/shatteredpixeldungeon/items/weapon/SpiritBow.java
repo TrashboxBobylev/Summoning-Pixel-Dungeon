@@ -166,7 +166,9 @@ public class SpiritBow extends Weapon implements Tierable {
 
 	@Override
 	public int min() {
-		return min(level());
+		int min = min(level());
+		if (superShot) min *= 2;
+		return min;
 	}
 
 	@Override
@@ -317,7 +319,12 @@ public class SpiritBow extends Weapon implements Tierable {
 
 		@Override
 		public int damageRoll(Char owner) {
-			int damage = SpiritBow.this.damageRoll(owner);
+			int damage = 0;
+			for (int i = 0; i < 2; i++) {
+				int dmg = SpiritBow.this.damageRoll(owner);
+				if (dmg > damage) damage = dmg;
+			}
+
 			int distance = Dungeon.level.distance(owner.pos, targetPos) - 1;
 			float multiplier = Math.min(5f, 1.32f * (float)Math.pow(1.13f, distance));
 			damage = Math.round(damage * multiplier);
