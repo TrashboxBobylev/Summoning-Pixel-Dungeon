@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.ArcaneBomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.ShrapnelBomb;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Maze;
@@ -34,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
+import com.watabou.utils.Random;
 
 public class BoomRoom extends StandardRoom {
 	
@@ -73,7 +75,7 @@ public class BoomRoom extends StandardRoom {
 		Painter.fill(level, this, 1, Terrain.EMBERS);
 		
 		//true = space, false = wall
-		Maze.allowDiagonals = true;
+		Maze.allowDiagonals = false;
 		boolean[][] maze = Maze.generate(this);
 		boolean[] passable = new boolean[width()*height()];
 		
@@ -93,12 +95,12 @@ public class BoomRoom extends StandardRoom {
 		
 		PathFinder.buildDistanceMap( entrancePos, passable );
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 20; i++) {
 			int dropPos;
 			do {
 				dropPos = level.pointToCell(random());
 			} while (level.map[dropPos] != Terrain.EMPTY || level.heaps.get( dropPos ) != null);
-			Item prize = new ArcaneBomb();
+			Item prize = Random.Int(8) == 0 ? new ArcaneBomb() : new ShrapnelBomb();
 			level.drop(prize, dropPos).type = Heap.Type.HEAP;
 			level.map[dropPos] = Terrain.TRAP;
 			level.setTrap(new ExplosiveTrap(), dropPos);
