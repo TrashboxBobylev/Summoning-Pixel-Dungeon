@@ -58,7 +58,7 @@ public class AndroidPlatformSupport extends PlatformSupport {
 		return new PackageTrie() {
 			{
 				try {
-					Enumeration<String> entries = new DexFile(AndroidLauncher.instance
+					Enumeration<String> entries = new DexFile(AndroidGame.instance
 							.getContext()
 							.getPackageCodePath()
 					).entries();
