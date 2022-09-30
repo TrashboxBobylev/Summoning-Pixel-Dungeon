@@ -114,8 +114,8 @@ public class SpiritBow extends Weapon implements Tierable {
 		int max = Math.round(augment.damageFactor(max()));
 		
 		info += "\n\n" + Messages.get( SpiritBow.class, "stats",
-				Integer.toString(min()),
-				Integer.toString(max()),
+				Integer.toString(min),
+				Integer.toString(max),
 				STRReq());
 		
 		if (STRReq() > Dungeon.hero.STR()) {
