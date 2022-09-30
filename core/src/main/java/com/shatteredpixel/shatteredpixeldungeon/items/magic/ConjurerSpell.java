@@ -58,6 +58,7 @@ public abstract class ConjurerSpell extends Item implements Tierable {
 
     {
         defaultAction = AC_ZAP;
+        unique = true;
     }
 
     @Override
