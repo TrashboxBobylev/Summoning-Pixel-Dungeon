@@ -688,9 +688,9 @@ public class SoulOfYendor extends Artifact {
     }
 
     @Override
-    public void charge(Hero target) {
+    public void charge(Hero target, float amount) {
         if (charge < chargeCap){
-            partialCharge += 0.2f;
+            partialCharge += 0.2f*amount;
             if (partialCharge >= 1){
                 partialCharge--;
                 charge++;
@@ -736,7 +736,7 @@ public class SoulOfYendor extends Artifact {
 
 
         @Override
-        public void charge() {
+        public void charge(float amount) {
 
         }
 

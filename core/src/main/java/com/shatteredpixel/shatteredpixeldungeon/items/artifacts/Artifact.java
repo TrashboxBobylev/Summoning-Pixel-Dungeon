@@ -210,10 +210,6 @@ public abstract class Artifact extends KindofMisc {
 	}
 
 	protected ArtifactBuff activeBuff() {return null; }
-	
-	public void charge(Hero target){
-		//do nothing by default;
-	}
 
 	public void charge(Hero target, float amount){
 		//do nothing by default;
@@ -227,6 +223,10 @@ public abstract class Artifact extends KindofMisc {
 
 		public boolean isCursed() {
 			return cursed;
+		}
+
+		public void charge(Hero target, float amount){
+			Artifact.this.charge(target, amount);
 		}
 
 	}
