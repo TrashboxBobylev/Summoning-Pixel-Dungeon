@@ -125,6 +125,19 @@ public abstract class Ability extends Artifact {
     }
 
     @Override
+    public void charge(Hero target, float amount) {
+        if (charge < chargeCap){
+            charge += Math.round(3*amount);
+            if (charge >= chargeCap) {
+                charge = chargeCap;
+                partialCharge = 0;
+                GLog.positive( Messages.get(Ability.class, "charged", name()) );
+            }
+            updateQuickslot();
+        }
+    }
+
+    @Override
     public String toString() {
 
         String name = name();
