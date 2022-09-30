@@ -48,11 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Tierable;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndTierInfo;
-import com.watabou.noosa.Game;
-import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
@@ -292,8 +288,6 @@ public class Staff extends Weapon implements Tierable {
             actions.add( AC_SUMMON );
         }
         actions.remove( AC_EQUIP);
-        if (level() > 0) actions.add(AC_DOWNGRADE);
-        actions.add( AC_TIERINFO );
         return actions;
     }
 
@@ -318,18 +312,6 @@ public class Staff extends Weapon implements Tierable {
                 GLog.warning( Messages.get(Wand.class, "fizzles") );
             }
 
-        } else if (action.equals(AC_DOWNGRADE)){
-            GameScene.flash(0xFFFFFF);
-            Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
-            level(level()-1);
-            GLog.warning( Messages.get(Staff.class, "lower_tier"));
-        } else if (action.equals(AC_TIERINFO)){
-            ShatteredPixelDungeon.runOnRenderThread(new Callback() {
-                @Override
-                public void call() {
-                    Game.scene().addToFront(new WndTierInfo(Staff.this));
-                }
-            });
         }
     }
 
