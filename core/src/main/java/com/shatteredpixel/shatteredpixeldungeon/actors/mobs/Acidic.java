@@ -57,7 +57,7 @@ public class Acidic extends Scorpio {
 	}
 
 	@Override
-	protected Item createLoot() {
+    public Item createLoot() {
 		return new PotionOfExperience();
 	}
 }

@@ -197,7 +197,7 @@ public class AbyssalNightmare extends AbyssalMob {
 	}
 
 	@Override
-	protected Item createLoot(){
+    public Item createLoot(){
 		int rolls = 30;
 		((RingOfWealth)(new RingOfWealth().upgrade(10))).buff().attachTo(this);
 		ArrayList<Item> bonus = RingOfWealth.tryForBonusDrop(this, rolls);

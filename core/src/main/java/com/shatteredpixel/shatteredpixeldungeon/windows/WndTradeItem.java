@@ -37,8 +37,12 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class WndTradeItem extends WndInfoItem {
 
@@ -112,6 +116,8 @@ public class WndTradeItem extends WndInfoItem {
 
 		final int price = Shopkeeper.sellPrice( item );
 
+		ArrayList<RedButton> buttons = new ArrayList();
+
 		RedButton btnBuy = new RedButton( Messages.get(this, "buy", price) ) {
 			@Override
 			protected void onClick() {
@@ -120,19 +126,20 @@ public class WndTradeItem extends WndInfoItem {
 			}
 		};
 		btnBuy.setRect( 0, pos + GAP, width, BTN_HEIGHT );
+		btnBuy.icon(new ItemSprite(ItemSpriteSheet.GOLD));
 		btnBuy.enable( price <= Dungeon.gold );
-		add( btnBuy );
+		buttons.add(btnBuy);
 
 		pos = btnBuy.bottom();
 
-		MasterThievesArmband.ThieveryBuff thievery = Dungeon.hero.buff(MasterThievesArmband.ThieveryBuff.class);
-		if (thievery != null && !thievery.isCursed()) {
-			final float chance = thievery.stealChance(price);
-			MasterThievesArmband.ThieveryBuff finalThievery = thievery;
-			RedButton btnSteal = new RedButton(Messages.get(this, "steal", Math.min(100, (int) (chance * 100)))) {
+		final MasterThievesArmband.ThieveryBuff thievery = Dungeon.hero.buff(MasterThievesArmband.ThieveryBuff.class);
+		if (thievery != null && !thievery.isCursed() && thievery.chargesToUse(item) > 0) {
+			final float chance = thievery.stealChance(item);
+			final int chargesToUse = thievery.chargesToUse(item);
+			RedButton btnSteal = new RedButton(Messages.get(this, "steal", Math.min(100, (int) (chance * 100)), chargesToUse), 6) {
 				@Override
 				protected void onClick() {
-					if (finalThievery.steal(price)) {
+					if (thievery.steal(item)) {
 						Hero hero = Dungeon.hero;
 						Item item = heap.pickUp();
 						hide();
@@ -153,6 +160,7 @@ public class WndTradeItem extends WndInfoItem {
 				}
 			};
 			btnSteal.setRect(0, pos + 1, width, BTN_HEIGHT);
+			btnSteal.icon(new ItemSprite(ItemSpriteSheet.ARTIFACT_ARMBAND));
 			add(btnSteal);
 
 			pos = btnSteal.bottom();

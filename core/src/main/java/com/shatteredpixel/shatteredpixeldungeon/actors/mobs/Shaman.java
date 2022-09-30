@@ -83,7 +83,7 @@ public abstract class Shaman extends Mob {
 	}
 
 	@Override
-	protected Item createLoot() {
+    public Item createLoot() {
 		Dungeon.LimitedDrops.SHAMAN_WAND.count++;
 		return super.createLoot();
 	}

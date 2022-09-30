@@ -170,7 +170,7 @@ public class BlinkingMan extends AbyssalMob {
 	}
 
 	@Override
-	protected Item createLoot() {
+    public Item createLoot() {
 		Class<?extends Scroll> loot;
 		do{
 			loot = (Class<? extends Scroll>) Random.oneOf(Generator.Category.SCROLL.classes);

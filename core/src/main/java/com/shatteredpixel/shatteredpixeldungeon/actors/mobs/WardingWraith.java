@@ -221,7 +221,7 @@ public class WardingWraith extends Mob implements Callback {
     }
 
     @Override
-    protected Item createLoot() {
+    public Item createLoot() {
         if (EXP != 0){
             return (Item) loot;
         }

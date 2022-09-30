@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.AlchemicalCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
@@ -97,7 +98,7 @@ public class RingOfWealth extends Ring {
 	}
 	
 	public static ArrayList<Item> tryForBonusDrop(Char target, int tries ){
-		int bonus = getBuffedBonus(target, Wealth.class);
+		int bonus = target.buff(MasterThievesArmband.Thievery.class).itemLevel();
 
 		if (bonus <= 0) return null;
 		

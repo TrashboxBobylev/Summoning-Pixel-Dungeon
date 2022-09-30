@@ -156,7 +156,7 @@ public class Guard extends Mob {
 	}
 
 	@Override
-	protected Item createLoot() {
+    public Item createLoot() {
 		Dungeon.LimitedDrops.GUARD_ARM.count++;
 		return super.createLoot();
 	}

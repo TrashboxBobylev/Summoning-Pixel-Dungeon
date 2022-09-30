@@ -1663,6 +1663,9 @@ public class Hero extends Char {
 		
 		AlchemistsToolkit.kitEnergy kit = buff(AlchemistsToolkit.kitEnergy.class);
 		if (kit != null) kit.gainCharge(percent);
+
+		MasterThievesArmband.Thievery armband = buff(MasterThievesArmband.Thievery.class);
+		if (armband != null) armband.gainCharge(percent);
 		
 		Berserk berserk = buff(Berserk.class);
 		if (berserk != null) berserk.recover(percent);

@@ -46,13 +46,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.ConjurerSpell;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.GoldToken;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
@@ -956,6 +956,26 @@ public abstract class Mob extends Char {
 		float lootChance = this.lootChance;
 		lootChance *= RingOfWealth.dropChanceMultiplier( Dungeon.hero );
 
+		MasterThievesArmband.StolenTracker stolen = buff(MasterThievesArmband.StolenTracker.class);
+		if (stolen == null || !stolen.itemWasStolen()) {
+			if (Random.Float() < lootChance) {
+				Item loot = createLoot();
+				if (loot != null) {
+					Dungeon.level.drop(loot, pos).sprite.drop();
+				}
+			}
+			int rolls = 1;
+			if (properties.contains(Property.BOSS)) rolls = 15;
+			else if (properties.contains(Property.MINIBOSS)) rolls = 5;
+			for (int i = 0; i < rolls; i++) {
+				if (Dungeon.hero.buff(MasterThievesArmband.Thievery.class) != null &&
+						Random.Int(15) < Dungeon.hero.buff(MasterThievesArmband.Thievery.class).itemLevel()){
+					Dungeon.level.drop(RingOfWealth.genConsumableDrop(Dungeon.hero.buff(MasterThievesArmband.Thievery.class).itemLevel()), pos).sprite.drop();
+					RingOfWealth.showFlareForBonusDrop(sprite);
+				}
+			}
+		}
+
 		if (Random.Float() < lootChance && Dungeon.mode != Dungeon.GameMode.GAUNTLET) {
 			Item loot = createLoot();
 			if (loot != null) {
@@ -973,18 +993,6 @@ public abstract class Mob extends Char {
 			}
 		}
 
-		//ring of wealth logic
-		if (Ring.getBuffedBonus(Dungeon.hero, RingOfWealth.Wealth.class) > 0) {
-			int rolls = 1;
-			if (properties.contains(Property.BOSS)) rolls = 15;
-			else if (properties.contains(Property.MINIBOSS)) rolls = 5;
-			ArrayList<Item> bonus = RingOfWealth.tryForBonusDrop(Dungeon.hero, rolls);
-			if (bonus != null && !bonus.isEmpty()) {
-				for (Item b : bonus) Dungeon.level.drop(b, pos).sprite.drop();
-				RingOfWealth.showFlareForBonusDrop(sprite);
-			}
-		}
-
 		//lucky enchant logic
 		if ((Dungeon.hero.lvl <= maxLvl || Dungeon.mode == Dungeon.GameMode.LOL) && buff(Lucky.LuckProc.class) != null){
 			Dungeon.level.drop(Lucky.genLoot(), pos).sprite.drop();
@@ -993,10 +1001,10 @@ public abstract class Mob extends Char {
 	}
 
 	protected Object loot = null;
-	protected float lootChance = 0;
+	public float lootChance = 0;
 
 	@SuppressWarnings("unchecked")
-	protected Item createLoot() {
+	public Item createLoot() {
 		Item item;
 		if (loot instanceof Generator.Category) {
 
