@@ -33,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.MeatPie;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.StewedMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.AlchemicalCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.PerfumeBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.RagingBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.ShockingBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.*;
@@ -200,6 +199,7 @@ public abstract class Recipe {
 		new Graveyard.Recipe(),
 		new DruidBag.Recipe(),
 		new Drill.Recipe(),
+		new PerfumeBlast.Recipe(),
         new Broadsword.Recipe()
 	};
 
@@ -223,7 +223,6 @@ public abstract class Recipe {
 		new ExoticScroll.ScrollToExotic(),
 		new StewedMeat.threeMeat(),
 		new MeatPie.Recipe(),
-            new PerfumeBrew.Recipe(),
             new Contain.Recipe(),
 	};
 	

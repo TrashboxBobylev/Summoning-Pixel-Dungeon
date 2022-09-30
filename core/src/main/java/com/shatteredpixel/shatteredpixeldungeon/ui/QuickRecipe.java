@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.AlchemicalCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.PerfumeBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.RagingBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.ShockingBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.*;
@@ -308,7 +307,6 @@ public class QuickRecipe extends Component {
 				return result;
 			case 7:
 				result.add(new QuickRecipe(new ShockingBrew.Recipe()));
-                result.add(new QuickRecipe(new PerfumeBrew.Recipe()));
                 result.add(new QuickRecipe(new RagingBrew.Recipe()));
 				result.add(null);
 				result.add(null);
@@ -352,6 +350,7 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe(new Graveyard.Recipe()));
 				result.add(new QuickRecipe(new DruidBag.Recipe()));
 				result.add(new QuickRecipe(new Drill.Recipe()));
+				result.add(new QuickRecipe(new PerfumeBlast.Recipe()));
                 return result;
 		}
 	}

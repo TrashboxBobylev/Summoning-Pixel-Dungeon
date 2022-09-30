@@ -838,6 +838,8 @@ public class ItemSpriteSheet {
     public static final int GRAVEYARD = POWERS+10;
     public static final int GRASS_ABILITY = POWERS+11;
     public static final int DRILL = POWERS+12;
+	public static final int PERFUME_ABILITY = POWERS+13;
+	public static final int SHINOBI_TRICK = POWERS+14;
     static {
         for (int i = 0; i < 15; i++){
             assignItemRect(POWERS+i, 14, 14);
