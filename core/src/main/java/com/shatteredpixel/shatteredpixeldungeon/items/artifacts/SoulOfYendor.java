@@ -52,6 +52,7 @@ import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
@@ -123,13 +124,13 @@ public class SoulOfYendor extends Artifact {
             GameScene.show(
                     new WndOptions(Messages.get(SoulOfYendor.class, "usage_title"),
                             Messages.get(SoulOfYendor.class, "usage_message"),
-                            Messages.get(SoulOfYendor.class, "horn_of_plenty"),
-                            Messages.get(SoulOfYendor.class, "alchemist_toolkit"),
-                            Messages.get(SoulOfYendor.class, "ethereal_chains"),
-                            Messages.get(SoulOfYendor.class, "sandals_of_nature"),
-                            Messages.get(SoulOfYendor.class, "timekeeper_hourglass"),
-                            Messages.get(SoulOfYendor.class, "unstable_spellbook"),
-                            Messages.get(SoulOfYendor.class, "master_armband")){
+                            new IconTitle(new ItemSprite(ItemSpriteSheet.ARTIFACT_HORN1), Messages.get(SoulOfYendor.class, "horn_of_plenty")),
+                            new IconTitle(new ItemSprite(ItemSpriteSheet.ARTIFACT_TOOLKIT), Messages.get(SoulOfYendor.class, "alchemist_toolkit")),
+                            new IconTitle(new ItemSprite(ItemSpriteSheet.ARTIFACT_CHAINS), Messages.get(SoulOfYendor.class, "ethereal_chains")),
+                            new IconTitle(new ItemSprite(ItemSpriteSheet.ARTIFACT_SANDALS), Messages.get(SoulOfYendor.class, "sandals_of_nature")),
+                            new IconTitle(new ItemSprite(ItemSpriteSheet.ARTIFACT_HOURGLASS), Messages.get(SoulOfYendor.class, "timekeeper_hourglass")),
+                            new IconTitle(new ItemSprite(ItemSpriteSheet.ARTIFACT_SPELLBOOK), Messages.get(SoulOfYendor.class, "unstable_spellbook")),
+                            new IconTitle(new ItemSprite(ItemSpriteSheet.ARTIFACT_ARMBAND), Messages.get(SoulOfYendor.class, "master_armband"))){
                         @Override
                         protected boolean enabled(int index) {
                             switch (index) {
