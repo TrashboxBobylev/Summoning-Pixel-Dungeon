@@ -95,7 +95,7 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 
 	public float speedMultiplier(){
 		if (freerunning()){
-			return 2;
+			return 1.5f;
 		} else {
 			return 1;
 		}
