@@ -38,9 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.stationary.M
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SmokeParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.*;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -194,18 +192,6 @@ public class AbyssalNightmare extends AbyssalMob {
 			Buff.affect( clone, Corruption.class);
 		}
 		return clone;
-	}
-
-	@Override
-    public Item createLoot(){
-		int rolls = 30;
-		((RingOfWealth)(new RingOfWealth().upgrade(10))).buff().attachTo(this);
-		ArrayList<Item> bonus = RingOfWealth.tryForBonusDrop(this, rolls);
-		if (bonus != null && !bonus.isEmpty()) {
-			for (Item b : bonus) Dungeon.level.drop(b, pos).sprite.drop();
-			RingOfWealth.showFlareForBonusDrop(sprite);
-		}
-		return null;
 	}
 
 	@Override

@@ -31,8 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -89,18 +87,6 @@ public class Dragon extends AbyssalMob {
         }
 
         return super.act();
-    }
-
-    @Override
-    public Item createLoot(){
-        int rolls = 30;
-        ((RingOfWealth)(new RingOfWealth().upgrade(10))).buff().attachTo(this);
-        ArrayList<Item> bonus = RingOfWealth.tryForBonusDrop(this, rolls);
-        if (bonus != null && !bonus.isEmpty()) {
-            for (Item b : bonus) Dungeon.level.drop(b, pos).sprite.drop();
-            RingOfWealth.showFlareForBonusDrop(sprite);
-        }
-        return null;
     }
 
     @Override
