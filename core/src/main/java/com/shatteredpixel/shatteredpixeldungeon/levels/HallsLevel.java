@@ -71,16 +71,14 @@ public class HallsLevel extends RegularLevel {
 	@Override
 	protected int standardRooms(boolean forceMax) {
 		if (SPDSettings.smalldungeon()) return 4;
-		if (forceMax) return 30;
-		//18 to 26
-		return 12+Random.chances(new float[]{3, 2, 1, 1});
+		if (forceMax) return 18;
+		return 10+Random.chances(new float[]{3, 2, 1});
 	}
 	
 	@Override
 	protected int specialRooms(boolean forceMax) {
 		if (SPDSettings.smalldungeon()) return 2;
 		if (forceMax) return 3;
-		//2 to 3, average 2.5
 		return 2 + Random.chances(new float[]{1, 1});
 	}
 	
