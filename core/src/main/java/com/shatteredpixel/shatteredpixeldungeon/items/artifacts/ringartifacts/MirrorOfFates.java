@@ -176,6 +176,10 @@ public class MirrorOfFates extends Artifact {
 
         public int damage(int damage){
             potency -= damage;
+            mirrorExp exp = target.buff(mirrorExp.class);
+            if (exp != null){
+                exp.gainExp(damage);
+            }
             if (potency <= 0){
                 destroy();
                 damage = -potency;
