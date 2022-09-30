@@ -462,13 +462,6 @@ public class Staff extends Weapon implements Tierable {
         @Override
         public boolean act() {
 
-            for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-                if (mob.getClass() == minionType && !(mob instanceof Chicken)) {
-                    spend( TICK );
-                    return true;
-                }
-            }
-
             if (curCharges < 1)
                 recharge();
 
@@ -488,9 +481,17 @@ public class Staff extends Weapon implements Tierable {
 
         private void recharge(){
 
+            float mod = 1f;
+
+            for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+                if (mob.getClass() == minionType && !(mob instanceof Chicken)) {
+                    mod = 0.33f;
+                }
+            }
+
             LockedFloor lock = target.buff(LockedFloor.class);
             if (lock == null || lock.regenOn())
-                partialCharge += (1f / getChargeTurns()) * (Dungeon.hero.heroClass == HeroClass.CONJURER ? 1 : 0.9);
+                partialCharge += (1f / getChargeTurns()) * (Dungeon.hero.heroClass == HeroClass.CONJURER ? 1 : 0.9)*mod;
             updateQuickslot();
 
             for (Recharging bonus : target.buffs(Recharging.class)){
