@@ -326,6 +326,8 @@ public class WndJournal extends WndTabbed {
 					return new ItemSprite( ItemSpriteSheet.WAND_FIREBOLT );
 				case "Summoning":
 					return new ItemSprite( ItemSpriteSheet.GREY_RAT_STAFF);
+				case "Tiering":
+					return new ItemSprite( ItemSpriteSheet.SCROLL_TIWAZ);
 			}
 
 		}
