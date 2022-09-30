@@ -176,7 +176,7 @@ public class SpiritBow extends Weapon implements Tierable {
 
 	@Override
 	public int min(int lvl) {
-		switch (level()){
+		switch (lvl){
 			case 1:
 				return 2 + Dungeon.hero.lvl/5
 						+ RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
@@ -193,7 +193,7 @@ public class SpiritBow extends Weapon implements Tierable {
 	
 	@Override
 	public int max(int lvl) {
-		switch (level()){
+		switch (lvl){
 			case 1:
 				return 7 + (int)(Dungeon.hero.lvl/2.5f)
 						+ 2*RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
@@ -206,6 +206,16 @@ public class SpiritBow extends Weapon implements Tierable {
 		return 6 + (int)(Dungeon.hero.lvl/2.5f)
 				+ 2*RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
 				+ (curseInfusionBonus ? 2 : 0);
+	}
+
+	@Override
+	public String getTierMessage(int tier){
+		return Messages.get(this, "tier" + tier,
+				min(tier-1),
+				max(tier-1),
+				enchantPower(tier-1),
+				Math.round(speedMod(tier-1)*100)
+		);
 	}
 
 	@Override
@@ -255,26 +265,35 @@ public class SpiritBow extends Weapon implements Tierable {
 					return 2f * RingOfFuror.attackDelayMultiplier(owner);
 			}
 		} else {
-			float mod = 1f;
-			switch (level()){
-				case 1:
-					mod = 1f / 0.75f; break;
-				case 2:
-					mod = 1f / 0.4f;
-			}
+			float mod = 1f / speedMod(level());
 			return super.speedFactor(owner)*mod;
 		}
 	}
 
+	public float speedMod(int lvl){
+		float mod = 1f;
+		switch (lvl){
+			case 1:
+				mod = 0.75f; break;
+			case 2:
+				mod = 0.4f; break;
+		}
+		return mod;
+	}
+
+	public int enchantPower(int lvl){
+		switch (lvl){
+			case 1:
+				return 3;
+			case 2:
+				return 6;
+		}
+		return 5;
+	}
+
 	@Override
 	public int buffedLvl() {
-		switch (level()){
-			case 1:
-				return Dungeon.hero.lvl/3;
-			case 2:
-				return Dungeon.hero.lvl/6;
-		}
-		return Dungeon.hero.lvl/5;
+		return Dungeon.hero.lvl/enchantPower(level());
 	}
 
 	public static boolean superShot = false;
