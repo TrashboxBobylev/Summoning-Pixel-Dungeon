@@ -27,13 +27,11 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SilkyQuiver;
-import com.shatteredpixel.shatteredpixeldungeon.items.magic.ConjurerSpell;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
@@ -45,9 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndTierInfo;
-import com.watabou.noosa.Game;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Tierable;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
@@ -55,7 +51,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-public class SpiritBow extends Weapon {
+public class SpiritBow extends Weapon implements Tierable {
 	
 	public static final String AC_SHOOT		= "SHOOT";
 	public static final String AC_DOWNGRADE = "DOWNGRADE";
@@ -83,8 +79,6 @@ public class SpiritBow extends Weapon {
 		ArrayList<String> actions = super.actions(hero);
 		actions.remove(AC_EQUIP);
 		actions.add(AC_SHOOT);
-		if (level() > 0) actions.add(AC_DOWNGRADE);
-		actions.add( AC_TIERINFO );
 		return actions;
 	}
 
@@ -109,37 +103,7 @@ public class SpiritBow extends Weapon {
 			curItem = this;
 			GameScene.selectCell( shooter );
 			
-		} else if (action.equals(AC_DOWNGRADE)){
-			GameScene.flash(0xFFFFFF);
-			Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
-			level(level()-1);
-			GLog.warning( Messages.get(ConjurerSpell.class, "lower_tier"));
-		} else if (action.equals(AC_TIERINFO)){
-			curItem = this;
-			ShatteredPixelDungeon.runOnRenderThread(new Callback() {
-				@Override
-				public void call() {
-					Game.scene().addToFront(new WndTierInfo(curItem));
-				}
-			});
 		}
-	}
-
-	@Override
-	public String toString() {
-
-		String name = name();
-		String tier = "";
-		switch (level()){
-			case 0: tier = "I"; break;
-			case 1: tier = "II"; break;
-			case 2: tier = "III"; break;
-		}
-
-		name = Messages.format( "%s %s", name, tier  );
-
-		return name;
-
 	}
 	
 	@Override
@@ -311,11 +275,6 @@ public class SpiritBow extends Weapon {
 				return Dungeon.hero.lvl/6;
 		}
 		return Dungeon.hero.lvl/5;
-	}
-	
-	@Override
-	public boolean isUpgradable() {
-		return level() < 2;
 	}
 
 	public static boolean superShot = false;

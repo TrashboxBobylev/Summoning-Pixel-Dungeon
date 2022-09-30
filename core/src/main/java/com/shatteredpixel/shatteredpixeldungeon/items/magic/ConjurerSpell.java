@@ -27,7 +27,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items.magic;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
@@ -42,14 +41,13 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndTierInfo;
-import com.watabou.noosa.Game;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Tierable;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 
 import java.util.ArrayList;
 
-public abstract class ConjurerSpell extends Item {
+public abstract class ConjurerSpell extends Item implements Tierable {
 
     public static final String AC_ZAP	= "ZAP";
     public static final String AC_DOWNGRADE = "DOWNGRADE";
@@ -65,11 +63,6 @@ public abstract class ConjurerSpell extends Item {
     @Override
     public boolean isIdentified() {
         return !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
-    }
-
-    @Override
-    public boolean isUpgradable() {
-        return level() < 2;
     }
 
     public abstract void effect(Ballistica trajectory);
@@ -88,8 +81,6 @@ public abstract class ConjurerSpell extends Item {
     public ArrayList<String> actions(Hero hero ) {
         ArrayList<String> actions = new ArrayList<>();
         actions.add( AC_ZAP );
-        if (level() > 0) actions.add(AC_DOWNGRADE);
-        actions.add( AC_TIERINFO );
 
         return actions;
     }
@@ -110,20 +101,6 @@ public abstract class ConjurerSpell extends Item {
                 curItem = this;
                 GameScene.selectCell(targeter);
             }
-
-        } else if (action.equals(AC_DOWNGRADE)){
-            GameScene.flash(0xFFFFFF);
-            Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
-            level(level()-1);
-            GLog.warning( Messages.get(ConjurerSpell.class, "lower_tier"));
-        } else if (action.equals(AC_TIERINFO)){
-            curItem = this;
-            ShatteredPixelDungeon.runOnRenderThread(new Callback() {
-                @Override
-                public void call() {
-                    Game.scene().addToFront(new WndTierInfo(curItem));
-                }
-            });
         }
     }
 

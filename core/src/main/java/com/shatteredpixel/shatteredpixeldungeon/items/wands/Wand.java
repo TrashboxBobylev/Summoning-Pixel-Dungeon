@@ -43,15 +43,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndTierInfo;
-import com.watabou.noosa.Game;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Tierable;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.PixelParticle;
@@ -63,7 +61,7 @@ import com.watabou.utils.Random;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public abstract class Wand extends Weapon {
+public abstract class Wand extends Weapon implements Tierable {
 
 	public static final String AC_ZAP	= "ZAP";
 
@@ -105,8 +103,6 @@ public abstract class Wand extends Weapon {
 		if (hero.heroClass != HeroClass.MAGE && !Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)){
 			actions.remove(AC_EQUIP);
 		}
-		if (level() > 0) actions.add(AC_DOWNGRADE);
-		actions.add( AC_TIERINFO );
 
 		return actions;
 	}
@@ -122,13 +118,6 @@ public abstract class Wand extends Weapon {
 			curItem = this;
 			GameScene.selectCell( zapper );
 			
-		} else if (action.equals(AC_DOWNGRADE)){
-			GameScene.flash(0xFFFFFF);
-			Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
-			level(level()-1);
-			GLog.warning( Messages.get(Staff.class, "lower_tier"));
-		} else if (action.equals(AC_TIERINFO)) {
-			ShatteredPixelDungeon.runOnRenderThread(() -> Game.scene().addToFront(new WndTierInfo(Wand.this)));
 		}
 	}
 
@@ -301,11 +290,6 @@ public abstract class Wand extends Weapon {
 		}
 	}
 
-	@Override
-	public boolean isUpgradable() {
-		return level() < 2;
-	}
-
 	public void level(int value) {
 		super.level( value );
 	}
@@ -373,31 +357,6 @@ public abstract class Wand extends Weapon {
 		}
 
 		return desc;
-	}
-
-	@Override
-	public String toString() {
-
-		String name = name();
-		String tier = "";
-		if (levelKnown) {
-			switch (level()) {
-				case 0:
-					tier = "I";
-					break;
-				case 1:
-					tier = "II";
-					break;
-				case 2:
-					tier = "III";
-					break;
-			}
-		}
-
-		name = Messages.format( "%s %s", name, tier  );
-
-		return name;
-
 	}
 
 	public String statsDesc(){
