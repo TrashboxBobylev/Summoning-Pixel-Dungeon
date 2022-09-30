@@ -38,7 +38,11 @@ public class RenderedTextBlock extends Component {
 
 	private static final RenderedText SPACE = new RenderedText();
 	private static final RenderedText NEWLINE = new RenderedText();
-	
+
+	public String getText() {
+		return text;
+	}
+
 	protected String text;
 	protected String[] tokens = null;
 	protected ArrayList<RenderedText> words = new ArrayList<>();

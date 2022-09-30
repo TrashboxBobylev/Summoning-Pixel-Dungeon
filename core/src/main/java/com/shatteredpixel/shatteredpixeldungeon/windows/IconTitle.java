@@ -41,8 +41,8 @@ public class IconTitle extends Component {
 
 	private static final float GAP = 2;
 
-	protected Image imIcon;
-	protected RenderedTextBlock tfLabel;
+	Image imIcon;
+	RenderedTextBlock tfLabel;
 	protected HealthBar health;
 
 	private float healthLvl = Float.NaN;
