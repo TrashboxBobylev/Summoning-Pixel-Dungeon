@@ -70,6 +70,11 @@ public class MirrorOfFates extends Artifact {
     }
 
     @Override
+    public void charge(Hero target, float amount) {
+        Buff.detach(target, MirrorCooldown.class);
+    }
+
+    @Override
     public void execute(Hero hero, String action) {
         super.execute(hero, action);
 

@@ -91,6 +91,17 @@ public class FuelContainer extends Artifact {
     }
 
     @Override
+    public void charge(Hero target, float amount) {
+        if (charge < chargeCap) {
+            charge += 2f * amount;
+                if (charge == chargeCap) {
+                    GLog.positive(Messages.get(FuelContainer.class, "full_charge"));
+                    partialCharge = 0;
+                }
+        }
+    }
+
+    @Override
     public void level(int value) {
         super.level(value);
         chargeCap = 40 + level()*10;

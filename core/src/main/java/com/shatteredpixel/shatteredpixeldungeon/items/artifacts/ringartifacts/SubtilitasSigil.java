@@ -198,6 +198,16 @@ public class SubtilitasSigil extends Artifact {
         }
     }
 
+    @Override
+    public void charge(Hero target, float amount) {
+        if (charge < chargeCap) {
+            charge += 2f * amount;
+            if (charge == chargeCap) {
+                partialCharge = 0;
+            }
+        }
+    }
+
     public static class EnrageBuff extends DummyBuff{
 
         {

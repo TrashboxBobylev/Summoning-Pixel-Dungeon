@@ -50,6 +50,17 @@ public class MomentumBoots extends Artifact {
     }
 
     @Override
+    public void charge(Hero target, float amount) {
+        if (target.buff(Momentum.class) != null){
+            Momentum momentum = target.buff(Momentum.class);
+            momentum.freerunCooldown = Math.max(0, momentum.freerunCooldown-2);
+            if (momentum.freerunCooldown <= 0){
+                momentum.momentumStacks = Math.min(momentum.momentumStacks+1, momentum.getMaxMomentum());
+            }
+        }
+    }
+
+    @Override
     public String desc() {
         String desc = super.desc();
 

@@ -1202,7 +1202,9 @@ public class Hero extends Char {
 			if (buff(BadgeOfBravery.braveryBuff.class) != null && buff(BadgeOfBravery.braveryBuff.class).isCursed()){
 				Weapon.Enchantment curse = Weapon.Enchantment.randomCurse();
 				damage = curse.proc((Weapon) wep, this, enemy, damage);
-				if (Random.Int(4) == 0) damage(damage/3, this);
+				int i = 4;
+				if (buff(ArtifactRecharge.class) != null) i = 1;
+				if (Random.Int(i) == 0) damage(damage/3, this);
 			} else {
 				damage = wep.proc(this, enemy, damage);
 				if (buff(FierySlash.class) != null) new Blazing().proc((Weapon) wep, this, enemy, damage);

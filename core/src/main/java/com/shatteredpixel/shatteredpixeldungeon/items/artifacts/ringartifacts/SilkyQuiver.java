@@ -251,6 +251,11 @@ public class SilkyQuiver extends Artifact {
     }
 
     @Override
+    public void charge(Hero target, float amount) {
+        target.buff(quiverBuff.class).gainCharge(CHARGE_GAIN);
+    }
+
+    @Override
     protected ArtifactBuff passiveBuff() {
         return new quiverBuff();
     }

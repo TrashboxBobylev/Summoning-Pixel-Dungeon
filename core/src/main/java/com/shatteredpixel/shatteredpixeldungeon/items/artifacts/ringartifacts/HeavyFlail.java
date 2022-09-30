@@ -210,6 +210,20 @@ public class HeavyFlail extends Artifact {
     }
 
     @Override
+    public void charge(Hero target, float amount) {
+        WarriorShield shield = target.buff(WarriorShield.class);
+        if (shield != null){
+            if (shield.shielding() < shield.maxShield()){
+                shield.partialShield += 1/(shield.rechargeRate()*6);
+                while (shield.partialShield >= 1){
+                    shield.incShield();
+                    shield.partialShield--;
+                }
+            }
+        }
+    }
+
+    @Override
     protected ArtifactBuff passiveBuff() {
         return new heavyBuff();
     }
@@ -237,7 +251,7 @@ public class HeavyFlail extends Artifact {
     public static class WarriorShield extends ShieldBuff {
 
         private HeavyFlail source;
-        private float partialShield;
+        float partialShield;
 
         public float rechargeRate(){
             return 30f - source.level()*2f;

@@ -47,9 +47,9 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 		actPriority = HERO_PRIO+1;
 	}
 
-	private int momentumStacks = 0;
-	private int freerunTurns = 0;
-	private int freerunCooldown = 0;
+	public int momentumStacks = 0;
+	public int freerunTurns = 0;
+	public int freerunCooldown = 0;
 
 	private boolean movedLastTurn = true;
 
