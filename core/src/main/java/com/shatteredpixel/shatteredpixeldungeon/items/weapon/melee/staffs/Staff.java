@@ -47,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Tierable;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTierInfo;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
@@ -55,9 +56,10 @@ import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class Staff extends Weapon {
+public class Staff extends Weapon implements Tierable {
     //Staffs is kind of weapons, that can summon minions and hold the attunement
 
     //type of minion, since we need to spawn them, not hold
@@ -191,7 +193,7 @@ public class Staff extends Weapon {
     }
 
     public int hp(int lvl){
-        switch (level()) {
+        switch (lvl) {
             case 0: return table.hp1;
             case 1: return table.hp2;
             case 2: return table.hp3;
@@ -209,7 +211,7 @@ public class Staff extends Weapon {
 
     public int minionMin(int lvl) {
         int dmg = 0;
-        switch (level()) {
+        switch (lvl) {
             case 0: dmg = table.min1; break;
             case 1: dmg = table.min2; break;
             case 2: dmg = table.min3; break;
@@ -224,7 +226,7 @@ public class Staff extends Weapon {
 
     public int minionMax(int lvl) {
         int dmg = 0;
-        switch (level()) {
+        switch (lvl) {
             case 0: dmg = table.max1; break;
             case 1: dmg = table.max2; break;
             case 2: dmg = table.max3; break;
@@ -244,12 +246,26 @@ public class Staff extends Weapon {
     }
 
     public float requiredAttunement(){
-        switch (level()) {
+        return requiredAttunement(level());
+    }
+
+    public float requiredAttunement(int lvl){
+        switch (lvl) {
             case 0: return table.att1;
             case 1: return table.att2;
             case 2: return table.att3;
         }
         return 0;
+    }
+
+    @Override
+    public String getTierMessage(int tier){
+        return Messages.get(this, "tier" + tier,
+                hp(tier-1),
+                minionMin(tier-1),
+                minionMax(tier-1),
+                new DecimalFormat("#.##").format(requiredAttunement(tier-1))
+        );
     }
 
     public void setClass(Minion.MinionClass minionClass){
