@@ -5,7 +5,6 @@ buildscript {
             url "https://plugins.gradle.org/m2/"
         }
         google()
-        jcenter()
 
     }
     dependencies {
@@ -28,8 +27,8 @@ allprojects {
         appName = 'Summoning Pixel Dungeon'
         appPackageName = 'com.trashboxbobylev.summoningpixeldungeon'
 
-        appVersionCode = 421
-        appVersionName = '1.2.2n-' + details.gitHash.substring(0, 7)
+        appVersionCode = 422
+        appVersionName = '1.2.3-' + details.gitHash.substring(0, 7)
 
         appAndroidCompileSDK = 30
         appAndroidMinSDK = 15
@@ -43,8 +42,6 @@ allprojects {
     repositories {
         maven { url 'https://jitpack.io'}
         google()
-        jcenter()
-
     }
 
 }
