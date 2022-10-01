@@ -274,7 +274,8 @@ public abstract class Mob extends Char {
 		return EXP > 0 &&
 				!(this instanceof Ghoul) && !(this instanceof Slime) &&
 				!(this instanceof WardingWraith) && !(this instanceof Necromancer.NecroSkeleton) &&
-				!(this instanceof RipperDemon);
+				!(this instanceof RipperDemon) &&
+				!Dungeon.isChallenged(Conducts.Conduct.LIMITED_MONSTERS);
 	}
 
 	//FIXME this is sort of a band-aid correction for allies needing more intelligent behaviour
