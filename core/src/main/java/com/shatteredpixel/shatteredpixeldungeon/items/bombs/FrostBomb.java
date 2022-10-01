@@ -31,8 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -52,30 +50,6 @@ public class FrostBomb extends Bomb {
 	public void explode(int cell) {
 		super.explode(cell);
 		GameScene.flash(0xFFA5F1FF);
-		if (Dungeon.level instanceof RegularLevel) {
-            Room room = ((RegularLevel) Dungeon.level).room(cell);
-            if (room != null) {
-                for (Point point : room.getPoints()) {
-                    int tile = Dungeon.level.pointToCell(point);
-                    Char ch = Actor.findChar(tile);
-                    if (ch != null && ch != Dungeon.hero) {
-                        Buff.affect(ch, Frost.class, 15f);
-                    } else if (ch instanceof Hero) {
-                        Buff.affect(ch, Chill.class, 9f);
-                    }
-                }
-            }
-        } else {
-//		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 2 );
-//		for (int i = 0; i < PathFinder.distance.length; i++) {
-//			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
-//				GameScene.add(Blob.seed(i, 10, Freezing.class));
-//				Char ch = Actor.findChar(i);
-//				if (ch != null){
-//					Buff.affect(ch, Frost.class, 15f);
-//				}
-//			}
-//		}
             boolean[] FOV = new boolean[Dungeon.level.length()];
             Point c = Dungeon.level.cellToPoint(cell);
             ShadowCaster.castShadow(c.x, c.y, FOV, Dungeon.level.losBlocking, Dungeon.level.viewDistance);
@@ -98,7 +72,6 @@ public class FrostBomb extends Bomb {
                     Buff.affect(ch, Chill.class, 9f);
                 }
             }
-        }
 	}
 	
 	@Override
