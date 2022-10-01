@@ -42,8 +42,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.watabou.utils.Random;
 
-import java.util.ArrayList;
-
 public class WndTradeItem extends WndInfoItem {
 
 	private static final float GAP		= 2;
@@ -116,8 +114,6 @@ public class WndTradeItem extends WndInfoItem {
 
 		final int price = Shopkeeper.sellPrice( item );
 
-		ArrayList<RedButton> buttons = new ArrayList();
-
 		RedButton btnBuy = new RedButton( Messages.get(this, "buy", price) ) {
 			@Override
 			protected void onClick() {
@@ -128,7 +124,7 @@ public class WndTradeItem extends WndInfoItem {
 		btnBuy.setRect( 0, pos + GAP, width, BTN_HEIGHT );
 		btnBuy.icon(new ItemSprite(ItemSpriteSheet.GOLD));
 		btnBuy.enable( price <= Dungeon.gold );
-		buttons.add(btnBuy);
+		add(btnBuy);
 
 		pos = btnBuy.bottom();
 
@@ -164,7 +160,6 @@ public class WndTradeItem extends WndInfoItem {
 			add(btnSteal);
 
 			pos = btnSteal.bottom();
-
 		}
 
 		resize(width, (int) pos);
