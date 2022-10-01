@@ -385,6 +385,7 @@ public class Dungeon {
 		else {
 			i = 5;
 		}
+		if (Dungeon.isChallenged(Conducts.Conduct.HUGE)) i *= 1.5f;
 		return i;
 	}
 
