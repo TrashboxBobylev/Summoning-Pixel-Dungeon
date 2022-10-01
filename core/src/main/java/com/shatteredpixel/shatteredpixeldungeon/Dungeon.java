@@ -60,8 +60,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import static com.shatteredpixel.shatteredpixeldungeon.Conducts.Conduct.ZEN;
-
 public class Dungeon {
 
 	//enum of items which have limited spawns, records how many have spawned
@@ -808,13 +806,6 @@ public class Dungeon {
 		for (int i = t; i <= b; i++) {
 			BArray.or( level.visited, level.heroFOV, pos, width, level.visited );
 			pos+=level.width();
-		}
-		if (Dungeon.isChallenged(ZEN)) {
-
-			if (level.needUpdateFog!=null) {
-				level.needUpdateFog = BArray.and(BArray.not(level.heroFOV,null),BArray.or(level.visited, level.needUpdateFog, null),null);
-			} else level.needUpdateFog = BArray.and(level.visited,BArray.not(level.heroFOV,null),null);
-			level.visited = level.heroFOV;
 		}
 	
 		GameScene.updateFog(l, t, width, height);
