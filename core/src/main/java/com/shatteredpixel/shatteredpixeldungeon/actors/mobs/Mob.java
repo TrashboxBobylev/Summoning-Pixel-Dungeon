@@ -192,7 +192,7 @@ public abstract class Mob extends Char {
 		boolean justAlerted = alerted;
 		alerted = false;
 
-		if (!hordeSpawned && hordeException() && Random.Int(6) == 0 && !Dungeon.bossLevel() && alignment == Alignment.ENEMY){
+		if (!hordeSpawned && hordeException() && Random.Int(7) == 0 && !Dungeon.bossLevel() && alignment == Alignment.ENEMY){
 
 			int hordeSize = Math.min(3, Random.IntRange(1, Dungeon.depth / 8));
 			for (int i = 0; i < hordeSize; i++) {
@@ -845,6 +845,7 @@ public abstract class Mob extends Char {
 
 				int exp = Dungeon.hero.lvl <= maxLvl || Dungeon.mode == Dungeon.GameMode.LOL ? EXP : 0;
 				if (Dungeon.mode == Dungeon.GameMode.NO_EXP) exp = 0;
+				if (hordeHead != -1) exp = 0;
 				if (exp > 0) {
 					Dungeon.hero.sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "exp", exp));
 				}
