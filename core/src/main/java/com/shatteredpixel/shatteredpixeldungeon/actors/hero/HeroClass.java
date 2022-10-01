@@ -282,6 +282,9 @@ public enum HeroClass {
 			FroggitStaff staff1 = new FroggitStaff();
 			staff1.identify().collect();
 
+			new MagicalHolster().collect();
+			Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
+
 			Dungeon.quickslot.setSlot(0, book);
 			Dungeon.quickslot.setSlot(1, staff1);
 		}
