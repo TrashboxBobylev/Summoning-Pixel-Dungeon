@@ -108,8 +108,8 @@ public class ArcaneBomb extends Bomb {
 				    if (Dungeon.level.distance(cell, i) > 3) chance = 0.6f;
 				    if (Dungeon.level.distance(cell, i) > 4) chance = 0.4f;
 				    if (Random.Float() < chance && Dungeon.level.insideMap(i)){
-                        Level.set( i, Terrain.EMPTY );
-
+						if (Dungeon.level.exit != i && Dungeon.level.entrance != i)
+                        	Level.set( i, Terrain.EMPTY );
                     }
                 }
                 GameScene.updateMap( i );
