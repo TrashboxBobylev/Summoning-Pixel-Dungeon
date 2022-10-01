@@ -5,7 +5,7 @@ buildscript {
             url "https://plugins.gradle.org/m2/"
         }
         google()
-
+        mavenCentral()
     }
     dependencies {
         //FIXME the version of R8 coming with gradle plugin 4.0.0 causes serious problems
@@ -42,6 +42,7 @@ allprojects {
     repositories {
         maven { url 'https://jitpack.io'}
         google()
+        mavenCentral()
     }
 
 }
