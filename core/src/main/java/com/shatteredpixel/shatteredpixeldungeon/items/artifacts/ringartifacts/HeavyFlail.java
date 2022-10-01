@@ -230,6 +230,7 @@ public class HeavyFlail extends Artifact {
 
     @Override
     public void activate(Char ch) {
+        super.activate(ch);
         Buff.affect(ch, WarriorShield.class).setSource(this);
     }
 
