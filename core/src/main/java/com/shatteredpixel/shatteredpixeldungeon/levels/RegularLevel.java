@@ -213,7 +213,7 @@ public abstract class RegularLevel extends Level {
 	public int nMobs() {
 		if (Dungeon.depth <= 1 && Dungeon.mode != Dungeon.GameMode.GAUNTLET) return 0;
 
-		int mobs = Math.round(5 + Dungeon.depth*0.7f + Random.Int(4));
+		int mobs = Math.round(4 + Dungeon.depth % Dungeon.chapterSize() + Random.Int(4));
 		if (feeling == Feeling.LARGE){
 			mobs = (int)Math.ceil(mobs * 2f);
 		}
