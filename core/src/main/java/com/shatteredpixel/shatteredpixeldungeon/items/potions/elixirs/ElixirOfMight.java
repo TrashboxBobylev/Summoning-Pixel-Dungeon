@@ -52,11 +52,6 @@ public class ElixirOfMight extends Elixir {
 	}
 
 	@Override
-	public void shatter(int cell) {
-
-	}
-
-	@Override
 	public void apply( Hero hero ) {
 		setKnown();
 		

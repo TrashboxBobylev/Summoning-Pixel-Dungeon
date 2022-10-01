@@ -39,9 +39,6 @@ public abstract class Elixir extends Potion {
 	public void doThrow(Hero hero) {
 		GameScene.selectCell(thrower);
 	}
-
-	@Override
-	public abstract void shatter( int cell );
 	
 	public abstract void apply( Hero hero );
 	

@@ -47,11 +47,6 @@ public class ElixirOfAquaticRejuvenation extends Elixir {
 	public void setAction() {
 		defaultAction = AC_DRINK;
 	}
-
-	@Override
-	public void shatter(int cell) {
-
-	}
 	
 	@Override
 	public void apply(Hero hero) {
