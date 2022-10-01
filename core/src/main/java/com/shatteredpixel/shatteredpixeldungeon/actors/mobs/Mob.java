@@ -960,7 +960,7 @@ public abstract class Mob extends Char {
 
 		MasterThievesArmband.StolenTracker stolen = buff(MasterThievesArmband.StolenTracker.class);
 		if (stolen == null || !stolen.itemWasStolen()) {
-			if (Random.Float() < lootChance) {
+			if (Random.Float() < lootChance && Dungeon.mode != Dungeon.GameMode.GAUNTLET) {
 				Item loot = createLoot();
 				if (loot != null) {
 					Dungeon.level.drop(loot, pos).sprite.drop();
@@ -975,13 +975,6 @@ public abstract class Mob extends Char {
 					Dungeon.level.drop(RingOfWealth.genConsumableDrop(Dungeon.hero.buff(MasterThievesArmband.Thievery.class).itemLevel()), pos).sprite.drop();
 					RingOfWealth.showFlareForBonusDrop(sprite);
 				}
-			}
-		}
-
-		if (Random.Float() < lootChance && Dungeon.mode != Dungeon.GameMode.GAUNTLET) {
-			Item loot = createLoot();
-			if (loot != null) {
-				Dungeon.level.drop(loot, pos).sprite.drop();
 			}
 		}
 
