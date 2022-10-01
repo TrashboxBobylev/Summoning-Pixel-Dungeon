@@ -55,6 +55,8 @@ import com.watabou.utils.Random;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import static com.shatteredpixel.shatteredpixeldungeon.journal.Document.GUIDE_SUMMONING;
+
 public class Staff extends Weapon implements Tierable {
     //Staffs is kind of weapons, that can summon minions and hold the attunement
 
@@ -418,10 +420,9 @@ public class Staff extends Weapon implements Tierable {
                     minionmin(),
                     minionmax());
             Statistics.summonedMinions++;
-            if (Statistics.summonedMinions != 0 && !Document.ADVENTURERS_GUIDE.isPageFound("Summoning")){
+            if (Statistics.summonedMinions != 0 && !Document.ADVENTURERS_GUIDE.isPageRead("Summoning")){
                 GLog.positive(Messages.get(Guidebook.class, "hint"));
-                GameScene.flashForDocument("Summoning");
-                Document.ADVENTURERS_GUIDE.readPage("Summoning");
+                GameScene.flashForDocument(GUIDE_SUMMONING);
             }
             minion.strength = STRReq();
             this.customizeMinion(minion);
