@@ -32,8 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SilkyQuiver;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -181,15 +179,12 @@ public class SpiritBow extends Weapon implements Tierable {
 		switch (lvl){
 			case 1:
 				return 2 + Dungeon.hero.lvl/5
-						+ RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
 						+ (curseInfusionBonus ? 1 : 0);
 			case 2:
 				return 5 + (int)(Dungeon.hero.lvl/1.5f)
-						+ RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
 						+ (curseInfusionBonus ? 1 : 0);
 		}
 		return 1 + Dungeon.hero.lvl/5
-				+ RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
 				+ (curseInfusionBonus ? 1 : 0);
 	}
 	
@@ -198,15 +193,12 @@ public class SpiritBow extends Weapon implements Tierable {
 		switch (lvl){
 			case 1:
 				return 7 + (int)(Dungeon.hero.lvl/2.5f)
-						+ 2*RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
 						+ (curseInfusionBonus ? 2 : 0);
 			case 2:
 				return 15 + (int)(Dungeon.hero.lvl/0.8f)
-										+ 2*RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
 										+ (curseInfusionBonus ? 1 : 0);
 		}
 		return 6 + (int)(Dungeon.hero.lvl/2.5f)
-				+ 2*RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
 				+ (curseInfusionBonus ? 2 : 0);
 	}
 
@@ -262,9 +254,9 @@ public class SpiritBow extends Weapon implements Tierable {
 				case NONE: default:
 					return 0f;
 				case SPEED:
-					return 1f * RingOfFuror.attackDelayMultiplier(owner);
+					return 1f;
 				case DAMAGE:
-					return 2f * RingOfFuror.attackDelayMultiplier(owner);
+					return 2f;
 			}
 		} else {
 			float mod = 1f / speedMod(level());

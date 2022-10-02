@@ -956,7 +956,6 @@ public abstract class Mob extends Char {
 		if (Dungeon.hero.lvl > maxLvl + 2 && Dungeon.mode != Dungeon.GameMode.LOL) return;
 
 		float lootChance = this.lootChance;
-		lootChance *= RingOfWealth.dropChanceMultiplier( Dungeon.hero );
 
 		MasterThievesArmband.StolenTracker stolen = buff(MasterThievesArmband.StolenTracker.class);
 		if (stolen == null || !stolen.itemWasStolen()) {

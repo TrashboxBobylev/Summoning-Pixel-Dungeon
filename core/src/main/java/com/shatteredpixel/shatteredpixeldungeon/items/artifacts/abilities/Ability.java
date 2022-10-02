@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -161,7 +160,7 @@ public abstract class Ability extends Artifact implements Tierable {
             LockedFloor lock = target.buff(LockedFloor.class);
             if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
                 //500 turns to a full charge
-                partialCharge += (1/5f * RingOfEnergy.artifactChargeMultiplier(target));
+                partialCharge += (1/5f);
                 if (partialCharge > 1){
                     charge++;
                     partialCharge--;

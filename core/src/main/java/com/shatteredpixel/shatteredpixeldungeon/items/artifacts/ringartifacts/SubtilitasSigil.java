@@ -35,7 +35,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -182,7 +181,7 @@ public class SubtilitasSigil extends Artifact {
             LockedFloor lock = target.buff(LockedFloor.class);
             if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
                 //300 turns to a full charge
-                partialCharge += (1/3f * RingOfEnergy.artifactChargeMultiplier(target));
+                partialCharge += (1/3f);
                 if (partialCharge > 1){
                     charge++;
                     partialCharge--;

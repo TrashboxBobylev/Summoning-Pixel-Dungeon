@@ -51,7 +51,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.Mi
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SubtilitasSigil;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfAdrenalineSurge;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Scrap;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsionicBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
@@ -876,7 +875,7 @@ public abstract class Char extends Actor {
 				result = 0.5f;
 			}
 		}
-		return result * RingOfElements.resist(this, effect);
+		return result;
 	}
 	
 	protected final HashSet<Class> immunities = new HashSet<>();

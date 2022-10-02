@@ -40,7 +40,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.Fu
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SubtilitasSigil;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -736,7 +735,7 @@ public abstract class Wand extends Weapon implements Tierable {
 			missingCharges = Math.max(0, missingCharges);
 
 			return (float) (BASE_CHARGE_DELAY
-					+ (SCALING_CHARGE_ADDITION * Math.pow(scalingFactor, missingCharges)))*rechargeModifier(level)/RingOfEnergy.wandChargeMultiplier(target);
+					+ (SCALING_CHARGE_ADDITION * Math.pow(scalingFactor, missingCharges)))*rechargeModifier(level);
 		}
 
 		public Wand wand(){

@@ -38,7 +38,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Shocker;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -353,7 +352,6 @@ public abstract class Minion extends Mob {
         int encumbrance = strength - Dungeon.hero.STR();
 
         float accuracy = 1;
-        accuracy *= RingOfAccuracy.accuracyMultiplier( Dungeon.hero );
 
         if (encumbrance > 0){
             accuracy /= Math.pow(1.5, encumbrance);

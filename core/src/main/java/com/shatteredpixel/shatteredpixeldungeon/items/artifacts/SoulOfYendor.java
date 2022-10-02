@@ -36,7 +36,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EarthParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -710,7 +709,6 @@ public class SoulOfYendor extends Artifact {
             LockedFloor lock = target.buff(LockedFloor.class);
             if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
                 float chargeGain = 0.025f + 0.025f*level();
-                chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
                 partialCharge += chargeGain;
 
                 while (partialCharge >= 1) {
@@ -755,7 +753,6 @@ public class SoulOfYendor extends Artifact {
                 //exp towards toolkit levels is included here
                 float effectiveLevel = GameMath.gate(0, level() + exp/10f, 10);
                 float chargeGain = (2 + (1f * effectiveLevel)) * levelPortion;
-                chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
                 partialCharge += chargeGain;
 
                 //charge is in increments of 1/10 max hunger value.

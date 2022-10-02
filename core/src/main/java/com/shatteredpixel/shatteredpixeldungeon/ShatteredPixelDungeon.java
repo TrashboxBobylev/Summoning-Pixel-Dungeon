@@ -40,6 +40,7 @@ public class ShatteredPixelDungeon extends Game {
 
 	//variable constants for specific older versions of shattered, used for data conversion
 	//versions older than v1.1.5 are no longer supported, and data from them is ignored
+	public static final int v1_2_3 = 422;
 	public static final int v1_1_5 = 390;
 	public static final int v0_7_3b = 349;
 	public static final int v0_7_4c = 362;
@@ -48,6 +49,39 @@ public class ShatteredPixelDungeon extends Game {
 	public ShatteredPixelDungeon( PlatformSupport platform ) {
 		super( sceneClass == null ? TitleScene.class : sceneClass, platform );
 
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SubtilitasSigil.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MirrorOfFates.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEvasion" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.FuelContainer.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.ParchmentOfElbereth.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.HeavyFlail.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfMight" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MomentumBoots.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MomentumBoots.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfHaste" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SilkyQuiver.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.BadgeOfBravery.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAttunement" );
 	}
 	
 	@Override

@@ -37,7 +37,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.Guidebook;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAttunement;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
@@ -204,7 +203,7 @@ public class Staff extends Weapon implements Tierable {
 
 
     public int minionmin() {
-        return Math.round(minionMin(level())* RingOfAttunement.damageMultiplier(Dungeon.hero));
+        return Math.round(minionMin(level()));
     }
 
     public int minionMin(int lvl) {
@@ -219,7 +218,7 @@ public class Staff extends Weapon implements Tierable {
     }
 
     public int minionmax() {
-        return Math.round(minionMax(level())* RingOfAttunement.damageMultiplier(Dungeon.hero));
+        return Math.round(minionMax(level()));
     }
 
     public int minionMax(int lvl) {

@@ -56,7 +56,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMight;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAttunement;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Recycle;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
@@ -98,7 +98,10 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.*;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -196,8 +199,6 @@ public class Hero extends Char {
 		}
 
 		HT = (int) ((adjustHT + adjustScaling*(lvl-1)) + HTBoost);
-		float multiplier = RingOfMight.HTMultiplier(this);
-		HT = Math.round(multiplier * HT);
 		
 		if (buff(ElixirOfMight.HTBoost.class) != null){
 			HT += buff(ElixirOfMight.HTBoost.class).boost();
@@ -213,8 +214,6 @@ public class Hero extends Char {
 
 	public int STR() {
 		int STR = this.STR;
-
-		STR += RingOfMight.strengthBonus( this );
 		
 		AdrenalineSurge buff = buff(AdrenalineSurge.class);
 		if (buff != null){
@@ -362,9 +361,6 @@ public class Hero extends Char {
 	public void hitSound(float pitch) {
 		if ( belongings.weapon != null ){
 			belongings.weapon.hitSound(pitch);
-		} else if (RingOfForce.getBuffedBonus(this, RingOfForce.Force.class) > 0) {
-			//pitch deepens by 2.5% (additive) per point of strength, down to 75%
-			super.hitSound( pitch * GameMath.gate( 0.75f, 1.25f - 0.025f*STR(), 1f) );
 		} else {
 			super.hitSound(pitch * 1.1f);
 		}
@@ -428,7 +424,6 @@ public class Hero extends Char {
 		float accuracy = 1;
 		if (Dungeon.mode == Dungeon.GameMode.EXPLORE) accuracy = 1.2f;
 		if (Dungeon.isChallenged(Conducts.Conduct.KING)) accuracy = 1.1f;
-		accuracy *= RingOfAccuracy.accuracyMultiplier( this );
 
 		if (belongings.weapon instanceof MissileWeapon &&
 				target.buff(QuiverMark.class) != null) return INFINITE_ACCURACY;
@@ -470,8 +465,6 @@ public class Hero extends Char {
 		
 		float evasion = defenseSkill;
 		if (Dungeon.mode == Dungeon.GameMode.EXPLORE) evasion *= 1.2f;
-
-		evasion *= RingOfEvasion.evasionMultiplier( this );
 		
 		if (paralysed > 0) {
 			evasion /= 2;
@@ -537,9 +530,8 @@ public class Hero extends Char {
 
 		if (wep != null) {
 			dmg = wep.damageRoll( this );
-			if (!(wep instanceof MissileWeapon)) dmg += RingOfForce.armedDamageBonus(this);
 		} else {
-			dmg = RingOfForce.damageRoll(this);
+			dmg = Random.NormalIntRange(1, Math.max(STR()-8, 1));
 		}
 		if (dmg < 0) dmg = 0;
 		
@@ -560,8 +552,6 @@ public class Hero extends Char {
 	public float speed() {
 
 		float speed = super.speed();
-
-		speed *= RingOfHaste.speedMultiplier(this);
 		
 		if (belongings.armor != null) {
 			speed = belongings.armor.speedFactor(this, speed);
@@ -641,7 +631,7 @@ public class Hero extends Char {
 			//Normally putting furor speed on unarmed attacks would be unnecessary
 			//But there's going to be that one guy who gets a furor+force ring combo
 			//This is for that one guy, you shall get your fists of fury!
-			attackSpeed = RingOfFuror.attackDelayMultiplier(this)/adrenalineMod;
+			attackSpeed = 1f/adrenalineMod;
 		}
 		if (Dungeon.hero.buff(MomentumBoots.momentumBuff.class) != null
 				&& Dungeon.hero.buff(MomentumBoots.momentumBuff.class).isCursed()){
@@ -1367,8 +1357,6 @@ public class Hero extends Char {
 		if (buff(ParchmentOfElbereth.parchmentPraying.class) != null){
 			dmg *= 0.8f;
 		}
-
-		dmg = (int)Math.ceil(dmg * RingOfElements.damageMultiplier( this ));
 
 		//TODO improve this when I have proper damage source logic
 		if (belongings.armor != null && belongings.armor.hasGlyph(AntiMagic.class, this)

@@ -33,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAttunement;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -136,8 +135,8 @@ public class StationaryStaff extends Staff {
             ScrollOfTeleportation.appear(minion, target);
             owner.usedAttunement += requiredAttunement();
             minion.setDamage(
-                    Math.round(minionMin(level())* RingOfAttunement.damageMultiplier(owner)),
-                    Math.round(minionMax(level()) * RingOfAttunement.damageMultiplier(owner)));
+                    Math.round(minionMin(level())),
+                    Math.round(minionMax(level())));
             Statistics.summonedMinions++;
             minion.strength = STRReq();
             minion.attunement = requiredAttunement();
