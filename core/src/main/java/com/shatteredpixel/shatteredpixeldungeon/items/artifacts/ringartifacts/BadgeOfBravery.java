@@ -131,6 +131,8 @@ public class BadgeOfBravery extends Artifact {
                 } else {
                     GLog.i( Messages.get(BadgeOfBravery.class, "feed") );
                 }
+                if (item.isEquipped(hero))
+                    ((Weapon) item).doUnequip(hero, false);
                 item.detach(hero.belongings.backpack);
             }
         }

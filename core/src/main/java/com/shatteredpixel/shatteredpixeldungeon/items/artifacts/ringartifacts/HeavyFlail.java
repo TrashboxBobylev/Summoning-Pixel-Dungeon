@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
@@ -336,7 +337,7 @@ public class HeavyFlail extends Artifact {
 
         @Override
         public boolean itemSelectable(Item item) {
-            return item instanceof Armor && ((Armor) item).tier > 1;
+            return item instanceof Armor && ((Armor) item).tier > 1 && !(item instanceof ConjurerArmor);
         }
 
         @Override
@@ -359,6 +360,8 @@ public class HeavyFlail extends Artifact {
                 }
                 if (preLevel == curItem.level())
                     GLog.i( Messages.get(HeavyFlail.class, "feed") );
+                if (item.isEquipped(hero))
+                    ((Armor) item).doUnequip(hero, false);
                 item.detach(hero.belongings.backpack);
             }
         }
