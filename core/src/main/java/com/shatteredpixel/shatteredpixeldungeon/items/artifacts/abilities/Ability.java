@@ -176,4 +176,9 @@ public abstract class Ability extends Artifact implements Tierable {
             return true;
         }
     }
+
+    @Override
+    public int energyVal() {
+        return 18 * quantity; //scroll of upgrade + cost + average of all components
+    }
 }
