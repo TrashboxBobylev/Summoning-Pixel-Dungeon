@@ -74,5 +74,10 @@ public class Rotberry extends Plant {
 		public int value() {
 			return 45 * quantity;
 		}
+
+		@Override
+		public int energyVal() {
+			return 3 * quantity;
+		}
 	}
 }

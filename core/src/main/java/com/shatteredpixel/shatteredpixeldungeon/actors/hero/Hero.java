@@ -27,7 +27,6 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Alchemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.GonerField;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.PerfumeGas;
@@ -878,19 +877,14 @@ public class Hero extends Char {
 		if (Dungeon.level.distance(dst, pos) <= 1) {
 
 			ready();
-			
-			AlchemistsToolkit.ToolkitBuff kit = buff(AlchemistsToolkit.kitEnergy.class);
-			if (kit == null) kit = buff(SoulOfYendor.omniBuff.class);
+
+			AlchemistsToolkit.kitEnergy kit = buff(AlchemistsToolkit.kitEnergy.class);
 			if (kit != null && kit.isCursed()){
 				GLog.warning( Messages.get(AlchemistsToolkit.class, "cursed"));
 				return false;
 			}
-			
-			Alchemy alch = (Alchemy) Dungeon.level.blobs.get(Alchemy.class);
-			if (alch != null) {
-				alch.alchPos = dst;
-				AlchemyScene.setProvider( alch );
-			}
+
+			AlchemyScene.clearToolkit();
 			ShatteredPixelDungeon.switchScene(AlchemyScene.class);
 			return false;
 

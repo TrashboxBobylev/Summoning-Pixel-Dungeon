@@ -116,16 +116,20 @@ public class Item implements Bundlable {
 		}
 		return actions;
 	}
-	
-	public boolean doPickUp( Hero hero ) {
+
+	public boolean doPickUp(Hero hero) {
+		return doPickUp( hero, hero.pos );
+	}
+
+	public boolean doPickUp(Hero hero, int pos) {
 		if (collect( hero.belongings.backpack )) {
-			
-			GameScene.pickUp( this, hero.pos );
+
+			GameScene.pickUp( this, pos );
 			Sample.INSTANCE.play( Assets.Sounds.ITEM );
-            Hunger.adjustHunger(-2.25f);
+			Hunger.adjustHunger(-2.25f);
 			hero.spendAndNext( TIME_TO_PICK_UP );
 			return true;
-			
+
 		} else {
 			return false;
 		}
@@ -507,6 +511,11 @@ public class Item implements Bundlable {
 	}
 	
 	public int value() {
+		return 0;
+	}
+
+	//item's value in energy crystals
+	public int energyVal() {
 		return 0;
 	}
 	

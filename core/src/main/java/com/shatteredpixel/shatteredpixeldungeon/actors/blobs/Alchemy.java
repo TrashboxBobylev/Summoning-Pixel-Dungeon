@@ -27,13 +27,15 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.blobs;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.EnergyCrystal;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.AlchemyScene;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
-public class Alchemy extends Blob implements AlchemyScene.AlchemyProvider {
+public class Alchemy extends Blob {
 
 	protected int pos;
-	
+
 	@Override
 	protected void evolve() {
 		int cell;
@@ -42,6 +44,17 @@ public class Alchemy extends Blob implements AlchemyScene.AlchemyProvider {
 				cell = j + i* Dungeon.level.width();
 				if (Dungeon.level.insideMap(cell)) {
 					off[cell] = cur[cell];
+
+					//for pre-v1.1.0 saves, drops 1/4 the pot's old energy contents in crystals
+					if (off[cell] >= 4){
+						int n;
+						do {
+							n = cell + PathFinder.NEIGHBOURS8[Random.Int( 8 )];
+						} while (!Dungeon.level.passable[n] && !Dungeon.level.avoid[n]);
+						Dungeon.level.drop( new EnergyCrystal((int)Math.ceil(off[cell]/4f)), n ).sprite.drop( cell );
+						off[cell] = 1;
+					}
+
 					volume += off[cell];
 					if (off[cell] > 0 && Dungeon.level.heroFOV[cell]){
 						Notes.add( Notes.Landmark.ALCHEMY );
@@ -50,24 +63,11 @@ public class Alchemy extends Blob implements AlchemyScene.AlchemyProvider {
 			}
 		}
 	}
-	
+
 	@Override
 	public void use( BlobEmitter emitter ) {
 		super.use( emitter );
 		emitter.start( Speck.factory( Speck.BUBBLE ), 0.33f, 0 );
 	}
-	
-	public static int alchPos;
-	
-	//1 volume is kept in reserve
-	
-	@Override
-	public int getEnergy() {
-		return Math.max(0, cur[alchPos] - 1);
-	}
-	
-	@Override
-	public void spendEnergy(int reduction) {
-		cur[alchPos] = Math.max(1, cur[alchPos] - reduction);
-	}
+
 }

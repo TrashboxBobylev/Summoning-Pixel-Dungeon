@@ -74,6 +74,11 @@ public class ArcaneCatalyst extends Spell {
 	public int value() {
 		return 58 * quantity;
 	}
+
+	@Override
+	public int energyVal() {
+		return 8 * quantity;
+	}
 	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe {
 		

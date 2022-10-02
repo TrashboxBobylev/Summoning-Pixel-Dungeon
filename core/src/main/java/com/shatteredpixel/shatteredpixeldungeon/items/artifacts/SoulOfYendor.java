@@ -61,7 +61,7 @@ import com.watabou.utils.*;
 
 import java.util.ArrayList;
 
-public class SoulOfYendor extends Artifact {
+public class SoulOfYendor extends Artifact implements AlchemyScene.ToolkitLike {
 
     private static final String AC_USE = "USE";
     private static final String AC_USEAGAIN = "USEAGAIN";
@@ -229,12 +229,10 @@ public class SoulOfYendor extends Artifact {
                 break;
             case 1:
                 //Alchemist Toolkit
-                if (!isEquipped(hero))                                          GLog.i( Messages.get(AlchemistsToolkit.class, "need_to_equip") );
-                else if (cursed)                                                GLog.warning( Messages.get(AlchemistsToolkit.class, "cursed") );
-                else if (hero.visibleEnemies() > hero.mindVisionEnemies.size()) GLog.i( Messages.get(AlchemistsToolkit.class, "enemy_near") );
+                if (!isEquipped(hero))              GLog.i( Messages.get(this, "need_to_equip") );
+                else if (cursed)                    GLog.warning( Messages.get(this, "cursed") );
                 else {
-
-                    AlchemyScene.setProvider(hero.buff(omniBuff.class));
+                    AlchemyScene.assignToolkit(this);
                     Game.switchScene(AlchemyScene.class);
                 }
                 break;
@@ -699,10 +697,19 @@ public class SoulOfYendor extends Artifact {
         }
     }
 
+    public int availableEnergy(){
+        return charge;
+    }
+
+    public int consumeEnergy(int amount){
+        int result = amount - charge;
+        charge = Math.max(0, charge - amount);
+        return Math.max(0, result);
+    }
+
     public class omniBuff extends ArtifactBuff
             implements RegenerationBuff,
-                SandalsOfNature.NaturalismBuff, AlchemistsToolkit.ToolkitBuff,
-                AlchemyScene.AlchemyProvider, MasterThievesArmband.ThieveryBuff {
+                SandalsOfNature.NaturalismBuff, MasterThievesArmband.ThieveryBuff {
         @Override
         public boolean act() {
 
@@ -741,45 +748,6 @@ public class SoulOfYendor extends Artifact {
         @Override
         public int natureLevel() {
             return (int) (level()/2.5f);
-        }
-
-        @Override
-        public void gainCharge(float levelPortion) {
-            if (charge < chargeCap) {
-
-                //generates 2 energy every hero level, +0.1 energy per toolkit level
-                //to a max of 12 energy per hero level
-                //This means that energy absorbed into the kit is recovered in 6.67 hero levels (as 33% of input energy is kept)
-                //exp towards toolkit levels is included here
-                float effectiveLevel = GameMath.gate(0, level() + exp/10f, 10);
-                float chargeGain = (2 + (1f * effectiveLevel)) * levelPortion;
-                partialCharge += chargeGain;
-
-                //charge is in increments of 1/10 max hunger value.
-                while (partialCharge >= 1) {
-                    charge++;
-                    partialCharge -= 1;
-
-                    if (charge == chargeCap){
-                        GLog.positive( Messages.get(AlchemistsToolkit.class, "full") );
-                        partialCharge = 0;
-                    }
-                    if (charge >= 100) charge = 100;
-
-                    updateQuickslot();
-                }
-            } else
-                partialCharge = 0;
-        }
-
-        @Override
-        public int getEnergy() {
-            return charge;
-        }
-
-        @Override
-        public void spendEnergy(int reduction) {
-            charge = Math.max(0, charge - reduction);
         }
 
         public boolean steal(Item item){

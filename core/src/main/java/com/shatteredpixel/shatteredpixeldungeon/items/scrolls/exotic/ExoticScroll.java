@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
@@ -108,52 +107,41 @@ public abstract class ExoticScroll extends Scroll {
 	public int value() {
 		return (Reflection.newInstance(exoToReg.get(getClass())).value() + 36) * quantity;
 	}
-	
+
+	@Override
+	//6 more energy than its none-exotic equivalent
+	public int energyVal() {
+		return (Reflection.newInstance(exoToReg.get(getClass())).energyVal() + 6) * quantity;
+	}
+
 	public static class ScrollToExotic extends Recipe {
-		
+
 		@Override
 		public boolean testIngredients(ArrayList<Item> ingredients) {
-			int r = 0;
-			Scroll s = null;
-			
-			for (Item i : ingredients){
-				if (i instanceof Runestone){
-					r++;
-				} else if (regToExo.containsKey(i.getClass())) {
-					s = (Scroll)i;
-				}
+			if (ingredients.size() == 1 && regToExo.containsKey(ingredients.get(0).getClass())){
+				return true;
 			}
-			
-			return s != null && r == 2;
+
+			return false;
 		}
-		
+
 		@Override
 		public int cost(ArrayList<Item> ingredients) {
-			return 0;
+			return 6;
 		}
-		
+
 		@Override
 		public Item brew(ArrayList<Item> ingredients) {
-			Item result = null;
-			
 			for (Item i : ingredients){
 				i.quantity(i.quantity()-1);
-				if (regToExo.containsKey(i.getClass())) {
-					result = Reflection.newInstance(regToExo.get(i.getClass()));
-				}
 			}
-			return result;
+
+			return Reflection.newInstance(regToExo.get(ingredients.get(0).getClass()));
 		}
-		
+
 		@Override
 		public Item sampleOutput(ArrayList<Item> ingredients) {
-			for (Item i : ingredients){
-				if (regToExo.containsKey(i.getClass())) {
-					return Reflection.newInstance(regToExo.get(i.getClass()));
-				}
-			}
-			return null;
-			
+			return Reflection.newInstance(regToExo.get(ingredients.get(0).getClass()));
 		}
 	}
 }

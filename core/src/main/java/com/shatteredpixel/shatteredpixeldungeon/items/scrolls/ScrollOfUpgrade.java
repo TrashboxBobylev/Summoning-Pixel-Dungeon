@@ -133,4 +133,9 @@ public class ScrollOfUpgrade extends InventoryScroll {
 	public int value() {
 		return isKnown() ? 100 * quantity : super.value();
 	}
+
+	@Override
+	public int energyVal() {
+		return isKnown() ? 8 * quantity : super.energyVal();
+	}
 }

@@ -153,7 +153,6 @@ public abstract class Recipe {
 	//*******
 	
 	private static Recipe[] oneIngredientRecipes = new Recipe[]{
-		new AlchemistsToolkit.upgradeKit(),
 		new Scroll.ScrollToStone(),
 		new StewedMeat.oneMeat()
 	};
@@ -225,32 +224,34 @@ public abstract class Recipe {
 		new MeatPie.Recipe(),
             new Contain.Recipe(),
 	};
-	
-	public static Recipe findRecipe(ArrayList<Item> ingredients){
-		
+
+	public static ArrayList<Recipe> findRecipes(ArrayList<Item> ingredients){
+
+		ArrayList<Recipe> result = new ArrayList<>();
+
 		if (ingredients.size() == 1){
 			for (Recipe recipe : oneIngredientRecipes){
 				if (recipe.testIngredients(ingredients)){
-					return recipe;
+					result.add(recipe);
 				}
 			}
-			
+
 		} else if (ingredients.size() == 2){
 			for (Recipe recipe : twoIngredientRecipes){
 				if (recipe.testIngredients(ingredients)){
-					return recipe;
+					result.add(recipe);
 				}
 			}
-			
+
 		} else if (ingredients.size() == 3){
 			for (Recipe recipe : threeIngredientRecipes){
 				if (recipe.testIngredients(ingredients)){
-					return recipe;
+					result.add(recipe);
 				}
 			}
 		}
-		
-		return null;
+
+		return result;
 	}
 	
 	public static boolean usableInRecipe(Item item){

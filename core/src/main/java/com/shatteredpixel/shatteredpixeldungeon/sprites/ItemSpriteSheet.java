@@ -98,6 +98,7 @@ public class ItemSpriteSheet {
     public static final int TENGU_SHOCKER   = UNCOLLECTIBLE+10;
     public static final int SPIRIT_BLAST = UNCOLLECTIBLE+12;
     public static final int CRYSTAL = UNCOLLECTIBLE+13;
+	public static final int ENERGY = UNCOLLECTIBLE+14;
     static{
         assignItemRect(GOLD,        15, 13);
         assignItemRect(DEWDROP,     10, 10);
@@ -114,6 +115,8 @@ public class ItemSpriteSheet {
         assignItemRect(TENGU_SHOCKER,   13, 12);
         assignItemRect(SPIRIT_BLAST, 15, 15);
         assignItemRect(CRYSTAL, 11, 11);
+
+		assignItemRect(ENERGY, 16, 16);
     }
 
 	private static final int CONTAINERS     =                               xy(1, 3);   //16 slots

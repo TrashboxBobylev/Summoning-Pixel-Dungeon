@@ -202,6 +202,7 @@ public class Dungeon {
 	
 	public static int depth;
 	public static int gold;
+	public static int energy;
 	
 	public static HashSet<Integer> chapters;
 
@@ -512,6 +513,7 @@ public class Dungeon {
 	private static final String MODE        = "mode";
 	private static final String HERO		= "hero";
 	private static final String GOLD		= "gold";
+	private static final String ENERGY		= "energy";
 	private static final String DEPTH		= "depth";
 	private static final String MOBS_TO_CHAMPION	= "mobs_to_champion";
 	private static final String DROPPED     = "dropped%d";
@@ -533,6 +535,7 @@ public class Dungeon {
 			bundle.put( MOBS_TO_CHAMPION, mobsToChampion );
 			bundle.put( HERO, hero );
 			bundle.put( GOLD, gold );
+			bundle.put( ENERGY, energy );
 			bundle.put( DEPTH, depth );
 			bundle.put( MODE, mode);
 
@@ -687,6 +690,7 @@ public class Dungeon {
 		hero = (Hero)bundle.get( HERO );
 		
 		gold = bundle.getInt( GOLD );
+		energy = bundle.getInt( ENERGY );
 		depth = bundle.getInt( DEPTH );
 		
 		Statistics.restoreFromBundle( bundle );
