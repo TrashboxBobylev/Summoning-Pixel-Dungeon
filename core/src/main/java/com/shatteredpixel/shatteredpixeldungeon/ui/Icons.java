@@ -57,6 +57,9 @@ public enum Icons {
 	ALERT,
 	LOST,
 	TARGET,
+	ENERGY,
+	COIN_SML,
+	ENERGY_SML,
 	BACKPACK,
 	SEED_POUCH,
 	SCROLL_HOLDER,
@@ -180,6 +183,15 @@ public enum Icons {
 			break;
 		case TARGET:
 			icon.frame( icon.texture.uvRect( 32, 32, 48, 48 ) );
+			break;
+		case ENERGY:
+			icon.frame( icon.texture.uvRectBySize( 76, 80, 16, 16 ) );
+			break;
+		case COIN_SML:
+			icon.frame( icon.texture.uvRectBySize( 92, 80, 7, 7 ) );
+			break;
+		case ENERGY_SML:
+			icon.frame( icon.texture.uvRectBySize( 92, 88, 8, 7 ) );
 			break;
 		case BACKPACK:
 			icon.frame( icon.texture.uvRect( 48, 32, 58, 42 ) );
