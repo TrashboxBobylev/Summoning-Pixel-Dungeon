@@ -68,7 +68,7 @@ public class WandOfCorrosion extends Wand {
 
 	public int gasStrength(int level){
 		switch (level){
-			case 1: return 5 + Dungeon.hero.lvl/3;
+			case 1: return 3 + Dungeon.hero.lvl/4;
 			case 2: return 3 + Dungeon.hero.lvl/2;
 		}
 		return 2 + Dungeon.hero.lvl/4;
@@ -78,7 +78,7 @@ public class WandOfCorrosion extends Wand {
 	public float rechargeModifier(int level) {
 		switch (level){
 			case 0: return 1.0f;
-			case 1: return 1.0f;
+			case 1: return 1.33f;
 			case 2: return 2.2f;
 		}
 		return 0f;
