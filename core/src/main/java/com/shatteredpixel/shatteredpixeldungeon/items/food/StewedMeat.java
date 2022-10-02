@@ -45,7 +45,7 @@ public class StewedMeat extends Food {
 			inputs =  new Class[]{MysteryMeat.class};
 			inQuantity = new int[]{1};
 			
-			cost = 2;
+			cost = 1;
 			
 			output = StewedMeat.class;
 			outQuantity = 1;
@@ -57,7 +57,7 @@ public class StewedMeat extends Food {
 			inputs =  new Class[]{MysteryMeat.class};
 			inQuantity = new int[]{2};
 			
-			cost = 3;
+			cost = 2;
 			
 			output = StewedMeat.class;
 			outQuantity = 2;
@@ -72,7 +72,7 @@ public class StewedMeat extends Food {
 			inputs =  new Class[]{MysteryMeat.class};
 			inQuantity = new int[]{3};
 			
-			cost = 4;
+			cost = 2;
 			
 			output = StewedMeat.class;
 			outQuantity = 3;

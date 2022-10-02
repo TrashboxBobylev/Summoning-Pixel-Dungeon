@@ -155,8 +155,8 @@ public abstract class Recipe {
 	private static Recipe[] oneIngredientRecipes = new Recipe[]{
 		new Scroll.ScrollToStone(),
 		new StewedMeat.oneMeat(),
-			new ExoticPotion.PotionToExotic(),
-			new ExoticScroll.ScrollToExotic(),
+		new ExoticPotion.PotionToExotic(),
+		new ExoticScroll.ScrollToExotic(),
 	};
 	
 	private static Recipe[] twoIngredientRecipes = new Recipe[]{
@@ -223,7 +223,7 @@ public abstract class Recipe {
 		new Potion.SeedToPotion(),
 		new StewedMeat.threeMeat(),
 		new MeatPie.Recipe(),
-            new Contain.Recipe(),
+		new Contain.Recipe(),
 	};
 
 	public static ArrayList<Recipe> findRecipes(ArrayList<Item> ingredients){

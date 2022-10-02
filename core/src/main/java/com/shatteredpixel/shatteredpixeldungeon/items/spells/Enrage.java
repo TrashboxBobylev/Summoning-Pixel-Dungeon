@@ -61,7 +61,7 @@ public class Enrage extends TargetedSpell {
             inputs =  new Class[]{ScrollOfRage.class, ArcaneCatalyst.class};
             inQuantity = new int[]{1, 1};
 
-            cost = 6;
+            cost = 5;
 
             output = Enrage.class;
             outQuantity = 4;

@@ -139,7 +139,7 @@ public class Broadsword extends MeleeWeapon {
             inputs =  new Class[]{WornShortsword.class, ArmorKit.class};
             inQuantity = new int[]{1, 1};
 
-            cost = 16;
+            cost = 12;
 
             output = Broadsword.class;
             outQuantity = 1;
