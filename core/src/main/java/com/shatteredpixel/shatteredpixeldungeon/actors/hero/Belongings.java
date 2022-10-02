@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
@@ -55,7 +54,8 @@ public class Belongings implements Iterable<Item> {
 	public Armor armor = null;
 	public Artifact artifact = null;
 	public KindofMisc misc = null;
-	public Ring ring = null;
+	//TODO: do something about this
+	public Artifact ring = null;
 
 	//used when thrown weapons temporary occupy the weapon slot
 	public KindOfWeapon stashedWeapon = null;
@@ -123,23 +123,18 @@ public class Belongings implements Iterable<Item> {
 			KindofMisc m = (KindofMisc)bundle.get("misc1");
 			if (m instanceof Artifact){
 				artifact = (Artifact) m;
-			} else if (m instanceof Ring) {
-				ring = (Ring) m;
 			}
 
 			m = (KindofMisc)bundle.get("misc2");
-			if (m instanceof Artifact){
-				if (artifact == null)   artifact = (Artifact) m;
-				else                    misc = (Artifact) m;
-			} else if (m instanceof Ring) {
-				if (ring == null)       ring = (Ring) m;
-				else                    misc = (Ring) m;
-			}
+			if (artifact == null)   artifact = (Artifact) m;
+			else if (ring == null)   ring = (Artifact) m;
+			else                    misc = (Artifact) m;
+
 
 		} else {
 			artifact = (Artifact) bundle.get(ARTIFACT);
 			misc = (KindofMisc) bundle.get(MISC);
-			ring = (Ring) bundle.get(RING);
+			ring = (Artifact) bundle.get(RING);
 		}
 
 		if (artifact != null)   artifact.activate(owner);
