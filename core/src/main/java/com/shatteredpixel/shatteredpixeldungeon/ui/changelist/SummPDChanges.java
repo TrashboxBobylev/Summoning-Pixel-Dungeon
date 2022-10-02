@@ -114,6 +114,10 @@ public class SummPDChanges {
                         "_-_ Prison's cells are no longer allowed to spawn in famous glitchy manner.\n\n" +
                         "_-_ Demon Halls's bomb mazes generate like all other mazes and no longer only feature nukes."
         ));
+        changes.addButton( new ChangeButton(Icons.get(Icons.ENERGY), "Alchemical energy",
+                "_-_ Implemented Shattered's second alchemy rework.\n\n" +
+                        "_-_ Abilities have cost of 18 alchemical energy."
+        ));
         changes.addButton( new ChangeButton(new Image(new RatSprite()), "Hordes",
                 "_-_ Smaller horde members no longer grant XP.\n\n" +
                         "_-_ Reduced the chance of spawning from 17% to 14%."
@@ -130,7 +134,8 @@ public class SummPDChanges {
                         "_-_ Super-shots no longer invoke targeting when unable to shoot.\n\n" +
                         "_-_ Conjurer's spells are considered unique for revival purposes.\n\n" +
                         "_-_ Added placeholder surface sprite for Adventurer.\n\n" +
-                        "_-_ Adjusted Hacatu's power scaling to account for reduced max attunement."
+                        "_-_ Adjusted Hacatu's power scaling to account for reduced max attunement.\n\n" +
+                        "_-_ Nerfed Wand of Corrosion's rank II."
         ));
         changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
                 "Fixed:\n" +
