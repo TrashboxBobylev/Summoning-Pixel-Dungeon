@@ -111,7 +111,10 @@ public class BadgeOfBravery extends Artifact {
 
         @Override
         public boolean itemSelectable(Item item) {
-            return item instanceof MeleeWeapon && ((MeleeWeapon) item).tier == curItem.level()+2;
+            boolean condition = item instanceof MeleeWeapon && ((MeleeWeapon) item).tier == curItem.level() + 2;
+            if (item.isEquipped(curUser) && item.visiblyCursed()) condition = false;
+            return condition;
+
         }
 
         @Override

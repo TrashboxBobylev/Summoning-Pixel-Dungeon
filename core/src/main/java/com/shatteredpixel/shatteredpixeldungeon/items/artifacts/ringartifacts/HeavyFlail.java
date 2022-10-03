@@ -337,7 +337,9 @@ public class HeavyFlail extends Artifact {
 
         @Override
         public boolean itemSelectable(Item item) {
-            return item instanceof Armor && ((Armor) item).tier > 1 && !(item instanceof ConjurerArmor);
+            boolean condition = item instanceof Armor && ((Armor) item).tier > 1 && !(item instanceof ConjurerArmor);
+            if (item.isEquipped(curUser) && item.visiblyCursed()) condition = false;
+            return condition;
         }
 
         @Override
