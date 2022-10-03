@@ -442,9 +442,6 @@ public class Item implements Bundlable {
 
 		String name = name();
 
-		if (visiblyUpgraded() != 0)
-			name = Messages.format( TXT_TO_STRING_LVL, name, visiblyUpgraded()  );
-
 		if (quantity > 1)
 			name = Messages.format( TXT_TO_STRING_X, name, quantity );
 
@@ -465,6 +462,9 @@ public class Item implements Bundlable {
 
 				name = Messages.format( "%s %s", name, tier  );
 			}
+		} else {
+			if (visiblyUpgraded() != 0)
+				name = Messages.format( TXT_TO_STRING_LVL, name, visiblyUpgraded()  );
 		}
 
 		return name;
