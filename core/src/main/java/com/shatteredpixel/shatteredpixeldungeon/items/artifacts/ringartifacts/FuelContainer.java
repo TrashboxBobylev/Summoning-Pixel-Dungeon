@@ -121,12 +121,7 @@ public class FuelContainer extends Artifact {
 
     public class fuelBuff extends ArtifactBuff {
         public boolean canUseCharge(Wand wand, int charges){
-            if (charge >= wand.rechargeModifier() * charges * 10) {
-                return true;
-            } else {
-                GLog.warning(Messages.get(Wand.class, "fizzles"));
-                return false;
-            }
+            return charge >= wand.rechargeModifier() * charges * 10;
         }
 
         public void useCharge(Wand wand, int charges){

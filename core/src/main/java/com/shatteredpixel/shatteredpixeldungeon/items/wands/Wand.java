@@ -96,7 +96,7 @@ public abstract class Wand extends Weapon implements Tierable {
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		if (curCharges > 0 || !curChargeKnown) {
+		if (canZap(hero) || !curChargeKnown) {
 			actions.add( AC_ZAP );
 		}
 		if (hero.heroClass != HeroClass.MAGE && !Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)){
@@ -201,6 +201,17 @@ public abstract class Wand extends Weapon implements Tierable {
 
 	public abstract void onHit(Wand wand, Char attacker, Char defender, int damage);
 
+	public boolean canZap(Hero owner){
+		if ( curCharges >= (cursed ? 1 : chargesPerCast())){
+			return true;
+		} else {
+			if (owner.buff(FuelContainer.fuelBuff.class) != null){
+				return owner.buff(FuelContainer.fuelBuff.class).canUseCharge(this, (cursed ? 1 : chargesPerCast()));
+			}
+		}
+		return false;
+	}
+
 	public boolean tryToZap( Hero owner, int target ){
 
 		if (owner.buff(MagicImmune.class) != null || Dungeon.isChallenged(Conducts.Conduct.NO_MAGIC)){
@@ -212,15 +223,11 @@ public abstract class Wand extends Weapon implements Tierable {
             return false;
         }
 
-		if ( curCharges >= (cursed ? 1 : chargesPerCast())){
-			return true;
+		if (canZap(owner)){
+			GLog.warning(Messages.get(this, "fizzles"));
+			return false;
 		} else {
-			if (owner.buff(FuelContainer.fuelBuff.class) != null){
-				return owner.buff(FuelContainer.fuelBuff.class).canUseCharge(this, (cursed ? 1 : chargesPerCast()));
-			} else {
-				GLog.warning(Messages.get(this, "fizzles"));
-				return false;
-			}
+			return true;
 		}
 	}
 
