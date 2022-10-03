@@ -224,10 +224,10 @@ public abstract class Wand extends Weapon implements Tierable {
         }
 
 		if (canZap(owner)){
+			return true;
+		} else {
 			GLog.warning(Messages.get(this, "fizzles"));
 			return false;
-		} else {
-			return true;
 		}
 	}
 
