@@ -94,8 +94,8 @@ public class StationaryStaff extends Staff {
                     Invisibility.dispel();
                         try {
                             Sample.INSTANCE.play( Assets.Sounds.ZAP );
-                            staff.summon(curUser, target);
-                            staff.wandUsed(false);
+                            if (staff.summon(curUser, target))
+                                staff.wandUsed(false);
                         } catch (Exception e) {
                             ShatteredPixelDungeon.reportException(e);
                             GLog.warning( Messages.get(Wand.class, "fizzles") );
@@ -112,7 +112,7 @@ public class StationaryStaff extends Staff {
     };
 
     //summoning logic
-    public void summon(Hero owner, int target) throws InstantiationException, IllegalAccessException {
+    public boolean summon(Hero owner, int target) throws InstantiationException, IllegalAccessException {
 
         //searching for available space
         //did it before summoning
@@ -121,7 +121,7 @@ public class StationaryStaff extends Staff {
         if (requiredAttunement() > owner.attunement() || (requiredAttunement() + owner.usedAttunement > owner.attunement())){
             owner.sprite.zap(0);
             GLog.warning( Messages.get(Staff.class, "too_low_attunement") );
-            return;
+            return false;
         }
 
         int strength = 1;
@@ -150,5 +150,6 @@ public class StationaryStaff extends Staff {
             }
             minion.setMaxHP((int) (hp(level()) * robeBonus));
         } else GLog.warning( Messages.get(Wand.class, "fizzles") );
+        return true;
     }
 }
