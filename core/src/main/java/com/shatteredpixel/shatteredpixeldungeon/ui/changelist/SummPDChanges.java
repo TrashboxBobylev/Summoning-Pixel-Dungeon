@@ -135,7 +135,8 @@ public class SummPDChanges {
                         "_-_ Conjurer's spells are considered unique for revival purposes.\n\n" +
                         "_-_ Added placeholder surface sprite for Adventurer.\n\n" +
                         "_-_ Adjusted Hacatu's power scaling to account for reduced max attunement.\n\n" +
-                        "_-_ Nerfed Wand of Corrosion's rank II."
+                        "_-_ Nerfed Wand of Corrosion's rank II.\n\n" +
+                        "_-_ Added third slot for artifacts."
         ));
         changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
                 "Fixed:\n" +
@@ -143,7 +144,9 @@ public class SummPDChanges {
                         "_-_ Elixirs not producing any particles when thrown into the ground.\n" +
                         "_-_ Wands showing their rank when unidentified.\n" +
                         "_-_ Penetration debuff not scaling with Wand of Shadow Beams's ranks.\n" +
-                        "_-_ Broken Seal mentioning armor in inventory prompt."
+                        "_-_ Broken Seal mentioning armor in inventory prompt.\n" +
+                        "_-_ Stationary staves consuming attunement even when their normal counterparts do not.\n" +
+                        "_-_ Toy Knife's displayed name not changing with enchantments or curses."
         ));
 
         changes = ChangesScene.createChangeInfo(changeInfos, "1.2.2", true, Window.TITLE_COLOR);
