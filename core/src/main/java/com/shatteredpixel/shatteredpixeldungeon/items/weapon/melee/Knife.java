@@ -74,16 +74,22 @@ public class Knife extends MeleeWeapon {
 
     @Override
     public String name() {
+        String name;
         switch (buffedLvl()){
             case 0: case 1: case 2: case 3:
-                return Messages.get(this, "name");
+                name = Messages.get(this, "name");
+                break;
             case 4: case 5: case 6:
-                return Messages.get(this, "name2");
+                name = Messages.get(this, "name2");
+                break;
             case 7: case 8: case 9:
-                return Messages.get(this, "name3");
+                name = Messages.get(this, "name3");
+                break;
             default:
-                return Messages.get(this, "name4");
+                name = Messages.get(this, "name4");
+                break;
         }
+        return enchantment != null && (cursedKnown || !enchantment.curse()) ? enchantment.name( name ) : name;
     }
 
     @Override
