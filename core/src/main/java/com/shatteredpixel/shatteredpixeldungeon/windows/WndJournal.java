@@ -587,7 +587,7 @@ public class WndJournal extends WndTabbed {
 	private static class CatalogTab extends Component{
 		
 		private RedButton[] itemButtons;
-		private static final int NUM_BUTTONS = 7;
+		private static final int NUM_BUTTONS = 6;
 		
 		private static int currentItemIdx   = 0;
 		
