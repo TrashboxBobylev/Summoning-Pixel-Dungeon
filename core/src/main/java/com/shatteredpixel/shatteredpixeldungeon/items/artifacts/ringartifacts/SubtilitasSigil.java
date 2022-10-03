@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.DummyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
@@ -134,12 +135,12 @@ public class SubtilitasSigil extends Artifact {
                     curUser.sprite.parent.add(
                             new Beam.RedRay(curUser.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(ray.collisionPos)));
                 }
-                Buff.affect(curUser, EnrageBuff.class, 3 + level());
                 for (int c : cone.cells) {
                     Char ch = Actor.findChar(c);
                     if (ch != null) {
 
                         Buff.affect(ch, EnrageBuff.class, 3 + level());
+                        Buff.affect(ch, Amok.class, 2 + level()*0.75f);
                     }
                 }
 
