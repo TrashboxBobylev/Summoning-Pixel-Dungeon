@@ -52,7 +52,7 @@ jobs:
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest_debug_"
-          prerelease: false
+          prerelease: true
           title: "${{ env.version }}"
           files: |
               android/build/outputs/apk/release/android-release.apk
