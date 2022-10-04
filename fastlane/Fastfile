@@ -19,7 +19,8 @@ platform :android do
   desc "Deploy a new version to the Google Play"
   lane :production do
     gradle(task: "clean bundleRelease")
-    notes = changelog_from_git_commits
+    notes = changelog_from_git_commits(merge_commit_filtering: "exclude_merges" )
+    File.open(ENV["GITHUB_WORKSPACE"] + "/fastlane/metadata/android/en-US/changelogs/out.txt", "w") {|f| f.write(notes) }
     upload_to_play_store
   end
 end
