@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
 import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MomentumBoots;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
@@ -59,8 +60,6 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
-
-import static com.shatteredpixel.shatteredpixeldungeon.Conducts.Conduct.ZEN;
 
 public class Dungeon {
 
@@ -203,6 +202,7 @@ public class Dungeon {
 	
 	public static int depth;
 	public static int gold;
+	public static int energy;
 	
 	public static HashSet<Integer> chapters;
 
@@ -222,6 +222,7 @@ public class Dungeon {
 
 		Actor.clear();
 		Actor.resetNextID();
+		MomentumBoots.instance = null;
 		
 		Random.pushGenerator( seed );
 
@@ -387,6 +388,7 @@ public class Dungeon {
 		else {
 			i = 5;
 		}
+		if (Dungeon.isChallenged(Conducts.Conduct.HUGE)) i *= 1.5f;
 		return i;
 	}
 
@@ -511,6 +513,7 @@ public class Dungeon {
 	private static final String MODE        = "mode";
 	private static final String HERO		= "hero";
 	private static final String GOLD		= "gold";
+	private static final String ENERGY		= "energy";
 	private static final String DEPTH		= "depth";
 	private static final String MOBS_TO_CHAMPION	= "mobs_to_champion";
 	private static final String DROPPED     = "dropped%d";
@@ -532,6 +535,7 @@ public class Dungeon {
 			bundle.put( MOBS_TO_CHAMPION, mobsToChampion );
 			bundle.put( HERO, hero );
 			bundle.put( GOLD, gold );
+			bundle.put( ENERGY, energy );
 			bundle.put( DEPTH, depth );
 			bundle.put( MODE, mode);
 
@@ -686,6 +690,7 @@ public class Dungeon {
 		hero = (Hero)bundle.get( HERO );
 		
 		gold = bundle.getInt( GOLD );
+		energy = bundle.getInt( ENERGY );
 		depth = bundle.getInt( DEPTH );
 		
 		Statistics.restoreFromBundle( bundle );
@@ -808,13 +813,6 @@ public class Dungeon {
 		for (int i = t; i <= b; i++) {
 			BArray.or( level.visited, level.heroFOV, pos, width, level.visited );
 			pos+=level.width();
-		}
-		if (Dungeon.isChallenged(ZEN)) {
-
-			if (level.needUpdateFog!=null) {
-				level.needUpdateFog = BArray.and(BArray.not(level.heroFOV,null),BArray.or(level.visited, level.needUpdateFog, null),null);
-			} else level.needUpdateFog = BArray.and(level.visited,BArray.not(level.heroFOV,null),null);
-			level.visited = level.heroFOV;
 		}
 	
 		GameScene.updateFog(l, t, width, height);

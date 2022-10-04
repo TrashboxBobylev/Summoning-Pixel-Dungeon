@@ -36,20 +36,19 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Overload;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.FuelContainer;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SubtilitasSigil;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndTierInfo;
-import com.watabou.noosa.Game;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Tierable;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.PixelParticle;
@@ -61,7 +60,7 @@ import com.watabou.utils.Random;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public abstract class Wand extends Weapon {
+public abstract class Wand extends Weapon implements Tierable {
 
 	public static final String AC_ZAP	= "ZAP";
 
@@ -97,14 +96,12 @@ public abstract class Wand extends Weapon {
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		if (curCharges > 0 || !curChargeKnown) {
+		if (canZap(hero) || !curChargeKnown) {
 			actions.add( AC_ZAP );
 		}
 		if (hero.heroClass != HeroClass.MAGE && !Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)){
 			actions.remove(AC_EQUIP);
 		}
-		if (level() > 0) actions.add(AC_DOWNGRADE);
-		actions.add( AC_TIERINFO );
 
 		return actions;
 	}
@@ -120,13 +117,6 @@ public abstract class Wand extends Weapon {
 			curItem = this;
 			GameScene.selectCell( zapper );
 			
-		} else if (action.equals(AC_DOWNGRADE)){
-			GameScene.flash(0xFFFFFF);
-			Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
-			level(level()-1);
-			GLog.warning( Messages.get(Staff.class, "lower_tier"));
-		} else if (action.equals(AC_TIERINFO)) {
-			ShatteredPixelDungeon.runOnRenderThread(() -> Game.scene().addToFront(new WndTierInfo(Wand.this)));
 		}
 	}
 
@@ -211,6 +201,17 @@ public abstract class Wand extends Weapon {
 
 	public abstract void onHit(Wand wand, Char attacker, Char defender, int damage);
 
+	public boolean canZap(Hero owner){
+		if ( curCharges >= (cursed ? 1 : chargesPerCast())){
+			return true;
+		} else {
+			if (owner.buff(FuelContainer.fuelBuff.class) != null){
+				return owner.buff(FuelContainer.fuelBuff.class).canUseCharge(this, (cursed ? 1 : chargesPerCast()));
+			}
+		}
+		return false;
+	}
+
 	public boolean tryToZap( Hero owner, int target ){
 
 		if (owner.buff(MagicImmune.class) != null || Dungeon.isChallenged(Conducts.Conduct.NO_MAGIC)){
@@ -222,7 +223,7 @@ public abstract class Wand extends Weapon {
             return false;
         }
 
-		if ( curCharges >= (cursed ? 1 : chargesPerCast())){
+		if (canZap(owner)){
 			return true;
 		} else {
 			GLog.warning(Messages.get(this, "fizzles"));
@@ -295,11 +296,6 @@ public abstract class Wand extends Weapon {
 		}
 	}
 
-	@Override
-	public boolean isUpgradable() {
-		return level() < 2;
-	}
-
 	public void level(int value) {
 		super.level( value );
 	}
@@ -367,23 +363,6 @@ public abstract class Wand extends Weapon {
 		}
 
 		return desc;
-	}
-
-	@Override
-	public String toString() {
-
-		String name = name();
-		String tier = "";
-		switch (level()){
-			case 0: tier = "I"; break;
-			case 1: tier = "II"; break;
-			case 2: tier = "III"; break;
-		}
-
-		name = Messages.format( "%s %s", name, tier  );
-
-		return name;
-
 	}
 
 	public String statsDesc(){
@@ -492,8 +471,16 @@ public abstract class Wand extends Weapon {
 				Badges.validateItemLevelAquired( this );
 			}
 		}
-		
-		curCharges -= cursed ? 1 : chargesPerCast();
+
+		boolean fuelUsed = false;
+
+		if (curCharges > 0)
+			curCharges -= cursed ? 1 : chargesPerCast();
+		else if (curUser.buff(FuelContainer.fuelBuff.class) != null){
+			fuelUsed = true;
+			curUser.buff(FuelContainer.fuelBuff.class).useCharge(this, (cursed ? 1 : chargesPerCast()));
+		}
+
 
 		WandOfMagicMissile.MagicCharge buff = curUser.buff(WandOfMagicMissile.MagicCharge.class);
 		if (buff != null && !isMM){
@@ -501,13 +488,17 @@ public abstract class Wand extends Weapon {
 		}
 
 		Invisibility.dispel();
-		if (Dungeon.hero.buff(EnergyOverload.class) != null && !cursed) curCharges += chargesPerCast();
+		if (Dungeon.hero.buff(EnergyOverload.class) != null && !cursed && !fuelUsed) curCharges += chargesPerCast();
 
 		if (curUser.heroClass == HeroClass.MAGE) levelKnown = true;
 		updateQuickslot();
 
 		if (curUser.subClass == HeroSubClass.GLADIATOR){
 			Buff.affect(curUser, Stacks.class).add(1);
+		}
+		SubtilitasSigil.Recharge sigilCharge = curUser.buff(SubtilitasSigil.Recharge.class);
+		if (sigilCharge != null){
+			sigilCharge.gainExp(1);
 		}
 
 		curUser.spendAndNext( TIME_TO_ZAP );
@@ -706,7 +697,11 @@ public abstract class Wand extends Weapon {
 		}
 		@Override
 		public boolean act() {
-			if (curCharges < maxCharges)
+			boolean canCharge = true;
+			FuelContainer.fuelBuff fuelBuff = target.buff(FuelContainer.fuelBuff.class);
+			if (fuelBuff != null && fuelBuff.isCursed())
+				canCharge = false;
+			if (curCharges < maxCharges && canCharge)
 				recharge();
 			
 			while (partialCharge >= 1 && curCharges < maxCharges) {
@@ -747,7 +742,7 @@ public abstract class Wand extends Weapon {
 			missingCharges = Math.max(0, missingCharges);
 
 			return (float) (BASE_CHARGE_DELAY
-					+ (SCALING_CHARGE_ADDITION * Math.pow(scalingFactor, missingCharges)))*rechargeModifier(level)/RingOfEnergy.wandChargeMultiplier(target);
+					+ (SCALING_CHARGE_ADDITION * Math.pow(scalingFactor, missingCharges)))*rechargeModifier(level);
 		}
 
 		public Wand wand(){

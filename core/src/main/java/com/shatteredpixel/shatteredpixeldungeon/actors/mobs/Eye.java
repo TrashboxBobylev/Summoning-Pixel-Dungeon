@@ -155,7 +155,11 @@ public class Eye extends Mob {
 	}
 	
 	//used so resistances can differentiate between melee and magical attacks
-	public static class DeathGaze{}
+	public static class DeathGaze extends MagicalAttack{
+		public DeathGaze(Mob attacker, int damage) {
+			super(attacker, damage);
+		}
+	}
 
 	public void deathGaze(){
 		if (!beamCharged || beamCooldown > 0 || beam == null)
@@ -190,7 +194,7 @@ public class Eye extends Mob {
 					damage = Random.NormalIntRange( 64, 89 );
 				}
                 if (buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) damage *= 0.6f;
-				ch.damage(damage , new DeathGaze() );
+				ch.damage(damage , new DeathGaze(this, damage) );
 
 				if (Dungeon.level.heroFOV[pos]) {
 					ch.sprite.flash();
@@ -216,7 +220,7 @@ public class Eye extends Mob {
 
 	//generates an average of 1 dew, 0.25 seeds, and 0.25 stones
 	@Override
-	protected Item createLoot() {
+    public Item createLoot() {
 		Item loot;
 		switch(Random.Int(4)){
 			case 0: case 1: default:

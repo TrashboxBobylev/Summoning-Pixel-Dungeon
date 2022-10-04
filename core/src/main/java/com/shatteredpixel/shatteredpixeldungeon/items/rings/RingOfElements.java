@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Hacatu;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Wizard;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.ArcaneBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.*;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrimTrap;
@@ -76,6 +77,7 @@ public class RingOfElements extends Ring {
 		
 		RESISTS.add( DisintegrationTrap.class );
 		RESISTS.add( GrimTrap.class );
+		RESISTS.add(ArcaneBomb.class);
 
 		RESISTS.add( WandOfBlastWave.class );
 		RESISTS.add( WandOfBounceBeams.class );

@@ -188,6 +188,8 @@ public class Bomb extends Item {
 
 				int dmg = damageRoll();
 				if (this instanceof RatBomb) dmg = (int) (damageRoll() / Random.Float(2, 3.5f));
+				if (ch instanceof Hero && Dungeon.isChallenged(Conducts.Conduct.EXPLOSIONS))
+					dmg /= 2;
 
 				//those not at the center of the blast take less damage
 				if (ch.pos != cell){
@@ -409,23 +411,23 @@ public class Bomb extends Item {
 		
 		private static final HashMap<Class<?extends Bomb>, Integer> bombCosts = new HashMap<>();
 		static {
-			bombCosts.put(FrostBomb.class,      2);
-			bombCosts.put(WoollyBomb.class,     2);
+			bombCosts.put(FrostBomb.class,      0);
+			bombCosts.put(WoollyBomb.class,     3);
 			
-			bombCosts.put(Firebomb.class,       4);
-			bombCosts.put(Noisemaker.class,     7);
+			bombCosts.put(Firebomb.class,       2);
+			bombCosts.put(Noisemaker.class,     4);
 			
-			bombCosts.put(Flashbang.class,      6);
-			bombCosts.put(ShockBomb.class,      6);
+			bombCosts.put(Flashbang.class,      2);
+			bombCosts.put(ShockBomb.class,      4);
 
-			bombCosts.put(RegrowthBomb.class,   8);
-			bombCosts.put(HolyBomb.class,       8);
+			bombCosts.put(RegrowthBomb.class,   3);
+			bombCosts.put(HolyBomb.class,       3);
 			
-			bombCosts.put(ArcaneBomb.class,     15);
-			bombCosts.put(ShrapnelBomb.class,   10);
+			bombCosts.put(ArcaneBomb.class,     6);
+			bombCosts.put(ShrapnelBomb.class,   6);
 
-			bombCosts.put(Webbomb.class,        7);
-			bombCosts.put(SupplyBomb.class, 6);
+			bombCosts.put(Webbomb.class,        3);
+			bombCosts.put(SupplyBomb.class,     3);
 		}
 		
 		@Override

@@ -74,6 +74,11 @@ public class ArcaneCatalyst extends Spell {
 	public int value() {
 		return 58 * quantity;
 	}
+
+	@Override
+	public int energyVal() {
+		return 8 * quantity;
+	}
 	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe {
 		
@@ -99,12 +104,12 @@ public class ArcaneCatalyst extends Spell {
 		public int cost(ArrayList<Item> ingredients) {
 			for (Item i : ingredients){
 				if (i instanceof Plant.Seed){
-					return 2;
-				} else if (i instanceof Runestone){
 					return 1;
+				} else if (i instanceof Runestone){
+					return 0;
 				}
 			}
-			return 1;
+			return 0;
 		}
 		
 		@Override

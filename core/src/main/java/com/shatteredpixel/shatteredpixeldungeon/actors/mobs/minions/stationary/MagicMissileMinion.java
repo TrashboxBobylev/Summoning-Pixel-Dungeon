@@ -87,9 +87,17 @@ public class MagicMissileMinion extends StationaryMinion {
             } else {
                 enemy.damage(dmg, this);
             }
-            damage(lvl * 3 / 2, this);
+            damage(decay(), this);
         } else {
             enemy.sprite.showStatus(CharSprite.NEUTRAL, enemy.defenseVerb());
         }
+    }
+
+    private int decay(){
+        switch (lvl){
+            case 1: return 3;
+            case 2: return 4;
+        }
+        return 1;
     }
 }

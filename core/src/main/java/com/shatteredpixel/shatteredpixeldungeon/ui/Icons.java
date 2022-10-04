@@ -47,6 +47,7 @@ public enum Icons {
 	AUDIO,
 	TALENT,
 	MAGNIFY,
+	PLUS,
 
 	//ingame UI icons
 	SKULL,
@@ -56,6 +57,9 @@ public enum Icons {
 	ALERT,
 	LOST,
 	TARGET,
+	ENERGY,
+	COIN_SML,
+	ENERGY_SML,
 	BACKPACK,
 	SEED_POUCH,
 	SCROLL_HOLDER,
@@ -103,7 +107,13 @@ public enum Icons {
 	CHARLIE,
 	CUBE_CODE,
 	PURIGRO,
-	ARCNOR;
+	ARCNOR,
+
+	ZACHARY,
+	OMICRONRG,
+	KRAUZXE,
+	LOLMAN,
+	MARSHALL;
 
 	public Image get() {
 		return get( this );
@@ -145,6 +155,7 @@ public enum Icons {
 		case DISPLAY:
 			icon.frame( icon.texture.uvRect( 32, 16, 45, 32 ) );
 			break;
+
 		//TODO UI icon?
 		case DATA:
 			icon.frame( icon.texture.uvRect( 48, 16, 64, 31 ) );
@@ -154,6 +165,9 @@ public enum Icons {
 			break;
 		case MAGNIFY:
 			icon.frame( icon.texture.uvRect( 48, 80, 62, 94 ) );
+			break;
+		case PLUS:
+			icon.frame( icon.texture.uvRect( 64, 80, 75, 91 ) );
 			break;
 		case SKULL:
 			icon.frame( icon.texture.uvRect( 0, 32, 8, 40 ) );
@@ -175,6 +189,15 @@ public enum Icons {
 			break;
 		case TARGET:
 			icon.frame( icon.texture.uvRect( 32, 32, 48, 48 ) );
+			break;
+		case ENERGY:
+			icon.frame( icon.texture.uvRectBySize( 76, 80, 16, 16 ) );
+			break;
+		case COIN_SML:
+			icon.frame( icon.texture.uvRectBySize( 92, 80, 7, 7 ) );
+			break;
+		case ENERGY_SML:
+			icon.frame( icon.texture.uvRectBySize( 92, 88, 8, 7 ) );
 			break;
 		case BACKPACK:
 			icon.frame( icon.texture.uvRect( 48, 32, 58, 42 ) );
@@ -308,6 +331,26 @@ public enum Icons {
 				break;
 			case DARK_AMU:
 				icon.frame( icon.texture.uvRect( 96, 160, 112, 176 ) );
+				break;
+			case ZACHARY:
+				icon.frame( icon.texture.uvRectBySize( 128, 0, 32, 32 ) );
+				icon.scale.set(PixelScene.align(0.49f));
+				break;
+			case OMICRONRG:
+				icon.frame( icon.texture.uvRectBySize( 160, 0, 32, 32 ) );
+				icon.scale.set(PixelScene.align(0.49f));
+				break;
+			case KRAUZXE:
+				icon.frame( icon.texture.uvRectBySize( 128, 32, 32, 32 ) );
+				icon.scale.set(PixelScene.align(0.49f));
+				break;
+			case LOLMAN:
+				icon.frame( icon.texture.uvRectBySize( 160, 32, 32, 32 ) );
+				icon.scale.set(PixelScene.align(0.49f));
+				break;
+			case MARSHALL:
+				icon.frame( icon.texture.uvRectBySize( 128, 64, 32, 32 ) );
+				icon.scale.set(PixelScene.align(0.49f));
 				break;
 		}
 		return icon;

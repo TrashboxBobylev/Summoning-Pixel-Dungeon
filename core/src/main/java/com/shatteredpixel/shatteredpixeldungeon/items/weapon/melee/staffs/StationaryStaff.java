@@ -33,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAttunement;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -95,8 +94,8 @@ public class StationaryStaff extends Staff {
                     Invisibility.dispel();
                         try {
                             Sample.INSTANCE.play( Assets.Sounds.ZAP );
-                            staff.summon(curUser, target);
-                            staff.wandUsed(false);
+                            if (staff.summon(curUser, target))
+                                staff.wandUsed(false);
                         } catch (Exception e) {
                             ShatteredPixelDungeon.reportException(e);
                             GLog.warning( Messages.get(Wand.class, "fizzles") );
@@ -113,7 +112,7 @@ public class StationaryStaff extends Staff {
     };
 
     //summoning logic
-    public void summon(Hero owner, int target) throws InstantiationException, IllegalAccessException {
+    public boolean summon(Hero owner, int target) throws InstantiationException, IllegalAccessException {
 
         //searching for available space
         //did it before summoning
@@ -122,7 +121,7 @@ public class StationaryStaff extends Staff {
         if (requiredAttunement() > owner.attunement() || (requiredAttunement() + owner.usedAttunement > owner.attunement())){
             owner.sprite.zap(0);
             GLog.warning( Messages.get(Staff.class, "too_low_attunement") );
-            return;
+            return false;
         }
 
         int strength = 1;
@@ -136,8 +135,8 @@ public class StationaryStaff extends Staff {
             ScrollOfTeleportation.appear(minion, target);
             owner.usedAttunement += requiredAttunement();
             minion.setDamage(
-                    Math.round(minionMin(level())* RingOfAttunement.damageMultiplier(owner)),
-                    Math.round(minionMax(level()) * RingOfAttunement.damageMultiplier(owner)));
+                    Math.round(minionMin(level())),
+                    Math.round(minionMax(level())));
             Statistics.summonedMinions++;
             minion.strength = STRReq();
             minion.attunement = requiredAttunement();
@@ -151,5 +150,6 @@ public class StationaryStaff extends Staff {
             }
             minion.setMaxHP((int) (hp(level()) * robeBonus));
         } else GLog.warning( Messages.get(Wand.class, "fizzles") );
+        return true;
     }
 }

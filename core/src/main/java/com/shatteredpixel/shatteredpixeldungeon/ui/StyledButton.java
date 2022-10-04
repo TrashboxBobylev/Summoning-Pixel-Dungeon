@@ -40,6 +40,7 @@ public class StyledButton extends Button {
 	protected Image icon;
 
 	public boolean multiline;
+	public boolean leftJustify = false;
 
 	public StyledButton(Chrome.Type type, String label ) {
 		this(type, label, 9);
@@ -90,6 +91,18 @@ public class StyledButton extends Button {
 			icon.x = x + (width() - componentWidth)/2f + 1;
 			icon.y = y + (height() - icon.height()) / 2f;
 			PixelScene.align(icon);
+		}
+
+		if (leftJustify){
+			if (icon != null){
+				icon.x = x + bg.marginLeft() + 1;
+				PixelScene.align(icon);
+				text.setPos( icon.x + icon.width() + 1, text.top());
+				PixelScene.align(text);
+			} else if (text != null) {
+				text.setPos( x + bg.marginLeft() + 1, text.top());
+				PixelScene.align(text);
+			}
 		}
 
 	}

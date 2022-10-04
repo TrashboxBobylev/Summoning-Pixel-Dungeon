@@ -59,20 +59,79 @@ public class AboutScene extends PixelScene {
 		tb.setRect((w - fullWidth)/2f, 6, 120, 0);
 		content.add(tb);
 
+		CreditsBlock zachary = new CreditsBlock(false, ItemSlot.GOLD,
+				"Wiki, Testing and Proofreading:",
+				Icons.ZACHARY.get(),
+				"Zackary4536",
+				null,
+				null);
+		zachary.setSize(colWidth/2f, 0);
+		if (landscape()){
+			zachary.setPos(tb.right()-10, tb.top() + (tb.height() - tb.height())/2f);
+		} else {
+			zachary.setPos(w/2f - colWidth/2f, tb.bottom()+5);
+		}
+		content.add(zachary);
+
+		CreditsBlock omicronrg = new CreditsBlock(false, ItemSlot.ENHANCED,
+				"Support and Testing:",
+				Icons.OMICRONRG.get(),
+				"Daniel Ømicrón Rodriguez",
+				"Click for Youtube channel",
+				"https://www.youtube.com/channel/UCH5v6V_Be2_AY0bprgHS4Bw");
+		omicronrg.setRect(zachary.right()+10, zachary.top(), colWidth/2f, 0);
+		content.add(omicronrg);
+
+		CreditsBlock krauzxe = new CreditsBlock(false, ItemSlot.BRONZE,
+				"Former Sprite Artist:",
+				Icons.KRAUZXE.get(),
+				"Krauzxe##1119",
+				null,
+				null);
+		krauzxe.setSize(colWidth/2f, 0);
+		if (landscape()){
+			krauzxe.setPos(zachary.left()+zachary.width()/2, omicronrg.bottom()+6);
+		} else {
+			krauzxe.setPos(tb.left()+tb.width()/4, omicronrg.bottom()+5);
+		}
+		content.add(krauzxe);
+
+		CreditsBlock lolman = new CreditsBlock(false, ItemSlot.SILVER,
+				"Support and Ideas:",
+				Icons.LOLMAN.get(),
+				"Gammalolman#1119",
+				"reddit.com/u/Hyperlolman",
+				"https://www.reddit.com/user/Hyperlolman");
+		lolman.setSize(colWidth/2f, 0);
+		if (landscape()){
+			lolman.setPos(tb.right(), krauzxe.bottom()+8);
+		} else {
+			lolman.setPos(tb.left()-5, krauzxe.bottom()+8);
+		}
+		content.add(lolman);
+
+		CreditsBlock marshall = new CreditsBlock(false, ItemSlot.WARNING,
+				"Conjurer's sprites:",
+				Icons.MARSHALL.get(),
+				"MarshalldotEXE",
+				"Click for Youtube channel",
+				"https://www.youtube.com/channel/UCEhheHlAmqkGMqULoDAIMOQ");
+		marshall.setRect(lolman.right()+10, lolman.top(), colWidth/2f, 0);
+		content.add(marshall);
+
 		CreditsBlock guys = new CreditsBlock(false, Window.TITLE_COLOR,
-				"Credits:",
+				"The rest of credits:",
 				Icons.INFO.get(),
-				"Krauzxe#1119, MarshalldotEXE#9805, RavenWolf#4290 - Advanced sprites\n" +
-						"0micronrg#0223 - Conjurer's graphics, app icon and playtesting\n" +
+				"RavenWolf#4290 - Advanced sprites\n" +
 						"Zrp200#0484, Kohru#4813 - Code spinnets\n"+
-						"smujames#5300, Gamma Lolman#3370, NeoSlav#5320 and rest of community - ideas and support",
+						"smujames#5300, NeoSlav#5320 and rest of community - ideas and support",
 				"discord.gg/tkrjtUS",
 				"https://discord.gg/tkrjtUS");
 		guys.setSize(colWidth, 4);
 		if (landscape()){
-			guys.setPos(tb.right(), tb.top() + (tb.height() - guys.height())/2f + 5);
+			guys.setPos(tb.left(), krauzxe.bottom()+10);
 		} else {
-			guys.setPos(w/2f - colWidth/2f, tb.bottom()+2);
+			guys.setPos(tb.left(), marshall.bottom()+10);
 		}
 		content.add(guys);
 
@@ -94,7 +153,7 @@ public class AboutScene extends PixelScene {
 		shpx.setRect((w - fullWidth)/2f, 6, 120, 0);
 		content.add(shpx);
 		if (landscape()){
-			shpx.setRect(tb.left(), tb.bottom() + 24, colWidth, 0);
+			shpx.setRect(tb.left(), guys.bottom() + 24, colWidth, 0);
 		} else {
 			shpx.setRect(tb.left(), guys.bottom() + 16, colWidth, 0);
 		}

@@ -135,6 +135,7 @@ public enum Document {
 	public static final String GUIDE_FOOD           = "Food";
 	public static final String GUIDE_DIEING         = "Dieing";
 	public static final String GUIDE_SEARCHING      = "Searching";
+	public static final String GUIDE_SUMMONING      = "Summoning";
 
 	//pages and default states
 	static {
@@ -154,7 +155,8 @@ public enum Document {
 		ADVENTURERS_GUIDE.pagesStates.put("Levelling",          debug ? READ : NOT_FOUND);
 		ADVENTURERS_GUIDE.pagesStates.put("Positioning",        debug ? READ : NOT_FOUND);
 		ADVENTURERS_GUIDE.pagesStates.put("Magic",              debug ? READ : NOT_FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put("Summoning",          debug ? READ : NOT_FOUND);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_SUMMONING,      debug ? READ : NOT_FOUND);
+		ADVENTURERS_GUIDE.pagesStates.put("Tiering",            debug ? READ : NOT_FOUND);
 		
 		//given in sewers
 		ALCHEMY_GUIDE.pagesStates.put("Potions",              debug ? READ : NOT_FOUND);

@@ -310,7 +310,7 @@ public class Mimic extends Mob {
 					reward = Generator.randomWeapon();
 					break;
 				case 4:
-					reward = Generator.random(Generator.Category.RING);
+					reward = Generator.randomArtifact();
 					break;
                 case 5:
                     reward = Generator.randomStaff();

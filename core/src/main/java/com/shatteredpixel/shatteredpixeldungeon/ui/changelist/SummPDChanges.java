@@ -71,52 +71,86 @@ public class SummPDChanges {
 
     public static void add_1_1_7_Changes(ArrayList<ChangeInfo> changeInfos) {
 
-        ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "1.2.2", true, Window.TITLE_COLOR);
+        ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "1.2.3", true, Window.TITLE_COLOR);
 
-        changes = ChangesScene.createChangeInfo(changeInfos, "1.2.2 bugfixes", false, Window.WHITE);
+        changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
+        changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
+                "_-_ Released October, 2022\n" +
+                        "_-_ 366 days after 1.2.2\n\n" +
+                        ""
+        ));
+        changes = ChangesScene.createChangeInfo(changeInfos, "New Content", false, 0x10bb00);
+        changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_MIRROR, null), "New Artifacts",
+                "Following the future plans for more integration of ranking mechanic, rings have been replaced by new and already existing artifacts!\n\n" +
+                        "   _-_ Ring of Accuracy -> _Subtilitas Sigil_\n" +
+                        "   _-_ Ring of Evasion -> _Mirror of Fates_\n" +
+                        "   _-_ Ring of Energy -> _Fuel Container_\n" +
+                        "   _-_ Ring of Haste/Furor -> _Momentum Boots_\n" +
+                        "   _-_ Ring of Endurance -> _Parchment of Elbereth_\n" +
+                        "   _-_ Ring of Force -> _Badge of Bravery_\n" +
+                        "   _-_ Ring of Might -> _Guardian's Stone_\n" +
+                        "   _-_ Ring of Sharpshooting -> _Silky Quiver_\n" +
+                        "   _-_ Ring of Attunement -> _Dried Rose_\n" +
+                        "   _-_ Ring of Wealth -> _Master Thieves' Armband_"
+        ));
+        changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.PERFUME_ABILITY, null), "Abilities",
+                "Added new abilities: \n\n" +
+                        "_-_ _Perfume Blast_ - replaces the old Brew of Perfume, spreads the perfume gas that distracts enemies."
+        ));
+        changes = ChangesScene.createChangeInfo(changeInfos, "Changes", false, 0xd1bb00);
+        changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_ARMBAND, null), "Artifacts",
+            "_- Master Thieves' Armband_ was reworked to its Shattered equivalent (no longer picking up charge from gold, allows to steal items from enemies)\n\n" +
+                    "_- Dried Rose_ increases max attunement at rate of 0.5 atu per level and can be used in Gauntlet mode."
+        ));
         changes.addButton(new ChangeButton(Icons.get(Icons.CHALLENGE_ON), "Conducts",
-                "_-_ Fixed Innate Rage crashing when player is dying.\n\n" +
-                        "_-_ Added experimental toggle to allow multiple conducts. Trust me, it's not balanced.\n\n" +
-                        "_-_ Conducts window's info buttons show correct descriptions for conducts.\n\n" +
-                        "_-_ Selecting a null conduct deselects all the other for convenience.\n\n" +
-                        "_-_ Goldfish Memory properly now blocks any identification.\n\n" +
-                        "_-_ Endless Potential characters can gather mana now.\n\n" +
-                        "_-_ Added new conduct that minimizes the loot from dungeon.\n\n" +
-                        "_-_ Entropy Drive doesn't consume additional hunger anymore, converts progression items or uses transmutation animation.\n\n" +
-                        "_-_ Added new conduct that makes monsters a limited resource.\n\n" +
-                        "_-_ Fixed the debug string gathering for conducts.\n\n" +
-                        "_-_ Fixed the softlock for Erupting Darkness.\n\n" +
-                        "_-_ Increased the score modifier for certain conducts."));
+                "_-_ Readjusted score modifiers for most of conducts.\n\n" +
+                        "_-_ Tweaked _Enlightened One_ to no longer use amnesia effect.\n\n" +
+                        "_-_ _TNT Plague_ explosions only deal 50% damage to the hero.\n\n" +
+                        "_-_ Hordes no longer spawn in _Impending Doom_.\n\n" +
+                        "_-_ Reimplemented _Axiom Nexus Inside Out_."
+        ));
+        changes.addButton( new ChangeButton(Icons.get(Icons.DEPTH), "Level gen",
+                "_-_ Reduced level sizes to be less tedious to explore (up to 50% reduction in Large Enlargement).\n\n" +
+                        "_-_ Prison's cells are no longer allowed to spawn in famous glitchy manner.\n\n" +
+                        "_-_ Demon Halls's bomb mazes generate like all other mazes and no longer only feature nukes."
+        ));
+        changes.addButton( new ChangeButton(Icons.get(Icons.ENERGY), "Alchemical energy",
+                "_-_ Implemented Shattered's second alchemy rework.\n\n" +
+                        "_-_ Abilities have cost of 18 alchemical energy."
+        ));
+        changes.addButton( new ChangeButton(new Image(new RatSprite()), "Hordes",
+                "_-_ Smaller horde members no longer grant XP.\n\n" +
+                        "_-_ Reduced the chance of spawning from 17% to 14%."
+        ));
         changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-                "_-_ Fixed the crash for Spectral Shaman.\n\n" +
-                        "_-_ Adjusted the chance for hordes to 1/6 at any stage and limited max horde members to 3. This should make endgame massively less spammy.\n\n" +
-                        "_-_ Slightly buffed wand recharge.\n\n" +
-                        "_-_ Fixed more crashes for Project Paradox.\n\n" +
-                        "_-_ Changed how minions act and follow the hero.\n\n" +
-                        "_-_ Fixed the crash when game couldn't read conducts from save file.\n\n" +
-                        "_-_ Fixed the crash for one of Knight's spell.\n\n" +
-                        "_-_ Fixed the crash with Electrical Explosive and made it charged from beginning.\n\n" +
-                        "_-_ Fixed the error with attunement consumption for Soul Flame.\n\n" +
-                        "_-_ Fixed the crash for some of Battlemage effects.\n\n" +
-                        "_-_ Fixed the crash for certain level builders.\n\n" +
-                        "_-_ Fixed the items in walls for pylon room.\n\n" +
-                        "_-_ Fixed the issue when Stars t2 couldn't consume charges.\n\n" +
-                        "_-_ Fixed the rare crash for transmutations.\n\n" +
-                        "_-_ Fixed the electrical explosive's damage.\n\n" +
-                        "_-_ Fixed the exploit with ropes and chests.\n\n" +
-                        "_-_ Fixed some exploits and issues with chalice regen.\n\n" +
-                        "_-_ Fixed the issue with 4/3 wands.\n\n" +
-                        "_-_ Fixed the issue with TNT mouse and NPCs.\n\n" +
-                        "_-_ Fixed some Increased Difficulty enemies.\n\n" +
-                        "_-_ Fixed missile being stuck in a wall in rare cases for gnoll tribe room.\n\n" +
-                        "_-_ Changed how potion of strength is generated in Fast Adventure.\n\n" +
-                        "_-_ Fixed the crash for Warrior's special attacks.\n\n" +
-                        "_-_ Fixed the crashes for dungeon generation.\n\n" +
-                        "_-_ Fixed the crash for t3 chicken.\n\n" +
-                        "_-_ Fixed the crash for wraiths that have rose as parent.\n\n" +
-                        "_-_ Fixed the crash with Special Delivery spawning items out of bounds.\n\n" +
-                        "_-_ Fixed Conjurer's Armor being removable by any means.\n\n" +
-                        "_-_ Fixed Majestic Guard's room spawning items in walls."));
+                "_-_ Buffed Conjurer's max HP from 10(+2) to 13(+3).\n\n" +
+                        "_-_ Tweaked ranking descriptions for every rankable item to be more streamlined and feature less repetition.\n\n" +
+                        "_-_ Super-shots deal more base damage and do it more consistently.\n\n" +
+                        "_-_ Nerfed Firebomb's fire field duration by 60%.\n\n" +
+                        "_-_ Added guide page about ranking mechanic, thanks to @Zackary4536.\n\n" +
+                        "_-_ Minion staves now can recharge when their respective minion is alive, but at 33% efficiency.\n\n" +
+                        "_-_ Soul of Yendor shows icons of artifacts it can use as abilities.\n\n" +
+                        "_-_ Miasma no longer deals damage over time.\n\n" +
+                        "_-_ Super-shots no longer invoke targeting when unable to shoot.\n\n" +
+                        "_-_ Conjurer's spells are considered unique for revival purposes.\n\n" +
+                        "_-_ Added placeholder surface sprite for Adventurer.\n\n" +
+                        "_-_ Adjusted Hacatu's power scaling to account for reduced max attunement.\n\n" +
+                        "_-_ Nerfed Wand of Corrosion's rank II.\n\n" +
+                        "_-_ Added third slot for artifacts.\n\n" +
+                        "_-_ Rewritten the descriptions of certain items to sound better, thanks to @Zackary4536."
+        ));
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "Fixed:\n" +
+                        "_-_ Lightning Explosive dealing no damage.\n" +
+                        "_-_ Elixirs not producing any particles when thrown into the ground.\n" +
+                        "_-_ Wands showing their rank when unidentified.\n" +
+                        "_-_ Penetration debuff not scaling with Wand of Shadow Beams's ranks.\n" +
+                        "_-_ Broken Seal mentioning armor in inventory prompt.\n" +
+                        "_-_ Stationary staves consuming attunement even when their normal counterparts do not.\n" +
+                        "_-_ Toy Knife's displayed name not changing with enchantments or curses."
+        ));
+
+        changes = ChangesScene.createChangeInfo(changeInfos, "1.2.2", true, Window.TITLE_COLOR);
 
         changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
         changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
@@ -216,7 +250,20 @@ public class SummPDChanges {
                         "_-_ Massively decreased the amount of items generated in dungeon.\n\n" +
                         "_-_ Skeleton explosions can be dodged.\n\n" +
                         "_-_ Enchant parchments with same enchantments can stack.\n\n" +
-                        "_-_ Changed the look for buttons again."));
+                        "_-_ Changed the look for buttons again.\n\n"+
+                        "_-_ Adjusted the chance for hordes to 1/6 at any stage and limited max horde members to 3. This should make endgame massively less spammy.\n\n" +
+                        "_-_ Slightly buffed wand recharge.\n\n" +
+                        "_-_ Changed how minions act and follow the hero.\n\n" +
+                        "_-_ Changed how potion of strength is generated in Fast Adventure.\n\n" +
+                        "_-_ Added experimental toggle to allow multiple conducts. Trust me, it's not balanced.\n\n" +
+                        "_-_ Conducts window's info buttons show correct descriptions for conducts.\n\n" +
+                        "_-_ Selecting a null conduct deselects all the other for convenience.\n\n" +
+                        "_-_ Goldfish Memory properly now blocks any identification.\n\n" +
+                        "_-_ Endless Potential characters can gather mana now.\n\n" +
+                        "_-_ Added new conduct that minimizes the loot from dungeon.\n\n" +
+                        "_-_ Entropy Drive doesn't consume additional hunger anymore, converts progression items or uses transmutation animation.\n\n" +
+                        "_-_ Added new conduct that makes monsters a limited resource.\n\n" +
+                        "_-_ Increased the score modifier for certain conducts."));
         changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
                 "Fixed:\n" +
                         "_-_ Rat bombs not working half of the time.\n" +
@@ -228,8 +275,37 @@ public class SummPDChanges {
                         "_-_ Goo minion killing allies.\n" +
                         "_-_ Getting stuck in wall if you used amulet in Gauntlet in certain way.\n" +
                         "_-_ Goo minion not being able to attack after unsuccessful pump attack.\n" +
-                        "_-_ Gauntlet mode mobs dropping additional loot when rest of them have died already.\n\n" +
-                        "_-_ Soul of Yendor yielding disproportional numbers for sandals and armband components."));
+                        "_-_ Gauntlet mode mobs dropping additional loot when rest of them have died already.\n" +
+                        "_-_ Soul of Yendor yielding disproportional numbers for sandals and armband components.\n" +
+                        "_-_ Majestic Guard's room spawning items in walls.\n" +
+                        "_-_ Softlock for Erupting Darkness.\n" +
+                        "_-_ Debug string gathering for conducts.\n" +
+                        "_-_ Crash for Warrior's special attacks.\n" +
+                        "_-_ Crashes for dungeon generation.\n" +
+                        "_-_ Crash for t3 chicken.\n" +
+                        "_-_ Crash for wraiths that have rose as parent.\n" +
+                        "_-_ Crash with Special Delivery spawning items out of bounds.\n" +
+                        "_-_ Conjurer's Armor being removable by any means.\n" +
+                        "_-_ Majestic Guard's room spawning items in walls.\n" +
+                        "_-_ Innate Rage crashing when player is dying.\n"+
+                        "_-_ Crash when game couldn't read conducts from save file.\n" +
+                        "_-_ Crash for one of Knight's spell.\n" +
+                        "_-_ Crash with Electrical Explosive and made it charged from beginning.\n" +
+                        "_-_ Error with attunement consumption for Soul Flame.\n" +
+                        "_-_ Crash for some of Battlemage effects.\n" +
+                        "_-_ Crash for certain level builders.\n" +
+                        "_-_ Items in walls for pylon room.\n" +
+                        "_-_ Issue when Stars t2 couldn't consume charges.\n" +
+                        "_-_ Rare crash for transmutations.\n" +
+                        "_-_ Electrical explosive's damage.\n" +
+                        "_-_ Exploit with ropes and chests.\n" +
+                        "_-_ Some exploits and issues with chalice regen.\n" +
+                        "_-_ Issue with 4/3 wands.\n" +
+                        "_-_ Issue with TNT mouse and NPCs.\n" +
+                        "_-_ Some Increased Difficulty enemies.\n" +
+                        "_-_ More crashes for Project Paradox.\n"+
+                        "_-_ Missiles being stuck in a wall in rare cases for gnoll tribe room.\n" +
+                        "_-_ Crash for Spectral Shaman."));
 
 
 

@@ -98,6 +98,7 @@ public class ItemSpriteSheet {
     public static final int TENGU_SHOCKER   = UNCOLLECTIBLE+10;
     public static final int SPIRIT_BLAST = UNCOLLECTIBLE+12;
     public static final int CRYSTAL = UNCOLLECTIBLE+13;
+	public static final int ENERGY = UNCOLLECTIBLE+14;
     static{
         assignItemRect(GOLD,        15, 13);
         assignItemRect(DEWDROP,     10, 10);
@@ -114,6 +115,8 @@ public class ItemSpriteSheet {
         assignItemRect(TENGU_SHOCKER,   13, 12);
         assignItemRect(SPIRIT_BLAST, 15, 15);
         assignItemRect(CRYSTAL, 11, 11);
+
+		assignItemRect(ENERGY, 16, 16);
     }
 
 	private static final int CONTAINERS     =                               xy(1, 3);   //16 slots
@@ -374,10 +377,12 @@ public class ItemSpriteSheet {
 	public static final int HOLY_DART       = TIPPED_DARTS+9;
 	public static final int DISPLACING_DART = TIPPED_DARTS+10;
 	public static final int BLINDING_DART   = TIPPED_DARTS+11;
+	public static final int QUIVER_ARROW    = TIPPED_DARTS+13;
 	static {
 		for (int i = TIPPED_DARTS; i < TIPPED_DARTS+16; i++)
 			assignItemRect(i, 15, 15);
 		assignItemRect(LIGHT_KNIFE, 11, 12);
+		assignItemRect(QUIVER_ARROW, 13, 13);
 	}
 	
 	private static final int ARMOR          =                               xy(1, 12);  //16 slots
@@ -836,6 +841,8 @@ public class ItemSpriteSheet {
     public static final int GRAVEYARD = POWERS+10;
     public static final int GRASS_ABILITY = POWERS+11;
     public static final int DRILL = POWERS+12;
+	public static final int PERFUME_ABILITY = POWERS+13;
+	public static final int SHINOBI_TRICK = POWERS+14;
     static {
         for (int i = 0; i < 15; i++){
             assignItemRect(POWERS+i, 14, 14);
@@ -856,6 +863,26 @@ public class ItemSpriteSheet {
 		assignItemRect(BANDOLIER,   15, 16);
 		assignItemRect(HOLSTER,     15, 16);
 		assignItemRect(BOOK,        13, 16);
+	}
+	private static final int NEW_ARTIFACTS = xy(1, 32);
+	public static final int ARTIFACT_SIGIL = NEW_ARTIFACTS+0;
+	public static final int ARTIFACT_MIRROR = NEW_ARTIFACTS+1;
+	public static final int ARTIFACT_FUEL  = NEW_ARTIFACTS+2;
+	public static final int ARTIFACT_PARCHMENT = NEW_ARTIFACTS+3;
+	public static final int ARTIFACT_MOMENTUM = NEW_ARTIFACTS+4;
+	public static final int ARTIFACT_BADGE = NEW_ARTIFACTS+5;
+	public static final int ARTIFACT_FLAIL = NEW_ARTIFACTS+6;
+	public static final int ARTIFACT_QUIVER = NEW_ARTIFACTS+7;
+
+	static {
+		assignItemRect(ARTIFACT_SIGIL, 14, 12);
+		assignItemRect(ARTIFACT_MIRROR, 14, 14);
+		assignItemRect(ARTIFACT_FUEL, 14, 13);
+		assignItemRect(ARTIFACT_PARCHMENT, 15, 14);
+		assignItemRect(ARTIFACT_MOMENTUM, 13, 12);
+		assignItemRect(ARTIFACT_BADGE, 14, 14);
+		assignItemRect(ARTIFACT_FLAIL, 11, 12);
+		assignItemRect(ARTIFACT_QUIVER, 15, 14);
 	}
 
 	                                                                                    //16 free slots

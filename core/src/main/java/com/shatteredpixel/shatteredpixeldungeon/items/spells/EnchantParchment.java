@@ -143,7 +143,7 @@ public class EnchantParchment extends InventorySpell {
             inputs =  new Class[]{Stylus.class, ArcaneCatalyst.class};
             inQuantity = new int[]{1, 1};
 
-            cost = 12;
+            cost = 7;
 
             output = EnchantParchment.class;
             outQuantity = 1;

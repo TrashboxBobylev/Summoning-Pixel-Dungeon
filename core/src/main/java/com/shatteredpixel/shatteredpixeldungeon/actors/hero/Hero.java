@@ -27,12 +27,12 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Alchemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.GonerField;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.PerfumeGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.FierySlash;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.QuiverMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulWeakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SpikyShield;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -46,6 +46,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Endure;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Barrier;
@@ -54,11 +55,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMight;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.*;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAttunement;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Recycle;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
@@ -66,6 +64,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blocking;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Unstable;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Cleaver;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knife;
@@ -96,8 +95,12 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.*;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -154,7 +157,10 @@ public class Hero extends Char {
 	public int maxMana = 0;
 
 	public float attunement(){
-	    return attunement + RingOfAttunement.attunementMultiplier(this) + (subClass == HeroSubClass.SOUL_REAVER ? 1 : 0) + (Dungeon.isChallenged(Conducts.Conduct.KING) ? 1 : 0);
+	    return attunement +
+				RingOfAttunement.attunementMultiplier(this) +
+				(subClass == HeroSubClass.SOUL_REAVER ? 1 : 0) +
+				(Dungeon.isChallenged(Conducts.Conduct.KING) ? 1 : 0);
     }
 	
 	public int lvl = 1;
@@ -185,15 +191,13 @@ public class Hero extends Char {
 	public void updateHT( boolean boostHP ){
 		int curHT = HT;
 
-		float adjustHT = heroClass == HeroClass.CONJURER ? 10 : 20;
-        float adjustScaling = heroClass == HeroClass.CONJURER ? 2 : 5;
+		float adjustHT = heroClass == HeroClass.CONJURER ? 13 : 20;
+        float adjustScaling = heroClass == HeroClass.CONJURER ? 3 : 5;
         if (heroClass == HeroClass.ADVENTURER){
         	adjustHT = 30;
 		}
 
 		HT = (int) ((adjustHT + adjustScaling*(lvl-1)) + HTBoost);
-		float multiplier = RingOfMight.HTMultiplier(this);
-		HT = Math.round(multiplier * HT);
 		
 		if (buff(ElixirOfMight.HTBoost.class) != null){
 			HT += buff(ElixirOfMight.HTBoost.class).boost();
@@ -209,8 +213,6 @@ public class Hero extends Char {
 
 	public int STR() {
 		int STR = this.STR;
-
-		STR += RingOfMight.strengthBonus( this );
 		
 		AdrenalineSurge buff = buff(AdrenalineSurge.class);
 		if (buff != null){
@@ -358,9 +360,6 @@ public class Hero extends Char {
 	public void hitSound(float pitch) {
 		if ( belongings.weapon != null ){
 			belongings.weapon.hitSound(pitch);
-		} else if (RingOfForce.getBuffedBonus(this, RingOfForce.Force.class) > 0) {
-			//pitch deepens by 2.5% (additive) per point of strength, down to 75%
-			super.hitSound( pitch * GameMath.gate( 0.75f, 1.25f - 0.025f*STR(), 1f) );
 		} else {
 			super.hitSound(pitch * 1.1f);
 		}
@@ -424,10 +423,15 @@ public class Hero extends Char {
 		float accuracy = 1;
 		if (Dungeon.mode == Dungeon.GameMode.EXPLORE) accuracy = 1.2f;
 		if (Dungeon.isChallenged(Conducts.Conduct.KING)) accuracy = 1.1f;
-		accuracy *= RingOfAccuracy.accuracyMultiplier( this );
+
+		if (belongings.weapon instanceof MissileWeapon &&
+				target.buff(QuiverMark.class) != null) return INFINITE_ACCURACY;
 		
 		if (wep instanceof MissileWeapon || (wep instanceof Knife && ((Knife) wep).ranged)){
-			if (Dungeon.level.adjacent( pos, target.pos )) {
+			SilkyQuiver.quiverBuff buff = buff(SilkyQuiver.quiverBuff.class);
+			if (buff != null && buff.isCursed()){
+				accuracy *= 0.33f;
+			} else if (Dungeon.level.adjacent( pos, target.pos )) {
 				accuracy *= 0.5f;
 			} else {
 				accuracy *= 1.5f;
@@ -460,8 +464,6 @@ public class Hero extends Char {
 		
 		float evasion = defenseSkill;
 		if (Dungeon.mode == Dungeon.GameMode.EXPLORE) evasion *= 1.2f;
-
-		evasion *= RingOfEvasion.evasionMultiplier( this );
 		
 		if (paralysed > 0) {
 			evasion /= 2;
@@ -527,9 +529,8 @@ public class Hero extends Char {
 
 		if (wep != null) {
 			dmg = wep.damageRoll( this );
-			if (!(wep instanceof MissileWeapon)) dmg += RingOfForce.armedDamageBonus(this);
 		} else {
-			dmg = RingOfForce.damageRoll(this);
+			dmg = Random.NormalIntRange(1, Math.max(STR()-8, 1));
 		}
 		if (dmg < 0) dmg = 0;
 		
@@ -550,21 +551,30 @@ public class Hero extends Char {
 	public float speed() {
 
 		float speed = super.speed();
-
-		speed *= RingOfHaste.speedMultiplier(this);
 		
 		if (belongings.armor != null) {
 			speed = belongings.armor.speedFactor(this, speed);
 		}
-		
+
+		if (MomentumBoots.instance != null && speed > 1){
+			MomentumBoots.instance.getExp(speed);
+		}
+
 		Momentum momentum = buff(Momentum.class);
 		if (momentum != null){
-			((HeroSprite)sprite).sprint( 1f + 0.05f*momentum.stacks());
+			((HeroSprite)sprite).sprint( momentum.freerunning() ? 1.5f : 1f );
 			speed *= momentum.speedMultiplier();
+		} else {
+			((HeroSprite)sprite).sprint( 1f );
 		}
 
 		if (Dungeon.isChallenged(Conducts.Conduct.CRIPPLED)) speed/=2;
 		if (Dungeon.isChallenged(Conducts.Conduct.WRAITH)) speed *= 1.25f;
+
+		if (Dungeon.hero.buff(MomentumBoots.momentumBuff.class) != null
+				&& Dungeon.hero.buff(MomentumBoots.momentumBuff.class).isCursed()){
+			speed = Math.min(1f, speed);
+		}
 		
 		return speed;
 		
@@ -573,6 +583,9 @@ public class Hero extends Char {
 	public boolean canSurpriseAttack(){
 		if (belongings.weapon == null || !(belongings.weapon instanceof Weapon))    return true;
 		if (STR() < ((Weapon)belongings.weapon).STRReq())                           return false;
+		if (belongings.weapon instanceof MissileWeapon &&
+				buff(SilkyQuiver.quiverBuff.class) != null &&
+					buff(SilkyQuiver.quiverBuff.class).isCursed()) return false;
 		if (belongings.weapon instanceof Flail || belongings.weapon instanceof Cleaver)                                     return false;
 
 		return true;
@@ -609,15 +622,21 @@ public class Hero extends Char {
 
 		float adrenalineMod = 1f;
 		if ( buff(Adrenaline.class) != null) adrenalineMod = 1.5f;
+		if ( buff(Momentum.class) != null) adrenalineMod *= buff(Momentum.class).furorMultiplier();
+		float attackSpeed;
 		if (belongings.weapon != null) {
-			return belongings.weapon.speedFactor( this )/adrenalineMod;
-			
+			attackSpeed = belongings.weapon.speedFactor( this )/adrenalineMod;
 		} else {
 			//Normally putting furor speed on unarmed attacks would be unnecessary
 			//But there's going to be that one guy who gets a furor+force ring combo
 			//This is for that one guy, you shall get your fists of fury!
-			return RingOfFuror.attackDelayMultiplier(this)/adrenalineMod;
+			attackSpeed = 1f/adrenalineMod;
 		}
+		if (Dungeon.hero.buff(MomentumBoots.momentumBuff.class) != null
+				&& Dungeon.hero.buff(MomentumBoots.momentumBuff.class).isCursed()){
+			attackSpeed = Math.max(1f, attackSpeed);
+		}
+		return attackSpeed;
 	}
 
 	@Override
@@ -858,19 +877,14 @@ public class Hero extends Char {
 		if (Dungeon.level.distance(dst, pos) <= 1) {
 
 			ready();
-			
-			AlchemistsToolkit.ToolkitBuff kit = buff(AlchemistsToolkit.kitEnergy.class);
-			if (kit == null) kit = buff(SoulOfYendor.omniBuff.class);
+
+			AlchemistsToolkit.kitEnergy kit = buff(AlchemistsToolkit.kitEnergy.class);
 			if (kit != null && kit.isCursed()){
 				GLog.warning( Messages.get(AlchemistsToolkit.class, "cursed"));
 				return false;
 			}
-			
-			Alchemy alch = (Alchemy) Dungeon.level.blobs.get(Alchemy.class);
-			if (alch != null) {
-				alch.alchPos = dst;
-				AlchemyScene.setProvider( alch );
-			}
+
+			AlchemyScene.clearToolkit();
 			ShatteredPixelDungeon.switchScene(AlchemyScene.class);
 			return false;
 
@@ -1169,9 +1183,52 @@ public class Hero extends Char {
 		KindOfWeapon wep = belongings.weapon;
 
 		if (wep != null) {
-		    damage = wep.proc( this, enemy, damage );
-		    if (buff(FierySlash.class) != null) new Blazing().proc((Weapon) wep,this, enemy, damage);
+			if (buff(BadgeOfBravery.braveryBuff.class) != null && buff(BadgeOfBravery.braveryBuff.class).isCursed()){
+				Weapon.Enchantment curse = Weapon.Enchantment.randomCurse();
+				damage = curse.proc((Weapon) wep, this, enemy, damage);
+				int i = 4;
+				if (buff(ArtifactRecharge.class) != null) i = 1;
+				if (Random.Int(i) == 0) damage(damage/3, this);
+			} else {
+				damage = wep.proc(this, enemy, damage);
+				if (buff(FierySlash.class) != null) new Blazing().proc((Weapon) wep, this, enemy, damage);
+			}
         }
+
+		if (buff(BadgeOfBravery.braveryBuff.class) != null){
+			BadgeOfBravery.braveryBuff buff = buff(BadgeOfBravery.braveryBuff.class);
+			if (!buff.isCursed()){
+				int chance = buff.itemLevel() == 4 ? 4 : 5;
+				if (Random.Int(chance) == 0){
+					int braveryDmg = Random.NormalIntRange((buff.itemLevel() + 1)*2, (buff.itemLevel()+1)*5);
+					if (buff.itemLevel() == 4)
+						braveryDmg = Random.NormalIntRange((buff.itemLevel() + 1)*3, (buff.itemLevel()+1)*5);
+					enemy.damage(braveryDmg, new BadgeOfBravery());
+					Sample.INSTANCE.play(Assets.Sounds.HIT_MAGIC);
+					new Unstable().proc(new Weapon() {
+						@Override
+						public int STRReq(int lvl) {
+							return 0;
+						}
+
+						@Override
+						public int min(int lvl) {
+							return (buff.itemLevel()+1);
+						}
+
+						@Override
+						public int max(int lvl) {
+							return (buff.itemLevel()+1)*4;
+						}
+
+						@Override
+						public int level() {
+							return buff.itemLevel()*2;
+						}
+					}, this, enemy, braveryDmg);
+				}
+			}
+		}
 
 		damage = Talent.onAttackProc(this, enemy, damage);
 		
@@ -1269,6 +1326,10 @@ public class Hero extends Char {
 			return;
 		}
 
+		if (buff(MirrorOfFates.mirrorExp.class) != null && buff(MirrorOfFates.mirrorExp.class).isCursed() && Random.Int(5) == 0) {
+			ScrollOfTeleportation.teleportHero(Dungeon.hero);
+		}
+
 		if (!(src instanceof Hunger || src instanceof Viscosity.DeferedDamage) && damageInterrupt) {
 			interrupt();
 			resting = false;
@@ -1287,8 +1348,9 @@ public class Hero extends Char {
 		if (Dungeon.mode == Dungeon.GameMode.EXPLORE){
 			dmg *= 0.75f;
 		}
-
-		dmg = (int)Math.ceil(dmg * RingOfElements.damageMultiplier( this ));
+		if (buff(ParchmentOfElbereth.parchmentPraying.class) != null){
+			dmg *= 0.8f;
+		}
 
 		//TODO improve this when I have proper damage source logic
 		if (belongings.armor != null && belongings.armor.hasGlyph(AntiMagic.class, this)
@@ -1472,8 +1534,12 @@ public class Hero extends Char {
 
 			search(false);
 
-			if (subClass == HeroSubClass.FREERUNNER){
+			if (subClass == HeroSubClass.FREERUNNER || MomentumBoots.instance != null){
 				Buff.affect(this, Momentum.class).gainStack();
+			}
+			if (MirrorOfFates.isMirrorActive(this)){
+				MirrorOfFates.MirrorShield shield = buff(MirrorOfFates.MirrorShield.class);
+				shield.damage(shield.maxPotency / 4);
 			}
 
 			return true;
@@ -1581,6 +1647,9 @@ public class Hero extends Char {
 		
 		AlchemistsToolkit.kitEnergy kit = buff(AlchemistsToolkit.kitEnergy.class);
 		if (kit != null) kit.gainCharge(percent);
+
+		MasterThievesArmband.Thievery armband = buff(MasterThievesArmband.Thievery.class);
+		if (armband != null) armband.gainCharge(percent);
 		
 		Berserk berserk = buff(Berserk.class);
 		if (berserk != null) berserk.recover(percent);
@@ -1721,6 +1790,9 @@ public class Hero extends Char {
 		
 		if (belongings.armor != null){
 			stealth = belongings.armor.stealthFactor(this, stealth);
+		}
+		if (buff(ParchmentOfElbereth.parchmentCharge.class) != null && buff(ParchmentOfElbereth.parchmentCharge.class).isCursed()){
+			stealth = -Float.NEGATIVE_INFINITY;
 		}
 		
 		return stealth;
@@ -2145,11 +2217,11 @@ public class Hero extends Char {
 		return smthFound;
 	}
 
-	public static ConeAOE arrangeBlast(int pos, CharSprite sprite, int type){
+	public static ConeAOE arrangeBlast(int pos, Visual sprite, int type){
 		return arrangeBlast(pos, sprite, type, 1.5f);
 	}
 
-	public static ConeAOE arrangeBlast(int pos, CharSprite sprite, int type, float range) {
+	public static ConeAOE arrangeBlast(int pos, Visual sprite, int type, float range) {
 		Ballistica aim;
 		if (pos % Dungeon.level.width() > 10){
 			aim = new Ballistica(pos, pos - 1, Ballistica.WONT_STOP);

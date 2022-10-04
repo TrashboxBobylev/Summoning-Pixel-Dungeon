@@ -26,6 +26,8 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.HeavyFlail;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SilkyQuiver;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Stars;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
@@ -96,11 +98,13 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
         ANGULAR_SPEEDS.put(RunicBlade.RunicMissile.class,       0);
         ANGULAR_SPEEDS.put(ThrowingKnive2.class, 0);
         ANGULAR_SPEEDS.put(Shortsword.class, 0);
+		ANGULAR_SPEEDS.put(SilkyQuiver.Arrow.class, 0);
 		
 		ANGULAR_SPEEDS.put(SpiritBow.SpiritArrow.class,       0);
 		ANGULAR_SPEEDS.put(ScorpioSprite.ScorpioShot.class,   0);
         ANGULAR_SPEEDS.put(ShakeSprite.ShakeShot.class,   0);
         ANGULAR_SPEEDS.put(BlinkingManSprite.TenguJavelin.class, 0);
+		ANGULAR_SPEEDS.put(HeavyFlail.class, 0);
 		
 		//720 is default
 		
@@ -160,12 +164,16 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 			item instanceof Kunai || item instanceof Stars.ProjectileStar){
 			speed = 380f;
 		}
+		if (item instanceof HeavyFlail.Sprite){
+			speed /= 1.5f;
+		}
 		if (item instanceof Dart && Dungeon.hero.belongings.weapon instanceof Crossbow) {
             speed *= 3f;
         } else if (item instanceof SpiritBow.SpiritArrow
 				|| item instanceof ScorpioSprite.ScorpioShot
 				|| item instanceof TenguSprite.TenguShuriken
-				|| item instanceof BlinkingManSprite.TenguJavelin){
+				|| item instanceof BlinkingManSprite.TenguJavelin
+				|| item instanceof SilkyQuiver.Arrow){
 			speed *= 1.5f;
 		}
 		if (item instanceof Stars.ProjectileStar){
@@ -175,6 +183,7 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		
 		PosTweener tweener = new PosTweener( this, to, d.length() / speed );
 		tweener.listener = this;
+		item.onMissileCreate(this, from, to, d);
 		parent.add( tweener );
 	}
 

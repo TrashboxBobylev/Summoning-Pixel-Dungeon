@@ -493,7 +493,6 @@ public class Badges {
 			global.contains( Badge.ALL_WEAPONS_IDENTIFIED ) &&
 			global.contains( Badge.ALL_ARMOR_IDENTIFIED ) &&
 			global.contains( Badge.ALL_WANDS_IDENTIFIED ) &&
-			global.contains( Badge.ALL_RINGS_IDENTIFIED ) &&
 			global.contains( Badge.ALL_ARTIFACTS_IDENTIFIED ) &&
 			global.contains( Badge.ALL_POTIONS_IDENTIFIED ) &&
 			global.contains( Badge.ALL_SCROLLS_IDENTIFIED )) {
@@ -928,7 +927,6 @@ public class Badges {
 		leaveBest( badges, Badge.ALL_WEAPONS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED );
 		leaveBest( badges, Badge.ALL_ARMOR_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED );
 		leaveBest( badges, Badge.ALL_WANDS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED );
-		leaveBest( badges, Badge.ALL_RINGS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED );
 		leaveBest( badges, Badge.ALL_ARTIFACTS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED );
 		leaveBest( badges, Badge.ALL_POTIONS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED );
 		leaveBest( badges, Badge.ALL_SCROLLS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED );

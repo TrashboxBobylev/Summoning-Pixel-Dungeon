@@ -26,14 +26,11 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Ability;
-import com.shatteredpixel.shatteredpixeldungeon.items.magic.ConjurerSpell;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Tierable;
 
 public class WndInfoItem extends Window {
 	
@@ -74,17 +71,27 @@ public class WndInfoItem extends Window {
 	private void fillFields( Item item ) {
 		
 		int color = TITLE_COLOR;
-		if (!(item instanceof Staff || item instanceof ConjurerSpell || item instanceof Wand || item instanceof Ability)) {
+		if (!(item instanceof Tierable)) {
 			if (item.levelKnown && item.level() > 0) {
 				color = ItemSlot.UPGRADED;
 			} else if (item.levelKnown && item.level() < 0) {
 				color = ItemSlot.DEGRADED;
 			}
 		} else {
-			switch (item.level()){
-				case 0: color = ItemSlot.BRONZE; break;
-				case 1: color = ItemSlot.SILVER; break;
-				case 2: color = ItemSlot.GOLD; break;
+			if (item.levelKnown) {
+				switch (item.level()) {
+					case 0:
+						color = ItemSlot.BRONZE;
+						break;
+					case 1:
+						color = ItemSlot.SILVER;
+						break;
+					case 2:
+						color = ItemSlot.GOLD;
+						break;
+				}
+			} else {
+				color = ItemSlot.BRONZE;
 			}
 		}
 

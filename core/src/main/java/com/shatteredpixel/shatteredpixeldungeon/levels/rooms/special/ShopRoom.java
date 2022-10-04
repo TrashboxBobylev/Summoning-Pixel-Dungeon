@@ -194,23 +194,20 @@ public class ShopRoom extends SpecialRoom {
 			!(Dungeon.hero.belongings.armor instanceof ClassArmor) && Dungeon.hero.heroClass != HeroClass.ADVENTURER) itemsToSpawn.add( new ArmorKit());
 
 		Item rare;
-		switch (Random.Int(6)){
+		switch (Random.Int(5)){
 			case 0:
 				rare = Generator.randomUsingDefaults( Generator.Category.WAND );
 				break;
 			case 1:
-				rare = Generator.randomUsingDefaults(Generator.Category.RING);
-				break;
-			case 2:
 				rare = Generator.randomUsingDefaults( Generator.Category.ARTIFACT );
 				break;
-			case 3:
+			case 2:
 				rare = Generator.randomWeapon();
 				break;
-			case 4:
+			case 3:
 				rare = Generator.randomArmor();
 				break;
-			case 5:
+			case 4:
 				rare = Generator.randomStaff();
 				break;
 			default:
@@ -289,7 +286,7 @@ public class ShopRoom extends SpecialRoom {
 		if ((SPDSettings.bigdungeon() && Dungeon.depth == 10) || Dungeon.depth == Dungeon.chapterSize()*2 + 1) {
 			itemsToSpawn.add(new PotionOfExperience());
 			itemsToSpawn.add(new ScrollOfDivination());
-			i = Generator.random(Generator.Category.RING);
+			i = Generator.random(Generator.Category.ARTIFACT);
 			i.cursed = false;
 			i.upgrade(1).identify();
 			itemsToSpawn.add(i);
@@ -415,9 +412,6 @@ public class ShopRoom extends SpecialRoom {
 				rare.level( 0 );
 				break;
 			case 1:
-				rare = Generator.random(Generator.Category.RING);
-				rare.level( 0 );
-				break;
 			case 2:
 				rare = Generator.random( Generator.Category.ARTIFACT );
 				break;

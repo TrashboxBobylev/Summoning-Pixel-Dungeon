@@ -41,8 +41,8 @@ public class HacatuStaff extends Staff{
     public int getChargeTurns() {
         switch (level()){
             case 0: return 400;
-            case 1: return 625;
-            case 2: return 1400;
+            case 1: return 525;
+            case 2: return 1100;
         }
         return 0;
     }

@@ -25,13 +25,13 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Tierable;
 
 public class WndTierInfo extends Window {
     private static final float GAP	= 2;
@@ -97,8 +97,8 @@ public class WndTierInfo extends Window {
     }
 
     private String getTierInfo(Item item) {
-        if (item instanceof Wand){
-            return ((Wand) item).getTierMessage(tier);
+        if (item instanceof Tierable){
+            return ((Tierable) item).getTierMessage(tier);
         }
         return Messages.get(item, "tier" + tier);
     }

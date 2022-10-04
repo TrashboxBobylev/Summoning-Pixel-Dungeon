@@ -35,7 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-public class Artifact extends KindofMisc {
+public abstract class Artifact extends KindofMisc {
 
 	protected Buff passiveBuff;
 	protected Buff activeBuff;
@@ -210,8 +210,8 @@ public class Artifact extends KindofMisc {
 	}
 
 	protected ArtifactBuff activeBuff() {return null; }
-	
-	public void charge(Hero target){
+
+	public void charge(Hero target, float amount){
 		//do nothing by default;
 	}
 
@@ -223,6 +223,10 @@ public class Artifact extends KindofMisc {
 
 		public boolean isCursed() {
 			return cursed;
+		}
+
+		public void charge(Hero target, float amount){
+			Artifact.this.charge(target, amount);
 		}
 
 	}
@@ -239,7 +243,7 @@ public class Artifact extends KindofMisc {
 		bundle.put( PARTIALCHARGE , partialCharge );
 	}
 
-	@Override
+    @Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle(bundle);
 		exp = bundle.getInt( EXP );

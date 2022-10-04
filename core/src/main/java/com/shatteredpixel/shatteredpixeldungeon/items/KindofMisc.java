@@ -43,13 +43,9 @@ public abstract class KindofMisc extends EquipableItem {
 	public boolean doEquip(final Hero hero) {
 
 		boolean equipFull = false;
-		if ( this instanceof Artifact
+		if ( hero.belongings.ring != null
 				&& hero.belongings.artifact != null
 				&& hero.belongings.misc != null){
-			equipFull = true;
-		} else if (this instanceof Ring
-				&& hero.belongings.misc != null
-				&& hero.belongings.ring != null){
 			equipFull = true;
 		}
 
@@ -87,14 +83,14 @@ public abstract class KindofMisc extends EquipableItem {
 							int slot = Dungeon.quickslot.getSlot(KindofMisc.this);
 							detach(hero.belongings.backpack);
 							if (equipped.doUnequip(hero, true, false)) {
-								//swap out equip in misc slot if needed
-								if (index == 0 && KindofMisc.this instanceof Ring){
-									hero.belongings.artifact = (Artifact)hero.belongings.misc;
-									hero.belongings.misc = null;
-								} else if (index == 2 && KindofMisc.this instanceof Artifact){
-									hero.belongings.ring = (Ring) hero.belongings.misc;
-									hero.belongings.misc = null;
-								}
+//								//swap out equip in misc slot if needed
+//								if (index == 0 && KindofMisc.this instanceof Ring){
+//									hero.belongings.artifact = (Artifact)hero.belongings.misc;
+//									hero.belongings.misc = null;
+//								} else if (index == 2 && KindofMisc.this instanceof Artifact){
+//									hero.belongings.ring = (Ring) hero.belongings.misc;
+//									hero.belongings.misc = null;
+//								}
 								doEquip(hero);
 							} else {
 								collect();
@@ -113,13 +109,11 @@ public abstract class KindofMisc extends EquipableItem {
 
 		} else {
 
-			if (this instanceof Artifact){
+
 				if (hero.belongings.artifact == null)   hero.belongings.artifact = (Artifact) this;
+				else if (hero.belongings.ring == null)   hero.belongings.ring = (Artifact) this;
 				else                                    hero.belongings.misc = (Artifact) this;
-			} else if (this instanceof Ring){
-				if (hero.belongings.ring == null)   hero.belongings.ring = (Ring) this;
-				else                                hero.belongings.misc = (Ring) this;
-			}
+
 
 			detach( hero.belongings.backpack );
 

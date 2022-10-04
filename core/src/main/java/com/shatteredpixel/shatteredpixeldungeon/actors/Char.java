@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.PerfumeGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.QuiverMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.Wet;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -46,9 +47,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Endure;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MirrorOfFates;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SubtilitasSigil;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfAdrenalineSurge;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Scrap;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsionicBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
@@ -266,8 +268,13 @@ public abstract class Char extends Actor {
 		} else if (hit( this, enemy, accMulti )) {
 			
 			int dr = enemy.drRoll();
+			boolean quivered = false;
 			if (enemy.buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dr *= 0.5f;
 			if (properties.contains(Property.IGNORE_ARMOR)) dr = 0;
+			if (enemy.buff(QuiverMark.class) != null && this instanceof Hero && ((Hero) this).belongings.weapon instanceof MissileWeapon) {
+				quivered = true;
+				dr = 0;
+			}
 
 			if (this instanceof Hero){
 				Hero h = (Hero)this;
@@ -310,6 +317,7 @@ public abstract class Char extends Actor {
 			if ( enemy.buff( Vulnerable.class ) != null){
 				effectiveDamage *= 1.33f;
 			}
+			if (quivered) dmg *= 1.33f;
 
 			effectiveDamage = attackProc( enemy, effectiveDamage );
 			
@@ -423,6 +431,7 @@ public abstract class Char extends Actor {
 		if (attacker.buff(Bless.class) != null) acuRoll *= 1.25f;
 		if (attacker.buff(  Hex.class) != null) acuRoll *= 0.8f;
 		if (attacker.buff(Shrink.class)!= null || attacker.buff(TimedShrink.class)!= null) acuRoll *= 0.6f;
+		if (attacker.buff(SubtilitasSigil.EnrageBuff.class) != null) acuRoll *= 1.33f;
 		for (ChampionEnemy buff : attacker.buffs(ChampionEnemy.class)){
 			acuRoll *= buff.evasionAndAccuracyFactor();
 		}
@@ -536,6 +545,24 @@ public abstract class Char extends Actor {
 		if (!(src instanceof DwarfKing.KingDamager)) {
 			for (ChampionEnemy buff : buffs(ChampionEnemy.class)) {
 				dmg = (int) Math.ceil(dmg * buff.damageTakenFactor());
+			}
+			if ( buff(SubtilitasSigil.EnrageBuff.class) != null){
+				dmg *= 2f;
+			}
+			if (buff(SubtilitasSigil.Recharge.class) != null && buff(SubtilitasSigil.Recharge.class).isCursed()){
+				dmg *= 1.5f;
+			}
+		}
+
+		if ((src instanceof Char || src instanceof Mob.MagicalAttack) && MirrorOfFates.isMirrorActive(this)){
+			MirrorOfFates.MirrorShield shield = buff(MirrorOfFates.MirrorShield.class);
+			int reflectDamage = shield.damage(dmg);
+			Char victim = src instanceof Mob.MagicalAttack ?
+					((Mob.MagicalAttack) src).caster : (Char) src;
+			victim.damage(dmg - reflectDamage, this);
+			dmg = reflectDamage;
+			if (dmg <= 0){
+				return;
 			}
 		}
 
@@ -848,7 +875,7 @@ public abstract class Char extends Actor {
 				result = 0.5f;
 			}
 		}
-		return result * RingOfElements.resist(this, effect);
+		return result;
 	}
 	
 	protected final HashSet<Class> immunities = new HashSet<>();

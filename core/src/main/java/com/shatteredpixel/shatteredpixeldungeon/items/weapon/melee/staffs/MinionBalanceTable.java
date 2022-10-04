@@ -71,8 +71,8 @@ public enum MinionBalanceTable {
             300, 8, 23, 3.5f,
             400, 5, 12, 4.0f),
     HACATU(50, 6, 30, 2.0f,
-            90, 12, 60, 5.0f,
-            125, 24, 120, 12.0f);
+            80, 9, 45, 4.0f,
+            105, 18, 90, 9.0f);
 
     public int hp1;
     public int hp2;

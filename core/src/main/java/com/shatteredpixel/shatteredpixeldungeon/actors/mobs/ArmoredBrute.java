@@ -61,7 +61,7 @@ public class ArmoredBrute extends Brute {
 	}
 	
 	@Override
-	protected Item createLoot () {
+    public Item createLoot() {
 		if (Random.Int( 4 ) == 0) {
 			return new PlateArmor().random();
 		}

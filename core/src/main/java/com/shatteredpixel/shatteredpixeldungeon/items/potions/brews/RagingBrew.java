@@ -66,7 +66,7 @@ public class RagingBrew extends Brew {
 			inputs =  new Class[]{PotionOfHaste.class, AlchemicalCatalyst.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 10;
+			cost = 6;
 			
 			output = RagingBrew.class;
 			outQuantity = 1;

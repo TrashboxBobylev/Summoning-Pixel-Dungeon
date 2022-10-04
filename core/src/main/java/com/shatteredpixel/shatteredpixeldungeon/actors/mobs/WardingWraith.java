@@ -98,7 +98,11 @@ public class WardingWraith extends Mob implements Callback {
 	}
 	
 	//used so resistances can differentiate between melee and magical attacks
-	public static class DarkBolt{}
+	public static class DarkBolt extends MagicalAttack{
+        public DarkBolt(Mob attacker, int damage) {
+            super(attacker, damage);
+        }
+    }
 	
 	private void zap() {
 		spend( TIME_TO_ZAP );
@@ -108,7 +112,7 @@ public class WardingWraith extends Mob implements Callback {
 			int dmg = Random.Int( 11, 16 );
 			if (alignment == Alignment.ALLY) dmg = Random.Int(15, 20);
             if (buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dmg *= 0.6f;
-			enemy.damage( dmg, new DarkBolt() );
+			enemy.damage( dmg, new DarkBolt(this, dmg) );
 			if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
 			    Buff.affect(enemy, Chill.class, 5f);
             }
@@ -217,7 +221,7 @@ public class WardingWraith extends Mob implements Callback {
     }
 
     @Override
-    protected Item createLoot() {
+    public Item createLoot() {
         if (EXP != 0){
             return (Item) loot;
         }

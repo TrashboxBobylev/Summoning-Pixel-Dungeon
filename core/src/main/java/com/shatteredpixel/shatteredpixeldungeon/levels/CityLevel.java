@@ -49,16 +49,14 @@ public class CityLevel extends RegularLevel {
 	@Override
 	protected int standardRooms(boolean forceMax) {
 		if (SPDSettings.smalldungeon()) return 4;
-		if (forceMax) return 28;
-		//15 to 21
-		return 10+Random.chances(new float[]{4, 3, 2, 1, 1});
+		if (forceMax) return 16;
+		return 8+Random.chances(new float[]{3, 2, 1, 1});
 	}
 	
 	@Override
 	protected int specialRooms(boolean forceMax) {
 		if (SPDSettings.smalldungeon()) return 2;
 		if (forceMax) return 3;
-		//2 to 3, average 2.33
 		return 2 + Random.chances(new float[]{2, 1});
 	}
 	

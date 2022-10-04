@@ -5,8 +5,7 @@ buildscript {
             url "https://plugins.gradle.org/m2/"
         }
         google()
-        jcenter()
-
+        mavenCentral()
     }
     dependencies {
         //FIXME the version of R8 coming with gradle plugin 4.0.0 causes serious problems
@@ -26,8 +25,8 @@ allprojects {
         appName = 'Summoning Pixel Dungeon'
         appPackageName = 'com.trashboxbobylev.summoningpixeldungeon'
 
-        appVersionCode = 421
-        appVersionName = '1.2.2т'
+        appVersionCode = 422
+        appVersionName = '1.2.3'
 
         appAndroidCompileSDK = 30
         appAndroidMinSDK = 15
@@ -41,8 +40,7 @@ allprojects {
     repositories {
         maven { url 'https://jitpack.io'}
         google()
-        jcenter()
-
+        mavenCentral()
     }
 
 }

@@ -70,6 +70,13 @@ public class Beam extends Image {
 			super(s, e, Effects.Type.HEALTH_RAY, 0.75f);
 		}
 	}
+
+	public static class RedRay extends Beam{
+		public RedRay(PointF s, PointF e) {
+			super(s, e, Effects.Type.HEALTH_RAY, 0.33f);
+			hardlight(0.6f, 0, 0);
+		}
+	}
 	
 	@Override
 	public void update() {

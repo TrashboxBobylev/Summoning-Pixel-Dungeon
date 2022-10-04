@@ -138,7 +138,7 @@ public class Toolbar extends Component {
 		});
 		
 		add(btnInventory = new Tool(0, 0, 24, 26) {
-			private GoldIndicator gold;
+			private CurrencyIndicator gold;
 
 
 
@@ -161,7 +161,7 @@ public class Toolbar extends Component {
 			@Override
 			protected void createChildren() {
 				super.createChildren();
-				gold = new GoldIndicator();
+				gold = new CurrencyIndicator();
 				add(gold);
 			}
 

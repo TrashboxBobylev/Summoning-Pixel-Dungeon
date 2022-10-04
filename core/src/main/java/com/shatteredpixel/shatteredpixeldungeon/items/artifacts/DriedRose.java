@@ -49,7 +49,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsionicBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfTargeting;
@@ -274,10 +273,10 @@ public class DriedRose extends Artifact {
 	}
 	
 	@Override
-	public void charge(Hero target) {
+	public void charge(Hero target, float amount) {
 		if (ghost == null){
 			if (charge < chargeCap) {
-				charge += 4;
+				charge += Math.round(4*amount);
 				if (charge >= chargeCap) {
 					charge = chargeCap;
 					partialCharge = 0;
@@ -286,7 +285,8 @@ public class DriedRose extends Artifact {
 				updateQuickslot();
 			}
 		} else {
-			ghost.HP = Math.min( ghost.HT, ghost.HP + 1 + level()/3);
+			int heal = Math.round((1 + level()/3f)*amount);
+			ghost.HP = Math.min( ghost.HT, ghost.HP + heal);
 			updateQuickslot();
 		}
 	}
@@ -375,7 +375,7 @@ public class DriedRose extends Artifact {
 				//heals to full over 1000 turns
 				LockedFloor lock = target.buff(LockedFloor.class);
 				if (ghost.HP < ghost.HT && (lock == null || lock.regenOn())) {
-					partialCharge += (ghost.HT / 1000f) * RingOfEnergy.artifactChargeMultiplier(target);
+					partialCharge += (ghost.HT / 1000f);
 					updateQuickslot();
 					
 					if (partialCharge > 1) {
@@ -394,7 +394,7 @@ public class DriedRose extends Artifact {
 			LockedFloor lock = target.buff(LockedFloor.class);
 			if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
 				//500 turns to a full charge
-				partialCharge += (1/5f * RingOfEnergy.artifactChargeMultiplier(target));
+				partialCharge += (1/5f);
 				if (partialCharge > 1){
 					charge++;
 					partialCharge--;

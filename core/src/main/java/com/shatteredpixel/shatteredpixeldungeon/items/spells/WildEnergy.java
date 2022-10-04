@@ -61,10 +61,8 @@ public class WildEnergy extends TargetedSpell {
 				ScrollOfRecharging.charge(hero);
 
 				hero.belongings.charge(1f);
-				for (int i = 0; i < 4; i++){
-					if (hero.belongings.artifact instanceof Artifact)   ((Artifact) hero.belongings.artifact).charge(hero);
-					if (hero.belongings.misc instanceof Artifact)       ((Artifact) hero.belongings.misc).charge(hero);
-				}
+				if (hero.belongings.artifact instanceof Artifact)   ((Artifact) hero.belongings.artifact).charge(hero, 4);
+				if (hero.belongings.misc instanceof Artifact)       ((Artifact) hero.belongings.misc).charge(hero, 4);
 
 				Buff.affect(hero, Recharging.class, 8f);
 				Buff.affect(hero, ArtifactRecharge.class).prolong( 8 );
@@ -88,7 +86,7 @@ public class WildEnergy extends TargetedSpell {
 			inputs =  new Class[]{ScrollOfMysticalEnergy.class, MetalShard.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 8;
+			cost = 4;
 			
 			output = WildEnergy.class;
 			outQuantity = 5;

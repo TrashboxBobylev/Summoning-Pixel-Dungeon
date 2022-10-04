@@ -267,6 +267,7 @@ public enum HeroClass {
 			Dungeon.LimitedDrops.VELVET_POUCH.drop();
 		}
 
+
 		new PotionOfMindVision().identify();
 		new ScrollOfLullaby().identify();
 	}
@@ -281,6 +282,9 @@ public enum HeroClass {
 			FroggitStaff staff1 = new FroggitStaff();
 			staff1.identify().collect();
 
+			new MagicalHolster().collect();
+			Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
+
 			Dungeon.quickslot.setSlot(0, book);
 			Dungeon.quickslot.setSlot(1, staff1);
 		}
@@ -293,7 +297,7 @@ public enum HeroClass {
 //        Dungeon.quickslot.setSlot(0, hero.belongings.artifact);
 
         hero.attunement = 1;
-        hero.HP = hero.HT = 10;
+        hero.HP = hero.HT = 13;
 		if (!Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
 			Stars star = new Stars();
 			star.collect();

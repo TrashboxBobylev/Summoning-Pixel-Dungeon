@@ -1166,7 +1166,7 @@ public abstract class Level implements Bundlable {
 					if (distance( c.pos, p) <= 5) {
 
 						if (!fieldOfView[p]){
-							Dungeon.hero.mindVisionEnemies.add(mob);
+							fieldOfView[p] = true;
 						}
 					}
 				}

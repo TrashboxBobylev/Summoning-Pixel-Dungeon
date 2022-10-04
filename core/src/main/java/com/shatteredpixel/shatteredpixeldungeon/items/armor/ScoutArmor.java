@@ -81,14 +81,17 @@ public class ScoutArmor extends Armor {
         super.execute(hero, action);
 
         if (action.equals(AC_SPECIAL)){
+            usesTargeting = true;
 
             if (hero.belongings.armor != this){
                 GLog.warning( Messages.get(ScoutArmor.class, "not_equipped"));
+                usesTargeting = false;
                 return;
             }
 
             if (hero.buff(ScoutCooldown.class) != null){
                 GLog.warning( Messages.get(ScoutArmor.class, "not_ready"));
+                usesTargeting = false;
                 return;
             }
             for (Item item : hero.belongings.backpack){
@@ -100,6 +103,7 @@ public class ScoutArmor extends Armor {
                 }
             }
             GLog.warning( Messages.get(ScoutArmor.class, "no_bow"));
+            usesTargeting = false;
         }
     }
 

@@ -24,8 +24,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ToxicImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -33,20 +31,11 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PoisonParticle
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.AlchemicalCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.watabou.noosa.audio.Sample;
 
 public class ElixirOfToxicEssence extends Elixir {
 	
 	{
 		image = ItemSpriteSheet.ELIXIR_TOXIC;
-	}
-
-	@Override
-	public void shatter(int cell) {
-		if (Dungeon.level.heroFOV[cell]) {
-			splash( cell );
-			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
-		}
 	}
 
 	@Override

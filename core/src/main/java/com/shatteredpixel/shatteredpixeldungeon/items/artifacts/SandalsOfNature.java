@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EarthParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
@@ -105,8 +104,8 @@ public class SandalsOfNature extends Artifact {
 	}
 	
 	@Override
-	public void charge(Hero target) {
-		target.buff(Naturalism.class).charge();
+	public void charge(Hero target, float amount) {
+		target.buff(Naturalism.class).charge(amount);
 	}
 
 	@Override
@@ -177,11 +176,11 @@ public class SandalsOfNature extends Artifact {
 			return level();
 		}
 
-		public void charge() {
+		public void charge(float amount) {
 			if (level() > 0 && charge < target.HT){
 				//gain 1+(1*level)% of the difference between current charge and max HP.
 				float chargeGain = (target.HT-charge) * (.01f+ level()*0.01f);
-				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
+				chargeGain *= amount;
 				partialCharge += Math.max(0, chargeGain);
 				while (partialCharge > 1){
 					charge++;
@@ -195,7 +194,7 @@ public class SandalsOfNature extends Artifact {
 	public interface NaturalismBuff {
 		public boolean isCursed();
 		public int natureLevel();
-		public void charge();
+		public void charge(float amount);
 	}
 
 	protected WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {

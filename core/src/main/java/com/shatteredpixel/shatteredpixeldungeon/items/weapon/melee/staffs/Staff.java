@@ -37,7 +37,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.Guidebook;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAttunement;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
@@ -47,17 +46,17 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndTierInfo;
-import com.watabou.noosa.Game;
-import com.watabou.noosa.audio.Sample;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Tierable;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class Staff extends Weapon {
+import static com.shatteredpixel.shatteredpixeldungeon.journal.Document.GUIDE_SUMMONING;
+
+public class Staff extends Weapon implements Tierable {
     //Staffs is kind of weapons, that can summon minions and hold the attunement
 
     //type of minion, since we need to spawn them, not hold
@@ -182,9 +181,7 @@ public class Staff extends Weapon {
     }
 
     public int STRReq(int lvl){
-        lvl = Math.max(0, lvl);
-        //strength req increases with tiers
-        return (7 + tier * 2) + level();
+        return (8 + tier * 2);
     }
 
     @Override
@@ -193,7 +190,7 @@ public class Staff extends Weapon {
     }
 
     public int hp(int lvl){
-        switch (level()) {
+        switch (lvl) {
             case 0: return table.hp1;
             case 1: return table.hp2;
             case 2: return table.hp3;
@@ -206,12 +203,12 @@ public class Staff extends Weapon {
 
 
     public int minionmin() {
-        return Math.round(minionMin(level())* RingOfAttunement.damageMultiplier(Dungeon.hero));
+        return Math.round(minionMin(level()));
     }
 
     public int minionMin(int lvl) {
         int dmg = 0;
-        switch (level()) {
+        switch (lvl) {
             case 0: dmg = table.min1; break;
             case 1: dmg = table.min2; break;
             case 2: dmg = table.min3; break;
@@ -221,12 +218,12 @@ public class Staff extends Weapon {
     }
 
     public int minionmax() {
-        return Math.round(minionMax(level())* RingOfAttunement.damageMultiplier(Dungeon.hero));
+        return Math.round(minionMax(level()));
     }
 
     public int minionMax(int lvl) {
         int dmg = 0;
-        switch (level()) {
+        switch (lvl) {
             case 0: dmg = table.max1; break;
             case 1: dmg = table.max2; break;
             case 2: dmg = table.max3; break;
@@ -246,12 +243,26 @@ public class Staff extends Weapon {
     }
 
     public float requiredAttunement(){
-        switch (level()) {
+        return requiredAttunement(level());
+    }
+
+    public float requiredAttunement(int lvl){
+        switch (lvl) {
             case 0: return table.att1;
             case 1: return table.att2;
             case 2: return table.att3;
         }
         return 0;
+    }
+
+    @Override
+    public String getTierMessage(int tier){
+        return Messages.get(this, "tier" + tier,
+                hp(tier-1),
+                minionMin(tier-1),
+                minionMax(tier-1),
+                new DecimalFormat("#.##").format(requiredAttunement(tier-1))
+        );
     }
 
     public void setClass(Minion.MinionClass minionClass){
@@ -278,8 +289,6 @@ public class Staff extends Weapon {
             actions.add( AC_SUMMON );
         }
         actions.remove( AC_EQUIP);
-        if (level() > 0) actions.add(AC_DOWNGRADE);
-        actions.add( AC_TIERINFO );
         return actions;
     }
 
@@ -304,18 +313,6 @@ public class Staff extends Weapon {
                 GLog.warning( Messages.get(Wand.class, "fizzles") );
             }
 
-        } else if (action.equals(AC_DOWNGRADE)){
-            GameScene.flash(0xFFFFFF);
-            Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
-            level(level()-1);
-            GLog.warning( Messages.get(Staff.class, "lower_tier"));
-        } else if (action.equals(AC_TIERINFO)){
-            ShatteredPixelDungeon.runOnRenderThread(new Callback() {
-                @Override
-                public void call() {
-                    Game.scene().addToFront(new WndTierInfo(Staff.this));
-                }
-            });
         }
     }
 
@@ -422,10 +419,9 @@ public class Staff extends Weapon {
                     minionmin(),
                     minionmax());
             Statistics.summonedMinions++;
-            if (Statistics.summonedMinions != 0 && !Document.ADVENTURERS_GUIDE.isPageFound("Summoning")){
+            if (Statistics.summonedMinions != 0 && !Document.ADVENTURERS_GUIDE.isPageRead("Summoning")){
                 GLog.positive(Messages.get(Guidebook.class, "hint"));
-                GameScene.flashForDocument("Summoning");
-                Document.ADVENTURERS_GUIDE.readPage("Summoning");
+                GameScene.flashForDocument(GUIDE_SUMMONING);
             }
             minion.strength = STRReq();
             this.customizeMinion(minion);
@@ -466,13 +462,6 @@ public class Staff extends Weapon {
         @Override
         public boolean act() {
 
-            for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-                if (mob.getClass() == minionType && !(mob instanceof Chicken)) {
-                    spend( TICK );
-                    return true;
-                }
-            }
-
             if (curCharges < 1)
                 recharge();
 
@@ -492,9 +481,17 @@ public class Staff extends Weapon {
 
         private void recharge(){
 
+            float mod = 1f;
+
+            for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+                if (mob.getClass() == minionType && !(mob instanceof Chicken)) {
+                    mod = 0.33f;
+                }
+            }
+
             LockedFloor lock = target.buff(LockedFloor.class);
             if (lock == null || lock.regenOn())
-                partialCharge += (1f / getChargeTurns()) * (Dungeon.hero.heroClass == HeroClass.CONJURER ? 1 : 0.9);
+                partialCharge += (1f / getChargeTurns()) * (Dungeon.hero.heroClass == HeroClass.CONJURER ? 1 : 0.9)*mod;
             updateQuickslot();
 
             for (Recharging bonus : target.buffs(Recharging.class)){

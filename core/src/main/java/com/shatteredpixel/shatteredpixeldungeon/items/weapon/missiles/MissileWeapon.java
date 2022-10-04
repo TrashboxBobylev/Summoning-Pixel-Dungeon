@@ -40,9 +40,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SilkyQuiver;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Slingshot;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
@@ -89,7 +89,7 @@ abstract public class MissileWeapon extends Weapon {
 	
 	@Override
 	public int min() {
-		return Math.max(0, min( buffedLvl() + RingOfSharpshooting.levelDamageBonus(Dungeon.hero) ));
+		return Math.max(0, min( buffedLvl()));
 	}
 	
 	@Override
@@ -100,7 +100,7 @@ abstract public class MissileWeapon extends Weapon {
 	
 	@Override
 	public int max() {
-		return Math.max(0, max( buffedLvl() + RingOfSharpshooting.levelDamageBonus(Dungeon.hero) ));
+		return Math.max(0, max( buffedLvl() ));
 	}
 	
 	@Override
@@ -304,8 +304,6 @@ abstract public class MissileWeapon extends Weapon {
 		if (holster)                                        usages *= MagicalHolster.HOLSTER_DURABILITY_FACTOR;
 		if (enchantment != null || augment != Augment.NONE) usages *= 3f;
 		
-		usages *= RingOfSharpshooting.durabilityMultiplier( Dungeon.hero );
-		
 		//at 100 uses, items just last forever.
 		if (usages >= 100f) return 0;
 		
@@ -316,6 +314,10 @@ abstract public class MissileWeapon extends Weapon {
 	protected void decrementDurability(Char enemy){
 		//if this weapon was thrown from a source stack, degrade that stack.
 		//unless a weapon is about to break, then break the one being thrown
+		SilkyQuiver.quiverBuff buff = Dungeon.hero.buff(SilkyQuiver.quiverBuff.class);
+		if (buff != null){
+			buff.gainCharge();
+		}
         if (enemy != null && !((Mob)enemy).enemySeen && sneaky) return;
 		if (parent != null){
 			if (parent.durability <= parent.durabilityPerUse()){

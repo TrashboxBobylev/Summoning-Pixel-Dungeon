@@ -196,6 +196,7 @@ public abstract class RegularLevel extends Level {
 			return Random.NormalIntRange( 1, 3 + (Dungeon.depth/5) );
 
 		int i = Random.NormalIntRange(3, 5 + (Dungeon.depth / 3));
+		if (Dungeon.isChallenged(Conducts.Conduct.HUGE)) i *= 3f;
 		if (Dungeon.mode == Dungeon.GameMode.CHAOS) i = Random.Int(1, i);
 		return i;
 	}
@@ -212,7 +213,7 @@ public abstract class RegularLevel extends Level {
 	public int nMobs() {
 		if (Dungeon.depth <= 1 && Dungeon.mode != Dungeon.GameMode.GAUNTLET) return 0;
 
-		int mobs = Math.round(5 + Dungeon.depth*0.7f + Random.Int(4));
+		int mobs = Math.round(4 + Dungeon.depth % Dungeon.chapterSize() + Random.Int(4));
 		if (feeling == Feeling.LARGE){
 			mobs = (int)Math.ceil(mobs * 2f);
 		}
@@ -229,6 +230,7 @@ public abstract class RegularLevel extends Level {
 		//on floor 1, 8 pre-set mobs are created so the player can get level 2.
 		int mobsToSpawn = Dungeon.depth == 1 ? 10 : nMobs();
 		if (Dungeon.mode == Dungeon.GameMode.GAUNTLET) mobsToSpawn = nMobs();
+		if (Dungeon.isChallenged(Conducts.Conduct.HUGE)) mobsToSpawn *= 3f;
 
 		ArrayList<Room> stdRooms = new ArrayList<>();
 		for (Room room : rooms) {
@@ -358,6 +360,7 @@ public abstract class RegularLevel extends Level {
 		}
 		else if (Dungeon.hero.heroClass == HeroClass.ADVENTURER) nItems *= 2f;
 		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT) nItems *= 1.5f;
+		if (Dungeon.isChallenged(Conducts.Conduct.HUGE)) nItems *= 3f;
 
 		if (Dungeon.mode == Dungeon.GameMode.CHAOS) nItems = Random.Int(1 ,nItems);
 		if (Dungeon.isChallenged(Conducts.Conduct.NO_LOOT)){

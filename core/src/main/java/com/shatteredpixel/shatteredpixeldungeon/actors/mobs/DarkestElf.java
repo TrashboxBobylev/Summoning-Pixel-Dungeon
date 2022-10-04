@@ -115,7 +115,7 @@ public class DarkestElf extends AbyssalMob {
 	}
 
 	@Override
-	protected Item createLoot(){
+    public Item createLoot(){
 		Dungeon.LimitedDrops.NECRO_HP.count++;
 		return super.createLoot();
 	}

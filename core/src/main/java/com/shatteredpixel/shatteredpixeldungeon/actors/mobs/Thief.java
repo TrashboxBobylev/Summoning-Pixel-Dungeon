@@ -121,7 +121,7 @@ public class Thief extends Mob {
 	}
 
 	@Override
-	protected Item createLoot() {
+    public Item createLoot() {
 		Dungeon.LimitedDrops.THEIF_MISC.count++;
 		return super.createLoot();
 	}

@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
@@ -53,7 +54,12 @@ public class RingOfAttunement extends Ring {
 	}
 
 	public static float attunementMultiplier( Char t){
-        return (float)(0.5f * getBonus(t, Attunement.class));
+//        return 0.5f * getBonus(t, Attunement.class);
+		DriedRose.roseRecharge buff = t.buff(DriedRose.roseRecharge.class);
+		if (buff != null){
+			return 0.5f * buff.itemLevel();
+		}
+		return 0f;
     }
 
 

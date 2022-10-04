@@ -90,7 +90,7 @@ public class PhaseShift extends TargetedSpell {
 			inputs =  new Class[]{ScrollOfTeleportation.class, ArcaneCatalyst.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 6;
+			cost = 4;
 			
 			output = PhaseShift.class;
 			outQuantity = 8;

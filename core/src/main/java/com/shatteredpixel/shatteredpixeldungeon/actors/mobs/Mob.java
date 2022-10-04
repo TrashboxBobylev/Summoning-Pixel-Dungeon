@@ -46,13 +46,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.ConjurerSpell;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.GoldToken;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
@@ -192,7 +192,7 @@ public abstract class Mob extends Char {
 		boolean justAlerted = alerted;
 		alerted = false;
 
-		if (!hordeSpawned && hordeException() && Random.Int(6) == 0 && !Dungeon.bossLevel() && alignment == Alignment.ENEMY){
+		if (!hordeSpawned && hordeException() && Random.Int(7) == 0 && !Dungeon.bossLevel() && alignment == Alignment.ENEMY){
 
 			int hordeSize = Math.min(3, Random.IntRange(1, Dungeon.depth / 8));
 			for (int i = 0; i < hordeSize; i++) {
@@ -274,7 +274,8 @@ public abstract class Mob extends Char {
 		return EXP > 0 &&
 				!(this instanceof Ghoul) && !(this instanceof Slime) &&
 				!(this instanceof WardingWraith) && !(this instanceof Necromancer.NecroSkeleton) &&
-				!(this instanceof RipperDemon);
+				!(this instanceof RipperDemon) &&
+				!Dungeon.isChallenged(Conducts.Conduct.LIMITED_MONSTERS);
 	}
 
 	//FIXME this is sort of a band-aid correction for allies needing more intelligent behaviour
@@ -844,6 +845,7 @@ public abstract class Mob extends Char {
 
 				int exp = Dungeon.hero.lvl <= maxLvl || Dungeon.mode == Dungeon.GameMode.LOL ? EXP : 0;
 				if (Dungeon.mode == Dungeon.GameMode.NO_EXP) exp = 0;
+				if (hordeHead != -1) exp = 0;
 				if (exp > 0) {
 					Dungeon.hero.sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "exp", exp));
 				}
@@ -954,12 +956,24 @@ public abstract class Mob extends Char {
 		if (Dungeon.hero.lvl > maxLvl + 2 && Dungeon.mode != Dungeon.GameMode.LOL) return;
 
 		float lootChance = this.lootChance;
-		lootChance *= RingOfWealth.dropChanceMultiplier( Dungeon.hero );
 
-		if (Random.Float() < lootChance && Dungeon.mode != Dungeon.GameMode.GAUNTLET) {
-			Item loot = createLoot();
-			if (loot != null) {
-				Dungeon.level.drop(loot, pos).sprite.drop();
+		MasterThievesArmband.StolenTracker stolen = buff(MasterThievesArmband.StolenTracker.class);
+		if (stolen == null || !stolen.itemWasStolen()) {
+			if (Random.Float() < lootChance && Dungeon.mode != Dungeon.GameMode.GAUNTLET) {
+				Item loot = createLoot();
+				if (loot != null) {
+					Dungeon.level.drop(loot, pos).sprite.drop();
+				}
+			}
+			int rolls = 1;
+			if (properties.contains(Property.BOSS)) rolls = 15;
+			else if (properties.contains(Property.MINIBOSS)) rolls = 5;
+			for (int i = 0; i < rolls; i++) {
+				if (Dungeon.hero.buff(MasterThievesArmband.Thievery.class) != null &&
+						Random.Int(15) < Dungeon.hero.buff(MasterThievesArmband.Thievery.class).itemLevel()){
+					Dungeon.level.drop(RingOfWealth.genConsumableDrop(Dungeon.hero.buff(MasterThievesArmband.Thievery.class).itemLevel()), pos).sprite.drop();
+					RingOfWealth.showFlareForBonusDrop(sprite);
+				}
 			}
 		}
 
@@ -973,18 +987,6 @@ public abstract class Mob extends Char {
 			}
 		}
 
-		//ring of wealth logic
-		if (Ring.getBuffedBonus(Dungeon.hero, RingOfWealth.Wealth.class) > 0) {
-			int rolls = 1;
-			if (properties.contains(Property.BOSS)) rolls = 15;
-			else if (properties.contains(Property.MINIBOSS)) rolls = 5;
-			ArrayList<Item> bonus = RingOfWealth.tryForBonusDrop(Dungeon.hero, rolls);
-			if (bonus != null && !bonus.isEmpty()) {
-				for (Item b : bonus) Dungeon.level.drop(b, pos).sprite.drop();
-				RingOfWealth.showFlareForBonusDrop(sprite);
-			}
-		}
-
 		//lucky enchant logic
 		if ((Dungeon.hero.lvl <= maxLvl || Dungeon.mode == Dungeon.GameMode.LOL) && buff(Lucky.LuckProc.class) != null){
 			Dungeon.level.drop(Lucky.genLoot(), pos).sprite.drop();
@@ -993,10 +995,10 @@ public abstract class Mob extends Char {
 	}
 
 	protected Object loot = null;
-	protected float lootChance = 0;
+	public float lootChance = 0;
 
 	@SuppressWarnings("unchecked")
-	protected Item createLoot() {
+	public Item createLoot() {
 		Item item;
 		if (loot instanceof Generator.Category) {
 
@@ -1054,7 +1056,9 @@ public abstract class Mob extends Char {
 			}
 		}
 		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
-			desc += "\n\n" + Messages.get(this, "harder");
+			String harderDesc = Messages.get(this, "harder");
+			if (!harderDesc.equals(""))
+				desc += "\n\n" + harderDesc;
 		}
 		desc += "\n\n" + Messages.get(Mob.class, "stats", HP, HT, attackSkill(Dungeon.hero), defenseSkill);
 		for (Buff b : buffs(ChampionEnemy.class)){
@@ -1401,6 +1405,15 @@ public abstract class Mob extends Char {
 
 	}
 
+	public static class MagicalAttack {
+		public Mob caster;
+		public int damage;
+
+		public MagicalAttack(Mob attacker, int damage){
+			caster = attacker;
+			this.damage = damage;
+		}
+	}
 
 	private static ArrayList<Mob> heldAllies = new ArrayList<>();
 

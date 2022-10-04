@@ -24,28 +24,21 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndTierInfo;
-import com.watabou.noosa.Game;
-import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Callback;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Tierable;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public abstract class Ability extends Artifact {
+public abstract class Ability extends Artifact implements Tierable {
 
     public int baseChargeUse = 35;
 
@@ -62,8 +55,6 @@ public abstract class Ability extends Artifact {
     public ArrayList<String> actions(Hero hero ) {
         ArrayList<String> actions = super.actions( hero );
         if (isEquipped( hero ) && !cursed) actions.add(AC_USE);
-        if (level() > 0) actions.add(AC_DOWNGRADE);
-        actions.add( AC_TIERINFO );
         return actions;
     }
 
@@ -120,25 +111,16 @@ public abstract class Ability extends Artifact {
     }
 
     @Override
-    public boolean isUpgradable() {
-        return level() < 2;
-    }
-
-    @Override
-    public String toString() {
-
-        String name = name();
-        String tier = "";
-        switch (level()){
-            case 0: tier = "I"; break;
-            case 1: tier = "II"; break;
-            case 2: tier = "III"; break;
+    public void charge(Hero target, float amount) {
+        if (charge < chargeCap){
+            charge += Math.round(3*amount);
+            if (charge >= chargeCap) {
+                charge = chargeCap;
+                partialCharge = 0;
+                GLog.positive( Messages.get(Ability.class, "charged", name()) );
+            }
+            updateQuickslot();
         }
-
-        name = Messages.format( "%s %s", name, tier  );
-
-        return name;
-
     }
 
     @Override
@@ -165,20 +147,7 @@ public abstract class Ability extends Artifact {
                 usesTargeting = useTargeting();
                 use(this, hero);
                 }
-            }else if (action.equals(AC_DOWNGRADE)){
-            GameScene.flash(0xFFFFFF);
-            Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
-            level(level()-1);
-            GLog.warning( Messages.get(Staff.class, "lower_tier"));
-        } else if (action.equals(AC_TIERINFO)){
-            ShatteredPixelDungeon.runOnRenderThread(new Callback() {
-                @Override
-                public void call() {
-                    Game.scene().addToFront(new WndTierInfo(Ability.this));
-                }
-            });
-        }
-
+            }
         }
 
     public class Recharge extends ArtifactBuff {
@@ -191,7 +160,7 @@ public abstract class Ability extends Artifact {
             LockedFloor lock = target.buff(LockedFloor.class);
             if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
                 //500 turns to a full charge
-                partialCharge += (1/5f * RingOfEnergy.artifactChargeMultiplier(target));
+                partialCharge += (1/5f);
                 if (partialCharge > 1){
                     charge++;
                     partialCharge--;
@@ -206,5 +175,10 @@ public abstract class Ability extends Artifact {
 
             return true;
         }
+    }
+
+    @Override
+    public int energyVal() {
+        return 18 * quantity; //scroll of upgrade + cost + average of all components
     }
 }

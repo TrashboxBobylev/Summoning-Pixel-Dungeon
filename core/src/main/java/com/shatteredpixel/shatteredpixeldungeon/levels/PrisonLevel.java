@@ -58,16 +58,15 @@ public class PrisonLevel extends RegularLevel {
 	@Override
 	protected int standardRooms(boolean forceMax) {
 		if (SPDSettings.smalldungeon()) return 3;
-		if (forceMax) return 20;
-		return 7+Random.chances(new float[]{4, 3, 2, 1});
+		if (forceMax) return 11;
+		return 5+Random.chances(new float[]{3, 2, 1});
 	}
 	
 	@Override
 	protected int specialRooms(boolean forceMax) {
 		if (SPDSettings.smalldungeon()) return 1;
-		if (forceMax) return 3;
-		//1 to 3, average 2.0
-		return 1+Random.chances(new float[]{1, 3, 1});
+		if (forceMax) return 2;
+		return 1+Random.chances(new float[]{3, 1});
 	}
 	
 	@Override

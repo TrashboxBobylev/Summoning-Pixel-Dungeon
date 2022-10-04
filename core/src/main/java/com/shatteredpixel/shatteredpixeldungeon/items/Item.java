@@ -24,10 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Conducts;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
@@ -38,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knife;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
@@ -49,6 +47,10 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Tierable;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndTierInfo;
+import com.watabou.noosa.Game;
+import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.*;
@@ -108,18 +110,26 @@ public class Item implements Bundlable {
 		ArrayList<String> actions = new ArrayList<>();
 		actions.add( AC_DROP );
 		actions.add( AC_THROW );
+		if (this instanceof Tierable){
+			if (level() > 0) actions.add(AC_DOWNGRADE);
+			actions.add( AC_TIERINFO );
+		}
 		return actions;
 	}
-	
-	public boolean doPickUp( Hero hero ) {
+
+	public boolean doPickUp(Hero hero) {
+		return doPickUp( hero, hero.pos );
+	}
+
+	public boolean doPickUp(Hero hero, int pos) {
 		if (collect( hero.belongings.backpack )) {
-			
-			GameScene.pickUp( this, hero.pos );
+
+			GameScene.pickUp( this, pos );
 			Sample.INSTANCE.play( Assets.Sounds.ITEM );
-            Hunger.adjustHunger(-2.25f);
+			Hunger.adjustHunger(-2.25f);
 			hero.spendAndNext( TIME_TO_PICK_UP );
 			return true;
-			
+
 		} else {
 			return false;
 		}
@@ -156,6 +166,15 @@ public class Item implements Bundlable {
 				doThrow(hero);
 			}
 			
+		} else if (this instanceof Tierable){
+			if (action.equals(AC_DOWNGRADE)){
+				GameScene.flash(0xFFFFFF);
+				Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
+				level(level()-1);
+				GLog.warning( Messages.get(Staff.class, "lower_tier"));
+			} else if (action.equals(AC_TIERINFO)) {
+				ShatteredPixelDungeon.runOnRenderThread(() -> Game.scene().addToFront(new WndTierInfo(Item.this)));
+			}
 		}
 	}
 	
@@ -380,8 +399,10 @@ public class Item implements Bundlable {
 	public boolean visiblyCursed() {
 		return cursed && cursedKnown;
 	}
-	
+
 	public boolean isUpgradable() {
+		if (this instanceof Tierable)
+			return level() < 2;
 		return true;
 	}
 	
@@ -421,11 +442,30 @@ public class Item implements Bundlable {
 
 		String name = name();
 
-		if (visiblyUpgraded() != 0)
-			name = Messages.format( TXT_TO_STRING_LVL, name, visiblyUpgraded()  );
-
 		if (quantity > 1)
 			name = Messages.format( TXT_TO_STRING_X, name, quantity );
+
+		if (this instanceof Tierable){
+			String tier = "";
+			if (levelKnown) {
+				switch (level()) {
+					case 0:
+						tier = "I";
+						break;
+					case 1:
+						tier = "II";
+						break;
+					case 2:
+						tier = "III";
+						break;
+				}
+
+				name = Messages.format( "%s %s", name, tier  );
+			}
+		} else {
+			if (visiblyUpgraded() != 0)
+				name = Messages.format( TXT_TO_STRING_LVL, name, visiblyUpgraded()  );
+		}
 
 		return name;
 
@@ -448,6 +488,10 @@ public class Item implements Bundlable {
 	}
 
 	public Emitter emitter() { return null; }
+
+	public void onMissileCreate(Visual vis, PointF from, PointF to, PointF distance){
+		//do nothing by default
+	}
 	
 	public String info() {
 		return desc();
@@ -467,6 +511,11 @@ public class Item implements Bundlable {
 	}
 	
 	public int value() {
+		return 0;
+	}
+
+	//item's value in energy crystals
+	public int energyVal() {
 		return 0;
 	}
 	

@@ -55,6 +55,23 @@ public class WndOptions extends Window {
 		layoutBody(pos, message, options);
 	}
 
+	public WndOptions(Image icon, String title, String message, IconTitle... options) {
+		super();
+
+		int width = PixelScene.landscape() ? WIDTH_L : WIDTH_P;
+
+		float pos = 0;
+		if (title != null) {
+			IconTitle tfTitle = new IconTitle(icon, title);
+			tfTitle.setRect(0, pos, width, 0);
+			add(tfTitle);
+
+			pos = tfTitle.bottom() + 2*MARGIN;
+		}
+
+		layoutBody(pos, message, options);
+	}
+
 	public WndOptions( String title, String message, String... options ) {
 		super();
 
@@ -72,6 +89,55 @@ public class WndOptions extends Window {
 		}
 
 		layoutBody(pos, message, options);
+	}
+
+	public WndOptions( String title, String message, IconTitle... options ) {
+		super();
+
+		int width = PixelScene.landscape() ? WIDTH_L : WIDTH_P;
+
+		float pos = MARGIN;
+		if (title != null) {
+			RenderedTextBlock tfTitle = PixelScene.renderTextBlock(title, 9);
+			tfTitle.hardlight(TITLE_COLOR);
+			tfTitle.setPos(MARGIN, pos);
+			tfTitle.maxWidth(width - MARGIN * 2);
+			add(tfTitle);
+
+			pos = tfTitle.bottom() + 2*MARGIN;
+		}
+
+		layoutBody(pos, message, options);
+	}
+
+	private void layoutBody(float pos, String message, IconTitle... options){
+		int width = PixelScene.landscape() ? WIDTH_L : WIDTH_P;
+
+		RenderedTextBlock tfMesage = PixelScene.renderTextBlock( 6 );
+		tfMesage.text(message, width);
+		tfMesage.setPos( 0, pos );
+		add( tfMesage );
+
+		pos = tfMesage.bottom() + 2*MARGIN;
+
+		for (int i=0; i < options.length; i++) {
+			final int index = i;
+			RedButton btn = new RedButton( options[i].tfLabel.getText() ) {
+				@Override
+				protected void onClick() {
+					hide();
+					onSelect( index );
+				}
+			};
+			btn.icon(options[i].imIcon);
+			btn.enable(enabled(i));
+			btn.setRect( 0, pos, width, Math.max(btn.reqHeight(), BUTTON_HEIGHT) );
+			add( btn );
+
+			pos += BUTTON_HEIGHT + MARGIN;
+		}
+
+		resize( width, (int)(pos - MARGIN) );
 	}
 
 	private void layoutBody(float pos, String message, String... options){

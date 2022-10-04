@@ -110,6 +110,7 @@ public class BuffIndicator extends Component {
 	public static final int DEGRADE     = 59;
 	public static final int FOOD_DEBUFF = 60;
 	public static final int NECROMANCY  = 61;
+	public static final int MIRROR      = 62;
 
 	public static final int SIZE	= 7;
 	

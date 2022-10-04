@@ -83,7 +83,7 @@ public abstract class Shaman extends Mob {
 	}
 
 	@Override
-	protected Item createLoot() {
+    public Item createLoot() {
 		Dungeon.LimitedDrops.SHAMAN_WAND.count++;
 		return super.createLoot();
 	}
@@ -123,7 +123,11 @@ public abstract class Shaman extends Mob {
 	}
 	
 	//used so resistances can differentiate between melee and magical attacks
-	public static class EarthenBolt{}
+	public static class EarthenBolt extends MagicalAttack{
+		public EarthenBolt(Mob attacker, int damage) {
+			super(attacker, damage);
+		}
+	}
 	
 	private void zap() {
 		spend( 1f );
@@ -137,7 +141,7 @@ public abstract class Shaman extends Mob {
 			
 			int dmg = Random.NormalIntRange( 5, 13 );
 			if (buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dmg *= 0.6f;
-			enemy.damage( dmg, new EarthenBolt() );
+			enemy.damage( dmg, new EarthenBolt(this, dmg) );
 			
 			if (!enemy.isAlive() && enemy == Dungeon.hero) {
 				Dungeon.fail( getClass() );
