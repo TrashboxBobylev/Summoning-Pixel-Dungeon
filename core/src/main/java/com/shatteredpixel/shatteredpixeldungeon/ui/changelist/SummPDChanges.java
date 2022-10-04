@@ -100,7 +100,7 @@ public class SummPDChanges {
         changes = ChangesScene.createChangeInfo(changeInfos, "Changes", false, 0xd1bb00);
         changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_ARMBAND, null), "Artifacts",
             "_- Master Thieves' Armband_ was reworked to its Shattered equivalent (no longer picking up charge from gold, allows to steal items from enemies)\n\n" +
-                    "_- Dried Rose_ increases max attunement at rate of 0.5 atu per level."
+                    "_- Dried Rose_ increases max attunement at rate of 0.5 atu per level and can be used in Gauntlet mode."
         ));
         changes.addButton(new ChangeButton(Icons.get(Icons.CHALLENGE_ON), "Conducts",
                 "_-_ Readjusted score modifiers for most of conducts.\n\n" +
@@ -136,7 +136,8 @@ public class SummPDChanges {
                         "_-_ Added placeholder surface sprite for Adventurer.\n\n" +
                         "_-_ Adjusted Hacatu's power scaling to account for reduced max attunement.\n\n" +
                         "_-_ Nerfed Wand of Corrosion's rank II.\n\n" +
-                        "_-_ Added third slot for artifacts."
+                        "_-_ Added third slot for artifacts.\n\n" +
+                        "_-_ Rewritten the descriptions of certain items to sound better, thanks to @Zackary4536."
         ));
         changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
                 "Fixed:\n" +
