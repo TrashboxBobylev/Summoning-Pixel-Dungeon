@@ -1,5 +1,5 @@
 ## 1
-name: Upload thing when pushing something
+name: Upload thing when pushing something (debug scroll version)
 
 on:
   push:
@@ -51,7 +51,7 @@ jobs:
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest_"
+          automatic_release_tag: "latest_debug_"
           prerelease: false
           title: "${{ env.version }}"
           files: |

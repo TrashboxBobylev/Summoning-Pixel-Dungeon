@@ -391,7 +391,7 @@ public class GameScene extends PixelScene {
 
 		// debug logic...
 		ScrollOfDebug debug = Dungeon.hero.belongings.getItem(ScrollOfDebug.class);
-		boolean supported = false;
+		boolean supported = true;
 		if(supported) {
 			if(debug == null) {
 				debug = new ScrollOfDebug();
