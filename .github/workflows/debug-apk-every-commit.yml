@@ -4,7 +4,7 @@ name: Upload thing when pushing something (debug scroll version)
 on:
   push:
     branches:
-      - "master"
+      - "debug-scroll"
 
 jobs:
   build:
