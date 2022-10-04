@@ -107,7 +107,13 @@ public enum Icons {
 	CHARLIE,
 	CUBE_CODE,
 	PURIGRO,
-	ARCNOR;
+	ARCNOR,
+
+	ZACHARY,
+	OMICRONRG,
+	KRAUZXE,
+	LOLMAN,
+	MARSHALL;
 
 	public Image get() {
 		return get( this );
@@ -325,6 +331,26 @@ public enum Icons {
 				break;
 			case DARK_AMU:
 				icon.frame( icon.texture.uvRect( 96, 160, 112, 176 ) );
+				break;
+			case ZACHARY:
+				icon.frame( icon.texture.uvRectBySize( 128, 0, 32, 32 ) );
+				icon.scale.set(PixelScene.align(0.49f));
+				break;
+			case OMICRONRG:
+				icon.frame( icon.texture.uvRectBySize( 160, 0, 32, 32 ) );
+				icon.scale.set(PixelScene.align(0.49f));
+				break;
+			case KRAUZXE:
+				icon.frame( icon.texture.uvRectBySize( 128, 32, 32, 32 ) );
+				icon.scale.set(PixelScene.align(0.49f));
+				break;
+			case LOLMAN:
+				icon.frame( icon.texture.uvRectBySize( 160, 32, 32, 32 ) );
+				icon.scale.set(PixelScene.align(0.49f));
+				break;
+			case MARSHALL:
+				icon.frame( icon.texture.uvRectBySize( 128, 64, 32, 32 ) );
+				icon.scale.set(PixelScene.align(0.49f));
 				break;
 		}
 		return icon;
