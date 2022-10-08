@@ -102,7 +102,8 @@ public class RingOfElements extends Ring {
         RESISTS.add( Wizard.DarkBolt.class );
 		RESISTS.add( Eye.DeathGaze.class );
 		RESISTS.add( Yog.BurningFist.DarkBolt.class );
-		RESISTS.add(FinalFroggit.Bolt.class);
+		RESISTS.add( FinalFroggit.Bolt.class);
+		RESISTS.add( SpectreRat.DarkBolt.class);
 	}
 	
 	public static float resist( Char target, Class effect ){
