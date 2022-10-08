@@ -86,6 +86,8 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 	}
 
 	public int getMaxMomentum() {
+		if (MomentumBoots.instance == null)
+			return 1;
 		return 5 + MomentumBoots.instance.itemLevel()*2;
 	}
 
@@ -201,6 +203,8 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 	}
 
 	public float cooldownScaling(){
+		if (MomentumBoots.instance == null)
+			return 1f;
 		return 1f - MomentumBoots.instance.itemLevel()*0.1f;
 	}
 
