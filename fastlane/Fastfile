@@ -18,10 +18,6 @@ default_platform(:android)
 platform :android do
   desc "Deploy a new version to the Google Play"
   lane :production do
-  notes = changelog_from_git_commits(between: ["cba321d", "HEAD"], merge_commit_filtering: "exclude_merges" )
-      out_file = File.open(ENV["GITHUB_WORKSPACE"] + "/fastlane/metadata/android/en-US/changelogs/default.txt", "w")
-      out_file.puts(notes)
-      out_file.close
     gradle(task: "clean bundleRelease")
     upload_to_play_store
   end
