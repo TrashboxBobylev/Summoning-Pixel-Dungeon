@@ -73,10 +73,23 @@ public class SummPDChanges {
 
         ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "1.2.3", true, Window.TITLE_COLOR);
 
+        changes = ChangesScene.createChangeInfo(changeInfos, "1.2.3a", false, Window.WHITE);
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "Fixed:\n" +
+                        "_-_ Crash from equipping certain artifacts.\n" +
+                        "_-_ Crash from invalid positions for Special Delivery.\n" +
+                        "_-_ Crash for instances of Momentum existing separately from Momentum Boots.\n" +
+                        "_-_ Crash for missing sprite of falling monster.\n" +
+                        "_-_ Inability to view rank descriptions for Conjurer's spells.\n" +
+                        "_-_ Final Froggit and Possessed Rodent not being fully affected by magical protection.\n" +
+                        "_-_ Grammar mistakes for Wand of Shadow Beams.\n" +
+                        "_-_ Instances of prison cell room being too small to generate.\n" +
+                        "_-_ Level cap being too high on Large Enlargement."));
+
         changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
         changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
-                "_-_ Released October, 2022\n" +
-                        "_-_ 366 days after 1.2.2\n\n" +
+                "_-_ Released October 4th, 2022\n" +
+                        "_-_ 379 days after 1.2.2\n\n" +
                         ""
         ));
         changes = ChangesScene.createChangeInfo(changeInfos, "New Content", false, 0x10bb00);

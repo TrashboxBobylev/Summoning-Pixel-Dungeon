@@ -80,9 +80,10 @@ public abstract class ConjurerSpell extends Item implements Tierable {
 
     @Override
     public ArrayList<String> actions(Hero hero ) {
-        ArrayList<String> actions = new ArrayList<>();
+        ArrayList<String> actions = super.actions(hero);
         actions.add( AC_ZAP );
-
+        actions.remove( AC_DROP );
+        actions.remove( AC_THROW );
         return actions;
     }
 

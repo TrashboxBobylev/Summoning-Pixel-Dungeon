@@ -70,6 +70,8 @@ public class AntiMagic extends Armor.Glyph {
 		RESISTS.add( Yog.BurningFist.DarkBolt.class );
 		RESISTS.add( YogFist.BrightFist.LightBeam.class );
 		RESISTS.add( YogFist.DarkFist.DarkBolt.class );
+		RESISTS.add( FinalFroggit.Bolt.class);
+		RESISTS.add( SpectreRat.DarkBolt.class);
 
 		RESISTS.add(ArcaneBomb.class);
 	}

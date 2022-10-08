@@ -1630,9 +1630,6 @@ public class Hero extends Char {
 	}
 	
 	public void earnExp( int exp, Class source ) {
-
-		if (SPDSettings.bigdungeon()) MAX_LEVEL = 100;
-		else MAX_LEVEL = 30;
 		if (Dungeon.mode == Dungeon.GameMode.LOL) MAX_LEVEL = Integer.MAX_VALUE;
 
 		this.exp += exp;

@@ -57,6 +57,12 @@ public class CellBlockRoom extends StandardRoom {
 
 		int rows = (internal.width() - 1)/3;
 		int cols = (internal.height() - 1)/3;
+		if (rows <= 0 || cols <= 0) {
+			for (Door door : connected.values()) {
+				door.set( Door.Type.REGULAR );
+			}
+			return;
+		}
 
 		if (internal.height() == 11) cols--;
 		if (internal.width() == 11) rows--;
