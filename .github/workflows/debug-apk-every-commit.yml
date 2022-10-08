@@ -75,7 +75,7 @@ jobs:
           gameData: ./desktop/build/libs
           itchUsername: TrashboxBobylev
           itchGameId: summoning-pixel-dungeon
-          buildChannel: win-linux-mac-stable
+          buildChannel: win-linux-mac-beta
           buildNumberFile: ./version
 
       - uses: KikimoraGames/itch-publish@v0.0.3
@@ -84,6 +84,6 @@ jobs:
           gameData: ./android/build/outputs/apk/release
           itchUsername: TrashboxBobylev
           itchGameId: summoning-pixel-dungeon
-          buildChannel: android-stable
+          buildChannel: android-beta
           buildNumberFile: ./version
 
