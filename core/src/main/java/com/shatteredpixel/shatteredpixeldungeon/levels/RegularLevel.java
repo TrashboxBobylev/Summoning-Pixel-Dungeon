@@ -472,20 +472,29 @@ public abstract class RegularLevel extends Level {
 			Talent.SpecialDeliveryCount dropped = Buff.affect(Dungeon.hero, Talent.SpecialDeliveryCount.class);
 			if (dropped.count() < 1 + Dungeon.hero.pointsInTalent(Talent.SPECIAL_DELIVERY)){
 				int cell;
+				int tries = 100;
+				boolean valid;
 				do {
 					cell = randomDropCell(SpecialRoom.class);
-				} while (room(cell) instanceof SecretRoom && !Dungeon.level.insideMap(cell));
-				if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
-					map[cell] = Terrain.GRASS;
-					losBlocking[cell] = false;
+					valid = cell != -1 && !(room(cell) instanceof SecretRoom)
+							&& !(room(cell) instanceof ShopRoom)
+							&& map[cell] != Terrain.EMPTY_SP
+							&& map[cell] != Terrain.WATER
+							&& map[cell] != Terrain.PEDESTAL;
+				} while (tries-- > 0 && !valid);
+				if (valid) {
+					if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
+						map[cell] = Terrain.GRASS;
+						losBlocking[cell] = false;
+					}
+					// give anything that is not gold
+					Item droppy;
+					do {
+						droppy = Generator.random();
+					} while (droppy instanceof Gold);
+					drop( droppy, cell).type = Heap.Type.CHEST;
+					dropped.countUp(1);
 				}
-				// give anything that is not gold
-				Item droppy;
-				do {
-					droppy = Generator.random();
-				} while (droppy instanceof Gold);
-				drop( droppy, cell).type = Heap.Type.CHEST;
-				dropped.countUp(1);
 			}
 		}
 
