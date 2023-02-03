@@ -397,7 +397,14 @@ public abstract class Minion extends Mob {
 
     @Override
     public float speed() {
-        return super.speed()*Dungeon.hero.speed();
+        float speed = super.speed()*Dungeon.hero.speed();
+
+        //moves 2 tiles at a time when returning to the hero
+        if (state == WANDERING && defendingPos == -1){
+            speed *= 2;
+        }
+
+        return speed;
     }
 
     //ported from DriedRose.java
