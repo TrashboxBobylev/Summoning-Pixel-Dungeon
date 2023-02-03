@@ -57,6 +57,7 @@ public abstract class AdHocSpell extends ConjurerSpell {
                 effect(curUser);
             }
 
-        }
+        } else
+            tierableActions(action);
     }
 }
