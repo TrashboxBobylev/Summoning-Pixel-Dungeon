@@ -137,7 +137,7 @@ public class MagicMissile extends Emitter {
 				pour( WhiteParticle.FACTORY, 0.01f );
 				break;
 			case FROST:
-				pour(WebParticle.FROST, 0.01f );
+				pour(Speck.factory(Speck.FROSTBURN), 0.01f );
 				break;
 			case FIRE:
 				size( 4 );
