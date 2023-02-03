@@ -74,7 +74,7 @@ import java.util.ArrayList;
 public class CursedWand {
 
 	private static float COMMON_CHANCE = 0.6f;
-	private static float UNCOMMON_CHANCE = 10.3f;
+	private static float UNCOMMON_CHANCE = 0.3f;
 	private static float RARE_CHANCE = 0.09f;
 	private static float VERY_RARE_CHANCE = 0.01f;
 
