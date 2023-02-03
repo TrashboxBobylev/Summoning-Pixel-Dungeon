@@ -447,7 +447,6 @@ public class CursedWand {
 				if (heap != null) scanForArtifact(heap, artifacts, artifactLevels);
 			}
 		} else {
-			GLog.i(Messages.get(CursedWand.class, "nothing"));
 			return false;
 		}
 		if (artifacts.isEmpty()){
@@ -461,7 +460,6 @@ public class CursedWand {
 			Sample.INSTANCE.play(Assets.Sounds.BOSS);
 			origin.detach(Dungeon.hero.belongings.backpack);
 		} else {
-			GLog.i(Messages.get(CursedWand.class, "nothing"));
 			return false;
 		}
 		return true;
