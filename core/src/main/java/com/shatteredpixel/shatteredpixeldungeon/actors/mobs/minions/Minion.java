@@ -477,10 +477,5 @@ public abstract class Minion extends Mob {
         return d + "\n\n" + Messages.get(Minion.class, "stats", Math.round(minDamage*empowering), Math.round(maxDamage*empowering), HP, HT, minDR + baseMinDR, maxDR + baseMaxDR);
     }
 
-    public void destroy() {
-        Dungeon.hero.usedAttunement -= attunement;
-        super.destroy();
-    }
-
     public void onLeaving(){}
 }

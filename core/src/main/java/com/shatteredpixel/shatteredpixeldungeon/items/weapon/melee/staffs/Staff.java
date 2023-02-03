@@ -388,7 +388,7 @@ public class Staff extends Weapon implements Tierable {
         }
 
         //checking attunement
-        if (requiredAttunement() > owner.attunement() || (requiredAttunement() + owner.usedAttunement > owner.attunement())){
+        if (requiredAttunement() > owner.maxAttunement() || (requiredAttunement() + owner.usedAttunement() > owner.maxAttunement())){
             owner.sprite.zap(0);
             GLog.warning( Messages.get(Staff.class, "too_low_attunement") );
             return;
@@ -414,7 +414,6 @@ public class Staff extends Weapon implements Tierable {
             Minion minion = minionType.newInstance();
             GameScene.add(minion);
             ScrollOfTeleportation.appear(minion, spawnPoints.get(Random.index(spawnPoints)));
-            owner.usedAttunement += requiredAttunement();
             minion.setDamage(
                     minionmin(),
                     minionmax());

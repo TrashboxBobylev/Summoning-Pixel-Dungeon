@@ -62,7 +62,6 @@ public class Zap extends ConjurerSpell {
                         Minion minion = (Minion) ch.getClass().newInstance();
                         GameScene.add(minion);
                         ScrollOfTeleportation.appear(minion, ch.pos);
-                        curUser.usedAttunement += ((Minion) ch).attunement;
                         minion.setDamage(
                                 ((Minion) ch).minDamage * 3 / 2,
                                 ((Minion) ch).maxDamage * 3 / 2);

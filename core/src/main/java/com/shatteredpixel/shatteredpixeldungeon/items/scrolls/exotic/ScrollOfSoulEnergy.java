@@ -75,7 +75,7 @@ public class ScrollOfSoulEnergy extends ExoticScroll {
             SoulFlame minion = new SoulFlame();
             GameScene.add(minion);
             ScrollOfTeleportation.appear(minion, respawnPoints.get(Random.index(respawnPoints)));
-            curUser.usedAttunement = minion.attunement = curUser.attunement();
+            minion.attunement = curUser.maxAttunement();
             minion.setDamage(
                     SoulFlame.adjustMinDamage(curUser.lvl),
                     SoulFlame.adjustMaxDamage(curUser.lvl));
@@ -94,6 +94,6 @@ public class ScrollOfSoulEnergy extends ExoticScroll {
 
     @Override
     public String desc() {
-        return Messages.get(this, "desc", SoulFlame.adjustMinDamage(Dungeon.hero.lvl), SoulFlame.adjustMaxDamage(Dungeon.hero.lvl), SoulFlame.adjustHP((int) Dungeon.hero.attunement()) );
+        return Messages.get(this, "desc", SoulFlame.adjustMinDamage(Dungeon.hero.lvl), SoulFlame.adjustMaxDamage(Dungeon.hero.lvl), SoulFlame.adjustHP((int) Dungeon.hero.maxAttunement()) );
     }
 }

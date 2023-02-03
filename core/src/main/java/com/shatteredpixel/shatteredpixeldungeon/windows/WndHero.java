@@ -148,7 +148,7 @@ public class WndHero extends WndTabbed {
 			statSlot( Messages.get(this, "exp"), hero.exp + "/" + hero.maxExp() );
             Hunger hunger = Buff.affect(hero, Hunger.class);
             statSlot( Messages.get(this, "hunger"), new DecimalFormat("#.##").format(100f * (hunger.hunger() / Hunger.STARVING)) + "%");
-			statSlot( Messages.get(this, "attunement"), (hero.attunement() - hero.usedAttunement) + "/" + hero.attunement() );
+			statSlot( Messages.get(this, "attunement"), (hero.maxAttunement() - hero.usedAttunement()) + "/" + hero.maxAttunement() );
 			statSlot(Messages.get(this, "accuracy"), hero.attackSkill(new Rat()));
 			statSlot(Messages.get(this, "evasion"), hero.defenseSkill(new Rat()));
 

@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulWeakness
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SpikyShield;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Phantom;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GoatClone;
 import com.shatteredpixel.shatteredpixeldungeon.effects.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.*;
@@ -149,14 +150,23 @@ public class Hero extends Char {
 	public int STR;
 	
 	public float attunement = 1;
-	public float usedAttunement;
 
 	public ArrayList<LinkedHashMap<Talent, Integer>> talents = new ArrayList<>();
 
 	public int mana = 0;
 	public int maxMana = 0;
 
-	public float attunement(){
+	public float usedAttunement(){
+		float att = 0;
+		for (Mob mob : Dungeon.level.mobs){
+			if (mob instanceof Minion){
+				att += ((Minion) mob).attunement;
+			}
+		}
+		return att;
+	}
+
+	public float maxAttunement(){
 	    return attunement +
 				RingOfAttunement.attunementMultiplier(this) +
 				(subClass == HeroSubClass.SOUL_REAVER ? 1 : 0) +
@@ -229,7 +239,6 @@ public class Hero extends Char {
 	private static final String EXPERIENCE	= "exp";
 	private static final String HTBOOST     = "htboost";
     private static final String ATTUNEMENT		= "attunement";
-    private static final String USED_ATTUNEMENT		= "used_attunement";
 	private static final String LASTMOVE = "last_move";
 	private static final String MANA = "mana";
 	private static final String MAX_MANA = "max_mana";
@@ -251,7 +260,6 @@ public class Hero extends Char {
 		
 		bundle.put( LEVEL, lvl );
 		bundle.put(ATTUNEMENT, attunement);
-		bundle.put(USED_ATTUNEMENT, usedAttunement);
 		bundle.put( EXPERIENCE, exp );
 		
 		bundle.put( HTBOOST, HTBoost );
@@ -282,7 +290,6 @@ public class Hero extends Char {
 		exp = bundle.getInt( EXPERIENCE );
 		totalExp = bundle.getInt( TOTAL_EXP);
 		attunement = bundle.getFloat(ATTUNEMENT);
-        usedAttunement = bundle.getFloat(USED_ATTUNEMENT);
 
 		HTBoost = bundle.getInt(HTBOOST);
 
