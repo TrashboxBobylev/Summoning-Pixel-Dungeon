@@ -52,7 +52,7 @@ public class ElixirOfToxicEssence extends Elixir {
 	@Override
 	public int value() {
 		//prices of ingredients
-		return quantity * (30 + 40);
+		return quantity * (Recipe.calculatePrice(new Recipe()));
 	}
 	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {

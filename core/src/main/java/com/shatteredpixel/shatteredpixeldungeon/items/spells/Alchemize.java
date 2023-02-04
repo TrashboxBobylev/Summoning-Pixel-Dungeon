@@ -56,7 +56,7 @@ public class Alchemize extends Spell {
 	@Override
 	public int value() {
 		//prices of ingredients, divided by output quantity
-		return Math.round(quantity * (40 / 8f));
+		return quantity * Recipe.calculatePrice(new Recipe());
 	}
 
 	//TODO also allow alchemical catalyst? Or save that for an elixir/brew?

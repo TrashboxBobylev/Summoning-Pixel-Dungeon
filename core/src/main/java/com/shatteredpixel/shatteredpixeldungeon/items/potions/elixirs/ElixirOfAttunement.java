@@ -65,7 +65,7 @@ public class ElixirOfAttunement extends Elixir {
 	@Override
 	public int value() {
 		//prices of ingredients
-		return quantity * 80;
+		return Recipe.calculatePrice(new Recipe()) * quantity;
 	}
 	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
