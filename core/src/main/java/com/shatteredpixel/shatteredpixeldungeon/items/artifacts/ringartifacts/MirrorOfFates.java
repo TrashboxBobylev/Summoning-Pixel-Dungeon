@@ -108,7 +108,7 @@ public class MirrorOfFates extends Artifact {
 
     @Override
     protected ArtifactBuff passiveBuff() {
-        return new ArtifactBuff();
+        return new mirrorExp();
     }
 
     public class mirrorExp extends ArtifactBuff {
