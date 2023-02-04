@@ -425,6 +425,7 @@ public class Staff extends Weapon implements Tierable {
             minion.strength = STRReq();
             this.customizeMinion(minion);
             minion.enchantment = enchantment;
+            minion.augmentOffense = augment;
             minion.lvl = level();
             minion.minionClass = minionClass;
             minion.attunement = requiredAttunement();
@@ -548,8 +549,8 @@ public class Staff extends Weapon implements Tierable {
             info += "\n\n" + Messages.get(Staff.class, "stats_known",
                     tier,
                     STRReq(),
-                    Math.round(minionmin()*robeBonus),
-                    Math.round(minionmax()*robeBonus),
+                    augment.damageFactor(Math.round(minionmin()*robeBonus)),
+                    augment.damageFactor(Math.round(minionmax()*robeBonus)),
                     (hp(level())),
                     requiredAttunement());
             if (STRReq() > Dungeon.hero.STR()) {
@@ -571,10 +572,10 @@ public class Staff extends Weapon implements Tierable {
 
         switch (augment) {
             case SPEED:
-                info += "\n\n" + Messages.get(Weapon.class, "faster");
+                info += "\n\n" + Messages.get(Staff.class, "faster");
                 break;
             case DAMAGE:
-                info += "\n\n" + Messages.get(Weapon.class, "stronger");
+                info += "\n\n" + Messages.get(Staff.class, "stronger");
                 break;
             case NONE:
         }

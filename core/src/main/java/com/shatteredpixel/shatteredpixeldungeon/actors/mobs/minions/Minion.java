@@ -126,11 +126,13 @@ public abstract class Minion extends Mob {
 
     public boolean isTanky = false;
     public Weapon.Enchantment enchantment;
+    public Weapon.Augment augmentOffense;
     public int lvl;
     public int timer = -1;
 
     private static final String DEFEND_POS = "defend_pos";
     private static final String MOVING_TO_DEFEND = "moving_to_defend";
+    private static final String AUGMENT1 = "augment1";
 
     @Override
     public void storeInBundle(Bundle bundle) {
@@ -148,6 +150,7 @@ public abstract class Minion extends Mob {
         bundle.put("partialhp", partialHealing);
         bundle.put(DEFEND_POS, defendingPos);
         bundle.put(MOVING_TO_DEFEND, movingToDefendPos);
+        bundle.put(AUGMENT1, augmentOffense);
     }
 
     @Override
@@ -167,6 +170,9 @@ public abstract class Minion extends Mob {
         partialHealing = bundle.getFloat("partialHealing");
         if (bundle.contains(DEFEND_POS)) defendingPos = bundle.getInt(DEFEND_POS);
         movingToDefendPos = bundle.getBoolean(MOVING_TO_DEFEND);
+
+        if (bundle.contains(AUGMENT1)) augmentOffense = bundle.getEnum(AUGMENT1, Weapon.Augment.class);
+        else augmentOffense = Weapon.Augment.NONE;
     }
 
     public float attunement = 1;
@@ -244,7 +250,7 @@ public abstract class Minion extends Mob {
         if (buff(AdditionalDamage.class) != null) i += minDamage*2;
         if (Dungeon.hero.buff(Attunement.class) != null) i *= Attunement.empowering();
         if (buff(Chungus.class) != null) i*=1.4f;
-        return i;
+        return augmentOffense.damageFactor(i);
     }
 
     public void setDR(int min, int max){
@@ -270,7 +276,7 @@ public abstract class Minion extends Mob {
     public int drRoll() {
         int i = Random.NormalIntRange(minDR + baseMinDR, maxDR + baseMaxDR);
         if (buff(AdditionalDefense.class) != null) i += Random.NormalIntRange(1, 5);
-        return i;
+        return augmentOffense.damageFactor(i);
     }
 
     @Override
@@ -330,7 +336,7 @@ public abstract class Minion extends Mob {
                 && !(alignment == Alignment.ALLY && enemy == Dungeon.hero)) {
             int i = Dungeon.hero.defenseSkill(enemy);
             if (buff(AdditionalEvasion.class) != null) i *= 1.3f;
-            return i;
+            return Math.round(i * (1f / augmentOffense.delayFactor(1)));
         } else {
             return 0;
         }
@@ -338,7 +344,7 @@ public abstract class Minion extends Mob {
 
     @Override
     public int defenseSkillDesc() {
-        return Dungeon.hero.defenseSkill(enemy);
+        return Math.round(Dungeon.hero.defenseSkill(enemy) * (1f / augmentOffense.delayFactor(1)));
     }
 
     @Override
@@ -402,7 +408,7 @@ public abstract class Minion extends Mob {
 
     @Override
     public float speed() {
-        float speed = super.speed()*Dungeon.hero.speed();
+        float speed = 1f / augmentOffense.delayFactor(super.speed()*Dungeon.hero.speed());
 
         //moves 2 tiles at a time when returning to the hero
         if (state == WANDERING && defendingPos == -1){
@@ -410,6 +416,12 @@ public abstract class Minion extends Mob {
         }
 
         return speed;
+    }
+
+    @Override
+    protected float attackDelay() {
+        float delay = super.attackDelay();
+        return augmentOffense.delayFactor(delay);
     }
 
     //ported from DriedRose.java
@@ -479,7 +491,12 @@ public abstract class Minion extends Mob {
         float empowering = 1f;
         if (buff(Chungus.class) != null) empowering *= 1.4f;
         if (Dungeon.hero.buff(Attunement.class) != null) empowering = Attunement.empowering();
-        return d + "\n\n" + Messages.get(Minion.class, "stats", Math.round(minDamage*empowering), Math.round(maxDamage*empowering), HP, HT, minDR + baseMinDR, maxDR + baseMaxDR);
+        return d + "\n\n" + Messages.get(Minion.class, "stats",
+                augmentOffense.damageFactor(Math.round(minDamage*empowering)),
+                      augmentOffense.damageFactor(Math.round(maxDamage*empowering)),
+                    HP, HT,
+                    augmentOffense.damageFactor(minDR + baseMinDR),
+                    augmentOffense.damageFactor(maxDR + baseMaxDR));
     }
 
     public void onLeaving(){}
