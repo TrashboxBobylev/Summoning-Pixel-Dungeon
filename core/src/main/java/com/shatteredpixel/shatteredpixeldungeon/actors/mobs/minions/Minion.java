@@ -337,6 +337,11 @@ public abstract class Minion extends Mob {
     }
 
     @Override
+    public int defenseSkillDesc() {
+        return Dungeon.hero.defenseSkill(enemy);
+    }
+
+    @Override
     public void add(Buff buff) {
         super.add(buff);
         if (buff instanceof TankHeal && minionClass == MinionClass.DEFENSE){

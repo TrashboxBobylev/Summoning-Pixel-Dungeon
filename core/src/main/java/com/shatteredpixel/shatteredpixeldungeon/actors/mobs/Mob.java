@@ -1047,6 +1047,10 @@ public abstract class Mob extends Char {
 		}
 	}
 
+	public int defenseSkillDesc(){
+		return defenseSkill;
+	}
+
 	public String description() {
 		String desc = Messages.get(this, "desc");
 		if (hordeHead != -1 && Actor.findById(hordeHead) != null){
@@ -1060,7 +1064,7 @@ public abstract class Mob extends Char {
 			if (!harderDesc.equals(""))
 				desc += "\n\n" + harderDesc;
 		}
-		desc += "\n\n" + Messages.get(Mob.class, "stats", HP, HT, attackSkill(Dungeon.hero), defenseSkill);
+		desc += "\n\n" + Messages.get(Mob.class, "stats", HP, HT, attackSkill(Dungeon.hero), defenseSkillDesc());
 		for (Buff b : buffs(ChampionEnemy.class)){
 			desc += "\n\n_" + Messages.titleCase(b.toString()) + "_\n" + b.desc();
 		}
