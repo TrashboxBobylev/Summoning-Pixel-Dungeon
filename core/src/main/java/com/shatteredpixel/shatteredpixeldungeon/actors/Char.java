@@ -422,7 +422,7 @@ public abstract class Char extends Actor {
 		}
 
 		float acuRoll = 0;
-		for (int i = 0; i < defender.attackRolls(); i++) {
+		for (int i = 0; i < attacker.attackRolls(); i++) {
 			float roll = Random.Float(acuStat);
 			if (roll > acuRoll){
 				acuRoll = roll;
