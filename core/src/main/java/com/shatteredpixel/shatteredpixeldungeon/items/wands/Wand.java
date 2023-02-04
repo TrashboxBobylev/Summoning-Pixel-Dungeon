@@ -474,11 +474,12 @@ public abstract class Wand extends Weapon implements Tierable {
 
 		boolean fuelUsed = false;
 
-		if (curCharges > 0)
-			curCharges -= cursed ? 1 : chargesPerCast();
+		int usedCharges = cursed ? 1 : chargesPerCast();
+		if (this.curCharges > 0)
+			this.curCharges -= usedCharges;
 		else if (curUser.buff(FuelContainer.fuelBuff.class) != null){
 			fuelUsed = true;
-			curUser.buff(FuelContainer.fuelBuff.class).useCharge(this, (cursed ? 1 : chargesPerCast()));
+			curUser.buff(FuelContainer.fuelBuff.class).useCharge(this, usedCharges);
 		}
 
 
@@ -488,7 +489,7 @@ public abstract class Wand extends Weapon implements Tierable {
 		}
 
 		Invisibility.dispel();
-		if (Dungeon.hero.buff(EnergyOverload.class) != null && !cursed && !fuelUsed) curCharges += chargesPerCast();
+		if (Dungeon.hero.buff(EnergyOverload.class) != null && !cursed && !fuelUsed) this.curCharges += chargesPerCast();
 
 		if (curUser.heroClass == HeroClass.MAGE) levelKnown = true;
 		updateQuickslot();
@@ -498,7 +499,7 @@ public abstract class Wand extends Weapon implements Tierable {
 		}
 		SubtilitasSigil.Recharge sigilCharge = curUser.buff(SubtilitasSigil.Recharge.class);
 		if (sigilCharge != null){
-			sigilCharge.gainExp(1);
+			sigilCharge.gainExp(usedCharges);
 		}
 
 		curUser.spendAndNext( TIME_TO_ZAP );
