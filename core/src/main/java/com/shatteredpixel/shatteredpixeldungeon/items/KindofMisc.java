@@ -24,143 +24,132 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
-
-
 public abstract class KindofMisc extends EquipableItem {
 
 	private static final float TIME_TO_EQUIP = 1f;
 
-	@Override
-	public boolean doEquip(final Hero hero) {
-
-		boolean equipFull = false;
-		if ( hero.belongings.ring != null
-				&& hero.belongings.artifact != null
-				&& hero.belongings.misc != null){
-			equipFull = true;
-		}
-
-		if (equipFull) {
-
-			final KindofMisc[] miscs = new KindofMisc[3];
-			miscs[0] = hero.belongings.artifact;
-			miscs[1] = hero.belongings.misc;
-			miscs[2] = hero.belongings.ring;
-
-			final boolean[] enabled = new boolean[3];
-			enabled[0] = miscs[0] != null;
-			enabled[1] = miscs[1] != null;
-			enabled[2] = miscs[2] != null;
-
-			//force swapping with the same type of item if 2x of that type is already present
-			if (this instanceof Ring && hero.belongings.misc instanceof Ring){
-				enabled[0] = false; //disable artifact
-			} else if (this instanceof Artifact && hero.belongings.misc instanceof Artifact){
-				enabled[2] = false; //disable ring
-			}
-
-			GameScene.show(
-					new WndOptions(new ItemSprite(this),
-							Messages.get(KindofMisc.class, "unequip_title"),
-							Messages.get(KindofMisc.class, "unequip_message"),
-							miscs[0] == null ? "---" : Messages.titleCase(miscs[0].toString()),
-							miscs[1] == null ? "---" : Messages.titleCase(miscs[1].toString()),
-							miscs[2] == null ? "---" : Messages.titleCase(miscs[2].toString())) {
-
-						@Override
-						protected void onSelect(int index) {
-
-							KindofMisc equipped = miscs[index];
-							int slot = Dungeon.quickslot.getSlot(KindofMisc.this);
-							detach(hero.belongings.backpack);
-							if (equipped.doUnequip(hero, true, false)) {
-//								//swap out equip in misc slot if needed
-//								if (index == 0 && KindofMisc.this instanceof Ring){
-//									hero.belongings.artifact = (Artifact)hero.belongings.misc;
-//									hero.belongings.misc = null;
-//								} else if (index == 2 && KindofMisc.this instanceof Artifact){
-//									hero.belongings.ring = (Ring) hero.belongings.misc;
-//									hero.belongings.misc = null;
-//								}
-								doEquip(hero);
-							} else {
-								collect();
-							}
-							if (slot != -1) Dungeon.quickslot.setSlot(slot, KindofMisc.this);
-							updateQuickslot();
-						}
-
-						@Override
-						protected boolean enabled(int index) {
-							return enabled[index];
-						}
-					});
-
-			return false;
-
-		} else {
-
-
-				if (hero.belongings.artifact == null)   hero.belongings.artifact = (Artifact) this;
-				else if (hero.belongings.ring == null && this instanceof Artifact)   hero.belongings.ring = (Artifact) this;
-				else {
-					if (this instanceof Artifact)
-						hero.belongings.misc = this;
-				}
-
-
-			detach( hero.belongings.backpack );
-
-			activate( hero );
-
-			cursedKnown = true;
-			if (cursed) {
-				equipCursed( hero );
-				GLog.negative( Messages.get(this, "equip_cursed", this) );
-			}
-			if (!doNotUseTurnForCollect)
-			hero.spendAndNext( TIME_TO_EQUIP );
-			return true;
-
-		}
-
-	}
-
-	@Override
-	public boolean doUnequip(Hero hero, boolean collect, boolean single) {
-		if (super.doUnequip(hero, collect, single)){
-
-			if (hero.belongings.artifact == this) {
-				hero.belongings.artifact = null;
-			} else if (hero.belongings.misc == this) {
-				hero.belongings.misc = null;
-			} else if (hero.belongings.ring == this){
-				hero.belongings.ring = null;
-			}
-
-			return true;
-
-		} else {
-
-			return false;
-
-		}
-	}
-
-	@Override
-	public boolean isEquipped( Hero hero ) {
-		return hero.belongings.artifact == this
-				|| hero.belongings.misc == this
-				|| hero.belongings.ring == this;
-	}
+//	@Override
+//	public boolean doEquip(final Hero hero) {
+//
+//		boolean equipFull = false;
+//		if ( hero.belongings.ring != null
+//				&& hero.belongings.artifact != null
+//				&& hero.belongings.misc != null){
+//			equipFull = true;
+//		}
+//
+//		if (equipFull) {
+//
+//			final KindofMisc[] miscs = new KindofMisc[3];
+//			miscs[0] = hero.belongings.artifact;
+//			miscs[1] = hero.belongings.misc;
+//			miscs[2] = hero.belongings.ring;
+//
+//			final boolean[] enabled = new boolean[3];
+//			enabled[0] = miscs[0] != null;
+//			enabled[1] = miscs[1] != null;
+//			enabled[2] = miscs[2] != null;
+//
+//			//force swapping with the same type of item if 2x of that type is already present
+//			if (this instanceof Ring && hero.belongings.misc instanceof Ring){
+//				enabled[0] = false; //disable artifact
+//			} else if (this instanceof Artifact && hero.belongings.misc instanceof Artifact){
+//				enabled[2] = false; //disable ring
+//			}
+//
+//			GameScene.show(
+//					new WndOptions(new ItemSprite(this),
+//							Messages.get(KindofMisc.class, "unequip_title"),
+//							Messages.get(KindofMisc.class, "unequip_message"),
+//							miscs[0] == null ? "---" : Messages.titleCase(miscs[0].toString()),
+//							miscs[1] == null ? "---" : Messages.titleCase(miscs[1].toString()),
+//							miscs[2] == null ? "---" : Messages.titleCase(miscs[2].toString())) {
+//
+//						@Override
+//						protected void onSelect(int index) {
+//
+//							KindofMisc equipped = miscs[index];
+//							int slot = Dungeon.quickslot.getSlot(KindofMisc.this);
+//							detach(hero.belongings.backpack);
+//							if (equipped.doUnequip(hero, true, false)) {
+////								//swap out equip in misc slot if needed
+////								if (index == 0 && KindofMisc.this instanceof Ring){
+////									hero.belongings.artifact = (Artifact)hero.belongings.misc;
+////									hero.belongings.misc = null;
+////								} else if (index == 2 && KindofMisc.this instanceof Artifact){
+////									hero.belongings.ring = (Ring) hero.belongings.misc;
+////									hero.belongings.misc = null;
+////								}
+//								doEquip(hero);
+//							} else {
+//								collect();
+//							}
+//							if (slot != -1) Dungeon.quickslot.setSlot(slot, KindofMisc.this);
+//							updateQuickslot();
+//						}
+//
+//						@Override
+//						protected boolean enabled(int index) {
+//							return enabled[index];
+//						}
+//					});
+//
+//			return false;
+//
+//		} else {
+//
+//
+//				if (hero.belongings.artifact == null)   hero.belongings.artifact = (Artifact) this;
+//				else if (hero.belongings.ring == null && this instanceof Artifact)   hero.belongings.ring = (Artifact) this;
+//				else {
+//					if (this instanceof Artifact)
+//						hero.belongings.misc = this;
+//				}
+//
+//
+//			detach( hero.belongings.backpack );
+//
+//			activate( hero );
+//
+//			cursedKnown = true;
+//			if (cursed) {
+//				equipCursed( hero );
+//				GLog.negative( Messages.get(this, "equip_cursed", this) );
+//			}
+//			if (!doNotUseTurnForCollect)
+//			hero.spendAndNext( TIME_TO_EQUIP );
+//			return true;
+//
+//		}
+//
+//	}
+//
+//	@Override
+//	public boolean doUnequip(Hero hero, boolean collect, boolean single) {
+//		if (super.doUnequip(hero, collect, single)){
+//
+//			if (hero.belongings.artifact == this) {
+//				hero.belongings.artifact = null;
+//			} else if (hero.belongings.misc == this) {
+//				hero.belongings.misc = null;
+//			} else if (hero.belongings.ring == this){
+//				hero.belongings.ring = null;
+//			}
+//
+//			return true;
+//
+//		} else {
+//
+//			return false;
+//
+//		}
+//	}
+//
+//	@Override
+//	public boolean isEquipped( Hero hero ) {
+//		return hero.belongings.artifact == this
+//				|| hero.belongings.misc == this
+//				|| hero.belongings.ring == this;
+//	}
 
 }

@@ -58,6 +58,7 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action {
 
 	{
 		image = ItemSpriteSheet.ARTIFACT_CLOAK;
+		artifactClass = ArtifactClass.UTILITY;
 
 		exp = 0;
 		levelCap = 10;

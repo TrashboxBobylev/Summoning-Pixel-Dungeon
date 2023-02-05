@@ -28,17 +28,18 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-public abstract class Artifact extends KindofMisc {
+public abstract class Artifact extends EquipableItem {
 
 	protected Buff passiveBuff;
 	protected Buff activeBuff;
+	public ArtifactClass artifactClass;
 
 	//level is used internally to track upgrades to artifacts, size/logic varies per artifact.
 	//already inherited from item superclass
@@ -59,39 +60,70 @@ public abstract class Artifact extends KindofMisc {
 	protected int cooldown = 0;
 
 	@Override
-	public boolean doEquip( final Hero hero ) {
-
-		if ((hero.belongings.artifact != null && hero.belongings.artifact.getClass() == this.getClass())
-				|| (hero.belongings.misc != null && hero.belongings.misc.getClass() == this.getClass())){
-
-			GLog.warning( Messages.get(Artifact.class, "cannot_wear_two") );
-			return false;
-
-		} else {
-
-			if (super.doEquip( hero )){
-
-				identify();
-				return true;
-
-			} else {
-
-				return false;
-
-			}
-
-		}
-
+	public boolean isEquipped(Hero hero) {
+		return (hero.belongings.offenseAcc == this && artifactClass == ArtifactClass.OFFENSE) ||
+				(hero.belongings.defenseAcc == this && artifactClass == ArtifactClass.DEFENSE) ||
+				(hero.belongings.utilityAcc == this && artifactClass == ArtifactClass.UTILITY);
 	}
 
-	public void activate( Char ch ) {
+	public void activate(Char ch ) {
 		passiveBuff = passiveBuff();
 		passiveBuff.attachTo(ch);
 	}
 
 	@Override
+	public boolean doEquip(Hero hero) {
+		detach(hero.belongings.backpack);
+		boolean equipSuccessful = false;
+
+		if (artifactClass == ArtifactClass.OFFENSE &&
+				(hero.belongings.offenseAcc == null || hero.belongings.offenseAcc.doUnequip( hero, true, false ))) {
+			hero.belongings.offenseAcc = this;
+			equipSuccessful = true;
+		} else if (artifactClass == ArtifactClass.DEFENSE &&
+				(hero.belongings.defenseAcc == null || hero.belongings.defenseAcc.doUnequip( hero, true, false ))) {
+			hero.belongings.defenseAcc = this;
+			equipSuccessful = true;
+		} else if (artifactClass == ArtifactClass.UTILITY &&
+				(hero.belongings.utilityAcc == null || hero.belongings.utilityAcc.doUnequip( hero, true, false ))) {
+			hero.belongings.defenseAcc = this;
+			equipSuccessful = true;
+		}
+
+		if (equipSuccessful){
+			detach( hero.belongings.backpack );
+
+			activate( hero );
+
+			cursedKnown = true;
+			if (cursed) {
+				equipCursed( hero );
+				GLog.negative( Messages.get(this, "equip_cursed", this) );
+			}
+			if (!doNotUseTurnForCollect)
+				hero.spendAndNext( 1f );
+
+			return true;
+		}
+		else {
+
+			collect( hero.belongings.backpack );
+			return false;
+
+		}
+	}
+
+	@Override
 	public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
 		if (super.doUnequip( hero, collect, single )) {
+
+			if (hero.belongings.offenseAcc == this) {
+				hero.belongings.offenseAcc = null;
+			} else if (hero.belongings.defenseAcc == this) {
+				hero.belongings.defenseAcc = null;
+			} else if (hero.belongings.utilityAcc == this){
+				hero.belongings.utilityAcc = null;
+			}
 
 			passiveBuff.detach();
 			passiveBuff = null;
@@ -213,6 +245,12 @@ public abstract class Artifact extends KindofMisc {
 
 	public void charge(Hero target, float amount){
 		//do nothing by default;
+	}
+
+	public enum ArtifactClass {
+		OFFENSE,
+		DEFENSE,
+		UTILITY;
 	}
 
 	public class ArtifactBuff extends Buff {

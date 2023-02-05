@@ -134,6 +134,11 @@ public class Ring extends KindofMisc {
 	}
 
 	@Override
+	public boolean doEquip(Hero hero) {
+		return false;
+	}
+
+	@Override
 	public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
 		if (super.doUnequip( hero, collect, single )) {
 
