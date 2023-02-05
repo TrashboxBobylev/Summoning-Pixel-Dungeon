@@ -28,8 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DwarfKing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewDM300;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAugmentation;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
@@ -154,7 +152,7 @@ public class v0_8_X_Changes {
 				"This feed pulls in blog posts from ShatteredPixel.com, and displays then within the game. It will also notify players when new posts are available.\n\n" +
 				"I've wanted to improve my communication with the game's playerbase for quite a while, and this is a huge step in that direction."));
 
-		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_TOPAZ), Messages.get(RingOfEnergy.class, "name"),
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_TOPAZ), "Ring of Energy",
 				"With the changes to equipment slots, I've taken the opportunity to buff and expand the _Ring of Energy_ a bit:\n\n" +
 				"_-_ Ring of Energy wand recharge boost down to 20% from 30%\n" +
 				"_-_ Ring of Energy now increases artifact recharge speed by 10%"));
@@ -216,7 +214,7 @@ public class v0_8_X_Changes {
 		changes.hardlight(CharSprite.POSITIVE);
 		changeInfos.add(changes);
 
-		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_AMETHYST), Messages.get(RingOfWealth.class, "name"),
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_AMETHYST), "Ring of Wealth",
 				"The _Ring of Wealth_ is doing better after its buff/rework in v0.8.1, but it's still the weakest ring when upgraded. I'm making some more tweaks to improve its upgrade scaling, and put more emphasis on its new rare drops:\n\n" +
 				"_-_ Regular drop chance boost down to 20% from 25%\n" +
 				"_-_ Now gives a rare drop every 0-25 kills, down from 0-30\n" +

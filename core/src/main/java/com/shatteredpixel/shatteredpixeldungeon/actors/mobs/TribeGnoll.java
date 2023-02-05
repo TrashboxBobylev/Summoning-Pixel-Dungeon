@@ -29,7 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Wealth;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TribeGnollSprite;
 import com.watabou.utils.Random;
 
@@ -44,7 +44,7 @@ public class TribeGnoll extends Mob {
 		EXP = 2;
 		maxLvl = 6;
 
-        loot = RingOfWealth.genConsumableDrop(-3);
+        loot = Wealth.genConsumableDrop(-3);
 		lootChance = 1f;
 	}
 

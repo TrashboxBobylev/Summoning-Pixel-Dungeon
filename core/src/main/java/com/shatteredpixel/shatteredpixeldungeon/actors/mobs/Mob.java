@@ -52,7 +52,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourg
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.ConjurerSpell;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
@@ -65,6 +64,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Wealth;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -970,8 +970,8 @@ public abstract class Mob extends Char {
 			for (int i = 0; i < rolls; i++) {
 				if (Dungeon.hero.buff(MasterThievesArmband.Thievery.class) != null &&
 						Random.Int(15) < Dungeon.hero.buff(MasterThievesArmband.Thievery.class).itemLevel()){
-					Dungeon.level.drop(RingOfWealth.genConsumableDrop(Dungeon.hero.buff(MasterThievesArmband.Thievery.class).itemLevel()), pos).sprite.drop();
-					RingOfWealth.showFlareForBonusDrop(sprite);
+					Dungeon.level.drop(Wealth.genConsumableDrop(Dungeon.hero.buff(MasterThievesArmband.Thievery.class).itemLevel()), pos).sprite.drop();
+					Wealth.showFlareForBonusDrop(sprite);
 				}
 			}
 		}

@@ -31,7 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.UnstableSpellbook;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfAttunement;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMirrorImage;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
@@ -553,7 +552,7 @@ public class v0_7_X_Changes {
 				"_-_ No longer self-harms, now grants a mild self-shield instead\n" +
 				"_-_ Charm duration no longer scales with level, damage to undead enemies reduced"));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_AMETHYST, null), Messages.get(RingOfWealth.class, "name"),
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_AMETHYST, null), "Ring of Wealth",
 				"Ring of Wealth significantly buffed:\n" +
 				"_-_ Special item drops now happen ~50% more often\n" +
 				"_-_ The ring of wealth now awards a greater variety of items from special drops\n" +

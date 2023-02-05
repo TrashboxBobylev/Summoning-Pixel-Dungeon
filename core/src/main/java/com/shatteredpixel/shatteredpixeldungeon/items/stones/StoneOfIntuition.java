@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Identification;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -56,9 +55,7 @@ public class StoneOfIntuition extends InventoryStone {
 
 	@Override
 	protected boolean usableOnItem(Item item) {
-		if (item instanceof Ring){
-			return !((Ring) item).isKnown();
-		} else if (item instanceof Potion){
+		if (item instanceof Potion){
 			return !((Potion) item).isKnown();
 		} else if (item instanceof Scroll){
 			return !((Scroll) item).isKnown();
@@ -131,11 +128,7 @@ public class StoneOfIntuition extends InventoryStone {
 					super.onClick();
 					useAnimation();
 					if (item.getClass() == curGuess){
-						if (item instanceof Ring){
-							((Ring) item).setKnown();
-						} else {
-							item.identify();
-						}
+						item.identify();
 						GLog.positive( Messages.get(WndGuess.class, "correct") );
 						curUser.sprite.parent.add( new Identification( curUser.sprite.center().offset( 0, -16 ) ) );
 					} else {
@@ -176,8 +169,6 @@ public class StoneOfIntuition extends InventoryStone {
 				} else {
 					unIDed.addAll(Scroll.getUnknown());
 				}
-			} else if (item instanceof Ring) {
-				unIDed.addAll(Ring.getUnknown());
 			} else {
 				hide();
 				return;

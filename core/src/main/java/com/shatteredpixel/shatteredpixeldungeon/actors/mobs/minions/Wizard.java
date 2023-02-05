@@ -37,7 +37,7 @@ import com.watabou.utils.Random;
 
 import java.util.HashMap;
 
-import static com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements.RESISTS;
+import static com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.ELEMENT_RESISTS;
 
 public class Wizard extends Minion implements Callback {
 	
@@ -89,7 +89,7 @@ public class Wizard extends Minion implements Callback {
 
 	@Override
 	public void damage(int dmg, Object src) {
-		for (Class c : RESISTS){
+		for (Class c : ELEMENT_RESISTS){
 			if (c.isAssignableFrom(src.getClass())){
 				dmg *= 0.75 - lvl*0.15f;
 			}

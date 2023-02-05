@@ -33,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Bulk;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAugmentation;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorrosion;
@@ -370,7 +369,7 @@ public class v0_6_X_Changes {
 				"_-_ Curare darts are now paralytic darts, and paralyze for 5 turns, up from 3\n\n" +
 				"_-_ Alchemy interface now features a recipes button to show you what you can create."));
 		
-		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_TOPAZ, null), Messages.get(RingOfSharpshooting.class, "name"),
+		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_TOPAZ, null), "Ring of Sharpshooting",
 				"Ring of Sharpshooting overhauled\n\n" +
 				"_-_ No longer grants bonus accuracy\n\n" +
 				"_-_ Now increases ranged weapon durability, instead of giving a chance to not consume them\n\n" +
@@ -426,7 +425,7 @@ public class v0_6_X_Changes {
 		changes.hardlight( CharSprite.POSITIVE );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_EMERALD, null), Messages.get(RingOfElements.class, "name"),
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_EMERALD, null), "Ring of Elements",
 				"Thanks to the increased flexibility of the improved resistance system, buffing the ring of elements is now possible!\n\n" +
 				"_-_ Now reduces the duration and damage of harmful effects significantly more at higher levels.\n\n" +
 				"_-_ Rather than granting a chance to resist elemental/magic damage, ring now grants a set percentage resistance to these effects, which increases each level.\n\n" +
@@ -468,7 +467,7 @@ public class v0_6_X_Changes {
 				"_-_ Decreased lvls to recover rage to 2 from 3\n" +
 				"_-_ Berserking now reduces max health by 20%"));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_ONYX, null), new RingOfEvasion().trueName(),
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_ONYX, null), "Ring of Evasion",
 				"The ring of evasion has always been a very powerful ring, but the recent freerunner rework has increased the power of evasiveness in general, making the ring overbearingly strong.\n\n" +
 				"Evasion synergy has been adjusted:\n" +
 				"_-_ Ring of evasion no longer synergizes as strongly with freerunner or armor of swiftness.\n" +
@@ -696,7 +695,7 @@ public class v0_6_X_Changes {
 				"_-_ Tunnels will now appear more consistently.\n\n" +
 				"_-_ Ascending stairs, descending stairs, and mining no longer increase hunger."));
 		
-		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_TOPAZ, null), new RingOfEnergy().trueName(),
+		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_TOPAZ, null), "Ring of Energy",
 				"_-_ Added the ring of energy."));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.CHEST, null), "Sprites",
@@ -717,7 +716,7 @@ public class v0_6_X_Changes {
 				"_-_ Cursed rings are now always harmful regardless of their level, until the curse is cleansed.\n\n" +
 				"_-_ Scrolls of upgrade have a chance to remove curses on a ring, scrolls of remove curse will always remove the curse."));
 		
-		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_AMETHYST, null), new RingOfWealth().trueName(),
+		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_AMETHYST, null), "Ring of Wealth",
 				"The ring of wealth is getting a change in emphasis, moving away from affecting items generally, and instead affecting item drops more strongly.\n\n" +
 				"_-_ No longer grants any benefit to item spawns when levels are generated.\n\n" +
 				"_-_ Now has a chance to generate extra loot when defeating enemies.\n\n" +
@@ -820,7 +819,7 @@ public class v0_6_X_Changes {
 				"_-_ Charge Speed reduced, primarily at lower levels:\n-20% at +0\n-7.5% at +10\n\n" +
 				"_-_ Upgrade rate adjusted, Food now contributes towards upgrades exactly in line with how much hunger it restores. This means smaller food items will contribute more, larger ones will contribute less. Rations still grant exactly 1 upgrade each."));
 		
-		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_GARNET, null), new RingOfMight().trueName(),
+		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_GARNET, null), "Ring of Might",
 				"The Ring of Might's strength bonus is already extremely valuable, having it also provide an excellent health boost was simply too much:\n\n" +
 				"_-_ Health granted reduced from +5 per upgrade to +3.5% of max hp per upgrade.\n\n" +
 				"This is a massive reduction to its earlygame health boosting power, however as the player levels up this will improve. By hero level 26 it will be as strong as before this change."));

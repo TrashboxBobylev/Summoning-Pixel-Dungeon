@@ -56,7 +56,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMight;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAttunement;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Recycle;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
@@ -167,8 +166,13 @@ public class Hero extends Char {
 	}
 
 	public float maxAttunement(){
+		float roseBoost = 0f;
+		DriedRose.roseRecharge buff = buff(DriedRose.roseRecharge.class);
+		if (buff != null){
+			roseBoost = 0.5f * buff.itemLevel();
+		}
 	    return attunement +
-				RingOfAttunement.attunementMultiplier(this) +
+				roseBoost +
 				(subClass == HeroSubClass.SOUL_REAVER ? 1 : 0) +
 				(Dungeon.isChallenged(Conducts.Conduct.KING) ? 1 : 0);
     }

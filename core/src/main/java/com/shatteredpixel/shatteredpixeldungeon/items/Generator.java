@@ -35,8 +35,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Pasty;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.*;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAttunement;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.*;
@@ -80,7 +78,6 @@ public class Generator {
         STF_T5  ( 0,    Staff.class ),
 
 		WAND	( 2,    Wand.class ),
-		RING	( 0,    Ring.class ),
 		ARTIFACT( 2,    Artifact.class),
 		
 		FOOD	( 0,    Food.class ),
@@ -395,10 +392,6 @@ public class Generator {
 					MysteryMeat.class };
 			Category.FOOD.probs = new float[]{ 4, 1, 0 };
 
-			Category.RING.classes = new Class<?>[]{
-					RingOfAttunement.class};
-			Category.RING.probs = new float[]{1 };
-
 			Category.ARTIFACT.classes = new Class<?>[]{
 					CapeOfThorns.class,
 					ChaliceOfBlood.class,
@@ -704,11 +697,6 @@ public class Generator {
 					MysteryMeat.class };
 			Category.FOOD.probs = new float[]{ 1, 1, 1 };
 
-			Category.RING.prob = 0;
-			Category.RING.classes = new Class<?>[]{
-					RingOfAttunement.class};
-			Category.RING.probs = new float[]{ 1 };
-
 			Category.ARTIFACT.prob = 1;
 			Category.ARTIFACT.classes = new Class<?>[]{
 					CapeOfThorns.class,
@@ -795,8 +783,8 @@ public class Generator {
                     return randomStaff();
 			case ARTIFACT:
 				Item item = randomArtifact();
-				//if we're out of artifacts, return a ring instead.
-				return item != null ? item : random(Category.RING);
+				//if we're out of artifacts, return a staff instead.
+				return item != null ? item : random(Category.STAFFS);
 			default:
 				int i = Random.chances(cat.probs);
 				if (i == -1) {

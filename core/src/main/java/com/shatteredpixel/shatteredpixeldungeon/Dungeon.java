@@ -40,7 +40,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MomentumBoots;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.*;
@@ -227,7 +226,6 @@ public class Dungeon {
 
 			Scroll.initLabels();
 			Potion.initColors();
-			Ring.initGems();
 
 			SpecialRoom.initForRun();
 			SecretRoom.initForRun();
@@ -570,7 +568,6 @@ public class Dungeon {
 			
 			Scroll.save( bundle );
 			Potion.save( bundle );
-			Ring.save( bundle );
 
 			Actor.storeNextID( bundle );
 			
@@ -638,7 +635,6 @@ public class Dungeon {
 		
 		Scroll.restore( bundle );
 		Potion.restore( bundle );
-		Ring.restore( bundle );
 
 		quickslot.restorePlaceholders( bundle );
 		

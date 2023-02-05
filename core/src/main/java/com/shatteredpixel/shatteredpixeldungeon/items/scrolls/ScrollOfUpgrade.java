@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -98,7 +97,7 @@ public class ScrollOfUpgrade extends InventoryScroll {
 				GLog.warning( Messages.get(Armor.class, "incompatible") );
 			}
 
-		} else if (item instanceof Wand || item instanceof Ring) {
+		} else if (item instanceof Wand) {
 			boolean wasCursed = item.cursed;
 
 			item.upgrade();

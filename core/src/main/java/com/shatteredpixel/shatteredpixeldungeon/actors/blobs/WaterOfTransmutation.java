@@ -33,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
@@ -57,8 +56,6 @@ public class WaterOfTransmutation extends WellWater {
 			item = changeScroll( (Scroll)item );
 		} else if (item instanceof Potion) {
 			item = changePotion( (Potion)item );
-		} else if (item instanceof Ring) {
-			item = changeRing( (Ring)item );
 		} else if (item instanceof Wand) {
 			item = changeWand( (Wand)item );
 		} else if (item instanceof Plant.Seed) {
@@ -120,28 +117,6 @@ public class WaterOfTransmutation extends WellWater {
 
 		return n;
 
-	}
-	
-	private Ring changeRing( Ring r ) {
-		Ring n;
-		do {
-			n = (Ring)Generator.random( Category.RING );
-		} while (n.getClass() == r.getClass());
-		
-		n.level(0);
-		
-		int level = r.level();
-		if (level > 0) {
-			n.upgrade( level );
-		} else if (level < 0) {
-			n.degrade( -level );
-		}
-		
-		n.levelKnown = r.levelKnown;
-		n.cursedKnown = r.cursedKnown;
-		n.cursed = r.cursed;
-		
-		return n;
 	}
 
 	private Artifact changeArtifact( Artifact a ) {

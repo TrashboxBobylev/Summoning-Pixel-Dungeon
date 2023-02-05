@@ -402,7 +402,7 @@ public class CursedWand {
 				Item result;
 				do {
 					result = Generator.random(Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR,
-							Generator.Category.RING, Generator.Category.ARTIFACT));
+							Generator.Category.STAFFS, Generator.Category.ARTIFACT));
 				} while (result.cursed);
 				if (result.isUpgradable()) result.upgrade();
 				result.cursed = result.cursedKnown = true;
