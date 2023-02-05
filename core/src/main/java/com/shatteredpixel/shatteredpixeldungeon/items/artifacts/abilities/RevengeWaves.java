@@ -44,6 +44,7 @@ public class RevengeWaves extends Ability {
     {
         image = ItemSpriteSheet.REVENGE_WAVES;
         baseChargeUse = 50;
+        setArtifactClass(ArtifactClass.DEFENSE);
     }
 
     @Override

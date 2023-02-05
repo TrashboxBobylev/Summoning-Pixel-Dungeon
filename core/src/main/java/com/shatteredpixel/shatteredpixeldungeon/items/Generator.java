@@ -78,6 +78,7 @@ public class Generator {
         STF_T5  ( 0,    Staff.class ),
 
 		WAND	( 2,    Wand.class ),
+		DUMMY   (0,       Item.class),
 		ARTIFACT( 2,    Artifact.class),
 		
 		FOOD	( 0,    Food.class ),

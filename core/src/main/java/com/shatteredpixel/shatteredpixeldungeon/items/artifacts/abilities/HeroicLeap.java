@@ -52,6 +52,7 @@ public class HeroicLeap extends Ability {
     {
         baseChargeUse = 25;
         image = ItemSpriteSheet.HEROIC_LEAP;
+        setArtifactClass(ArtifactClass.OFFENSE);
     }
 
     @Override

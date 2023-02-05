@@ -53,6 +53,7 @@ public class DruidBag extends Ability {
     {
         baseChargeUse = 25;
         image = ItemSpriteSheet.GRASS_ABILITY;
+        setArtifactClass(ArtifactClass.DEFENSE);
     }
 
     @Override

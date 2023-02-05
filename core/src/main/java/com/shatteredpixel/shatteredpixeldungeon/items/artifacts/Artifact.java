@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -170,14 +171,15 @@ public abstract class Artifact extends EquipableItem {
 
 	@Override
 	public String info() {
+		String description = desc() + "\n\n" + Messages.get(ArtifactClass.class, artifactClass.name() + "_desc");
 		if (cursed && cursedKnown && !isEquipped( Dungeon.hero )) {
-			return desc() + "\n\n" + Messages.get(Artifact.class, "curse_known");
+			return description + "\n\n" + Messages.get(Artifact.class, "curse_known");
 			
 		} else if (!isIdentified() && cursedKnown && !isEquipped( Dungeon.hero)) {
-			return desc()+ "\n\n" + Messages.get(Artifact.class, "not_cursed");
+			return description + "\n\n" + Messages.get(Artifact.class, "not_cursed");
 			
 		} else {
-			return desc();
+			return description;
 			
 		}
 	}
@@ -245,6 +247,18 @@ public abstract class Artifact extends EquipableItem {
 
 	public void charge(Hero target, float amount){
 		//do nothing by default;
+	}
+
+	public void setArtifactClass(ArtifactClass artifactClass) {
+		this.artifactClass = artifactClass;
+		switch (artifactClass){
+			case OFFENSE:
+				icon = ItemSpriteSheet.Icons.ARTIFACT_OFFENSIVE; break;
+			case DEFENSE:
+				icon = ItemSpriteSheet.Icons.ARTIFACT_DEFENSIVE; break;
+			case UTILITY:
+				icon = ItemSpriteSheet.Icons.ARTIFACT_UTILITY; break;
+		}
 	}
 
 	public enum ArtifactClass {

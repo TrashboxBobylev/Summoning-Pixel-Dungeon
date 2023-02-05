@@ -45,6 +45,7 @@ public class Overload extends Ability {
     {
         baseChargeUse = 60;
         image = ItemSpriteSheet.CONJURER_POWER;
+        setArtifactClass(ArtifactClass.OFFENSE);
     }
 
     @Override

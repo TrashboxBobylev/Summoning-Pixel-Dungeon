@@ -52,6 +52,7 @@ public class ParchmentOfElbereth extends Artifact {
         charge = 100;
         chargeCap = 100;
         levelCap = 5;
+        setArtifactClass(ArtifactClass.DEFENSE);
     }
 
     public static final String AC_USE = "USE";

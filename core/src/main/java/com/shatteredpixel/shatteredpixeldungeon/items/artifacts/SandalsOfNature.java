@@ -52,6 +52,7 @@ public class SandalsOfNature extends Artifact {
 
 	{
 		image = ItemSpriteSheet.ARTIFACT_SANDALS;
+		setArtifactClass(ArtifactClass.DEFENSE);
 
 		levelCap = 3;
 

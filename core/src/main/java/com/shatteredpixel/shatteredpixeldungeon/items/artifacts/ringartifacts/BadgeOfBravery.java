@@ -47,6 +47,7 @@ public class BadgeOfBravery extends Artifact {
     {
         image = ItemSpriteSheet.ARTIFACT_BADGE;
         levelCap = 4;
+        setArtifactClass(ArtifactClass.OFFENSE);
     }
 
     public static final String AC_REPAIR = "REPAIR";

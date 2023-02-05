@@ -45,6 +45,7 @@ public class ArcaneElement extends Ability {
     {
         baseChargeUse = 25;
         image = ItemSpriteSheet.ARCANE_ELEMENT;
+        setArtifactClass(ArtifactClass.OFFENSE);
     }
 
     @Override
