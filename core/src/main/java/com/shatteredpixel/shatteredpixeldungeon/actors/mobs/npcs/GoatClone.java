@@ -153,6 +153,18 @@ public class GoatClone extends NPC {
         ScrollOfTeleportation.appear( clone, respawnPoints.get( index ) );
     }
 
+    @Override
+    public float speed() {
+        float speed = super.speed();
+
+        //moves 2 tiles at a time when returning to the hero
+        if (state == WANDERING && defendingPos == -1){
+            speed *= 2;
+        }
+
+        return speed;
+    }
+
     {
         immunities.add(Terror.class);
         immunities.add(Amok.class);
