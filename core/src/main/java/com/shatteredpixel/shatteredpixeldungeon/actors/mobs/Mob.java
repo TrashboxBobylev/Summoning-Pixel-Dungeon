@@ -1432,8 +1432,7 @@ public abstract class Mob extends Char {
 
 				//preserve intelligent allies if they are near the hero
 			} else if (mob.alignment == Alignment.ALLY
-					&& mob.intelligentAlly
-					&& Dungeon.level.distance(Dungeon.hero.pos, mob.pos) <= 3){
+					&& mob.intelligentAlly){
 				level.mobs.remove( mob );
 				if (mob instanceof Minion) ((Minion) mob).onLeaving();
 				heldAllies.add(mob);
