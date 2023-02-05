@@ -123,7 +123,11 @@ public class GoatClone extends NPC {
 
         for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
             if (mob instanceof GoatClone){
-                clone = (GoatClone) mob;
+                if (clone != null){
+                    mob.destroy();
+                } else {
+                    clone = (GoatClone) mob;
+                }
             }
         }
 
