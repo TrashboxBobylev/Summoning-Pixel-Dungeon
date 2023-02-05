@@ -86,9 +86,4 @@ public class ConjurerArmor extends ClassArmor {
         return 9;
     }
 
-    @Override
-    public int DRMax(int lvl){
-        return 2 + lvl;
-    }
-
 }
