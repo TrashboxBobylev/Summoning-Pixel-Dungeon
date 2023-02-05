@@ -52,7 +52,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourg
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.ConjurerSpell;
-import com.shatteredpixel.shatteredpixeldungeon.items.quest.GoldToken;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
@@ -979,12 +978,6 @@ public abstract class Mob extends Char {
 
 		if (Dungeon.mode == Dungeon.GameMode.LOL && Random.Float() < 0.4f){
 			Dungeon.level.drop(Generator.random(), pos).sprite.drop();
-		}
-
-		if (this instanceof Monk || this instanceof Warlock){
-			if (Random.Float() < 0.5f * RingOfWealth.dropChanceMultiplier( Dungeon.hero ) && Dungeon.mode != Dungeon.GameMode.GAUNTLET){
-				Dungeon.level.drop(new GoldToken(), pos).sprite.drop();
-			}
 		}
 
 		//lucky enchant logic
