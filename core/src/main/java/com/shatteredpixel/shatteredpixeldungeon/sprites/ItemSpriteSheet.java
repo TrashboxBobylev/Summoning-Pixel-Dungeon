@@ -1007,9 +1007,9 @@ public class ItemSpriteSheet {
 		public static final int ARTIFACT_DEFENSIVE = ARTIFACT_CLASSES+1;
 		public static final int ARTIFACT_UTILITY   = ARTIFACT_CLASSES+2;
 		static {
-			assignItemRect( ARTIFACT_OFFENSIVE, 6, 6);
-			assignItemRect( ARTIFACT_DEFENSIVE, 6, 6);
-			assignItemRect( ARTIFACT_UTILITY,   6, 6);
+			assignIconRect( ARTIFACT_OFFENSIVE, 6, 6);
+			assignIconRect( ARTIFACT_DEFENSIVE, 6, 6);
+			assignIconRect( ARTIFACT_UTILITY,   6, 6);
 		}
 
 		private static final int POTIONS        =                            xy(1, 6);  //16 slots
