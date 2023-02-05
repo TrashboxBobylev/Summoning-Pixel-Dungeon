@@ -281,9 +281,9 @@ public class WndBag extends WndTabbed {
 		if (!SPDSettings.flipInventory()) {
 			placeItem( stuff.weapon != null ? stuff.weapon : new Placeholder( ItemSpriteSheet.WEAPON_HOLDER ) );
 			placeItem( stuff.armor != null ? stuff.armor : new Placeholder( ItemSpriteSheet.ARMOR_HOLDER ) );
-			placeItem( stuff.misc != null ? stuff.misc : new Placeholder( ItemSpriteSheet.SOMETHING ) );
-			placeItem( stuff.ring != null ? stuff.ring : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
-			placeItem( stuff.artifact != null ? stuff.artifact : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
+			placeItem( stuff.offenseAcc != null ? stuff.offenseAcc : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
+			placeItem( stuff.defenseAcc != null ? stuff.defenseAcc : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
+			placeItem( stuff.utilityAcc != null ? stuff.utilityAcc : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
 
 		}
 		else {
@@ -323,9 +323,9 @@ public class WndBag extends WndTabbed {
 
 		if (SPDSettings.flipInventory()) {
 
-			placeItem( stuff.ring != null ? stuff.ring : new Placeholder( ItemSpriteSheet.RING_HOLDER ) );
-			placeItem( stuff.misc != null ? stuff.misc : new Placeholder( ItemSpriteSheet.SOMETHING ) );
-			placeItem( stuff.artifact != null ? stuff.artifact : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
+			placeItem( stuff.utilityAcc != null ? stuff.utilityAcc : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
+			placeItem( stuff.defenseAcc != null ? stuff.defenseAcc : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
+			placeItem( stuff.offenseAcc != null ? stuff.offenseAcc : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
 			placeItem( stuff.armor != null ? stuff.armor : new Placeholder( ItemSpriteSheet.ARMOR_HOLDER ) );
 			placeItem( stuff.weapon != null ? stuff.weapon : new Placeholder( ItemSpriteSheet.WEAPON_HOLDER ) );
 		}

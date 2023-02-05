@@ -56,7 +56,7 @@ public class ElixirOfAquaticRejuvenation extends Elixir {
 	@Override
 	public int value() {
 		//prices of ingredients
-		return quantity * (30 + 50);
+		return quantity * (Recipe.calculatePrice(new Recipe()));
 	}
 	
 	public static class AquaHealing extends Buff {

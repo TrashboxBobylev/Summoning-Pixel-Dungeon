@@ -42,6 +42,7 @@ public class SupplyBomb extends Bomb {
 		image = ItemSpriteSheet.SUPPLY_BOMB;
 		fuseDelay = 50;
 		harmless = true;
+		fuseTriggerClass = Trigger.class;
 	}
 
 //    public void setTrigger(int cell){
@@ -59,12 +60,13 @@ public class SupplyBomb extends Bomb {
 //
 //	}
 	
-	public static class Trigger extends Buff {
+	public static class Trigger extends Buff implements FuseBuff {
 
 		int cell;
 		int floor;
 		int left;
-		
+
+		@Override
 		public void set(int cell){
 			floor = Dungeon.depth;
 			this.cell = cell;

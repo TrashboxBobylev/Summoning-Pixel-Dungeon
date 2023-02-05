@@ -49,6 +49,7 @@ public class FuelContainer extends Artifact {
         defaultAction = AC_USE;
         charge = 0;
         chargeCap = 40 + level()*10;
+        setArtifactClass(ArtifactClass.UTILITY);
     }
 
     public static final String AC_USE = "USE";

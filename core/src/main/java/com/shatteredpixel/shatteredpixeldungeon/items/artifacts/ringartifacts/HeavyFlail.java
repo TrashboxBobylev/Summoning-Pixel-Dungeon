@@ -69,6 +69,7 @@ public class HeavyFlail extends Artifact {
         image = ItemSpriteSheet.ARTIFACT_FLAIL;
         levelCap = 10;
         defaultAction = AC_LAUNCH;
+        setArtifactClass(ArtifactClass.DEFENSE);
     }
 
     public static final String AC_LAUNCH = "LAUNCH";

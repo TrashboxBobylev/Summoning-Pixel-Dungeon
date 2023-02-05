@@ -45,6 +45,7 @@ public class Endure extends Ability {
     {
         baseChargeUse = 50;
         image = ItemSpriteSheet.ENDURE;
+        setArtifactClass(ArtifactClass.DEFENSE);
     }
 
     @Override

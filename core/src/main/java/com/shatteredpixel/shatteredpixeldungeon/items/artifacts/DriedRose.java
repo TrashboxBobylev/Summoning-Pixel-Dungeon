@@ -79,6 +79,7 @@ public class DriedRose extends Artifact {
 
 	{
 		image = ItemSpriteSheet.ARTIFACT_ROSE1;
+		setArtifactClass(ArtifactClass.DEFENSE);
 
 		levelCap = 10;
 

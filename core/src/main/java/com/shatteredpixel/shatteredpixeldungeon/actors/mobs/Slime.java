@@ -30,7 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.GooBlob;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
@@ -96,7 +95,7 @@ public class Slime extends Mob {
 
     @Override
     public void damage(int dmg, Object src) {
-        for (Class c : RingOfElements.RESISTS){
+        for (Class c : Buff.ELEMENT_RESISTS){
             if (c.isAssignableFrom(src.getClass()) && src instanceof Wand){
                 dmg *= 3f;
             }

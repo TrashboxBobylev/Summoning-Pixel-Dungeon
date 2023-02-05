@@ -29,11 +29,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
@@ -62,9 +62,12 @@ public class Gravery extends Blob implements Hero.Doom{
 	
 	public static void corrupt(int cell ){
 		Char ch = Actor.findChar( cell );
-		if (ch != null && !ch.isImmune(Grim.class)) {
+		if (ch != null) {
 			if (ch.properties().contains(Char.Property.UNDEAD)){
-				Buff.affect(ch, Corruption.class);
+				if (ch.isImmune(Corruption.class))
+					Buff.affect(ch, Doom.class);
+				else
+					Buff.affect(ch, Corruption.class);
 			} else if (!ch.properties().contains(Char.Property.BOSS) && !ch.properties().contains(Char.Property.MINIBOSS)){
 				ch.damage(Dungeon.chapterNumber()*2+2, new Gravery());
 			}

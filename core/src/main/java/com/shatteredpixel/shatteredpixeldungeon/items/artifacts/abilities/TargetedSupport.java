@@ -54,6 +54,7 @@ public class TargetedSupport extends Ability {
     {
         image = ItemSpriteSheet.TARGET_SUPPORT;
         baseChargeUse = 25;
+        setArtifactClass(ArtifactClass.UTILITY);
     }
 
     @Override

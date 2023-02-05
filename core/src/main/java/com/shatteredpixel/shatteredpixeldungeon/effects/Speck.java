@@ -76,7 +76,9 @@ public class Speck extends Image {
     public static final int PERFUME = 122;
     public static final int HASTE = 123;
     public static final int STENCH_WAND = 124;
+	public static final int FROSTBURN = 125;
     public static final int SWORD = 15;
+	public static final int SNOWFLAKE = 16;
 	
 	private static final int SIZE = 7;
 	
@@ -137,6 +139,9 @@ public class Speck extends Image {
 			break;
 		case CALM:
 			frame( film.get( SCREAM ) );
+			break;
+		case FROSTBURN:
+			frame( film.get( SNOWFLAKE ) );
 			break;
 		default:
 			frame( film.get( type ) );
@@ -333,6 +338,15 @@ public class Speck extends Image {
 			angle = Random.Float( 360 );
 			lifespan = Random.Float( 1f, 3f );
 			break;
+
+		case FROSTBURN:
+			hardlight( 0x3780ff );
+			angularSpeed = 15;
+			angle = Random.Float( 180 );
+			lifespan = Random.Float( 0.11f, 0.33f );
+			acc.set( 0, -95 );
+			speed.set(0);
+			break;
 			
 		case PARALYSIS:
 			hardlight( 0xFFFF66 );
@@ -524,6 +538,11 @@ public class Speck extends Image {
             case HASTE:
 				am = (float)Math.sqrt( (p < 0.5f ? p : 1 - p) * 0.5f );
 				scale.set( 1 + p );
+				break;
+
+			case FROSTBURN:
+				am = (float)Math.sqrt( (p < 0.5f ? p : 1 - p) * 0.5f );
+				scale.set( 1 + p/2 );
 				break;
 
 			case SWORD:

@@ -58,6 +58,7 @@ public class SubtilitasSigil extends Artifact {
         chargeCap = 100;
         levelCap = 5;
         defaultAction = AC_USE;
+        setArtifactClass(ArtifactClass.OFFENSE);
     }
 
     public static final String AC_USE = "USE";

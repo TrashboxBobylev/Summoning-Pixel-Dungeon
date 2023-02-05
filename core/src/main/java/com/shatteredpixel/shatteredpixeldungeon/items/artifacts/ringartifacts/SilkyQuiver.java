@@ -68,6 +68,7 @@ public class SilkyQuiver extends Artifact {
         charge = 5;
         chargeCap = 5 + level();
         defaultAction = AC_USE;
+        setArtifactClass(ArtifactClass.OFFENSE);
     }
 
     public static final String AC_USE = "USE";

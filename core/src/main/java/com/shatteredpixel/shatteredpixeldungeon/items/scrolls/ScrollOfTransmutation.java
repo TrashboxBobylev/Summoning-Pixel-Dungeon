@@ -40,7 +40,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.Brew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.Elixir;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
@@ -72,7 +71,6 @@ public class ScrollOfTransmutation extends InventoryScroll {
 				(item instanceof MissileWeapon && !(item instanceof Dart)) ||
 				(item instanceof Potion && !(item instanceof Elixir || item instanceof Brew || item instanceof PotionOfStrength || item instanceof AlchemicalCatalyst)) ||
 				(item instanceof Scroll && !(item instanceof ScrollOfUpgrade)) ||
-				item instanceof Ring ||
 				item instanceof Wand ||
 				item instanceof Plant.Seed ||
 				item instanceof Runestone ||
@@ -97,8 +95,6 @@ public class ScrollOfTransmutation extends InventoryScroll {
 			result = changeScroll( (Scroll)item );
 		} else if (item instanceof Potion) {
 			result = changePotion( (Potion)item );
-		} else if (item instanceof Ring) {
-			result = changeRing( (Ring)item );
 		} else if (item instanceof Wand) {
 			result = changeWand( (Wand)item );
 		} else if (item instanceof Plant.Seed) {
@@ -207,29 +203,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		return n;
 		
 	}
-	
-	private Ring changeRing( Ring r ) {
-		Ring n;
-		do {
-			n = (Ring)Generator.random( Generator.Category.RING );
-		} while (Challenges.isItemBlocked(n) || n.getClass() == r.getClass());
-		
-		n.level(0);
-		
-		int level = r.level();
-		if (level > 0) {
-			n.upgrade( level );
-		} else if (level < 0) {
-			n.degrade( -level );
-		}
-		
-		n.levelKnown = r.levelKnown;
-		n.cursedKnown = r.cursedKnown;
-		n.cursed = r.cursed;
-		
-		return n;
-	}
-	
+
 	private Artifact changeArtifact( Artifact a ) {
 		Artifact n = Generator.randomArtifact();
 		

@@ -107,6 +107,7 @@ public class ElementalBlast extends Ability {
     {
         baseChargeUse = 35;
         image = ItemSpriteSheet.ELEMENTAL_BLAST;
+        setArtifactClass(ArtifactClass.OFFENSE);
     }
 
     @Override

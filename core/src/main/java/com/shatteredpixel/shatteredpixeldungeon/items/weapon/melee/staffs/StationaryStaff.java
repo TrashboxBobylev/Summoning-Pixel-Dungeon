@@ -118,7 +118,7 @@ public class StationaryStaff extends Staff {
         //did it before summoning
 
         //checking attunement
-        if (requiredAttunement() > owner.attunement() || (requiredAttunement() + owner.usedAttunement > owner.attunement())){
+        if (requiredAttunement() > owner.maxAttunement() || (requiredAttunement() + owner.usedAttunement() > owner.maxAttunement())){
             owner.sprite.zap(0);
             GLog.warning( Messages.get(Staff.class, "too_low_attunement") );
             return false;
@@ -133,7 +133,6 @@ public class StationaryStaff extends Staff {
             Minion minion = minionType.newInstance();
             GameScene.add(minion);
             ScrollOfTeleportation.appear(minion, target);
-            owner.usedAttunement += requiredAttunement();
             minion.setDamage(
                     Math.round(minionMin(level())),
                     Math.round(minionMax(level())));

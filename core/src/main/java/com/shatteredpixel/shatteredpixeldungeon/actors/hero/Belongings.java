@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
@@ -52,10 +51,10 @@ public class Belongings implements Iterable<Item> {
 
 	public KindOfWeapon weapon = null;
 	public Armor armor = null;
-	public Artifact artifact = null;
-	public KindofMisc misc = null;
-	//TODO: do something about this
-	public Artifact ring = null;
+
+	public Artifact offenseAcc = null;
+	public Artifact defenseAcc = null;
+	public Artifact utilityAcc = null;
 
 	//used when thrown weapons temporary occupy the weapon slot
 	public KindOfWeapon stashedWeapon = null;
@@ -85,15 +84,19 @@ public class Belongings implements Iterable<Item> {
 	private static final String MISC       = "misc";
 	private static final String RING       = "ring";
 
+	private static final String OFFENSE_ACCESSORY = "offense_acc";
+	private static final String DEFENSE_ACCESSORY = "defense_acc";
+	private static final String UTILITY_ACCESSORY = "utility_acc";
+
 	public void storeInBundle( Bundle bundle ) {
 		
 		backpack.storeInBundle( bundle );
 		
 		bundle.put( WEAPON, weapon );
 		bundle.put( ARMOR, armor );
-		bundle.put( ARTIFACT, artifact );
-		bundle.put( MISC, misc );
-		bundle.put( RING, ring );
+		bundle.put( OFFENSE_ACCESSORY, offenseAcc );
+		bundle.put( DEFENSE_ACCESSORY, defenseAcc );
+		bundle.put( UTILITY_ACCESSORY, utilityAcc );
 	}
 	
 	public void restoreFromBundle( Bundle bundle ) {
@@ -114,32 +117,24 @@ public class Belongings implements Iterable<Item> {
 			armor.activate( owner );
 		}
 
-		//pre-0.8.2
-		if (bundle.contains("misc1") || bundle.contains("misc2")){
-			artifact = null;
-			misc = null;
-			ring = null;
+		if (bundle.contains(ARTIFACT) || bundle.contains(MISC) || bundle.contains(RING)){
+			Artifact artifact = (Artifact) bundle.get(ARTIFACT);
+			artifact.doUnequip(owner, true);
 
-			KindofMisc m = (KindofMisc)bundle.get("misc1");
-			if (m instanceof Artifact){
-				artifact = (Artifact) m;
-			}
+			Artifact misc = (Artifact) bundle.get(MISC);
+			misc.doUnequip(owner, true);
 
-			m = (KindofMisc)bundle.get("misc2");
-			if (artifact == null)   artifact = (Artifact) m;
-			else if (ring == null)   ring = (Artifact) m;
-			else                    misc = (Artifact) m;
-
-
+			Artifact ring = (Artifact) bundle.get(RING);
+			ring.doUnequip(owner, true);
 		} else {
-			artifact = (Artifact) bundle.get(ARTIFACT);
-			misc = (KindofMisc) bundle.get(MISC);
-			ring = (Artifact) bundle.get(RING);
+			offenseAcc = (Artifact) bundle.get(OFFENSE_ACCESSORY);
+			defenseAcc = (Artifact) bundle.get(DEFENSE_ACCESSORY);
+			utilityAcc = (Artifact) bundle.get(UTILITY_ACCESSORY);
 		}
 
-		if (artifact != null)   artifact.activate(owner);
-		if (misc != null)       misc.activate( owner );
-		if (ring != null)       ring.activate( owner );
+		if (offenseAcc != null) offenseAcc.activate(owner);
+		if (defenseAcc != null) defenseAcc.activate(owner);
+		if (utilityAcc != null) utilityAcc.activate(owner);
 	}
 	
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {
@@ -223,17 +218,17 @@ public class Belongings implements Iterable<Item> {
 			armor.identify();
 			Badges.validateItemLevelAquired( armor );
 		}
-		if (artifact != null) {
-			artifact.identify();
-			Badges.validateItemLevelAquired(artifact);
+		if (offenseAcc != null) {
+			offenseAcc.identify();
+			Badges.validateItemLevelAquired(offenseAcc);
 		}
-		if (misc != null) {
-			misc.identify();
-			Badges.validateItemLevelAquired(misc);
+		if (defenseAcc != null) {
+			defenseAcc.identify();
+			Badges.validateItemLevelAquired(defenseAcc);
 		}
-		if (ring != null) {
-			ring.identify();
-			Badges.validateItemLevelAquired(ring);
+		if (utilityAcc != null) {
+			utilityAcc.identify();
+			Badges.validateItemLevelAquired(utilityAcc);
 		}
 		for (Item item : backpack) {
 			if (item instanceof EquipableItem || item instanceof Wand) {
@@ -243,7 +238,7 @@ public class Belongings implements Iterable<Item> {
 	}
 	
 	public void uncurseEquipped() {
-		ScrollOfRemoveCurse.uncurse( owner, armor, weapon, artifact, misc, ring);
+		ScrollOfRemoveCurse.uncurse( owner, armor, weapon, offenseAcc, defenseAcc, utilityAcc);
 	}
 	
 	public Item randomUnequipped() {
@@ -279,17 +274,17 @@ public class Belongings implements Iterable<Item> {
 			armor.activate( owner );
 		}
 
-		if (artifact != null) {
-			artifact.cursed = false;
-			artifact.activate( owner );
+		if (offenseAcc != null) {
+			offenseAcc.cursed = false;
+			offenseAcc.activate( owner );
 		}
-		if (misc != null) {
-			misc.cursed = false;
-			misc.activate( owner );
+		if (defenseAcc != null) {
+			defenseAcc.cursed = false;
+			defenseAcc.activate( owner );
 		}
-		if (ring != null) {
-			ring.cursed = false;
-			ring.activate( owner );
+		if (utilityAcc != null) {
+			utilityAcc.cursed = false;
+			utilityAcc.activate( owner );
 		}
 	}
 	
@@ -321,7 +316,7 @@ public class Belongings implements Iterable<Item> {
 		
 		private Iterator<Item> backpackIterator = backpack.iterator();
 		
-		private Item[] equipped = {weapon, armor, artifact, misc, ring};
+		private Item[] equipped = {weapon, armor, offenseAcc, defenseAcc, utilityAcc};
 		private int backpackIndex = equipped.length;
 		
 		@Override
@@ -359,13 +354,13 @@ public class Belongings implements Iterable<Item> {
 				equipped[1] = armor = null;
 				break;
 			case 2:
-				equipped[2] = artifact = null;
+				equipped[2] = offenseAcc = null;
 				break;
 			case 3:
-				equipped[3] = misc = null;
+				equipped[3] = defenseAcc = null;
 				break;
 			case 4:
-				equipped[4] = ring = null;
+				equipped[4] = utilityAcc = null;
 				break;
 			default:
 				backpackIterator.remove();

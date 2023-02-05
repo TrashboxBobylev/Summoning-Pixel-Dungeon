@@ -1002,7 +1002,15 @@ public class ItemSpriteSheet {
 			assignIconRect( SCROLL_POLYMORPH,   7, 6 );
 		}
 
-		                                                                                //16 free slots
+		private static final int ARTIFACT_CLASSES = xy(1, 5);
+		public static final int ARTIFACT_OFFENSIVE = ARTIFACT_CLASSES+0;
+		public static final int ARTIFACT_DEFENSIVE = ARTIFACT_CLASSES+1;
+		public static final int ARTIFACT_UTILITY   = ARTIFACT_CLASSES+2;
+		static {
+			assignIconRect( ARTIFACT_OFFENSIVE, 6, 6);
+			assignIconRect( ARTIFACT_DEFENSIVE, 6, 6);
+			assignIconRect( ARTIFACT_UTILITY,   6, 6);
+		}
 
 		private static final int POTIONS        =                            xy(1, 6);  //16 slots
 		public static final int POTION_STRENGTH = POTIONS+0;

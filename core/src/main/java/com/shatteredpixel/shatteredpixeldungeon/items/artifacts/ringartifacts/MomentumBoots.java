@@ -37,6 +37,7 @@ public class MomentumBoots extends Artifact {
     {
         image = ItemSpriteSheet.ARTIFACT_MOMENTUM;
         levelCap = 4;
+        setArtifactClass(ArtifactClass.UTILITY);
     }
 
     public static momentumBuff instance = null;

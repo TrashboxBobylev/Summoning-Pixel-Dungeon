@@ -44,6 +44,7 @@ public class PerfumeBlast extends Ability {
     {
         image = ItemSpriteSheet.PERFUME_ABILITY;
         baseChargeUse = 60;
+        setArtifactClass(ArtifactClass.DEFENSE);
     }
 
     @Override

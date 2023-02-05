@@ -37,7 +37,7 @@ public class StewedMeat extends Food {
 	
 	@Override
 	public int value() {
-		return 8 * quantity;
+		return quantity * Recipe.calculatePrice(new oneMeat());
 	}
 	
 	public static class oneMeat extends Recipe.SimpleRecipe{

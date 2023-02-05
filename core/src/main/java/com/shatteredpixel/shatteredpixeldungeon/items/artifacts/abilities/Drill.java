@@ -50,6 +50,7 @@ public class Drill extends Ability {
     {
         baseChargeUse = 40;
         image = ItemSpriteSheet.DRILL;
+        setArtifactClass(ArtifactClass.UTILITY);
     }
 
     @Override

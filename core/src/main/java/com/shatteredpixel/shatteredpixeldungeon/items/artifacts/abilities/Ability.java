@@ -91,6 +91,11 @@ public abstract class Ability extends Artifact implements Tierable {
     }
 
     @Override
+    public boolean isUpgradable() {
+        return level() < 2;
+    }
+
+    @Override
     public String desc() {
         String desc = super.desc();
 

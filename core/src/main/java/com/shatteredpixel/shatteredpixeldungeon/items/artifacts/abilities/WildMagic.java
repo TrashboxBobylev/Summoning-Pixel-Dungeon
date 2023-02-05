@@ -47,6 +47,7 @@ public class WildMagic extends Ability {
     {
         baseChargeUse = 35;
         image = ItemSpriteSheet.WILD_MAGIC;
+        setArtifactClass(ArtifactClass.OFFENSE);
     }
 
     @Override

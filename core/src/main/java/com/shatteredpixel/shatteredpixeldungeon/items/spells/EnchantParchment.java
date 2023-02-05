@@ -134,7 +134,7 @@ public class EnchantParchment extends InventorySpell {
     @Override
     public int value() {
         //prices of ingredients, divided by output quantity
-        return com.shatteredpixel.shatteredpixeldungeon.items.Recipe.calculatePrice(new Recipe()) * quantity;
+        return Recipe.calculatePrice(new Recipe()) * quantity;
     }
 
     public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {

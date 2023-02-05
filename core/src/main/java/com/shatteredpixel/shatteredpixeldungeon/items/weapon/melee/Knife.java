@@ -54,7 +54,7 @@ public class Knife extends MeleeWeapon {
 
     @Override
     public int max(int lvl) {
-        return  7*(tier) + ((1 + (level()+1)) / 2)*level();
+        return  7*(tier) + ((1 + (lvl+1)) / 2)*lvl;
 
     }
 

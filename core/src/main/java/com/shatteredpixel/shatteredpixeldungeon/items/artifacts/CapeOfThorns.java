@@ -37,6 +37,7 @@ public class CapeOfThorns extends Artifact {
 
 	{
 		image = ItemSpriteSheet.ARTIFACT_CAPE;
+		setArtifactClass(ArtifactClass.DEFENSE);
 
 		levelCap = 10;
 
