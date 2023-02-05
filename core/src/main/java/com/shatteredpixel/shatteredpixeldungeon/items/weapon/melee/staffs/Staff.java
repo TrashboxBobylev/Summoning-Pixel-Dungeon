@@ -566,8 +566,6 @@ public class Staff extends Weapon implements Tierable {
         String statsInfo = Messages.get(this, "stats_desc");
         if (!statsInfo.equals("")) info += "\n\n" + statsInfo;
 
-        if (level() >= 3) info += "\n\n" + Messages.get(Staff.class, "upgrade_info");
-
         info += "\n\n" + Messages.get(Staff.class, "class", minionClass);
 
         switch (augment) {
