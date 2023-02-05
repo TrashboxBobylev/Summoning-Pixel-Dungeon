@@ -126,7 +126,7 @@ public abstract class Minion extends Mob {
 
     public boolean isTanky = false;
     public Weapon.Enchantment enchantment;
-    public Weapon.Augment augmentOffense;
+    public Weapon.Augment augmentOffense = Weapon.Augment.NONE;
     public int lvl;
     public int timer = -1;
 
