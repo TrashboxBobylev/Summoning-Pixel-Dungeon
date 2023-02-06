@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Pasty;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
@@ -78,7 +79,7 @@ public class Generator {
         STF_T5  ( 0,    Staff.class ),
 
 		WAND	( 2,    Wand.class ),
-		DUMMY   (0,       Item.class),
+		DUMMY   (0,     IronKey.class),
 		ARTIFACT( 2,    Artifact.class),
 		
 		FOOD	( 0,    Food.class ),
@@ -248,6 +249,9 @@ public class Generator {
 					WandOfStench.class,
 					WandOfConjuration.class};
 			Category.WAND.probs = new float[]{ 4, 4, 3, 4, 4, 3, 3, 3, 3, 4, 3, 3, 3, 3, 3, 3, 3 };
+
+			Category.DUMMY.classes = new Class<?>[]{};
+			Category.DUMMY.probs = new float[]{};
 
 			//see generator.randomWeapon
 			Category.WEAPON.classes = new Class<?>[]{};
@@ -548,6 +552,9 @@ public class Generator {
 					WandOfStench.class,
 					WandOfConjuration.class};
 			Category.WAND.probs = new float[]{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+
+			Category.DUMMY.classes = new Class<?>[]{};
+			Category.DUMMY.probs = new float[]{};
 
 			//see generator.randomWeapon
 			Category.WEAPON.prob = 1;

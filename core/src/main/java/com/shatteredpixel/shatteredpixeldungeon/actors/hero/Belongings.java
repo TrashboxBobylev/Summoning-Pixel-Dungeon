@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -42,6 +43,8 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.updateQuickslot;
 
 public class Belongings implements Iterable<Item> {
 
@@ -118,14 +121,25 @@ public class Belongings implements Iterable<Item> {
 		}
 
 		if (bundle.contains(ARTIFACT) || bundle.contains(MISC) || bundle.contains(RING)){
-			Artifact artifact = (Artifact) bundle.get(ARTIFACT);
-			artifact.doUnequip(owner, true);
+			String[] slotNames = {ARTIFACT, MISC, RING};
+			for (String slot : slotNames){
+				Artifact artifact = (Artifact) bundle.get(slot);
 
-			Artifact misc = (Artifact) bundle.get(MISC);
-			misc.doUnequip(owner, true);
+				if (artifact.activeBuff != null){
+					artifact.activeBuff.detach();
+					artifact.activeBuff = null;
+				}
 
-			Artifact ring = (Artifact) bundle.get(RING);
-			ring.doUnequip(owner, true);
+				artifact.passiveBuff.detach();
+				artifact.passiveBuff = null;
+
+				if (!artifact.collect(backpack)){
+					Dungeon.quickslot.clearItem(artifact);
+					updateQuickslot();
+					Dungeon.level.drop( artifact, owner.pos );
+				}
+
+			}
 		} else {
 			offenseAcc = (Artifact) bundle.get(OFFENSE_ACCESSORY);
 			defenseAcc = (Artifact) bundle.get(DEFENSE_ACCESSORY);

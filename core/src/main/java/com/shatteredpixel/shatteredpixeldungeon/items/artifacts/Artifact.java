@@ -38,8 +38,8 @@ import com.watabou.utils.Random;
 
 public abstract class Artifact extends EquipableItem {
 
-	protected Buff passiveBuff;
-	protected Buff activeBuff;
+	public Buff passiveBuff;
+	public Buff activeBuff;
 	public ArtifactClass artifactClass;
 
 	//level is used internally to track upgrades to artifacts, size/logic varies per artifact.
@@ -87,7 +87,7 @@ public abstract class Artifact extends EquipableItem {
 			equipSuccessful = true;
 		} else if (artifactClass == ArtifactClass.UTILITY &&
 				(hero.belongings.utilityAcc == null || hero.belongings.utilityAcc.doUnequip( hero, true, false ))) {
-			hero.belongings.defenseAcc = this;
+			hero.belongings.utilityAcc = this;
 			equipSuccessful = true;
 		}
 
@@ -95,6 +95,7 @@ public abstract class Artifact extends EquipableItem {
 			detach( hero.belongings.backpack );
 
 			activate( hero );
+			identify();
 
 			cursedKnown = true;
 			if (cursed) {
