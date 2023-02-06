@@ -919,7 +919,7 @@ public abstract class Char extends Actor {
 	public boolean isInvulnerable( Class effect ){
 		if (this instanceof Mob) {
 			for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
-				if (mob.fieldOfView != null && Dungeon.level.insideMap(pos) && mob.fieldOfView[pos] && mob.buff(ChampionEnemy.Paladin.class) != null
+				if (mob.fieldOfView != null && pos < mob.fieldOfView.length && mob.fieldOfView[pos] && mob.buff(ChampionEnemy.Paladin.class) != null
 						&& mob != this) {
 					return true;
 				}
