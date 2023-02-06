@@ -87,7 +87,7 @@ public abstract class Artifact extends EquipableItem {
 			equipSuccessful = true;
 		} else if (artifactClass == ArtifactClass.UTILITY &&
 				(hero.belongings.utilityAcc == null || hero.belongings.utilityAcc.doUnequip( hero, true, false ))) {
-			hero.belongings.defenseAcc = this;
+			hero.belongings.utilityAcc = this;
 			equipSuccessful = true;
 		}
 
