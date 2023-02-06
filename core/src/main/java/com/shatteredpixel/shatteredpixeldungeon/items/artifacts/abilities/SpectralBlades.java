@@ -51,7 +51,7 @@ public class SpectralBlades extends Ability {
     {
         baseChargeUse = 35;
         image = ItemSpriteSheet.RANGE_POWER;
-        setArtifactClass(ArtifactClass.UTILITY);
+        setArtifactClass(ArtifactClass.OFFENSE);
     }
 
     @Override
