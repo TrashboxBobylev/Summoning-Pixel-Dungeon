@@ -38,8 +38,8 @@ import com.watabou.utils.Random;
 
 public abstract class Artifact extends EquipableItem {
 
-	protected Buff passiveBuff;
-	protected Buff activeBuff;
+	public Buff passiveBuff;
+	public Buff activeBuff;
 	public ArtifactClass artifactClass;
 
 	//level is used internally to track upgrades to artifacts, size/logic varies per artifact.
