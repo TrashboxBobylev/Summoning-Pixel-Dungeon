@@ -130,8 +130,10 @@ public class Belongings implements Iterable<Item> {
 					artifact.activeBuff = null;
 				}
 
-				artifact.passiveBuff.detach();
-				artifact.passiveBuff = null;
+				if (artifact.passiveBuff != null) {
+					artifact.passiveBuff.detach();
+					artifact.passiveBuff = null;
+				}
 
 				if (!artifact.collect(backpack)){
 					Dungeon.quickslot.clearItem(artifact);
