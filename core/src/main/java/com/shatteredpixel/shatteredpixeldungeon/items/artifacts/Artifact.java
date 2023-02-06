@@ -95,6 +95,7 @@ public abstract class Artifact extends EquipableItem {
 			detach( hero.belongings.backpack );
 
 			activate( hero );
+			identify();
 
 			cursedKnown = true;
 			if (cursed) {
