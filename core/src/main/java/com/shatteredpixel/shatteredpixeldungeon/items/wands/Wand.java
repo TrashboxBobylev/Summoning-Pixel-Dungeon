@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Overload;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.FuelContainer;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SubtilitasSigil;
@@ -677,7 +678,14 @@ public abstract class Wand extends Weapon implements Tierable {
 	}
 
 	public float rechargeModifier(){
-		return rechargeModifier(level());
+		float rechargeModifier = rechargeModifier(level());
+		if (Dungeon.hero.belongings.armor instanceof ClothArmor){
+			ClothArmor armor = (ClothArmor) Dungeon.hero.belongings.armor;
+			if (armor.level() == 1){
+				rechargeModifier *= 0.667f;
+			}
+		}
+		return rechargeModifier;
 	}
 	
 	public class Charger extends Buff {

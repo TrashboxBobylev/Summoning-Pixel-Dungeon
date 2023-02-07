@@ -125,20 +125,23 @@ public class Belongings implements Iterable<Item> {
 			for (String slot : slotNames){
 				Artifact artifact = (Artifact) bundle.get(slot);
 
-				if (artifact.activeBuff != null){
-					artifact.activeBuff.detach();
-					artifact.activeBuff = null;
-				}
+				if (artifact != null) {
 
-				if (artifact.passiveBuff != null) {
-					artifact.passiveBuff.detach();
-					artifact.passiveBuff = null;
-				}
+					if (artifact.activeBuff != null) {
+						artifact.activeBuff.detach();
+						artifact.activeBuff = null;
+					}
 
-				if (!artifact.collect(backpack)){
-					Dungeon.quickslot.clearItem(artifact);
-					updateQuickslot();
-					Dungeon.level.drop( artifact, owner.pos );
+					if (artifact.passiveBuff != null) {
+						artifact.passiveBuff.detach();
+						artifact.passiveBuff = null;
+					}
+
+					if (!artifact.collect(backpack)) {
+						Dungeon.quickslot.clearItem(artifact);
+						updateQuickslot();
+						Dungeon.level.drop(artifact, owner.pos);
+					}
 				}
 
 			}

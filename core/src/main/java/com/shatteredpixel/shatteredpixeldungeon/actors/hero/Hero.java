@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GoatClone;
 import com.shatteredpixel.shatteredpixeldungeon.effects.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
@@ -778,6 +779,16 @@ public class Hero extends Char {
             else if (buff(Attunement.class) != null) buff(Attunement.class).detach();
         }
 
+		if (belongings.armor instanceof ClothArmor && belongings.armor.level() == 2){
+			for (Buff b : buffs()) {
+				if (b instanceof Artifact.ArtifactBuff) {
+					if (!((Artifact.ArtifactBuff) b).isCursed()) {
+						((Artifact.ArtifactBuff) b).charge(this, 0.334f);
+					}
+				}
+			}
+		}
+
         if (subClass == HeroSubClass.OCCULTIST && GoatClone.findClone() == null){
         	GoatClone.spawnClone();
 		}
@@ -1366,7 +1377,7 @@ public class Hero extends Char {
 		//TODO improve this when I have proper damage source logic
 		if (belongings.armor != null && belongings.armor.hasGlyph(AntiMagic.class, this)
 				&& AntiMagic.RESISTS.contains(src.getClass())){
-			dmg -= AntiMagic.drRoll(belongings.armor.buffedLvl());
+			dmg -= AntiMagic.drRoll(belongings.armor.powerLevel());
 		}
 
 		int preHP = HP + shielding();
