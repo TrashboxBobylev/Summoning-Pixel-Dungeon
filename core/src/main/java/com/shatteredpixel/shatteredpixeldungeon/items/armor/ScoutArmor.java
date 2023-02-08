@@ -128,8 +128,6 @@ public class ScoutArmor extends Armor {
             val = max;
         }
 
-        val *= defenseLevel();
-
         return val;
     }
 
@@ -143,7 +141,6 @@ public class ScoutArmor extends Armor {
             val = lvl + 1;
         }
 
-        val *= defenseLevel();
         return val;
     }
 
