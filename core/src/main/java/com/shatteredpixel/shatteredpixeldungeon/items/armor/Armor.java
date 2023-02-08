@@ -209,12 +209,8 @@ public class Armor extends EquipableItem implements Tierable {
 		return 0f;
 	}
 
-	public float defenseLevel(){
-		return defenseLevel(level());
-	}
-
 	public final int DRMax(){
-		return DRMax(powerLevel());
+		return Math.round(DRMax(powerLevel())*defenseLevel(level()));
 	}
 
 	public int DRMax(int lvl){
@@ -229,13 +225,12 @@ public class Armor extends EquipableItem implements Tierable {
 				val = max;
 			}
 		}
-		val *= defenseLevel();
 
 		return val;
 	}
 
 	public int DRMin(){
-		return DRMin(powerLevel());
+		return Math.round(DRMin(powerLevel())*defenseLevel(level()));
 	}
 
 	public int DRMin(int lvl){
@@ -250,7 +245,6 @@ public class Armor extends EquipableItem implements Tierable {
 				val = lvl;
 			}
 		}
-		val *= defenseLevel();
 
 		return val;
 	}
@@ -481,8 +475,8 @@ public class Armor extends EquipableItem implements Tierable {
 	@Override
 	public String getTierMessage(int tier){
 		return Messages.get(this, "tier" + tier,
-				Math.round(DRMin(tier-1)*defenseLevel(tier-1)),
-				Math.round(DRMax(tier-1)*defenseLevel(tier-1))
+				Math.round(DRMin(powerLevel())*defenseLevel(tier-1)),
+				Math.round(DRMax(powerLevel())*defenseLevel(tier-1))
 		);
 	}
 

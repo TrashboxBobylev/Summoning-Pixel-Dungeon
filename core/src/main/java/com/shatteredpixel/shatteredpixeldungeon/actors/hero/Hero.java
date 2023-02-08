@@ -43,6 +43,8 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScoutArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.SyntheticArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
@@ -435,6 +437,9 @@ public class Hero extends Char {
 		float accuracy = 1;
 		if (Dungeon.mode == Dungeon.GameMode.EXPLORE) accuracy = 1.2f;
 		if (Dungeon.isChallenged(Conducts.Conduct.KING)) accuracy = 1.1f;
+		if (belongings.armor instanceof SyntheticArmor &&
+			belongings.armor.level() == 2)
+				accuracy *= 1.15f;
 
 		if (belongings.weapon instanceof MissileWeapon &&
 				target.buff(QuiverMark.class) != null) return INFINITE_ACCURACY;
@@ -1378,6 +1383,11 @@ public class Hero extends Char {
 		if (belongings.armor != null && belongings.armor.hasGlyph(AntiMagic.class, this)
 				&& AntiMagic.RESISTS.contains(src.getClass())){
 			dmg -= AntiMagic.drRoll(belongings.armor.powerLevel());
+		}
+
+		if (belongings.armor instanceof ScoutArmor &&
+			belongings.armor.level() == 2){
+			dmg *= 1.75;
 		}
 
 		int preHP = HP + shielding();
