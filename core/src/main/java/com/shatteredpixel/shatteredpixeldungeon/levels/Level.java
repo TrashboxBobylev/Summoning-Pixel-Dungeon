@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.WindParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.SyntheticArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
@@ -1083,6 +1084,9 @@ public abstract class Level implements Bundlable {
 			
 			int viewDist = c.viewDistance;
 			if (c instanceof Hero && ((Hero) c).subClass == HeroSubClass.SNIPER) viewDist *= 1.5f;
+			if (c instanceof Hero && ((Hero) c).belongings.armor instanceof SyntheticArmor &&
+				((Hero) c).belongings.armor.level() == 2)
+				viewDist += 2;
 			
 			ShadowCaster.castShadow( cx, cy, fieldOfView, blocking, viewDist );
 		} else {
