@@ -28,10 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
-import com.shatteredpixel.shatteredpixeldungeon.items.DewVial;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.Ropes;
+import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.ElementalBlast;
@@ -124,7 +121,7 @@ public enum HeroClass {
 		}
 		new Ropes().quantity(5).collect();
 		new DewVial().collect();
-		new PlateArmor().identify().collect();
+		new ArmorKit().collect();
 		new ScrollOfUpgrade().identify().collect();
 
 		if (Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)){

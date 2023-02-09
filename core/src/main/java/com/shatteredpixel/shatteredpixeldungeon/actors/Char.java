@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.Wet;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.DeathMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DwarfKing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GhostChicken;
@@ -301,6 +302,16 @@ public abstract class Char extends Actor {
 				dmg = endure.adjustDamageTaken(dmg);
 			}
 
+			//friendly endure
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure.EndureTracker endure2 = buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure.EndureTracker.class);
+			if (endure != null) dmg = (int) endure2.damageFactor(dmg);
+
+			//enemy endure
+			endure2 = enemy.buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure.EndureTracker.class);
+			if (endure2 != null){
+				dmg = (int) endure2.adjustDamageTaken(dmg);
+			}
+
 			if (enemy.buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dmg *= 1.4f;
 
 			if (buff(PotionOfAdrenalineSurge.SurgeTracker.class) != null){
@@ -552,6 +563,11 @@ public abstract class Char extends Actor {
 			dmg = endure.adjustDamageTaken(dmg);
 		}
 
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure.EndureTracker endure2 = buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure.EndureTracker.class);
+		if (endure2 != null){
+			dmg = endure2.enforceDamagetakenLimit(dmg);
+		}
+
 		if (!(src instanceof DwarfKing.KingDamager)) {
 			for (ChampionEnemy buff : buffs(ChampionEnemy.class)) {
 				dmg = (int) Math.ceil(dmg * buff.damageTakenFactor());
@@ -680,6 +696,8 @@ public abstract class Char extends Actor {
 				Dungeon.level.drop(new Scrap(), pos).sprite.drop();
 			}
 			die( src );
+		} else if (HP == 0 && buff(DeathMark.DeathMarkTracker.class) != null){
+			DeathMark.processFearTheReaper(this);
 		}
 	}
 	
@@ -692,9 +710,14 @@ public abstract class Char extends Actor {
 		destroy();
 		if (src != Chasm.class) sprite.die();
 	}
-	
+
+	//we cache this info to prevent having to call buff(...) in isAlive.
+	//This is relevant because we call isAlive during drawing, which has both performance
+	//and thread coordination implications
+	public boolean deathMarked = false;
+
 	public boolean isAlive() {
-		return HP > 0;
+		return HP > 0 || deathMarked;
 	}
 	
 	@Override
