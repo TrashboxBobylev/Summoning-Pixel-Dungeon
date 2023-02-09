@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class MailArmor extends Armor {
@@ -36,4 +37,21 @@ public class MailArmor extends Armor {
 		super( 3 );
 	}
 
+	@Override
+	public float defenseLevel(int level) {
+		switch (level){
+			case 0: return 1.0f;
+			case 1: return 1.5f;
+			case 2: return 0.5f;
+		}
+		return 0f;
+	}
+
+	@Override
+	public float speedFactor(Char owner, float speed) {
+		float speedFactor = super.speedFactor(owner, speed);
+		if (level() == 2)
+			speedFactor *= 0.7f;
+		return speedFactor;
+	}
 }

@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.FierySlash;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.QuiverMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulWeakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SpikyShield;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Phantom;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
@@ -42,9 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GoatClone;
 import com.shatteredpixel.shatteredpixeldungeon.effects.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScoutArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.SyntheticArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
@@ -71,6 +70,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Unstab
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Cleaver;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knife;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -134,6 +134,7 @@ public class Hero extends Char {
 	
 	public HeroClass heroClass = HeroClass.ROGUE;
 	public HeroSubClass subClass = HeroSubClass.NONE;
+	public ArmorAbility armorAbility = null;
 	
 	private int attackSkill = 10;
 	private int defenseSkill = 5;
@@ -173,6 +174,10 @@ public class Hero extends Char {
 		DriedRose.roseRecharge buff = buff(DriedRose.roseRecharge.class);
 		if (buff != null){
 			roseBoost = 0.5f * buff.itemLevel();
+		}
+		if (belongings.armor instanceof ScaleArmor &&
+			belongings.armor.level() == 2){
+			roseBoost += 2f;
 		}
 	    return attunement +
 				roseBoost +
@@ -250,6 +255,7 @@ public class Hero extends Char {
 	private static final String MANA = "mana";
 	private static final String MAX_MANA = "max_mana";
 	private static final String TOTAL_EXP = "totalExp";
+	private static final String ABILITY     = "armorAbility";
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 
@@ -259,6 +265,7 @@ public class Hero extends Char {
 		subClass.storeInBundle( bundle );
 		if (heroClass == HeroClass.ROGUE)
 		Talent.storeTalentsInBundle( bundle, this );
+		bundle.put( ABILITY, armorAbility );
 		
 		bundle.put( ATTACK, attackSkill );
 		bundle.put( DEFENSE, defenseSkill );
@@ -287,6 +294,7 @@ public class Hero extends Char {
 		subClass = HeroSubClass.restoreInBundle( bundle );
 		if (heroClass == HeroClass.ROGUE)
 		Talent.restoreTalentsFromBundle( bundle, this );
+		armorAbility = (ArmorAbility)bundle.get( ABILITY );
 		
 		attackSkill = bundle.getInt( ATTACK );
 		defenseSkill = bundle.getInt( DEFENSE );
@@ -395,7 +403,15 @@ public class Hero extends Char {
 	}
 	
 	public int tier() {
-		return belongings.armor == null ? 0 : belongings.armor.tier;
+		if (belongings.armor == null){
+			return 0;
+		} else {
+			if (armorAbility != null){
+				return 6;
+			} else {
+				return belongings.armor.tier;
+			}
+		}
 	}
 	
 	public boolean shoot( Char enemy, MissileWeapon wep ) {
@@ -430,6 +446,25 @@ public class Hero extends Char {
         return hit;
     }
 
+	//same, but with melee weapons lol
+	//ech
+	public boolean shoot(Char enemy, MeleeWeapon weapon) {
+
+		//temporarily set the hero's weapon to the missile weapon being used
+		belongings.stashedWeapon = belongings.weapon;
+		belongings.weapon = weapon;
+		weapon.ranged = true;
+		boolean hit = false;
+		if (enemy.alignment != Alignment.ALLY)
+			hit = attack( enemy );
+		Invisibility.dispel();
+		belongings.weapon = belongings.stashedWeapon;
+		belongings.stashedWeapon = null;
+		weapon.ranged = false;
+
+		return hit;
+	}
+
 	@Override
 	public int attackSkill( Char target ) {
 		KindOfWeapon wep = belongings.weapon;
@@ -440,6 +475,9 @@ public class Hero extends Char {
 		if (belongings.armor instanceof SyntheticArmor &&
 			belongings.armor.level() == 2)
 				accuracy *= 1.15f;
+		if (belongings.armor instanceof PlateArmor &&
+				belongings.armor.level() == 2)
+			accuracy *= 1.25f;
 
 		if (belongings.weapon instanceof MissileWeapon &&
 				target.buff(QuiverMark.class) != null) return INFINITE_ACCURACY;
@@ -516,6 +554,12 @@ public class Hero extends Char {
 
 		if (belongings.armor != null) {
 			int armDr = Random.NormalIntRange( belongings.armor.DRMin(), belongings.armor.DRMax());
+			if (belongings.armor instanceof PlateArmor &&
+				belongings.armor.level() == 2){
+				int armDr2 = Random.NormalIntRange( belongings.armor.DRMin(), belongings.armor.DRMax());
+				if (armDr2 > armDr)
+					armDr = armDr2;
+			}
 			if (STR() < belongings.armor.STRReq()){
 				armDr -= 2*(belongings.armor.STRReq() - STR());
 			}
@@ -653,6 +697,9 @@ public class Hero extends Char {
 				&& Dungeon.hero.buff(MomentumBoots.momentumBuff.class).isCursed()){
 			attackSpeed = Math.max(1f, attackSpeed);
 		}
+		if (belongings.armor instanceof PlateArmor &&
+			belongings.armor.level() == 2)
+			attackSpeed /= 2;
 		return attackSpeed;
 	}
 
@@ -1382,7 +1429,7 @@ public class Hero extends Char {
 		//TODO improve this when I have proper damage source logic
 		if (belongings.armor != null && belongings.armor.hasGlyph(AntiMagic.class, this)
 				&& AntiMagic.RESISTS.contains(src.getClass())){
-			dmg -= AntiMagic.drRoll(belongings.armor.powerLevel());
+			dmg -= AntiMagic.drRoll(belongings.armor.enchantLevel());
 		}
 
 		if (belongings.armor instanceof ScoutArmor &&

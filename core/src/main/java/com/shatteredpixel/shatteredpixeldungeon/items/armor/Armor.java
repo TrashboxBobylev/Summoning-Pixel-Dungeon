@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.*;
@@ -43,10 +44,12 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Tierable;
 import com.watabou.utils.*;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -136,6 +139,31 @@ public class Armor extends EquipableItem implements Tierable {
 	}
 
 	@Override
+	public String status() {
+		if (Dungeon.hero.armorAbility != null)
+			return Messages.format( "%.0f%%", Dungeon.hero.armorAbility.charge );
+		else
+			return super.status();
+	}
+
+	@Override
+	public int image() {
+		if (Dungeon.hero.armorAbility != null && Dungeon.hero.belongings.armor == this){
+			switch (Dungeon.hero.heroClass){
+				case WARRIOR:
+					return ItemSpriteSheet.ARMOR_WARRIOR;
+				case MAGE:
+					return ItemSpriteSheet.ARMOR_MAGE;
+				case ROGUE:
+					return ItemSpriteSheet.ARMOR_ROGUE;
+				case HUNTRESS:
+					return ItemSpriteSheet.ARMOR_HUNTRESS;
+			}
+		}
+		return super.image();
+	}
+
+	@Override
 	public boolean doEquip( Hero hero ) {
 		
 		detach(hero.belongings.backpack);
@@ -193,6 +221,10 @@ public class Armor extends EquipableItem implements Tierable {
 
 	public int powerLevel(){
 		return Dungeon.hero.lvl/6;
+	}
+
+	public int enchantLevel() {
+		return powerLevel();
 	}
 	
 	@Override
@@ -284,9 +316,9 @@ public class Armor extends EquipableItem implements Tierable {
 					break;
 				}
 			}
-			if (!enemyNear) speed *= (1.2f + 0.04f * powerLevel());
+			if (!enemyNear) speed *= (1.2f + 0.04f * enchantLevel());
 		} else if (hasGlyph(Flow.class, owner) && Dungeon.level.water[owner.pos]){
-			speed *= (2f + 0.25f*powerLevel());
+			speed *= (2f + 0.25f*enchantLevel());
 		}
 		
 		if (hasGlyph(Bulk.class, owner) &&
@@ -302,7 +334,7 @@ public class Armor extends EquipableItem implements Tierable {
 	public float stealthFactor( Char owner, float stealth ){
 		
 		if (hasGlyph(Obfuscation.class, owner)){
-			stealth += 1 + powerLevel()/3f;
+			stealth += 1 + enchantLevel()/3f;
 		}
 		
 		return stealth;
@@ -415,6 +447,17 @@ public class Armor extends EquipableItem implements Tierable {
 			info += "\n\n" + Messages.get(Armor.class, "cursed");
 		} else if (!isIdentified() && cursedKnown){
 			info += "\n\n" + Messages.get(Armor.class, "not_cursed");
+		}
+
+		if (Dungeon.hero.belongings.armor == this) {
+			ArmorAbility ability = Dungeon.hero.armorAbility;
+			if (ability != null) {
+				info += "\n\n" + ability.shortDesc();
+				float chargeUse = ability.chargeUse(Dungeon.hero);
+				info += " " + Messages.get(this, "charge_use", new DecimalFormat("#.##").format(chargeUse));
+			} else {
+				info += "\n\n" + "_" + Messages.get(this, "no_ability") + "_";
+			}
 		}
 		
 		return info;

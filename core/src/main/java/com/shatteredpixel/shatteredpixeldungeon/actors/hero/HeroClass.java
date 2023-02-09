@@ -28,10 +28,16 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
-import com.shatteredpixel.shatteredpixeldungeon.items.DewVial;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.Ropes;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.NaturesPower;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpiritHawk;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.WarpBeacon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.WildMagic;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.DeathMark;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.ShadowClone;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Shockwave;
+import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.ElementalBlast;
@@ -124,6 +130,7 @@ public enum HeroClass {
 		}
 		new Ropes().quantity(5).collect();
 		new DewVial().collect();
+		new KingsCrown().collect();
 		new ScrollOfUpgrade().identify().collect();
 
 		if (Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)){
@@ -343,6 +350,19 @@ public enum HeroClass {
 
 	public HeroSubClass[] subClasses() {
 		return subClasses;
+	}
+
+	public ArmorAbility[] armorAbilities(){
+		switch (this) {
+			case WARRIOR: default:
+				return new ArmorAbility[]{new Shockwave(), new Endure()};
+			case MAGE:
+				return new ArmorAbility[]{new WildMagic(), new WarpBeacon()};
+			case ROGUE:
+				return new ArmorAbility[]{new DeathMark(), new ShadowClone()};
+			case HUNTRESS:
+				return new ArmorAbility[]{new NaturesPower(), new SpiritHawk()};
+		}
 	}
 
 	public String spritesheet() {

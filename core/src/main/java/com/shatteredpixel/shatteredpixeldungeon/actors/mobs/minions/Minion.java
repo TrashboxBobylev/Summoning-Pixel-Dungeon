@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Yog;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.stationary.StationaryMinion;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScaleArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Shocker;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
@@ -250,6 +251,9 @@ public abstract class Minion extends Mob {
         if (buff(AdditionalDamage.class) != null) i += minDamage*2;
         if (Dungeon.hero.buff(Attunement.class) != null) i *= Attunement.empowering();
         if (buff(Chungus.class) != null) i*=1.4f;
+        if (Dungeon.hero.belongings.armor instanceof ScaleArmor &&
+            Dungeon.hero.belongings.armor.level() == 2)
+            i *= 1.25f;
         return augmentOffense.damageFactor(i);
     }
 

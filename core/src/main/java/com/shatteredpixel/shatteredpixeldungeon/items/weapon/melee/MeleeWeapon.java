@@ -26,9 +26,12 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulWeakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.MailArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Random;
@@ -36,6 +39,7 @@ import com.watabou.utils.Random;
 public class MeleeWeapon extends Weapon {
 	
 	public int tier;
+	public boolean ranged = false;
 
 	@Override
 	public int min(int lvl) {
@@ -71,6 +75,8 @@ public class MeleeWeapon extends Weapon {
             if (exStr > 0) {
                 damage += Random.IntRange( 0, Math.round(exStr) );
 			}
+
+			if (ranged) damage *= 1.33f;
 		}
 		
 		return damage;
@@ -161,4 +167,21 @@ public class MeleeWeapon extends Weapon {
 		return delay*1.5f;
 	}
 
+	@Override
+	protected void onThrow(int cell) {
+		if (Dungeon.isChallenged(Conducts.Conduct.PACIFIST) ||
+				!(Dungeon.hero.belongings.armor instanceof MailArmor &&
+						Dungeon.hero.belongings.armor.level() == 2)) {
+			super.onThrow(cell);
+		} else {
+			Char enemy = Actor.findChar( cell );
+			if ((enemy == null || enemy == curUser || curUser.buff(SoulWeakness.class) != null)) {
+				super.onThrow( cell );
+			} else {
+				if (curUser.shoot(enemy, this)) {
+					Dungeon.level.drop(this, cell).sprite.drop();
+				}
+			}
+		}
+	}
 }

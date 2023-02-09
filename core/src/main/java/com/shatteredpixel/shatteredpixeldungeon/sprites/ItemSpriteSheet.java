@@ -147,6 +147,7 @@ public class ItemSpriteSheet {
 	public static final int SEAL            = SINGLE_USE+3;
 	public static final int TORCH           = SINGLE_USE+4;
 	public static final int BEACON          = SINGLE_USE+5;
+	public static final int CROWN           = SINGLE_USE+6;
 
 	public static final int HONEYPOT        = SINGLE_USE+7;
 	public static final int SHATTPOT        = SINGLE_USE+8;
@@ -165,6 +166,7 @@ public class ItemSpriteSheet {
 		assignItemRect(SEAL,            9,  15);
 		assignItemRect(TORCH,           12, 15);
 		assignItemRect(BEACON,          16, 15);
+		assignItemRect(CROWN,           13,  7);
 		
 		assignItemRect(HONEYPOT,        14, 12);
 		assignItemRect(SHATTPOT,        14, 12);

@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class PlateArmor extends Armor {
@@ -34,6 +35,33 @@ public class PlateArmor extends Armor {
 	
 	public PlateArmor() {
 		super( 5 );
+	}
+
+	@Override
+	public float defenseLevel(int level) {
+		switch (level){
+			case 0: return 1.0f;
+			case 1: return 2.0f;
+			case 2: return 1.0f;
+		}
+		return 0f;
+	}
+
+	@Override
+	public int enchantLevel() {
+		if (level() == 2)
+			return powerLevel()*2;
+		return super.enchantLevel();
+	}
+
+	@Override
+	public float evasionFactor(Char owner, float evasion) {
+		float eva = super.evasionFactor(owner, evasion);
+		if (level() == 1)
+			eva = 0;
+		if (level() == 2)
+			eva *= 0.33f;
+		return eva;
 	}
 
 }
