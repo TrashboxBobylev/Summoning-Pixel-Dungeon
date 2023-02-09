@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GhostChicken;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.MailArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
@@ -339,6 +340,15 @@ public abstract class Char extends Actor {
 			// This matters as defence procs can sometimes inflict self-damage, such as armor glyphs.
 			if (!enemy.isAlive()){
 				return true;
+			}
+
+			if (enemy instanceof Hero && ((Hero) enemy).belongings.armor instanceof MailArmor &&
+				((Hero) enemy).belongings.armor.level() == 1){
+				Viscosity.DeferedDamage deferred = Buff.affect( enemy, Viscosity.DeferedDamage.class );
+				deferred.prolong( effectiveDamage );
+
+				enemy.sprite.showStatus( CharSprite.WARNING, Messages.get(Viscosity.class, "deferred", effectiveDamage) );
+				effectiveDamage = -1;
 			}
 
 			enemy.damage( effectiveDamage, this );

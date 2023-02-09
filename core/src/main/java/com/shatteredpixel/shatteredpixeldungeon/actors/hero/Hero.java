@@ -71,6 +71,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Unstab
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Cleaver;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knife;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -429,6 +430,25 @@ public class Hero extends Char {
 
         return hit;
     }
+
+	//same, but with melee weapons lol
+	//ech
+	public boolean shoot(Char enemy, MeleeWeapon weapon) {
+
+		//temporarily set the hero's weapon to the missile weapon being used
+		belongings.stashedWeapon = belongings.weapon;
+		belongings.weapon = weapon;
+		weapon.ranged = true;
+		boolean hit = false;
+		if (enemy.alignment != Alignment.ALLY)
+			hit = attack( enemy );
+		Invisibility.dispel();
+		belongings.weapon = belongings.stashedWeapon;
+		belongings.stashedWeapon = null;
+		weapon.ranged = false;
+
+		return hit;
+	}
 
 	@Override
 	public int attackSkill( Char target ) {
