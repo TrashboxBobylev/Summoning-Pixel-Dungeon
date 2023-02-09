@@ -120,11 +120,6 @@ abstract public class ClassArmor extends Armor {
 	}
 
 	@Override
-	public String status() {
-		return Messages.format( "%.0f%%", charge );
-	}
-
-	@Override
 	public void execute( Hero hero, String action ) {
 
 		super.execute( hero, action );

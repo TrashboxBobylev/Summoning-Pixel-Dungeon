@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Tierable;
 import com.watabou.utils.*;
@@ -133,6 +134,31 @@ public class Armor extends EquipableItem implements Tierable {
 		ArrayList<String> actions = super.actions(hero);
 		if (hero.heroClass == HeroClass.CONJURER) actions.remove(AC_EQUIP);
 		return actions;
+	}
+
+	@Override
+	public String status() {
+		if (Dungeon.hero.armorAbility != null)
+			return Messages.format( "%.0f%%", Dungeon.hero.armorAbility.charge );
+		else
+			return super.status();
+	}
+
+	@Override
+	public int image() {
+		if (Dungeon.hero.armorAbility != null && Dungeon.hero.belongings.armor == this){
+			switch (Dungeon.hero.heroClass){
+				case WARRIOR:
+					return ItemSpriteSheet.ARMOR_WARRIOR;
+				case MAGE:
+					return ItemSpriteSheet.ARMOR_MAGE;
+				case ROGUE:
+					return ItemSpriteSheet.ARMOR_ROGUE;
+				case HUNTRESS:
+					return ItemSpriteSheet.ARMOR_HUNTRESS;
+			}
+		}
+		return super.image();
 	}
 
 	@Override

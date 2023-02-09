@@ -403,7 +403,15 @@ public class Hero extends Char {
 	}
 	
 	public int tier() {
-		return belongings.armor == null ? 0 : belongings.armor.tier;
+		if (belongings.armor == null){
+			return 0;
+		} else {
+			if (armorAbility != null){
+				return 6;
+			} else {
+				return belongings.armor.tier;
+			}
+		}
 	}
 	
 	public boolean shoot( Char enemy, MissileWeapon wep ) {
