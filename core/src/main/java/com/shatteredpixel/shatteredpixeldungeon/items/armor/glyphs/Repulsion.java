@@ -40,7 +40,7 @@ public class Repulsion extends Armor.Glyph {
 		// lvl 0 - 20%
 		// lvl 1 - 33%
 		// lvl 2 - 43%
-		int level = Math.max( 0, armor.powerLevel() );
+		int level = Math.max( 0, armor.enchantLevel() );
 
 		if (Random.Int( level + 5 ) >= 4){
 			int oppositeHero = attacker.pos + (attacker.pos - defender.pos);

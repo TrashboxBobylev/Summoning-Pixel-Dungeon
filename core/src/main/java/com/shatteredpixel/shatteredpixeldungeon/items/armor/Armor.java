@@ -194,6 +194,10 @@ public class Armor extends EquipableItem implements Tierable {
 	public int powerLevel(){
 		return Dungeon.hero.lvl/6;
 	}
+
+	public int enchantLevel() {
+		return powerLevel();
+	}
 	
 	@Override
 	public boolean isEquipped( Hero hero ) {
@@ -284,9 +288,9 @@ public class Armor extends EquipableItem implements Tierable {
 					break;
 				}
 			}
-			if (!enemyNear) speed *= (1.2f + 0.04f * powerLevel());
+			if (!enemyNear) speed *= (1.2f + 0.04f * enchantLevel());
 		} else if (hasGlyph(Flow.class, owner) && Dungeon.level.water[owner.pos]){
-			speed *= (2f + 0.25f*powerLevel());
+			speed *= (2f + 0.25f*enchantLevel());
 		}
 		
 		if (hasGlyph(Bulk.class, owner) &&
@@ -302,7 +306,7 @@ public class Armor extends EquipableItem implements Tierable {
 	public float stealthFactor( Char owner, float stealth ){
 		
 		if (hasGlyph(Obfuscation.class, owner)){
-			stealth += 1 + powerLevel()/3f;
+			stealth += 1 + enchantLevel()/3f;
 		}
 		
 		return stealth;

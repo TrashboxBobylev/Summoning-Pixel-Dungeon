@@ -42,10 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GoatClone;
 import com.shatteredpixel.shatteredpixeldungeon.effects.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScaleArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScoutArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.SyntheticArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
@@ -465,6 +462,9 @@ public class Hero extends Char {
 		if (belongings.armor instanceof SyntheticArmor &&
 			belongings.armor.level() == 2)
 				accuracy *= 1.15f;
+		if (belongings.armor instanceof PlateArmor &&
+				belongings.armor.level() == 2)
+			accuracy *= 1.25f;
 
 		if (belongings.weapon instanceof MissileWeapon &&
 				target.buff(QuiverMark.class) != null) return INFINITE_ACCURACY;
@@ -541,6 +541,12 @@ public class Hero extends Char {
 
 		if (belongings.armor != null) {
 			int armDr = Random.NormalIntRange( belongings.armor.DRMin(), belongings.armor.DRMax());
+			if (belongings.armor instanceof PlateArmor &&
+				belongings.armor.level() == 2){
+				int armDr2 = Random.NormalIntRange( belongings.armor.DRMin(), belongings.armor.DRMax());
+				if (armDr2 > armDr)
+					armDr = armDr2;
+			}
 			if (STR() < belongings.armor.STRReq()){
 				armDr -= 2*(belongings.armor.STRReq() - STR());
 			}
@@ -1407,7 +1413,7 @@ public class Hero extends Char {
 		//TODO improve this when I have proper damage source logic
 		if (belongings.armor != null && belongings.armor.hasGlyph(AntiMagic.class, this)
 				&& AntiMagic.RESISTS.contains(src.getClass())){
-			dmg -= AntiMagic.drRoll(belongings.armor.powerLevel());
+			dmg -= AntiMagic.drRoll(belongings.armor.enchantLevel());
 		}
 
 		if (belongings.armor instanceof ScoutArmor &&

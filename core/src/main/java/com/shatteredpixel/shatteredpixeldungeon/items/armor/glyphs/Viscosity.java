@@ -63,7 +63,7 @@ public class Viscosity extends Glyph {
 			return 0;
 		}
 
-		int level = Math.max( 0, armor.powerLevel() );
+		int level = Math.max( 0, armor.enchantLevel() );
 		
 		float percent = (level+1)/(float)(level+6);
 		int amount = (int)Math.ceil(realDamage * percent);
