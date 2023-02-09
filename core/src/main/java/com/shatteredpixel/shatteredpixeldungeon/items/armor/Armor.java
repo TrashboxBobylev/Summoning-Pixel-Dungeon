@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.*;
@@ -48,6 +49,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Tierable;
 import com.watabou.utils.*;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -445,6 +447,17 @@ public class Armor extends EquipableItem implements Tierable {
 			info += "\n\n" + Messages.get(Armor.class, "cursed");
 		} else if (!isIdentified() && cursedKnown){
 			info += "\n\n" + Messages.get(Armor.class, "not_cursed");
+		}
+
+		if (Dungeon.hero.belongings.armor == this) {
+			ArmorAbility ability = Dungeon.hero.armorAbility;
+			if (ability != null) {
+				info += "\n\n" + ability.shortDesc();
+				float chargeUse = ability.chargeUse(Dungeon.hero);
+				info += " " + Messages.get(this, "charge_use", new DecimalFormat("#.##").format(chargeUse));
+			} else {
+				info += "\n\n" + "_" + Messages.get(this, "no_ability") + "_";
+			}
 		}
 		
 		return info;

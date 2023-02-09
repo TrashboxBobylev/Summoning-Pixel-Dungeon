@@ -130,7 +130,7 @@ public enum HeroClass {
 		}
 		new Ropes().quantity(5).collect();
 		new DewVial().collect();
-		new ArmorKit().collect();
+		new KingsCrown().collect();
 		new ScrollOfUpgrade().identify().collect();
 
 		if (Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)){
