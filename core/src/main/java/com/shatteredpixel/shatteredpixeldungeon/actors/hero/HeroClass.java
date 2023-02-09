@@ -126,7 +126,6 @@ public enum HeroClass {
 		new DewVial().collect();
 		new PlateArmor().identify().collect();
 		new ScrollOfUpgrade().identify().collect();
-		hero.STR = 18;
 
 		if (Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)){
 			(hero.belongings.armor = new ScoutArmor()).identify();

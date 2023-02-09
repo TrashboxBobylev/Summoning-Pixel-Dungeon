@@ -55,20 +55,12 @@ public class PlateArmor extends Armor {
 	}
 
 	@Override
-	public float speedFactor(Char owner, float speed) {
-		float speedFactor = super.speedFactor(owner, speed);
-		if (level() == 2)
-			speedFactor /= 2;
-		return speedFactor;
-	}
-
-	@Override
 	public float evasionFactor(Char owner, float evasion) {
 		float eva = super.evasionFactor(owner, evasion);
 		if (level() == 1)
 			eva = 0;
 		if (level() == 2)
-			eva *= 0.66f;
+			eva *= 0.33f;
 		return eva;
 	}
 

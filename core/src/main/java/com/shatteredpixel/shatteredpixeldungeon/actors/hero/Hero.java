@@ -684,6 +684,9 @@ public class Hero extends Char {
 				&& Dungeon.hero.buff(MomentumBoots.momentumBuff.class).isCursed()){
 			attackSpeed = Math.max(1f, attackSpeed);
 		}
+		if (belongings.armor instanceof PlateArmor &&
+			belongings.armor.level() == 2)
+			attackSpeed /= 2;
 		return attackSpeed;
 	}
 
