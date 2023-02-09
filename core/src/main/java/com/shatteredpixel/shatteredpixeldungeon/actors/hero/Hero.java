@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScaleArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScoutArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.SyntheticArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
@@ -174,6 +175,10 @@ public class Hero extends Char {
 		DriedRose.roseRecharge buff = buff(DriedRose.roseRecharge.class);
 		if (buff != null){
 			roseBoost = 0.5f * buff.itemLevel();
+		}
+		if (belongings.armor instanceof ScaleArmor &&
+			belongings.armor.level() == 2){
+			roseBoost += 2f;
 		}
 	    return attunement +
 				roseBoost +

@@ -124,6 +124,9 @@ public enum HeroClass {
 		}
 		new Ropes().quantity(5).collect();
 		new DewVial().collect();
+//		new ScaleArmor().identify().collect();
+//		new ScrollOfUpgrade().identify().collect();
+//		hero.STR = 16;
 
 		if (Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)){
 			(hero.belongings.armor = new ScoutArmor()).identify();

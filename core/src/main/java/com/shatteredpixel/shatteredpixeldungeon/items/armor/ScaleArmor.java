@@ -24,7 +24,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.utils.Callback;
+import com.watabou.utils.PathFinder;
 
 public class ScaleArmor extends Armor {
 
@@ -36,4 +41,46 @@ public class ScaleArmor extends Armor {
 		super( 4 );
 	}
 
+	@Override
+	public float defenseLevel(int level) {
+		switch (level){
+			case 0: return 1.0f;
+			case 1: return 0.6f;
+			case 2: return 0.2f;
+		}
+		return 0f;
+	}
+
+	@Override
+	public float evasionFactor(Char owner, float evasion) {
+		float eva = super.evasionFactor(owner, evasion);
+		if (level() == 1)
+			eva *= 0.66f;
+		if (level() == 2)
+			eva *= 0.33f;
+		return eva;
+	}
+
+	@Override
+	public int proc(Char attacker, Char defender, int damage) {
+		int proc = super.proc(attacker, defender, damage);
+		if (level() == 1) {
+			for (int n : PathFinder.NEIGHBOURS8) {
+				int cell = defender.pos + n;
+				Char ch = Actor.findChar(cell);
+				if (ch != null){
+					ch.damage(Math.round(proc * 0.75f), defender);
+					MagicMissile.boltFromChar(defender.sprite.parent,
+							MagicMissile.EARTH,
+							defender.sprite,
+							cell,
+							new Callback() {
+								@Override
+								public void call() {}
+							});
+				}
+			}
+		}
+		return proc;
+	}
 }
