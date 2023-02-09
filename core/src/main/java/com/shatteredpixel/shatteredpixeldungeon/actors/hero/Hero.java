@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.FierySlash;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.QuiverMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulWeakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SpikyShield;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Phantom;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
@@ -133,6 +134,7 @@ public class Hero extends Char {
 	
 	public HeroClass heroClass = HeroClass.ROGUE;
 	public HeroSubClass subClass = HeroSubClass.NONE;
+	public ArmorAbility armorAbility = null;
 	
 	private int attackSkill = 10;
 	private int defenseSkill = 5;
@@ -253,6 +255,7 @@ public class Hero extends Char {
 	private static final String MANA = "mana";
 	private static final String MAX_MANA = "max_mana";
 	private static final String TOTAL_EXP = "totalExp";
+	private static final String ABILITY     = "armorAbility";
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 
@@ -262,6 +265,7 @@ public class Hero extends Char {
 		subClass.storeInBundle( bundle );
 		if (heroClass == HeroClass.ROGUE)
 		Talent.storeTalentsInBundle( bundle, this );
+		bundle.put( ABILITY, armorAbility );
 		
 		bundle.put( ATTACK, attackSkill );
 		bundle.put( DEFENSE, defenseSkill );
@@ -290,6 +294,7 @@ public class Hero extends Char {
 		subClass = HeroSubClass.restoreInBundle( bundle );
 		if (heroClass == HeroClass.ROGUE)
 		Talent.restoreTalentsFromBundle( bundle, this );
+		armorAbility = (ArmorAbility)bundle.get( ABILITY );
 		
 		attackSkill = bundle.getInt( ATTACK );
 		defenseSkill = bundle.getInt( DEFENSE );
