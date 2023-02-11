@@ -455,8 +455,6 @@ public class Armor extends EquipableItem implements Tierable {
 				info += "\n\n" + ability.shortDesc();
 				float chargeUse = ability.chargeUse(Dungeon.hero);
 				info += " " + Messages.get(this, "charge_use", new DecimalFormat("#.##").format(chargeUse));
-			} else {
-				info += "\n\n" + "_" + Messages.get(this, "no_ability") + "_";
 			}
 		}
 		
