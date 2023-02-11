@@ -38,7 +38,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.Shad
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Shockwave;
 import com.shatteredpixel.shatteredpixeldungeon.items.*;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScoutArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.SyntheticArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.ElementalBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Graveyard;
@@ -305,7 +308,7 @@ public enum HeroClass {
 			Dungeon.quickslot.setSlot(1, staff1);
 		}
 
-        hero.belongings.armor = ClassArmor.upgrade(hero, (Armor)(new ClothArmor().identify()));
+		(hero.belongings.armor = new ConjurerArmor()).identify();
 
 //        LoveHolder cloak = new LoveHolder();
 //        (hero.belongings.artifact = cloak).identify();
