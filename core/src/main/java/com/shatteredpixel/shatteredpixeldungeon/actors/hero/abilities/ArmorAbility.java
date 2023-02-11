@@ -29,7 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
@@ -50,7 +50,7 @@ public abstract class ArmorAbility implements Bundlable {
 		charger.attachTo(ch);
 	}
 
-	public void use( ClassArmor armor, Hero hero ){
+	public void use(Armor armor, Hero hero ){
 		if (targetingPrompt() == null){
 			activate(armor, hero, hero.pos);
 		} else {
@@ -86,7 +86,7 @@ public abstract class ArmorAbility implements Bundlable {
 		return chargeUse;
 	}
 
-	protected abstract void activate( ClassArmor armor, Hero hero, Integer target );
+	protected abstract void activate(Armor armor, Hero hero, Integer target );
 
 	public String name(){
 		return Messages.get(this, "name");
