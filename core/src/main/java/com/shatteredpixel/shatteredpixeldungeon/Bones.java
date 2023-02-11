@@ -82,14 +82,8 @@ public class Bones {
 				case 1:
 					item = hero.belongings.armor;
 					break;
-				case 2:
-					item = hero.belongings.offenseAcc;
-					break;
-				case 3:
-					item = hero.belongings.defenseAcc;
-					break;
-				case 4:
-					item = hero.belongings.utilityAcc;
+				case 2: case 3: case 4:
+					item = hero.belongings.accs.get(Random.Int(3));
 					break;
 				case 5: case 6:
 					item = Dungeon.quickslot.randomNonePlaceholder();

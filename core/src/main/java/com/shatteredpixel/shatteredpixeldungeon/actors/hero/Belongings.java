@@ -38,10 +38,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurs
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff;
+import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 
 import static com.shatteredpixel.shatteredpixeldungeon.items.Item.updateQuickslot;
@@ -55,9 +58,7 @@ public class Belongings implements Iterable<Item> {
 	public KindOfWeapon weapon = null;
 	public Armor armor = null;
 
-	public Artifact offenseAcc = null;
-	public Artifact defenseAcc = null;
-	public Artifact utilityAcc = null;
+	public ArrayList<Artifact> accs = new ArrayList<>(Arrays.asList(null, null, null));
 
 	//used when thrown weapons temporary occupy the weapon slot
 	public KindOfWeapon stashedWeapon = null;
@@ -91,15 +92,18 @@ public class Belongings implements Iterable<Item> {
 	private static final String DEFENSE_ACCESSORY = "defense_acc";
 	private static final String UTILITY_ACCESSORY = "utility_acc";
 
+	private static final String ACCESSORY = "accessories";
+
 	public void storeInBundle( Bundle bundle ) {
 		
 		backpack.storeInBundle( bundle );
 		
 		bundle.put( WEAPON, weapon );
 		bundle.put( ARMOR, armor );
-		bundle.put( OFFENSE_ACCESSORY, offenseAcc );
-		bundle.put( DEFENSE_ACCESSORY, defenseAcc );
-		bundle.put( UTILITY_ACCESSORY, utilityAcc );
+//		bundle.put( OFFENSE_ACCESSORY, offenseAcc );
+//		bundle.put( DEFENSE_ACCESSORY, defenseAcc );
+//		bundle.put( UTILITY_ACCESSORY, utilityAcc );
+		bundle.put(ACCESSORY, accs);
 	}
 	
 	public void restoreFromBundle( Bundle bundle ) {
@@ -146,14 +150,16 @@ public class Belongings implements Iterable<Item> {
 
 			}
 		} else {
-			offenseAcc = (Artifact) bundle.get(OFFENSE_ACCESSORY);
-			defenseAcc = (Artifact) bundle.get(DEFENSE_ACCESSORY);
-			utilityAcc = (Artifact) bundle.get(UTILITY_ACCESSORY);
+			Collection<Bundlable> accessories = bundle.getCollection(ACCESSORY);
+			Bundlable[] accList = accessories.toArray(new Bundlable[0]);
+			for (int index = 0; index < accList.length; index++){
+				accs.set(index, (Artifact) accList[index]);
+			}
 		}
-
-		if (offenseAcc != null) offenseAcc.activate(owner);
-		if (defenseAcc != null) defenseAcc.activate(owner);
-		if (utilityAcc != null) utilityAcc.activate(owner);
+		for (Artifact acc: accs){
+			if (acc != null)
+				acc.activate(owner);
+		}
 
 		if (owner.armorAbility != null)
 			owner.armorAbility.activate(owner);
@@ -240,17 +246,9 @@ public class Belongings implements Iterable<Item> {
 			armor.identify();
 			Badges.validateItemLevelAquired( armor );
 		}
-		if (offenseAcc != null) {
-			offenseAcc.identify();
-			Badges.validateItemLevelAquired(offenseAcc);
-		}
-		if (defenseAcc != null) {
-			defenseAcc.identify();
-			Badges.validateItemLevelAquired(defenseAcc);
-		}
-		if (utilityAcc != null) {
-			utilityAcc.identify();
-			Badges.validateItemLevelAquired(utilityAcc);
+		for (Artifact acc: accs){
+			acc.identify();
+			Badges.validateItemLevelAquired(acc);
 		}
 		for (Item item : backpack) {
 			if (item instanceof EquipableItem || item instanceof Wand) {
@@ -260,7 +258,10 @@ public class Belongings implements Iterable<Item> {
 	}
 	
 	public void uncurseEquipped() {
-		ScrollOfRemoveCurse.uncurse( owner, armor, weapon, offenseAcc, defenseAcc, utilityAcc);
+		ScrollOfRemoveCurse.uncurse( owner, armor, weapon);
+		for (Artifact acc: accs){
+			ScrollOfRemoveCurse.uncurse(owner, acc);
+		}
 	}
 	
 	public Item randomUnequipped() {
@@ -296,17 +297,11 @@ public class Belongings implements Iterable<Item> {
 			armor.activate( owner );
 		}
 
-		if (offenseAcc != null) {
-			offenseAcc.cursed = false;
-			offenseAcc.activate( owner );
-		}
-		if (defenseAcc != null) {
-			defenseAcc.cursed = false;
-			defenseAcc.activate( owner );
-		}
-		if (utilityAcc != null) {
-			utilityAcc.cursed = false;
-			utilityAcc.activate( owner );
+		for (Artifact acc: accs){
+			if (acc != null) {
+				acc.cursed = false;
+				acc.activate(owner);
+			}
 		}
 	}
 	
@@ -335,10 +330,11 @@ public class Belongings implements Iterable<Item> {
 	private class ItemIterator implements Iterator<Item> {
 
 		private int index = 0;
+		private int accIndex = 0;
 		
 		private Iterator<Item> backpackIterator = backpack.iterator();
 		
-		private Item[] equipped = {weapon, armor, offenseAcc, defenseAcc, utilityAcc};
+		private Item[] equipped = {weapon, armor};
 		private int backpackIndex = equipped.length;
 		
 		@Override
@@ -347,6 +343,14 @@ public class Belongings implements Iterable<Item> {
 			for (int i=index; i < backpackIndex; i++) {
 				if (equipped[i] != null) {
 					return true;
+				}
+			}
+
+			if (accs.size() > 0) {
+				for (int i=accIndex; i < accs.size(); i++) {
+					if (accs.get(accIndex) != null) {
+						return true;
+					}
 				}
 			}
 			
@@ -362,6 +366,15 @@ public class Belongings implements Iterable<Item> {
 					return item;
 				}
 			}
+
+			if (accs.size() > 0) {
+				while (accIndex < accs.size()) {
+					Item item = accs.get(accIndex++);
+					if (item != null) {
+						return item;
+					}
+				}
+			}
 			
 			return backpackIterator.next();
 		}
@@ -375,16 +388,18 @@ public class Belongings implements Iterable<Item> {
 			case 1:
 				equipped[1] = armor = null;
 				break;
-			case 2:
-				equipped[2] = offenseAcc = null;
-				break;
-			case 3:
-				equipped[3] = defenseAcc = null;
-				break;
-			case 4:
-				equipped[4] = utilityAcc = null;
-				break;
 			default:
+				switch (accIndex){
+					case 0:
+						accs.set(0, null);
+						break;
+					case 1:
+						accs.set(1, null);
+						break;
+					case 2:
+						accs.set(2, null);
+						break;
+				}
 				backpackIterator.remove();
 			}
 		}

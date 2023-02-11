@@ -41,6 +41,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.ElementalBlast;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Graveyard;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.HeroicLeap;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Heal;
@@ -132,6 +134,8 @@ public enum HeroClass {
 		new DewVial().collect();
 		new KingsCrown().collect();
 		new ScrollOfUpgrade().identify().collect();
+		new HeroicLeap().identify().collect();
+		new Graveyard().identify().collect();
 
 		if (Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)){
 			(hero.belongings.armor = new ScoutArmor()).identify();
@@ -147,11 +151,13 @@ public enum HeroClass {
 			Dungeon.quickslot.setSlot(0, stones);
 			new BrokenSeal().collect();
 			ElementalBlast blast = new ElementalBlast();
-			(hero.belongings.offenseAcc = blast).identify();
-			hero.belongings.offenseAcc.activate(hero);
+			hero.belongings.accs.set(0, blast);
+			blast.identify();
+			blast.activate(hero);
 			CloakOfShadows cloakOfShadows = new CloakOfShadows();
-			(hero.belongings.utilityAcc = cloakOfShadows).identify();
-			hero.belongings.utilityAcc.activate(hero);
+			hero.belongings.accs.set(1, cloakOfShadows);
+			cloakOfShadows.identify();
+			cloakOfShadows.activate(hero);
 			Dungeon.quickslot.setSlot(1, cloakOfShadows);
 			hero.attunement = 1;
 			hero.mana = 0;
@@ -220,8 +226,9 @@ public enum HeroClass {
 			(hero.belongings.weapon = wand).identify();
 			hero.belongings.weapon.activate(hero);
 			ElementalBlast blast = new ElementalBlast();
-			(hero.belongings.offenseAcc = blast).identify();
-			hero.belongings.offenseAcc.activate(hero);
+			hero.belongings.accs.set(0, blast);
+			blast.identify();
+			blast.activate(hero);
 			Dungeon.quickslot.setSlot(0, wand);
 			Dungeon.quickslot.setSlot(1, blast);
 		}
@@ -239,8 +246,9 @@ public enum HeroClass {
 		(hero.belongings.weapon = new Dagger()).identify();
 		CloakOfShadows cloak = new CloakOfShadows();
 		if (!Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
-			(hero.belongings.utilityAcc = cloak).identify();
-			hero.belongings.utilityAcc.activate(hero);
+			hero.belongings.accs.set(0, cloak);
+			cloak.identify();
+			cloak.activate(hero);
 		}
 
 		if (!Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
