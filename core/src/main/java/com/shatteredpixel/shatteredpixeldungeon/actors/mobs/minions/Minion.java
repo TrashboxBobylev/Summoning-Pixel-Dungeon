@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Yog;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.stationary.StationaryMinion;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScaleArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.Shocker;
@@ -268,6 +269,9 @@ public abstract class Minion extends Mob {
             dmg -= Random.NormalIntRange(0, 7);
             if (dmg < 0) dmg = 0;
         }
+        if (Dungeon.hero.belongings.armor instanceof ConjurerArmor &&
+                Dungeon.hero.belongings.armor.level() == 2)
+            dmg *= 0.6f;
         super.damage(dmg, src);
     }
 

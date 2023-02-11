@@ -41,6 +41,16 @@ public class ConjurerArmor extends Armor {
     }
 
     @Override
+    public float defenseLevel(int level) {
+        switch (level){
+            case 0: return 1.0f;
+            case 1: return 2.0f;
+            case 2: return 0f;
+        }
+        return 0f;
+    }
+
+    @Override
     public ArrayList<String> actions(Hero hero ) {
         ArrayList<String> actions = super.actions( hero );
         actions.remove(AC_UNEQUIP);
