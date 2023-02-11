@@ -126,10 +126,6 @@ public enum Catalog {
 		ARMOR.seen.put( MailArmor.class,                    false);
 		ARMOR.seen.put( ScaleArmor.class,                   false);
 		ARMOR.seen.put( PlateArmor.class,                   false);
-		ARMOR.seen.put( WarriorArmor.class,                 false);
-		ARMOR.seen.put( MageArmor.class,                    false);
-		ARMOR.seen.put( RogueArmor.class,                   false);
-		ARMOR.seen.put( HuntressArmor.class,                false);
         ARMOR.seen.put( ConjurerArmor.class,                false);
 
 		WANDS.seen.put( WandOfMagicMissile.class,           false);
