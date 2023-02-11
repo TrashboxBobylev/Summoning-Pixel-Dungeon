@@ -42,7 +42,13 @@ public abstract class ArmorAbility implements Bundlable {
 
 	protected float baseChargeUse = 35;
 
+	private Charger charger;
 	public float charge = 0;
+
+	public void activate(Char ch){
+		charger = new Charger();
+		charger.attachTo(ch);
+	}
 
 	public void use( ClassArmor armor, Hero hero ){
 		if (targetingPrompt() == null){

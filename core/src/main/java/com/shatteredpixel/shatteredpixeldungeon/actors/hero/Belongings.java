@@ -154,6 +154,9 @@ public class Belongings implements Iterable<Item> {
 		if (offenseAcc != null) offenseAcc.activate(owner);
 		if (defenseAcc != null) defenseAcc.activate(owner);
 		if (utilityAcc != null) utilityAcc.activate(owner);
+
+		if (owner.armorAbility != null)
+			owner.armorAbility.activate(owner);
 	}
 	
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {
