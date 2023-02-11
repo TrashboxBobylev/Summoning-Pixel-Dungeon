@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerArmor;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
@@ -40,7 +41,11 @@ public class Attunement extends Buff{
     }
 
     public static float empowering(){
-        return 2.5f * ((Dungeon.hero.HT - Dungeon.hero.HP * 1f) / (Dungeon.hero.HT * 1f));
+        float value = 2.5f;
+        if (Dungeon.hero.belongings.armor instanceof ConjurerArmor &&
+                (Dungeon.hero.belongings.armor.level() == 2))
+            value *= 3f;
+        return value * ((Dungeon.hero.HT - Dungeon.hero.HP * 1f) / (Dungeon.hero.HT * 1f));
     }
 
     @Override

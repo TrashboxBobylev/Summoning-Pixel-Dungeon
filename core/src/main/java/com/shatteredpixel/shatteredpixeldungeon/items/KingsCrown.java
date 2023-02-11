@@ -95,6 +95,7 @@ public class KingsCrown extends Item {
 
 		GLog.positive(Messages.get(this, "upgraded"));
 		hero.armorAbility = ability;
+		hero.armorAbility.activate(hero);
 		((HeroSprite)hero.sprite).updateArmor();
 
 		hero.sprite.operate( hero.pos );

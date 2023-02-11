@@ -42,11 +42,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.*;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Tierable;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndChooseAbility;
 import com.watabou.utils.*;
 
 import java.text.DecimalFormat;
@@ -56,6 +58,7 @@ import java.util.Arrays;
 public class Armor extends EquipableItem implements Tierable {
 
 	protected static final String AC_DETACH       = "DETACH";
+	protected static final String AC_ABILITY = "ABILITY";
 	
 	public enum Augment {
 		EVASION (2f , -1f),
@@ -144,6 +147,33 @@ public class Armor extends EquipableItem implements Tierable {
 			return Messages.format( "%.0f%%", Dungeon.hero.armorAbility.charge );
 		else
 			return super.status();
+	}
+
+	@Override
+	public String getDefaultAction() {
+		return Dungeon.hero.armorAbility != null ? AC_ABILITY : super.getDefaultAction();
+	}
+
+	@Override
+	public void execute(Hero hero, String action) {
+		super.execute(hero, action);
+
+		if (action.equals(AC_ABILITY)){
+
+			if (hero.armorAbility == null){
+				GameScene.show(new WndChooseAbility(null, this, hero));
+			} else if (!isEquipped( hero )) {
+				usesTargeting = false;
+				GLog.warning( Messages.get(this, "not_equipped") );
+			} else if (hero.armorAbility.charge < hero.armorAbility.chargeUse(hero)) {
+				usesTargeting = false;
+				GLog.warning( Messages.get(this, "low_charge") );
+			} else  {
+				usesTargeting = hero.armorAbility.useTargeting();
+				hero.armorAbility.use(this, hero);
+			}
+
+		}
 	}
 
 	@Override
@@ -455,8 +485,6 @@ public class Armor extends EquipableItem implements Tierable {
 				info += "\n\n" + ability.shortDesc();
 				float chargeUse = ability.chargeUse(Dungeon.hero);
 				info += " " + Messages.get(this, "charge_use", new DecimalFormat("#.##").format(chargeUse));
-			} else {
-				info += "\n\n" + "_" + Messages.get(this, "no_ability") + "_";
 			}
 		}
 		

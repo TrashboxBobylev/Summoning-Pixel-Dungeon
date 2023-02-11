@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -281,9 +282,12 @@ public class WndBag extends WndTabbed {
 		if (!SPDSettings.flipInventory()) {
 			placeItem( stuff.weapon != null ? stuff.weapon : new Placeholder( ItemSpriteSheet.WEAPON_HOLDER ) );
 			placeItem( stuff.armor != null ? stuff.armor : new Placeholder( ItemSpriteSheet.ARMOR_HOLDER ) );
-			placeItem( stuff.offenseAcc != null ? stuff.offenseAcc : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
-			placeItem( stuff.defenseAcc != null ? stuff.defenseAcc : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
-			placeItem( stuff.utilityAcc != null ? stuff.utilityAcc : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
+			for (Artifact acc: stuff.accs){
+				placeItem( acc != null ? acc : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
+			}
+//			placeItem( stuff.offenseAcc != null ? stuff.offenseAcc : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
+//			placeItem( stuff.defenseAcc != null ? stuff.defenseAcc : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
+//			placeItem( stuff.utilityAcc != null ? stuff.utilityAcc : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
 
 		}
 		else {
@@ -322,10 +326,9 @@ public class WndBag extends WndTabbed {
 		}
 
 		if (SPDSettings.flipInventory()) {
-
-			placeItem( stuff.utilityAcc != null ? stuff.utilityAcc : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
-			placeItem( stuff.defenseAcc != null ? stuff.defenseAcc : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
-			placeItem( stuff.offenseAcc != null ? stuff.offenseAcc : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
+			placeItem( stuff.accs.get(2) != null ? stuff.accs.get(2) : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
+			placeItem( stuff.accs.get(1) != null ? stuff.accs.get(1) : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
+			placeItem( stuff.accs.get(0) != null ? stuff.accs.get(0) : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
 			placeItem( stuff.armor != null ? stuff.armor : new Placeholder( ItemSpriteSheet.ARMOR_HOLDER ) );
 			placeItem( stuff.weapon != null ? stuff.weapon : new Placeholder( ItemSpriteSheet.WEAPON_HOLDER ) );
 		}

@@ -44,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GhostChicken;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.MailArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential;
@@ -636,6 +637,9 @@ public abstract class Char extends Actor {
         if (src instanceof Wand && !Dungeon.level.heroFOV[pos] && Dungeon.hero.hasTalent(Talent.UNSIGHTED)){
         	dmg *= 1 + Dungeon.hero.pointsInTalent(Talent.UNSIGHTED)*0.2f;
 		}
+		if (this instanceof Hero && ((Hero) this).belongings.armor instanceof ConjurerArmor &&
+			((Hero) this).belongings.armor.level() == 2)
+			dmg *= 1.5f;
 
 		Class<?> srcClass = src.getClass();
 		if (isImmune( srcClass )) {

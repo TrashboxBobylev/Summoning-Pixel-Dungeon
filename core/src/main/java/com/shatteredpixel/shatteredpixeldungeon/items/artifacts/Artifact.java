@@ -62,9 +62,7 @@ public abstract class Artifact extends EquipableItem {
 
 	@Override
 	public boolean isEquipped(Hero hero) {
-		return (hero.belongings.offenseAcc == this && artifactClass == ArtifactClass.OFFENSE) ||
-				(hero.belongings.defenseAcc == this && artifactClass == ArtifactClass.DEFENSE) ||
-				(hero.belongings.utilityAcc == this && artifactClass == ArtifactClass.UTILITY);
+		return hero.belongings.accs.contains(this);
 	}
 
 	public void activate(Char ch ) {
@@ -76,19 +74,23 @@ public abstract class Artifact extends EquipableItem {
 	public boolean doEquip(Hero hero) {
 		detach(hero.belongings.backpack);
 		boolean equipSuccessful = false;
+		for (int i = 0; i < hero.belongings.accs.size(); i++){
+			if (hero.belongings.accs.get(i) == null){
+				hero.belongings.accs.set(i, this);
+				equipSuccessful = true;
+				break;
+			}
+		}
 
-		if (artifactClass == ArtifactClass.OFFENSE &&
-				(hero.belongings.offenseAcc == null || hero.belongings.offenseAcc.doUnequip( hero, true, false ))) {
-			hero.belongings.offenseAcc = this;
-			equipSuccessful = true;
-		} else if (artifactClass == ArtifactClass.DEFENSE &&
-				(hero.belongings.defenseAcc == null || hero.belongings.defenseAcc.doUnequip( hero, true, false ))) {
-			hero.belongings.defenseAcc = this;
-			equipSuccessful = true;
-		} else if (artifactClass == ArtifactClass.UTILITY &&
-				(hero.belongings.utilityAcc == null || hero.belongings.utilityAcc.doUnequip( hero, true, false ))) {
-			hero.belongings.utilityAcc = this;
-			equipSuccessful = true;
+		if (!equipSuccessful){
+			for (int i = 0; i < hero.belongings.accs.size(); i++){
+				if (hero.belongings.accs.get(i) != null &&
+						hero.belongings.accs.get(i).doUnequip( hero, true, false )){
+					hero.belongings.accs.set(i, this);
+					equipSuccessful = true;
+					break;
+				}
+			}
 		}
 
 		if (equipSuccessful){
@@ -119,13 +121,15 @@ public abstract class Artifact extends EquipableItem {
 	public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
 		if (super.doUnequip( hero, collect, single )) {
 
-			if (hero.belongings.offenseAcc == this) {
-				hero.belongings.offenseAcc = null;
-			} else if (hero.belongings.defenseAcc == this) {
-				hero.belongings.defenseAcc = null;
-			} else if (hero.belongings.utilityAcc == this){
-				hero.belongings.utilityAcc = null;
-			}
+			hero.belongings.accs.set(hero.belongings.accs.indexOf(this), null);
+
+//			if (hero.belongings.offenseAcc == this) {
+//				hero.belongings.offenseAcc = null;
+//			} else if (hero.belongings.defenseAcc == this) {
+//				hero.belongings.defenseAcc = null;
+//			} else if (hero.belongings.utilityAcc == this){
+//				hero.belongings.utilityAcc = null;
+//			}
 
 			passiveBuff.detach();
 			passiveBuff = null;
