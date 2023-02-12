@@ -104,7 +104,7 @@ public class Endure extends ArmorAbility {
 
 		public float adjustDamageTaken(float damage){
 			if (enduring) {
-				damageBonus += damage/2;
+				damageBonus += damage;
 				return damage/2f;
 			}
 			return damage;
