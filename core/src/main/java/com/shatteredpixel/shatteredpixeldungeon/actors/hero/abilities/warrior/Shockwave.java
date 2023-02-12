@@ -24,7 +24,10 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
@@ -108,8 +111,7 @@ public class Shockwave extends ArmorAbility {
 							Char ch = Actor.findChar(cell);
 							if (ch != null && ch.alignment != hero.alignment){
 								int scalingStr = hero.STR()-10;
-								int damage = Random.NormalIntRange(5 + scalingStr, 10 + 2*scalingStr);
-								damage = Math.round(damage * (1.5f));
+								int damage = Random.NormalIntRange(10 + scalingStr*2, 20 + 4*scalingStr);
 								damage -= ch.drRoll();
 
 //								if (hero.pointsInTalent(Talent.STRIKING_WAVE) == 4){
@@ -127,11 +129,7 @@ public class Shockwave extends ArmorAbility {
 									ch.damage(damage, hero);
 								}
 								if (ch.isAlive()){
-									if (Random.Int(4) < 3){
-										Buff.affect(ch, Paralysis.class, 5f);
-									} else {
 										Buff.affect(ch, Cripple.class, 5f);
-									}
 								}
 
 							}
