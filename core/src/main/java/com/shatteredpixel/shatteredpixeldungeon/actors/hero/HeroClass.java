@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.conjurer.SoulParalysisAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.NaturesPower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpiritHawk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.WarpBeacon;
@@ -136,7 +137,6 @@ public enum HeroClass {
 		}
 		new Ropes().quantity(5).collect();
 		new DewVial().collect();
-		new ScrollOfUpgrade().identify().collect();
 
 		if (Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)){
 			(hero.belongings.armor = new ScoutArmor()).identify();
@@ -308,12 +308,7 @@ public enum HeroClass {
 
 		(hero.belongings.armor = new ConjurerArmor()).identify();
 
-//        LoveHolder cloak = new LoveHolder();
-//        (hero.belongings.artifact = cloak).identify();
-//        hero.belongings.artifact.activate( hero );
-//        Dungeon.quickslot.setSlot(0, hero.belongings.artifact);
-
-        hero.attunement = 1;
+		hero.attunement = 1;
         hero.HP = hero.HT = 13;
 		if (!Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
 			Stars star = new Stars();
@@ -371,6 +366,8 @@ public enum HeroClass {
 				return new ArmorAbility[]{new DeathMark(), new ShadowClone()};
 			case HUNTRESS:
 				return new ArmorAbility[]{new NaturesPower(), new SpiritHawk()};
+			case CONJURER:
+				return new ArmorAbility[]{new SoulParalysisAbility()};
 		}
 	}
 

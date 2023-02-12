@@ -147,9 +147,11 @@ public class ScoutArmor extends Armor {
     @Override
     public float speedFactor(Char owner, float speed) {
         float speedFactor = super.speedFactor(owner, speed);
-        if (((Hero)owner).belongings.armor instanceof ScoutArmor &&
-                ((Hero)owner).belongings.armor.level() == 2){
-            speedFactor *= 2;
+        if (owner instanceof Hero) {
+            if (((Hero) owner).belongings.armor instanceof ScoutArmor &&
+                    ((Hero) owner).belongings.armor.level() == 2) {
+                speedFactor *= 2;
+            }
         }
         return speedFactor;
     }

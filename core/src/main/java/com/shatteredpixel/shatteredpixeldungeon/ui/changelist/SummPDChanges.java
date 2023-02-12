@@ -52,6 +52,7 @@ public class SummPDChanges {
 		//ChangeInfo changes = new ChangeInfo( "1.1", true, "");
 		//changes.hardlight( Window.TITLE_COLOR);
 		//changeInfos.add(changes);
+        add_1_2_4_Changes(changeInfos);
         add_1_1_7_Changes(changeInfos);
         add_1_1_5_Changes(changeInfos);
         add_1_1_4_Changes(changeInfos);
@@ -68,6 +69,69 @@ public class SummPDChanges {
 		add_Mobs_Changes(changeInfos);
 		add_Minor_Changes(changeInfos);
 	}
+
+    public static void add_1_2_4_Changes(ArrayList<ChangeInfo> changeInfos){
+        ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "1.2.4", true, Window.TITLE_COLOR);
+
+        changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
+        changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
+                "_-_ Released February 12th, 2022\n" +
+                        "_-_ 132 days after 1.2.3"
+        ));
+        changes = ChangesScene.createChangeInfo(changeInfos, "New Content", false, 0x10bb00);
+        changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.ARMOR_MAIL, null), "Armor ranking",
+                "Implemented ranking mechanic for armor.\n\n" +
+                        "_-_ Just like other tiered items, there are 3 tiers for each armor.\n\n" +
+                        "_-_ Armor items are gaining upgrade level every 6 hero's levels."
+        ));
+        changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.CROWN, null), "Armor abilities",
+                "Implemented Shattered's armor abilities, but with nuance.\n\n" +
+                        "_-_ Class armor items are removed; the crown instead empowers existing armor with armor ability.\n\n" +
+                        "_-_ Only two armor abilities for each class are implemented; ones that already exist as ability items were not implemented.\n\n" +
+                        "_-_ Armor abilities that were implemented were significantly buffed."
+        ));
+
+        changes = ChangesScene.createChangeInfo(changeInfos, "Changes", false, 0xd1bb00);
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ELIXIR_ICY, null), "Frost",
+                "_-_ Reworked VFX of frostburn and frost potions to be less performance-taxing."
+        ));
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_HOLDER, null), "Artifact slots",
+                "_-_ Redone the equipment mechanic. Now there is 3 artifact slots, that can hold any type of artifact in any order.\n\n" +
+                        "_-_ Three types of artifacts exist: offense, defense and utility. They roughly determine the theming and function of artifact."
+        ));
+        changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+                "_-_ Rewritten the description of rattlesnakes.\n" +
+                        "_-_ Minions return faster to hero and can be collected from any distance when descending.\n" +
+                        "_-_ Graveyard now affects undead minibosses and bosses, inflicting Doomed on them.\n" +
+                        "_-_ Minions are now affected by augmentation.\n" +
+                        "_-_ Added all ring-based artifacts into catalog.\n" +
+                        "_-_ Removed Hell Bat for being too annoying.\n" +
+                        "_-_ Removed rings from codebase altogether.\n" +
+                        "_-_ Excessive Underground Paradises are getting deleted.\n" +
+                        "_-_ Updated Conjurer's description.\n" +
+                        "_-_ Removed Gold Tokens due to ghouls already giving gold.\n" +
+                        "_-_ Subtilitas Sigil's upgrading now scales with wand's recharge speed.\n" +
+                        "_-_ Bombs with custom exploding behavior now get properly disabled when frozen."
+        ));
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "Fixed:\n" +
+                        "_-_ Bombs lying inside solid blocks in special rooms\n" +
+                        "_-_ Tiering actions doing nothing on conjurer's spells\n" +
+                        "_-_ Ability artifacts not being \"upgradable\"\n" +
+                        "_-_ Uncommon cursed wand effects being more common than other effects\n" +
+                        "_-_ Log spam on Soul of Yendor crafting failing\n" +
+                        "_-_ Crazy thieves dropping rings\n" +
+                        "_-_ Parchment of Elbereth overflowing its charge above 100%%\n" +
+                        "_-_ Mirror of Fates not upgrading\n" +
+                        "_-_ Minions showing 0 as their evasion in their description\n" +
+                        "_-_ Containment spell not working properly\n" +
+                        "_-_ Attack roll functionality not working properly\n" +
+                        "_-_ Knight's Concentration spell being spammable\n" +
+                        "_-_ Toy Knife not working properly with degrade magic\n" +
+                        "_-_ Wand of Stars not working properly\n" +
+                        "_-_ Slingshot disappearing on resurrection"
+        ));
+    }
 
     public static void add_1_1_7_Changes(ArrayList<ChangeInfo> changeInfos) {
 

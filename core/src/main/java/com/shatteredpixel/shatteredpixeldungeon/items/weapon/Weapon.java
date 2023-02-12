@@ -237,9 +237,11 @@ abstract public class Weapon extends KindOfWeapon {
 	@Override
 	public int reachFactor(Char owner) {
 		int reach = hasEnchant(Projecting.class, owner) ? RCH + 1 : RCH;
-		if (((Hero)owner).belongings.armor instanceof SyntheticArmor &&
-			((Hero) owner).belongings.armor.level() == 1)
-			reach += 1;
+		if (owner instanceof Hero) {
+			if (((Hero) owner).belongings.armor instanceof SyntheticArmor &&
+					((Hero) owner).belongings.armor.level() == 1)
+				reach += 1;
+		}
 		return reach;
 	}
 

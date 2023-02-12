@@ -70,7 +70,7 @@ public class ShadowClone extends ArmorAbility {
 	}
 
 	{
-		baseChargeUse = 35f;
+		baseChargeUse = 50f;
 	}
 
 	@Override
@@ -140,7 +140,7 @@ public class ShadowClone extends ArmorAbility {
 		{
 			spriteClass = ShadowSprite.class;
 
-			HP = HT = 80;
+			HP = HT = 100;
 		}
 
 		public ShadowAlly(){
@@ -150,7 +150,7 @@ public class ShadowClone extends ArmorAbility {
 		public ShadowAlly( int heroLevel ){
 			super();
 			int hpBonus = 15 + 5*heroLevel;
-			hpBonus = Math.round(0.33f * hpBonus);
+			hpBonus = Math.round(0.5f * hpBonus);
 			if (hpBonus > 0){
 				HT += hpBonus;
 				HP += hpBonus;
@@ -197,7 +197,7 @@ public class ShadowClone extends ArmorAbility {
 			int damage = Random.NormalIntRange(10, 20);
 			int heroDamage = Dungeon.hero.damageRoll();
 			heroDamage /= Dungeon.hero.attackDelay(); //normalize hero damage based on atk speed
-			heroDamage = Math.round(0.3f * heroDamage);
+			heroDamage = Math.round(0.5f * heroDamage);
 			if (heroDamage > 0){
 				damage += heroDamage;
 			}
@@ -219,7 +219,7 @@ public class ShadowClone extends ArmorAbility {
 		public int drRoll() {
 			int dr = super.drRoll();
 			int heroRoll = Dungeon.hero.drRoll();
-			heroRoll = Math.round(0.4f * heroRoll);
+			heroRoll = Math.round(0.5f * heroRoll);
 			if (heroRoll > 0){
 				dr += heroRoll;
 			}

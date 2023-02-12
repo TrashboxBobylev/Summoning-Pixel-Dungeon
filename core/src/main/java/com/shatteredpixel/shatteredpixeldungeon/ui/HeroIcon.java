@@ -62,6 +62,7 @@ public class HeroIcon extends Image {
 	public static final int SPIRIT_HAWK     = 19;
 	public static final int RATMOGRIFY      = 20;
 	public static final int LEGACYWRATH     = 22;
+	public static final int SOUL_PARALYSIS  = 23;
 
 	public HeroIcon(HeroSubClass subCls){
 		super( Assets.Interfaces.HERO_ICONS );
