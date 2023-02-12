@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.conjurer.SoulParalysisAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.NaturesPower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpiritHawk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.mage.WarpBeacon;
@@ -37,10 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.Deat
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.ShadowClone;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Shockwave;
-import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
-import com.shatteredpixel.shatteredpixeldungeon.items.DewVial;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.Ropes;
+import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScoutArmor;
@@ -315,6 +313,7 @@ public enum HeroClass {
 
         hero.attunement = 1;
         hero.HP = hero.HT = 13;
+		new KingsCrown().collect();
 		if (!Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
 			Stars star = new Stars();
 			star.collect();
@@ -371,6 +370,8 @@ public enum HeroClass {
 				return new ArmorAbility[]{new DeathMark(), new ShadowClone()};
 			case HUNTRESS:
 				return new ArmorAbility[]{new NaturesPower(), new SpiritHawk()};
+			case CONJURER:
+				return new ArmorAbility[]{new SoulParalysisAbility()};
 		}
 	}
 
