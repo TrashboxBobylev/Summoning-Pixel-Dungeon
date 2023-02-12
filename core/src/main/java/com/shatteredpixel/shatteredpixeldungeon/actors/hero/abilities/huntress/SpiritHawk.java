@@ -134,8 +134,8 @@ public class SpiritHawk extends ArmorAbility {
 		{
 			spriteClass = HawkSprite.class;
 
-			HP = HT = 10;
-			defenseSkill = 60;
+			HP = HT = 20;
+			defenseSkill = 80;
 
 			flying = true;
 			viewDistance = (int)GameMath.gate(6, 8, 8);
@@ -147,7 +147,7 @@ public class SpiritHawk extends ArmorAbility {
 
 		@Override
 		public int attackSkill(Char target) {
-			return 60;
+			return 80;
 		}
 
 		private int dodgesUsed = 0;
