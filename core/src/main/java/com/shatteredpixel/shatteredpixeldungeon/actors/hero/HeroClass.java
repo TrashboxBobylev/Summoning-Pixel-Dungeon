@@ -38,7 +38,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.Deat
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.ShadowClone;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Shockwave;
-import com.shatteredpixel.shatteredpixeldungeon.items.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
+import com.shatteredpixel.shatteredpixeldungeon.items.DewVial;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.Ropes;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScoutArmor;
@@ -134,7 +137,6 @@ public enum HeroClass {
 		}
 		new Ropes().quantity(5).collect();
 		new DewVial().collect();
-		new ScrollOfUpgrade().identify().collect();
 
 		if (Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)){
 			(hero.belongings.armor = new ScoutArmor()).identify();
@@ -306,14 +308,8 @@ public enum HeroClass {
 
 		(hero.belongings.armor = new ConjurerArmor()).identify();
 
-//        LoveHolder cloak = new LoveHolder();
-//        (hero.belongings.artifact = cloak).identify();
-//        hero.belongings.artifact.activate( hero );
-//        Dungeon.quickslot.setSlot(0, hero.belongings.artifact);
-
-        hero.attunement = 1;
+		hero.attunement = 1;
         hero.HP = hero.HT = 13;
-		new KingsCrown().collect();
 		if (!Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) {
 			Stars star = new Stars();
 			star.collect();
