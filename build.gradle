@@ -28,9 +28,9 @@ allprojects {
         appVersionCode = 424
         appVersionName = '1.2.4'
 
-        appAndroidCompileSDK = 30
+        appAndroidCompileSDK = 31
         appAndroidMinSDK = 15
-        appAndroidTargetSDK = 30
+        appAndroidTargetSDK = 31
         appJavaCompatibility = JavaVersion.VERSION_1_8
 
         gdxVersion = '1.10.0'
