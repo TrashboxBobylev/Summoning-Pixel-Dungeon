@@ -95,6 +95,10 @@ public class SummPDChanges {
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ELIXIR_ICY, null), "Frost",
                 "_-_ Reworked VFX of frostburn and frost potions to be less performance-taxing."
         ));
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_HOLDER, null), "Artifact slots",
+                "_-_ Redone the equipment mechanic. Now there is 3 artifact slots, that can hold any type of artifact in any order.\n\n" +
+                        "_-_ Three types of artifacts exist: offense, defense and utility. They roughly determine the theming and function of artifact."
+        ));
         changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
                 "_-_ Rewritten the description of rattlesnakes.\n" +
                         "_-_ Minions return faster to hero and can be collected from any distance when descending.\n" +
