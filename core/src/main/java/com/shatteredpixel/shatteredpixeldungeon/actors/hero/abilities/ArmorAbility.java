@@ -121,7 +121,7 @@ public abstract class ArmorAbility implements Bundlable {
 		public boolean act() {
 			LockedFloor lock = target.buff(LockedFloor.class);
 			if (lock == null || lock.regenOn()) {
-				charge += 100 / 200f; //200 turns to full charge
+				charge += 100 / 500f; //500 turns to full charge
 				Item.updateQuickslot();
 				if (charge > 100) {
 					charge = 100;
