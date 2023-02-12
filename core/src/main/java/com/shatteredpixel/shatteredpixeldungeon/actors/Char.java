@@ -637,6 +637,9 @@ public abstract class Char extends Actor {
         if (src instanceof Wand && !Dungeon.level.heroFOV[pos] && Dungeon.hero.hasTalent(Talent.UNSIGHTED)){
         	dmg *= 1 + Dungeon.hero.pointsInTalent(Talent.UNSIGHTED)*0.2f;
 		}
+		if (alignment != Alignment.ALLY && this.buff(DeathMark.DeathMarkTracker.class) != null){
+			dmg *= 1.5f;
+		}
 		if (this instanceof Hero && ((Hero) this).belongings.armor instanceof ConjurerArmor &&
 			((Hero) this).belongings.armor.level() == 2)
 			dmg *= 1.5f;
