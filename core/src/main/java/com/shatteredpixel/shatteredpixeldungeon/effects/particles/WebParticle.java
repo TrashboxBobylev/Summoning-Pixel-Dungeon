@@ -46,28 +46,6 @@ public class WebParticle extends PixelParticle {
 		}
 	};
 
-	public static final Emitter.Factory FROST = new Factory() {
-		@Override
-		public void emit( Emitter emitter, int index, float x, float y ) {
-			for (int i=0; i < 8; i++) {
-				((WebParticle)emitter.recycle( WebParticle.class )).resetCold( x, y, i );
-			}
-		}
-	};
-
-	public static final Emitter.Factory FROSTBURN = new Factory() {
-		@Override
-		public void emit( Emitter emitter, int index, float x, float y ) {
-			for (int i=0; i < 8; i++) {
-				((WebParticle)emitter.recycle( WebParticle.class )).resetFireCold( x, y, i );
-			}
-		}
-		@Override
-		public boolean lightMode() {
-			return false;
-		};
-	};
-	
 	public WebParticle() {
 		super();
 		
@@ -85,20 +63,6 @@ public class WebParticle extends PixelParticle {
 		angle = 360 - 45 * index;
 	}
 
-	public void resetCold( float x, float y, int index ) {
-		reset(x, y, index);
-		lifespan = 2f;
-		color( 0x3780ff);
-	}
-
-	public void resetFireCold( float x, float y, int index ) {
-		reset(x, y, index);
-		lifespan = 0.33f;
-		color( 0x3780ff);
-		acc.set( 0, -95 );
-		speed.set(0);
-	}
-	
 	@Override
 	public void update() {
 		super.update();

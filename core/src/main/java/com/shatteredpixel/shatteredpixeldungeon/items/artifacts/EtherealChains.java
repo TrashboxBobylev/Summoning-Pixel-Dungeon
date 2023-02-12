@@ -56,6 +56,7 @@ public class EtherealChains extends Artifact {
 
 	{
 		image = ItemSpriteSheet.ARTIFACT_CHAINS;
+		setArtifactClass(ArtifactClass.UTILITY);
 
 		levelCap = 5;
 		exp = 0;

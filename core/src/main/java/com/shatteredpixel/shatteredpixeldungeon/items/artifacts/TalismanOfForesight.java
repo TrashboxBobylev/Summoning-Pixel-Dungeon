@@ -53,6 +53,7 @@ public class TalismanOfForesight extends Artifact {
 
 	{
 		image = ItemSpriteSheet.ARTIFACT_TALISMAN;
+		setArtifactClass(ArtifactClass.UTILITY);
 
 		exp = 0;
 		levelCap = 10;

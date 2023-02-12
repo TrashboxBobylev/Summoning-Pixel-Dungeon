@@ -74,8 +74,7 @@ public class Bestiary {
 						Elemental.ChaosElemental.class, Warlock.class, Golem.class, DwarfGuardMob.class));
 			}
 			if (Dungeon.depth > Dungeon.chapterSize()*4 && Dungeon.depth < Dungeon.chapterSize()*5) {
-				return new ArrayList<>(Arrays.asList(Slime.class, Succubus.class, Eye.class, Scorpio.class, Acidic.class,
-						HellBat.class));
+				return new ArrayList<>(Arrays.asList(Slime.class, Succubus.class, Eye.class, Scorpio.class, Acidic.class));
 			}
 			return new ArrayList<>(Arrays.asList(
 					SpectreRat.class, DarkestElf.class, GhostChicken.class, Phantom.class, BlinkingMan.class, AbyssalNightmare.class,
@@ -172,7 +171,7 @@ public class Bestiary {
 					return new ArrayList<>(Arrays.asList(
 							Slime.class, Slime.class, Slime.class, Succubus.class, Succubus.class, Succubus.class, Succubus.class,
 							Eye.class,
-							Scorpio.class,  HellBat.class));
+							Scorpio.class));
 				default:
 					return new ArrayList<>(Arrays.asList(
 							SpectreRat.class, DarkestElf.class, GhostChicken.class, Phantom.class, BlinkingMan.class, Trappet.class
@@ -338,7 +337,7 @@ public class Bestiary {
 					//2x evil eye, 2x succubus, 2x scorpio, 2x hellbat
 					return new ArrayList<>(Arrays.asList(
 							Eye.class, Eye.class, Succubus.class, Succubus.class,
-							Scorpio.class, Scorpio.class, HellBat.class, HellBat.class));
+							Scorpio.class, Scorpio.class));
 				default:
 					return new ArrayList<>(Arrays.asList(
 							SpectreRat.class, DarkestElf.class, GhostChicken.class, Phantom.class, BlinkingMan.class, Trappet.class
@@ -466,13 +465,13 @@ public class Bestiary {
 				return new ArrayList<>(Arrays.asList(
 						Succubus.class, Slime.class,
 						Eye.class, Eye.class, Eye.class, Slime.class,
-						Scorpio.class, Scorpio.class, HellBat.class));
+						Scorpio.class, Scorpio.class));
 			case 24: case 25: case 26:
 				//2x evil eye, 3x scorpio, 1x slime
 				return new ArrayList<>(Arrays.asList(
 						Slime.class,
 						Eye.class, Eye.class,
-						Scorpio.class, Scorpio.class, Scorpio.class, HellBat.class, HellBat.class));
+						Scorpio.class, Scorpio.class, Scorpio.class));
 			default:
 				return new ArrayList<>(Arrays.asList(
 						SpectreRat.class, DarkestElf.class, GhostChicken.class, Phantom.class, BlinkingMan.class, Trappet.class

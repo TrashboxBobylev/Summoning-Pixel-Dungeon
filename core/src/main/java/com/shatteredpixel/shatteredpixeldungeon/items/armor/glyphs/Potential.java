@@ -40,7 +40,7 @@ public class Potential extends Glyph {
 	@Override
 	public int proc( Armor armor, Char attacker, Char defender, int damage) {
 
-		int level = Math.max( 0, armor.buffedLvl() );
+		int level = Math.max( 0, armor.enchantLevel() );
 		
 		// lvl 0 - 16.7%
 		// lvl 1 - 28.6%

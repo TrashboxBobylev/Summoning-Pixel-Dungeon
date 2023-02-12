@@ -43,7 +43,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 
 public class Contain extends TargetedSpell {
@@ -65,6 +64,8 @@ public class Contain extends TargetedSpell {
                 mob.sprite.killAndErase();
                 mob.state = mob.PASSIVE;
                 containedMob = mob;
+                quantity++;
+                collect();
                 TargetHealthIndicator.instance.target(null);
                 for (int i = 0; i < 5; i++) Sample.INSTANCE.play(Assets.Sounds.HIT);
                 updateQuickslot();
@@ -90,7 +91,7 @@ public class Contain extends TargetedSpell {
 
     @Override
     public int value() {
-        return com.shatteredpixel.shatteredpixeldungeon.items.Recipe.calculatePrice(new Recipe()) * quantity;
+        return Recipe.calculatePrice(new Recipe()) * quantity;
     }
 
     private static final ItemSprite.Glowing RED = new ItemSprite.Glowing( 0xff002a, 0.5f );
@@ -105,18 +106,13 @@ public class Contain extends TargetedSpell {
     @Override
     public void storeInBundle( Bundle bundle ) {
         super.storeInBundle( bundle );
-        if (containedMob != null) {
-            containedMob.storeInBundle(bundle);
-        }
+        bundle.put(MOB, containedMob);
     }
 
     @Override
     public void restoreFromBundle( Bundle bundle ) {
         super.restoreFromBundle(bundle);
-        Bundlable mobBundle = bundle.get(MOB);
-        if (mobBundle != null){
-            containedMob = (Mob) mobBundle;
-        }
+        containedMob = (Mob) bundle.get(MOB);
     }
 
     @Override

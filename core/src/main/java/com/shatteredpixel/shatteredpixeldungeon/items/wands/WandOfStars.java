@@ -92,11 +92,6 @@ public class WandOfStars extends DamageWand {
             for (int p : pos){
                 if (Dungeon.level.heroFOV[p]){
                     effect = true;
-                    for (Heap heap : Dungeon.level.heaps.valueList()){
-                        for (Item item : heap.items){
-                            if (item instanceof Star) heap.remove(item);
-                        }
-                    }
                     Sample.INSTANCE.play(Assets.Sounds.ZAP);
                     if (!Dungeon.isChallenged(Conducts.Conduct.PACIFIST)) {
                         for (int i : PathFinder.NEIGHBOURS9) {
@@ -109,6 +104,11 @@ public class WandOfStars extends DamageWand {
                             }
                         }
                     }
+                }
+            }
+            for (Heap heap : Dungeon.level.heaps.valueList()){
+                for (Item item : heap.items){
+                    if (item instanceof Star) heap.remove(item);
                 }
             }
 

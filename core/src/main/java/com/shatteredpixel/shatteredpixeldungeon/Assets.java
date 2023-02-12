@@ -103,6 +103,7 @@ public class Assets {
 		public static final String TALENT_BUTTON = "interfaces/talent_button.png";
 		public static final String TALENT_ICONS = "interfaces/talent_icons.png";
 		public static final String SUBCLASS_ICONS = "interfaces/subclasses.png";
+		public static final String HERO_ICONS       = "interfaces/hero_icons.png";
     }
 
 	//these points to resource bundles, not raw asset files
@@ -307,5 +308,6 @@ public class Assets {
 		public static final String MAGIC_MISSILE = "sprites/magic_missile.png";
 		public static final String DRAGON = "sprites/mob_drake.png";
 		public static final String TRAPPET = "sprites/trappet.png";
+		public static final String SPIRIT_HAWK= "sprites/spirit_hawk.png";
 	}
 }

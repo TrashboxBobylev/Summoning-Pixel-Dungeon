@@ -74,7 +74,7 @@ import java.util.ArrayList;
 public class CursedWand {
 
 	private static float COMMON_CHANCE = 0.6f;
-	private static float UNCOMMON_CHANCE = 10.3f;
+	private static float UNCOMMON_CHANCE = 0.3f;
 	private static float RARE_CHANCE = 0.09f;
 	private static float VERY_RARE_CHANCE = 0.01f;
 
@@ -402,7 +402,7 @@ public class CursedWand {
 				Item result;
 				do {
 					result = Generator.random(Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR,
-							Generator.Category.RING, Generator.Category.ARTIFACT));
+							Generator.Category.STAFFS, Generator.Category.ARTIFACT));
 				} while (result.cursed);
 				if (result.isUpgradable()) result.upgrade();
 				result.cursed = result.cursedKnown = true;
@@ -447,7 +447,6 @@ public class CursedWand {
 				if (heap != null) scanForArtifact(heap, artifacts, artifactLevels);
 			}
 		} else {
-			GLog.i(Messages.get(CursedWand.class, "nothing"));
 			return false;
 		}
 		if (artifacts.isEmpty()){
@@ -461,7 +460,6 @@ public class CursedWand {
 			Sample.INSTANCE.play(Assets.Sounds.BOSS);
 			origin.detach(Dungeon.hero.belongings.backpack);
 		} else {
-			GLog.i(Messages.get(CursedWand.class, "nothing"));
 			return false;
 		}
 		return true;

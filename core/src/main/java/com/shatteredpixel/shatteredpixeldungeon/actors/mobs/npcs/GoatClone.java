@@ -123,7 +123,11 @@ public class GoatClone extends NPC {
 
         for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
             if (mob instanceof GoatClone){
-                clone = (GoatClone) mob;
+                if (clone != null){
+                    mob.destroy();
+                } else {
+                    clone = (GoatClone) mob;
+                }
             }
         }
 
@@ -147,6 +151,18 @@ public class GoatClone extends NPC {
 
         GameScene.add( clone );
         ScrollOfTeleportation.appear( clone, respawnPoints.get( index ) );
+    }
+
+    @Override
+    public float speed() {
+        float speed = super.speed();
+
+        //moves 2 tiles at a time when returning to the hero
+        if (state == WANDERING && defendingPos == -1){
+            speed *= 2;
+        }
+
+        return speed;
     }
 
     {

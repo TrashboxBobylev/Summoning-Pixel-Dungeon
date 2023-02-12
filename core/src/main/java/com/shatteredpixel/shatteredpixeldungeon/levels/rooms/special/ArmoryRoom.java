@@ -69,7 +69,9 @@ public class ArmoryRoom extends SpecialRoom {
 		int itemPos;
 		do {
 			itemPos = level.pointToCell(random());
-		} while (level.heaps.get(itemPos) != null);
+		} while (
+			level.map[itemPos] != Terrain.EMPTY ||
+				level.heaps.get( itemPos ) != null);
 
 		level.drop(new Bomb().random(), itemPos);
 		

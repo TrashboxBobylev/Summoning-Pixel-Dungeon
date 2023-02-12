@@ -46,7 +46,6 @@ public class KiHealing extends AdHocSpell {
 
     @Override
     public void effect(Hero hero) {
-        hero.busy();
         hero.sprite.operate(hero.pos, new Callback() {
             @Override
             public void call() {
@@ -59,6 +58,7 @@ public class KiHealing extends AdHocSpell {
                 new Flare(10, 64).color(0xFFFFFF, true).show(Dungeon.hero.sprite.parent, DungeonTilemap.tileCenterToWorld(hero.pos), 1.5f);
             }
         });
+        hero.busy();
     }
 
     private int intHeal(){

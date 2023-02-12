@@ -77,6 +77,7 @@ public class Bomb extends Item {
 
 	public Fuse fuse;
     public int fuseDelay = 1;
+	public Class<? extends Buff> fuseTriggerClass = null;
     public boolean harmless = false;
 
 	//FIXME using a static variable for this is kinda gross, should be a better way
@@ -116,8 +117,8 @@ public class Bomb extends Item {
 	protected void onThrow( int cell ) {
 		if (!Dungeon.level.pit[ cell ] && (lightingFuse || curUser == null)) {
 			Actor.addDelayed(fuse = new Fuse().ignite(this), fuseDelay);
-			if (this instanceof Noisemaker) Buff.affect(Dungeon.hero, Noisemaker.Trigger.class).set(cell);
-			if (this instanceof SupplyBomb) Buff.affect(Dungeon.hero, SupplyBomb.Trigger.class).set(cell);
+			if (fuseTriggerClass != null)
+				((FuseBuff)(Buff.affect(Dungeon.hero, fuseTriggerClass))).set(cell);
 		}
 		if (Actor.findChar( cell ) != null && !(Actor.findChar( cell ) instanceof Hero) ){
 			ArrayList<Integer> candidates = new ArrayList<>();
@@ -315,6 +316,10 @@ public class Bomb extends Item {
 		super.restoreFromBundle(bundle);
 		if (bundle.contains( FUSE ))
 			Actor.add( fuse = ((Fuse)bundle.get(FUSE)).ignite(this) );
+	}
+
+	public interface FuseBuff {
+		void set(int cell);
 	}
 
 

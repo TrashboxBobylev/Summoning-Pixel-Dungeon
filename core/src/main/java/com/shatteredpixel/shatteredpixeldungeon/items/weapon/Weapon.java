@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.SyntheticArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.ArcaneElement;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.*;
@@ -235,7 +236,13 @@ abstract public class Weapon extends KindOfWeapon {
 
 	@Override
 	public int reachFactor(Char owner) {
-		return hasEnchant(Projecting.class, owner) ? RCH+1 : RCH;
+		int reach = hasEnchant(Projecting.class, owner) ? RCH + 1 : RCH;
+		if (owner instanceof Hero) {
+			if (((Hero) owner).belongings.armor instanceof SyntheticArmor &&
+					((Hero) owner).belongings.armor.level() == 1)
+				reach += 1;
+		}
+		return reach;
 	}
 
 	public int STRReq(){

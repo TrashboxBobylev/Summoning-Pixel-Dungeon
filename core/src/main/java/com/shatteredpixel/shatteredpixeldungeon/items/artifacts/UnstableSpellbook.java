@@ -58,6 +58,7 @@ public class UnstableSpellbook extends Artifact {
 
 	{
 		image = ItemSpriteSheet.ARTIFACT_SPELLBOOK;
+		setArtifactClass(ArtifactClass.UTILITY);
 
 		levelCap = 10;
 

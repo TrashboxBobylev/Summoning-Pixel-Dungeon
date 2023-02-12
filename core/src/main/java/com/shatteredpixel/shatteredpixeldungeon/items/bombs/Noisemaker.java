@@ -47,6 +47,7 @@ public class Noisemaker extends Bomb {
 	{
 		image = ItemSpriteSheet.NOISEMAKER;
 		fuseDelay = 20;
+		fuseTriggerClass = Trigger.class;
 	}
 
     @Override
@@ -83,12 +84,13 @@ public class Noisemaker extends Bomb {
 //
 //	}
 	
-	public static class Trigger extends Buff {
+	public static class Trigger extends Buff implements FuseBuff {
 
 		int cell;
 		int floor;
 		int left;
-		
+
+		@Override
 		public void set(int cell){
 			floor = Dungeon.depth;
 			this.cell = cell;

@@ -33,10 +33,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Pasty;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.*;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAttunement;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.*;
@@ -80,7 +79,7 @@ public class Generator {
         STF_T5  ( 0,    Staff.class ),
 
 		WAND	( 2,    Wand.class ),
-		RING	( 0,    Ring.class ),
+		DUMMY   (0,     IronKey.class),
 		ARTIFACT( 2,    Artifact.class),
 		
 		FOOD	( 0,    Food.class ),
@@ -251,6 +250,9 @@ public class Generator {
 					WandOfConjuration.class};
 			Category.WAND.probs = new float[]{ 4, 4, 3, 4, 4, 3, 3, 3, 3, 4, 3, 3, 3, 3, 3, 3, 3 };
 
+			Category.DUMMY.classes = new Class<?>[]{};
+			Category.DUMMY.probs = new float[]{};
+
 			//see generator.randomWeapon
 			Category.WEAPON.classes = new Class<?>[]{};
 			Category.WEAPON.probs = new float[]{};
@@ -394,10 +396,6 @@ public class Generator {
 					Pasty.class,
 					MysteryMeat.class };
 			Category.FOOD.probs = new float[]{ 4, 1, 0 };
-
-			Category.RING.classes = new Class<?>[]{
-					RingOfAttunement.class};
-			Category.RING.probs = new float[]{1 };
 
 			Category.ARTIFACT.classes = new Class<?>[]{
 					CapeOfThorns.class,
@@ -555,6 +553,9 @@ public class Generator {
 					WandOfConjuration.class};
 			Category.WAND.probs = new float[]{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
+			Category.DUMMY.classes = new Class<?>[]{};
+			Category.DUMMY.probs = new float[]{};
+
 			//see generator.randomWeapon
 			Category.WEAPON.prob = 1;
 			Category.WEAPON.classes = new Class<?>[]{};
@@ -704,11 +705,6 @@ public class Generator {
 					MysteryMeat.class };
 			Category.FOOD.probs = new float[]{ 1, 1, 1 };
 
-			Category.RING.prob = 0;
-			Category.RING.classes = new Class<?>[]{
-					RingOfAttunement.class};
-			Category.RING.probs = new float[]{ 1 };
-
 			Category.ARTIFACT.prob = 1;
 			Category.ARTIFACT.classes = new Class<?>[]{
 					CapeOfThorns.class,
@@ -795,8 +791,8 @@ public class Generator {
                     return randomStaff();
 			case ARTIFACT:
 				Item item = randomArtifact();
-				//if we're out of artifacts, return a ring instead.
-				return item != null ? item : random(Category.RING);
+				//if we're out of artifacts, return a staff instead.
+				return item != null ? item : random(Category.STAFFS);
 			default:
 				int i = Random.chances(cat.probs);
 				if (i == -1) {

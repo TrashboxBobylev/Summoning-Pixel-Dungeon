@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Overload;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.FuelContainer;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SubtilitasSigil;
@@ -474,11 +475,12 @@ public abstract class Wand extends Weapon implements Tierable {
 
 		boolean fuelUsed = false;
 
-		if (curCharges > 0)
-			curCharges -= cursed ? 1 : chargesPerCast();
+		int usedCharges = cursed ? 1 : chargesPerCast();
+		if (this.curCharges > 0)
+			this.curCharges -= usedCharges;
 		else if (curUser.buff(FuelContainer.fuelBuff.class) != null){
 			fuelUsed = true;
-			curUser.buff(FuelContainer.fuelBuff.class).useCharge(this, (cursed ? 1 : chargesPerCast()));
+			curUser.buff(FuelContainer.fuelBuff.class).useCharge(this, usedCharges);
 		}
 
 
@@ -488,7 +490,7 @@ public abstract class Wand extends Weapon implements Tierable {
 		}
 
 		Invisibility.dispel();
-		if (Dungeon.hero.buff(EnergyOverload.class) != null && !cursed && !fuelUsed) curCharges += chargesPerCast();
+		if (Dungeon.hero.buff(EnergyOverload.class) != null && !cursed && !fuelUsed) this.curCharges += chargesPerCast();
 
 		if (curUser.heroClass == HeroClass.MAGE) levelKnown = true;
 		updateQuickslot();
@@ -498,7 +500,7 @@ public abstract class Wand extends Weapon implements Tierable {
 		}
 		SubtilitasSigil.Recharge sigilCharge = curUser.buff(SubtilitasSigil.Recharge.class);
 		if (sigilCharge != null){
-			sigilCharge.gainExp(1);
+			sigilCharge.gainExp(usedCharges);
 		}
 
 		curUser.spendAndNext( TIME_TO_ZAP );
@@ -676,7 +678,14 @@ public abstract class Wand extends Weapon implements Tierable {
 	}
 
 	public float rechargeModifier(){
-		return rechargeModifier(level());
+		float rechargeModifier = rechargeModifier(level());
+		if (Dungeon.hero.belongings.armor instanceof ClothArmor){
+			ClothArmor armor = (ClothArmor) Dungeon.hero.belongings.armor;
+			if (armor.level() == 1){
+				rechargeModifier *= 0.667f;
+			}
+		}
+		return rechargeModifier;
 	}
 	
 	public class Charger extends Buff {

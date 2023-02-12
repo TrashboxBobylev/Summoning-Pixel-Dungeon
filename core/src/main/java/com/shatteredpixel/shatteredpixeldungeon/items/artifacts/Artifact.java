@@ -28,17 +28,19 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-public abstract class Artifact extends KindofMisc {
+public abstract class Artifact extends EquipableItem {
 
-	protected Buff passiveBuff;
-	protected Buff activeBuff;
+	public Buff passiveBuff;
+	public Buff activeBuff;
+	public ArtifactClass artifactClass;
 
 	//level is used internally to track upgrades to artifacts, size/logic varies per artifact.
 	//already inherited from item superclass
@@ -59,39 +61,75 @@ public abstract class Artifact extends KindofMisc {
 	protected int cooldown = 0;
 
 	@Override
-	public boolean doEquip( final Hero hero ) {
-
-		if ((hero.belongings.artifact != null && hero.belongings.artifact.getClass() == this.getClass())
-				|| (hero.belongings.misc != null && hero.belongings.misc.getClass() == this.getClass())){
-
-			GLog.warning( Messages.get(Artifact.class, "cannot_wear_two") );
-			return false;
-
-		} else {
-
-			if (super.doEquip( hero )){
-
-				identify();
-				return true;
-
-			} else {
-
-				return false;
-
-			}
-
-		}
-
+	public boolean isEquipped(Hero hero) {
+		return hero.belongings.accs.contains(this);
 	}
 
-	public void activate( Char ch ) {
+	public void activate(Char ch ) {
 		passiveBuff = passiveBuff();
 		passiveBuff.attachTo(ch);
 	}
 
 	@Override
+	public boolean doEquip(Hero hero) {
+		detach(hero.belongings.backpack);
+		boolean equipSuccessful = false;
+		for (int i = 0; i < hero.belongings.accs.size(); i++){
+			if (hero.belongings.accs.get(i) == null){
+				hero.belongings.accs.set(i, this);
+				equipSuccessful = true;
+				break;
+			}
+		}
+
+		if (!equipSuccessful){
+			for (int i = 0; i < hero.belongings.accs.size(); i++){
+				if (hero.belongings.accs.get(i) != null &&
+						hero.belongings.accs.get(i).doUnequip( hero, true, false )){
+					hero.belongings.accs.set(i, this);
+					equipSuccessful = true;
+					break;
+				}
+			}
+		}
+
+		if (equipSuccessful){
+			detach( hero.belongings.backpack );
+
+			activate( hero );
+			identify();
+
+			cursedKnown = true;
+			if (cursed) {
+				equipCursed( hero );
+				GLog.negative( Messages.get(this, "equip_cursed", this) );
+			}
+			if (!doNotUseTurnForCollect)
+				hero.spendAndNext( 1f );
+
+			return true;
+		}
+		else {
+
+			collect( hero.belongings.backpack );
+			return false;
+
+		}
+	}
+
+	@Override
 	public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
 		if (super.doUnequip( hero, collect, single )) {
+
+			hero.belongings.accs.set(hero.belongings.accs.indexOf(this), null);
+
+//			if (hero.belongings.offenseAcc == this) {
+//				hero.belongings.offenseAcc = null;
+//			} else if (hero.belongings.defenseAcc == this) {
+//				hero.belongings.defenseAcc = null;
+//			} else if (hero.belongings.utilityAcc == this){
+//				hero.belongings.utilityAcc = null;
+//			}
 
 			passiveBuff.detach();
 			passiveBuff = null;
@@ -138,14 +176,15 @@ public abstract class Artifact extends KindofMisc {
 
 	@Override
 	public String info() {
+		String description = desc() + "\n\n" + Messages.get(ArtifactClass.class, artifactClass.name() + "_desc");
 		if (cursed && cursedKnown && !isEquipped( Dungeon.hero )) {
-			return desc() + "\n\n" + Messages.get(Artifact.class, "curse_known");
+			return description + "\n\n" + Messages.get(Artifact.class, "curse_known");
 			
 		} else if (!isIdentified() && cursedKnown && !isEquipped( Dungeon.hero)) {
-			return desc()+ "\n\n" + Messages.get(Artifact.class, "not_cursed");
+			return description + "\n\n" + Messages.get(Artifact.class, "not_cursed");
 			
 		} else {
-			return desc();
+			return description;
 			
 		}
 	}
@@ -213,6 +252,24 @@ public abstract class Artifact extends KindofMisc {
 
 	public void charge(Hero target, float amount){
 		//do nothing by default;
+	}
+
+	public void setArtifactClass(ArtifactClass artifactClass) {
+		this.artifactClass = artifactClass;
+		switch (artifactClass){
+			case OFFENSE:
+				icon = ItemSpriteSheet.Icons.ARTIFACT_OFFENSIVE; break;
+			case DEFENSE:
+				icon = ItemSpriteSheet.Icons.ARTIFACT_DEFENSIVE; break;
+			case UTILITY:
+				icon = ItemSpriteSheet.Icons.ARTIFACT_UTILITY; break;
+		}
+	}
+
+	public enum ArtifactClass {
+		OFFENSE,
+		DEFENSE,
+		UTILITY;
 	}
 
 	public class ArtifactBuff extends Buff {

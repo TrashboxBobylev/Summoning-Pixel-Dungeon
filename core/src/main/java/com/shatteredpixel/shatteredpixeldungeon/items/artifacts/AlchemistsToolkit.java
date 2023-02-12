@@ -45,6 +45,7 @@ public class AlchemistsToolkit extends Artifact implements AlchemyScene.ToolkitL
 	{
 		image = ItemSpriteSheet.ARTIFACT_TOOLKIT;
 		defaultAction = AC_BREW;
+		setArtifactClass(ArtifactClass.UTILITY);
 
 		levelCap = 10;
 

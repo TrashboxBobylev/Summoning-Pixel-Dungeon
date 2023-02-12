@@ -103,7 +103,8 @@ public abstract class ConjurerSpell extends Item implements Tierable {
                 curItem = this;
                 GameScene.selectCell(targeter);
             }
-        }
+        } else
+            tierableActions(action);
     }
 
     public boolean tryToZap( Hero owner){

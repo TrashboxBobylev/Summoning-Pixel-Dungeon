@@ -52,6 +52,7 @@ public class ParchmentOfElbereth extends Artifact {
         charge = 100;
         chargeCap = 100;
         levelCap = 5;
+        setArtifactClass(ArtifactClass.DEFENSE);
     }
 
     public static final String AC_USE = "USE";
@@ -96,7 +97,8 @@ public class ParchmentOfElbereth extends Artifact {
     public void charge(Hero target, float amount) {
         if (charge < chargeCap) {
             charge += 4f * amount;
-            if (charge == chargeCap) {
+            if (charge >= chargeCap) {
+                charge = chargeCap;
                 GLog.positive(Messages.get(ParchmentOfElbereth.class, "full_charge"));
                 partialCharge = 0;
             }

@@ -57,7 +57,7 @@ public class Thief extends Mob {
 		EXP = 5;
 		maxLvl = 11;
 
-		loot = Random.oneOf(Generator.Category.RING, Generator.Category.ARTIFACT);
+		loot = Generator.Category.ARTIFACT;
 		lootChance = 0.03f; //initially, see rollToDropLoot
 
 		WANDERING = new Wandering();

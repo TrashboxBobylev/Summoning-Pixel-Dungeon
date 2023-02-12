@@ -51,6 +51,7 @@ public class SmokeBomb extends Ability {
 
     {
         image = ItemSpriteSheet.SMOKE_BOMB;
+        setArtifactClass(ArtifactClass.UTILITY);
     }
 
     @Override

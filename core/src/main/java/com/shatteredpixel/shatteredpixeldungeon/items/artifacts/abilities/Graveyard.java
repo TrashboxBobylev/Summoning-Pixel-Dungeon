@@ -46,6 +46,7 @@ public class Graveyard extends Ability {
     {
         image = ItemSpriteSheet.GRAVEYARD;
         baseChargeUse = 100;
+        setArtifactClass(ArtifactClass.UTILITY);
     }
 
     @Override

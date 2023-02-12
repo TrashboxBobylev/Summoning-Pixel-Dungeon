@@ -52,7 +52,7 @@ public class Enrage extends TargetedSpell {
 
     @Override
     public int value() {
-        return com.shatteredpixel.shatteredpixeldungeon.items.Recipe.calculatePrice(new Recipe()) * quantity;
+        return Recipe.calculatePrice(new Recipe()) * quantity;
     }
 
     public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {

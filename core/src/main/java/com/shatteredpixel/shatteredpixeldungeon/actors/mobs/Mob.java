@@ -52,8 +52,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourg
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.ConjurerSpell;
-import com.shatteredpixel.shatteredpixeldungeon.items.quest.GoldToken;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
@@ -66,6 +64,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Wealth;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -971,20 +970,14 @@ public abstract class Mob extends Char {
 			for (int i = 0; i < rolls; i++) {
 				if (Dungeon.hero.buff(MasterThievesArmband.Thievery.class) != null &&
 						Random.Int(15) < Dungeon.hero.buff(MasterThievesArmband.Thievery.class).itemLevel()){
-					Dungeon.level.drop(RingOfWealth.genConsumableDrop(Dungeon.hero.buff(MasterThievesArmband.Thievery.class).itemLevel()), pos).sprite.drop();
-					RingOfWealth.showFlareForBonusDrop(sprite);
+					Dungeon.level.drop(Wealth.genConsumableDrop(Dungeon.hero.buff(MasterThievesArmband.Thievery.class).itemLevel()), pos).sprite.drop();
+					Wealth.showFlareForBonusDrop(sprite);
 				}
 			}
 		}
 
 		if (Dungeon.mode == Dungeon.GameMode.LOL && Random.Float() < 0.4f){
 			Dungeon.level.drop(Generator.random(), pos).sprite.drop();
-		}
-
-		if (this instanceof Monk || this instanceof Warlock){
-			if (Random.Float() < 0.5f * RingOfWealth.dropChanceMultiplier( Dungeon.hero ) && Dungeon.mode != Dungeon.GameMode.GAUNTLET){
-				Dungeon.level.drop(new GoldToken(), pos).sprite.drop();
-			}
 		}
 
 		//lucky enchant logic
@@ -1047,6 +1040,10 @@ public abstract class Mob extends Char {
 		}
 	}
 
+	public int defenseSkillDesc(){
+		return defenseSkill;
+	}
+
 	public String description() {
 		String desc = Messages.get(this, "desc");
 		if (hordeHead != -1 && Actor.findById(hordeHead) != null){
@@ -1060,7 +1057,7 @@ public abstract class Mob extends Char {
 			if (!harderDesc.equals(""))
 				desc += "\n\n" + harderDesc;
 		}
-		desc += "\n\n" + Messages.get(Mob.class, "stats", HP, HT, attackSkill(Dungeon.hero), defenseSkill);
+		desc += "\n\n" + Messages.get(Mob.class, "stats", HP, HT, attackSkill(Dungeon.hero), defenseSkillDesc());
 		for (Buff b : buffs(ChampionEnemy.class)){
 			desc += "\n\n_" + Messages.titleCase(b.toString()) + "_\n" + b.desc();
 		}
@@ -1428,8 +1425,7 @@ public abstract class Mob extends Char {
 
 				//preserve intelligent allies if they are near the hero
 			} else if (mob.alignment == Alignment.ALLY
-					&& mob.intelligentAlly
-					&& Dungeon.level.distance(Dungeon.hero.pos, mob.pos) <= 3){
+					&& mob.intelligentAlly){
 				level.mobs.remove( mob );
 				if (mob instanceof Minion) ((Minion) mob).onLeaving();
 				heldAllies.add(mob);

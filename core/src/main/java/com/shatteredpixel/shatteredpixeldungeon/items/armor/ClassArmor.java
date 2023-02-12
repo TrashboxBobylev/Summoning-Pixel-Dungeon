@@ -71,9 +71,6 @@ abstract public class ClassArmor extends Armor {
 		case HUNTRESS:
 			classArmor = new HuntressArmor();
 			break;
-            case CONJURER:
-                classArmor = new ConjurerArmor();
-                break;
 		}
 		
 		classArmor.level(armor.level() - (armor.curseInfusionBonus ? 1 : 0));
@@ -120,11 +117,6 @@ abstract public class ClassArmor extends Armor {
 	}
 
 	@Override
-	public String status() {
-		return Messages.format( "%.0f%%", charge );
-	}
-
-	@Override
 	public void execute( Hero hero, String action ) {
 
 		super.execute( hero, action );
@@ -156,10 +148,7 @@ abstract public class ClassArmor extends Armor {
 
 	@Override
 	public int STRReq(int lvl) {
-		lvl = Math.max(0, lvl);
-
-		//strength req decreases at +1,+3,+6,+10,etc.
-		return (8 + Math.round(armorTier * 2)) - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
+		return (8 + Math.round(armorTier * 2));
 	}
 
 	@Override

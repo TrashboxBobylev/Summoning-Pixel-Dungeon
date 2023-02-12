@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class SyntheticArmor extends Armor {
@@ -36,6 +37,39 @@ public class SyntheticArmor extends Armor {
 
 	public SyntheticArmor() {
 		super( 6 );
+	}
+
+	@Override
+	public float defenseLevel(int level) {
+		switch (level){
+			case 0: return 1.0f;
+			case 1: return 1.5f;
+			case 2: return 0.5f;
+		}
+		return 0f;
+	}
+
+	@Override
+	public float speedFactor(Char owner, float speed) {
+		float speedFactor = super.speedFactor(owner, speed);
+		if (level() == 1){
+			speedFactor /= 2;
+		}
+		if (level() == 2){
+			speedFactor *= 1.15f;
+		}
+		return speedFactor;
+	}
+
+
+
+	@Override
+	public float evasionFactor(Char owner, float evasion) {
+		float evasionFactor = super.evasionFactor(owner, evasion);
+		if (level() == 2){
+			evasionFactor *= 1.2f;
+		}
+		return evasionFactor;
 	}
 
 	public int DRMax(int lvl){
@@ -59,10 +93,7 @@ public class SyntheticArmor extends Armor {
 	}
 
 	public int STRReq(int lvl){
-		lvl = Math.max(0, lvl);
-
-		//strength req decreases at +1,+3,+6,+10,etc.
-		return 11 - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
+		return 11;
 	}
 
 }

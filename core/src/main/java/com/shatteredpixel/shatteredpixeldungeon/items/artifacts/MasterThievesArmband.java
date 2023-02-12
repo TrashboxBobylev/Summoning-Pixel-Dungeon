@@ -54,6 +54,7 @@ public class MasterThievesArmband extends Artifact {
 
 	{
 		image = ItemSpriteSheet.ARTIFACT_ARMBAND;
+		setArtifactClass(ArtifactClass.UTILITY);
 
 		levelCap = 10;
 

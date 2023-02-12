@@ -166,7 +166,11 @@ public class Item implements Bundlable {
 				doThrow(hero);
 			}
 			
-		} else if (this instanceof Tierable){
+		} else tierableActions(action);
+	}
+
+	protected void tierableActions(String action) {
+		if (this instanceof Tierable){
 			if (action.equals(AC_DOWNGRADE)){
 				GameScene.flash(0xFFFFFF);
 				Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
@@ -177,7 +181,7 @@ public class Item implements Bundlable {
 			}
 		}
 	}
-	
+
 	public void execute( Hero hero ) {
 		execute( hero, getDefaultAction());
 	}

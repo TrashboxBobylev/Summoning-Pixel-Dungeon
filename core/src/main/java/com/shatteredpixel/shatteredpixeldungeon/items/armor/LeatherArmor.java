@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class LeatherArmor extends Armor {
@@ -36,4 +37,31 @@ public class LeatherArmor extends Armor {
 		super( 2 );
 	}
 
+	@Override
+	public float stealthFactor(Char owner, float stealth) {
+		float sth = super.stealthFactor(owner, stealth);
+		if (level() == 1)
+			sth = Math.max(1.5f, sth*1.5f);
+		return sth;
+	}
+
+	@Override
+	public float evasionFactor(Char owner, float evasion) {
+		float eva = super.evasionFactor(owner, evasion);
+		if (level() == 1)
+			eva *= 1.5;
+		if (level() == 2)
+			eva /= 2;
+		return eva;
+	}
+
+	@Override
+	public float defenseLevel(int level) {
+		switch (level){
+			case 0: return 1.0f;
+			case 1: return 0.4f;
+			case 2: return 0f;
+		}
+		return 0f;
+	}
 }

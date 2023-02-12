@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
 import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -107,26 +108,52 @@ public class ScoutArmor extends Armor {
         }
     }
 
-
+    @Override
+    public float defenseLevel(int level) {
+        switch (level){
+            case 0: return 1.0f;
+            case 1: return 1.0f;
+            case 2: return 0f;
+        }
+        return 0f;
+    }
 
     public int DRMax(int lvl){
+        int val;
 
         int max = 3 + lvl + augment.defenseFactor(lvl);
         if (lvl > max){
-            return ((lvl - max)+1)/2;
+            val = ((lvl - max)+1)/2;
         } else {
-            return max;
+            val = max;
         }
+
+        return val;
     }
 
     public int DRMin(int lvl){
+        int val;
 
         int max = DRMax(lvl);
         if (lvl >= max){
-            return (lvl + 1 - max);
+            val = (lvl + 1 - max);
         } else {
-            return lvl + 1;
+            val = lvl + 1;
         }
+
+        return val;
+    }
+
+    @Override
+    public float speedFactor(Char owner, float speed) {
+        float speedFactor = super.speedFactor(owner, speed);
+        if (owner instanceof Hero) {
+            if (((Hero) owner).belongings.armor instanceof ScoutArmor &&
+                    ((Hero) owner).belongings.armor.level() == 2) {
+                speedFactor *= 2;
+            }
+        }
+        return speedFactor;
     }
 
     private CellSelector.Listener shooter = new CellSelector.Listener() {
@@ -135,7 +162,11 @@ public class ScoutArmor extends Armor {
             if (target != null && bow != null) {
                 SpiritBow.superShot = true;
                 bow.knockArrow().cast(curUser, target);
-                Buff.affect(curUser, ScoutCooldown.class, 20f);
+                float duration = 20f;
+                switch (level()){
+                    case 1: duration = 13.3f; break;
+                }
+                Buff.affect(curUser, ScoutCooldown.class, duration);
             }
         }
         @Override

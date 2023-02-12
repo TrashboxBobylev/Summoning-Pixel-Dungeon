@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.*;
@@ -125,10 +126,6 @@ public enum Catalog {
 		ARMOR.seen.put( MailArmor.class,                    false);
 		ARMOR.seen.put( ScaleArmor.class,                   false);
 		ARMOR.seen.put( PlateArmor.class,                   false);
-		ARMOR.seen.put( WarriorArmor.class,                 false);
-		ARMOR.seen.put( MageArmor.class,                    false);
-		ARMOR.seen.put( RogueArmor.class,                   false);
-		ARMOR.seen.put( HuntressArmor.class,                false);
         ARMOR.seen.put( ConjurerArmor.class,                false);
 
 		WANDS.seen.put( WandOfMagicMissile.class,           false);
@@ -163,6 +160,14 @@ public enum Catalog {
 		ARTIFACTS.seen.put( TimekeepersHourglass.class,     false);
 		ARTIFACTS.seen.put( UnstableSpellbook.class,        false);
 		ARTIFACTS.seen.put( SoulOfYendor.class,             false);
+		ARTIFACTS.seen.put(SubtilitasSigil.class,           false);
+		ARTIFACTS.seen.put(MirrorOfFates.class,             false);
+		ARTIFACTS.seen.put(BadgeOfBravery.class,            false);
+		ARTIFACTS.seen.put(FuelContainer.class,             false);
+		ARTIFACTS.seen.put(HeavyFlail.class,                false);
+		ARTIFACTS.seen.put(MomentumBoots.class,             false);
+		ARTIFACTS.seen.put(ParchmentOfElbereth.class,       false);
+		ARTIFACTS.seen.put(SilkyQuiver.class,               false);
 	
 		POTIONS.seen.put( PotionOfHealing.class,            false);
 		POTIONS.seen.put( PotionOfStrength.class,           false);

@@ -51,6 +51,7 @@ public class TimekeepersHourglass extends Artifact {
 
 	{
 		image = ItemSpriteSheet.ARTIFACT_HOURGLASS;
+		setArtifactClass(ArtifactClass.DEFENSE);
 
 		levelCap = 5;
 

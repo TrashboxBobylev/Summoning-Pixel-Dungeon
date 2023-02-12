@@ -69,6 +69,7 @@ public class SoulOfYendor extends Artifact implements AlchemyScene.ToolkitLike {
 
     {
         image = ItemSpriteSheet.ARTIFACT_OMNI;
+        setArtifactClass(ArtifactClass.UTILITY);
 
         exp = 0;
         levelCap = 10;

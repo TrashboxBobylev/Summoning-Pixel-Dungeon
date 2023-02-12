@@ -49,6 +49,7 @@ public class MirrorOfFates extends Artifact {
         image = ItemSpriteSheet.ARTIFACT_MIRROR;
         levelCap = 10;
         defaultAction = AC_USE;
+        setArtifactClass(ArtifactClass.DEFENSE);
     }
 
     public static final String AC_USE = "USE";
@@ -108,7 +109,7 @@ public class MirrorOfFates extends Artifact {
 
     @Override
     protected ArtifactBuff passiveBuff() {
-        return new ArtifactBuff();
+        return new mirrorExp();
     }
 
     public class mirrorExp extends ArtifactBuff {

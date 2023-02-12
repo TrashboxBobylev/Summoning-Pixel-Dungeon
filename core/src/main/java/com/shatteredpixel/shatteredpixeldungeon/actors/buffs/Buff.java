@@ -26,6 +26,16 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WandOfStenchGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Hacatu;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Wizard;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.ArcaneBomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.*;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrimTrap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Reflection;
@@ -34,8 +44,7 @@ import java.text.DecimalFormat;
 import java.util.HashSet;
 
 public class Buff extends Actor {
-	
-	public Char target;
+    public Char target;
 
     {
 		actPriority = BUFF_PRIO; //low priority, towards the end of a turn
@@ -172,5 +181,50 @@ public class Buff extends Actor {
 		for ( Buff b : target.buffs( cl )){
 			b.detach();
 		}
+	}
+
+	public static final HashSet<Class> ELEMENT_RESISTS = new HashSet<>();
+	static {
+		Buff.ELEMENT_RESISTS.add( Burning.class );
+		Buff.ELEMENT_RESISTS.add( Charm.class );
+		Buff.ELEMENT_RESISTS.add( Chill.class );
+		Buff.ELEMENT_RESISTS.add( Frost.class );
+		Buff.ELEMENT_RESISTS.add( Ooze.class );
+		Buff.ELEMENT_RESISTS.add( Paralysis.class );
+		Buff.ELEMENT_RESISTS.add( Poison.class );
+		Buff.ELEMENT_RESISTS.add( Corrosion.class );
+		Buff.ELEMENT_RESISTS.add( Weakness.class );
+		Buff.ELEMENT_RESISTS.add(FrostBurn.class);
+
+
+		Buff.ELEMENT_RESISTS.add( DisintegrationTrap.class );
+		Buff.ELEMENT_RESISTS.add( GrimTrap.class );
+		Buff.ELEMENT_RESISTS.add(ArcaneBomb.class);
+
+		Buff.ELEMENT_RESISTS.add( WandOfBlastWave.class );
+		Buff.ELEMENT_RESISTS.add( WandOfBounceBeams.class );
+		Buff.ELEMENT_RESISTS.add( WandOfFireblast.class );
+		Buff.ELEMENT_RESISTS.add( WandOfFrost.class );
+		Buff.ELEMENT_RESISTS.add( WandOfLightning.class );
+		Buff.ELEMENT_RESISTS.add( WandOfLivingEarth.class );
+		Buff.ELEMENT_RESISTS.add( WandOfMagicMissile.class );
+		Buff.ELEMENT_RESISTS.add( WandOfPrismaticLight.class );
+		Buff.ELEMENT_RESISTS.add( WandOfTransfusion.class );
+		Buff.ELEMENT_RESISTS.add( WandOfWarding.Ward.class );
+		Buff.ELEMENT_RESISTS.add(WandOfCrystalBullet.class);
+		Buff.ELEMENT_RESISTS.add( WandOfStars.Star.class);
+
+		Buff.ELEMENT_RESISTS.add( ToxicGas.class );
+		Buff.ELEMENT_RESISTS.add (WandOfStenchGas.class);
+		Buff.ELEMENT_RESISTS.add( Electricity.class );
+
+		Buff.ELEMENT_RESISTS.add( Shaman.EarthenBolt.class );
+		Buff.ELEMENT_RESISTS.add( Hacatu.LightningBolt.class );
+		Buff.ELEMENT_RESISTS.add( Warlock.DarkBolt.class );
+		Buff.ELEMENT_RESISTS.add( Wizard.DarkBolt.class );
+		Buff.ELEMENT_RESISTS.add( Eye.DeathGaze.class );
+		Buff.ELEMENT_RESISTS.add( Yog.BurningFist.DarkBolt.class );
+		Buff.ELEMENT_RESISTS.add( FinalFroggit.Bolt.class);
+		Buff.ELEMENT_RESISTS.add( SpectreRat.DarkBolt.class);
 	}
 }

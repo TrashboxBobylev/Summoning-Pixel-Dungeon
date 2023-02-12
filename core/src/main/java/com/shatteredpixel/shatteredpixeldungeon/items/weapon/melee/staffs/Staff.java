@@ -388,7 +388,7 @@ public class Staff extends Weapon implements Tierable {
         }
 
         //checking attunement
-        if (requiredAttunement() > owner.attunement() || (requiredAttunement() + owner.usedAttunement > owner.attunement())){
+        if (requiredAttunement() > owner.maxAttunement() || (requiredAttunement() + owner.usedAttunement() > owner.maxAttunement())){
             owner.sprite.zap(0);
             GLog.warning( Messages.get(Staff.class, "too_low_attunement") );
             return;
@@ -414,7 +414,6 @@ public class Staff extends Weapon implements Tierable {
             Minion minion = minionType.newInstance();
             GameScene.add(minion);
             ScrollOfTeleportation.appear(minion, spawnPoints.get(Random.index(spawnPoints)));
-            owner.usedAttunement += requiredAttunement();
             minion.setDamage(
                     minionmin(),
                     minionmax());
@@ -426,6 +425,7 @@ public class Staff extends Weapon implements Tierable {
             minion.strength = STRReq();
             this.customizeMinion(minion);
             minion.enchantment = enchantment;
+            minion.augmentOffense = augment;
             minion.lvl = level();
             minion.minionClass = minionClass;
             minion.attunement = requiredAttunement();
@@ -549,8 +549,8 @@ public class Staff extends Weapon implements Tierable {
             info += "\n\n" + Messages.get(Staff.class, "stats_known",
                     tier,
                     STRReq(),
-                    Math.round(minionmin()*robeBonus),
-                    Math.round(minionmax()*robeBonus),
+                    augment.damageFactor(Math.round(minionmin()*robeBonus)),
+                    augment.damageFactor(Math.round(minionmax()*robeBonus)),
                     (hp(level())),
                     requiredAttunement());
             if (STRReq() > Dungeon.hero.STR()) {
@@ -566,16 +566,14 @@ public class Staff extends Weapon implements Tierable {
         String statsInfo = Messages.get(this, "stats_desc");
         if (!statsInfo.equals("")) info += "\n\n" + statsInfo;
 
-        if (level() >= 3) info += "\n\n" + Messages.get(Staff.class, "upgrade_info");
-
         info += "\n\n" + Messages.get(Staff.class, "class", minionClass);
 
         switch (augment) {
             case SPEED:
-                info += "\n\n" + Messages.get(Weapon.class, "faster");
+                info += "\n\n" + Messages.get(Staff.class, "faster");
                 break;
             case DAMAGE:
-                info += "\n\n" + Messages.get(Weapon.class, "stronger");
+                info += "\n\n" + Messages.get(Staff.class, "stronger");
                 break;
             case NONE:
         }

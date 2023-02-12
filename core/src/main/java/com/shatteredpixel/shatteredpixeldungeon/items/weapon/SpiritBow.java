@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScoutArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SilkyQuiver;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -176,30 +177,38 @@ public class SpiritBow extends Weapon implements Tierable {
 
 	@Override
 	public int min(int lvl) {
+		int dmg = 1 + Dungeon.hero.lvl/5
+				+ (curseInfusionBonus ? 1 : 0);
 		switch (lvl){
 			case 1:
-				return 2 + Dungeon.hero.lvl/5
-						+ (curseInfusionBonus ? 1 : 0);
+				dmg = 2 + Dungeon.hero.lvl/5
+						+ (curseInfusionBonus ? 1 : 0); break;
 			case 2:
-				return 5 + (int)(Dungeon.hero.lvl/1.5f)
-						+ (curseInfusionBonus ? 1 : 0);
+				dmg = 5 + (int)(Dungeon.hero.lvl/1.5f)
+						+ (curseInfusionBonus ? 1 : 0); break;
 		}
-		return 1 + Dungeon.hero.lvl/5
-				+ (curseInfusionBonus ? 1 : 0);
+		if (Dungeon.hero.belongings.armor instanceof ScoutArmor &&
+				Dungeon.hero.belongings.armor.level() == 1)
+			dmg /= 2;
+		return dmg;
 	}
 	
 	@Override
 	public int max(int lvl) {
+		int dmg = 6 + (int)(Dungeon.hero.lvl/2.5f)
+				+ (curseInfusionBonus ? 2 : 0);
 		switch (lvl){
 			case 1:
-				return 7 + (int)(Dungeon.hero.lvl/2.5f)
-						+ (curseInfusionBonus ? 2 : 0);
+				dmg = 7 + (int)(Dungeon.hero.lvl/2.5f)
+						+ (curseInfusionBonus ? 2 : 0); break;
 			case 2:
-				return 15 + (int)(Dungeon.hero.lvl/0.8f)
-										+ (curseInfusionBonus ? 1 : 0);
+				dmg = 15 + (int)(Dungeon.hero.lvl/0.8f)
+										+ (curseInfusionBonus ? 1 : 0); break;
 		}
-		return 6 + (int)(Dungeon.hero.lvl/2.5f)
-				+ (curseInfusionBonus ? 2 : 0);
+		if (Dungeon.hero.belongings.armor instanceof ScoutArmor &&
+				Dungeon.hero.belongings.armor.level() == 1)
+			dmg /= 2;
+		return dmg;
 	}
 
 	@Override
@@ -319,6 +328,9 @@ public class SpiritBow extends Weapon implements Tierable {
 
 			int distance = Dungeon.level.distance(owner.pos, targetPos) - 1;
 			float multiplier = Math.min(5f, 1.32f * (float)Math.pow(1.13f, distance));
+			if (Dungeon.hero.belongings.armor instanceof ScoutArmor &&
+					Dungeon.hero.belongings.armor.level() == 1)
+				multiplier *= 4;
 			damage = Math.round(damage * multiplier);
 			return damage;
 		}

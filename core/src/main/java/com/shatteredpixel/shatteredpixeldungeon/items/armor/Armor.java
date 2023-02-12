@@ -35,23 +35,30 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.*;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Tierable;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndChooseAbility;
 import com.watabou.utils.*;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Armor extends EquipableItem {
+public class Armor extends EquipableItem implements Tierable {
 
 	protected static final String AC_DETACH       = "DETACH";
+	protected static final String AC_ABILITY = "ABILITY";
 	
 	public enum Augment {
 		EVASION (2f , -1f),
@@ -135,6 +142,60 @@ public class Armor extends EquipableItem {
 	}
 
 	@Override
+	public String status() {
+		if (Dungeon.hero.armorAbility != null)
+			return Messages.format( "%.0f%%", Dungeon.hero.armorAbility.charge );
+		else
+			return super.status();
+	}
+
+	@Override
+	public String getDefaultAction() {
+		return Dungeon.hero.armorAbility != null ? AC_ABILITY : super.getDefaultAction();
+	}
+
+	@Override
+	public void execute(Hero hero, String action) {
+		super.execute(hero, action);
+
+		if (action.equals(AC_ABILITY)){
+
+			if (hero.armorAbility == null){
+				GameScene.show(new WndChooseAbility(null, this, hero));
+			} else if (!isEquipped( hero )) {
+				usesTargeting = false;
+				GLog.warning( Messages.get(this, "not_equipped") );
+			} else if (hero.armorAbility.charge < hero.armorAbility.chargeUse(hero)) {
+				usesTargeting = false;
+				GLog.warning( Messages.get(this, "low_charge") );
+			} else  {
+				usesTargeting = hero.armorAbility.useTargeting();
+				hero.armorAbility.use(this, hero);
+			}
+
+		}
+	}
+
+	@Override
+	public int image() {
+		if (Dungeon.hero != null) {
+			if (Dungeon.hero.armorAbility != null && Dungeon.hero.belongings.armor == this) {
+				switch (Dungeon.hero.heroClass) {
+					case WARRIOR:
+						return ItemSpriteSheet.ARMOR_WARRIOR;
+					case MAGE:
+						return ItemSpriteSheet.ARMOR_MAGE;
+					case ROGUE:
+						return ItemSpriteSheet.ARMOR_ROGUE;
+					case HUNTRESS:
+						return ItemSpriteSheet.ARMOR_HUNTRESS;
+				}
+			}
+		}
+		return super.image();
+	}
+
+	@Override
 	public boolean doEquip( Hero hero ) {
 		
 		detach(hero.belongings.backpack);
@@ -189,44 +250,67 @@ public class Armor extends EquipableItem {
 
 		}
 	}
+
+	public int powerLevel(){
+		return Dungeon.hero.lvl/6;
+	}
+
+	public int enchantLevel() {
+		return powerLevel();
+	}
 	
 	@Override
 	public boolean isEquipped( Hero hero ) {
 		return hero.belongings.armor == this;
 	}
 
+	public float defenseLevel(int level){
+		switch (level){
+			case 0: return 1.0f;
+			case 1: return 1.0f;
+			case 2: return 1.0f;
+		}
+		return 0f;
+	}
+
 	public final int DRMax(){
-		return DRMax(buffedLvl());
+		return Math.round(DRMax(powerLevel())*defenseLevel(level()));
 	}
 
 	public int DRMax(int lvl){
+		int val;
 		if (Dungeon.isChallenged(Conducts.Conduct.NO_ARMOR)){
-			return 1 + tier + lvl + augment.defenseFactor(lvl);
+			val = 1 + tier + lvl + augment.defenseFactor(lvl);
+		} else {
+			int max = tier * (2 + lvl) + augment.defenseFactor(lvl);
+			if (lvl > max){
+				val = ((lvl - max)+1)/2;
+			} else {
+				val = max;
+			}
 		}
 
-		int max = tier * (2 + lvl) + augment.defenseFactor(lvl);
-		if (lvl > max){
-			return ((lvl - max)+1)/2;
-		} else {
-			return max;
-		}
+		return val;
 	}
 
 	public int DRMin(){
-		return DRMin(buffedLvl());
+		return Math.round(DRMin(powerLevel())*defenseLevel(level()));
 	}
 
 	public int DRMin(int lvl){
+		int val;
 		if (Dungeon.isChallenged(Conducts.Conduct.NO_ARMOR)){
-			return 0;
+			val = 0;
+		} else {
+			int max = DRMax(lvl);
+			if (lvl >= max){
+				val = (lvl - max);
+			} else {
+				val = lvl;
+			}
 		}
 
-		int max = DRMax(lvl);
-		if (lvl >= max){
-			return (lvl - max);
-		} else {
-			return lvl;
-		}
+		return val;
 	}
 	
 	public float evasionFactor( Char owner, float evasion ){
@@ -245,7 +329,7 @@ public class Armor extends EquipableItem {
 			}
 		}
 		
-		return evasion + augment.evasionFactor(buffedLvl());
+		return evasion + augment.evasionFactor(powerLevel());
 	}
 	
 	public float speedFactor( Char owner, float speed ){
@@ -264,9 +348,9 @@ public class Armor extends EquipableItem {
 					break;
 				}
 			}
-			if (!enemyNear) speed *= (1.2f + 0.04f * buffedLvl());
+			if (!enemyNear) speed *= (1.2f + 0.04f * enchantLevel());
 		} else if (hasGlyph(Flow.class, owner) && Dungeon.level.water[owner.pos]){
-			speed *= (2f + 0.25f*buffedLvl());
+			speed *= (2f + 0.25f*enchantLevel());
 		}
 		
 		if (hasGlyph(Bulk.class, owner) &&
@@ -282,7 +366,7 @@ public class Armor extends EquipableItem {
 	public float stealthFactor( Char owner, float stealth ){
 		
 		if (hasGlyph(Obfuscation.class, owner)){
-			stealth += 1 + buffedLvl()/3f;
+			stealth += 1 + enchantLevel()/3f;
 		}
 		
 		return stealth;
@@ -310,6 +394,9 @@ public class Armor extends EquipableItem {
 	
 	public Item upgrade( boolean inscribe ) {
 
+		if (isUpgradable())
+			super.upgrade();
+
 		if (inscribe && (glyph == null || glyph.curse())){
 			inscribe( Glyph.random() );
 		} else if (!inscribe && level() >= 4 && Random.Float(10) < Math.pow(2, level()-4)){
@@ -318,7 +405,7 @@ public class Armor extends EquipableItem {
 		
 		cursed = false;
 
-		return super.upgrade();
+		return this;
 	}
 	
 	public int proc( Char attacker, Char defender, int damage ) {
@@ -393,19 +480,28 @@ public class Armor extends EquipableItem {
 		} else if (!isIdentified() && cursedKnown){
 			info += "\n\n" + Messages.get(Armor.class, "not_cursed");
 		}
+
+		if (Dungeon.hero.belongings.armor == this) {
+			ArmorAbility ability = Dungeon.hero.armorAbility;
+			if (ability != null) {
+				info += "\n\n" + ability.shortDesc();
+				float chargeUse = ability.chargeUse(Dungeon.hero);
+				info += " " + Messages.get(this, "charge_use", new DecimalFormat("#.##").format(chargeUse));
+			}
+		}
 		
 		return info;
 	}
 
 	@Override
 	public Item random() {
-		//+0: 75% (3/4)
-		//+1: 20% (4/20)
-		//+2: 5%  (1/20)
+		//+0: 66.67% (2/3)
+		//+1: 26.67% (4/15)
+		//+2: 6.67%  (1/15)
 		int n = 0;
-		if (Random.Int(4) == 0) {
+		if (Random.Int(3) == 0) {
 			n++;
-			if (Random.Int(5) == 0) {
+			if (Random.Int(5) == 0){
 				n++;
 			}
 		}
@@ -429,10 +525,7 @@ public class Armor extends EquipableItem {
 	}
 
 	public int STRReq(int lvl){
-		lvl = Math.max(0, lvl);
-
-		//strength req decreases at +1,+3,+6,+10,etc.
-		return (8 + Math.round(tier * 2)) - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
+		return (8 + Math.round(tier * 2));
 	}
 	
 	@Override
@@ -446,13 +539,18 @@ public class Armor extends EquipableItem {
 		if (cursedKnown && (cursed || hasCurseGlyph())) {
 			price /= 2;
 		}
-		if (levelKnown && level() > 0) {
-			price *= (level() + 1);
-		}
 		if (price < 1) {
 			price = 1;
 		}
 		return price;
+	}
+
+	@Override
+	public String getTierMessage(int tier){
+		return Messages.get(this, "tier" + tier,
+				Math.round(DRMin(powerLevel())*defenseLevel(tier-1)),
+				Math.round(DRMax(powerLevel())*defenseLevel(tier-1))
+		);
 	}
 
 	public Armor inscribe( Glyph glyph ) {

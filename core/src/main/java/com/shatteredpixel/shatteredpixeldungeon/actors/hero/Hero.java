@@ -35,12 +35,15 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.FierySlash;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.QuiverMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulWeakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SpikyShield;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Phantom;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GoatClone;
 import com.shatteredpixel.shatteredpixeldungeon.effects.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
@@ -55,7 +58,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMight;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAttunement;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Recycle;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
@@ -68,6 +70,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Unstab
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Cleaver;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knife;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -131,6 +134,7 @@ public class Hero extends Char {
 	
 	public HeroClass heroClass = HeroClass.ROGUE;
 	public HeroSubClass subClass = HeroSubClass.NONE;
+	public ArmorAbility armorAbility = null;
 	
 	private int attackSkill = 10;
 	private int defenseSkill = 5;
@@ -149,16 +153,34 @@ public class Hero extends Char {
 	public int STR;
 	
 	public float attunement = 1;
-	public float usedAttunement;
 
 	public ArrayList<LinkedHashMap<Talent, Integer>> talents = new ArrayList<>();
 
 	public int mana = 0;
 	public int maxMana = 0;
 
-	public float attunement(){
+	public float usedAttunement(){
+		float att = 0;
+		for (Mob mob : Dungeon.level.mobs){
+			if (mob instanceof Minion){
+				att += ((Minion) mob).attunement;
+			}
+		}
+		return att;
+	}
+
+	public float maxAttunement(){
+		float roseBoost = 0f;
+		DriedRose.roseRecharge buff = buff(DriedRose.roseRecharge.class);
+		if (buff != null){
+			roseBoost = 0.5f * buff.itemLevel();
+		}
+		if (belongings.armor instanceof ScaleArmor &&
+			belongings.armor.level() == 2){
+			roseBoost += 2f;
+		}
 	    return attunement +
-				RingOfAttunement.attunementMultiplier(this) +
+				roseBoost +
 				(subClass == HeroSubClass.SOUL_REAVER ? 1 : 0) +
 				(Dungeon.isChallenged(Conducts.Conduct.KING) ? 1 : 0);
     }
@@ -229,11 +251,11 @@ public class Hero extends Char {
 	private static final String EXPERIENCE	= "exp";
 	private static final String HTBOOST     = "htboost";
     private static final String ATTUNEMENT		= "attunement";
-    private static final String USED_ATTUNEMENT		= "used_attunement";
 	private static final String LASTMOVE = "last_move";
 	private static final String MANA = "mana";
 	private static final String MAX_MANA = "max_mana";
 	private static final String TOTAL_EXP = "totalExp";
+	private static final String ABILITY     = "armorAbility";
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 
@@ -243,6 +265,7 @@ public class Hero extends Char {
 		subClass.storeInBundle( bundle );
 		if (heroClass == HeroClass.ROGUE)
 		Talent.storeTalentsInBundle( bundle, this );
+		bundle.put( ABILITY, armorAbility );
 		
 		bundle.put( ATTACK, attackSkill );
 		bundle.put( DEFENSE, defenseSkill );
@@ -251,7 +274,6 @@ public class Hero extends Char {
 		
 		bundle.put( LEVEL, lvl );
 		bundle.put(ATTUNEMENT, attunement);
-		bundle.put(USED_ATTUNEMENT, usedAttunement);
 		bundle.put( EXPERIENCE, exp );
 		
 		bundle.put( HTBOOST, HTBoost );
@@ -272,6 +294,7 @@ public class Hero extends Char {
 		subClass = HeroSubClass.restoreInBundle( bundle );
 		if (heroClass == HeroClass.ROGUE)
 		Talent.restoreTalentsFromBundle( bundle, this );
+		armorAbility = (ArmorAbility)bundle.get( ABILITY );
 		
 		attackSkill = bundle.getInt( ATTACK );
 		defenseSkill = bundle.getInt( DEFENSE );
@@ -282,7 +305,6 @@ public class Hero extends Char {
 		exp = bundle.getInt( EXPERIENCE );
 		totalExp = bundle.getInt( TOTAL_EXP);
 		attunement = bundle.getFloat(ATTUNEMENT);
-        usedAttunement = bundle.getFloat(USED_ATTUNEMENT);
 
 		HTBoost = bundle.getInt(HTBOOST);
 
@@ -381,7 +403,15 @@ public class Hero extends Char {
 	}
 	
 	public int tier() {
-		return belongings.armor == null ? 0 : belongings.armor.tier;
+		if (belongings.armor == null){
+			return 0;
+		} else {
+			if (armorAbility != null){
+				return 6;
+			} else {
+				return belongings.armor.tier;
+			}
+		}
 	}
 	
 	public boolean shoot( Char enemy, MissileWeapon wep ) {
@@ -416,6 +446,25 @@ public class Hero extends Char {
         return hit;
     }
 
+	//same, but with melee weapons lol
+	//ech
+	public boolean shoot(Char enemy, MeleeWeapon weapon) {
+
+		//temporarily set the hero's weapon to the missile weapon being used
+		belongings.stashedWeapon = belongings.weapon;
+		belongings.weapon = weapon;
+		weapon.ranged = true;
+		boolean hit = false;
+		if (enemy.alignment != Alignment.ALLY)
+			hit = attack( enemy );
+		Invisibility.dispel();
+		belongings.weapon = belongings.stashedWeapon;
+		belongings.stashedWeapon = null;
+		weapon.ranged = false;
+
+		return hit;
+	}
+
 	@Override
 	public int attackSkill( Char target ) {
 		KindOfWeapon wep = belongings.weapon;
@@ -423,6 +472,12 @@ public class Hero extends Char {
 		float accuracy = 1;
 		if (Dungeon.mode == Dungeon.GameMode.EXPLORE) accuracy = 1.2f;
 		if (Dungeon.isChallenged(Conducts.Conduct.KING)) accuracy = 1.1f;
+		if (belongings.armor instanceof SyntheticArmor &&
+			belongings.armor.level() == 2)
+				accuracy *= 1.15f;
+		if (belongings.armor instanceof PlateArmor &&
+				belongings.armor.level() == 2)
+			accuracy *= 1.25f;
 
 		if (belongings.weapon instanceof MissileWeapon &&
 				target.buff(QuiverMark.class) != null) return INFINITE_ACCURACY;
@@ -499,6 +554,12 @@ public class Hero extends Char {
 
 		if (belongings.armor != null) {
 			int armDr = Random.NormalIntRange( belongings.armor.DRMin(), belongings.armor.DRMax());
+			if (belongings.armor instanceof PlateArmor &&
+				belongings.armor.level() == 2){
+				int armDr2 = Random.NormalIntRange( belongings.armor.DRMin(), belongings.armor.DRMax());
+				if (armDr2 > armDr)
+					armDr = armDr2;
+			}
 			if (STR() < belongings.armor.STRReq()){
 				armDr -= 2*(belongings.armor.STRReq() - STR());
 			}
@@ -636,6 +697,9 @@ public class Hero extends Char {
 				&& Dungeon.hero.buff(MomentumBoots.momentumBuff.class).isCursed()){
 			attackSpeed = Math.max(1f, attackSpeed);
 		}
+		if (belongings.armor instanceof PlateArmor &&
+			belongings.armor.level() == 2)
+			attackSpeed /= 2;
 		return attackSpeed;
 	}
 
@@ -766,6 +830,16 @@ public class Hero extends Char {
             }
             else if (buff(Attunement.class) != null) buff(Attunement.class).detach();
         }
+
+		if (belongings.armor instanceof ClothArmor && belongings.armor.level() == 2){
+			for (Buff b : buffs()) {
+				if (b instanceof Artifact.ArtifactBuff) {
+					if (!((Artifact.ArtifactBuff) b).isCursed()) {
+						((Artifact.ArtifactBuff) b).charge(this, 0.334f);
+					}
+				}
+			}
+		}
 
         if (subClass == HeroSubClass.OCCULTIST && GoatClone.findClone() == null){
         	GoatClone.spawnClone();
@@ -1355,7 +1429,12 @@ public class Hero extends Char {
 		//TODO improve this when I have proper damage source logic
 		if (belongings.armor != null && belongings.armor.hasGlyph(AntiMagic.class, this)
 				&& AntiMagic.RESISTS.contains(src.getClass())){
-			dmg -= AntiMagic.drRoll(belongings.armor.buffedLvl());
+			dmg -= AntiMagic.drRoll(belongings.armor.enchantLevel());
+		}
+
+		if (belongings.armor instanceof ScoutArmor &&
+			belongings.armor.level() == 2){
+			dmg *= 1.75;
 		}
 
 		int preHP = HP + shielding();

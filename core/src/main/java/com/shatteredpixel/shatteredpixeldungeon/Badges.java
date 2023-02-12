@@ -58,7 +58,6 @@ public class Badges {
 		ALL_WEAPONS_IDENTIFIED( 16 ),
 		ALL_ARMOR_IDENTIFIED( 17 ),
 		ALL_WANDS_IDENTIFIED( 18 ),
-		ALL_RINGS_IDENTIFIED( 19 ),
 		ALL_ARTIFACTS_IDENTIFIED( 20 ),
 		ALL_POTIONS_IDENTIFIED( 21 ),
 		ALL_SCROLLS_IDENTIFIED( 22 ),
@@ -186,7 +185,7 @@ public class Badges {
 	
 	private static final HashSet<String> removedBadges = new HashSet<>();
 	static{
-		//no recently removed badges
+		removedBadges.add("ALL_RINGS_IDENTIFIED");
 	}
 
 	private static final HashMap<String, String> renamedBadges = new HashMap<>();

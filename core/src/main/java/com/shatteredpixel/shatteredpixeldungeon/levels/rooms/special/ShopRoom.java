@@ -191,7 +191,7 @@ public class ShopRoom extends SpecialRoom {
 		if (Dungeon.depth == Dungeon.chapterSize()*5+1) itemsToSpawn.add(new Amulet());
 		if (Dungeon.hero.lvl >= 12 && Dungeon.hero.subClass == null && Dungeon.hero.heroClass != HeroClass.ADVENTURER) itemsToSpawn.add( new TomeOfMastery());
 		if (Dungeon.hero.lvl >= 21 && Dungeon.hero.belongings.armor != null &&
-			!(Dungeon.hero.belongings.armor instanceof ClassArmor) && Dungeon.hero.heroClass != HeroClass.ADVENTURER) itemsToSpawn.add( new ArmorKit());
+			!(Dungeon.hero.belongings.armor instanceof ClassArmor) && Dungeon.hero.heroClass != HeroClass.ADVENTURER) itemsToSpawn.add( new KingsCrown());
 
 		Item rare;
 		switch (Random.Int(5)){

@@ -37,12 +37,15 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.Wet;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.DeathMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DwarfKing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GhostChicken;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.MailArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
@@ -300,6 +303,16 @@ public abstract class Char extends Actor {
 				dmg = endure.adjustDamageTaken(dmg);
 			}
 
+			//friendly endure
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure.EndureTracker endure2 = buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure.EndureTracker.class);
+			if (endure != null) dmg = (int) endure2.damageFactor(dmg);
+
+			//enemy endure
+			endure2 = enemy.buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure.EndureTracker.class);
+			if (endure2 != null){
+				dmg = (int) endure2.adjustDamageTaken(dmg);
+			}
+
 			if (enemy.buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dmg *= 1.4f;
 
 			if (buff(PotionOfAdrenalineSurge.SurgeTracker.class) != null){
@@ -339,6 +352,15 @@ public abstract class Char extends Actor {
 			// This matters as defence procs can sometimes inflict self-damage, such as armor glyphs.
 			if (!enemy.isAlive()){
 				return true;
+			}
+
+			if (enemy instanceof Hero && ((Hero) enemy).belongings.armor instanceof MailArmor &&
+				((Hero) enemy).belongings.armor.level() == 1){
+				Viscosity.DeferedDamage deferred = Buff.affect( enemy, Viscosity.DeferedDamage.class );
+				deferred.prolong( effectiveDamage );
+
+				enemy.sprite.showStatus( CharSprite.WARNING, Messages.get(Viscosity.class, "deferred", effectiveDamage) );
+				effectiveDamage = -1;
 			}
 
 			enemy.damage( effectiveDamage, this );
@@ -422,7 +444,7 @@ public abstract class Char extends Actor {
 		}
 
 		float acuRoll = 0;
-		for (int i = 0; i < defender.attackRolls(); i++) {
+		for (int i = 0; i < attacker.attackRolls(); i++) {
 			float roll = Random.Float(acuStat);
 			if (roll > acuRoll){
 				acuRoll = roll;
@@ -542,6 +564,11 @@ public abstract class Char extends Actor {
 			dmg = endure.adjustDamageTaken(dmg);
 		}
 
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure.EndureTracker endure2 = buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure.EndureTracker.class);
+		if (endure2 != null){
+			dmg = endure2.enforceDamagetakenLimit(dmg);
+		}
+
 		if (!(src instanceof DwarfKing.KingDamager)) {
 			for (ChampionEnemy buff : buffs(ChampionEnemy.class)) {
 				dmg = (int) Math.ceil(dmg * buff.damageTakenFactor());
@@ -610,6 +637,12 @@ public abstract class Char extends Actor {
         if (src instanceof Wand && !Dungeon.level.heroFOV[pos] && Dungeon.hero.hasTalent(Talent.UNSIGHTED)){
         	dmg *= 1 + Dungeon.hero.pointsInTalent(Talent.UNSIGHTED)*0.2f;
 		}
+		if (alignment != Alignment.ALLY && this.buff(DeathMark.DeathMarkTracker.class) != null){
+			dmg *= 1.5f;
+		}
+		if (this instanceof Hero && ((Hero) this).belongings.armor instanceof ConjurerArmor &&
+			((Hero) this).belongings.armor.level() == 2)
+			dmg *= 1.5f;
 
 		Class<?> srcClass = src.getClass();
 		if (isImmune( srcClass )) {
@@ -670,6 +703,8 @@ public abstract class Char extends Actor {
 				Dungeon.level.drop(new Scrap(), pos).sprite.drop();
 			}
 			die( src );
+		} else if (HP == 0 && buff(DeathMark.DeathMarkTracker.class) != null){
+			DeathMark.processFearTheReaper(this);
 		}
 	}
 	
@@ -682,9 +717,14 @@ public abstract class Char extends Actor {
 		destroy();
 		if (src != Chasm.class) sprite.die();
 	}
-	
+
+	//we cache this info to prevent having to call buff(...) in isAlive.
+	//This is relevant because we call isAlive during drawing, which has both performance
+	//and thread coordination implications
+	public boolean deathMarked = false;
+
 	public boolean isAlive() {
-		return HP > 0;
+		return HP > 0 || deathMarked;
 	}
 	
 	@Override
@@ -919,7 +959,7 @@ public abstract class Char extends Actor {
 	public boolean isInvulnerable( Class effect ){
 		if (this instanceof Mob) {
 			for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
-				if (mob.fieldOfView != null && Dungeon.level.insideMap(pos) && mob.fieldOfView[pos] && mob.buff(ChampionEnemy.Paladin.class) != null
+				if (mob.fieldOfView != null && pos < mob.fieldOfView.length && mob.fieldOfView[pos] && mob.buff(ChampionEnemy.Paladin.class) != null
 						&& mob != this) {
 					return true;
 				}
