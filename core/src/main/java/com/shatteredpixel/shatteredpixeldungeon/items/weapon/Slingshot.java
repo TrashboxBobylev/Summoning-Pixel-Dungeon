@@ -60,6 +60,7 @@ public class Slingshot extends Weapon {
         usesTargeting = true;
         levelKnown = true;
         bones = false;
+        unique = true;
         Stone.slingshot = this;
     }
 
