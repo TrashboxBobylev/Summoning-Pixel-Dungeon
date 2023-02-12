@@ -178,16 +178,18 @@ public class Armor extends EquipableItem implements Tierable {
 
 	@Override
 	public int image() {
-		if (Dungeon.hero.armorAbility != null && Dungeon.hero.belongings.armor == this){
-			switch (Dungeon.hero.heroClass){
-				case WARRIOR:
-					return ItemSpriteSheet.ARMOR_WARRIOR;
-				case MAGE:
-					return ItemSpriteSheet.ARMOR_MAGE;
-				case ROGUE:
-					return ItemSpriteSheet.ARMOR_ROGUE;
-				case HUNTRESS:
-					return ItemSpriteSheet.ARMOR_HUNTRESS;
+		if (Dungeon.hero != null) {
+			if (Dungeon.hero.armorAbility != null && Dungeon.hero.belongings.armor == this) {
+				switch (Dungeon.hero.heroClass) {
+					case WARRIOR:
+						return ItemSpriteSheet.ARMOR_WARRIOR;
+					case MAGE:
+						return ItemSpriteSheet.ARMOR_MAGE;
+					case ROGUE:
+						return ItemSpriteSheet.ARMOR_ROGUE;
+					case HUNTRESS:
+						return ItemSpriteSheet.ARMOR_HUNTRESS;
+				}
 			}
 		}
 		return super.image();
