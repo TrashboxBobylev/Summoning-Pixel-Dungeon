@@ -44,7 +44,7 @@ public class Attunement extends Buff{
         float value = 2.5f;
         if (Dungeon.hero.belongings.armor instanceof ConjurerArmor &&
                 (Dungeon.hero.belongings.armor.level() == 2))
-            value *= 3f;
+            value *= 2f;
         return value * ((Dungeon.hero.HT - Dungeon.hero.HP * 1f) / (Dungeon.hero.HT * 1f));
     }
 
