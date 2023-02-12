@@ -1,1 +1,1 @@
-1.2.3a includes fixes and improvements to stability.
+1.2.4 introduces ranking mechanic for armor, some armor abilities and a lot of bugfixes.
