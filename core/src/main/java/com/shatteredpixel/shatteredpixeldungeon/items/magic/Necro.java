@@ -54,7 +54,7 @@ public class Necro extends ConjurerSpell {
         Char ch = Actor.findChar(trajectory.collisionPos);
         if ((ch instanceof Minion || ch instanceof DriedRose.GhostHero || ch instanceof WandOfLivingEarth.EarthGuardian ||
                 ch instanceof WandOfWarding.Ward || (ch instanceof WardingWraith && ch.alignment == Char.Alignment.ALLY))
-                    && ch.isAlive()){
+                    && Dungeon.hero.buff(NecromancyCD.class) == null && ch.isAlive()){
             Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);
             int healing = heal();
             ch.sprite.emitter().burst(Speck.factory(Speck.STEAM), 20);
