@@ -332,6 +332,7 @@ public class Dragon extends AbyssalMob {
 
             EXP = 5;
             maxLvl = -2;
+            flying = true;
 
             properties.add(Property.DEMONIC);
             properties.add(Property.FIERY);
