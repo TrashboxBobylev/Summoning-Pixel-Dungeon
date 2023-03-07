@@ -45,7 +45,7 @@ public class KiHealing extends AdHocSpell {
     }
 
     @Override
-    public void effect(Hero hero) {
+    public boolean effect(Hero hero) {
         hero.sprite.operate(hero.pos, new Callback() {
             @Override
             public void call() {

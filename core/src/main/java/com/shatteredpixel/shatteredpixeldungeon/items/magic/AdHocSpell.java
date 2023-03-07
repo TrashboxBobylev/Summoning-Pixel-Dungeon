@@ -38,7 +38,7 @@ public abstract class AdHocSpell extends ConjurerSpell {
         //do nothing
     }
 
-    abstract public void effect(Hero hero);
+    abstract public boolean effect(Hero hero);
 
     @Override
     public void execute(final Hero hero, String action ) {
@@ -50,13 +50,14 @@ public abstract class AdHocSpell extends ConjurerSpell {
             if (tryToZap(Dungeon.hero)) {
                 curUser = Dungeon.hero;
                 curItem = this;
-                curUser.mana -= manaCost();
-                Invisibility.dispel();
-                curUser.busy();
+                if (effect(curUser)) {
+                    curUser.mana -= manaCost();
+                    Invisibility.dispel();
+                    curUser.busy();
+                    if (!(this instanceof KiHealing))
+                        curUser.spendAndNext(1f);
+                }
                 updateQuickslot();
-                effect(curUser);
-                if (!(this instanceof KiHealing))
-                    curUser.spendAndNext(1f);
             }
 
         } else

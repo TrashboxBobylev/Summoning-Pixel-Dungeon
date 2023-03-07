@@ -55,7 +55,7 @@ public class Shards extends AdHocSpell {
     private HashMap<Callback, Mob> targets = new HashMap<>();
 
     @Override
-    public void effect(Hero hero) {
+    public boolean effect(Hero hero) {
         for (Mob mob : Dungeon.level.mobs) {
             if (Dungeon.level.distance(curUser.pos, mob.pos) <= 8
                     && Dungeon.level.heroFOV[mob.pos]
@@ -99,11 +99,12 @@ public class Shards extends AdHocSpell {
 
         if (targets.size() == 0) {
             GLog.warning( Messages.get(this, "no_enemies") );
-            return;
+            return false;
         }
 
         curUser.sprite.zap( curUser.pos );
         curUser.busy();
+        return true;
     }
 
     private float buff(){

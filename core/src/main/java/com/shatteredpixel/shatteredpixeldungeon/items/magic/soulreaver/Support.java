@@ -44,7 +44,7 @@ public class Support extends AdHocSpell {
     }
 
     @Override
-    public void effect(Hero hero) {
+    public boolean effect(Hero hero) {
         Sample.INSTANCE.play(Assets.Sounds.READ);
         HolyAuraBuff aura = Buff.affect(hero, HolyAuraBuff.class, duration());
         aura.healingRate = healingRate();
@@ -56,6 +56,7 @@ public class Support extends AdHocSpell {
         if (shieldingRate() != 0) Buff.affect(hero, ConstantShielding.class);
         Buff.affect(hero, ManaStealing.class);
         hero.spendAndNext(1f);
+        return true;
     }
 
     private int shieldingRate(){
