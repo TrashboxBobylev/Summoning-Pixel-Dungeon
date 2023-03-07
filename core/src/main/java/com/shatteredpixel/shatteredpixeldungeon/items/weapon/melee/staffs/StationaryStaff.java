@@ -32,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -141,13 +140,7 @@ public class StationaryStaff extends Staff {
             minion.attunement = requiredAttunement();
             minion.lvl = level();
             this.customizeMinion(minion);
-
-            //if we have upgraded robe, increase hp
-            float robeBonus = 1f;
-            if (curUser.belongings.armor instanceof ConjurerArmor && curUser.belongings.armor.level() > 0) {
-                robeBonus = 1f + curUser.belongings.armor.level() * 0.1f;
-            }
-            minion.setMaxHP((int) (hp(level()) * robeBonus));
+            minion.setMaxHP((int) (hp(level())));
         } else GLog.warning( Messages.get(Wand.class, "fizzles") );
         return true;
     }
