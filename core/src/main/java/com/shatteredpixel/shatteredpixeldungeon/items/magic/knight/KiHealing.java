@@ -59,6 +59,7 @@ public class KiHealing extends AdHocSpell {
             }
         });
         hero.busy();
+        return true;
     }
 
     private int intHeal(){
