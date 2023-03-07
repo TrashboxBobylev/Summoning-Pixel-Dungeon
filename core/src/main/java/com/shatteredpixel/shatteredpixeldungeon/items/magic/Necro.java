@@ -84,10 +84,10 @@ public class Necro extends ConjurerSpell {
 
     private int cd(){
         switch (level()){
-            case 1: return 800;
-            case 2: return 1000;
+            case 1: return 640;
+            case 2: return 800;
         }
-        return 250;
+        return 200;
     }
 
 
