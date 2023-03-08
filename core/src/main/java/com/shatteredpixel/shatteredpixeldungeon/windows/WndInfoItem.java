@@ -78,7 +78,7 @@ public class WndInfoItem extends Window {
 				color = ItemSlot.DEGRADED;
 			}
 		} else {
-			if (item.levelKnown) {
+			if (item.isIdentified()) {
 				switch (item.level()) {
 					case 0:
 						color = ItemSlot.BRONZE;

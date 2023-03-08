@@ -250,14 +250,6 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 
 	public abstract int STRReq(int lvl);
-
-	@Override
-	public int level() {
-		if (this instanceof SpiritBow || this instanceof SpiritBow.SpiritArrow){
-			return super.level();
-		}
-		return super.level() + (curseInfusionBonus ? 1 : 0);
-	}
 	
 	//overrides as other things can equip these
 	@Override

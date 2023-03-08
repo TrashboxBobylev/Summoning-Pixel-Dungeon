@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Chicken;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.Guidebook;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -429,13 +428,7 @@ public class Staff extends Weapon implements Tierable {
             minion.lvl = level();
             minion.minionClass = minionClass;
             minion.attunement = requiredAttunement();
-
-            //if we have upgraded robe, increase hp
-            float robeBonus = 1f;
-            if (curUser.belongings.armor instanceof ConjurerArmor && curUser.belongings.armor.level() > 0 && !(this instanceof ChickenStaff)) {
-                robeBonus = 1f + curUser.belongings.armor.level() * 0.1f;
-            }
-            minion.setMaxHP((int) (hp(level()) * robeBonus));
+            minion.setMaxHP((int) (hp(level())));
         } else GLog.warning( Messages.get(Staff.class, "fizzles") );
         wandUsed(false);
     }

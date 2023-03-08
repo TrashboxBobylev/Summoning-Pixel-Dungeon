@@ -44,7 +44,7 @@ public class Albino extends Rat {
 		loot = new MysteryMeat();
 		lootChance = 1f;
 
-		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT && buff(Chungus.class) == null){
 			Buff.affect(this, Chungus.class, 9999f);
 		}
 	}

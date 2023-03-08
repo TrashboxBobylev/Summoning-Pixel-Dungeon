@@ -177,6 +177,9 @@ public class Mimic extends Mob {
 			alignment = Alignment.ENEMY;
 			stopHiding();
 		}
+		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+			dmg *= 0.75f;
+		}
 		super.damage(dmg, src);
 	}
 
