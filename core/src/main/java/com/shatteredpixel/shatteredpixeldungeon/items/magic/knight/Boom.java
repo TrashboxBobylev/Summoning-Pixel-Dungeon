@@ -48,7 +48,7 @@ public class Boom extends AdHocSpell {
     }
 
     @Override
-    public void effect(Hero hero) {
+    public boolean effect(Hero hero) {
         GoatClone clone = GoatClone.findClone();
         if (clone != null){
             hero.spendAndNext(1f);
@@ -61,6 +61,9 @@ public class Boom extends AdHocSpell {
                     ch.damage((int) (Bomb.damageRoll()*damage()), clone);
                 }
             }
+            return true;
+        } else {
+            return false;
         }
     }
 

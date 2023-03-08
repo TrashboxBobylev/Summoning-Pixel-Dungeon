@@ -73,6 +73,29 @@ public class SummPDChanges {
     public static void add_1_2_4_Changes(ArrayList<ChangeInfo> changeInfos){
         ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "1.2.4", true, Window.TITLE_COLOR);
 
+        changes = ChangesScene.createChangeInfo(changeInfos, "1.2.4a", false, Window.WHITE);
+
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "Fixed:\n" +
+                        "_-_ Lack of tiering colors on conjurer's spells\n" +
+                        "_-_ Lack of Increased Difficulty abilities for DM-201 and mimics\n" +
+                        "_-_ Abilities not being uncursed with Scrolls of Upgrade\n" +
+                        "_-_ Albino rats growing more with each reload\n" +
+                        "_-_ Ability to use Dreemurr's Necromancy when cooldown is active\n" +
+                        "_-_ Dragon Spawns not being able to fly\n" +
+                        "_-_ Darkest Elf's description mentioning wrong type of summon they use\n" +
+                        "_-_ Shards of Despair not having string for missing enemies\n" +
+                        "_-_ Antarctic Touch saying \"cooldown\" instead of \"frostburn\" in its tier 3 description\n" +
+                        "_-_ Deltarune Robe still giving health to minions when ranked up\n" +
+                        "_-_ Certain spells still consuming mana even if they did not have any meaningful effect\n" +
+                        "_-_ Possessed Rodents not being undead creatures despite their appearance"
+        ));
+
+        changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+                "_-_ Decreased the cooldown of Dreemurr's Necromancy by 20%\n" +
+                        "_-_ Removed one level increase from Curse Infusion, in preparation to full tiering"
+        ));
+
         changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
         changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
                 "_-_ Released February 12th, 2022\n" +

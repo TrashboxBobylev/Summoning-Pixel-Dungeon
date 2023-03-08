@@ -372,11 +372,6 @@ public class Armor extends EquipableItem implements Tierable {
 		return stealth;
 	}
 	
-	@Override
-	public int level() {
-		return super.level() + (curseInfusionBonus ? 1 : 0);
-	}
-	
 	//other things can equip these, for now we assume only the hero can be affected by levelling debuffs
 	@Override
 	public int buffedLvl() {

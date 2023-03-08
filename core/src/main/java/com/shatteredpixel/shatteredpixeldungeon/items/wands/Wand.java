@@ -389,7 +389,7 @@ public abstract class Wand extends Weapon implements Tierable {
 		if (!cursed && curseInfusionBonus){
 			curseInfusionBonus = false;
 		}
-		return super.level() + (curseInfusionBonus ? 1 : 0);
+		return super.level();
 	}
 	
 	@Override

@@ -72,8 +72,7 @@ abstract public class ClassArmor extends Armor {
 			classArmor = new HuntressArmor();
 			break;
 		}
-		
-		classArmor.level(armor.level() - (armor.curseInfusionBonus ? 1 : 0));
+
 		classArmor.armorTier = armor.tier;
 		classArmor.augment = armor.augment;
 		classArmor.inscribe( armor.glyph );
