@@ -65,7 +65,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Unstable;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Cleaver;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
@@ -573,9 +572,6 @@ public class Hero extends Char {
 			}
 			if (wepDr > 0) dr += wepDr;
 		}
-
-		Blocking.BlockBuff block = buff(Blocking.BlockBuff.class);
-		if (block != null)              dr += block.blockingRoll();
 
 		if (Dungeon.isChallenged(Conducts.Conduct.KING)) dr += Random.NormalIntRange(0, Dungeon.hero.lvl/2);
 		

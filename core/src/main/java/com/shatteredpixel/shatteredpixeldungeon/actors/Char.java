@@ -63,6 +63,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFrost;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLightning;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Slingshot;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
@@ -496,6 +497,9 @@ public abstract class Char extends Actor {
 
 		Barkskin bark = buff(Barkskin.class);
 		if (bark != null)               def += bark.level();
+
+		Blocking.BlockBuff block = buff(Blocking.BlockBuff.class);
+		if (block != null)              def += block.blockingRoll();
 
 		if (buff(Shrink.class) != null || buff(TimedShrink.class) != null) def /= 2;
 
