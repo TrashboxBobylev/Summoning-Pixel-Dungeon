@@ -30,6 +30,5 @@ public class Sheep extends Minion{
     {
         spriteClass = SheepTankSprite.class;
         isTanky = true;
-        baseDefense = 3;
     }
 }
