@@ -389,7 +389,7 @@ public class Hero extends Char {
 
 	@Override
 	public boolean blockSound(float pitch) {
-		if ( (belongings.weapon != null && belongings.weapon.defenseFactor(this) >= 4) || buff(Block.class) != null){
+		if ( (belongings.weapon != null && belongings.weapon.defenseFactor(this) >= 3) || buff(Block.class) != null){
 			Sample.INSTANCE.play( Assets.Sounds.HIT_PARRY, 1, pitch);
 			return true;
 		}
@@ -567,9 +567,9 @@ public class Hero extends Char {
 			if (armDr > 0) dr += armDr;
 		}
 		if (belongings.weapon != null)  {
-			int wepDr = Random.NormalIntRange( 0 , belongings.weapon.defenseFactor( this ) );
+			int wepDr = belongings.weapon.defenseFactor( this );
 			if (STR() < ((Weapon)belongings.weapon).STRReq()){
-				wepDr -= 2*(((Weapon)belongings.weapon).STRReq() - STR());
+				wepDr -= (((Weapon) belongings.weapon).STRReq() - STR());
 			}
 			if (wepDr > 0) dr += wepDr;
 		}

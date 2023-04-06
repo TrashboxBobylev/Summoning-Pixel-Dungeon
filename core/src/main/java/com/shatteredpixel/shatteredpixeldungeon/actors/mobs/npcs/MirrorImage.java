@@ -189,12 +189,12 @@ public class MirrorImage extends NPC {
 	protected boolean canAttack(Char enemy) {
 		return super.canAttack(enemy) || (hero.belongings.weapon != null && hero.belongings.weapon.canReach(this, enemy.pos));
 	}
-	
+
 	@Override
-	public int drRoll() {
+	public int defenseValue() {
 		if (hero != null && hero.belongings.weapon != null){
-			return Random.NormalIntRange(0, hero.belongings.weapon.defenseFactor(this)/
-					(hero.pointsInTalent(Talent.TIME_TOGETHER) > 1 ? 1 : 2));
+			return hero.belongings.weapon.defenseFactor(this)/
+					(hero.pointsInTalent(Talent.TIME_TOGETHER) > 1 ? 1 : 2);
 		} else {
 			return 0;
 		}

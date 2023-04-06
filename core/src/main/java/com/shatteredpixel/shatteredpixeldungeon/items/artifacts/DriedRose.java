@@ -702,7 +702,7 @@ public class DriedRose extends Artifact {
 				block += rose.armor.defenseValue();
 			}
 			if (rose != null && rose.weapon != null){
-				block += Random.NormalIntRange( 0, rose.weapon.defenseFactor( this ));
+				block += rose.weapon.defenseFactor( this );
 			}
 			return block;
 		}
