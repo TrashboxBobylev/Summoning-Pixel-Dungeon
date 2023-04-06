@@ -539,9 +539,7 @@ public class Armor extends EquipableItem implements Tierable {
 	@Override
 	public String getTierMessage(int tier){
 		return Messages.get(this, "tier" + tier,
-				Math.round(defenseValue(powerLevel())*defenseLevel(tier-1)),
-				Math.round(defenseValue(powerLevel())*defenseLevel(tier-1))
-		);
+				Math.round(defenseValue(powerLevel())*defenseLevel(tier-1)));
 	}
 
 	public Armor inscribe( Glyph glyph ) {
