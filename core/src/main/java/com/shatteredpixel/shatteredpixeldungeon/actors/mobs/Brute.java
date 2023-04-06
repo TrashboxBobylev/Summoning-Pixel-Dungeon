@@ -74,10 +74,10 @@ public class Brute extends Mob {
 	public int attackSkill( Char target ) {
 		return 20;
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 8);
+	public int defenseValue() {
+		return 8;
 	}
 
 	@Override

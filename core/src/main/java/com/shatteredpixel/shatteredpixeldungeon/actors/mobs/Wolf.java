@@ -83,7 +83,7 @@ public class Wolf extends Mob {
     }
 
     @Override
-    public int drRoll() {
-        return Random.NormalIntRange(0, 6);
+    public int defenseValue() {
+        return 6;
     }
 }

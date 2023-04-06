@@ -68,12 +68,12 @@ public class Bat extends Mob {
 	public int attackSkill( Char target ) {
 		return 16;
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 4);
+	public int defenseValue() {
+		return 5;
 	}
-	
+
 	@Override
 	public int attackProc( Char enemy, int damage ) {
 		damage = super.attackProc( enemy, damage );

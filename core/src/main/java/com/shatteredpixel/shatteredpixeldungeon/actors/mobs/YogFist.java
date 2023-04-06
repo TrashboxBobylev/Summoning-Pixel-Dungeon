@@ -143,8 +143,8 @@ public abstract class YogFist extends Mob {
 	}
 
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 15);
+	public int defenseValue() {
+		return 15;
 	}
 
 	@Override

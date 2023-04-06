@@ -272,7 +272,6 @@ public abstract class Char extends Actor {
 			
 			int dr = enemy.drRoll();
 			boolean quivered = false;
-			if (enemy.buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dr *= 0.5f;
 			if (properties.contains(Property.IGNORE_ARMOR)) dr = 0;
 			if (enemy.buff(QuiverMark.class) != null && this instanceof Hero && ((Hero) this).belongings.weapon instanceof MissileWeapon) {
 				quivered = true;
@@ -321,7 +320,8 @@ public abstract class Char extends Actor {
 			}
 
 			int effectiveDamage = enemy.defenseProc( this, dmg );
-			effectiveDamage = Math.max( effectiveDamage - dr, 0 );
+			effectiveDamage = Math.max( effectiveDamage -
+					Random.NormalIntRange(Math.round(dr * 0.2f), Math.round(dr * 0.8f)), 0 );
 
 			if (Dungeon.isChallenged(Conducts.Conduct.KING) && alignment == Alignment.ALLY && this != Dungeon.hero){
 				effectiveDamage *= 1.5f;
@@ -492,6 +492,12 @@ public abstract class Char extends Actor {
 	}
 	
 	public int drRoll() {
+		int def = defenseValue();
+		if (buff(Shrink.class) != null || buff(TimedShrink.class) != null) def /= 2;
+		return def;
+	}
+
+	public int defenseValue(){
 		return 0;
 	}
 	

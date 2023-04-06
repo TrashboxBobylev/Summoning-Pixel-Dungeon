@@ -119,8 +119,8 @@ public class Statue extends Mob {
 	}
 
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, Dungeon.chapterSize() + weapon.defenseFactor(this));
+	public int defenseValue() {
+		return Dungeon.chapterSize() + weapon.defenseFactor(this);
 	}
 	
 	@Override

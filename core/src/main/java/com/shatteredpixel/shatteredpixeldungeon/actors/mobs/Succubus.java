@@ -170,10 +170,10 @@ public class Succubus extends Mob {
 	public int attackSkill( Char target ) {
 		return 40;
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 13);
+	public int defenseValue() {
+		return 13;
 	}
 
 	@Override

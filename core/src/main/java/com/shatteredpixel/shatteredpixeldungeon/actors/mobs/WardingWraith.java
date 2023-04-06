@@ -76,8 +76,8 @@ public class WardingWraith extends Mob implements Callback {
 	}
 
     @Override
-    public int drRoll() {
-        return Random.NormalIntRange(0, 5);
+    public int defenseValue() {
+        return 5;
     }
 	
 	@Override

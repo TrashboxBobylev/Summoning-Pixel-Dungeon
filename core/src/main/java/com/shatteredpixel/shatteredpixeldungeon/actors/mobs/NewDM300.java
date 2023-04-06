@@ -87,8 +87,8 @@ public class NewDM300 extends Mob {
 	}
 
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 10);
+	public int defenseValue() {
+		return 10;
 	}
 
 	public int pylonsActivated = 0;

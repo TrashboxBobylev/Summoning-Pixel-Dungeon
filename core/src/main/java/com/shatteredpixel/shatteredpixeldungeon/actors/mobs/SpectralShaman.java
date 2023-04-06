@@ -95,13 +95,13 @@ public class SpectralShaman extends Mob {
 		}
 		return 20;
 	}
-	
+
 	@Override
-	public int drRoll() {
+	public int defenseValue() {
 		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
-			return Random.NormalIntRange(4, 12);
+			return 13;
 		}
-		return Random.NormalIntRange(0, 8);
+		return 8;
 	}
 
 	public int pedestal(boolean left){

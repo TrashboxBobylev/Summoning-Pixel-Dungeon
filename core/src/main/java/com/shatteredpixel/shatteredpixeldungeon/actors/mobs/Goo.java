@@ -94,8 +94,8 @@ public class Goo extends Mob {
 	}
 
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 2);
+	public int defenseValue() {
+		return 3;
 	}
 
 	@Override

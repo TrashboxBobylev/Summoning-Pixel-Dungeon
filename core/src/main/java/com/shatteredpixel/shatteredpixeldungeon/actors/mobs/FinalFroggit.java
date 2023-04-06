@@ -70,10 +70,10 @@ public class FinalFroggit extends AbyssalMob implements Callback {
 	public int attackSkill( Char target ) {
 		return 30 + abyssLevel()*10;
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0 + abyssLevel()*10, 8 + abyssLevel()*15);
+	public int defenseValue() {
+		return 8 + abyssLevel()*15;
 	}
 	
 	@Override

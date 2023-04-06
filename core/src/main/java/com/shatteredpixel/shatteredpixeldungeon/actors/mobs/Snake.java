@@ -98,8 +98,8 @@ public class Snake extends Mob {
 	}
 
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 8);
+	public int defenseValue() {
+		return 8;
 	}
 	
 	@Override

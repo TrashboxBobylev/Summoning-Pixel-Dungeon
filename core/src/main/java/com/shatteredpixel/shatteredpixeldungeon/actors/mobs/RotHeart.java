@@ -32,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RotHeartSprite;
-import com.watabou.utils.Random;
 
 public class RotHeart extends Mob {
 
@@ -110,8 +109,8 @@ public class RotHeart extends Mob {
 	}
 
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 5);
+	public int defenseValue() {
+		return 5;
 	}
 	
 	{

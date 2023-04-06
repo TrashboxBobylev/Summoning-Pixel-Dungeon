@@ -74,10 +74,10 @@ public abstract class Elemental extends Mob {
 	public int attackSkill( Char target ) {
 		return 25;
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 5);
+	public int defenseValue() {
+		return 5;
 	}
 	
 	private int rangedCooldown = Random.NormalIntRange( 3, 5 );

@@ -108,10 +108,10 @@ public class NewTengu extends Mob {
 			return 20;
 		}
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 5);
+	public int defenseValue() {
+		return 5;
 	}
 
 	//Tengu is immune to debuffs and damage when removed from the level
