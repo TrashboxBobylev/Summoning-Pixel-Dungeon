@@ -489,7 +489,7 @@ public abstract class Minion extends Mob {
                 augmentOffense.damageFactor(Math.round(minDamage*empowering)),
                       augmentOffense.damageFactor(Math.round(maxDamage*empowering)),
                     HP, HT,
-                    drRoll());
+                    attunement);
     }
 
     public void onLeaving(){}
