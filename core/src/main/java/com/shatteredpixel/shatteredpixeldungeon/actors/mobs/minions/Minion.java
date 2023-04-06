@@ -62,9 +62,6 @@ public abstract class Minion extends Mob {
     public int maxDamage = 0;
     private float partialHealing;
 
-    public int baseMinDR = 0;
-    public int baseMaxDR = 0;
-
     public int baseDefense = 0;
 
     public int strength = 9;
@@ -110,12 +107,6 @@ public abstract class Minion extends Mob {
             defendPos( cell );
             return;
         }
-
-        //TODO commenting this out for now, it should be pointless??
-		/*if (fieldOfView == null || fieldOfView.length != Dungeon.level.length()){
-			fieldOfView = new boolean[Dungeon.level.length()];
-		}
-		Dungeon.level.updateFieldOfView( this, fieldOfView );*/
 
         if (Actor.findChar(cell) == Dungeon.hero){
             followHero();
@@ -237,11 +228,6 @@ public abstract class Minion extends Mob {
     public void setDamage(int min, int max){
         minDamage = min;
         maxDamage = max;
-    }
-
-    public void adjustDamage(int min, int max){
-        minDamage += min;
-        maxDamage += max;
     }
 
     @Override
