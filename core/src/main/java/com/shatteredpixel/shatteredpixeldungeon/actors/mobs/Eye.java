@@ -78,10 +78,10 @@ public class Eye extends Mob {
 	public int attackSkill( Char target ) {
 		return 30;
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 10);
+	public int defenseValue() {
+		return 10;
 	}
 	
 	private Ballistica beam;

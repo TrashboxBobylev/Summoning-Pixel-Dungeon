@@ -111,9 +111,9 @@ public class ExplodingTNT extends Mob {
     }
 
     @Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 1);
-	}
+    public int defenseValue() {
+        return 1;
+    }
 
     {
         immunities.add(Flashbang.class);

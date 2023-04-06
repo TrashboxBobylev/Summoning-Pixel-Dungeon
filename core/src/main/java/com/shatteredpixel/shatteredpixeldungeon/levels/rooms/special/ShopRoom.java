@@ -439,7 +439,7 @@ public class ShopRoom extends SpecialRoom {
             //don't try to give uber tiered items
         else if (armor.STRReq() > compArmor.STRReq() + 2) return false;
             //don't want to give too weak items
-        else return armor.DRMax() >= compArmor.DRMax();
+        else return armor.defenseValue() >= compArmor.defenseValue();
     }
 
 	protected static Armor ChooseArmor(Armor armor){

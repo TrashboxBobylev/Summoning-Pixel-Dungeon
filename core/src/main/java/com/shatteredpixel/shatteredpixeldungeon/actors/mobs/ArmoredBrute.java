@@ -44,12 +44,12 @@ public class ArmoredBrute extends Brute {
 		loot = Generator.Category.ARMOR;
 		lootChance = 1f;
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(6, 10);
+	public int defenseValue() {
+		return 15;
 	}
-	
+
 	@Override
 	protected void triggerEnrage () {
 		Buff.affect(this, ArmoredRage.class).setShield(HT/2 + 1);

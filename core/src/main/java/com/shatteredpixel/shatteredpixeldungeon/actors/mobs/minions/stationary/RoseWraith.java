@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.RoseWraithSprite;
 public class RoseWraith extends StationaryMinion {
     {
         spriteClass = RoseWraithSprite.class;
+        baseDefense = 2;
     }
 
     @Override

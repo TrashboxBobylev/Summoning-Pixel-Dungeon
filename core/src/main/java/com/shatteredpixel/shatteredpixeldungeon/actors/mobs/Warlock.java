@@ -72,10 +72,10 @@ public class Warlock extends Mob implements Callback {
 	public int attackSkill( Char target ) {
 		return 25;
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 8);
+	public int defenseValue() {
+		return 8;
 	}
 	
 	@Override

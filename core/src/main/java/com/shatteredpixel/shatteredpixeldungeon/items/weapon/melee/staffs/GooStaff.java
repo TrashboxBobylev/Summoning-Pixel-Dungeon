@@ -39,7 +39,10 @@ public class GooStaff extends Staff {
 
     @Override
     public void customizeMinion(Minion minion) {
-        minion.baseMinDR = 9 + level()*5;
-        minion.baseMaxDR = 14 + level()*7;
+        switch (level()){
+            case 0: minion.baseDefense = 10; break;
+            case 1: minion.baseDefense = 20; break;
+            case 2: minion.baseDefense = 30; break;
+        }
     }
 }

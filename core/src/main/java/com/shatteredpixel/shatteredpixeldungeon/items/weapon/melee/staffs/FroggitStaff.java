@@ -37,13 +37,4 @@ public class FroggitStaff extends Staff {
         setClass(Minion.MinionClass.MELEE);
     }
 
-    @Override
-    public void customizeMinion(Minion minion) {
-        switch (level()){
-            case 0: minion.baseMinDR = 2; minion.baseMaxDR = 2; break;
-            case 1: minion.baseMaxDR = 2; minion.baseMinDR = 2; break;
-            case 2: minion.baseMaxDR = 4; minion.baseMinDR = 4; break;
-        }
-    }
-
 }

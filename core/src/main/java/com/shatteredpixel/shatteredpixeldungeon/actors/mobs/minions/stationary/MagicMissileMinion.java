@@ -39,6 +39,7 @@ import com.watabou.utils.PathFinder;
 public class MagicMissileMinion extends StationaryMinion {
     {
         spriteClass = MagicMissileSprite.class;
+        baseDefense = 12;
     }
 
     @Override

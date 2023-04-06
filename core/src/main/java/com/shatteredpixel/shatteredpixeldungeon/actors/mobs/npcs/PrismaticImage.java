@@ -176,9 +176,9 @@ public class PrismaticImage extends NPC {
 	}
 	
 	@Override
-	public int drRoll() {
+	public int defenseValue() {
 		if (hero != null){
-			return hero.drRoll();
+			return hero.defenseValue();
 		} else {
 			return 0;
 		}

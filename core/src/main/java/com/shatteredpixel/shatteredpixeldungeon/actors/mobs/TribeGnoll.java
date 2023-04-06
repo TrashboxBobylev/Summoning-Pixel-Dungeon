@@ -57,10 +57,10 @@ public class TribeGnoll extends Mob {
 	public int attackSkill( Char target ) {
 		return 13;
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 3);
+	public int defenseValue() {
+		return 3;
 	}
 
 	@Override

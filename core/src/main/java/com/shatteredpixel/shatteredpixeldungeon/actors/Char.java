@@ -63,6 +63,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFrost;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLightning;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Slingshot;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
@@ -272,7 +273,6 @@ public abstract class Char extends Actor {
 			
 			int dr = enemy.drRoll();
 			boolean quivered = false;
-			if (enemy.buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dr *= 0.5f;
 			if (properties.contains(Property.IGNORE_ARMOR)) dr = 0;
 			if (enemy.buff(QuiverMark.class) != null && this instanceof Hero && ((Hero) this).belongings.weapon instanceof MissileWeapon) {
 				quivered = true;
@@ -321,7 +321,8 @@ public abstract class Char extends Actor {
 			}
 
 			int effectiveDamage = enemy.defenseProc( this, dmg );
-			effectiveDamage = Math.max( effectiveDamage - dr, 0 );
+			effectiveDamage = Math.max( effectiveDamage -
+					Random.NormalIntRange(Math.round(dr * 0.2f), Math.round(dr * 0.8f)), 0 );
 
 			if (Dungeon.isChallenged(Conducts.Conduct.KING) && alignment == Alignment.ALLY && this != Dungeon.hero){
 				effectiveDamage *= 1.5f;
@@ -492,6 +493,20 @@ public abstract class Char extends Actor {
 	}
 	
 	public int drRoll() {
+		int def = defenseValue();
+
+		Barkskin bark = buff(Barkskin.class);
+		if (bark != null)               def += bark.level();
+
+		Blocking.BlockBuff block = buff(Blocking.BlockBuff.class);
+		if (block != null)              def += block.blockingRoll();
+
+		if (buff(Shrink.class) != null || buff(TimedShrink.class) != null) def /= 2;
+
+		return def;
+	}
+
+	public int defenseValue(){
 		return 0;
 	}
 	

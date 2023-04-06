@@ -118,28 +118,15 @@ public class ScoutArmor extends Armor {
         return 0f;
     }
 
-    public int DRMax(int lvl){
+    @Override
+    public int defenseValue(int lvl){
         int val;
-
-        int max = 3 + lvl + augment.defenseFactor(lvl);
-        if (lvl > max){
-            val = ((lvl - max)+1)/2;
-        } else {
-            val = max;
-        }
-
-        return val;
-    }
-
-    public int DRMin(int lvl){
-        int val;
-
-        int max = DRMax(lvl);
-        if (lvl >= max){
-            val = (lvl + 1 - max);
-        } else {
-            val = lvl + 1;
-        }
+            int max = 3 + lvl + augment.defenseFactor(lvl);
+            if (lvl > max){
+                val = ((lvl - max)+1)/2;
+            } else {
+                val = max;
+            }
 
         return val;
     }

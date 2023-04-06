@@ -138,11 +138,6 @@ public class AbyssalNightmare extends AbyssalMob {
 	public int damageRoll() {
 		return Random.NormalIntRange( 20 + abyssLevel()*6, 36 + abyssLevel()*14 );
 	}
-
-	@Override
-	public int drRoll() {
-		return 0;
-	}
 	
 	@Override
 	public int attackSkill( Char target ) {

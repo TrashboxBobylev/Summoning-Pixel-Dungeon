@@ -49,10 +49,10 @@ public class Rat extends Mob {
 	public int attackSkill( Char target ) {
 		return 8;
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 1);
+	public int defenseValue() {
+		return 1;
 	}
 
 	@Override

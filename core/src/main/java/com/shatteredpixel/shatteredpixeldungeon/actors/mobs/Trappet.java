@@ -68,10 +68,10 @@ public class Trappet extends AbyssalMob implements Callback {
 	public int attackSkill( Char target ) {
 		return 34 + abyssLevel();
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0 + abyssLevel()*3, 7 + abyssLevel()*11);
+	public int defenseValue() {
+		return 7 + abyssLevel()*10;
 	}
 	
 	@Override

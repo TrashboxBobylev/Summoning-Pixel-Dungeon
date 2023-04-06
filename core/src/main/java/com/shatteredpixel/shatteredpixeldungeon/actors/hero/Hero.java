@@ -65,7 +65,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Unstable;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Cleaver;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
@@ -389,7 +388,7 @@ public class Hero extends Char {
 
 	@Override
 	public boolean blockSound(float pitch) {
-		if ( (belongings.weapon != null && belongings.weapon.defenseFactor(this) >= 4) || buff(Block.class) != null){
+		if ( (belongings.weapon != null && belongings.weapon.defenseFactor(this) >= 3) || buff(Block.class) != null){
 			Sample.INSTANCE.play( Assets.Sounds.HIT_PARRY, 1, pitch);
 			return true;
 		}
@@ -549,34 +548,30 @@ public class Hero extends Char {
 	}
 
 	@Override
-	public int drRoll() {
+	public int defenseValue() {
 		int dr = 0;
 
 		if (belongings.armor != null) {
-			int armDr = Random.NormalIntRange( belongings.armor.DRMin(), belongings.armor.DRMax());
-			if (belongings.armor instanceof PlateArmor &&
-				belongings.armor.level() == 2){
-				int armDr2 = Random.NormalIntRange( belongings.armor.DRMin(), belongings.armor.DRMax());
-				if (armDr2 > armDr)
-					armDr = armDr2;
-			}
+			int armDr = belongings.armor.defenseValue();
+			//TODO rework t3 plate gimmick for new defense mechanic
+//			if (belongings.armor instanceof PlateArmor &&
+//				belongings.armor.level() == 2){
+//				int armDr2 = Random.NormalIntRange( belongings.armor.DRMin(), belongings.armor.DRMax());
+//				if (armDr2 > armDr)
+//					armDr = armDr2;
+//			}
 			if (STR() < belongings.armor.STRReq()){
 				armDr -= 2*(belongings.armor.STRReq() - STR());
 			}
 			if (armDr > 0) dr += armDr;
 		}
-		if (belongings.weapon != null)  {
-			int wepDr = Random.NormalIntRange( 0 , belongings.weapon.defenseFactor( this ) );
-			if (STR() < ((Weapon)belongings.weapon).STRReq()){
-				wepDr -= 2*(((Weapon)belongings.weapon).STRReq() - STR());
+		if (belongings.weapon != null) {
+			int wepDr = belongings.weapon.defenseFactor(this);
+			if (STR() < ((Weapon) belongings.weapon).STRReq()) {
+				wepDr -= (((Weapon) belongings.weapon).STRReq() - STR());
 			}
 			if (wepDr > 0) dr += wepDr;
 		}
-		Barkskin bark = buff(Barkskin.class);
-		if (bark != null)               dr += Random.NormalIntRange( 0 , bark.level() );
-
-		Blocking.BlockBuff block = buff(Blocking.BlockBuff.class);
-		if (block != null)              dr += block.blockingRoll();
 
 		if (Dungeon.isChallenged(Conducts.Conduct.KING)) dr += Random.NormalIntRange(0, Dungeon.hero.lvl/2);
 		
@@ -821,7 +816,7 @@ public class Hero extends Char {
 		}
 		
 		if( subClass == HeroSubClass.WARDEN && Dungeon.level.map[pos] == Terrain.FURROWED_GRASS){
-			Buff.affect(this, Barkskin.class).set( lvl + 5, 1 );
+			Buff.affect(this, Barkskin.class).set( Math.round(lvl*0.85f), 1 );
 		}
 
         if (heroClass == HeroClass.CONJURER) {

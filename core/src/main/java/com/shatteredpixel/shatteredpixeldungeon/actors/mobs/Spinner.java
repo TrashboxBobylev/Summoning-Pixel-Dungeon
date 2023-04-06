@@ -80,8 +80,8 @@ public class Spinner extends Mob {
 	}
 
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 4);
+	public int defenseValue() {
+		return 4;
 	}
 
 	@Override

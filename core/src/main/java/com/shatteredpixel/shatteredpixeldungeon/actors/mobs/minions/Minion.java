@@ -62,10 +62,7 @@ public abstract class Minion extends Mob {
     public int maxDamage = 0;
     private float partialHealing;
 
-    protected int minDR = 0;
-    protected int maxDR = 0;
-    public int baseMinDR = 0;
-    public int baseMaxDR = 0;
+    public int baseDefense = 0;
 
     public int strength = 9;
     protected int defendingPos = -1;
@@ -111,12 +108,6 @@ public abstract class Minion extends Mob {
             return;
         }
 
-        //TODO commenting this out for now, it should be pointless??
-		/*if (fieldOfView == null || fieldOfView.length != Dungeon.level.length()){
-			fieldOfView = new boolean[Dungeon.level.length()];
-		}
-		Dungeon.level.updateFieldOfView( this, fieldOfView );*/
-
         if (Actor.findChar(cell) == Dungeon.hero){
             followHero();
 
@@ -141,8 +132,7 @@ public abstract class Minion extends Mob {
         super.storeInBundle(bundle);
         bundle.put("minDamage", minDamage);
         bundle.put("maxDamage", maxDamage);
-        bundle.put("minDR", baseMinDR);
-        bundle.put("maxDR", baseMaxDR);
+        bundle.put("maxDR", baseDefense);
         bundle.put("str", strength);
         bundle.put("att", attunement);
         bundle.put("enchantment", enchantment);
@@ -161,8 +151,7 @@ public abstract class Minion extends Mob {
 
         minDamage = bundle.getInt("minDamage");
         maxDamage = bundle.getInt("maxDamage");
-        baseMinDR = bundle.getInt("minDR");
-        baseMaxDR = bundle.getInt("maxDR");
+        baseDefense = bundle.getInt("maxDR");
         strength = bundle.getInt("str");
         attunement = bundle.getInt("att");
         lvl = bundle.getInt("level");
@@ -241,11 +230,6 @@ public abstract class Minion extends Mob {
         maxDamage = max;
     }
 
-    public void adjustDamage(int min, int max){
-        minDamage += min;
-        maxDamage += max;
-    }
-
     @Override
     public int damageRoll() {
         int i = Random.NormalIntRange(minDamage, maxDamage);
@@ -256,11 +240,6 @@ public abstract class Minion extends Mob {
             Dungeon.hero.belongings.armor.level() == 2)
             i *= 1.25f;
         return augmentOffense.damageFactor(i);
-    }
-
-    public void setDR(int min, int max){
-        minDR = min;
-        maxDR = max;
     }
 
     @Override
@@ -275,16 +254,9 @@ public abstract class Minion extends Mob {
         super.damage(dmg, src);
     }
 
-    public void adjustDR(int min, int max){
-        minDR += Math.max(-2, min);
-        maxDR += Math.max(-4, max);
-    }
-
     @Override
-    public int drRoll() {
-        int i = Random.NormalIntRange(minDR + baseMinDR, maxDR + baseMaxDR);
-        if (buff(AdditionalDefense.class) != null) i += Random.NormalIntRange(1, 5);
-        return augmentOffense.damageFactor(i);
+    public int defenseValue() {
+        return augmentOffense.damageFactor(baseDefense);
     }
 
     @Override
@@ -503,8 +475,7 @@ public abstract class Minion extends Mob {
                 augmentOffense.damageFactor(Math.round(minDamage*empowering)),
                       augmentOffense.damageFactor(Math.round(maxDamage*empowering)),
                     HP, HT,
-                    augmentOffense.damageFactor(minDR + baseMinDR),
-                    augmentOffense.damageFactor(maxDR + baseMaxDR));
+                    attunement);
     }
 
     public void onLeaving(){}

@@ -1057,7 +1057,7 @@ public abstract class Mob extends Char {
 			if (!harderDesc.equals(""))
 				desc += "\n\n" + harderDesc;
 		}
-		desc += "\n\n" + Messages.get(Mob.class, "stats", HP, HT, attackSkill(Dungeon.hero), defenseSkillDesc());
+		desc += "\n\n" + Messages.get(Mob.class, "stats", HP, HT, attackSkill(Dungeon.hero), defenseSkillDesc(), drRoll());
 		for (Buff b : buffs(ChampionEnemy.class)){
 			desc += "\n\n_" + Messages.titleCase(b.toString()) + "_\n" + b.desc();
 		}

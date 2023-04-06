@@ -70,11 +70,6 @@ public class Crab extends Mob {
 	public int attackSkill( Char target ) {
 		return 13;
 	}
-	
-	@Override
-	public int drRoll() {
-		return 0;
-	}
 
     @Override
     protected float attackDelay() {

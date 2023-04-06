@@ -63,10 +63,10 @@ public abstract class Shaman extends Mob {
 	public int attackSkill( Char target ) {
 		return 18;
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 6);
+	public int defenseValue() {
+		return 6;
 	}
 	
 	@Override

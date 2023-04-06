@@ -68,10 +68,10 @@ public class SpectreRat extends AbyssalMob implements Callback {
 	public int attackSkill( Char target ) {
 		return 36 + abyssLevel();
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0 + abyssLevel()*5, 10 + abyssLevel()*10);
+	public int defenseValue() {
+		return 10 + abyssLevel()*10;
 	}
 	
 	@Override
