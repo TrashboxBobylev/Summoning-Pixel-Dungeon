@@ -42,8 +42,7 @@ import com.watabou.utils.Random;
 public class GasterBlaster extends StationaryMinion {
     {
         spriteClass = BlasterSprite.class;
-        baseMinDR = 15;
-        baseMaxDR = 18;
+        baseDefense = 18;
     }
 
     @Override

@@ -35,8 +35,7 @@ import com.watabou.utils.Random;
 public class Slime extends Minion {
     {
         spriteClass = SlimeMinionSprite.class;
-        baseMinDR = 2;
-        baseMaxDR = 4;
+        baseDefense = 3;
     }
 
     @Override

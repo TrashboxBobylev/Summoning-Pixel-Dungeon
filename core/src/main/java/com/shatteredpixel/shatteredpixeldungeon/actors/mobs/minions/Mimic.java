@@ -34,8 +34,6 @@ public class Mimic extends Minion {
     //deprecated for eternity
     {
         spriteClass = MimicSprite.class;
-        baseMinDR = 1;
-        baseMaxDR = 3;
     }
 
     @Override

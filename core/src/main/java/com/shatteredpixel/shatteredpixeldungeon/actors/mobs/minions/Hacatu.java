@@ -49,8 +49,7 @@ public class Hacatu extends Minion implements Callback {
 		
 		properties.add(Property.ELECTRIC);
 		properties.add(Property.RANGED);
-		baseMaxDR = 12;
-		baseMinDR = 0;
+		baseDefense = 11;
 		baseSpeed = 1.75f;
 	}
 	

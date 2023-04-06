@@ -37,8 +37,7 @@ public class Robo extends Minion{
     {
         spriteClass = DM150Sprite.class;
         isTanky = true;
-        baseMinDR = 12;
-        baseMaxDR = 22;
+        baseDefense = 17;
     }
 
     @Override

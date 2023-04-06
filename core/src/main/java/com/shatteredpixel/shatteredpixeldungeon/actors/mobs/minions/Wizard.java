@@ -40,17 +40,14 @@ import java.util.HashMap;
 import static com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.ELEMENT_RESISTS;
 
 public class Wizard extends Minion implements Callback {
-	
-	private static final float TIME_TO_ZAP	= 1f;
-	
+
 	{
 		spriteClass = WizardSprite.class;
 
 		properties.add(Property.UNDEAD);
 		properties.add(Property.RANGED);
 
-		baseMaxDR = 10;
-		baseMinDR = 2;
+		baseDefense = 8;
 	}
 	
 	@Override

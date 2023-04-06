@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.GrayRatSprite;
 public class GrayRat extends Minion {
     {
         spriteClass = GrayRatSprite.class;
+        baseDefense = 2;
     }
 
     //his fur are invulnerable to common hazards

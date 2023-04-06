@@ -30,10 +30,7 @@ public class Froggit extends Minion {
 
 	{
 		spriteClass = FroggitSprite.class;
-		baseMaxDR = 1;
+		baseDefense = 1;
 	}
-
-
-	
 
 }
