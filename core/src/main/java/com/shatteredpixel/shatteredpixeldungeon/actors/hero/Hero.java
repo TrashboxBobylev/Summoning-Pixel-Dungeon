@@ -574,7 +574,7 @@ public class Hero extends Char {
 			if (wepDr > 0) dr += wepDr;
 		}
 		Barkskin bark = buff(Barkskin.class);
-		if (bark != null)               dr += Random.NormalIntRange( 0 , bark.level() );
+		if (bark != null)               dr += bark.level();
 
 		Blocking.BlockBuff block = buff(Blocking.BlockBuff.class);
 		if (block != null)              dr += block.blockingRoll();
@@ -822,7 +822,7 @@ public class Hero extends Char {
 		}
 		
 		if( subClass == HeroSubClass.WARDEN && Dungeon.level.map[pos] == Terrain.FURROWED_GRASS){
-			Buff.affect(this, Barkskin.class).set( lvl + 5, 1 );
+			Buff.affect(this, Barkskin.class).set( Math.round(lvl*0.85f), 1 );
 		}
 
         if (heroClass == HeroClass.CONJURER) {

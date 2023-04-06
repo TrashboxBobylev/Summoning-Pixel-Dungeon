@@ -34,14 +34,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blocking;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MirrorSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.Random;
 
 public class MirrorImage extends NPC {
 	
@@ -121,12 +119,6 @@ public class MirrorImage extends NPC {
 
 	public int damageHero(Char enemy, int damage, float armorPercent) {
 		int dr = Math.round(hero.drRoll() * armorPercent);
-		Barkskin bark = hero.buff(Barkskin.class);
-		if (bark != null)   dr += Random.NormalIntRange( 0 , bark.level() );
-
-		Blocking.BlockBuff block = hero.buff(Blocking.BlockBuff.class);
-		if (block != null)  dr += block.blockingRoll();
-		if (hero.buff(Shrink.class) != null || hero.buff(TimedShrink.class) != null) dr *= 0.5f;
 		if (enemy != null)
 			damage = hero.defenseProc(enemy, damage);
 		damage -= dr;
