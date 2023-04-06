@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.FroggitSprite;
 
 public class Froggit extends Minion {
@@ -33,4 +34,15 @@ public class Froggit extends Minion {
 		baseDefense = 1;
 	}
 
+	@Override
+	public int defenseProc(Char enemy, int damage) {
+		int dr = 0;
+		switch (lvl){
+			case 0: case 1:
+				dr = 2; break;
+			case 2:
+				dr = 4; break;
+		}
+		return super.defenseProc(enemy, damage - dr);
+	}
 }
