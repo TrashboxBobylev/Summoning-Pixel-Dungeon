@@ -51,7 +51,7 @@ import java.util.Locale;
 public class WndHero extends WndTabbed {
 	
 	private static final int WIDTH		= 135;
-	private static final int HEIGHT		= 140;
+	private static final int HEIGHT		= 155;
 	
 	private StatsTab stats;
 	private TalentsTab talents;
@@ -151,6 +151,7 @@ public class WndHero extends WndTabbed {
 			statSlot( Messages.get(this, "attunement"), (hero.maxAttunement() - hero.usedAttunement()) + "/" + hero.maxAttunement() );
 			statSlot(Messages.get(this, "accuracy"), hero.attackSkill(new Rat()));
 			statSlot(Messages.get(this, "evasion"), hero.defenseSkill(new Rat()));
+			statSlot(Messages.get(this, "defense"), hero.drRoll());
 
 			pos += GAP;
 
