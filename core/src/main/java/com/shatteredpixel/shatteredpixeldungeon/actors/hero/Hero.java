@@ -549,17 +549,18 @@ public class Hero extends Char {
 	}
 
 	@Override
-	public int drRoll() {
+	public int defenseValue() {
 		int dr = 0;
 
 		if (belongings.armor != null) {
-			int armDr = Random.NormalIntRange( belongings.armor.DRMin(), belongings.armor.DRMax());
-			if (belongings.armor instanceof PlateArmor &&
-				belongings.armor.level() == 2){
-				int armDr2 = Random.NormalIntRange( belongings.armor.DRMin(), belongings.armor.DRMax());
-				if (armDr2 > armDr)
-					armDr = armDr2;
-			}
+			int armDr = belongings.armor.defenseValue();
+			//TODO rework t3 plate gimmick for new defense mechanic
+//			if (belongings.armor instanceof PlateArmor &&
+//				belongings.armor.level() == 2){
+//				int armDr2 = Random.NormalIntRange( belongings.armor.DRMin(), belongings.armor.DRMax());
+//				if (armDr2 > armDr)
+//					armDr = armDr2;
+//			}
 			if (STR() < belongings.armor.STRReq()){
 				armDr -= 2*(belongings.armor.STRReq() - STR());
 			}

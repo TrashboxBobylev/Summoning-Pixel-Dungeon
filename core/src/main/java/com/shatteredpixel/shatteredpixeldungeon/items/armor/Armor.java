@@ -273,8 +273,24 @@ public class Armor extends EquipableItem implements Tierable {
 		return 0f;
 	}
 
-	public final int DRMax(){
-		return Math.round(DRMax(powerLevel())*defenseLevel(level()));
+	public final int defenseValue(){
+		return Math.round(defenseValue(powerLevel())*defenseLevel(level()));
+	}
+
+	public int defenseValue(int lvl){
+		int val;
+		if (Dungeon.isChallenged(Conducts.Conduct.NO_ARMOR)){
+			val = 1 + tier + lvl + augment.defenseFactor(lvl);
+		} else {
+			int max = tier * (2 + lvl) + augment.defenseFactor(lvl);
+			if (lvl > max){
+				val = ((lvl - max)+1)/2;
+			} else {
+				val = max;
+			}
+		}
+
+		return val;
 	}
 
 	public int DRMax(int lvl){
@@ -293,26 +309,6 @@ public class Armor extends EquipableItem implements Tierable {
 		return val;
 	}
 
-	public int DRMin(){
-		return Math.round(DRMin(powerLevel())*defenseLevel(level()));
-	}
-
-	public int DRMin(int lvl){
-		int val;
-		if (Dungeon.isChallenged(Conducts.Conduct.NO_ARMOR)){
-			val = 0;
-		} else {
-			int max = DRMax(lvl);
-			if (lvl >= max){
-				val = (lvl - max);
-			} else {
-				val = lvl;
-			}
-		}
-
-		return val;
-	}
-	
 	public float evasionFactor( Char owner, float evasion ){
 		
 		if (hasGlyph(Stone.class, owner) && !((Stone)glyph).testingEvasion()){
@@ -440,13 +436,13 @@ public class Armor extends EquipableItem implements Tierable {
 		String info = desc();
 		
 		if (levelKnown) {
-			info += "\n\n" + Messages.get(Armor.class, "curr_absorb", DRMin(), DRMax(), STRReq());
+			info += "\n\n" + Messages.get(Armor.class, "curr_absorb", defenseValue(), STRReq());
 			
 			if (STRReq() > Dungeon.hero.STR()) {
 				info += " " + Messages.get(Armor.class, "too_heavy");
 			}
 		} else {
-			info += "\n\n" + Messages.get(Armor.class, "avg_absorb", DRMin(0), DRMax(0), STRReq(0));
+			info += "\n\n" + Messages.get(Armor.class, "avg_absorb", defenseValue(0), STRReq(0));
 
 			if (STRReq(0) > Dungeon.hero.STR()) {
 				info += " " + Messages.get(Armor.class, "probably_too_heavy");
@@ -543,8 +539,8 @@ public class Armor extends EquipableItem implements Tierable {
 	@Override
 	public String getTierMessage(int tier){
 		return Messages.get(this, "tier" + tier,
-				Math.round(DRMin(powerLevel())*defenseLevel(tier-1)),
-				Math.round(DRMax(powerLevel())*defenseLevel(tier-1))
+				Math.round(defenseValue(powerLevel())*defenseLevel(tier-1)),
+				Math.round(defenseValue(powerLevel())*defenseLevel(tier-1))
 		);
 	}
 
