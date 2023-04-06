@@ -493,7 +493,12 @@ public abstract class Char extends Actor {
 	
 	public int drRoll() {
 		int def = defenseValue();
+
+		Barkskin bark = buff(Barkskin.class);
+		if (bark != null)               def += bark.level();
+
 		if (buff(Shrink.class) != null || buff(TimedShrink.class) != null) def /= 2;
+
 		return def;
 	}
 

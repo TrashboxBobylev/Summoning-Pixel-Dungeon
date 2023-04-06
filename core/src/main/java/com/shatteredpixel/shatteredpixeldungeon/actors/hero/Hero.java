@@ -566,15 +566,13 @@ public class Hero extends Char {
 			}
 			if (armDr > 0) dr += armDr;
 		}
-		if (belongings.weapon != null)  {
-			int wepDr = belongings.weapon.defenseFactor( this );
-			if (STR() < ((Weapon)belongings.weapon).STRReq()){
+		if (belongings.weapon != null) {
+			int wepDr = belongings.weapon.defenseFactor(this);
+			if (STR() < ((Weapon) belongings.weapon).STRReq()) {
 				wepDr -= (((Weapon) belongings.weapon).STRReq() - STR());
 			}
 			if (wepDr > 0) dr += wepDr;
 		}
-		Barkskin bark = buff(Barkskin.class);
-		if (bark != null)               dr += bark.level();
 
 		Blocking.BlockBuff block = buff(Blocking.BlockBuff.class);
 		if (block != null)              dr += block.blockingRoll();
