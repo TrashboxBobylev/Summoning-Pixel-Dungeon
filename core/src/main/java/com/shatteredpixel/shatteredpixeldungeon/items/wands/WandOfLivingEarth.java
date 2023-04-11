@@ -374,6 +374,15 @@ public class WandOfLivingEarth extends DamageWand {
 		}
 
 		@Override
+		public int defenseValue() {
+			if (Dungeon.isChallenged(Conducts.Conduct.NO_ARMOR)){
+				return 2;
+			} else {
+				return 5 + wandLevel/3;
+			}
+		}
+
+		@Override
 		public String description() {
 			if (Dungeon.isChallenged(Conducts.Conduct.NO_ARMOR)){
 				return Messages.get(this, "desc", 1, 2, HP, HT);

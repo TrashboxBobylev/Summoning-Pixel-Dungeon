@@ -326,9 +326,9 @@ public class WandOfWarding extends Wand {
 		}
 
 		@Override
-		public int drRoll() {
+		public int defenseValue() {
 			if (tier > 3){
-				return Math.round(Random.NormalIntRange(0, 3 + Dungeon.depth/2) / (7f - tier));
+				return Math.round((2 + Dungeon.depth/3f) / (6f - tier));
 			} else {
 				return 0;
 			}
