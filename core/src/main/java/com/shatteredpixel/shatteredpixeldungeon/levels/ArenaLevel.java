@@ -29,8 +29,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
@@ -47,7 +47,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.sewerboss.SewerBossExitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.*;
@@ -235,24 +234,23 @@ public class ArenaLevel extends RegularLevel {
         }
 
         if (Dungeon.hero.hasTalent(Talent.SPECIAL_DELIVERY)){
-            Talent.SpecialDeliveryCount dropped = Buff.affect(Dungeon.hero, Talent.SpecialDeliveryCount.class);
-            if (dropped.count() < 1 + Dungeon.hero.pointsInTalent(Talent.SPECIAL_DELIVERY)){
-                int cell;
-                do {
-                    cell = randomDropCell(SpecialRoom.class);
-                } while (room(cell) instanceof SecretRoom);
-                if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
-                    map[cell] = Terrain.GRASS;
-                    losBlocking[cell] = false;
-                }
-                // give anything that is not gold
+            ArrayList<Item> dropList = new ArrayList<>();
+            for (int count = 0; count < 1 + Dungeon.hero.pointsInTalent(Talent.SPECIAL_DELIVERY); count++){
                 Item droppy;
                 do {
                     droppy = Generator.random();
                 } while (droppy instanceof Gold);
-                drop( droppy, cell).type = Heap.Type.CHEST;
-                dropped.countUp(1);
+                dropList.add(droppy);
             }
+            int cell;
+            do {
+                cell = randomDropCell();
+            } while (room(cell) instanceof SecretRoom);
+            if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
+                map[cell] = Terrain.GRASS;
+                losBlocking[cell] = false;
+            }
+            Mimic.spawnAt(cell, dropList);
         }
 
         Random.popGenerator();

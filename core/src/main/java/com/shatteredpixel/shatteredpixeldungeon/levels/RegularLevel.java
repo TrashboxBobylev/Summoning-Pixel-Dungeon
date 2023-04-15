@@ -30,7 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GoldenMimic;
@@ -469,32 +468,29 @@ public abstract class RegularLevel extends Level {
 		}
 
 		if (Dungeon.hero.hasTalent(Talent.SPECIAL_DELIVERY)){
-			Talent.SpecialDeliveryCount dropped = Buff.affect(Dungeon.hero, Talent.SpecialDeliveryCount.class);
-			if (dropped.count() < 1 + Dungeon.hero.pointsInTalent(Talent.SPECIAL_DELIVERY)){
-				int cell;
-				int tries = 100;
-				boolean valid;
+			ArrayList<Item> dropList = new ArrayList<>();
+			for (int count = 0; count < 1 + Dungeon.hero.pointsInTalent(Talent.SPECIAL_DELIVERY); count++){
+				Item droppy;
 				do {
-					cell = randomDropCell(SpecialRoom.class);
-					valid = cell != -1 && !(room(cell) instanceof SecretRoom)
-							&& !(room(cell) instanceof ShopRoom)
-							&& map[cell] != Terrain.EMPTY_SP
-							&& map[cell] != Terrain.WATER
-							&& map[cell] != Terrain.PEDESTAL;
-				} while (tries-- > 0 && !valid);
-				if (valid) {
-					if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
-						map[cell] = Terrain.GRASS;
-						losBlocking[cell] = false;
-					}
-					// give anything that is not gold
-					Item droppy;
-					do {
-						droppy = Generator.random();
-					} while (droppy instanceof Gold);
-					drop( droppy, cell).type = Heap.Type.CHEST;
-					dropped.countUp(1);
+					droppy = Generator.random();
+				} while (droppy instanceof Gold);
+				dropList.add(droppy);
+			}
+			int cell;
+			int tries = 100;
+			boolean valid;
+			do {
+				cell = randomDropCell();
+				valid = cell != -1 && !(room(cell) instanceof SecretRoom)
+						&& !(room(cell) instanceof ShopRoom)
+						&& map[cell] != Terrain.PEDESTAL;
+			} while (tries-- > 0 && !valid);
+			if (valid) {
+				if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
+					map[cell] = Terrain.GRASS;
+					losBlocking[cell] = false;
 				}
+				Mimic.spawnAt(cell, dropList);
 			}
 		}
 

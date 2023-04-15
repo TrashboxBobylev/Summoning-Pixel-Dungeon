@@ -144,7 +144,6 @@ public enum Talent {
         public int icon() { return BuffIndicator.SLOW; }
         public void tintIcon(Image icon) { icon.hardlight(0.15f, 0.2f, 0.5f); }
     }
-    public static class SpecialDeliveryCount extends CounterBuff{}
     public static class SuckerPunchTracker extends Buff{}
     public static class AcutenessTracker extends CounterBuff{}
     public static class DirectiveTracker extends FlavourBuff{}

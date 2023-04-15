@@ -198,9 +198,9 @@ public class Mimic extends Mob {
 	@Override
 	public int damageRoll() {
 		if (alignment == Alignment.NEUTRAL){
-			return Random.NormalIntRange( 2 + 2*level, 2 + 2*level);
+			return Random.NormalIntRange( 3 + 2*level, 3 + 2*level);
 		} else {
-			return Random.NormalIntRange( 1 + level, 2 + 2*level);
+			return Random.NormalIntRange( 2 + level, 3 + 2*level);
 		}
 	}
 
@@ -234,7 +234,7 @@ public class Mimic extends Mob {
 	}
 	
 	public void adjustStats( int level ) {
-		HP = HT = (1 + level) * 6;
+		HP = HT = (2 + level) * 6;
 		defenseSkill = 2 + level/2;
 		
 		enemySeen = true;
