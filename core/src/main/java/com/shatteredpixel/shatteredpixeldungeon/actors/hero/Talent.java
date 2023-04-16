@@ -164,7 +164,7 @@ public enum Talent {
     }
     public static class LethalMomentumTracker extends FlavourBuff{}
 
-    public static final int MAX_TALENT_TIERS = 2;
+    public static final int MAX_TALENT_TIERS = 3;
 
     public static int onAttackProc(Hero hero, Char enemy, int damage){
         if (hero.hasTalent(Talent.COLD_FRONT)
@@ -240,13 +240,13 @@ public enum Talent {
         }
 
         tierTalents.clear();
-//
-//        Collections.addAll(tierTalents, DOG_BREEDING, NUCLEAR_RAGE, SNIPER_PATIENCE, ARCANE_CLOAK, ARMORED_ARMADA, TIMEBENDING, LUST_AND_DUST, TOWER_OF_POWER, JUST_ONE_MORE_TILE, NEVER_GONNA_GIVE_YOU_UP, ASSASSINATION, SPEED_SHOES, BREAD_AND_CIRCUSES, COMET_FALL, SPYDER_MAN, DETERMINED, MY_SUNSHINE, OLYMPIC_SKILLS);
-//       for (Talent talent : tierTalents){
-//            talents.get(2).put(talent, 0);
-//        }
-//
-//        tierTalents.clear();
+
+        Collections.addAll(tierTalents, DOG_BREEDING, NUCLEAR_RAGE, SNIPER_PATIENCE, ARCANE_CLOAK, ARMORED_ARMADA, TIMEBENDING, LUST_AND_DUST, TOWER_OF_POWER, JUST_ONE_MORE_TILE, NEVER_GONNA_GIVE_YOU_UP, ASSASSINATION, SPEED_SHOES, BREAD_AND_CIRCUSES, COMET_FALL, SPYDER_MAN, DETERMINED, MY_SUNSHINE, OLYMPIC_SKILLS);
+       for (Talent talent : tierTalents){
+            talents.get(2).put(talent, 0);
+        }
+
+        tierTalents.clear();
 
     }
 
@@ -261,20 +261,20 @@ public enum Talent {
             talents.add(new LinkedHashMap<>());
         }
 
-//        ArrayList<Talent> tierTalents = new ArrayList<>();
-//        switch (cls){
-//            case ASSASSIN:
-//                Collections.addAll(tierTalents, REAL_KNIFE_MASTER, BLOOD_DRIVE, UNSETTLING_GAZE, SUPPORT_POTION, WITCHING_STRIKE, SILENCE_OF_LAMBS);
-//                break;
-//            case FREERUNNER:
-//                Collections.addAll(tierTalents, BLESSING_OF_SANITY, GUIDANCE_FLAME, SPEEDY_STEALTH, THAUMATURGY, SHARP_VISION, CHEMISTRY_DEGREE);
-//                break;
-//        }
-//
-//        for (Talent talent : tierTalents){
-//            talents.get(2).put(talent, 0);
-//        }
-//        tierTalents.clear();
+        ArrayList<Talent> tierTalents = new ArrayList<>();
+        switch (cls){
+            case ASSASSIN:
+                Collections.addAll(tierTalents, REAL_KNIFE_MASTER, BLOOD_DRIVE, UNSETTLING_GAZE, SUPPORT_POTION, WITCHING_STRIKE, SILENCE_OF_LAMBS);
+                break;
+            case FREERUNNER:
+                Collections.addAll(tierTalents, BLESSING_OF_SANITY, GUIDANCE_FLAME, SPEEDY_STEALTH, THAUMATURGY, SHARP_VISION, CHEMISTRY_DEGREE);
+                break;
+        }
+
+        for (Talent talent : tierTalents){
+            talents.get(2).put(talent, 0);
+        }
+        tierTalents.clear();
     }
 
     private static final String TALENT_TIER = "talents_tier_";
