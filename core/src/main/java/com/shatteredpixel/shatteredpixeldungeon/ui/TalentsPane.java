@@ -91,10 +91,10 @@ public class TalentsPane extends ScrollPane {
             blockText = PixelScene.renderTextBlock(Messages.get(this, "unlock_tier2"), 6);
         } else if (tiersAvailable == 2) {
             blockText = PixelScene.renderTextBlock(Messages.get(this, "unlock_tier3"), 6);
-        } else {
-            blockText = PixelScene.renderTextBlock(Messages.get(this, "coming_soon"), 6);
         }
-        content.add(blockText);
+
+        if (blockText != null)
+            content.add(blockText);
     }
 
     @Override
@@ -117,13 +117,17 @@ public class TalentsPane extends ScrollPane {
 
         float bottom = Math.max(height, top + 20);
 
-        blocker.x = 0;
-        blocker.y = top;
-        blocker.size(width, bottom - top);
-
-        blockText.maxWidth((int)width);
-        blockText.align(RenderedTextBlock.CENTER_ALIGN);
-        blockText.setPos((width - blockText.width())/2f, blocker.y + (bottom - blocker.y - blockText.height())/2);
+        if (blockText != null) {
+            blocker.x = 0;
+            blocker.y = top;
+            blocker.size(width, bottom - top);
+            blockText.maxWidth((int) width);
+            blockText.align(RenderedTextBlock.CENTER_ALIGN);
+            blockText.setPos((width - blockText.width()) / 2f, blocker.y + (bottom - blocker.y - blockText.height()) / 2);
+        } else {
+            bottom = Math.max(height, top);
+            blocker.visible = false;
+        }
 
         content.setSize(width, bottom);
     }
