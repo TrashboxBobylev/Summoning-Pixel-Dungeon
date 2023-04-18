@@ -110,5 +110,10 @@ public class Fadeleaf extends Plant {
 
 			plantClass = Fadeleaf.class;
 		}
+
+		@Override
+		public int sunValue() {
+			return 75;
+		}
 	}
 }

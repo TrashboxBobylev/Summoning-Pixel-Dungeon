@@ -840,6 +840,12 @@ public class Hero extends Char {
         	GoatClone.spawnClone();
 		}
 
+		if (hasTalent(Talent.MY_SUNSHINE)){
+			if (Dungeon.level.openSpace[pos]){
+				Buff.affect(this, Talent.MySunshineTracker.class);
+			}
+		}
+
 		return actResult;
 	}
 	

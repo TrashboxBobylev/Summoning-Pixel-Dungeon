@@ -64,5 +64,10 @@ public class Firebloom extends Plant {
 
 			plantClass = Firebloom.class;
 		}
+
+		@Override
+		public int sunValue() {
+			return 100;
+		}
 	}
 }

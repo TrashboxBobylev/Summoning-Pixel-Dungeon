@@ -41,6 +41,7 @@ public class SpellSprite extends Image {
 	public static final int MASTERY		= 3;
 	public static final int BERSERK     = 4;
 	public static final int SHIELD      = 5;
+	public static final int LIGHT       = 6;
 	
 	private static final int SIZE	= 16;
 	
@@ -125,22 +126,27 @@ public class SpellSprite extends Image {
 		super.kill();
 		all.remove( target );
 	}
-	
+
 	public static void show( Char ch, int index ) {
-		
+		show(ch, index, 1, 1, 1);
+	}
+
+	public static void show( Char ch, int index, float r, float g, float b ) {
+
 		if (!ch.sprite.visible) {
 			return;
 		}
-		
+
 		SpellSprite old = all.get( ch );
 		if (old != null) {
 			old.kill();
 		}
-		
+
 		SpellSprite sprite = GameScene.spellSprite();
-		sprite.revive();
-		sprite.reset( index );
 		sprite.target = ch;
-		all.put( ch,  sprite );
+		sprite.reset( index );
+		sprite.hardlight(r, g, b);
+		sprite.revive();
+		all.put( ch, sprite );
 	}
 }

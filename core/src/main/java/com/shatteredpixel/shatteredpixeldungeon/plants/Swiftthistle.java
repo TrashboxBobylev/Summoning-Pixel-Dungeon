@@ -63,6 +63,11 @@ public class Swiftthistle extends Plant {
 			
 			plantClass = Swiftthistle.class;
 		}
+
+		@Override
+		public int sunValue() {
+			return 200;
+		}
 	}
 	
 	//FIXME lots of copypasta from time freeze here

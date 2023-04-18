@@ -57,5 +57,10 @@ public class Stormvine extends Plant {
 
 			plantClass = Stormvine.class;
 		}
+
+		@Override
+		public int sunValue() {
+			return 100;
+		}
 	}
 }

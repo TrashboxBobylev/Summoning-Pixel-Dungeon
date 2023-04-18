@@ -67,5 +67,10 @@ public class Dreamfoil extends Plant {
 
 			plantClass = Dreamfoil.class;
 		}
+
+		@Override
+		public int sunValue() {
+			return 100;
+		}
 	}
 }

@@ -24,21 +24,21 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CounterBuff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FrostBurn;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Scrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -163,6 +163,82 @@ public enum Talent {
         public void tintIcon(Image icon) { icon.hardlight(0.8f, 0.1f, 0.0f); }
     }
     public static class LethalMomentumTracker extends FlavourBuff{}
+    public static class MySunshineTracker extends CounterBuff{
+        public float iconFadePercent() { return Math.max(0, 1f - ((count()) / (timeRequired()))); }
+        public String toString() { return Messages.get(this, "name"); }
+
+        public String desc() {
+            return Messages.get(this, "desc", sunCount, dispTurns(timeRequired() - (count())), timeRequired());
+        }
+
+        public int icon() { return BuffIndicator.SUNSHINE; }
+
+        public int sunCount;
+
+        public static final int SUN_COLOR = 0xf6ff00;
+
+        public static int timeRequired(){
+            switch (Dungeon.hero.pointsInTalent(MY_SUNSHINE)){
+                case 0: case 1:
+                    return 30;
+                case 2:
+                    return 25;
+            }
+            return 0;
+        }
+
+        public static int sunObtained(){
+            switch (Dungeon.hero.pointsInTalent(MY_SUNSHINE)){
+                case 0:
+                    return 20;
+                case 1:
+                    return 25;
+                case 2:
+                    return 50;
+            }
+            return 0;
+        }
+
+        @Override
+        public boolean act() {
+            if (target.isAlive()) {
+                spend( TICK );
+                if (Dungeon.level.openSpace[Dungeon.hero.pos]){
+                    if (target.buff(Light.class) != null){
+                        SpellSprite.show(Dungeon.hero, SpellSprite.LIGHT, 0.95f, 1, 0);
+                        countUp(1.5f);
+                    } else {
+                        SpellSprite.show(Dungeon.hero, SpellSprite.LIGHT, 1, 1, 0);
+                        countUp(1);
+                    }
+                }
+                if (count() >= timeRequired()) {
+                    sunCount += sunObtained();
+                    countDown(timeRequired());
+                    Sample.INSTANCE.play(Assets.Sounds.CHARGEUP, 1f, 2f);
+                }
+            } else {
+                detach();
+                sunCount = 0;
+            }
+
+            return true;
+        }
+
+        private static final String SUN = "sunCount";
+
+        @Override
+        public void storeInBundle(Bundle bundle) {
+            super.storeInBundle(bundle);
+            bundle.put(SUN, sunCount);
+        }
+
+        @Override
+        public void restoreFromBundle(Bundle bundle) {
+            super.restoreFromBundle(bundle);
+            sunCount = bundle.getInt(SUN);
+        }
+    }
 
     public static final int MAX_TALENT_TIERS = 3;
 

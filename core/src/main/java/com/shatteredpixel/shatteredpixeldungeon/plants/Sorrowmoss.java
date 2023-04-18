@@ -63,5 +63,10 @@ public class Sorrowmoss extends Plant {
 
 			plantClass = Sorrowmoss.class;
 		}
+
+		@Override
+		public int sunValue() {
+			return 125;
+		}
 	}
 }
