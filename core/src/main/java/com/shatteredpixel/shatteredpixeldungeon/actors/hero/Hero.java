@@ -1614,7 +1614,7 @@ public class Hero extends Char {
 
 			search(false);
 
-			if (subClass == HeroSubClass.FREERUNNER || MomentumBoots.instance != null){
+			if (MomentumBoots.instance != null){
 				Buff.affect(this, Momentum.class).gainStack();
 			}
 			if (MirrorOfFates.isMirrorActive(this)){
