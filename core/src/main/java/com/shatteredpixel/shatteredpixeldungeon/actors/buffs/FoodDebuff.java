@@ -53,7 +53,7 @@ public class FoodDebuff extends Buff implements Hero.Doom  {
 		} else {
 			partialHP += fullHP / 50f;
 			while (partialHP > 1){
-				target.damage(1, this);
+				target.damage(1, Dungeon.hero.buff(Hunger.class));
 				partialHP--;
 				if (!target.isAlive()){
 					Dungeon.hero.die(Dungeon.hero.buff(Hunger.class));
