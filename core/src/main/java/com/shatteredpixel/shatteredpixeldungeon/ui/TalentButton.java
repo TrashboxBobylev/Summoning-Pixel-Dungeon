@@ -106,6 +106,8 @@ public class TalentButton extends Button {
 
         icon.x = x + 2;
         icon.y = y + 2;
+        if (tier == 3 && !talent.implementedYet())
+            icon.tint(0x80b5bfbf);
         PixelScene.align(icon);
     }
 
@@ -139,6 +141,8 @@ public class TalentButton extends Button {
     @Override
     protected void onPointerUp() {
         icon.resetColor();
+        if (tier == 3 && !talent.implementedYet())
+            icon.tint(0x80b5bfbf);
         bg.resetColor();
     }
 

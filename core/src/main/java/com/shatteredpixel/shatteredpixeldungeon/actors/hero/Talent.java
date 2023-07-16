@@ -82,7 +82,7 @@ public enum Talent {
     COMET_FALL(118, 3),
     SPYDER_MAN(119, 3),
     DETERMINED(120, 3),
-    MY_SUNSHINE(121, 3),
+    MY_SUNSHINE(121, 3, true),
     OLYMPIC_SKILLS(122, 3),
     REAL_KNIFE_MASTER(25, 3),
     BLOOD_DRIVE(26, 3),
@@ -99,6 +99,7 @@ public enum Talent {
 
     int icon;
     int maxPoints;
+    boolean t3_implemented = false;
 
     // tiers 1/2/3/4 start at levels 2/7/13/21
     public static int[] tierLevelThresholds = new int[]{0, 2, 7, 13, 21, 31};
@@ -112,12 +113,22 @@ public enum Talent {
         this.maxPoints = maxPoints;
     }
 
+    Talent( int icon, int maxPoints, boolean implemented ){
+        this.icon = icon;
+        this.maxPoints = maxPoints;
+        this.t3_implemented = implemented;
+    }
+
     public int icon(){
         return icon;
     }
 
     public int maxPoints(){
         return maxPoints;
+    }
+
+    public boolean implementedYet(){
+        return t3_implemented;
     }
 
     public String title(){
