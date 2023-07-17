@@ -404,26 +404,26 @@ public abstract class Minion extends Mob {
         return augmentOffense.delayFactor(delay);
     }
 
+    public static Char whatToFollow(Char follower, Char start) {
+        Char toFollow = start;
+        boolean[] passable = Dungeon.level.passable.clone();
+        PathFinder.buildDistanceMap(follower.pos, passable, Integer.MAX_VALUE);//No limit on distance
+        for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+            if (mob.alignment == follower.alignment &&
+                    PathFinder.distance[toFollow.pos] > PathFinder.distance[mob.pos] &&
+                    mob.following(toFollow)) {
+                toFollow = whatToFollow(follower, mob);
+            }
+            else {
+                return start;
+            }
+        }
+        return toFollow;
+    }
+
     //ported from DriedRose.java
     //minions will always move towards hero if enemies not here
     public class Wandering extends Mob.Wandering implements AiState{
-
-        private Char toFollow(Char start) {
-            Char toFollow = start;
-            boolean[] passable = Dungeon.level.passable.clone();
-            PathFinder.buildDistanceMap(pos, passable, Integer.MAX_VALUE);//No limit on distance
-            for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-                if (mob.alignment == alignment &&
-                        PathFinder.distance[toFollow.pos] > PathFinder.distance[mob.pos] &&
-                        mob.following(toFollow)) {
-                    toFollow = toFollow(mob);
-                }
-                else {
-                    return start;
-                }
-            }
-            return toFollow;
-        }
 
         @Override
         public boolean act( boolean enemyInFOV, boolean justAlerted ) {
@@ -442,7 +442,7 @@ public abstract class Minion extends Mob {
             } else {
 
                 enemySeen = false;
-                Char toFollow = toFollow(Dungeon.hero);
+                Char toFollow = whatToFollow(Minion.this, Dungeon.hero);
                 int oldPos = pos;
                 target = defendingPos != -1 ? defendingPos : toFollow.pos;
                 //always move towards the target when wandering
