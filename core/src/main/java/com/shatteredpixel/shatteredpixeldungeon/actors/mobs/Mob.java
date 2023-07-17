@@ -409,7 +409,7 @@ public abstract class Mob extends Char {
 
 				HashSet<Char> minions = new HashSet<>();
 				for (Char enemy : enemies){
-					if (enemy instanceof Minion) minions.add(enemy);
+					if (enemy instanceof Minion || enemy.buff(TalentAllyMark.class) != null) minions.add(enemy);
 				}
 				//go after the closest potential enemy, preferring the minion if two are equidistant
 				if (minions.size() > 0) return chooseClosest(minions);
@@ -1240,6 +1240,8 @@ public abstract class Mob extends Char {
 				} else if (enemy == null) {
 					sprite.showLost();
 					state = WANDERING;
+					if (buff(TalentAllyMark.class) != null)
+						state = FOLLOWING;
 					target = Dungeon.level.randomDestination( Mob.this );
 					if (hordeHead != -1 && Actor.findById(hordeHead) != null){
 						Mob hordeHead = (Mob) Actor.findById(Mob.this.hordeHead);
@@ -1283,6 +1285,8 @@ public abstract class Mob extends Char {
 							state = SLEEPING;
 						}
 						else state = WANDERING;
+						if (buff(TalentAllyMark.class) != null)
+							state = FOLLOWING;
 						target = Dungeon.level.randomDestination( Mob.this );
 						if (hordeHead != -1 && Actor.findById(hordeHead) != null){
 							Mob hordeHead = (Mob) Actor.findById(Mob.this.hordeHead);
@@ -1394,6 +1398,25 @@ public abstract class Mob extends Char {
 
 	}
 
+	public static class TalentAllyMark extends Buff {
+		@Override
+		public boolean attachTo(Char target) {
+			if (super.attachTo(target)){
+				target.alignment = Char.Alignment.ALLY;
+				((Mob) target).state = ((Mob) target).FOLLOWING;
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		@Override
+		public void fx(boolean on) {
+			if (on) target.sprite.add(CharSprite.State.SPIRIT);
+			else target.sprite.remove(CharSprite.State.SPIRIT);
+		}
+	}
+
 	public static class MagicalAttack {
 		public Mob caster;
 		public int damage;
@@ -1417,7 +1440,7 @@ public abstract class Mob extends Char {
 
 				//preserve intelligent allies if they are near the hero
 			} else if (mob.alignment == Alignment.ALLY
-					&& mob.intelligentAlly){
+					&& (mob.intelligentAlly || mob.buff(TalentAllyMark.class) != null)){
 				level.mobs.remove( mob );
 				if (mob instanceof Minion) ((Minion) mob).onLeaving();
 				heldAllies.add(mob);
@@ -1439,6 +1462,8 @@ public abstract class Mob extends Char {
 			for (Mob ally : heldAllies) {
 				level.mobs.add(ally);
 				ally.state = ally.WANDERING;
+				if (ally.buff(TalentAllyMark.class) != null)
+					ally.state = ally.FOLLOWING;
 
 				if (!candidatePositions.isEmpty()){
 					ally.pos = candidatePositions.remove(0);

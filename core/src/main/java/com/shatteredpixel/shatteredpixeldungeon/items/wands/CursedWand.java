@@ -35,8 +35,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GoldenMimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
 import com.shatteredpixel.shatteredpixeldungeon.effects.*;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
@@ -90,24 +92,53 @@ public class CursedWand {
 		});
 	}
 
+	public static boolean tryForTalentAlly(final int targetPos){
+		if (Dungeon.hero.hasTalent(Talent.NEVER_GONNA_GIVE_YOU_UP)){
+			Char target = Actor.findChar(targetPos);
+			if (target != null &&
+					(Random.Float() < CursedWand.talentAllyChance(Dungeon.hero.pointsInTalent(Talent.NEVER_GONNA_GIVE_YOU_UP), target))){
+				int previousHT = target.HT;
+				target.HT = target.HP = previousHT / 2;
+				Buff.affect(target, Mob.TalentAllyMark.class);
+				Sample.INSTANCE.play( Assets.Sounds.READ );
+				target.sprite.emitter().burst(MagicMissile.WhiteParticle.FACTORY, 15);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static float talentAllyChance(int tier, Char target){
+		switch (tier){
+			case 1: default:
+				return 0 + 0.15f * ((float)(target.HT - target.HP)/target.HT);
+			case 2:
+				return 0.03f + 0.22f * ((float)(target.HT - target.HP)/target.HT);
+			case 3:
+				return 0.075f + 0.375f * ((float)(target.HT - target.HP)/target.HT);
+		}
+	}
+
 	public static boolean cursedEffect(final Item origin, final Char user, final Char target){
 		return cursedEffect(origin, user, target.pos);
 	}
 
 	public static boolean cursedEffect(final Item origin, final Char user, final int targetPos){
-		if (!createOmniArtifact(targetPos, origin)){
+		if (!tryForTalentAlly(targetPos)) {
+			if (!createOmniArtifact(targetPos, origin)) {
 
-		switch (Random.chances(new float[]{COMMON_CHANCE, UNCOMMON_CHANCE, RARE_CHANCE, VERY_RARE_CHANCE})) {
-			case 0:
-			default:
-				return commonEffect(origin, user, targetPos);
-			case 1:
-				return uncommonEffect(origin, user, targetPos);
-			case 2:
-				return rareEffect(origin, user, targetPos);
-			case 3:
-				return veryRareEffect(origin, user, targetPos);
-		}
+				switch (Random.chances(new float[]{COMMON_CHANCE, UNCOMMON_CHANCE, RARE_CHANCE, VERY_RARE_CHANCE})) {
+					case 0:
+					default:
+						return commonEffect(origin, user, targetPos);
+					case 1:
+						return uncommonEffect(origin, user, targetPos);
+					case 2:
+						return rareEffect(origin, user, targetPos);
+					case 3:
+						return veryRareEffect(origin, user, targetPos);
+				}
+			}
 		}
 		return true;
 	}
