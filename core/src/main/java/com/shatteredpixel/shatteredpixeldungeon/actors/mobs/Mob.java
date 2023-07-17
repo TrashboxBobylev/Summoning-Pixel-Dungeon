@@ -167,6 +167,8 @@ public abstract class Mob extends Char {
 			this.state = FLEEING;
 		} else if (state.equals( Passive.TAG )) {
 			this.state = PASSIVE;
+		} else if (state.equals( Following.TAG)){
+			this.state = FOLLOWING;
 		}
 
 		enemySeen = bundle.getBoolean( SEEN );
@@ -1354,17 +1356,7 @@ public abstract class Mob extends Char {
 
 	public class Following extends Wandering implements AiState {
 
-		private Char toFollow(Char start) {
-			Char toFollow = start;
-			boolean[] passable = Dungeon.level.passable;
-			PathFinder.buildDistanceMap(pos, passable, Integer.MAX_VALUE);//No limit on distance
-			for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-				if (mob.alignment == alignment && PathFinder.distance[toFollow.pos] > PathFinder.distance[mob.pos] && mob.following(toFollow)) {
-					toFollow = toFollow(mob);//If we find a mob already following the target, ensure there is not a mob already following them. This allows even massive chains of allies to traverse corridors correctly.
-				}
-			}
-			return toFollow;
-		}
+		public static final String TAG	= "FOLLOWING";
 
 		@Override
 		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
@@ -1383,7 +1375,7 @@ public abstract class Mob extends Char {
 			} else {
 
 				enemySeen = false;
-				Char toFollow = toFollow(Dungeon.hero);
+				Char toFollow = Minion.whatToFollow(Mob.this, Dungeon.hero);
 				int oldPos = pos;
 				//always move towards the target when wandering
 				if (getCloser( target = toFollow.pos )) {
