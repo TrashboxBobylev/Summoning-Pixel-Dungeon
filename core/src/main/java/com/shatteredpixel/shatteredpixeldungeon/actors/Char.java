@@ -321,8 +321,7 @@ public abstract class Char extends Actor {
 			}
 
 			int effectiveDamage = enemy.defenseProc( this, dmg );
-			effectiveDamage = Math.max( effectiveDamage -
-					Random.NormalIntRange(Math.round(dr * 0.2f), Math.round(dr * 0.8f)), 0 );
+			effectiveDamage = Math.max( effectiveDamage - dr, 0 );
 
 			if (Dungeon.isChallenged(Conducts.Conduct.KING) && alignment == Alignment.ALLY && this != Dungeon.hero){
 				effectiveDamage *= 1.5f;
@@ -503,7 +502,7 @@ public abstract class Char extends Actor {
 
 		if (buff(Shrink.class) != null || buff(TimedShrink.class) != null) def /= 2;
 
-		return def;
+		return Random.NormalIntRange(Math.round(def * 0.2f), Math.round(def * 0.8f));
 	}
 
 	public int defenseValue(){
