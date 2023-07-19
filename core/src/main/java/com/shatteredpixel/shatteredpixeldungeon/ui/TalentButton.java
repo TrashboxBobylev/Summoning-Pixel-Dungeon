@@ -107,7 +107,7 @@ public class TalentButton extends Button {
         icon.x = x + 2;
         icon.y = y + 2;
         if (tier == 3 && !talent.implementedYet())
-            icon.tint(0x80b5bfbf);
+            icon.tint(0x93b5bfbf);
         PixelScene.align(icon);
     }
 
@@ -120,14 +120,14 @@ public class TalentButton extends Button {
                 && Dungeon.hero.isAlive()
                 && Dungeon.hero.talentPointsAvailable(tier) > 0
                 && Dungeon.hero.pointsInTalent(talent) < talent.maxPoints()){
-            ShatteredPixelDungeon.scene().addToFront(new WndInfoTalent(talent, pointsInTalent, new Callback() {
+            ShatteredPixelDungeon.scene().addToFront(new WndInfoTalent(talent, tier, pointsInTalent, new Callback() {
                 @Override
                 public void call() {
                     upgradeTalent();
                 }
             }));
         } else {
-            ShatteredPixelDungeon.scene().addToFront(new WndInfoTalent(talent, pointsInTalent, null));
+            ShatteredPixelDungeon.scene().addToFront(new WndInfoTalent(talent, tier, pointsInTalent, null));
         }
     }
 
