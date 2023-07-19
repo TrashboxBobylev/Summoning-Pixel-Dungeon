@@ -68,7 +68,7 @@ public enum Talent {
     WILD_SORCERY(94),
     TOXIC_RELATIONSHIP(95),
     DOG_BREEDING(82, 3),
-    NUCLEAR_RAGE(83, 3),
+    NUCLEAR_RAGE(83, 3, true),
     SNIPER_PATIENCE(84, 3),
     ARCANE_CLOAK(85, 3),
     ARMORED_ARMADA(86, 3),

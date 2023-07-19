@@ -52,9 +52,9 @@ public class Webbomb extends Bomb {
 		for (int i = 0; i < PathFinder.distance.length; i++) {
 			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
 				if (Dungeon.level.pit[i])
-					GameScene.add(Blob.seed(i, 5, Web.class));
+					GameScene.add(Blob.seed(i, Math.round(5*Bomb.nuclearBoost()), Web.class));
 				else
-					GameScene.add(Blob.seed(i, 30, Web.class));
+					GameScene.add(Blob.seed(i, Math.round(30*Bomb.nuclearBoost()), Web.class));
 				CellEmitter.get(i).burst(WebParticle.FACTORY, 3);
 			}
 		}

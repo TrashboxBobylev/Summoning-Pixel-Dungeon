@@ -63,7 +63,7 @@ public class Noisemaker extends Bomb {
                     //trim it to just be the part that goes past them
                     trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size()-1), Ballistica.PROJECTILE);
                     //knock them back along that ballistica
-                    WandOfBlastWave.throwChar(ch, trajectory, 3);
+                    WandOfBlastWave.throwChar(ch, trajectory, Math.round(3*Bomb.nuclearBoost()));
                 }
             }
         }

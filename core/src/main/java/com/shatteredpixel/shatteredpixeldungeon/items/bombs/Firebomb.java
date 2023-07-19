@@ -52,9 +52,9 @@ public class Firebomb extends Bomb {
 		for (int i = 0; i < PathFinder.distance.length; i++) {
 			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
 				if (Dungeon.level.pit[i])
-					GameScene.add(Blob.seed(i, 2, FireKeeper.class));
+					GameScene.add(Blob.seed(i, Math.round(2*Bomb.nuclearBoost()), FireKeeper.class));
 				else
-					GameScene.add(Blob.seed(i, 8, FireKeeper.class));
+					GameScene.add(Blob.seed(i, Math.round(8*Bomb.nuclearBoost()), FireKeeper.class));
 				CellEmitter.get(i).burst(FlameParticle.FACTORY, 8);
 			}
 		}

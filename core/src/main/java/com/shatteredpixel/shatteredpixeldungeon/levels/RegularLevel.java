@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.GuidePage;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
@@ -424,6 +425,8 @@ public abstract class RegularLevel extends Level {
 		}
 
 		if (Random.Int(10) < 2) itemsToSpawn.add(new Ropes().quantity(Random.Int(1, 3)));
+		if (Dungeon.depth % 2 == 0 && Dungeon.hero.pointsInTalent(Talent.NUCLEAR_RAGE) > 2)
+			addItemToSpawn(new Bomb().random());
 
 		for (Item item : itemsToSpawn) {
 			int cell = randomDropCell();

@@ -151,6 +151,7 @@ public class ShockBomb extends Bomb {
         if (numberOfUses > 30 && numberOfUses < 40) chance = 0.08f;
         if (numberOfUses > 40 && numberOfUses > 50) chance = 0.12f;
         if (numberOfUses > 50) chance = 0.24f;
+        chance /= Bomb.nuclearBoost();
         return chance;
     }
 
@@ -163,6 +164,7 @@ public class ShockBomb extends Bomb {
             dist = 4;
         else
             dist = 2;
+        dist *= Bomb.nuclearBoost();
 
         PathFinder.buildDistanceMap( ch.pos, BArray.not( Dungeon.level.solid, null ), dist );
         for (int i = 0; i < PathFinder.distance.length; i++) {
