@@ -176,7 +176,7 @@ public enum Talent {
         public static float damageBoost() { return 0.65f + 0.35f*Dungeon.hero.pointsInTalent(TOWER_OF_POWER);}
         public String toString() { return Messages.get(this, "name"); }
         public String desc() { return Messages.get(this, "desc", Math.floor((damageBoost()-1f)*100f)); }
-        public int icon() { return BuffIndicator.ARMOR; }
+        public int icon() { return BuffIndicator.ARMOR_GEN; }
         public void tintIcon(Image icon) { icon.hardlight(0.7f, 0.66f, 0.63f); }
 
         @Override
