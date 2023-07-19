@@ -73,7 +73,7 @@ public enum Talent {
     ARCANE_CLOAK(85, 3),
     ARMORED_ARMADA(86, 3),
     TIMEBENDING(87, 3),
-    LUST_AND_DUST(88, 3),
+    LUST_AND_DUST(88, 3, true),
     TOWER_OF_POWER(89, 3, true),
     JUST_ONE_MORE_TILE(90, 3),
     NEVER_GONNA_GIVE_YOU_UP(114, 3, true),
@@ -204,6 +204,8 @@ public enum Talent {
         public void tintIcon(Image icon) { icon.hardlight(0.8f, 0.1f, 0.0f); }
     }
     public static class LethalMomentumTracker extends FlavourBuff{}
+    public static class LustAndDustTracker extends Buff{}
+    public static class LustAndDustDebuffTracker extends Buff{}
     public static class MySunshineTracker extends CounterBuff{
         public float iconFadePercent() { return Math.max(0, 1f - ((count()) / (timeRequired()))); }
         public String toString() { return Messages.get(this, "name"); }

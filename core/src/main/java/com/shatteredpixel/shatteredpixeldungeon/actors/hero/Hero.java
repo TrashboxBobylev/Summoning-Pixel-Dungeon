@@ -105,6 +105,7 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 
@@ -1337,6 +1338,15 @@ public class Hero extends Char {
 		default:
 		}
 
+		if (pointsInTalent(Talent.LUST_AND_DUST) > 1){
+			ArrayList<Class<?extends FlavourBuff>> debuffs = new ArrayList<>(Arrays.asList(Vertigo.class));
+			if (pointsInTalent(Talent.LUST_AND_DUST) > 2)
+				debuffs.add(Hex.class);
+			for (Class<?extends FlavourBuff> buff: debuffs){
+				Buff.affect(enemy, buff, 5f);
+			}
+			Buff.affect(enemy, Talent.LustAndDustDebuffTracker.class);
+		}
 
 
 		return damage;

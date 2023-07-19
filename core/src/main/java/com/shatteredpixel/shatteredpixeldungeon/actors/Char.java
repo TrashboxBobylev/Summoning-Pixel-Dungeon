@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GhostChicken;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
@@ -652,6 +653,16 @@ public abstract class Char extends Actor {
 		}
 		Charm c = buff(Charm.class);
 		if (c != null){
+			if (isCharmedBy(Dungeon.hero) && Dungeon.hero.hasTalent(Talent.LUST_AND_DUST)){
+				int healAmt = Math.round(dmg * (0.20f + 0.05f * Dungeon.hero.pointsInTalent(Talent.LUST_AND_DUST)));
+				healAmt = Math.min( healAmt, Dungeon.hero.HT - Dungeon.hero.HP );
+
+				if (healAmt > 0 && Dungeon.hero.isAlive()) {
+					Dungeon.hero.HP += healAmt;
+					Dungeon.hero.sprite.emitter().start( Speck.factory( Speck.HEALING ), 0.4f, 1 );
+					Dungeon.hero.sprite.showStatus( CharSprite.POSITIVE, Integer.toString( healAmt ) );
+				}
+			}
 			c.recover();
 		}
 		if (this.buff(Frost.class) != null){

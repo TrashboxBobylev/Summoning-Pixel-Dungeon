@@ -1068,7 +1068,19 @@ public abstract class Mob extends Char {
 
 	public void notice() {
 		if (sprite != null)
-		sprite.showAlert();
+			sprite.showAlert();
+		if (Dungeon.hero.hasTalent(Talent.LUST_AND_DUST) && alignment == Alignment.ENEMY && buff(Talent.LustAndDustDebuffTracker.class) == null){
+			int charmLength = 0;
+			switch (Dungeon.hero.pointsInTalent(Talent.LUST_AND_DUST)){
+				case 1: charmLength = 3; break;
+				case 2: charmLength = 7; break;
+				case 3: charmLength = 10; break;
+			}
+			Buff.affect(this, Charm.class, charmLength).object = Dungeon.hero.id();
+			sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
+			if (Dungeon.hero.pointsInTalent(Talent.LUST_AND_DUST) < 3)
+				Buff.affect(this, Talent.LustAndDustTracker.class);
+		}
 	}
 
 	public void yell( String str ) {
