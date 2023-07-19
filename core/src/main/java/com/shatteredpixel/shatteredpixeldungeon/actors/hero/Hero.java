@@ -529,6 +529,10 @@ public class Hero extends Char {
 
 		if (Dungeon.isChallenged(Conducts.Conduct.WRAITH)) evasion *= 5;
 
+		if (buff(Talent.TowerOfPowerTracker.class) != null){
+			return INFINITE_EVASION;
+		}
+
 		if (buff(Block.class) != null) return INFINITE_EVASION;
 
 		return Math.round(evasion);
@@ -1245,8 +1249,11 @@ public class Hero extends Char {
 
 	public void rest( boolean fullRest ) {
 		spendAndNext( TIME_TO_REST );
-		if (!fullRest && sprite != null) {
-			sprite.showStatus( CharSprite.DEFAULT, Messages.get(this, "wait") );
+		if (!fullRest) {
+			if (hasTalent(Talent.TOWER_OF_POWER) && buff(Talent.TowerOfPowerCooldown.class) == null)
+				Buff.affect(this, Talent.TowerOfPowerTracker.class);
+			if (sprite != null)
+				sprite.showStatus( CharSprite.DEFAULT, Messages.get(this, "wait") );
 		}
 		resting = fullRest;
 	}

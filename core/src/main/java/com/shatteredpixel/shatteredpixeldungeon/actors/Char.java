@@ -42,7 +42,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DwarfKing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GhostChicken;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.MailArmor;
@@ -208,7 +210,7 @@ public abstract class Char extends Actor {
 	}
 
 	public boolean blockSound( float pitch ) {
-		if (buff(Block.class) != null){
+		if (buff(Block.class) != null || buff(Talent.TowerOfPowerTracker.class) != null){
 			Sample.INSTANCE.play( Assets.Sounds.HIT_PARRY, 1, pitch);
 			return true;
 		}
@@ -348,6 +350,12 @@ public abstract class Char extends Actor {
 				}
 			}
 
+			if (buff(Talent.TowerOfPowerDamage.class) != null){
+				effectiveDamage *= Talent.TowerOfPowerTracker.damageBoost();
+				enemy.sprite.emitter().burst( FlameParticle.FACTORY, Math.round(10 * Talent.TowerOfPowerTracker.damageBoost()));
+				buff(Talent.TowerOfPowerDamage.class).detach();
+			}
+
 			// If the enemy is already dead, interrupt the attack.
 			// This matters as defence procs can sometimes inflict self-damage, such as armor glyphs.
 			if (!enemy.isAlive()){
@@ -418,6 +426,19 @@ public abstract class Char extends Actor {
 					Sample.INSTANCE.play(Assets.Sounds.MISS);
 				}
 			}
+			if (enemy.buff(Talent.TowerOfPowerTracker.class) != null){
+				enemy.buff(Talent.TowerOfPowerTracker.class).detach();
+				Sample.INSTANCE.play(Assets.Sounds.SHATTER);
+				Talent.Cooldown.affectHero(Talent.TowerOfPowerCooldown.class);
+				if (Dungeon.hero.pointsInTalent(Talent.TOWER_OF_POWER) > 1)
+					Buff.affect(enemy, Talent.TowerOfPowerDamage.class, Talent.TowerOfPowerDamage.DURATION);
+				if (Dungeon.hero.pointsInTalent(Talent.TOWER_OF_POWER) > 2){
+					Hero.arrangeBlast(enemy.pos, enemy.sprite, MagicMissile.FORCE_CONE, 1.5f);
+					Sample.INSTANCE.play(Assets.Sounds.HIT_MAGIC);
+					damage(Math.round(damageRoll()*1.5f), enemy);
+				}
+
+			}
 			
 			return false;
 			
@@ -487,7 +508,7 @@ public abstract class Char extends Actor {
 	public int defenseRolls(){ return 1;}
 	
 	public String defenseVerb() {
-		if (buff(Block.class) != null) return Messages.get(Hero.class, "absorbed");
+		if (buff(Block.class) != null || buff(Talent.TowerOfPowerTracker.class) != null) return Messages.get(Hero.class, "absorbed");
 		return Messages.get(this, "def_verb");
 	}
 	

@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Scrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
@@ -73,7 +74,7 @@ public enum Talent {
     ARMORED_ARMADA(86, 3),
     TIMEBENDING(87, 3),
     LUST_AND_DUST(88, 3),
-    TOWER_OF_POWER(89, 3),
+    TOWER_OF_POWER(89, 3, true),
     JUST_ONE_MORE_TILE(90, 3),
     NEVER_GONNA_GIVE_YOU_UP(114, 3, true),
     ASSASSINATION(115, 3),
@@ -154,6 +155,35 @@ public enum Talent {
         public float duration() { return Dungeon.hero.pointsInTalent(WELCOME_TO_EARTH) > 1 ? 50 : 80; }
         public int icon() { return BuffIndicator.SLOW; }
         public void tintIcon(Image icon) { icon.hardlight(0.15f, 0.2f, 0.5f); }
+    }
+    public static class TowerOfPowerCooldown extends Cooldown {
+        public float duration() {
+            return 40 - Dungeon.hero.pointsInTalent(TOWER_OF_POWER)*5;
+        }
+        public int icon() { return BuffIndicator.SLOW; }
+        public void tintIcon(Image icon) { icon.hardlight(0.7f, 0.66f, 0.63f); }
+    }
+    public static class TowerOfPowerDamage extends FlavourBuff{
+        public static final float DURATION = 10f;
+        public float iconFadePercent() {
+            return Math.max(0, (DURATION - visualcooldown()) / DURATION);
+        }
+        public int icon() { return BuffIndicator.WEAPON; }
+        public String toString() { return Messages.get(this, "name"); }
+        public String desc() { return Messages.get(this, "desc", Math.floor((TowerOfPowerTracker.damageBoost()-1f)*100f), dispTurns()); }
+    }
+    public static class TowerOfPowerTracker extends Buff{
+        public static float damageBoost() { return 0.65f + 0.35f*Dungeon.hero.pointsInTalent(TOWER_OF_POWER);}
+        public String toString() { return Messages.get(this, "name"); }
+        public String desc() { return Messages.get(this, "desc", Math.floor((damageBoost()-1f)*100f)); }
+        public int icon() { return BuffIndicator.ARMOR; }
+        public void tintIcon(Image icon) { icon.hardlight(0.7f, 0.66f, 0.63f); }
+
+        @Override
+        public void fx(boolean on) {
+            if (on) target.sprite.add(CharSprite.State.SHIELDED);
+            else target.sprite.remove(CharSprite.State.SHIELDED);
+        }
     }
     public static class SuckerPunchTracker extends Buff{}
     public static class AcutenessTracker extends CounterBuff{}
