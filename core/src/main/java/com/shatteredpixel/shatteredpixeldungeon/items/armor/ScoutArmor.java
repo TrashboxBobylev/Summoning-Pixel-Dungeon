@@ -70,7 +70,7 @@ public class ScoutArmor extends Armor {
     }
 
     public static class ScoutCooldown extends FlavourBuff {
-        public int icon() { return BuffIndicator.SLOW; }
+        public int icon() { return BuffIndicator.TIME; }
         public void tintIcon(Image icon) { icon.hardlight(0x2e92a7); }
         public float iconFadePercent() { return Math.max(0, 1 - (visualcooldown() / 20)); }
         public String toString() { return Messages.get(this, "name"); }

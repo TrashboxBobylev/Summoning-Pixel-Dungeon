@@ -55,7 +55,7 @@ public class BuffIndicator extends Component {
 	public static final int PARALYSIS	= 4;
 	public static final int HUNGER		= 5;
 	public static final int STARVATION	= 6;
-	public static final int SLOW		= 7;
+	public static final int TIME = 7;
 	public static final int OOZE		= 8;
 	public static final int AMOK		= 9;
 	public static final int TERROR		= 10;

@@ -153,14 +153,14 @@ public enum Talent {
     }
     public static class ImprovisedProjectileCooldown extends Cooldown {
         public float duration() { return Dungeon.hero.pointsInTalent(WELCOME_TO_EARTH) > 1 ? 50 : 80; }
-        public int icon() { return BuffIndicator.SLOW; }
+        public int icon() { return BuffIndicator.TIME; }
         public void tintIcon(Image icon) { icon.hardlight(0.15f, 0.2f, 0.5f); }
     }
     public static class TowerOfPowerCooldown extends Cooldown {
         public float duration() {
             return 40 - Dungeon.hero.pointsInTalent(TOWER_OF_POWER)*5;
         }
-        public int icon() { return BuffIndicator.SLOW; }
+        public int icon() { return BuffIndicator.TIME; }
         public void tintIcon(Image icon) { icon.hardlight(0.7f, 0.66f, 0.63f); }
     }
     public static class TowerOfPowerDamage extends FlavourBuff{
