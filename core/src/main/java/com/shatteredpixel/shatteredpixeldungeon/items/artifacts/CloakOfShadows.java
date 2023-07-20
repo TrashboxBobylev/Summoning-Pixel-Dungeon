@@ -30,15 +30,19 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.CloakGlyph;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -71,6 +75,7 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action {
 	}
 
 	private boolean stealthed = false;
+	public CloakGlyph glyph;
 
 	public static final String AC_STEALTH = "STEALTH";
 	public static final String AC_TELEPORT = "TELEPORT";
@@ -234,17 +239,21 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action {
 	}
 
 	private static final String STEALTHED = "stealthed";
+	private static final String GLYPH			= "glyph";
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle(bundle);
 		bundle.put( STEALTHED, stealthed );
+		bundle.put( GLYPH, glyph );
 	}
 
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle(bundle);
 		stealthed = bundle.getBoolean( STEALTHED );
+		if (bundle.contains(GLYPH))
+			inscribe((CloakGlyph) bundle.get(GLYPH));
 	}
 
 	@Override
@@ -261,6 +270,12 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action {
 					float missing = (chargeCap - charge);
 					if (level() > 7) missing += 5*(level() - 7)/3f;
 					float turnsToCharge = (45 - missing);
+					if (target instanceof Hero && ((Hero) target).hasTalent(Talent.ARCANE_CLOAK)){
+						if (glyph == null)
+							turnsToCharge /= 1.075f + 0.025f * ((Hero) target).pointsInTalent(Talent.ARCANE_CLOAK);
+						else
+							turnsToCharge /= 1.1f + 0.06f * ((Hero) target).pointsInTalent(Talent.ARCANE_CLOAK);
+					}
 					partialCharge += (1f / turnsToCharge);
 				}
 
@@ -296,6 +311,54 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action {
 			super.detach();
 			ActionIndicator.clearAction(CloakOfShadows.this);
 		}
+	}
+
+	@Override
+	public String name() {
+		return glyph != null && cursedKnown ? glyph.name( super.name() ) : super.name();
+	}
+
+	@Override
+	public String info() {
+		String info = desc();
+
+		if (glyph != null  && cursedKnown) {
+			info += "\n\n" +  Messages.get(Armor.class, "inscribed", glyph.name());
+			info += " " + glyph.desc();
+		}
+
+		if (cursed && isEquipped( Dungeon.hero )) {
+			info += "\n\n" + Messages.get(Armor.class, "cursed_worn");
+		} else if (cursedKnown && cursed) {
+			info += "\n\n" + Messages.get(Armor.class, "cursed");
+		} else if (!isIdentified() && cursedKnown){
+			info += "\n\n" + Messages.get(Armor.class, "not_cursed");
+		}
+
+		return info;
+	}
+
+	public CloakOfShadows inscribe( CloakGlyph glyph ) {
+		this.glyph = glyph;
+		updateQuickslot();
+		return this;
+	}
+
+	public CloakOfShadows inscribe() {
+
+		Class<? extends CloakGlyph> oldGlyphClass = glyph != null ? glyph.getClass() : null;
+		CloakGlyph gl = CloakGlyph.random( oldGlyphClass );
+
+		return inscribe( gl );
+	}
+
+	public boolean hasGlyph(Class<?extends CloakGlyph> type, Char owner) {
+		return glyph != null && glyph.getClass() == type && owner.buff(MagicImmune.class) == null;
+	}
+
+	@Override
+	public ItemSprite.Glowing glowing() {
+		return glyph != null && cursedKnown ? glyph.glowing() : null;
 	}
 
 	@Override
@@ -377,6 +440,8 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action {
 				}
 				updateQuickslot();
 			}
+			if (glyph != null)
+				glyph.proc(CloakOfShadows.this, target, 1);
 
 			spend( TICK );
 

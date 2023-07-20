@@ -70,7 +70,7 @@ public enum Talent {
     DOG_BREEDING(82, 3),
     NUCLEAR_RAGE(83, 3, true),
     SNIPER_PATIENCE(84, 3),
-    ARCANE_CLOAK(85, 3),
+    ARCANE_CLOAK(85, 3, true),
     ARMORED_ARMADA(86, 3),
     TIMEBENDING(87, 3),
     LUST_AND_DUST(88, 3, true),
