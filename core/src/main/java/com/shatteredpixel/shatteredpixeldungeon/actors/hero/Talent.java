@@ -75,7 +75,7 @@ public enum Talent {
     TIMEBENDING(87, 3),
     LUST_AND_DUST(88, 3, true),
     TOWER_OF_POWER(89, 3, true),
-    JUST_ONE_MORE_TILE(90, 3),
+    JUST_ONE_MORE_TILE(90, 3, true),
     NEVER_GONNA_GIVE_YOU_UP(114, 3, true),
     ASSASSINATION(115, 3),
     SPEED_SHOES(116, 3),
@@ -206,6 +206,13 @@ public enum Talent {
     public static class LethalMomentumTracker extends FlavourBuff{}
     public static class LustAndDustTracker extends Buff{}
     public static class LustAndDustDebuffTracker extends Buff{}
+    public static class JustOneMoreTileTracker extends FlavourBuff{
+        public String toString() { return Messages.get(this, "name"); }
+        public float iconFadePercent() { return Math.max(0, 1f - (visualcooldown() / 13f)); }
+        public String desc() { return Messages.get(this, "desc", dispTurns(visualcooldown())); }
+        public int icon() { return BuffIndicator.WEAPON; }
+        public void tintIcon(Image icon) { icon.hardlight(0xFFFF00); }
+    }
     public static class MySunshineTracker extends CounterBuff{
         public float iconFadePercent() { return Math.max(0, 1f - ((count()) / (timeRequired()))); }
         public String toString() { return Messages.get(this, "name"); }
@@ -292,6 +299,12 @@ public enum Talent {
             int bonus = hero.pointsInTalent(COLD_FRONT)*2;
             Buff.affect(enemy, FrostBurn.class).reignite(enemy, bonus);
             Buff.affect(enemy, SuckerPunchTracker.class);
+        }
+        if (hero.hasTalent(Talent.JUST_ONE_MORE_TILE)
+                && enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)
+                && hero.buff(JustOneMoreTileTracker.class) == null){
+            int duration = 1 + hero.pointsInTalent(JUST_ONE_MORE_TILE)*4;
+            Buff.affect(hero, JustOneMoreTileTracker.class, duration);
         }
         if (hero.hasTalent(Talent.DIRECTIVE)
                 && enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)

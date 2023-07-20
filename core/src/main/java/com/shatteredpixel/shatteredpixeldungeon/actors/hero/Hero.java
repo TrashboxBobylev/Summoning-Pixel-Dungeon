@@ -1667,6 +1667,31 @@ public class Hero extends Char {
 			if (ch.alignment != Alignment.ENEMY && ch.buff(Amok.class) == null) {
 				curAction = new HeroAction.Interact( ch );
 			} else {
+				if (((Mob)ch).surprisedBy(this) && !canAttack(ch) && pointsInTalent(Talent.JUST_ONE_MORE_TILE) > 1){
+					int enemy_cell = ch.pos;
+					boolean[] passable = Dungeon.level.passable.clone();
+					passable[enemy_cell] = true;
+					PathFinder.buildDistanceMap(pos, passable, 2+1);
+					if (PathFinder.distance[enemy_cell] != Integer.MAX_VALUE){
+						for (Char ch2 : Actor.chars()){
+							if (ch2 != this)  passable[ch2.pos] = false;
+						}
+						PathFinder.Path path = PathFinder.find(pos, cell, passable);
+						int attackPos = path == null ? -1 : path.get(path.size()-2);
+
+						if (attackPos != -1 && Dungeon.level.distance(attackPos, pos) <= 2){
+							pos = attackPos;
+							Dungeon.level.occupyCell(this);
+							Dungeon.observe();
+							checkVisibleMobs();
+
+							sprite.place( pos );
+							sprite.turnTo( pos, enemy_cell);
+							CellEmitter.get( pos ).burst( Speck.factory( Speck.WOOL ), 6 );
+							Sample.INSTANCE.play( Assets.Sounds.PUFF );
+						}
+					}
+				}
 				curAction = new HeroAction.Attack( ch );
 			}
 
