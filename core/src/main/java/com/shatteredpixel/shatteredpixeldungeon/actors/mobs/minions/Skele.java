@@ -89,7 +89,7 @@ public class Skele extends Minion {
                         break;
                 }
                 int damage = Bomb.damageRoll();
-                damage = Math.max( 0,  damage - (ch.drRoll()) );
+                damage = Math.max( 0,  damage - (ch.actualDrRoll()) );
                 ch.damage(Math.round(damage * (1 - bleed)), this );
                 Buff.affect(ch, Bleeding.class).set(damage*bleed/2);
             }

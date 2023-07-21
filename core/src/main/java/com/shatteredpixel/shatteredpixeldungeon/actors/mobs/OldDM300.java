@@ -80,7 +80,7 @@ public class OldDM300 extends Mob {
 	}
 	
 	@Override
-	public int drRoll() {
+	public int actualDrRoll() {
 		return Random.NormalIntRange(0, 10);
 	}
 	

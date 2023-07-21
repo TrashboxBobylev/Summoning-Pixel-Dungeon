@@ -216,9 +216,9 @@ public class ShadowClone extends ArmorAbility {
 		}
 
 		@Override
-		public int drRoll() {
-			int dr = super.drRoll();
-			int heroRoll = Dungeon.hero.drRoll();
+		public int actualDrRoll() {
+			int dr = super.actualDrRoll();
+			int heroRoll = Dungeon.hero.actualDrRoll();
 			heroRoll = Math.round(0.5f * heroRoll);
 			if (heroRoll > 0){
 				dr += heroRoll;

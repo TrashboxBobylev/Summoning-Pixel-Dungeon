@@ -365,7 +365,7 @@ public class WandOfLivingEarth extends DamageWand {
 		}
 
 		@Override
-		public int drRoll() {
+		public int actualDrRoll() {
 			if (Dungeon.isChallenged(Conducts.Conduct.NO_ARMOR)){
 				return Random.NormalIntRange(1, 2);
 			} else {

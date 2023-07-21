@@ -277,7 +277,7 @@ public abstract class Char extends Actor {
 
 		} else if (hit( this, enemy, accMulti )) {
 			
-			int dr = enemy.drRoll();
+			int dr = enemy.actualDrRoll();
 			boolean quivered = false;
 			if (properties.contains(Property.IGNORE_ARMOR)) dr = 0;
 			if (enemy.buff(QuiverMark.class) != null && this instanceof Hero && ((Hero) this).belongings.weapon instanceof MissileWeapon) {
@@ -515,8 +515,8 @@ public abstract class Char extends Actor {
 		if (buff(Block.class) != null || buff(Talent.TowerOfPowerTracker.class) != null) return Messages.get(Hero.class, "absorbed");
 		return Messages.get(this, "def_verb");
 	}
-	
-	public int drRoll() {
+
+	public int drRoll(){
 		int def = defenseValue();
 
 		Barkskin bark = buff(Barkskin.class);
@@ -529,6 +529,12 @@ public abstract class Char extends Actor {
 
 		if (buff(Crumbling.ZeroDefense.class) != null)
 			return 0;
+
+		return def;
+	}
+	
+	public int actualDrRoll() {
+		int def = drRoll();
 
 		return Random.NormalIntRange(Math.round(def * 0.2f), Math.round(def * 0.8f));
 	}

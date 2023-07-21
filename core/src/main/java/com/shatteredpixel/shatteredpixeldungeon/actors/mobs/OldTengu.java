@@ -85,7 +85,7 @@ public class OldTengu extends Mob {
 	}
 	
 	@Override
-	public int drRoll() {
+	public int actualDrRoll() {
 		return Random.NormalIntRange(0, 5);
 	}
 

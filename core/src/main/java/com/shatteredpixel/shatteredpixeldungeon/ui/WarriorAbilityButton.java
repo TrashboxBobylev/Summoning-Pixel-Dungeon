@@ -222,7 +222,7 @@ public class WarriorAbilityButton extends Tag {
             dmg *= 1.22f + 0.33f*(Dungeon.hero.STR() - weapon.STRReq());
         }
         dmg = enemy.defenseProc(Dungeon.hero, dmg);
-        dmg -= enemy.drRoll();
+        dmg -= enemy.actualDrRoll();
         if ( enemy.buff( Vulnerable.class ) != null){
             dmg *= 1.33f;
         }
