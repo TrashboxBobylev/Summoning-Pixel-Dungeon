@@ -37,11 +37,12 @@ import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 
 public abstract class CloakGlyph implements Bundlable {
-    private static final Class<?>[] glyphs = new Class<?>[]{};
+    private static final Class<?>[] glyphs = new Class<?>[]{Infernal.class};
 
-    public abstract int proc(CloakOfShadows cloak, Char defender, int charges );
+    public abstract void proc(CloakOfShadows cloak, Char defender, int charges );
 
     public String name() {
         return name( Messages.get(this, "glyph") );
@@ -54,6 +55,12 @@ public abstract class CloakGlyph implements Bundlable {
             case 3: return 1f;
         }
         return 0f;
+    }
+
+    protected HashSet<Class> immunities = new HashSet<>();
+
+    public HashSet<Class> immunities() {
+        return new HashSet<>(immunities);
     }
 
     public String name( String armorName ) {

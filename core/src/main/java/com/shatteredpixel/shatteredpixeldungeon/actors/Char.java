@@ -52,7 +52,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.MailArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Endure;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.CloakGlyph;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MirrorOfFates;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SubtilitasSigil;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfAdrenalineSurge;
@@ -973,6 +975,12 @@ public abstract class Char extends Actor {
 		}
 		for (Buff b : buffs()){
 			immunes.addAll(b.immunities());
+		}
+		if (this instanceof Hero && buff(CloakOfShadows.cloakStealth.class) != null){
+			CloakGlyph glyph = buff(CloakOfShadows.cloakStealth.class).glyph();
+			if (glyph != null){
+				immunes.addAll(glyph.immunities());
+			}
 		}
 		
 		for (Class c : immunes){

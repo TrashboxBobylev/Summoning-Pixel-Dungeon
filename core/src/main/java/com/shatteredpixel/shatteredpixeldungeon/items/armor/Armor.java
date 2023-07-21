@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.*;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -55,7 +56,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Armor extends EquipableItem implements Tierable {
+public class Armor extends EquipableItem implements Tierable, Stylus.Inscribable {
 
 	protected static final String AC_DETACH       = "DETACH";
 	protected static final String AC_ABILITY = "ABILITY";
@@ -568,6 +569,11 @@ public class Armor extends EquipableItem implements Tierable {
 
 	public boolean hasCurseGlyph(){
 		return glyph != null && glyph.curse();
+	}
+
+	@Override
+	public boolean isCursed() {
+		return cursed;
 	}
 	
 	@Override

@@ -35,7 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.CloakGlyph;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -55,7 +55,7 @@ import com.watabou.utils.PathFinder;
 
 import java.util.ArrayList;
 
-public class CloakOfShadows extends Artifact implements ActionIndicator.Action {
+public class CloakOfShadows extends Artifact implements ActionIndicator.Action, Stylus.Inscribable {
 
 	{
 		image = ItemSpriteSheet.ARTIFACT_CLOAK;
@@ -323,16 +323,8 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action {
 		String info = desc();
 
 		if (glyph != null  && cursedKnown) {
-			info += "\n\n" +  Messages.get(Armor.class, "inscribed", glyph.name());
+			info += "\n\n" +  Messages.get(CloakOfShadows.class, "inscribed", glyph.name());
 			info += " " + glyph.desc();
-		}
-
-		if (cursed && isEquipped( Dungeon.hero )) {
-			info += "\n\n" + Messages.get(Armor.class, "cursed_worn");
-		} else if (cursedKnown && cursed) {
-			info += "\n\n" + Messages.get(Armor.class, "cursed");
-		} else if (!isIdentified() && cursedKnown){
-			info += "\n\n" + Messages.get(Armor.class, "not_cursed");
 		}
 
 		return info;
@@ -350,6 +342,16 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action {
 		CloakGlyph gl = CloakGlyph.random( oldGlyphClass );
 
 		return inscribe( gl );
+	}
+
+	@Override
+	public boolean hasCurseGlyph() {
+		return false;
+	}
+
+	@Override
+	public boolean isCursed() {
+		return cursed;
 	}
 
 	public boolean hasGlyph(Class<?extends CloakGlyph> type, Char owner) {
@@ -404,6 +406,10 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action {
 			} else {
 				return false;
 			}
+		}
+
+		public CloakGlyph glyph(){
+			return glyph;
 		}
 
 		@Override
