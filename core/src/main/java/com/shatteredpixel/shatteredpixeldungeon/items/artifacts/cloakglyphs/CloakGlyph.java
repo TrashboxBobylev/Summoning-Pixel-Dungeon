@@ -40,11 +40,16 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 public abstract class CloakGlyph implements Bundlable {
-    private static final Class<?>[] glyphs = new Class<?>[]{Infernal.class, Cryonic.class};
+    private static final Class<?>[] glyphs = new Class<?>[]{Infernal.class, Cryonic.class, Ethereal.class};
 
     public abstract void proc(CloakOfShadows cloak, Char defender, int charges );
 
+    public void onCloaking(CloakOfShadows cloak, Char defender){}
     public void onUncloaking(CloakOfShadows cloak, Char defender){}
+
+    public float chargeModifier(CloakOfShadows cloak, Char defender){
+        return 1f;
+    }
 
     public String name() {
         return name( Messages.get(this, "glyph") );

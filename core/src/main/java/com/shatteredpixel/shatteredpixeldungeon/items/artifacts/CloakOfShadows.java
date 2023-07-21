@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.CloakGlyph;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.Ethereal;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
@@ -129,6 +130,8 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action, 
 						hero.sprite.alpha(0.4f);
 					}
 					hero.sprite.operate(hero.pos);
+					if (glyph != null)
+						glyph.onCloaking(this, hero);
 				}
 			} else {
 				stealthed = false;
@@ -153,6 +156,8 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action, 
 		public void onSelect(Integer target) {
 			if (target != null && (Dungeon.level.visited[target] || Dungeon.level.mapped[target]) && Dungeon.level.passable[target]){
 				int maxDistance = (int) (charge * (0.57f + 0.09f*(Dungeon.hero.pointsInTalent(Talent.HYPERSPACE))));
+				if (glyph != null)
+					maxDistance /= glyph.chargeModifier(CloakOfShadows.this, Dungeon.hero);
 				if (Dungeon.level.distance(target, Dungeon.hero.pos) > maxDistance){
 					GLog.warning( Messages.get(CloakOfShadows.class, "cant_reach") );
 				} else {
@@ -184,6 +189,8 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action, 
 		@Override
 		public String prompt() {
 			int maxDistance = (int) (charge * (0.57f + 0.09f*(Dungeon.hero.pointsInTalent(Talent.HYPERSPACE))));
+			if (glyph != null)
+				maxDistance /= glyph.chargeModifier(CloakOfShadows.this, Dungeon.hero);
 			PathFinder.buildDistanceMap( Dungeon.hero.pos, Dungeon.level.passable, maxDistance );
 			for (int i = 0; i < PathFinder.distance.length; i++) {
 				if (PathFinder.distance[i] < Integer.MAX_VALUE && !Dungeon.level.solid[i]) {
@@ -296,7 +303,10 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action, 
 				cooldown --;
 
 			updateQuickslot();
-			if ((int) (charge * (0.57f + 0.09f*(Dungeon.hero.pointsInTalent(Talent.HYPERSPACE)))) >= 1
+			float chargeMod = 1f;
+			if (glyph != null)
+				chargeMod = glyph.chargeModifier(CloakOfShadows.this, Dungeon.hero);
+			if ((int) (charge * ((0.57f + 0.09f*(Dungeon.hero.pointsInTalent(Talent.HYPERSPACE))) / chargeMod)) >= 1
 				&& Dungeon.hero.hasTalent(Talent.HYPERSPACE)){
 				ActionIndicator.setAction(CloakOfShadows.this);
 			} else {
@@ -450,10 +460,13 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action, 
 				}
 				updateQuickslot();
 			}
-			if (glyph != null)
+			float wait = TICK;
+			if (glyph != null){
+				wait /= glyph.chargeModifier(CloakOfShadows.this, Dungeon.hero);
 				glyph.proc(CloakOfShadows.this, target, 1);
+			}
 
-			spend( TICK );
+			spend( wait );
 
 			return true;
 		}
@@ -465,8 +478,18 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action, 
 
 		@Override
 		public void fx(boolean on) {
-			if (on) target.sprite.add( CharSprite.State.INVISIBLE );
-			else if (target.invisible == 0) target.sprite.remove( CharSprite.State.INVISIBLE );
+			if (on) {
+				target.sprite.add( CharSprite.State.INVISIBLE );
+				if (glyph instanceof Ethereal){
+					target.sprite.add(CharSprite.State.LEVITATING);
+				}
+			}
+			else {
+				if (target.invisible == 0) target.sprite.remove( CharSprite.State.INVISIBLE );
+				if (glyph instanceof Ethereal){
+					target.sprite.remove(CharSprite.State.LEVITATING);
+				}
+			}
 		}
 
 		@Override
