@@ -67,7 +67,14 @@ public class ScrollOfEnchantment extends ExoticScroll {
 	}
 
 	public static boolean enchantable( Item item ){
-		return ((item instanceof MeleeWeapon || item instanceof SpiritBow || item instanceof Slingshot || (item instanceof Wand && Dungeon.hero.heroClass == HeroClass.MAGE) || item instanceof Armor || item instanceof Staff || (item instanceof MissileWeapon && Dungeon.hero.hasTalent(Talent.WILD_SORCERY))) && !(item instanceof Broadsword));
+		return ((item instanceof MeleeWeapon ||
+				item instanceof SpiritBow ||
+				item instanceof Slingshot ||
+				(item instanceof Wand && Dungeon.hero.heroClass == HeroClass.MAGE) ||
+				item instanceof Armor ||
+				item instanceof Staff ||
+				(item instanceof MissileWeapon && Dungeon.hero.hasTalent(Talent.WILD_SORCERY))) &&
+				!(item instanceof Broadsword));
 	}
 	
 	protected WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
