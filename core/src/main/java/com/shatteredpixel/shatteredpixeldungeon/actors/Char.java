@@ -55,6 +55,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Endure;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.CloakGlyph;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.Crumbling;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MirrorOfFates;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SubtilitasSigil;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfAdrenalineSurge;
@@ -526,6 +527,9 @@ public abstract class Char extends Actor {
 
 		if (buff(Shrink.class) != null || buff(TimedShrink.class) != null) def /= 2;
 
+		if (buff(Crumbling.ZeroDefense.class) != null)
+			return 0;
+
 		return Random.NormalIntRange(Math.round(def * 0.2f), Math.round(def * 0.8f));
 	}
 
@@ -955,6 +959,12 @@ public abstract class Char extends Actor {
 		}
 		for (Buff b : buffs()){
 			resists.addAll(b.resistances());
+		}
+		if (this instanceof Hero && buff(CloakOfShadows.cloakStealth.class) != null){
+			CloakGlyph glyph = buff(CloakOfShadows.cloakStealth.class).glyph();
+			if (glyph != null){
+				resists.addAll(glyph.resistances());
+			}
 		}
 		
 		float result = 1f;

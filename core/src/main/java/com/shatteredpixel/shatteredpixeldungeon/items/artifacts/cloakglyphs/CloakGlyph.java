@@ -40,7 +40,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 public abstract class CloakGlyph implements Bundlable {
-    private static final Class<?>[] glyphs = new Class<?>[]{Infernal.class, Cryonic.class, Ethereal.class};
+    private static final Class<?>[] glyphs = new Class<?>[]{Infernal.class, Cryonic.class, Ethereal.class, Crumbling.class};
 
     public abstract void proc(CloakOfShadows cloak, Char defender, int charges );
 
@@ -68,6 +68,12 @@ public abstract class CloakGlyph implements Bundlable {
 
     public HashSet<Class> immunities() {
         return new HashSet<>(immunities);
+    }
+
+    protected HashSet<Class> resistances = new HashSet<>();
+
+    public HashSet<Class> resistances() {
+        return new HashSet<>(resistances);
     }
 
     public String name( String armorName ) {
