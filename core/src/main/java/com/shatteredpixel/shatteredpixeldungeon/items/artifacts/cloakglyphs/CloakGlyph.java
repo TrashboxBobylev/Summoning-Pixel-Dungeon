@@ -40,7 +40,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 public abstract class CloakGlyph implements Bundlable {
-    private static final Class<?>[] glyphs = new Class<?>[]{Infernal.class, Cryonic.class, Ethereal.class, Crumbling.class};
+    private static final Class<?>[] t1glyphs = new Class<?>[]{Infernal.class, Cryonic.class, Ethereal.class, Crumbling.class};
+
+    private static final Class<?>[] t2glyphs = new Class<?>[]{Infernal.class, Cryonic.class, Ethereal.class, Crumbling.class};
 
     public abstract void proc(CloakOfShadows cloak, Char defender, int charges );
 
@@ -108,7 +110,7 @@ public abstract class CloakGlyph implements Bundlable {
 
     @SuppressWarnings("unchecked")
     public static CloakGlyph randomCommon(Class<? extends CloakGlyph> ... toIgnore ) {
-        ArrayList<Class<?>> glyphsToSample = new ArrayList<>(Arrays.asList(glyphs));
+        ArrayList<Class<?>> glyphsToSample = new ArrayList<>(Arrays.asList(t1glyphs));
         glyphsToSample.removeAll(Arrays.asList(toIgnore));
         if (glyphsToSample.isEmpty()) {
             return random();
@@ -119,7 +121,7 @@ public abstract class CloakGlyph implements Bundlable {
 
     @SuppressWarnings("unchecked")
     public static CloakGlyph randomRare(Class<? extends CloakGlyph> ... toIgnore ) {
-        ArrayList<Class<?>> glyphsToSample = new ArrayList<>(Arrays.asList(glyphs));
+        ArrayList<Class<?>> glyphsToSample = new ArrayList<>(Arrays.asList(t2glyphs));
         glyphsToSample.removeAll(Arrays.asList(toIgnore));
         if (glyphsToSample.isEmpty()) {
             return random();
