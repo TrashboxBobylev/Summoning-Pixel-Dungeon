@@ -29,10 +29,14 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.Wet;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.CloakGlyph;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.Victide;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Scrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -305,6 +309,23 @@ public enum Talent {
                 && hero.buff(JustOneMoreTileTracker.class) == null){
             int duration = 1 + hero.pointsInTalent(JUST_ONE_MORE_TILE)*4;
             Buff.affect(hero, JustOneMoreTileTracker.class, duration);
+        }
+        if (hero.buff(CloakOfShadows.cloakStealth.class) != null
+                && enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)
+                && enemy.isWet()
+                && hero.buff(CloakOfShadows.cloakStealth.class).glyph() instanceof Victide){
+            float bonus = 0f;
+            if (Dungeon.level.water[enemy.pos]){
+                bonus = 1f;
+                if (enemy.buff(Wet.class) != null)
+                    bonus = 2f;
+            }
+            if (enemy.buff(Wet.class) != null){
+                bonus = 1f;
+                if (Dungeon.level.water[enemy.pos])
+                    bonus = 2f;
+            }
+            damage *= Math.max(1f, Math.pow(1.3f, bonus*CloakGlyph.efficiency()));
         }
         if (hero.hasTalent(Talent.DIRECTIVE)
                 && enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)
