@@ -139,8 +139,6 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action, 
 				activeBuff = null;
 				hero.spend( 1f );
 				hero.sprite.operate( hero.pos );
-				if (glyph != null)
-					glyph.onUncloaking(this, hero);
 			}
 
 		}
@@ -435,8 +433,6 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action, 
 					detach();
 					GLog.warning(Messages.get(this, "no_charge"));
 					((Hero) target).interrupt();
-					if (glyph != null)
-						glyph.onUncloaking(CloakOfShadows.this, target);
 				} else {
 					//target hero level is 1 + 2*cloak level
 					int lvlDiffFromTarget = ((Hero) target).lvl - (1+level()*2);
@@ -507,6 +503,8 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action, 
 			if (target.invisible > 0)
 				target.invisible--;
 			stealthed = false;
+			if (glyph != null)
+				glyph.onUncloaking(CloakOfShadows.this, target);
 
 			updateQuickslot();
 			super.detach();
