@@ -70,10 +70,10 @@ public class ShrapnelBomb extends Bomb {
 		}
 		
 		for (Char ch : affected){
-			//2x regular bomb damage, which falls off at a rate of 5% per tile of distance
+			//2x regular bomb damage, which falls off at a rate of 5% (reduced by Nuclear Rage) per tile of distance
 			int damage = Math.round(damageRoll()*2);
-			damage = Math.round(damage * (1f - .05f*Dungeon.level.distance(cell, ch.pos)));
-			damage -= ch.drRoll();
+			damage = Math.round(damage * (1f - (.05f*Dungeon.level.distance(cell, ch.pos)) / Bomb.nuclearBoost()));
+			damage -= ch.actualDrRoll();
 			ch.damage(damage, this);
 			if (ch == Dungeon.hero && !ch.isAlive()) {
 				Dungeon.fail(Bomb.class);

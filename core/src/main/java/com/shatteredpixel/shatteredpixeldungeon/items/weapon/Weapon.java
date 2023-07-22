@@ -241,6 +241,18 @@ abstract public class Weapon extends KindOfWeapon {
 			if (((Hero) owner).belongings.armor instanceof SyntheticArmor &&
 					((Hero) owner).belongings.armor.level() == 1)
 				reach += 1;
+			if (owner.buff(Talent.JustOneMoreTileTracker.class) != null)
+				reach += 1;
+
+			if (((Hero) owner).pointsInTalent(Talent.JUST_ONE_MORE_TILE) > 2){
+				float boost = 0;
+				for (Buff buff: owner.buffs()){
+					if (buff.type == Buff.buffType.NEGATIVE){
+						boost += 1f;
+					}
+				}
+				reach += (int) boost;
+			}
 		}
 		return reach;
 	}

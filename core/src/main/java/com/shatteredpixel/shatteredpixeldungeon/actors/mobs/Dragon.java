@@ -211,7 +211,7 @@ public class Dragon extends AbyssalMob {
             }
         } else if (hit( this, enemy, false )) {
 
-            int dr = enemy.drRoll();
+            int dr = enemy.actualDrRoll();
             int dmg = damageRoll();
             if (enemy.buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dmg *= 1.4f;
 

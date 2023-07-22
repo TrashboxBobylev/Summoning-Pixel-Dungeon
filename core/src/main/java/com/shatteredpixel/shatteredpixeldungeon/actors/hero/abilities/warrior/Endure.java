@@ -77,12 +77,12 @@ public class Endure extends ArmorAbility {
 
 		@Override
 		public int icon() {
-			return enduring ? BuffIndicator.NONE : BuffIndicator.ARMOR;
+			return enduring ? BuffIndicator.NONE : BuffIndicator.ARMOR_GEN;
 		}
 
 		@Override
 		public void tintIcon(Image icon) {
-			super.tintIcon(icon);
+			icon.hardlight(0xcc0c0c);
 		}
 
 		@Override

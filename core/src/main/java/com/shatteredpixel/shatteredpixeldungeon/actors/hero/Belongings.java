@@ -247,8 +247,10 @@ public class Belongings implements Iterable<Item> {
 			Badges.validateItemLevelAquired( armor );
 		}
 		for (Artifact acc: accs){
-			acc.identify();
-			Badges.validateItemLevelAquired(acc);
+			if (acc != null) {
+				acc.identify();
+				Badges.validateItemLevelAquired(acc);
+			}
 		}
 		for (Item item : backpack) {
 			if (item instanceof EquipableItem || item instanceof Wand) {

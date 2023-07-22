@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Enchanting;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
@@ -67,7 +68,15 @@ public class ScrollOfEnchantment extends ExoticScroll {
 	}
 
 	public static boolean enchantable( Item item ){
-		return ((item instanceof MeleeWeapon || item instanceof SpiritBow || item instanceof Slingshot || (item instanceof Wand && Dungeon.hero.heroClass == HeroClass.MAGE) || item instanceof Armor || item instanceof Staff || (item instanceof MissileWeapon && Dungeon.hero.hasTalent(Talent.WILD_SORCERY))) && !(item instanceof Broadsword));
+		return ((item instanceof MeleeWeapon ||
+				item instanceof SpiritBow ||
+				item instanceof Slingshot ||
+				(item instanceof Wand && Dungeon.hero.heroClass == HeroClass.MAGE) ||
+				(item instanceof CloakOfShadows && Dungeon.hero.hasTalent(Talent.ARCANE_CLOAK)) ||
+				item instanceof Armor ||
+				item instanceof Staff ||
+				(item instanceof MissileWeapon && Dungeon.hero.hasTalent(Talent.WILD_SORCERY))) &&
+				!(item instanceof Broadsword));
 	}
 	
 	protected WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {

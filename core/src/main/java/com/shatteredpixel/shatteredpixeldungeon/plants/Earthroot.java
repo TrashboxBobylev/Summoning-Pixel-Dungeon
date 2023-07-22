@@ -69,6 +69,11 @@ public class Earthroot extends Plant {
 
 			bones = true;
 		}
+
+		@Override
+		public int sunValue() {
+			return 150;
+		}
 	}
 	
 	public static class Armor extends Buff {

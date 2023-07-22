@@ -31,7 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Enchanting;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -88,12 +87,12 @@ public class Stylus extends Item {
 		return !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
 	}
 	
-	private void inscribe( Armor armor ) {
+	private void inscribe( Inscribable armor ) {
 
 		if (!armor.isIdentified() ){
 			GLog.warning( Messages.get(this, "identify"));
 			return;
-		} else if (armor.cursed || armor.hasCurseGlyph()){
+		} else if (armor.isCursed() || armor.hasCurseGlyph()){
 			GLog.warning( Messages.get(this, "cursed"));
 			return;
 		}
@@ -106,7 +105,7 @@ public class Stylus extends Item {
 		
 		curUser.sprite.operate(curUser.pos);
 		curUser.sprite.centerEmitter().start(PurpleParticle.BURST, 0.05f, 10);
-		Enchanting.show(curUser, armor);
+		Enchanting.show(curUser, ((Item)armor));
 		Sample.INSTANCE.play(Assets.Sounds.BURNING);
 		
 		curUser.spend(TIME_TO_INSCRIBE);
@@ -132,14 +131,21 @@ public class Stylus extends Item {
 
 		@Override
 		public boolean itemSelectable(Item item) {
-			return item instanceof Armor;
+			return item instanceof Inscribable;
 		}
 
 		@Override
 		public void onSelect( Item item ) {
 			if (item != null) {
-				Stylus.this.inscribe( (Armor)item );
+				Stylus.this.inscribe( (Inscribable) item );
 			}
 		}
+	};
+
+	public interface Inscribable {
+		boolean isIdentified();
+		Inscribable inscribe();
+		boolean hasCurseGlyph();
+		boolean isCursed();
 	};
 }

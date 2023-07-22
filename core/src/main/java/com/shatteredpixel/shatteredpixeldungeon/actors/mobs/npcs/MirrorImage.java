@@ -118,7 +118,7 @@ public class MirrorImage extends NPC {
 	}
 
 	public int damageHero(Char enemy, int damage, float armorPercent) {
-		int dr = Math.round(hero.drRoll() * armorPercent);
+		int dr = Math.round(hero.actualDrRoll() * armorPercent);
 		if (enemy != null)
 			damage = hero.defenseProc(enemy, damage);
 		damage -= dr;

@@ -105,7 +105,7 @@ public class HeroicLeap extends Ability {
                         Char mob = Actor.findChar(hero.pos + i);
                         if (mob != null && mob != hero && mob.alignment != Char.Alignment.ALLY) {
                             if (level() == 1){
-                                int damage = hero.drRoll();
+                                int damage = hero.actualDrRoll();
                                 damage = (int) (Math.round(damage)*1.5f);
                                 mob.damage(damage, hero);
                             }
@@ -150,7 +150,7 @@ public class HeroicLeap extends Ability {
                                             if (ch != null && ch.alignment != hero.alignment){
                                                 int scalingStr = hero.STR()-10;
                                                 int damage = Random.NormalIntRange(7 + scalingStr*2, 13 + 5*scalingStr);
-                                                damage -= ch.drRoll();
+                                                damage -= ch.actualDrRoll();
 
                                                 ch.damage(damage, hero);
                                                 if (ch.isAlive()){

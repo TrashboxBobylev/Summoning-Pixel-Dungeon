@@ -96,7 +96,7 @@ public class SupplyBomb extends Bomb {
 				detach();
 
 			}  else {
-				spend(TICK);
+				spend(TICK / Bomb.nuclearBoost());
 
 				PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 2 );
 				for (int i = 0; i < PathFinder.distance.length; i++) {

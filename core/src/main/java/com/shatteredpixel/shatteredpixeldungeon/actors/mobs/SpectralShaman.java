@@ -195,6 +195,7 @@ public class SpectralShaman extends Mob {
 					if (PathFinder.distance[j] == dist) {
 						
 						Wraith undead = Wraith.spawnForcefullyAt(j);
+						undead.alignment = alignment;
 						
 						ScrollOfTeleportation.appear( undead, j );
 						new Flare( 3, 32 ).color( 0x000000, false ).show( undead.sprite, 2f ) ;

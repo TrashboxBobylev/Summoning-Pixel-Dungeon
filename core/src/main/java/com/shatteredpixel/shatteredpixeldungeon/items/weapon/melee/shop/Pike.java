@@ -65,7 +65,7 @@ public class Pike extends MeleeWeapon {
         }
         for (int i = 0; i < affectedChars.size(); i++){
             int dmg = Math.round(damage * (10 - i) * 0.1f);
-            dmg -= affectedChars.get(i).drRoll();
+            dmg -= affectedChars.get(i).actualDrRoll();
             dmg = affectedChars.get(i).defenseProc(Dungeon.hero, dmg);
             dmg = Dungeon.hero.attackProc(affectedChars.get(i), dmg);
             affectedChars.get(i).damage(dmg, Dungeon.hero);

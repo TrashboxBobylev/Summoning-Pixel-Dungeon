@@ -105,6 +105,7 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 
@@ -529,6 +530,10 @@ public class Hero extends Char {
 
 		if (Dungeon.isChallenged(Conducts.Conduct.WRAITH)) evasion *= 5;
 
+		if (buff(Talent.TowerOfPowerTracker.class) != null){
+			return INFINITE_EVASION;
+		}
+
 		if (buff(Block.class) != null) return INFINITE_EVASION;
 
 		return Math.round(evasion);
@@ -838,6 +843,12 @@ public class Hero extends Char {
 
         if (subClass == HeroSubClass.OCCULTIST && GoatClone.findClone() == null){
         	GoatClone.spawnClone();
+		}
+
+		if (hasTalent(Talent.MY_SUNSHINE)){
+			if (Dungeon.level.openSpace[pos]){
+				Buff.affect(this, Talent.MySunshineTracker.class);
+			}
 		}
 
 		return actResult;
@@ -1239,8 +1250,11 @@ public class Hero extends Char {
 
 	public void rest( boolean fullRest ) {
 		spendAndNext( TIME_TO_REST );
-		if (!fullRest && sprite != null) {
-			sprite.showStatus( CharSprite.DEFAULT, Messages.get(this, "wait") );
+		if (!fullRest) {
+			if (hasTalent(Talent.TOWER_OF_POWER) && buff(Talent.TowerOfPowerCooldown.class) == null)
+				Buff.affect(this, Talent.TowerOfPowerTracker.class);
+			if (sprite != null)
+				sprite.showStatus( CharSprite.DEFAULT, Messages.get(this, "wait") );
 		}
 		resting = fullRest;
 	}
@@ -1324,6 +1338,15 @@ public class Hero extends Char {
 		default:
 		}
 
+		if (pointsInTalent(Talent.LUST_AND_DUST) > 1){
+			ArrayList<Class<?extends FlavourBuff>> debuffs = new ArrayList<>(Arrays.asList(Vertigo.class));
+			if (pointsInTalent(Talent.LUST_AND_DUST) > 2)
+				debuffs.add(Hex.class);
+			for (Class<?extends FlavourBuff> buff: debuffs){
+				Buff.affect(enemy, buff, 5f);
+			}
+			Buff.affect(enemy, Talent.LustAndDustDebuffTracker.class);
+		}
 
 
 		return damage;
@@ -1608,7 +1631,7 @@ public class Hero extends Char {
 
 			search(false);
 
-			if (subClass == HeroSubClass.FREERUNNER || MomentumBoots.instance != null){
+			if (MomentumBoots.instance != null){
 				Buff.affect(this, Momentum.class).gainStack();
 			}
 			if (MirrorOfFates.isMirrorActive(this)){
@@ -1644,6 +1667,31 @@ public class Hero extends Char {
 			if (ch.alignment != Alignment.ENEMY && ch.buff(Amok.class) == null) {
 				curAction = new HeroAction.Interact( ch );
 			} else {
+				if (((Mob)ch).surprisedBy(this) && !canAttack(ch) && pointsInTalent(Talent.JUST_ONE_MORE_TILE) > 1){
+					int enemy_cell = ch.pos;
+					boolean[] passable = Dungeon.level.passable.clone();
+					passable[enemy_cell] = true;
+					PathFinder.buildDistanceMap(pos, passable, 2+1);
+					if (PathFinder.distance[enemy_cell] != Integer.MAX_VALUE){
+						for (Char ch2 : Actor.chars()){
+							if (ch2 != this)  passable[ch2.pos] = false;
+						}
+						PathFinder.Path path = PathFinder.find(pos, cell, passable);
+						int attackPos = path == null ? -1 : path.get(path.size()-2);
+
+						if (attackPos != -1 && Dungeon.level.distance(attackPos, pos) <= 2){
+							pos = attackPos;
+							Dungeon.level.occupyCell(this);
+							Dungeon.observe();
+							checkVisibleMobs();
+
+							sprite.place( pos );
+							sprite.turnTo( pos, enemy_cell);
+							CellEmitter.get( pos ).burst( Speck.factory( Speck.WOOL ), 6 );
+							Sample.INSTANCE.play( Assets.Sounds.PUFF );
+						}
+					}
+				}
 				curAction = new HeroAction.Attack( ch );
 			}
 

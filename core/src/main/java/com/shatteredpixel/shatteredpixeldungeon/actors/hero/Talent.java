@@ -24,21 +24,26 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CounterBuff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FrostBurn;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.Wet;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.CloakGlyph;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.Victide;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Scrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -67,22 +72,22 @@ public enum Talent {
     WILD_SORCERY(94),
     TOXIC_RELATIONSHIP(95),
     DOG_BREEDING(82, 3),
-    NUCLEAR_RAGE(83, 3),
+    NUCLEAR_RAGE(83, 3, true),
     SNIPER_PATIENCE(84, 3),
-    ARCANE_CLOAK(85, 3),
+    ARCANE_CLOAK(85, 3, true),
     ARMORED_ARMADA(86, 3),
     TIMEBENDING(87, 3),
-    LUST_AND_DUST(88, 3),
-    TOWER_OF_POWER(89, 3),
-    JUST_ONE_MORE_TILE(90, 3),
-    NEVER_GONNA_GIVE_YOU_UP(114, 3),
+    LUST_AND_DUST(88, 3, true),
+    TOWER_OF_POWER(89, 3, true),
+    JUST_ONE_MORE_TILE(90, 3, true),
+    NEVER_GONNA_GIVE_YOU_UP(114, 3, true),
     ASSASSINATION(115, 3),
     SPEED_SHOES(116, 3),
     BREAD_AND_CIRCUSES(117, 3),
     COMET_FALL(118, 3),
     SPYDER_MAN(119, 3),
     DETERMINED(120, 3),
-    MY_SUNSHINE(121, 3),
+    MY_SUNSHINE(121, 3, true),
     OLYMPIC_SKILLS(122, 3),
     REAL_KNIFE_MASTER(25, 3),
     BLOOD_DRIVE(26, 3),
@@ -99,6 +104,7 @@ public enum Talent {
 
     int icon;
     int maxPoints;
+    boolean t3_implemented = false;
 
     // tiers 1/2/3/4 start at levels 2/7/13/21
     public static int[] tierLevelThresholds = new int[]{0, 2, 7, 13, 21, 31};
@@ -112,12 +118,22 @@ public enum Talent {
         this.maxPoints = maxPoints;
     }
 
+    Talent( int icon, int maxPoints, boolean implemented ){
+        this.icon = icon;
+        this.maxPoints = maxPoints;
+        this.t3_implemented = implemented;
+    }
+
     public int icon(){
         return icon;
     }
 
     public int maxPoints(){
         return maxPoints;
+    }
+
+    public boolean implementedYet(){
+        return t3_implemented;
     }
 
     public String title(){
@@ -141,10 +157,38 @@ public enum Talent {
     }
     public static class ImprovisedProjectileCooldown extends Cooldown {
         public float duration() { return Dungeon.hero.pointsInTalent(WELCOME_TO_EARTH) > 1 ? 50 : 80; }
-        public int icon() { return BuffIndicator.SLOW; }
+        public int icon() { return BuffIndicator.TIME; }
         public void tintIcon(Image icon) { icon.hardlight(0.15f, 0.2f, 0.5f); }
     }
-    public static class SpecialDeliveryCount extends CounterBuff{}
+    public static class TowerOfPowerCooldown extends Cooldown {
+        public float duration() {
+            return 40 - Dungeon.hero.pointsInTalent(TOWER_OF_POWER)*5;
+        }
+        public int icon() { return BuffIndicator.TIME; }
+        public void tintIcon(Image icon) { icon.hardlight(0.7f, 0.66f, 0.63f); }
+    }
+    public static class TowerOfPowerDamage extends FlavourBuff{
+        public static final float DURATION = 10f;
+        public float iconFadePercent() {
+            return Math.max(0, (DURATION - visualcooldown()) / DURATION);
+        }
+        public int icon() { return BuffIndicator.WEAPON; }
+        public String toString() { return Messages.get(this, "name"); }
+        public String desc() { return Messages.get(this, "desc", Math.floor((TowerOfPowerTracker.damageBoost()-1f)*100f), dispTurns()); }
+    }
+    public static class TowerOfPowerTracker extends Buff{
+        public static float damageBoost() { return 0.65f + 0.35f*Dungeon.hero.pointsInTalent(TOWER_OF_POWER);}
+        public String toString() { return Messages.get(this, "name"); }
+        public String desc() { return Messages.get(this, "desc", Math.floor((damageBoost()-1f)*100f)); }
+        public int icon() { return BuffIndicator.ARMOR_GEN; }
+        public void tintIcon(Image icon) { icon.hardlight(0.7f, 0.66f, 0.63f); }
+
+        @Override
+        public void fx(boolean on) {
+            if (on) target.sprite.add(CharSprite.State.SHIELDED);
+            else target.sprite.remove(CharSprite.State.SHIELDED);
+        }
+    }
     public static class SuckerPunchTracker extends Buff{}
     public static class AcutenessTracker extends CounterBuff{}
     public static class DirectiveTracker extends FlavourBuff{}
@@ -164,8 +208,93 @@ public enum Talent {
         public void tintIcon(Image icon) { icon.hardlight(0.8f, 0.1f, 0.0f); }
     }
     public static class LethalMomentumTracker extends FlavourBuff{}
+    public static class LustAndDustTracker extends Buff{}
+    public static class LustAndDustDebuffTracker extends Buff{}
+    public static class JustOneMoreTileTracker extends FlavourBuff{
+        public String toString() { return Messages.get(this, "name"); }
+        public float iconFadePercent() { return Math.max(0, 1f - (visualcooldown() / 13f)); }
+        public String desc() { return Messages.get(this, "desc", dispTurns(visualcooldown())); }
+        public int icon() { return BuffIndicator.WEAPON; }
+        public void tintIcon(Image icon) { icon.hardlight(0xFFFF00); }
+    }
+    public static class MySunshineTracker extends CounterBuff{
+        public float iconFadePercent() { return Math.max(0, 1f - ((count()) / (timeRequired()))); }
+        public String toString() { return Messages.get(this, "name"); }
 
-    public static final int MAX_TALENT_TIERS = 2;
+        public String desc() {
+            return Messages.get(this, "desc", sunCount, dispTurns(timeRequired() - (count())), timeRequired());
+        }
+
+        public int icon() { return BuffIndicator.SUNSHINE; }
+
+        public int sunCount;
+
+        public static final int SUN_COLOR = 0xf6ff00;
+
+        public static int timeRequired(){
+            switch (Dungeon.hero.pointsInTalent(MY_SUNSHINE)){
+                case 0: case 1:
+                    return 30;
+                case 2:
+                    return 25;
+            }
+            return 0;
+        }
+
+        public static int sunObtained(){
+            switch (Dungeon.hero.pointsInTalent(MY_SUNSHINE)){
+                case 0:
+                    return 20;
+                case 1:
+                    return 25;
+                case 2:
+                    return 50;
+            }
+            return 0;
+        }
+
+        @Override
+        public boolean act() {
+            if (target.isAlive()) {
+                spend( TICK );
+                if (Dungeon.level.openSpace[Dungeon.hero.pos]){
+                    if (target.buff(Light.class) != null){
+                        SpellSprite.show(Dungeon.hero, SpellSprite.LIGHT, 0.95f, 1, 0);
+                        countUp(1.5f);
+                    } else {
+                        SpellSprite.show(Dungeon.hero, SpellSprite.LIGHT, 1, 1, 0);
+                        countUp(1);
+                    }
+                }
+                if (count() >= timeRequired()) {
+                    sunCount += sunObtained();
+                    countDown(timeRequired());
+                    Sample.INSTANCE.play(Assets.Sounds.CHARGEUP, 1f, 2f);
+                }
+            } else {
+                detach();
+                sunCount = 0;
+            }
+
+            return true;
+        }
+
+        private static final String SUN = "sunCount";
+
+        @Override
+        public void storeInBundle(Bundle bundle) {
+            super.storeInBundle(bundle);
+            bundle.put(SUN, sunCount);
+        }
+
+        @Override
+        public void restoreFromBundle(Bundle bundle) {
+            super.restoreFromBundle(bundle);
+            sunCount = bundle.getInt(SUN);
+        }
+    }
+
+    public static final int MAX_TALENT_TIERS = 3;
 
     public static int onAttackProc(Hero hero, Char enemy, int damage){
         if (hero.hasTalent(Talent.COLD_FRONT)
@@ -174,6 +303,29 @@ public enum Talent {
             int bonus = hero.pointsInTalent(COLD_FRONT)*2;
             Buff.affect(enemy, FrostBurn.class).reignite(enemy, bonus);
             Buff.affect(enemy, SuckerPunchTracker.class);
+        }
+        if (hero.hasTalent(Talent.JUST_ONE_MORE_TILE)
+                && enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)
+                && hero.buff(JustOneMoreTileTracker.class) == null){
+            int duration = 1 + hero.pointsInTalent(JUST_ONE_MORE_TILE)*4;
+            Buff.affect(hero, JustOneMoreTileTracker.class, duration);
+        }
+        if (hero.buff(CloakOfShadows.cloakStealth.class) != null
+                && enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)
+                && enemy.isWet()
+                && hero.buff(CloakOfShadows.cloakStealth.class).glyph() instanceof Victide){
+            float bonus = 0f;
+            if (Dungeon.level.water[enemy.pos]){
+                bonus = 1f;
+                if (enemy.buff(Wet.class) != null)
+                    bonus = 2f;
+            }
+            if (enemy.buff(Wet.class) != null){
+                bonus = 1f;
+                if (Dungeon.level.water[enemy.pos])
+                    bonus = 2f;
+            }
+            damage *= Math.max(1f, Math.pow(1.3f, bonus*CloakGlyph.efficiency()));
         }
         if (hero.hasTalent(Talent.DIRECTIVE)
                 && enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)
@@ -241,13 +393,13 @@ public enum Talent {
         }
 
         tierTalents.clear();
-//
-//        Collections.addAll(tierTalents, DOG_BREEDING, NUCLEAR_RAGE, SNIPER_PATIENCE, ARCANE_CLOAK, ARMORED_ARMADA, TIMEBENDING, LUST_AND_DUST, TOWER_OF_POWER, JUST_ONE_MORE_TILE, NEVER_GONNA_GIVE_YOU_UP, ASSASSINATION, SPEED_SHOES, BREAD_AND_CIRCUSES, COMET_FALL, SPYDER_MAN, DETERMINED, MY_SUNSHINE, OLYMPIC_SKILLS);
-//       for (Talent talent : tierTalents){
-//            talents.get(2).put(talent, 0);
-//        }
-//
-//        tierTalents.clear();
+
+        Collections.addAll(tierTalents, DOG_BREEDING, NUCLEAR_RAGE, SNIPER_PATIENCE, ARCANE_CLOAK, ARMORED_ARMADA, TIMEBENDING, LUST_AND_DUST, TOWER_OF_POWER, JUST_ONE_MORE_TILE, NEVER_GONNA_GIVE_YOU_UP, ASSASSINATION, SPEED_SHOES, BREAD_AND_CIRCUSES, COMET_FALL, SPYDER_MAN, DETERMINED, MY_SUNSHINE, OLYMPIC_SKILLS);
+       for (Talent talent : tierTalents){
+            talents.get(2).put(talent, 0);
+        }
+
+        tierTalents.clear();
 
     }
 
@@ -262,20 +414,20 @@ public enum Talent {
             talents.add(new LinkedHashMap<>());
         }
 
-//        ArrayList<Talent> tierTalents = new ArrayList<>();
-//        switch (cls){
-//            case ASSASSIN:
-//                Collections.addAll(tierTalents, REAL_KNIFE_MASTER, BLOOD_DRIVE, UNSETTLING_GAZE, SUPPORT_POTION, WITCHING_STRIKE, SILENCE_OF_LAMBS);
-//                break;
-//            case FREERUNNER:
-//                Collections.addAll(tierTalents, BLESSING_OF_SANITY, GUIDANCE_FLAME, SPEEDY_STEALTH, THAUMATURGY, SHARP_VISION, CHEMISTRY_DEGREE);
-//                break;
-//        }
-//
-//        for (Talent talent : tierTalents){
-//            talents.get(2).put(talent, 0);
-//        }
-//        tierTalents.clear();
+        ArrayList<Talent> tierTalents = new ArrayList<>();
+        switch (cls){
+            case ASSASSIN:
+                Collections.addAll(tierTalents, REAL_KNIFE_MASTER, BLOOD_DRIVE, UNSETTLING_GAZE, SUPPORT_POTION, WITCHING_STRIKE, SILENCE_OF_LAMBS);
+                break;
+            case FREERUNNER:
+                Collections.addAll(tierTalents, BLESSING_OF_SANITY, GUIDANCE_FLAME, SPEEDY_STEALTH, THAUMATURGY, SHARP_VISION, CHEMISTRY_DEGREE);
+                break;
+        }
+
+        for (Talent talent : tierTalents){
+            talents.get(2).put(talent, 0);
+        }
+        tierTalents.clear();
     }
 
     private static final String TALENT_TIER = "talents_tier_";

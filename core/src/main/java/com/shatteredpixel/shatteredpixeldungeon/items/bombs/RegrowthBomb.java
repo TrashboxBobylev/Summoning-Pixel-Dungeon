@@ -81,11 +81,11 @@ public class RegrowthBomb extends Bomb {
 						&& Dungeon.level.plants.get(cell) == null){
 					plantCandidates.add(i);
 				}
-				GameScene.add( Blob.seed( i, 10, Regrowth.class ) );
+				GameScene.add( Blob.seed( i, Math.round(10*Bomb.nuclearBoost()), Regrowth.class ) );
 			}
 		}
 
-		int plants = Random.chances(new float[]{0, 6, 3, 1});
+		int plants = Math.round(Random.chances(new float[]{0, 6, 3, 1})*Bomb.nuclearBoost());
 
 		for (int i = 0; i < plants; i++) {
 			Integer plantPos = Random.element(plantCandidates);

@@ -25,10 +25,12 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.stones;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Enchanting;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -56,10 +58,14 @@ public class StoneOfEnchantment extends InventoryStone {
 			
 			((Weapon)item).enchant();
 			
-		} else {
+		} else if (item instanceof Armor) {
 			
 			((Armor)item).inscribe();
 			
+		} else if (item instanceof CloakOfShadows && curUser.hasTalent(Talent.ARCANE_CLOAK)){
+
+			((CloakOfShadows)item).inscribe();
+
 		}
 		
 		curUser.sprite.emitter().start( Speck.factory( Speck.LIGHT ), 0.1f, 5 );
@@ -67,6 +73,8 @@ public class StoneOfEnchantment extends InventoryStone {
 		
 		if (item instanceof Weapon) {
 			GLog.positive(Messages.get(this, "weapon"));
+		} else if (item instanceof CloakOfShadows) {
+			GLog.positive(Messages.get(this, "cloak"));
 		} else {
 			GLog.positive(Messages.get(this, "armor"));
 		}

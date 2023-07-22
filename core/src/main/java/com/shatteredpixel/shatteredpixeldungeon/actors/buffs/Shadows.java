@@ -27,8 +27,6 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -72,9 +70,9 @@ public class Shadows extends Buff {
 		}
 		if (super.attachTo( target )) {
 			target.invisible++;
-			if (target instanceof Hero && ((Hero) target).subClass == HeroSubClass.ASSASSIN){
-				Buff.affect(target, Preparation.class);
-			}
+//			if (target instanceof Hero && ((Hero) target).subClass == HeroSubClass.ASSASSIN){
+//				Buff.affect(target, Preparation.class);
+//			}
 			if (Dungeon.level != null) {
 				Sample.INSTANCE.play( Assets.Sounds.MELD );
 				Dungeon.observe();

@@ -67,5 +67,10 @@ public class Icecap extends Plant {
 
 			plantClass = Icecap.class;
 		}
+
+		@Override
+		public int sunValue() {
+			return 75;
+		}
 	}
 }

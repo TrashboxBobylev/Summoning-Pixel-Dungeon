@@ -121,7 +121,7 @@ public class ArcaneBomb extends Bomb {
 				if (heap != null)
 					heap.explode();
 
-                GameScene.add(Blob.seed(i, Random.NormalIntRange(100, 150), Miasma.class));
+                GameScene.add(Blob.seed(i, Math.round(Random.NormalIntRange(100, 150)*Bomb.nuclearBoost()), Miasma.class));
 
 
 			}

@@ -22,24 +22,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
+package com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs;
 
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.watabou.noosa.Image;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 
-public class Block extends DummyBuff{
-    @Override
-    public int icon() {
-        return BuffIndicator.ARMOR_GEN;
+public class Sparking extends CloakGlyph{
+    private static ItemSprite.Glowing SPARKY = new ItemSprite.Glowing( 0xffffca, 0.33f);
+
+    {
+        immunities.add(Electricity.class);
     }
 
     @Override
-    public void tintIcon(Image icon) {
-        icon.hardlight(0x94BCCC);
+    public void proc(CloakOfShadows cloak, Char defender, int charges) {
+
     }
 
     @Override
-    public float iconFadePercent() {
-        return Math.max(0, (8 - visualcooldown()) / 8);
+    public ItemSprite.Glowing glowing() {
+        return SPARKY;
     }
 }

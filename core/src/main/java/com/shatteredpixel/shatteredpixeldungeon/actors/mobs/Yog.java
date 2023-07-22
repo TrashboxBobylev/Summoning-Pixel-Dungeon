@@ -232,7 +232,7 @@ public class Yog extends Mob {
 		}
 		
 		@Override
-		public int drRoll() {
+		public int actualDrRoll() {
 			return Random.NormalIntRange(0, 15);
 		}
 		
@@ -304,7 +304,7 @@ public class Yog extends Mob {
 		}
 		
 		@Override
-		public int drRoll() {
+		public int actualDrRoll() {
 			return Random.NormalIntRange(0, 15);
 		}
 		
@@ -410,7 +410,7 @@ public class Yog extends Mob {
 		}
 		
 		@Override
-		public int drRoll() {
+		public int actualDrRoll() {
 			return Random.NormalIntRange(0, 8);
 		}
 

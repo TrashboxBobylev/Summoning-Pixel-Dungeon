@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -41,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -655,6 +657,9 @@ public class Item implements Bundlable {
 							} else {
 								user.spendAndNext(delay);
 							}
+							if (user.hasTalent(Talent.MY_SUNSHINE)){
+								plantRecycling(Item.this, user);
+							}
 						}
 					});
 		} else {
@@ -668,9 +673,25 @@ public class Item implements Bundlable {
 							curUser = user;
 							Item i = Item.this.detach(user.belongings.backpack);
 							if (i != null) i.onThrow(cell);
+							if (user.hasTalent(Talent.MY_SUNSHINE)){
+								plantRecycling(i, user);
+							}
 							user.spendAndNext(delay);
 						}
 					});
+		}
+	}
+
+	public static void plantRecycling(Item i, Hero user) {
+		Talent.MySunshineTracker buff = Buff.affect(user, Talent.MySunshineTracker.class);
+		if (i instanceof Plant.Seed){
+			Plant.Seed seed = ((Plant.Seed) i);
+			if (buff.sunCount >= seed.sunValue()){
+				buff.sunCount -= seed.sunValue();
+				user.sprite.showStatus(Talent.MySunshineTracker.SUN_COLOR, Messages.format( "-%d", seed.sunValue()) );
+				Plant.Seed newSeed = Reflection.newInstance(seed.getClass());
+				newSeed.quantity(1).collect();
+			}
 		}
 	}
 

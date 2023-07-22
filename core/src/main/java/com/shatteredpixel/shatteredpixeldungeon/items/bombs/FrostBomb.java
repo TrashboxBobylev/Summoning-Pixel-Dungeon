@@ -67,9 +67,9 @@ public class FrostBomb extends Bomb {
 
             for (Char ch : affected){
                 if (ch != null && ch != Dungeon.hero) {
-                    Buff.affect(ch, Frost.class, 15f);
+                    Buff.affect(ch, Frost.class, 15f*Bomb.nuclearBoost());
                 } else if (ch instanceof Hero) {
-                    Buff.affect(ch, Chill.class, 9f);
+                    Buff.affect(ch, Chill.class, 9f*Bomb.nuclearBoost());
                 }
             }
 	}
