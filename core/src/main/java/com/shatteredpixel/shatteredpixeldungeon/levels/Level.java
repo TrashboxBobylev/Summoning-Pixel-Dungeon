@@ -40,8 +40,10 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.WindParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.SyntheticArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.Aromatic;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
@@ -876,6 +878,15 @@ public abstract class Level implements Bundlable {
 			if (ch instanceof WandOfRegrowth.Lotus
 					&& ((WandOfRegrowth.Lotus) ch).inRange(pos)
 					&& Actor.findChar(pos) != null){
+				plant.trigger();
+				return null;
+			}
+		}
+
+		if (Dungeon.hero.buff(CloakOfShadows.cloakStealth.class) != null &&
+				Dungeon.hero.buff(CloakOfShadows.cloakStealth.class).glyph() instanceof Aromatic){
+			Aromatic glyph = (Aromatic) Dungeon.hero.buff(CloakOfShadows.cloakStealth.class).glyph();
+			if (glyph.inRange(Dungeon.hero, pos) && Actor.findChar(pos) != null){
 				plant.trigger();
 				return null;
 			}
