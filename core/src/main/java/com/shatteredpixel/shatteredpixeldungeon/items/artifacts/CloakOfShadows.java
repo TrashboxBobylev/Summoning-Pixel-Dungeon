@@ -132,6 +132,8 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action, 
 					hero.sprite.operate(hero.pos, () -> {
 						if (glyph != null)
 							glyph.onCloaking(this, hero);
+						hero.sprite.idle();
+						hero.onOperateComplete();
 					});
 
 				}
