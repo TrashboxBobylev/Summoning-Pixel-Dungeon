@@ -162,7 +162,7 @@ public class SilkyQuiver extends Artifact {
                     if (quiver.exp >= quiver.level() && quiver.level() < quiver.levelCap) {
                         quiver.exp -= quiver.level();
                         quiver.upgrade();
-                        GLog.positive(Messages.get(SilkyQuiver.class, "upgrade"));
+                        GLog.positive(Messages.get(SilkyQuiver.class, "level_up"));
                         quiver.charge += 2;
                         updateQuickslot();
                     }

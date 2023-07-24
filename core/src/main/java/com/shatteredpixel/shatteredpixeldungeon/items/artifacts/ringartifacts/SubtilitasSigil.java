@@ -169,7 +169,7 @@ public class SubtilitasSigil extends Artifact {
             target.sprite.emitter().burst(FlameParticle.FACTORY, 5);
             if (SubtilitasSigil.this.exp > 5 + (level()+1)*8){
                 SubtilitasSigil.this.exp = 0;
-                GLog.positive( Messages.get(this, "levelup") );
+                GLog.positive( Messages.get(SubtilitasSigil.class, "level_up") );
                 upgrade();
                 updateQuickslot();
             }

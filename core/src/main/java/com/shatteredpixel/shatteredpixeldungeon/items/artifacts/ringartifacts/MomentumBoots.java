@@ -91,7 +91,7 @@ public class MomentumBoots extends Artifact {
             if (exp >= 60 + itemLevel()*45 && level() < levelCap){
                 exp -= 60 + itemLevel()*45;
                 upgrade();
-                GLog.positive(Messages.get(MomentumBoots.class, "levelup"));
+                GLog.positive(Messages.get(MomentumBoots.class, "level_up"));
             }
         }
     }

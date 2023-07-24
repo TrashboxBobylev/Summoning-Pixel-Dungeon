@@ -132,7 +132,7 @@ public class FuelContainer extends Artifact {
             if (exp >= 40 + level()*20 && level() < levelCap){
                 exp -= 40 + level()*20;
                 upgrade();
-                GLog.positive(Messages.get(FuelContainer.class, "levelup"));
+                GLog.positive(Messages.get(FuelContainer.class, "level_up"));
             }
         }
     }

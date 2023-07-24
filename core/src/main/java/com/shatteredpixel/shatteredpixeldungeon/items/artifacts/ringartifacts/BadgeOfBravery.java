@@ -131,7 +131,7 @@ public class BadgeOfBravery extends Artifact {
                 if (++((BadgeOfBravery) curItem).exp == 2){
                     curItem.upgrade();
                     ((BadgeOfBravery) curItem).exp = 0;
-                    GLog.positive( Messages.get(BadgeOfBravery.class, "levelup") );
+                    GLog.positive( Messages.get(BadgeOfBravery.class, "level_up") );
                 } else {
                     GLog.i( Messages.get(BadgeOfBravery.class, "feed") );
                 }
