@@ -92,16 +92,16 @@ public class Stylus extends Item {
 	private void inscribe( Inscribable armor ) {
 
 		if (!armor.isIdentified() ){
-			GLog.warning( Messages.get(this, "identify"));
+			GLog.warning( Messages.get(this, "identify", armor.name()));
 			return;
 		} else if (armor.isCursed() || armor.hasCurseGlyph()){
-			GLog.warning( Messages.get(this, "cursed"));
+			GLog.warning( Messages.get(this, "cursed", armor.name()));
 			return;
 		}
 		
 		detach(curUser.belongings.backpack);
 
-		GLog.warning( Messages.get(this, "inscribed"));
+		GLog.warning( Messages.get(this, "inscribed", armor.name()));
 
 		armor.inscribe();
 		
@@ -152,5 +152,7 @@ public class Stylus extends Item {
 		Inscribable inscribe();
 		boolean hasCurseGlyph();
 		boolean isCursed();
+
+		String name();
 	};
 }
