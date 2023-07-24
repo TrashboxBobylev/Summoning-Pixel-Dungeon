@@ -34,6 +34,7 @@ public class ConjurerArmor extends Armor {
 	{
 		image = ItemSpriteSheet.ARMOR_CONJURER;
         unique = true;
+        bones = false;
 	}
 
     public ConjurerArmor() {

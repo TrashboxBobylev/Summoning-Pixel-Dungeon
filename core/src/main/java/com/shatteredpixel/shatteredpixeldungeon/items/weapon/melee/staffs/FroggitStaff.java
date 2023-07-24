@@ -35,6 +35,9 @@ public class FroggitStaff extends Staff {
         tier = 1;
         table = MinionBalanceTable.FROGGIT;
         setClass(Minion.MinionClass.MELEE);
+
+        unique = true;
+        bones = false;
     }
 
 }
