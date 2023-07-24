@@ -42,7 +42,7 @@ import java.util.HashSet;
 public abstract class CloakGlyph implements Bundlable {
     private static final Class<?>[] t1glyphs = new Class<?>[]{Infernal.class, Cryonic.class, Ethereal.class, Crumbling.class};
 
-    private static final Class<?>[] t2glyphs = new Class<?>[]{Sparking.class, Victide.class, Aromatic.class};
+    private static final Class<?>[] t2glyphs = new Class<?>[]{Sparking.class, Victide.class, Aromatic.class, Divine.class};
 
     public abstract void proc(CloakOfShadows cloak, Char defender, int charges );
 
