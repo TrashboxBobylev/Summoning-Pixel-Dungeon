@@ -49,6 +49,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Endure;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.Silent;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.*;
@@ -2078,7 +2079,10 @@ public class Hero extends Char {
 
 		super.move( step );
 		
-		if (!flying) {
+		if (!flying && !(
+				(buff(CloakOfShadows.cloakStealth.class) != null &&
+						buff(CloakOfShadows.cloakStealth.class).glyph() instanceof Silent)
+				)) {
 			if (isWet()) {
 				Sample.INSTANCE.play( Assets.Sounds.WATER, 1, Random.Float( 0.8f, 1.25f ) );
 			} else if (Dungeon.level.map[pos] == Terrain.EMPTY_SP) {

@@ -31,6 +31,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.SoulFlame;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.stationary.RoseWraith;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.Silent;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfAttunement;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -143,6 +145,10 @@ public class WardingWraith extends Mob implements Callback {
     }
 
     public Char chooseEnemy() {
+        if ((Dungeon.hero.buff(CloakOfShadows.cloakStealth.class) != null &&
+                Dungeon.hero.buff(CloakOfShadows.cloakStealth.class).glyph() instanceof Silent)
+        )
+            return null;
 	    if (alignment == Alignment.ALLY) return super.chooseEnemy();
 	    else if (enraged) {
             //find a new enemy if..

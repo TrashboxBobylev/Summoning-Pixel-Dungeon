@@ -45,10 +45,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.Silent;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.ConjurerSpell;
@@ -315,6 +313,11 @@ public abstract class Mob extends Char {
 			}
 		}
 
+		if ((Dungeon.hero.buff(CloakOfShadows.cloakStealth.class) != null &&
+				Dungeon.hero.buff(CloakOfShadows.cloakStealth.class).glyph() instanceof Silent)
+		)
+			return null;
+
 		//find a new enemy if..
 		boolean newEnemy = false;
 		//we have no enemy, or the current one is dead/missing
@@ -338,7 +341,6 @@ public abstract class Mob extends Char {
 		}
 
 		if ( newEnemy ) {
-
 			HashSet<Char> enemies = new HashSet<>();
 
 			//if the mob is amoked...
