@@ -162,7 +162,7 @@ public class ParchmentOfElbereth extends Artifact {
                         hero.spendAndNext(20f + 10f * level());
                         if (hero.isAlive()) {
                             upgrade();
-                            GLog.positive(Messages.get(this, "levelup"));
+                            GLog.positive(Messages.get(ParchmentOfElbereth.class, "level_up"));
                         }
                     });
                 } else {

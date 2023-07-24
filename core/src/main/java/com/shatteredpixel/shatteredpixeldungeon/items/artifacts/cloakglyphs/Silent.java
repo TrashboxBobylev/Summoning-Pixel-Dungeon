@@ -22,22 +22,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs;
+package com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Froggit;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 
-public class FroggitStaff extends Staff {
-    {
-        image = ItemSpriteSheet.FROGGIT_STAFF;
-        minionType = Froggit.class;
-        tier = 1;
-        table = MinionBalanceTable.FROGGIT;
-        setClass(Minion.MinionClass.MELEE);
+public class Silent extends CloakGlyph{
+    private static ItemSprite.Glowing BLACKNESS = new ItemSprite.Glowing( 0x1c1c1c, 0.33f);
 
-        unique = true;
-        bones = false;
+    @Override
+    public void proc(CloakOfShadows cloak, Char defender, int charges) {
+
     }
 
+    @Override
+    public ItemSprite.Glowing glowing() {
+        return BLACKNESS;
+    }
 }
