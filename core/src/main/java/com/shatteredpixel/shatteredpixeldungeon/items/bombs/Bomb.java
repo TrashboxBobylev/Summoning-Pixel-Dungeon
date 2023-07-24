@@ -225,23 +225,23 @@ public class Bomb extends Item {
 	}
 
 	public static int damageRoll(){
-		//sewers: 9-25
-		//prison: 24-55
-		//caves: 39-85
-		//city: 44-115
-		//halls: 68-135
+		//sewers: 8-22
+		//prison: 24-47
+		//caves: 40-72
+		//city: 56-97
+		//halls: 72-122
 		return Random.NormalIntRange(minDamage(), maxDamage());
 	}
 
 	public static int maxDamage() {
-		int baseDamage = 25 + (Dungeon.chapterNumber()) * 30;
+		int baseDamage = 22 + (Dungeon.chapterNumber()) * 25;
 		if (Dungeon.hero.pointsInTalent(Talent.NUCLEAR_RAGE) > 1)
 			baseDamage *= 1.05f + 0.1f * (Dungeon.hero.pointsInTalent(Talent.NUCLEAR_RAGE)-1);
 		return baseDamage;
 	}
 
 	public static int minDamage() {
-		int baseDamage = 11 + (Dungeon.chapterNumber())*19;
+		int baseDamage = 8 + (Dungeon.chapterNumber())*16;
 		if (Dungeon.hero.pointsInTalent(Talent.NUCLEAR_RAGE) > 0)
 			baseDamage *= 1.05f + 0.1f * (Dungeon.hero.pointsInTalent(Talent.NUCLEAR_RAGE));
 		return baseDamage;
