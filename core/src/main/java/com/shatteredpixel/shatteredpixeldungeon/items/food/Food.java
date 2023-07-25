@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.food;
 import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -35,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -64,6 +66,14 @@ public class Food extends Item {
 		actions.add( AC_EAT );
 		return actions;
 	}
+
+	protected float eatingTime(){
+		if (Dungeon.hero.hasTalent(Talent.BREAD_AND_CIRCUSES)){
+			return TIME_TO_EAT - 2;
+		} else {
+			return TIME_TO_EAT;
+		}
+	}
 	
 	@Override
 	public void execute( Hero hero, String action ) {
@@ -81,13 +91,14 @@ public class Food extends Item {
 
 
 			foodProc( hero );
+			Talent.onFoodEaten(hero, energy, this);
 			
 			hero.sprite.operate( hero.pos );
 			hero.busy();
 			SpellSprite.show( hero, SpellSprite.FOOD );
 			Sample.INSTANCE.play( Assets.Sounds.EAT );
 			
-			hero.spend( TIME_TO_EAT );
+			hero.spend( eatingTime() );
 			
 			Statistics.foodEaten++;
 			Badges.validateFoodEaten();
@@ -116,7 +127,17 @@ public class Food extends Item {
 				break;
 		}
 	}
-	
+
+	@Override
+	public Item random() {
+		Item item = super.random();
+		if (Dungeon.hero.pointsInTalent(Talent.BREAD_AND_CIRCUSES) > 1){
+			if (Random.Int(2) == 0)
+				item.quantity(2);
+		}
+		return item;
+	}
+
 	@Override
 	public boolean isUpgradable() {
 		return false;

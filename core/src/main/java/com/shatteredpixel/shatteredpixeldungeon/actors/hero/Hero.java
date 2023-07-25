@@ -348,6 +348,7 @@ public class Hero extends Char {
 				if (f == talent) tier.put(talent, tier.get(talent)+1);
 			}
 		}
+		Talent.onTalentUpgraded(this, talent);
 	}
 
 	public int talentPointsSpent(int tier){
@@ -580,6 +581,10 @@ public class Hero extends Char {
 		}
 
 		if (Dungeon.isChallenged(Conducts.Conduct.KING)) dr += Random.NormalIntRange(0, Dungeon.hero.lvl/2);
+
+		if (buff(Talent.BreadAndCircusesStatTracker.class) != null){
+			dr += buff(Talent.BreadAndCircusesStatTracker.class).defense();
+		}
 		
 		return dr;
 	}

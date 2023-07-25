@@ -48,6 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.Silent;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.ConjurerSpell;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
@@ -977,6 +978,15 @@ public abstract class Mob extends Char {
 					Dungeon.level.drop(Wealth.genConsumableDrop(Dungeon.hero.buff(MasterThievesArmband.Thievery.class).itemLevel()), pos).sprite.drop();
 					Wealth.showFlareForBonusDrop(sprite);
 				}
+			}
+		}
+
+		if (Dungeon.hero.hasTalent(Talent.BREAD_AND_CIRCUSES)){
+			Talent.BreadAndCircusesCounter counter = Buff.count(Dungeon.hero, Talent.BreadAndCircusesCounter.class, 1);
+			if (counter.count() >= Talent.BreadAndCircusesCounter.mobsForFood(Dungeon.hero.pointsInTalent(Talent.BREAD_AND_CIRCUSES))){
+				counter.countDown(counter.count());
+				new Flare(6, 20).color(0xb3a8a1, true).show(sprite, 2.5f);
+				Dungeon.level.drop(new SmallRation(), pos).sprite.drop();
 			}
 		}
 

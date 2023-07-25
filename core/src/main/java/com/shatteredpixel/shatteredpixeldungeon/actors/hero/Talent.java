@@ -34,10 +34,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.CloakGlyph;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.Victide;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Scrap;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -50,6 +53,8 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.GameMode.HELL;
 
 public enum Talent {
 
@@ -83,7 +88,7 @@ public enum Talent {
     NEVER_GONNA_GIVE_YOU_UP(114, 3, true),
     ASSASSINATION(115, 3),
     SPEED_SHOES(116, 3),
-    BREAD_AND_CIRCUSES(117, 3),
+    BREAD_AND_CIRCUSES(117, 3, true),
     COMET_FALL(118, 3),
     SPYDER_MAN(119, 3),
     DETERMINED(120, 3),
@@ -294,7 +299,40 @@ public enum Talent {
         }
     }
 
+    public static class BreadAndCircusesCounter extends CounterBuff{
+        public static int mobsForFood(int points){
+            return points < 2 ? 20 : 15;
+        }
+    }
+
+    public static class BreadAndCircusesStatTracker extends Buff{
+        public int defense() {
+            Hunger baseBuff = target.buff(Hunger.class);
+            float progress = Math.min(1f, baseBuff.hunger() / Hunger.HUNGRY);
+            return (int) Math.ceil(8 * (1f - progress));
+        }
+        public String toString() { return Messages.get(this, "name"); }
+        public String desc() { return Messages.get(this, "desc", defense()); }
+        public int icon() { return BuffIndicator.BREAD_CIRCUS; }
+        public void tintIcon(Image icon) {
+            Hunger baseBuff = target.buff(Hunger.class);
+            if (!baseBuff.isHungry()){
+                float progress = (baseBuff.hunger()/Hunger.HUNGRY);
+                icon.hardlight(0f + 0.949f*progress, 0.7f - 0.25f*progress, 0f + 0.09f*progress);
+            } else
+                icon.hardlight(0.95f, 0.45f, 0.09f);
+        }
+    }
+
     public static final int MAX_TALENT_TIERS = 3;
+
+    public static void onTalentUpgraded( Hero hero, Talent talent ){
+        if (talent == BREAD_AND_CIRCUSES){
+            Buff.affect(hero, BreadAndCircusesCounter.class);
+            if (hero.pointsInTalent(BREAD_AND_CIRCUSES) == 3)
+                Buff.affect(hero, BreadAndCircusesStatTracker.class);
+        }
+    }
 
     public static int onAttackProc(Hero hero, Char enemy, int damage){
         if (hero.hasTalent(Talent.COLD_FRONT)
@@ -365,6 +403,28 @@ public enum Talent {
 
     public static void onItemIdentified( Hero hero, Item item ){
 
+    }
+
+    public static void onFoodEaten( Hero hero, float foodVal, Item foodSource ){
+        if (hero.hasTalent(BREAD_AND_CIRCUSES)){
+            Buff.affect(hero, Adrenaline.class, 2);
+            if (hero.pointsInTalent(BREAD_AND_CIRCUSES) == 2){
+                ArtifactRecharge buff = Buff.affect( hero, ArtifactRecharge.class);
+                if (buff.left() < 4){
+                    Buff.affect( hero, ArtifactRecharge.class).set(4).ignoreHornOfPlenty = foodSource instanceof HornOfPlenty;
+                }
+                ScrollOfRecharging.charge( hero );
+                SpellSprite.show(hero, SpellSprite.CHARGE, 0, 1, 1);
+            }
+            if (hero.pointsInTalent(BREAD_AND_CIRCUSES) == 3){
+                for (Buff b : hero.buffs()){
+                    if (b instanceof Artifact.ArtifactBuff && !((Artifact.ArtifactBuff) b).isCursed() ) {
+                        ((Artifact.ArtifactBuff) b).charge(hero, 5f);
+                    }
+                }
+                if (Dungeon.mode != HELL) Buff.affect(hero, FoodRegen.class).fullHP = 20;
+            }
+        }
     }
 
     public static void initClassTalents( Hero hero ){

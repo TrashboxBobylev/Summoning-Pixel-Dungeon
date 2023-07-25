@@ -113,6 +113,7 @@ public class BuffIndicator extends Component {
 	public static final int MIRROR      = 62;
 	public static final int SUNSHINE    = 63;
 	public static final int ARMOR_GEN   = 64;
+	public static final int BREAD_CIRCUS= 65;
 
 	public static final int SIZE	= 7;
 	
