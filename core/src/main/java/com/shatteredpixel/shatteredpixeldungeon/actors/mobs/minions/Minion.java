@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.PerfumeGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Piranha;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Yog;
@@ -293,6 +294,8 @@ public abstract class Minion extends Mob {
         if (timer == -1) {
             if (cause == Chasm.class){
                 super.die( cause );
+            } else if (this instanceof Talent.DogBreedingMinion){
+                Buff.affect(this, Talent.DogBreedingDeathRefusal.class);
             } else if (buff(NecromancyStat.class) != null){
                 timer = buff(NecromancyStat.class).level+1;
                 sprite.add(CharSprite.State.SPIRIT);

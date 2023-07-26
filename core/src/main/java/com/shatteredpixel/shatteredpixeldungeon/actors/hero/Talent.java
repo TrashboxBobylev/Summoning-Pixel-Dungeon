@@ -25,12 +25,15 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.Wet;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -41,13 +44,17 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.Cloa
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.Victide;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Scrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.MinionBalanceTable;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.DogSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -76,7 +83,7 @@ public enum Talent {
     PLAGUEBRINGER(93),
     WILD_SORCERY(94),
     TOXIC_RELATIONSHIP(95),
-    DOG_BREEDING(82, 3),
+    DOG_BREEDING(82, 3, true),
     NUCLEAR_RAGE(83, 3, true),
     SNIPER_PATIENCE(84, 3),
     ARCANE_CLOAK(85, 3, true),
@@ -323,6 +330,175 @@ public enum Talent {
                 icon.hardlight(0.95f, 0.45f, 0.09f);
         }
     }
+    public static class DogBreedingDeathRefusal extends Buff {
+
+        @Override
+        public boolean attachTo(Char target) {
+            if (super.attachTo(target) && target instanceof Minion){
+                ((Minion) target).timer = 9999;
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        @Override
+        public boolean act() {
+            if (target.HP != target.HT){
+                spend(TICK);
+            } else {
+                detach();
+                ((Minion)target).timer = 0;
+                Sample.INSTANCE.play(Assets.Sounds.CHARGEUP, 1f, 3f);
+                SpellSprite.show(Dungeon.hero, SpellSprite.CHARGE, 1, 0, 0);
+            }
+            return true;
+        }
+
+        @Override
+        public void fx(boolean on) {
+            if (on) target.sprite.add(CharSprite.State.DARKENED);
+            else target.sprite.remove(CharSprite.State.DARKENED);
+        }
+    }
+    public static class DogBreedingMarking extends DummyBuff {
+        {
+            type = buffType.NEGATIVE;
+        }
+
+        @Override
+        public int icon() {
+            return BuffIndicator.MARK;
+        }
+
+        @Override
+        public String desc() {
+            if (Dungeon.hero.pointsInTalent(DOG_BREEDING) == 3)
+                return Messages.get(this, "desc_armor_ignore", dispTurns());
+            return Messages.get(this, "desc", dispTurns());
+        }
+
+        @Override
+        public void tintIcon(Image icon) {
+            icon.hardlight(0.8f, 0f, 0f);
+        }
+    }
+    public static class DogBreedingMinion extends Minion{
+        {
+            spriteClass = DogSprite.class;
+            baseDefense = 4;
+            baseSpeed = 1.5f;
+        }
+
+        @Override
+        protected boolean act() {
+            if (DogBreedingStaff.staffInstance == null)
+                DogBreedingStaff.staffInstance = new DogBreedingStaff();
+            return super.act();
+        }
+
+        @Override
+        protected float attackDelay() {
+            float mod = 0;
+            switch (lvl){
+                case 0: mod = 1; break;
+                case 1: case 2: mod = 0.66f; break;
+            }
+            return super.attackDelay() * mod;
+        }
+
+        @Override
+        public int attackProc(Char enemy, int damage) {
+            DogBreedingStaff.staffInstance.customizeMinion(this);
+            if (lvl > 0){
+                Buff.affect(enemy, DogBreedingMarking.class, attackDelay()*2.5f);
+            }
+            if (enemy.properties().contains(Property.ANIMAL)){
+                HP = Math.min(HT, HP + minDamage);
+                sprite.emitter().burst( Speck.factory( Speck.HEALING ), minDamage / 3 );
+            }
+            return super.attackProc(enemy, damage);
+        }
+
+        @Override
+        public int defenseProc(Char enemy, int damage) {
+            DogBreedingStaff.staffInstance.customizeMinion(this);
+            return super.defenseProc(enemy, damage);
+        }
+
+        @Override
+        public boolean interact(Char c) {
+            DogBreedingStaff.staffInstance.customizeMinion(this);
+            return super.interact(c);
+        }
+
+        @Override
+        protected boolean canAttack(Char enemy) {
+            return super.canAttack(enemy) && buff(DogBreedingDeathRefusal.class) == null;
+        }
+
+        public int foodHealing(){
+            switch (lvl){
+                case 0: return 20;
+                case 1: return 35;
+                case 2: return 50;
+            }
+            return 0;
+        }
+    }
+    public static class DogBreedingStaff extends Staff{
+
+        public static DogBreedingStaff staffInstance;
+
+        {
+            table = MinionBalanceTable.DOG_BREEDING;
+            minionType = DogBreedingMinion.class;
+            setClass(Minion.MinionClass.MELEE);
+        }
+
+        @Override
+        public int STRReq() {return 0;}
+
+        @Override
+        public int level() {
+            return Dungeon.hero.pointsInTalent(DOG_BREEDING)-1;
+        }
+
+        public int minionMin(int lvl) {
+            int dmg = 0;
+            int ownerLvl = Math.max(0, Dungeon.hero.lvl - 12);
+            switch (lvl) {
+                case 0: case 1: dmg = 6 + Math.round(ownerLvl * 0.5f); break;
+                case 2: dmg = 9 + Math.round(ownerLvl * 1f); break;
+            }
+            if (Dungeon.isChallenged(Conducts.Conduct.PACIFIST)) dmg /= 3;
+            return dmg;
+        }
+
+        public int minionMax(int lvl) {
+            int dmg = 0;
+            int ownerLvl = Math.max(0, Dungeon.hero.lvl - 12);
+            switch (lvl) {
+                case 0: case 1: dmg = 18 + ownerLvl * 1; break;
+                case 2: dmg = 27 + Math.round(ownerLvl * 1.5f); break;
+            }
+            if (Dungeon.isChallenged(Conducts.Conduct.PACIFIST)) dmg /= 3;
+            return dmg;
+        }
+
+        //use this method to update dog's stats
+        @Override
+        public void customizeMinion(Minion minion) {
+            super.customizeMinion(minion);
+            minion.enchantment = enchantment;
+            minion.augmentOffense = augment;
+            minion.lvl = level();
+            minion.setDamage(minionmin(), minionmax());
+            minion.minionClass = minionClass;
+            minion.attunement = requiredAttunement();
+            minion.HT = hp(level());
+        }
+    }
 
     public static final int MAX_TALENT_TIERS = 3;
 
@@ -331,6 +507,22 @@ public enum Talent {
             Buff.affect(hero, BreadAndCircusesCounter.class);
             if (hero.pointsInTalent(BREAD_AND_CIRCUSES) == 3)
                 Buff.affect(hero, BreadAndCircusesStatTracker.class);
+        }
+        if (talent == DOG_BREEDING){
+            boolean dogExists = false;
+            for (Char ch: Dungeon.level.mobs) {
+                if (ch instanceof DogBreedingMinion){
+                    dogExists = true;
+                    break;
+                }
+            }
+            if (!dogExists){
+                try {
+                    new DogBreedingStaff().summon(hero);
+                } catch (Exception e) {
+                    ShatteredPixelDungeon.reportException(e);
+                }
+            }
         }
     }
 
@@ -423,6 +615,16 @@ public enum Talent {
                     }
                 }
                 if (Dungeon.mode != HELL) Buff.affect(hero, FoodRegen.class).fullHP = 20;
+            }
+        }
+        if (hero.hasTalent(DOG_BREEDING)){
+            for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
+                int p = hero.pos + PathFinder.NEIGHBOURS8[i];
+                if (Actor.findChar( p ) instanceof DogBreedingMinion) {
+                    DogBreedingMinion dog = (DogBreedingMinion) Actor.findChar( p );
+                    dog.HP = Math.min(dog.HT, dog.HP + Math.round(dog.foodHealing()*(foodVal/550f)));
+                    dog.sprite.emitter().burst( Speck.factory( Speck.HEALING ), dog.foodHealing() / 5 );
+                }
             }
         }
     }

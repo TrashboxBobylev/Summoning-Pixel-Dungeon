@@ -1284,6 +1284,11 @@ public class Hero extends Char {
 			}
         }
 
+		if (enemy.buff(Talent.DogBreedingMarking.class) != null){
+			Buff.detach(enemy, Talent.DogBreedingMarking.class);
+			damage += damage / 3;
+		}
+
 		if (buff(BadgeOfBravery.braveryBuff.class) != null){
 			BadgeOfBravery.braveryBuff buff = buff(BadgeOfBravery.braveryBuff.class);
 			if (!buff.isCursed()){

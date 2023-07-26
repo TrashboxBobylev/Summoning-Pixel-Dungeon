@@ -287,6 +287,9 @@ public abstract class Char extends Actor {
 
 			if (this instanceof Hero){
 				Hero h = (Hero)this;
+				if (enemy.buff(Talent.DogBreedingMarking.class) != null
+					&& h.pointsInTalent(Talent.DOG_BREEDING) == 3)
+					dr = 0;
 				if (h.belongings.weapon instanceof MissileWeapon
 						&& h.subClass == HeroSubClass.SNIPER
 						&& !Dungeon.level.adjacent(h.pos, enemy.pos)){
