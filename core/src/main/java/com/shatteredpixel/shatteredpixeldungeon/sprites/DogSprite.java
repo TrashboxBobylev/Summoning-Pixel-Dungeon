@@ -42,7 +42,7 @@ public class DogSprite extends MobSprite {
 		run = new Animation( 10, true );
 		run.frames( frames, 6, 7, 8, 9, 10 );
 		
-		attack = new Animation( 15, false );
+		attack = new Animation( 18, false );
 		attack.frames( frames, 2, 3, 4, 5, 0 );
 		
 		die = new Animation( 10, false );
