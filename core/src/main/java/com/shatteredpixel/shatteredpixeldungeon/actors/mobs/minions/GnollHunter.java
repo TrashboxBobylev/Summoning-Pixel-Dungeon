@@ -37,6 +37,7 @@ public class GnollHunter extends Minion {
 
         properties.add(Property.RANGED);
         properties.add(Property.IGNORE_ARMOR);
+        properties.add(Property.ANIMAL);
     }
 
     //he is ranged minion

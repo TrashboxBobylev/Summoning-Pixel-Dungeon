@@ -51,6 +51,7 @@ public class ExplodingTNT extends Mob {
 		EXP = 10;
 		FLEEING = new Fleeing();
 		properties.add(Property.RANGED);
+        properties.add(Property.ANIMAL);
 	}
 
     //he doesn't attack in melee

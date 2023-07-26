@@ -52,6 +52,7 @@ public abstract class Shaman extends Mob {
 		lootChance = 0.03f; //initially, see rollToDropLoot
 
 		properties.add(Property.RANGED);
+		properties.add(Property.ANIMAL);
 	}
 	
 	@Override

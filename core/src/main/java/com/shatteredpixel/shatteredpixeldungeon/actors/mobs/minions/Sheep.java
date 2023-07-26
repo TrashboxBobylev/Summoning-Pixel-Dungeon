@@ -30,5 +30,6 @@ public class Sheep extends Minion{
     {
         spriteClass = SheepTankSprite.class;
         isTanky = true;
+        properties.add(Property.ANIMAL);
     }
 }

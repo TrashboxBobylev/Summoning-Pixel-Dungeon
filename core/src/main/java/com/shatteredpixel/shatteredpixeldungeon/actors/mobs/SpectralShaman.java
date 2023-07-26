@@ -58,6 +58,7 @@ public class SpectralShaman extends Mob {
 		lootChance = 1f;
 
 		properties.add(Property.UNDEAD);
+		properties.add(Property.ANIMAL);
 	}
 	
 	private boolean nextPedestal = true;

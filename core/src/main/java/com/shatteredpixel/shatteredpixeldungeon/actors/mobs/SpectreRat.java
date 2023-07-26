@@ -62,6 +62,7 @@ public class SpectreRat extends AbyssalMob implements Callback {
 		properties.add(Property.DEMONIC);
 		properties.add(Property.RANGED);
 		properties.add(Property.UNDEAD);
+		properties.add(Property.ANIMAL);
 	}
 	
 	@Override

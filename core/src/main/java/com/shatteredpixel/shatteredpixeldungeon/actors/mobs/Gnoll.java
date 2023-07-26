@@ -46,6 +46,7 @@ public class Gnoll extends Mob {
 
         loot = new Gold().goldFromEnemy();
 		lootChance = 0.5f;
+		properties.add(Property.ANIMAL);
 	}
 
 	@Override

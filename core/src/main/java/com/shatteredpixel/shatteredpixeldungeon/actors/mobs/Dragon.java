@@ -61,6 +61,7 @@ public class Dragon extends AbyssalMob {
         properties.add(Property.DEMONIC);
         properties.add(Property.UNDEAD);
         properties.add(Property.RANGED);
+        properties.add(Property.ANIMAL);
     }
 
     @Override

@@ -1078,7 +1078,8 @@ public abstract class Char extends Actor {
 				new HashSet<Class>( Arrays.asList(Blob.class) )),
 
 		LARGE,
-		IMMOVABLE;
+		IMMOVABLE,
+		ANIMAL;
 		
 		private HashSet<Class> resistances;
 		private HashSet<Class> immunities;

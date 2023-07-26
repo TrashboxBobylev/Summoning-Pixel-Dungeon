@@ -45,6 +45,7 @@ public class Dog extends Mob {
 		
 		loot = Generator.random();
 		lootChance = 0.1f;
+		properties.add(Property.ANIMAL);
 	}
 
 	{
