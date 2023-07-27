@@ -428,6 +428,8 @@ public enum Talent {
 
         @Override
         public boolean interact(Char c) {
+            if (DogBreedingStaff.staffInstance == null)
+                DogBreedingStaff.staffInstance = new DogBreedingStaff();
             DogBreedingStaff.staffInstance.customizeMinion(this);
             return super.interact(c);
         }
