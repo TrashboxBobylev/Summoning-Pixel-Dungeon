@@ -100,6 +100,7 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
@@ -483,6 +484,15 @@ public class Hero extends Char {
 
 		if (belongings.weapon instanceof MissileWeapon &&
 				target.buff(QuiverMark.class) != null) return INFINITE_ACCURACY;
+
+		if (belongings.weapon instanceof MissileWeapon &&
+				buff(Talent.SniperPatienceTracker.class) != null &&
+				pointsInTalent(Talent.SNIPER_PATIENCE) == 3){
+			Emitter e = target.sprite.centerEmitter();
+			e.pos(e.x-2, e.y-6, 4, 4);
+			e.start(Speck.factory(Speck.MASTERY), 0.025f, 12);
+			return INFINITE_ACCURACY;
+		}
 		
 		if (wep instanceof MissileWeapon || (wep instanceof Knife && ((Knife) wep).ranged)){
 			SilkyQuiver.quiverBuff buff = buff(SilkyQuiver.quiverBuff.class);
@@ -1259,6 +1269,9 @@ public class Hero extends Char {
 		if (!fullRest) {
 			if (hasTalent(Talent.TOWER_OF_POWER) && buff(Talent.TowerOfPowerCooldown.class) == null)
 				Buff.affect(this, Talent.TowerOfPowerTracker.class);
+			if (hasTalent(Talent.SNIPER_PATIENCE) && buff(Talent.SniperPatienceCooldown.class) == null
+					&& buff(Talent.SniperPatienceTracker.class) == null)
+				Buff.affect(this, Talent.SniperPatienceTracker.class);
 			if (sprite != null)
 				sprite.showStatus( CharSprite.DEFAULT, Messages.get(this, "wait") );
 		}

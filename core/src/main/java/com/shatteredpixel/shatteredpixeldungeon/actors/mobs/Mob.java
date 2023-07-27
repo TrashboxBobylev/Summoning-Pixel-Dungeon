@@ -1134,7 +1134,11 @@ public abstract class Mob extends Char {
 					}
 				}
 
-				if (Random.Float( distance( enemy ) + enemyStealth ) < 1) {
+				float chance = distance(enemy) + enemyStealth;
+				if (enemy instanceof Hero && ((Hero) enemy).pointsInTalent(Talent.SNIPER_PATIENCE) > 1 &&
+					enemy.buff(Talent.SniperPatienceTracker.class) != null)
+					chance *= 1.5f;
+				if (Random.Float(chance) < 1) {
 					enemySeen = true;
 
 					notice();
@@ -1164,7 +1168,11 @@ public abstract class Mob extends Char {
 
 		@Override
 		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
-			if (enemyInFOV && (justAlerted || Random.Float( distance( enemy ) / 2f + enemy.stealth() ) < 1) && buff(PerfumeGas.Affection.class) == null) {
+			float chance = enemy == null ? 0 : (distance(enemy) / 2f + enemy.stealth());
+			if (enemy instanceof Hero && ((Hero) enemy).pointsInTalent(Talent.SNIPER_PATIENCE) > 1 &&
+					enemy.buff(Talent.SniperPatienceTracker.class) != null)
+				chance *= 1.5f;
+			if (enemyInFOV && (justAlerted || Random.Float(chance) < 1) && buff(PerfumeGas.Affection.class) == null) {
 
 				return noticeEnemy();
 

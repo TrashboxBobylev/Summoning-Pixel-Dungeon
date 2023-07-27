@@ -350,6 +350,10 @@ abstract public class MissileWeapon extends Weapon {
 				damage += Random.IntRange( 0, exStr );
 			}
 		}
+
+		if (owner.buff(Talent.SniperPatienceTracker.class) != null){
+			damage *= Talent.SniperPatienceTracker.damageModifier();
+		}
 		
 		return damage;
 	}

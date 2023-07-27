@@ -77,6 +77,7 @@ public class Speck extends Image {
     public static final int HASTE = 123;
     public static final int STENCH_WAND = 124;
 	public static final int FROSTBURN = 125;
+	public static final int SMOKE_DUST = 126;
     public static final int SWORD = 15;
 	public static final int SNOWFLAKE = 16;
 	
@@ -128,6 +129,7 @@ public class Speck extends Image {
 		case CONFUSION:
 		case STORM:
 		case DUST:
+		case SMOKE_DUST:
 		case SMOKE:
 		case BLIZZARD:
 		case INFERNO:
@@ -417,6 +419,13 @@ public class Speck extends Image {
 			lifespan = 0.5f;
 			break;
 
+		case SMOKE_DUST:
+			hardlight( 0x666666 );
+			angle = Random.Float( 360 );
+			speed.polar( Random.Float( 2 * 3.1415926f ), Random.Float( 16, 48 ) );
+			lifespan = 1f;
+			break;
+
 		case COIN:
 			speed.polar( -PointF.PI * Random.Float( 0.3f, 0.7f ), Random.Float( 48, 96 ) );
 			acc.y = 256;
@@ -532,6 +541,7 @@ public class Speck extends Image {
 			case BLIZZARD:
 			case INFERNO:
 			case DUST:
+			case SMOKE_DUST:
             case HEALGAS:
             case HONEY:
             case PERFUME:

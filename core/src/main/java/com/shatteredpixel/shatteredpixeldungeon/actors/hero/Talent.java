@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.Wet;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -44,6 +45,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.Cloa
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.Victide;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Scrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.MinionBalanceTable;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
@@ -51,6 +54,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.DogSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -85,7 +89,7 @@ public enum Talent {
     TOXIC_RELATIONSHIP(95),
     DOG_BREEDING(82, 3, true),
     NUCLEAR_RAGE(83, 3, true),
-    SNIPER_PATIENCE(84, 3),
+    SNIPER_PATIENCE(84, 3, true),
     ARCANE_CLOAK(85, 3, true),
     ARMORED_ARMADA(86, 3),
     TIMEBENDING(87, 3),
@@ -303,6 +307,66 @@ public enum Talent {
         public void restoreFromBundle(Bundle bundle) {
             super.restoreFromBundle(bundle);
             sunCount = bundle.getInt(SUN);
+        }
+    }
+
+    public static class SniperPatienceCooldown extends Cooldown {
+        public float duration() { return Dungeon.hero.pointsInTalent(SNIPER_PATIENCE) > 2 ? 25 : 20; }
+        public int icon() { return BuffIndicator.TIME; }
+        public void tintIcon(Image icon) { icon.hardlight(0xa12d2d); }
+    }
+
+    public static class SniperPatienceTracker extends Buff {
+        {
+            actPriority = HERO_PRIO+1;
+        }
+
+        private int pos;
+
+        @Override
+        public boolean attachTo( Char target ) {
+            pos = target.pos;
+            return super.attachTo( target );
+        }
+
+        @Override
+        public boolean act() {
+            if (target.pos != pos) {
+                detach();
+            }
+            spend( TICK );
+            return true;
+        }
+
+        public static float damageModifier(){
+            switch (Dungeon.hero.pointsInTalent(SNIPER_PATIENCE)){
+                case 1: return 1.5f;
+                case 2: return 1.75f;
+                case 3: return 2.0f;
+            }
+            return 1f;
+        }
+
+        public String toString() { return Messages.get(this, "name"); }
+        public String desc() {
+            return String.format("%s\n\n%s\n\n%s",
+                    Messages.get(this, "desc"),
+                    Messages.get(this, "add_desc" + Dungeon.hero.pointsInTalent(SNIPER_PATIENCE)),
+                    Messages.get(this, "desc_detach"));
+        }
+        public int icon() { return BuffIndicator.SNIPER_PAT; }
+
+        private static final String POS		= "pos";
+
+        @Override
+        public void storeInBundle( Bundle bundle ) {
+            super.storeInBundle( bundle );
+            bundle.put( POS, pos );
+        }
+        @Override
+        public void restoreFromBundle( Bundle bundle ) {
+            super.restoreFromBundle( bundle );
+            pos = bundle.getInt( POS );
         }
     }
 
@@ -576,6 +640,29 @@ public enum Talent {
         if (hero.hasTalent(SCRAP_BRAIN) && Dungeon.hero.belongings.weapon instanceof MissileWeapon &&
             enemy.HP - damage <= 0 && Random.Int(3) == 0){
             Dungeon.level.drop(new Scrap(), enemy.pos).sprite.drop();
+        }
+        if (hero.buff(Talent.SniperPatienceTracker.class) != null && hero.belongings.weapon instanceof MissileWeapon){
+            switch (Dungeon.hero.pointsInTalent(Talent.SNIPER_PATIENCE)){
+                case 2:
+                    Buff.affect(enemy, Slow.class, 4f); break;
+                case 3:
+                    Buff.affect(enemy, Slow.class, 6f);
+                    Buff.affect(enemy, StoneOfAggression.Aggression.class, 10f);
+                    PathFinder.buildDistanceMap( enemy.pos, BArray.not( Dungeon.level.solid, null ), 2 );
+                    for (int i = 0; i < PathFinder.distance.length; i++) {
+                        if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+                            Char ch = Actor.findChar(i);
+                            if (ch != null && ch.alignment == Char.Alignment.ENEMY){
+                                ch.damage(1 + Dungeon.chapterNumber(), new WandOfBlastWave());
+                            }
+                            CellEmitter.get(i).burst(Speck.factory(Speck.SMOKE_DUST, true), Random.Int(4, 8));
+                        }
+                    }
+                    Sample.INSTANCE.play(Assets.Sounds.BLAST);
+                    break;
+            }
+            Buff.detach(Dungeon.hero, Talent.SniperPatienceTracker.class);
+            Talent.Cooldown.affectHero(Talent.SniperPatienceCooldown.class);
         }
         return damage;
     }
