@@ -26,9 +26,12 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.input.GameAction;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.ui.Button;
 
 public class ActionIndicator extends Tag {
 
@@ -55,6 +58,7 @@ public class ActionIndicator extends Tag {
 	public void destroy() {
 		super.destroy();
 		instance = null;
+		longClickListener.destroy();
 	}
 	
 	@Override
@@ -102,14 +106,44 @@ public class ActionIndicator extends Tag {
 			action.doAction();
 	}
 
-	public static void setAction(Action action){
+	public static boolean setAction(Action action){
+		if(action == null || !action.usable() || ActionIndicator.action == action) return false;
 		ActionIndicator.action = action;
 		updateIcon();
+		return true;
+	}
+
+	@Override
+	protected boolean onLongClick() {
+		return findAction(true);
+	}
+
+	private final Button longClickListener = new Button() {
+		@Override public GameAction keyAction() { return SPDAction.TAG_CYCLE; }
+		@Override protected void onClick()      { findAction(true); }
+	};
+
+	// list of action buffs that we should replace it with.
+	private static final Class<?extends Buff>[] actionBuffClasses = new Class[]{Combo.class, Momentum.class, Preparation.class, SnipersMark.class, CloakOfShadows.class};
+	private static boolean findAction(boolean cycle) {
+		if(action == null) cycle = false;
+		int start = -1;
+		if(cycle) while(++start < actionBuffClasses.length && !actionBuffClasses[start].isInstance(action));
+
+		for(int i = (start+1)%actionBuffClasses.length; i != start && i < actionBuffClasses.length; i++) {
+			for(Buff b : Dungeon.hero.buffs(actionBuffClasses[i])) {
+				if( setAction( (Action) b ) ) return true;
+			}
+			if(cycle && i+1 == actionBuffClasses.length) i = -1;
+		}
+		return false;
 	}
 
 	public static void clearAction(Action action){
-		if (ActionIndicator.action == action)
+		if (ActionIndicator.action == action) {
 			ActionIndicator.action = null;
+			findAction(false);
+		}
 	}
 
 	public static void updateIcon(){
@@ -132,6 +166,9 @@ public class ActionIndicator extends Tag {
 		public Image getIcon();
 
 		public void doAction();
+
+		default boolean usable() { return true; }
+		default boolean isSelectable() { return action != this && usable(); }
 
 	}
 

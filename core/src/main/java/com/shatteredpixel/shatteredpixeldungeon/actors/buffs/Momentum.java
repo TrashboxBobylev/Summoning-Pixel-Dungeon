@@ -227,4 +227,5 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 		return momentumStacks > 0 && freerunTurns <= 0;
 	}
 
+
 }

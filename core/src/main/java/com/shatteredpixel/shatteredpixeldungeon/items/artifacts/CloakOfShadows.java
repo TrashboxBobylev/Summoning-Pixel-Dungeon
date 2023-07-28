@@ -391,6 +391,15 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action, 
 		execute(Dungeon.hero, AC_TELEPORT);
 	}
 
+	@Override
+	public boolean usable() {
+		float chargeMod = 1f;
+		if (glyph != null)
+			chargeMod = glyph.chargeModifier(this, Dungeon.hero);
+		return (int) (charge * ((0.57f + 0.09f*(Dungeon.hero.pointsInTalent(Talent.HYPERSPACE))) / chargeMod)) >= 1
+				&& Dungeon.hero.hasTalent(Talent.HYPERSPACE);
+	}
+
 	public class cloakStealth extends ArtifactBuff{
 		
 		{

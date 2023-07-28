@@ -181,6 +181,11 @@ public class Combo extends Buff implements ActionIndicator.Action {
 		GameScene.selectCell(finisher);
 	}
 
+	@Override
+	public boolean usable() {
+		return count > 1;
+	}
+
 	private enum finisherType{
 		CLOBBER, CLEAVE, SLAM, CRUSH, FURY
 	}
