@@ -1034,7 +1034,7 @@ public abstract class Level implements Bundlable {
 
 		if (trap != null) {
 
-			TimekeepersHourglass.TimeFreezing timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.TimeFreezing.class );
+			TimeFreezing timeFreeze = Dungeon.hero.buff( TimeFreezing.class );
 			
 			if (timeFreeze != null){
 

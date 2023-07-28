@@ -28,15 +28,12 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.TimeFreezing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
@@ -73,7 +70,7 @@ public class Swiftthistle extends Plant {
 	
 	//FIXME lots of copypasta from time freeze here
 	
-	public static class TimeBubble extends Buff implements TimekeepersHourglass.TimeFreezing {
+	public static class TimeBubble extends Buff implements TimeFreezing {
 		
 		{
 			type = buffType.POSITIVE;
@@ -143,16 +140,7 @@ public class Swiftthistle extends Plant {
 
 		@Override
 		public void fx(boolean on) {
-			Emitter.freezeEmitters = on;
-			if (on){
-				for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
-					if (mob.sprite != null) mob.sprite.add(CharSprite.State.PARALYSED);
-				}
-			} else {
-				for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
-					if (mob.paralysed <= 0) mob.sprite.remove(CharSprite.State.PARALYSED);
-				}
-			}
+			TimeFreezing.doEffect(on);
 		}
 		
 		private static final String PRESSES = "presses";

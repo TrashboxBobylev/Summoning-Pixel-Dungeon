@@ -30,8 +30,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.TimeFreezing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -41,7 +41,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -302,14 +301,6 @@ public class TimekeepersHourglass extends Artifact {
 		}
 	}
 
-	public interface TimeFreezing{
-		public void detach();
-
-		public void processTime(float time);
-
-		public void setDelayedPress(int cell);
-	}
-
 	public class timeFreeze extends ArtifactBuff implements TimeFreezing {
 		
 		{
@@ -361,16 +352,7 @@ public class TimekeepersHourglass extends Artifact {
 
 		@Override
 		public void fx(boolean on) {
-			Emitter.freezeEmitters = on;
-			if (on){
-				for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
-					if (mob.sprite != null) mob.sprite.add(CharSprite.State.PARALYSED);
-				}
-			} else {
-				for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
-					if (mob.paralysed <= 0) mob.sprite.remove(CharSprite.State.PARALYSED);
-				}
-			}
+			TimeFreezing.doEffect(on);
 		}
 
 		private static final String PRESSES = "presses";

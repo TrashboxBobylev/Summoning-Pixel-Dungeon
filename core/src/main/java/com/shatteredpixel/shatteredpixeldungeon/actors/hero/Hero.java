@@ -722,7 +722,7 @@ public class Hero extends Char {
 	@Override
 	public void spend( float time ) {
 		justMoved = false;
-		TimekeepersHourglass.TimeFreezing freeze = Dungeon.hero.buff( TimekeepersHourglass.TimeFreezing.class );
+		TimeFreezing freeze = Dungeon.hero.buff( TimeFreezing.class );
 		if (freeze != null) {
 			freeze.processTime(time);
 			return;
@@ -1159,7 +1159,7 @@ public class Hero extends Char {
 			Hunger.adjustHunger(-30/speed());
 			lastMovPos = -1;
 
-			TimekeepersHourglass.TimeFreezing timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.TimeFreezing.class );
+			TimeFreezing timeFreeze = Dungeon.hero.buff( TimeFreezing.class );
 			if (timeFreeze != null) timeFreeze.detach();
 			
 			InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
@@ -1212,7 +1212,7 @@ public class Hero extends Char {
 				Hunger.adjustHunger(-30/speed());
 				lastMovPos = -1;
 
-				TimekeepersHourglass.TimeFreezing timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.TimeFreezing.class );
+				TimeFreezing timeFreeze = Dungeon.hero.buff( TimeFreezing.class );
 				if (timeFreeze != null) timeFreeze.detach();
 
 				InterlevelScene.mode = InterlevelScene.Mode.ASCEND;
