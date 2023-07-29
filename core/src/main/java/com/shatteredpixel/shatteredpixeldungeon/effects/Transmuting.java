@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.Visual;
 import com.watabou.noosa.ui.Component;
 
 public class Transmuting extends Component {
@@ -43,8 +44,8 @@ public class Transmuting extends Component {
 
 	private static final float ALPHA	= 0.6f;
 
-	ItemSprite oldSprite;
-	ItemSprite newSprite;
+	Visual oldSprite;
+	Visual newSprite;
 
 	private Char target;
 
@@ -53,10 +54,14 @@ public class Transmuting extends Component {
 	private float passed;
 
 	public Transmuting( Item oldItem, Item newItem ){
-		oldSprite = new ItemSprite(oldItem);
+		this(new ItemSprite(oldItem), new ItemSprite(newItem));
+	}
+
+	public Transmuting( Visual oldS, Visual newS ){
+		oldSprite = oldS;
 		oldSprite.originToCenter();
 		add(oldSprite);
-		newSprite = new ItemSprite(newItem);
+		newSprite = newS;
 		newSprite.originToCenter();
 		add(newSprite);
 
@@ -110,12 +115,22 @@ public class Transmuting extends Component {
 	}
 
 	public static void show( Char ch, Item oldItem, Item newItem ) {
-
 		if (!ch.sprite.visible) {
 			return;
 		}
 
 		Transmuting sprite = new Transmuting( oldItem, newItem );
+		sprite.target = ch;
+		ch.sprite.parent.add( sprite );
+	}
+
+	public static void show( Char ch, Visual oldS, Visual newS ) {
+
+		if (!ch.sprite.visible) {
+			return;
+		}
+
+		Transmuting sprite = new Transmuting( oldS, newS );
 		sprite.target = ch;
 		ch.sprite.parent.add( sprite );
 	}
