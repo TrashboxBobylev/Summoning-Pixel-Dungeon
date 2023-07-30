@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.input.GameAction;
@@ -124,7 +125,7 @@ public class ActionIndicator extends Tag {
 	};
 
 	// list of action buffs that we should replace it with.
-	private static final Class<?extends Buff>[] actionBuffClasses = new Class[]{Combo.class, Momentum.class, Preparation.class, SnipersMark.class, CloakOfShadows.class};
+	private static final Class<?extends Buff>[] actionBuffClasses = new Class[]{Combo.class, Momentum.class, Preparation.class, SnipersMark.class, CloakOfShadows.class, Talent.TimebendingCounter.class};
 	private static boolean findAction(boolean cycle) {
 		if(action == null) cycle = false;
 		int start = -1;

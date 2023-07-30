@@ -37,10 +37,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Transmuting;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.CloakGlyph;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.Victide;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Scrap;
@@ -50,12 +52,20 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.MinionBalanceTable;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.DogSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.gltextures.SmartTexture;
+import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
@@ -92,7 +102,7 @@ public enum Talent {
     SNIPER_PATIENCE(84, 3, true),
     ARCANE_CLOAK(85, 3, true),
     ARMORED_ARMADA(86, 3),
-    TIMEBENDING(87, 3),
+    TIMEBENDING(87, 3, true),
     LUST_AND_DUST(88, 3, true),
     TOWER_OF_POWER(89, 3, true),
     JUST_ONE_MORE_TILE(90, 3, true),
@@ -566,6 +576,224 @@ public enum Talent {
         }
     }
 
+    public enum TimebendingActions {
+        ATTACKING, WALKING, SPEED_SEED, NOTHING
+    }
+
+    //TODO: interfaces are kind of inflexible, but I still should move some of time freeze copying into TimeFreezing
+    public static class TimebendingTimeStop extends Buff implements TimeFreezing {
+
+        {
+            type = buffType.POSITIVE;
+            announced = true;
+        }
+
+        private float left;
+        ArrayList<Integer> presses = new ArrayList<>();
+
+        @Override
+        public int icon() {
+            return BuffIndicator.TIME;
+        }
+
+        @Override
+        public void tintIcon(Image icon) {icon.hardlight(1f, 0.19f, 0.07f);}
+
+        @Override
+        public float iconFadePercent() {
+            return Math.max(0, (TimebendingCounter.MAX_TIME - left) / TimebendingCounter.MAX_TIME);
+        }
+
+        public void reset(float time){
+            left = time;
+        }
+
+        @Override
+        public String toString() {
+            return Messages.get(this, "name");
+        }
+
+        @Override
+        public String desc() {
+            return Messages.get(this, "desc", dispTurns(left));
+        }
+
+        public void processTime(float time){
+            left -= time;
+
+            //use 1/1,000 to account for rounding errors
+            if (left < -0.001f){
+                detach();
+            }
+
+        }
+
+        public void setDelayedPress(int cell){
+            if (!presses.contains(cell))
+                presses.add(cell);
+        }
+
+        private void triggerPresses(){
+            for (int cell : presses)
+                Dungeon.level.pressCell(cell);
+
+            presses = new ArrayList<>();
+        }
+
+        @Override
+        public void detach(){
+            super.detach();
+            triggerPresses();
+            target.next();
+        }
+
+        @Override
+        public void fx(boolean on) {
+            TimeFreezing.doEffect(on);
+        }
+
+        private static final String PRESSES = "presses";
+        private static final String LEFT = "left";
+
+        @Override
+        public void storeInBundle(Bundle bundle) {
+            super.storeInBundle(bundle);
+
+            int[] values = new int[presses.size()];
+            for (int i = 0; i < values.length; i ++)
+                values[i] = presses.get(i);
+            bundle.put( PRESSES , values );
+
+            bundle.put( LEFT, left);
+        }
+
+        @Override
+        public void restoreFromBundle(Bundle bundle) {
+            super.restoreFromBundle(bundle);
+
+            int[] values = bundle.getIntArray( PRESSES );
+            for (int value : values)
+                presses.add(value);
+
+            left = bundle.getFloat(LEFT);
+        }
+
+    }
+
+    public static class TimebendingCounter extends CounterBuff implements ActionIndicator.Action {
+        public int timeCount;
+
+        public static int energyRequired(){
+            switch (Dungeon.hero.pointsInTalent(TIMEBENDING)){
+                case 0:
+                    return 120;
+                case 1:
+                    return 100;
+                case 2:
+                    return 80;
+            }
+            return 0;
+        }
+
+        public void investEnergy(TimebendingActions type){
+            int howMuch = 0;
+            switch (type){
+                case ATTACKING:
+                    howMuch = 6;
+                    break;
+                case WALKING:
+                    howMuch = 2;
+                    break;
+                case SPEED_SEED:
+                    howMuch = 4*energyRequired();
+                    break;
+
+                case NOTHING:
+                    howMuch = 1;
+                    break;
+            }
+            countUp(howMuch);
+        }
+
+        @Override
+        public boolean act() {
+            if (target.isAlive()) {
+                spend( TICK );
+
+                while (count() >= energyRequired() && timeCount < MAX_TIME) {
+                    timeCount++;
+                    countDown(energyRequired());
+                    Sample.INSTANCE.play(Assets.Sounds.CHARGEUP, 1f, 2f);
+                }
+                if (timeCount > 0)
+                    ActionIndicator.setAction(TimebendingCounter.this);
+                else
+                    ActionIndicator.clearAction(TimebendingCounter.this);
+            } else {
+                detach();
+                timeCount = 0;
+            }
+
+            return true;
+        }
+
+        public float iconFadePercent() { return Math.max(0, 1f - ((count()) / (energyRequired()))); }
+        public String toString() { return Messages.get(this, "name"); }
+
+        public String desc() {
+            return Messages.get(this, "desc", timeCount, dispTurns(energyRequired() - (count())), energyRequired());
+        }
+
+        @Override
+        public int icon() {
+            return BuffIndicator.TIME;
+        }
+
+        public static final float MAX_TIME = 15f;
+
+        @Override
+        public void tintIcon(Image icon) {
+            icon.hardlight(1f, 0.98f - 0.79f*(count()/MAX_TIME), 0.57f - 0.5f*(count()/MAX_TIME));
+        }
+
+        @Override
+        public void doAction() {
+            GLog.i( Messages.get(TimekeepersHourglass.class, "onfreeze") );
+            GameScene.flash(0xff4600);
+            Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+            Sample.INSTANCE.play(Assets.Sounds.BLAST);
+            Buff.affect(target, TimebendingTimeStop.class).reset(timeCount);
+        }
+
+        @Override
+        public Image getIcon() {
+            SmartTexture icons = TextureCache.get( Assets.Interfaces.TALENT_ICONS );
+            TextureFilm film = new TextureFilm( icons, 16, 16 );
+            Image buffIcon = new Image( icons );
+            buffIcon.frame( film.get(TIMEBENDING.icon()) );
+            return buffIcon;
+        }
+
+        @Override
+        public boolean usable() {
+            return timeCount > 0;
+        }
+
+        private static final String COUNT = "timeCount";
+
+        @Override
+        public void storeInBundle(Bundle bundle) {
+            super.storeInBundle(bundle);
+            bundle.put(COUNT, timeCount);
+        }
+
+        @Override
+        public void restoreFromBundle(Bundle bundle) {
+            super.restoreFromBundle(bundle);
+            timeCount = bundle.getInt(COUNT);
+        }
+    }
+
     public static final int MAX_TALENT_TIERS = 3;
 
     public static void onTalentUpgraded( Hero hero, Talent talent ){
@@ -573,6 +801,9 @@ public enum Talent {
             Buff.affect(hero, BreadAndCircusesCounter.class);
             if (hero.pointsInTalent(BREAD_AND_CIRCUSES) == 3)
                 Buff.affect(hero, BreadAndCircusesStatTracker.class);
+        }
+        if (talent == TIMEBENDING){
+            Buff.affect(hero, TimebendingCounter.class);
         }
         if (talent == DOG_BREEDING){
             boolean dogExists = false;
@@ -640,6 +871,22 @@ public enum Talent {
         if (hero.hasTalent(SCRAP_BRAIN) && Dungeon.hero.belongings.weapon instanceof MissileWeapon &&
             enemy.HP - damage <= 0 && Random.Int(3) == 0){
             Dungeon.level.drop(new Scrap(), enemy.pos).sprite.drop();
+        }
+        if (hero.pointsInTalent(TIMEBENDING) > 2 && Dungeon.hero.belongings.weapon instanceof Shuriken &&
+            hero.buff(TimebendingTimeStop.class) != null){
+            float energy = hero.buff(TimebendingTimeStop.class).left;
+            enemy.spend(energy*0.75f);
+
+            //the icon for timebending
+            SmartTexture icons = TextureCache.get( Assets.Interfaces.TALENT_ICONS );
+            TextureFilm film = new TextureFilm( icons, 16, 16 );
+            Image buffIcon = new Image( icons );
+            buffIcon.frame( film.get(TIMEBENDING.icon()) );
+
+            Sample.INSTANCE.play(Assets.Sounds.LIGHTNING, 1f, 0.6666f);
+            Sample.INSTANCE.play(Assets.Sounds.BLAST, 1f, 0.6666f);
+
+            Transmuting.show(enemy, new ItemSprite(Dungeon.hero.belongings.weapon), buffIcon);
         }
         if (hero.buff(Talent.SniperPatienceTracker.class) != null && hero.belongings.weapon instanceof MissileWeapon){
             switch (Dungeon.hero.pointsInTalent(Talent.SNIPER_PATIENCE)){

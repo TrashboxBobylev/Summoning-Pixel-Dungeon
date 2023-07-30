@@ -908,6 +908,8 @@ public class Hero extends Char {
 
 		if (getCloser( action.dst )) {
 			Hunger.adjustHunger(-1.33f/speed());
+			if (buff(Talent.TimebendingCounter.class) != null)
+				buff(Talent.TimebendingCounter.class).investEnergy(Talent.TimebendingActions.WALKING);
 			return true;
 
 		} else {
@@ -2134,6 +2136,8 @@ public class Hero extends Char {
 		Invisibility.dispel();
 		spend( attackDelay() );
         Hunger.adjustHunger(-3.75f*attackDelay());
+		if (buff(Talent.TimebendingCounter.class) != null)
+			buff(Talent.TimebendingCounter.class).investEnergy(Talent.TimebendingActions.ATTACKING);
 
 		curAction = null;
 
