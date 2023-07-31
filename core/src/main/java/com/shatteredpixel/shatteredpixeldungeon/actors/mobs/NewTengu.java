@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.*;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.*;
@@ -187,7 +186,7 @@ public class NewTengu extends Mob {
 	@Override
 	public void die( Object cause ) {
 		
-		if (Dungeon.hero.subClass == HeroSubClass.NONE && Dungeon.hero.heroClass != HeroClass.ADVENTURER) {
+		if (Dungeon.hero.subClass == HeroSubClass.NONE && Dungeon.hero.heroClass.hasSubclassing()) {
 			Dungeon.level.drop( new TomeOfMastery(), pos ).sprite.drop();
 		}
 		

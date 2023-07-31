@@ -105,7 +105,7 @@ public class WndHeroInfo extends WndTabbed {
             });
         }
 
-        if (Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_2) && cl != HeroClass.ADVENTURER) {
+        if (Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_2) && cl.hasSubclassing()) {
             subclassInfo = new SubclassInfoTab(cl);
             add(subclassInfo);
             subclassInfo.setSize(WIDTH, MIN_HEIGHT);
