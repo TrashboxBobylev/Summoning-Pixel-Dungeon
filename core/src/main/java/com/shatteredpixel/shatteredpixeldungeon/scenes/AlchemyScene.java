@@ -410,8 +410,8 @@ public class AlchemyScene extends PixelScene {
 				Dungeon.level.drop(result, Dungeon.hero.pos);
 			}
 
-			Statistics.potionsCooked++;
-			Badges.validatePotionsCooked();
+			Statistics.itemsCrafted++;
+			Badges.validateItemsCrafted();
 
 			try {
 				Dungeon.saveAll();

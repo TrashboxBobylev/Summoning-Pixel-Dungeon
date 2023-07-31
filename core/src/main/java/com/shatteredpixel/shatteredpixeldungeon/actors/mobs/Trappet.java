@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
@@ -111,6 +112,7 @@ public class Trappet extends AbyssalMob implements Callback {
 			}
 			
 			if (enemy == Dungeon.hero && !enemy.isAlive()) {
+				Badges.validateDeathFromEnemyMagic();
 				Dungeon.fail( getClass() );
 				GLog.negative( Messages.get(this, "bolt_kill") );
 			}

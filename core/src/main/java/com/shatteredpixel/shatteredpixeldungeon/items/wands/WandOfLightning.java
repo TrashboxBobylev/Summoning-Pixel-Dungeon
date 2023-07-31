@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -118,6 +119,7 @@ public class WandOfLightning extends DamageWand {
 		}
 
 		if (!curUser.isAlive()) {
+			Badges.validateDeathFromFriendlyMagic();
 			Dungeon.fail( getClass() );
 			GLog.negative(Messages.get(this, "ondeath"));
 		}

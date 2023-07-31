@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -207,6 +208,7 @@ public class MirrorImage extends NPC {
 		if (hero.belongings.weapon != null){
 			damage = hero.belongings.weapon.proc( this, enemy, damage );
 			if (!enemy.isAlive() && enemy == Dungeon.hero){
+				Badges.validateDeathFromFriendlyMagic();
 				Dungeon.fail(getClass());
 				GLog.negative( Messages.capitalize(Messages.get(Char.class, "kill", name())) );
 			}

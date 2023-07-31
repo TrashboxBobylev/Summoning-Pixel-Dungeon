@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions;
 
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Attunement;
@@ -112,6 +113,7 @@ public class Hacatu extends Minion implements Callback {
                 }
 
                 if (!Dungeon.hero.isAlive()) {
+					Badges.validateDeathFromFriendlyMagic();
                     Dungeon.fail( getClass() );
                     GLog.negative(Messages.get(Char.class, "kill", getName()));
                 }

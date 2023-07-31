@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
@@ -120,6 +121,7 @@ public class WardingWraith extends Mob implements Callback {
             }
 			
 			if (!enemy.isAlive() && enemy == Dungeon.hero) {
+                Badges.validateDeathFromEnemyMagic();
 				Dungeon.fail( getClass() );
 				GLog.negative( Messages.get(this, "bolt_kill") );
 			}

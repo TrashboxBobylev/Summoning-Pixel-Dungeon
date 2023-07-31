@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
@@ -121,6 +122,7 @@ public class FinalFroggit extends AbyssalMob implements Callback {
 			enemy.damage( dmg, new Bolt(this, damage) );
 			
 			if (!enemy.isAlive() && enemy == Dungeon.hero) {
+				Badges.validateDeathFromEnemyMagic();
 				Dungeon.fail( getClass() );
 				GLog.negative( Messages.get(this, "bolt_kill") );
 			}

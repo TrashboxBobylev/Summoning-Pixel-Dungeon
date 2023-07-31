@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -627,6 +628,7 @@ public class DriedRose extends Artifact {
 			if (rose != null && rose.weapon != null) {
 				damage = rose.weapon.proc( this, enemy, damage );
 				if (!enemy.isAlive() && enemy == Dungeon.hero){
+					Badges.validateDeathFromFriendlyMagic();
 					Dungeon.fail(getClass());
 					GLog.negative( Messages.capitalize(Messages.get(Char.class, "kill", name())) );
 				}

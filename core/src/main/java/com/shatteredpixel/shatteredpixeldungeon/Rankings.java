@@ -164,7 +164,7 @@ public enum Rankings {
                         noClassUniqueItemCheck(win) +
 						chaosStones(win) +
                         Statistics.foodEaten * 500 +
-                        Statistics.potionsCooked * 500) *
+                        Statistics.itemsCrafted * 500) *
                         (win ? 2 : 1) *
 						Dungeon.mode.scoreMod *
 				(Dungeon.challenges.isConductedAtAll() ? Dungeon.challenges.scoreMod() : 1));

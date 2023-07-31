@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.stationary;
 
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -95,6 +96,7 @@ public class GasterBlaster extends StationaryMinion {
                 ch.damage(damage, this);
 
                 if (!ch.isAlive() && ch instanceof Hero){
+                    Badges.validateDeathFromFriendlyMagic();
                     Dungeon.fail(this.getClass());
                     GLog.negative( Messages.capitalize(Messages.get(Char.class, "kill", getName())) );
                 }

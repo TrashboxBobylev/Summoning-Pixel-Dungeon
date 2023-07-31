@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.bombs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -237,6 +238,7 @@ public class ShockBomb extends Bomb {
             target.sprite.flash();
 
             if (target == Dungeon.hero && !target.isAlive()) {
+                Badges.validateDeathFromFriendlyMagic();
                 Dungeon.fail(Electricity.class);
             }
         }
