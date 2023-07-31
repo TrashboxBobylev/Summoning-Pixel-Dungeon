@@ -54,6 +54,7 @@ public class TomeOfMastery extends Item {
 	{
 		stackable = false;
 		image = ItemSpriteSheet.MASTERY;
+		defaultAction = AC_READ;
 		
 		unique = true;
 	}
