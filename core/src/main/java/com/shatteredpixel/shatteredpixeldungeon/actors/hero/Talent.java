@@ -685,11 +685,11 @@ public enum Talent {
 
         public static int energyRequired(){
             switch (Dungeon.hero.pointsInTalent(TIMEBENDING)){
-                case 0:
-                    return 120;
                 case 1:
-                    return 100;
+                    return 120;
                 case 2:
+                    return 100;
+                case 3:
                     return 80;
             }
             return 0;
@@ -741,7 +741,7 @@ public enum Talent {
         public String toString() { return Messages.get(this, "name"); }
 
         public String desc() {
-            return Messages.get(this, "desc", timeCount, dispTurns(energyRequired() - (count())), energyRequired());
+            return Messages.get(this, "desc", timeCount, dispTurns(count()), energyRequired());
         }
 
         @Override
@@ -763,6 +763,7 @@ public enum Talent {
             Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
             Sample.INSTANCE.play(Assets.Sounds.BLAST);
             Buff.affect(target, TimebendingTimeStop.class).reset(timeCount);
+            timeCount = 0;
         }
 
         @Override

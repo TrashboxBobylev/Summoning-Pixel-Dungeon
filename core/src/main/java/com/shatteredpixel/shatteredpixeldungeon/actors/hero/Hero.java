@@ -1269,6 +1269,8 @@ public class Hero extends Char {
 	public void rest( boolean fullRest ) {
 		spendAndNext( TIME_TO_REST );
 		if (!fullRest) {
+			if (buff(Talent.TimebendingCounter.class) != null)
+				buff(Talent.TimebendingCounter.class).investEnergy(Talent.TimebendingActions.NOTHING);
 			if (hasTalent(Talent.TOWER_OF_POWER) && buff(Talent.TowerOfPowerCooldown.class) == null)
 				Buff.affect(this, Talent.TowerOfPowerTracker.class);
 			if (hasTalent(Talent.SNIPER_PATIENCE) && buff(Talent.SniperPatienceCooldown.class) == null
