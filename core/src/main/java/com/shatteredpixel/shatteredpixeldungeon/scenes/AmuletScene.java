@@ -72,7 +72,7 @@ public class AmuletScene extends PixelScene {
 					if (Dungeon.hero.belongings.getSimilar(new Chaosstone()) != null) {
 						clazz = Chaosstone.class;
 					}
-					if (Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)){
+					if (Dungeon.isChallenged(Conducts.Conduct.EVERYTHING) || Dungeon.isChallenged(Conducts.Conduct.DEBUG_SCROLL)){
 						Dungeon.fail(clazz);
 					}
 					else Dungeon.win(clazz);

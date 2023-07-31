@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.DeviceCompat;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -57,7 +58,13 @@ public class Conducts {
         ALLSIGHT(1.4f),
         NO_LOOT(2f),
         LIMITED_MONSTERS(1.5f),
-        HUGE(1.75f);
+        HUGE(1.75f),
+        DEBUG_SCROLL(-1f){
+            @Override
+            public boolean shouldAppear() {
+                return DeviceCompat.isDebug() || !SPDSettings.oneConduct();
+            }
+        };
 
         public float scoreMod;
 
@@ -67,6 +74,10 @@ public class Conducts {
 
         Conduct(float scoreMod){
             this.scoreMod = scoreMod;
+        }
+
+        public boolean shouldAppear(){
+            return true;
         }
 
         @Override

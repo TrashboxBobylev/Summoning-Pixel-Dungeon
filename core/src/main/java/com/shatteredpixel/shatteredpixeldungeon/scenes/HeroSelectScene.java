@@ -153,6 +153,22 @@ public class HeroSelectScene extends PixelScene {
 			}
 
 			@Override
+			protected boolean onLongClick() {
+				ShatteredPixelDungeon.scene().addToFront(new WndChallenges(SPDSettings.challenges(), true) {
+					public void onBackPressed() {
+						super.onBackPressed();
+						icon(Icons.get(SPDSettings.challenges().isConductedAtAll() ? Icons.CONDUCT_ON : Icons.CONDUCT_OFF));
+					}
+
+					@Override
+					protected boolean yesToDebug() {
+						return true;
+					}
+				} );
+				return true;
+			}
+
+			@Override
 			public void update() {
 				if( !visible && GamesInProgress.selectedClass != null){
 					visible = true;
