@@ -204,7 +204,7 @@ public class v0_6_X_Changes {
 				"\n" +
 				"Dev commentary will be added here in the future."));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.CHALLENGE_ON), "Challenges",
+		changes.addButton( new ChangeButton(Icons.get(Icons.CONDUCT_ON), "Challenges",
 				"Challenges have received several major changes, with the goal of making them more fair and interesting.\n" +
 				"\n" +
 				"_-_ Challenges now have descriptions\n" +

@@ -202,7 +202,7 @@ public class SummPDChanges {
             "_- Master Thieves' Armband_ was reworked to its Shattered equivalent (no longer picking up charge from gold, allows to steal items from enemies)\n\n" +
                     "_- Dried Rose_ increases max attunement at rate of 0.5 atu per level and can be used in Gauntlet mode."
         ));
-        changes.addButton(new ChangeButton(Icons.get(Icons.CHALLENGE_ON), "Conducts",
+        changes.addButton(new ChangeButton(Icons.get(Icons.CONDUCT_ON), "Conducts",
                 "_-_ Readjusted score modifiers for most of conducts.\n\n" +
                         "_-_ Tweaked _Enlightened One_ to no longer use amnesia effect.\n\n" +
                         "_-_ _TNT Plague_ explosions only deal 50% damage to the hero.\n\n" +
@@ -258,7 +258,7 @@ public class SummPDChanges {
                         "_-_ 73 days after 1.2.1\n\n" +
                         ""));
         changes = ChangesScene.createChangeInfo(changeInfos, "New Content", false, 0x10bb00);
-        changes.addButton(new ChangeButton(Icons.get(Icons.CHALLENGE_ON), "Conducts",
+        changes.addButton(new ChangeButton(Icons.get(Icons.CONDUCT_ON), "Conducts",
                 "_Conducts_ are replacing challenges as new way of setting run modifiers.\n\n" +
                         "_-_ You can choose only one conduct.\n\n" +
                         "_-_ They can not only increase the difficulty, but also be beneficial to your character.\n\n" +
@@ -1082,7 +1082,7 @@ public static void add_1_1_1_Changes(ArrayList<ChangeInfo> changeInfos) {
                         "_-_ Every 4th strike a damage will be increased to 6-30 (+1/+6).\n\n"
         ));
 
-        changes.addButton( new ChangeButton(Icons.get(Icons.CHALLENGE_ON), "New challenge",
+        changes.addButton( new ChangeButton(Icons.get(Icons.CONDUCT_ON), "New challenge",
                 "Swarm Intelligence have been replaced by more powerful challenge.\n\n" +
                         "_-_ All NPCs will completely diappear.\n\n" +
                         "_-_ Shops will be not accessible.\n\n" +

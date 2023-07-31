@@ -117,7 +117,7 @@ public class WndGame extends Window {
 			} );
 			curBtn.icon(Dungeon.challenges.oneConduct() ?
 					new Image(Assets.Interfaces.SUBCLASS_ICONS, (Dungeon.challenge().ordinal()-1)*16, 16, 16, 16) :
-					Icons.get(Icons.CHALLENGE_ON));
+					Icons.get(Icons.CONDUCT_ON));
 		}
 
 		if (Dungeon.mode != null) {

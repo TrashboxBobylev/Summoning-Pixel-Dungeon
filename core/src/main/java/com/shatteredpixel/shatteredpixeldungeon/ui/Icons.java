@@ -35,8 +35,8 @@ public enum Icons {
 	CHECKED,
 	UNCHECKED,
 	INFO,
-	CHALLENGE_OFF,
-	CHALLENGE_ON,
+	CONDUCT_OFF,
+	CONDUCT_ON,
 	PREFS,
 	LANGS,
 	EXIT,
@@ -131,10 +131,10 @@ public enum Icons {
 		case INFO:
 			icon.frame( icon.texture.uvRect( 32, 0, 46, 14 ) );
 			break;
-		case CHALLENGE_ON:
-			icon.frame( icon.texture.uvRect( 48, 0, 62, 12 ) );
+		case CONDUCT_ON:
+			icon.frame( icon.texture.uvRect( 48, 0, 63, 12 ) );
 			break;
-		case CHALLENGE_OFF:
+		case CONDUCT_OFF:
 			icon.frame( icon.texture.uvRect( 64, 0, 78, 12 ) );
 			break;
 		case PREFS:

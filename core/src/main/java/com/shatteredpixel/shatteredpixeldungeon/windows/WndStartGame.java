@@ -112,7 +112,7 @@ public class WndStartGame extends Window {
 		
 		if (DeviceCompat.isDebug() || Badges.isUnlocked(Badges.Badge.VICTORY)){
 			IconButton challengeButton = new IconButton(
-					Icons.get( SPDSettings.challenges().isConductedAtAll() ? Icons.CHALLENGE_ON :Icons.CHALLENGE_OFF)){
+					Icons.get( SPDSettings.challenges().isConductedAtAll() ? Icons.CONDUCT_ON :Icons.CONDUCT_OFF)){
 				@Override
 				protected void onClick() {
 					ShatteredPixelDungeon.scene().addToFront(new WndChallenges(SPDSettings.challenges(), true) {
@@ -120,7 +120,7 @@ public class WndStartGame extends Window {
 							super.onBackPressed();
 							if (parent != null) {
 								icon(Icons.get(SPDSettings.challenges().isConductedAtAll() ?
-										Icons.CHALLENGE_ON : Icons.CHALLENGE_OFF));
+										Icons.CONDUCT_ON : Icons.CONDUCT_OFF));
 							}
 						}
 					} );

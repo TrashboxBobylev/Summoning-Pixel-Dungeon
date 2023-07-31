@@ -96,7 +96,7 @@ public class v0_9_X_Changes {
         changes.hardlight(CharSprite.WARNING);
         changeInfos.add(changes);
 
-        changes.addButton(new ChangeButton(Icons.get(Icons.CHALLENGE_OFF), "Existing Challenges",
+        changes.addButton(new ChangeButton(Icons.get(Icons.CONDUCT_OFF), "Existing Challenges",
                 "Some existing challenges have been tweaked to reduce the number of items that they remove from the game:\n\n" +
                         "_On Diet_ no longer restricts food, but instead causes all food to be 1/3 as effective at satiating hunger.\n\n" +
                         "_Faith Is My Armor_ no longer restricts the hero to cloth armor, but instead heavily reduces the blocking power of all armor above cloth.\n\n" +
