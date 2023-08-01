@@ -37,9 +37,8 @@ public class ShieldHalo extends Halo {
 	private float phase;
 	
 	public ShieldHalo( CharSprite sprite ) {
-		
-		//rectangular sprite to circular radius. Pythagorean theorem
-		super( (float)Math.sqrt(Math.pow(sprite.width()/2f, 2) + Math.pow(sprite.height()/2f, 2)), 0xBBAACC, 1f );
+
+		super(neededRadius(sprite), 0xBBAACC, 1f );
 		
 		am = -0.33f;
 		aa = +0.33f;

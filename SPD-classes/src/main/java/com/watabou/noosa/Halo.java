@@ -70,4 +70,8 @@ public class Halo extends Image {
 	public void radius( float value ) {
 		scale.set(  (this.radius = value) / RADIUS );
 	}
+
+	public static float neededRadius(Visual target){
+		return (float)Math.sqrt(Math.pow(target.width()/2f, 2) + Math.pow(target.height()/2f, 2));
+	}
 }
