@@ -112,7 +112,7 @@ public enum Talent {
     BREAD_AND_CIRCUSES(117, 3, true),
     COMET_FALL(118, 3),
     SPYDER_MAN(119, 3),
-    DETERMINED(120, 3),
+    DETERMINED(120, 3, true),
     MY_SUNSHINE(121, 3, true),
     OLYMPIC_SKILLS(122, 3),
     REAL_KNIFE_MASTER(25, 3),
@@ -318,6 +318,32 @@ public enum Talent {
             super.restoreFromBundle(bundle);
             sunCount = bundle.getInt(SUN);
         }
+    }
+
+    public static class DeterminedTracker extends Buff {
+        @Override
+        public boolean act() {
+            if (target.isAlive() && (target.HP/(float)target.HT) < 0.3f) {
+                spend( TICK );
+            } else {
+                detach();
+            }
+
+            return true;
+        }
+
+        @Override
+        public void fx(boolean on) {
+            if (on) target.sprite.add(CharSprite.State.DETERMINED);
+            else target.sprite.remove(CharSprite.State.DETERMINED);
+        }
+    }
+    public static class DeterminedReviveCooldown extends Cooldown {
+        public float duration() {
+            return 500;
+        }
+        public int icon() { return BuffIndicator.TIME; }
+        public void tintIcon(Image icon) { icon.hardlight(0xcc0c0c); }
     }
 
     public static class SniperPatienceCooldown extends Cooldown {

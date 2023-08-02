@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Phantom;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GoatClone;
 import com.shatteredpixel.shatteredpixeldungeon.effects.*;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BloodParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.*;
@@ -1434,6 +1435,10 @@ public class Hero extends Char {
 			damage = rockArmor.absorb(damage);
 		}
 
+		if (damage > 0 && buff(Talent.DeterminedTracker.class) != null){
+			enemy.damage(Math.round(damage*(1.5f+0.5f*(pointsInTalent(Talent.DETERMINED)))), this);
+		}
+
 		return damage;
 	}
 	
@@ -1471,6 +1476,9 @@ public class Hero extends Char {
 		if (buff(ParchmentOfElbereth.parchmentPraying.class) != null){
 			dmg *= 0.8f;
 		}
+		if (buff(Talent.DeterminedTracker.class) != null){
+			dmg	*= 0.75f;
+		}
 
 		//TODO improve this when I have proper damage source logic
 		if (belongings.armor != null && belongings.armor.hasGlyph(AntiMagic.class, this)
@@ -1490,11 +1498,21 @@ public class Hero extends Char {
 
 		if (effectiveDamage <= 0) return;
 
+		if ((HP/(float)HT) < 0.3f && hasTalent(Talent.DETERMINED))
+			Buff.affect(this, Talent.DeterminedTracker.class);
+
 		//flash red when hit for serious damage.
 		float percentDMG = effectiveDamage / (float)preHP; //percent of current HP that was taken
 		float percentHP = 1 - ((HT - postHP) / (float)HT); //percent health after damage was taken
 		// The flash intensity increases primarily based on damage taken and secondarily on missing HP.
 		float flashIntensity = 0.25f * (percentDMG * percentDMG) / percentHP;
+		if (pointsInTalent(Talent.DETERMINED) > 1 && isAlive() && HP != 1){
+			int healing = Math.round(effectiveDamage*Math.min(1/3f, flashIntensity));
+			if (healing > 0) {
+				HP = Math.min(HP + healing, HT);
+				sprite.showStatus(0x00FF00, String.valueOf(healing));
+			}
+		}
 		//if the intensity is very low don't flash at all
 		if (flashIntensity >= 0.05f){
 			flashIntensity = Math.min(1/3f, flashIntensity); //cap intensity at 1/3
@@ -1959,6 +1977,23 @@ public class Hero extends Char {
 					ankh = (Ankh) item;
 				}
 			}
+		}
+
+		if (buff(Talent.DeterminedReviveCooldown.class) == null && pointsInTalent(Talent.DETERMINED) == 3){
+			HP = 1;
+
+			Talent.Cooldown.affectHero(Talent.DeterminedReviveCooldown.class);
+			Buff.affect(this, Haste.class, 1f);
+
+			PotionOfHealing.cure(this);
+			Buff.detach(this, Paralysis.class);
+			spend(-cooldown());
+
+			Sample.INSTANCE.play(Assets.Sounds.HEALTH_CRITICAL, 1.5f);
+			CellEmitter.center(pos).burst( BloodParticle.BURST, 25 );
+			GLog.warning( Messages.get(this, "revive_determined") );
+
+			return;
 		}
 
 		if (ankh != null && ankh.isBlessed()) {
