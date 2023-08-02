@@ -93,7 +93,7 @@ public class Bat extends Mob {
 		boolean act = super.act();
 		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT) {
 			if (Dungeon.level.distance(pos, Dungeon.hero.pos) < 3){
-				Buff.affect(this, Bleeding.class).setForcefully(2f);
+				Buff.affect(Dungeon.hero, Bleeding.class).setForcefully(2f);
 				Hero.arrangeBlast(pos, sprite, MagicMissile.BLOOD_CONE, 2f);
 			}
 		}
