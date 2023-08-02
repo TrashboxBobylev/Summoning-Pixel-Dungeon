@@ -426,12 +426,16 @@ public abstract class Mob extends Char {
 	}
 
 	protected Char chooseClosest(HashSet<Char> enemies){
+		//go after the closest potential enemy, preferring enemies that can be reached/attacked, and the hero if two are equidistant
+		PathFinder.buildDistanceMap(pos, Dungeon.findPassable(this, Dungeon.level.passable, fieldOfView, true));
 		Char closest = null;
 
 		for (Char curr : enemies){
 			if (closest == null
-					|| Dungeon.level.distance(pos, curr.pos) < Dungeon.level.distance(pos, closest.pos)
-					|| Dungeon.level.distance(pos, curr.pos) == Dungeon.level.distance(pos, closest.pos)){
+					|| (PathFinder.distance[curr.pos] < PathFinder.distance[closest.pos])){
+				closest = curr;
+			} else if ( curr == Dungeon.hero &&
+					(PathFinder.distance[curr.pos] == PathFinder.distance[closest.pos]) || (canAttack(curr) && canAttack(closest))){
 				closest = curr;
 			}
 		}
