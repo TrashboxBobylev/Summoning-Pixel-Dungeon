@@ -173,9 +173,9 @@ public class Badges {
 		CHAMPION_3                  ( 124 ),
 
 		//abyssal
-		NIGHTMARE_SLAIN(137, true, true),
-		DRAGON_SLAIN(138, true, true),
-		SPIRIT_SLAIN(139, true, true);
+		NIGHTMARE_SLAIN(136, true, true),
+		DRAGON_SLAIN(137, true, true),
+		SPIRIT_SLAIN(138, true, true);
 
 		public boolean meta;
 		public boolean abyss = false;
