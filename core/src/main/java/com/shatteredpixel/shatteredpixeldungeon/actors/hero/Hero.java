@@ -1507,7 +1507,7 @@ public class Hero extends Char {
 		// The flash intensity increases primarily based on damage taken and secondarily on missing HP.
 		float flashIntensity = 0.25f * (percentDMG * percentDMG) / percentHP;
 		if (pointsInTalent(Talent.DETERMINED) > 1 && isAlive() && HP != 1){
-			int healing = Math.round(effectiveDamage*Math.min(1/3f, flashIntensity));
+			int healing = Math.round(effectiveDamage*Math.min(1/4f, flashIntensity));
 			if (healing > 0) {
 				HP = Math.min(HP + healing, HT);
 				sprite.showStatus(0x00FF00, String.valueOf(healing));
