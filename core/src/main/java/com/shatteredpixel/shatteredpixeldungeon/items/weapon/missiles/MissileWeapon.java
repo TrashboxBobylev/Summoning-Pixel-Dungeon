@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SilkyQuiver;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
@@ -167,12 +168,26 @@ abstract public class MissileWeapon extends Weapon {
 
 	@Override
 	public int proc(Char attacker, Char defender, int damage) {
-		if (attacker == Dungeon.hero && (Dungeon.hero.subClass == HeroSubClass.SNIPER && Random.Int(2) == 0)){
+		if (attacker == Dungeon.hero) {
+			if (Dungeon.hero.subClass == HeroSubClass.SNIPER && Random.Int(2) == 0) {
 				SpiritBow bow = Dungeon.hero.belongings.getItem(SpiritBow.class);
 				if (bow != null && bow.enchantment != null && Dungeon.hero.buff(MagicImmune.class) == null) {
 					damage = bow.enchantment.proc(this, attacker, defender, damage);
 				}
 			}
+			if (Dungeon.hero.pointsInTalent(Talent.OLYMPIC_SKILLS) > 1 &&
+					attacker.buff(Talent.OlympicSkillsTracker.class) != null &&
+					attacker.buff(Talent.OlympicSkillsTracker.class).count() == Talent.OlympicSkillsTracker.MAX_COMBO - 1){
+				Weapon wep = (Weapon) Dungeon.hero.belongings.stashedWeapon;
+				if (wep != null && wep.enchantment != null && Dungeon.hero.buff(MagicImmune.class) == null) {
+					attacker.sprite.centerEmitter().burst(PurpleParticle.BURST, 5);
+					damage = wep.enchantment.proc(this, attacker, defender, damage);
+				}
+			}
+			if (Dungeon.hero.pointsInTalent(Talent.OLYMPIC_SKILLS) > 2 && attacker.buff(Talent.OlympicSkillsCooldown.class) != null){
+				Buff.affect(attacker, Barrier.class).incShield(2);
+			}
+		}
 
 		return super.proc(attacker, defender, damage);
 	}

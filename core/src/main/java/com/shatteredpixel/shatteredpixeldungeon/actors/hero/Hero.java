@@ -430,6 +430,9 @@ public class Hero extends Char {
 		belongings.weapon = belongings.stashedWeapon;
 		belongings.stashedWeapon = null;
 
+		if (hit && hasTalent(Talent.OLYMPIC_SKILLS) && buff(Talent.OlympicSkillsCooldown.class) == null)
+			Buff.affect( this, Talent.OlympicSkillsTracker.class ).hit( enemy, wep );
+
 		return hit;
 	}
 

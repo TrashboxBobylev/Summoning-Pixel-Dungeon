@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Transmuting;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
@@ -114,7 +115,7 @@ public enum Talent {
     SPYDER_MAN(119, 3),
     DETERMINED(120, 3, true),
     MY_SUNSHINE(121, 3, true),
-    OLYMPIC_SKILLS(122, 3),
+    OLYMPIC_SKILLS(122, 3, true),
     REAL_KNIFE_MASTER(25, 3),
     BLOOD_DRIVE(26, 3),
     UNSETTLING_GAZE(27, 3),
@@ -317,6 +318,80 @@ public enum Talent {
         public void restoreFromBundle(Bundle bundle) {
             super.restoreFromBundle(bundle);
             sunCount = bundle.getInt(SUN);
+        }
+    }
+
+    public static class OlympicSkillsCooldown extends Cooldown {
+        public float duration() {
+            return 20;
+        }
+        public int icon() { return BuffIndicator.TIME; }
+        public void tintIcon(Image icon) { icon.hardlight(0f, 0.7f, 0.52f); }
+    }
+
+    public static class OlympicSkillsTracker extends CounterBuff{
+        private float comboTime = 0f;
+
+        @Override
+        public boolean act() {
+            comboTime-=TICK;
+            spend(TICK);
+            if (comboTime <= 0) {
+                detach();
+            }
+            return true;
+        }
+
+        public static final int MAX_COMBO = 3;
+
+        public static void damageWithSparkles(Char enemy, MissileWeapon wep){
+            if (enemy != null && enemy.alignment == Char.Alignment.ENEMY){
+                CellEmitter.center(enemy.pos).burst(SparkParticle.FACTORY, 13);
+                enemy.damage(wep.damageRoll(Dungeon.hero)/3, wep);
+            }
+        }
+
+        public void hit( Char enemy, MissileWeapon weapon ) {
+
+            countUp(1);
+            comboTime = 2f*(Dungeon.hero.pointsInTalent(OLYMPIC_SKILLS));
+
+            if (count() >= MAX_COMBO) {
+
+                detach();
+                Cooldown.affectHero(OlympicSkillsCooldown.class);
+
+                Buff.affect(Dungeon.hero, Talent.LethalMomentumTracker.class, 1f);
+
+                damageWithSparkles(enemy, weapon);
+                for (int cel: PathFinder.NEIGHBOURS4){
+                    damageWithSparkles(Actor.findChar(enemy.pos+cel), weapon);
+                }
+
+            }
+
+            BuffIndicator.refreshHero(); //refresh the buff visually on-hit
+
+        }
+
+        public int icon() { return BuffIndicator.WEAPON; }
+        public void tintIcon(Image icon) { icon.hardlight(0f, 0.7f, 0.52f); }
+        public String toString() { return Messages.get(this, "name"); }
+        public float iconFadePercent() { return Math.max(0, 1f - (MAX_COMBO / count())); }
+        public String desc() { return Messages.get(this, "desc", Math.round(count())); }
+
+        private static final String TIME = "comboTime";
+
+        @Override
+        public void storeInBundle(Bundle bundle) {
+            super.storeInBundle(bundle);
+            bundle.put(TIME, comboTime);
+        }
+
+        @Override
+        public void restoreFromBundle(Bundle bundle) {
+            super.restoreFromBundle(bundle);
+            comboTime = bundle.getInt(TIME);
         }
     }
 
