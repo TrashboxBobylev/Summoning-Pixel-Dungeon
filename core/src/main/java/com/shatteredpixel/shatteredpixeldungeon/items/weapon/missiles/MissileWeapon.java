@@ -90,7 +90,7 @@ abstract public class MissileWeapon extends Weapon {
 	
 	@Override
 	public int min() {
-		return Math.max(0, min( buffedLvl()));
+		return Math.max(0, Math.round(min( buffedLvl())*universalDMGModifier()));
 	}
 	
 	@Override
@@ -101,7 +101,7 @@ abstract public class MissileWeapon extends Weapon {
 	
 	@Override
 	public int max() {
-		return Math.max(0, max( buffedLvl() ));
+		return Math.max(0, Math.round(max( buffedLvl() )*universalDMGModifier()));
 	}
 	
 	@Override
@@ -360,10 +360,7 @@ abstract public class MissileWeapon extends Weapon {
 		int damage = augment.damageFactor(super.damageRoll( owner ));
 		
 		if (owner instanceof Hero) {
-			int exStr = ((Hero)owner).STR() - STRReq();
-			if (exStr > 0) {
-				damage += Random.IntRange( 0, exStr );
-			}
+			damage = strDamageBoost((Hero) owner, damage);
 		}
 
 		if (owner.buff(Talent.SniperPatienceTracker.class) != null){
@@ -435,7 +432,7 @@ abstract public class MissileWeapon extends Weapon {
 		if (STRReq() > Dungeon.hero.STR()) {
 			info += " " + Messages.get(Weapon.class, "too_heavy");
 		} else if (Dungeon.hero.STR() > STRReq()){
-			info += " " + Messages.get(Weapon.class, "excess_str", Dungeon.hero.STR() - STRReq());
+			info += " " + Messages.get(Weapon.class, "excess_str", Math.round((Dungeon.hero.STR() - STRReq())*universalDMGModifier()));
 		}
 		switch (augment) {
 			case SPEED:

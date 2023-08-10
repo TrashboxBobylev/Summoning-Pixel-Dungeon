@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.MailArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.watabou.utils.Random;
 
 public class MeleeWeapon extends Weapon {
 	
@@ -71,10 +70,7 @@ public class MeleeWeapon extends Weapon {
 		int damage = augment.damageFactor(super.damageRoll( owner ));
 
 		if (owner instanceof Hero) {
-			int exStr = ((Hero)owner).STR() - STRReq();
-            if (exStr > 0) {
-                damage += Random.IntRange( 0, Math.round(exStr) );
-			}
+			damage = strDamageBoost((Hero) owner, damage);
 
 			if (ranged) damage *= 1.33f;
 		}
@@ -94,10 +90,11 @@ public class MeleeWeapon extends Weapon {
 			} else if (Dungeon.hero.STR() > STRReq()){
 			    float additional_damage = Dungeon.hero.STR() - STRReq();
 			    if (this instanceof Knife) additional_damage *= 1.5f;
+				additional_damage *= universalDMGModifier();
 				info += " " + Messages.get(Weapon.class, "excess_str", Math.round(additional_damage));
 			}
 		} else {
-			info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_unknown", tier, min(0), max(0), STRReq(0));
+			info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_unknown", tier, Math.round(min(0)*universalDMGModifier()), Math.round(max(0)*universalDMGModifier()), STRReq(0));
 			if (STRReq(0) > Dungeon.hero.STR()) {
 				info += " " + Messages.get(MeleeWeapon.class, "probably_too_heavy");
 			}

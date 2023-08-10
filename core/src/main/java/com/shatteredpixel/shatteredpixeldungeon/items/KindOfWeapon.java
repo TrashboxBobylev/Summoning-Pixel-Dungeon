@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -136,13 +137,13 @@ abstract public class KindOfWeapon extends EquipableItem {
 	}
 
 	public int min(){
-		int min = min(buffedLvl());
+		int min = Math.round(min(buffedLvl())*universalDMGModifier());
 		if (Dungeon.isChallenged(Conducts.Conduct.KING)) min += 3;
 		return min;
 	}
 
 	public int max(){
-		return max(buffedLvl());
+		return Math.round(max(buffedLvl())*universalDMGModifier());
 	}
 
 	abstract public int min(int lvl);
@@ -150,6 +151,14 @@ abstract public class KindOfWeapon extends EquipableItem {
 
 	public int damageRoll( Char owner ) {
 		return Random.NormalIntRange( min(), max() );
+	}
+
+	public float universalDMGModifier(){
+		float base = 1f;
+		if ((isEquipped(Dungeon.hero) || !(this instanceof MeleeWeapon)) && Dungeon.hero.hasTalent(Talent.QUICK_HANDS)){
+			base *= 0.6f;
+		}
+		return base;
 	}
 	
 	public float accuracyFactor( Char owner ) {

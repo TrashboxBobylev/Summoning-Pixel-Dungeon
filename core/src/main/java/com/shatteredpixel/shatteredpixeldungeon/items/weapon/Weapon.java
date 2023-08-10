@@ -24,10 +24,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon;
 
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Conducts;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Statistics;
+import com.shatteredpixel.shatteredpixeldungeon.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
@@ -44,16 +42,16 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.SyntheticArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.ArcaneElement;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
-import com.watabou.utils.Bundlable;
-import com.watabou.utils.Bundle;
-import com.watabou.utils.Random;
-import com.watabou.utils.Reflection;
+import com.watabou.utils.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -113,6 +111,74 @@ abstract public class Weapon extends KindOfWeapon {
 				identify();
 				GLog.positive( Messages.get(Weapon.class, "identify") );
 				Badges.validateItemLevelAquired( this );
+			}
+		}
+
+		if (attacker == Dungeon.hero && Dungeon.hero.pointsInTalent(Talent.QUICK_HANDS) > 1 && this instanceof MeleeWeapon){
+			int[] targets = new int[2];
+			int direction = -1;
+			int direction1 = -1, direction2 = -1;
+			for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++){
+				if (Actor.findChar(attacker.pos + PathFinder.NEIGHBOURS8[i]) == defender){
+					direction = i;
+				}
+			}
+			if (direction != -1) {
+				switch (direction) {
+					case 0:
+						direction1 = 4;
+						direction2 = 6;
+						break;
+					case 1:
+					case 6:
+						direction1 = 3;
+						direction2 = 4;
+						break;
+					case 2:
+						direction1 = 3;
+						direction2 = 6;
+						break;
+					case 3:
+					case 4:
+						direction1 = 1;
+						direction2 = 6;
+						break;
+					case 5:
+						direction1 = 1;
+						direction2 = 4;
+						break;
+					case 7:
+						direction1 = 1;
+						direction2 = 3;
+						break;
+				}
+				targets[0] = defender.pos + PathFinder.NEIGHBOURS8[direction1];
+				targets[1] = defender.pos + PathFinder.NEIGHBOURS8[direction2];
+				Talent.QuickHandsWound.hit(defender.pos, 315, 0x7fa9d2);
+				if (Dungeon.hero.pointsInTalent(Talent.QUICK_HANDS) > 2) {
+					Buff.affect(attacker, Talent.QuickHandsRegenTracker.class, 2);
+					int healAmt = 1;
+					healAmt = Math.min( healAmt, Dungeon.hero.HT - Dungeon.hero.HP );
+
+					if (healAmt > 0 && Dungeon.hero.isAlive()) {
+						Dungeon.hero.HP += healAmt;
+						Dungeon.hero.sprite.showStatus( CharSprite.POSITIVE, Integer.toString( healAmt ) );
+					}
+				}
+				for (int pos: targets){
+					Talent.QuickHandsWound.hit(pos, 45, 0x7fa9d2);
+					if (Actor.findChar(pos) != null){
+						Char ch = Actor.findChar(pos);
+						if (ch.alignment != attacker.alignment){
+							int dmg = Math.round(damage*0.8f);
+							Sample.INSTANCE.play(Assets.Sounds.HIT_STAB, 1f, 0.75f);
+							if (enchantment != null && attacker.buff(MagicImmune.class) == null) {
+								dmg = enchantment.proc( this, attacker, defender, damage );
+							}
+							ch.damage(dmg, this);
+						}
+					}
+				}
 			}
 		}
 
@@ -231,6 +297,9 @@ abstract public class Weapon extends KindOfWeapon {
 
 		float DLY = augment.delayFactor(this.DLY);
 
+		if (owner instanceof Hero && ((Hero) owner).hasTalent(Talent.QUICK_HANDS))
+			DLY /= 2;
+
 		return (encumbrance > 0 ? (float)(DLY * Math.pow( 1.2, encumbrance )) : DLY);
 	}
 
@@ -262,6 +331,15 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 
 	public abstract int STRReq(int lvl);
+
+	public int strDamageBoost(Hero hero, int damage){
+		int exStr = hero.STR() - STRReq();
+		if (exStr > 0) {
+			damage += Random.IntRange(0, exStr);
+		}
+		damage*=universalDMGModifier();
+		return damage;
+	}
 	
 	//overrides as other things can equip these
 	@Override

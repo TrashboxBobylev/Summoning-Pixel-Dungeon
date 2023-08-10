@@ -34,10 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.Wet;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
-import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Transmuting;
+import com.shatteredpixel.shatteredpixeldungeon.effects.*;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
@@ -65,6 +62,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
+import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
@@ -109,7 +107,7 @@ public enum Talent {
     JUST_ONE_MORE_TILE(90, 3, true),
     NEVER_GONNA_GIVE_YOU_UP(114, 3, true),
     ASSASSINATION(115, 3),
-    SPEED_SHOES(116, 3),
+    QUICK_HANDS(116, 3, true),
     BREAD_AND_CIRCUSES(117, 3, true),
     COMET_FALL(118, 3),
     SPYDER_MAN(119, 3),
@@ -244,6 +242,26 @@ public enum Talent {
         public int icon() { return BuffIndicator.WEAPON; }
         public void tintIcon(Image icon) { icon.hardlight(0xFFFF00); }
     }
+    public static class QuickHandsWound extends Wound {
+        int color;
+
+        @Override
+        public void update() {
+            super.update();
+
+            hardlight(color);
+        }
+
+        public static void hit(int pos, float angle, int color ) {
+            Group parent = Dungeon.hero.sprite.parent;
+            QuickHandsWound w = (QuickHandsWound)parent.recycle( QuickHandsWound.class );
+            parent.bringToFront( w );
+            w.reset( pos );
+            w.angle = angle;
+            w.color = color;
+        }
+    }
+    public static class QuickHandsRegenTracker extends FlavourBuff {}
     public static class MySunshineTracker extends CounterBuff{
         public float iconFadePercent() { return Math.max(0, 1f - ((count()) / (timeRequired()))); }
         public String toString() { return Messages.get(this, "name"); }
@@ -1094,7 +1112,7 @@ public enum Talent {
 
         tierTalents.clear();
 
-        Collections.addAll(tierTalents, DOG_BREEDING, NUCLEAR_RAGE, SNIPER_PATIENCE, ARCANE_CLOAK, ARMORED_ARMADA, TIMEBENDING, LUST_AND_DUST, TOWER_OF_POWER, JUST_ONE_MORE_TILE, NEVER_GONNA_GIVE_YOU_UP, ASSASSINATION, SPEED_SHOES, BREAD_AND_CIRCUSES, COMET_FALL, SPYDER_MAN, DETERMINED, MY_SUNSHINE, OLYMPIC_SKILLS);
+        Collections.addAll(tierTalents, DOG_BREEDING, NUCLEAR_RAGE, SNIPER_PATIENCE, ARCANE_CLOAK, ARMORED_ARMADA, TIMEBENDING, LUST_AND_DUST, TOWER_OF_POWER, JUST_ONE_MORE_TILE, NEVER_GONNA_GIVE_YOU_UP, ASSASSINATION, QUICK_HANDS, BREAD_AND_CIRCUSES, COMET_FALL, SPYDER_MAN, DETERMINED, MY_SUNSHINE, OLYMPIC_SKILLS);
        for (Talent talent : tierTalents){
             talents.get(2).put(talent, 0);
         }
