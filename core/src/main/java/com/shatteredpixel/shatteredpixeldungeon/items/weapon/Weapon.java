@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.GuaranteedEnchant;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -45,7 +46,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -157,13 +157,7 @@ abstract public class Weapon extends KindOfWeapon {
 				Talent.QuickHandsWound.hit(defender.pos, 315, 0x7fa9d2);
 				if (Dungeon.hero.pointsInTalent(Talent.QUICK_HANDS) > 2) {
 					Buff.affect(attacker, Talent.QuickHandsRegenTracker.class, 2);
-					int healAmt = 1;
-					healAmt = Math.min( healAmt, Dungeon.hero.HT - Dungeon.hero.HP );
-
-					if (healAmt > 0 && Dungeon.hero.isAlive()) {
-						Dungeon.hero.HP += healAmt;
-						Dungeon.hero.sprite.showStatus( CharSprite.POSITIVE, Integer.toString( healAmt ) );
-					}
+					Regeneration.regenerate(Dungeon.hero, 1);
 				}
 				for (int pos: targets){
 					Talent.QuickHandsWound.hit(pos, 45, 0x7fa9d2);

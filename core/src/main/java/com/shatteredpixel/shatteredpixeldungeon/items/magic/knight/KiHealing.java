@@ -26,12 +26,12 @@ package com.shatteredpixel.shatteredpixeldungeon.items.magic.knight;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.WhiteParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.magic.AdHocSpell;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.audio.Sample;
@@ -53,8 +53,7 @@ public class KiHealing extends AdHocSpell {
                 hero.sprite.idle();
                 hero.sprite.emitter().burst(WhiteParticle.UP, 8);
                 Sample.INSTANCE.play(Assets.Sounds.LULLABY);
-                hero.sprite.showStatus( CharSprite.POSITIVE, Integer.toString( intHeal() ) );
-                hero.HP = Math.min(hero.HT, hero.HP + intHeal());
+                Regeneration.regenerate(hero, intHeal());
                 new Flare(10, 64).color(0xFFFFFF, true).show(Dungeon.hero.sprite.parent, DungeonTilemap.tileCenterToWorld(hero.pos), 1.5f);
             }
         });

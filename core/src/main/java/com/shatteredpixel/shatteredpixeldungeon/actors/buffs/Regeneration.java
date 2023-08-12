@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.LeatherArmor;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 
 public class Regeneration extends Buff {
 	
@@ -50,6 +51,29 @@ public class Regeneration extends Buff {
 			return true;
 		}
 		return false;
+	}
+
+	public static void regenerate(Char ch, int amount){
+		regenerate(ch, amount, true, false);
+	}
+
+	public static void regenerate(Char ch, int amount, boolean visible){
+		regenerate(ch, amount, visible, false);
+	}
+
+	public static void regenerate(Char ch, int amount, boolean visible, boolean showHPString){
+		int healAmt = amount;
+		healAmt = Math.min( healAmt, ch.HT - ch.HP );
+
+		if (healAmt > 0 && ch.isAlive()) {
+			ch.HP += healAmt;
+			if (visible){
+				if (showHPString)
+					ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healAmt);
+				else
+					ch.sprite.showStatus( CharSprite.POSITIVE, Integer.toString( healAmt ) );
+			}
+		}
 	}
 	
 	@Override
