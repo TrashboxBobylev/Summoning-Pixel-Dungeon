@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Callback;
@@ -51,44 +52,74 @@ public class Stars extends ConjurerSpell {
 
     @Override
     public void effect(Ballistica trajectory) {
-        Char ch = Actor.findChar(trajectory.collisionPos);
-        if (ch != null){
-            ch.damage(damageRoll(), this);
+        if (level() == 0){
+            Char ch = Actor.findChar(trajectory.collisionPos);
+            if (ch != null){
+                ch.damage(damageRoll(), this);
 
-            for (int i : PathFinder.NEIGHBOURS8){
-                ((MagicMissile)curUser.sprite.parent.recycle( MagicMissile.class )).reset(
-                        MagicMissile.MAGIC_MISSILE,
-                        ch.sprite,
-                        ch.pos+i,
-                        null
-                );
+                for (int b : PathFinder.NEIGHBOURS8){
+                    ((MagicMissile)curUser.sprite.parent.recycle( MagicMissile.class )).reset(
+                            MagicMissile.MAGIC_MISSILE,
+                            ch.sprite,
+                            ch.pos+b,
+                            null
+                    );
+                }
+                Sample.INSTANCE.play( Assets.Sounds.HIT_MAGIC, 1, Random.Float(0.87f, 1.15f) );
             }
-            Sample.INSTANCE.play( Assets.Sounds.HIT_MAGIC, 1, Random.Float(0.87f, 1.15f) );
+        }
+        else {
+            PathFinder.buildDistanceMap(trajectory.collisionPos, BArray.not(Dungeon.level.solid, null), range());
+            for (int i = 0; i < PathFinder.distance.length; i++) {
+                if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+                    Char ch = Actor.findChar(i);
+                    if (ch != null) {
+                        ch.damage(damageRoll(), this);
 
+                        for (int b : PathFinder.NEIGHBOURS8) {
+                            ((MagicMissile) curUser.sprite.parent.recycle(MagicMissile.class)).reset(
+                                    MagicMissile.MAGIC_MISSILE,
+                                    ch.sprite,
+                                    ch.pos + b,
+                                    null
+                            );
+                        }
+                        Sample.INSTANCE.play(Assets.Sounds.HIT_MAGIC, 1, Random.Float(0.87f, 1.15f));
+                    }
+                }
+            }
         }
     }
 
     @Override
     public int manaCost() {
         switch (level()){
-            case 1: return 3;
-            case 2: return 8;
+            case 1: return 4;
+            case 2: return 10;
         }
         return 1;
     }
 
+    public int range() {
+        switch (level()){
+            case 1: return 1;
+            case 2: return 2;
+        }
+        return 0;
+    }
+
     private int min(){
         switch (level()){
-            case 1: return (int) (5 + Dungeon.hero.lvl/1.5f);
-            case 2: return (int) (11 + Dungeon.hero.lvl/0.5f);
+            case 1: return (int) (5 + Dungeon.hero.lvl/2.5f);
+            case 2: return (int) (7 + Dungeon.hero.lvl/2f);
         }
-        return (int) (2 + Dungeon.hero.lvl / 3f);
+        return (int) (3 + Dungeon.hero.lvl / 3f);
     }
 
     private int max(){
         switch (level()){
-            case 1: return (int) (16 + Dungeon.hero.lvl/0.8f);
-            case 2: return (int) (35 + Dungeon.hero.lvl/0.33f);
+            case 1: return (int) (10 + Dungeon.hero.lvl/1.5f);
+            case 2: return (int) (12 + Dungeon.hero.lvl/1.25f);
         }
         return (int) (8 + Dungeon.hero.lvl / 2f);
     }
