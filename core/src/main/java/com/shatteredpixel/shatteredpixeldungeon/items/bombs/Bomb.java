@@ -192,7 +192,7 @@ public class Bomb extends Item {
 				int dmg = damageRoll();
 				if (this instanceof RatBomb) dmg = (int) (damageRoll() / Random.Float(2, 3.5f));
 				if (ch instanceof Hero && ((Hero) ch).hasTalent(Talent.NUCLEAR_RAGE)){
-					dmg *= 1.25f + 0.15f * ((Hero) ch).pointsInTalent(Talent.NUCLEAR_RAGE);
+					dmg *= 1f - (0.25f + 0.15f * ((Hero) ch).pointsInTalent(Talent.NUCLEAR_RAGE));
 				}
 				if (ch instanceof Hero && Dungeon.isChallenged(Conducts.Conduct.EXPLOSIONS))
 					dmg /= 2;
