@@ -129,7 +129,7 @@ public class NewTengu extends Mob {
 
 		NewPrisonBossLevel.State state = ((NewPrisonBossLevel)Dungeon.level).state();
 		
-		int hpBracket = HT / 8;
+		int hpBracket = HT / 4;
 		
 		int beforeHitHP = HP;
 		super.damage(dmg, src);
