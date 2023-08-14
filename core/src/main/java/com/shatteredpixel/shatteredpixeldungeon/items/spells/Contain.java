@@ -56,27 +56,31 @@ public class Contain extends TargetedSpell {
 
     @Override
     protected void affectTarget(Ballistica bolt, Hero hero) {
-        Mob mob = (Mob) Actor.findChar(bolt.collisionPos);
-        if (mob != null && containedMob == null &&
-                !mob.properties().contains(Char.Property.BOSS) &&
-                !mob.properties().contains(Char.Property.MINIBOSS) &&
-                !mob.properties().contains(Char.Property.IMMOVABLE)){
-            float resist = WandOfCorruption.getEnemyResist(mob, mob);
-            resist *= 1 + 2*Math.pow(mob.HP/(float)mob.HT, 2);
-            if (resist < 5) {
-                Dungeon.level.mobs.remove(mob);
-                mob.sprite.killAndErase();
-                mob.state = mob.PASSIVE;
-                containedMob = mob;
-                quantity++;
-                collect();
-                TargetHealthIndicator.instance.target(null);
-                for (int i = 0; i < 5; i++) Sample.INSTANCE.play(Assets.Sounds.HIT);
-                updateQuickslot();
-            } else {
-                mob.damage(Math.round(mob.HP * 0.5f), hero);
+        Char ch = Actor.findChar(bolt.collisionPos);
+        if (ch instanceof Mob) {
+            Mob mob = (Mob) ch;
+            if (containedMob == null
+                    && mob.alignment == Char.Alignment.ENEMY
+                    && !mob.properties().contains(Char.Property.BOSS)
+                    && !mob.properties().contains(Char.Property.MINIBOSS)
+                    && !mob.properties().contains(Char.Property.IMMOVABLE)) {
+                float resist = WandOfCorruption.getEnemyResist(mob, mob);
+                resist *= 1 + 2 * Math.pow(mob.HP / (float) mob.HT, 2);
+                if (resist < 5) {
+                    Dungeon.level.mobs.remove(mob);
+                    mob.sprite.killAndErase();
+                    mob.state = mob.PASSIVE;
+                    containedMob = mob;
+                    quantity++;
+                    collect();
+                    TargetHealthIndicator.instance.target(null);
+                    for (int i = 0; i < 5; i++) Sample.INSTANCE.play(Assets.Sounds.HIT);
+                    updateQuickslot();
+                } else {
+                    mob.damage(Math.round(mob.HP * 0.5f), hero);
+                }
+                curUser.spendAndNext(Actor.TICK);
             }
-            curUser.spendAndNext(Actor.TICK);
         } else if (containedMob != null && Dungeon.level.passable[bolt.collisionPos]){
             Mob mb = containedMob;
             containedMob = null;
