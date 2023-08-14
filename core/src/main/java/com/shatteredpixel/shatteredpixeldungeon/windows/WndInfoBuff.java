@@ -67,7 +67,7 @@ public class WndInfoBuff extends Window {
 
 		String desc = buff.desc();
 		if (Talent.canSufferAway(Dungeon.hero, buff))
-			desc += Messages.get(buff, "suffering_desc");
+			desc += "\n\n" + Messages.get(buff, "suffering_desc");
 
 		RenderedTextBlock txtInfo = PixelScene.renderTextBlock(desc, 6);
 		txtInfo.maxWidth(WIDTH);

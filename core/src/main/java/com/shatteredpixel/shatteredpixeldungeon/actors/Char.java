@@ -693,7 +693,7 @@ public abstract class Char extends Actor {
 				for (int i = 0; i < PathFinder.distance.length; i++) {
 					if (PathFinder.distance[i] < Integer.MAX_VALUE) {
 						Char ch = Actor.findChar(i);
-						if (ch != null){
+						if (ch != null && ch != this){
 							Buff.affect(ch, FrostBurn.class).reignite(ch, shardDistance*3);
 							CellEmitter.get(i).burst(FrostfireParticle.FACTORY, 4);
 						}
