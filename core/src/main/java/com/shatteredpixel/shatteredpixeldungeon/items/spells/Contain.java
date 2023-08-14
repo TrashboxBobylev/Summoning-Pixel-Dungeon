@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.spells;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -56,7 +57,10 @@ public class Contain extends TargetedSpell {
     @Override
     protected void affectTarget(Ballistica bolt, Hero hero) {
         Mob mob = (Mob) Actor.findChar(bolt.collisionPos);
-        if (mob != null && containedMob == null){
+        if (mob != null && containedMob == null &&
+                !mob.properties().contains(Char.Property.BOSS) &&
+                !mob.properties().contains(Char.Property.MINIBOSS) &&
+                !mob.properties().contains(Char.Property.IMMOVABLE)){
             float resist = WandOfCorruption.getEnemyResist(mob, mob);
             resist *= 1 + 2*Math.pow(mob.HP/(float)mob.HT, 2);
             if (resist < 5) {
