@@ -42,16 +42,19 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DwarfKing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GhostChicken;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FrostfireParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.MailArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Endure;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.CloakGlyph;
@@ -80,6 +83,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrimTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.audio.Sample;
@@ -681,7 +685,23 @@ public abstract class Char extends Actor {
 			c.recover();
 		}
 		if (this.buff(Frost.class) != null){
-			Buff.detach( this, Frost.class );
+			if (this instanceof Hero && ((Hero) this).hasTalent(Talent.SUFFERING_AWAY)){
+				dmg /= 2;
+				int shardDistance = ((Hero) this).pointsInTalent(Talent.SUFFERING_AWAY) > 2 ? 2 : 1;
+				Hero.arrangeBlast(pos, sprite, MagicMissile.FROST_CONE, shardDistance);
+				PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.solid, null ), shardDistance );
+				for (int i = 0; i < PathFinder.distance.length; i++) {
+					if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+						Char ch = Actor.findChar(i);
+						if (ch != null){
+							Buff.affect(ch, FrostBurn.class).reignite(ch, shardDistance*3);
+							CellEmitter.get(i).burst(FrostfireParticle.FACTORY, 4);
+						}
+					}
+				}
+			} else {
+				Buff.detach( this, Frost.class );
+			}
 		}
 		if (this.buff(MagicalSleep.class) != null){
 			Buff.detach(this, MagicalSleep.class);
@@ -794,6 +814,15 @@ public abstract class Char extends Actor {
 		float timeScale = 1f;
 		if (buff( Slow.class ) != null) {
 			timeScale *= 0.5f;
+			if (this instanceof Hero && ((Hero) this).hasTalent(Talent.SUFFERING_AWAY)){
+				for (Buff b : buffs()) {
+					if (b instanceof Artifact.ArtifactBuff) {
+						if (!((Artifact.ArtifactBuff) b).isCursed()) {
+							((Artifact.ArtifactBuff) b).charge((Hero) this, ((Hero) this).pointsInTalent(Talent.SUFFERING_AWAY) / 3f * 2);
+						}
+					}
+				}
+			}
 			//slowed and chilled do not stack
 		} else if (buff( Chill.class ) != null) {
 			timeScale *= buff( Chill.class ).speedFactor();

@@ -187,6 +187,11 @@ abstract public class MissileWeapon extends Weapon {
 			if (Dungeon.hero.pointsInTalent(Talent.OLYMPIC_SKILLS) > 2 && attacker.buff(Talent.OlympicSkillsCooldown.class) != null){
 				Buff.affect(attacker, Barrier.class).incShield(2);
 			}
+            if (Dungeon.hero.buff(Hex.class) != null && Dungeon.hero.hasTalent(Talent.SUFFERING_AWAY)){
+                Buff.affect(defender, Hex.class, 3f);
+				if (Dungeon.hero.pointsInTalent(Talent.SUFFERING_AWAY) > 2)
+					Buff.prolong(defender, Hex.class, 2f);
+            }
 		}
 
 		return super.proc(attacker, defender, damage);

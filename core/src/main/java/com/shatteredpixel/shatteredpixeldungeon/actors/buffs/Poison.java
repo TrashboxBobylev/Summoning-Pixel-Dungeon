@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PoisonParticle;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -44,6 +45,7 @@ public class Poison extends Buff implements Hero.Doom {
 
 	{
 		type = buffType.NEGATIVE;
+		severity = buffSeverity.DAMAGING;
 		announced = true;
 	}
 	
@@ -107,6 +109,9 @@ public class Poison extends Buff implements Hero.Doom {
 		if (target.isAlive()) {
 			
 			target.damage( (int)(left / 3) + 1, this );
+			if (target instanceof Hero && ((Hero) target).pointsInTalent(Talent.SUFFERING_AWAY) > 1){
+				Buff.affect(target, BlobImmunity.class, ((Hero) target).pointsInTalent(Talent.SUFFERING_AWAY) > 2 ? (left / 2) + 1 : (left / 4) + 1);
+			}
 			spend( TICK );
 			
 			if ((left -= TICK) <= 0) {

@@ -28,9 +28,11 @@ import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulWeakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.MailArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -73,6 +75,14 @@ public class MeleeWeapon extends Weapon {
 			damage = strDamageBoost((Hero) owner, damage);
 
 			if (ranged) damage *= 1.33f;
+
+			if (((Hero) owner).hasTalent(Talent.SUFFERING_AWAY) && owner.buff(Cripple.class) != null){
+				int tries = ((Hero) owner).pointsInTalent(Talent.SUFFERING_AWAY) > 2 ? 2 : 1;
+				for (int i = 0; i < tries; i++){
+					int newDamage = augment.damageFactor(super.damageRoll( owner ));
+					if (newDamage > damage) damage = newDamage;
+				}
+			}
 		}
 		
 		return damage;

@@ -25,7 +25,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
@@ -63,7 +65,11 @@ public class WndInfoBuff extends Window {
 		titlebar.setRect( 0, 0, WIDTH, 0 );
 		add( titlebar );
 
-		RenderedTextBlock txtInfo = PixelScene.renderTextBlock(buff.desc(), 6);
+		String desc = buff.desc();
+		if (Talent.canSufferAway(Dungeon.hero, buff))
+			desc += Messages.get(buff, "suffering_desc");
+
+		RenderedTextBlock txtInfo = PixelScene.renderTextBlock(desc, 6);
 		txtInfo.maxWidth(WIDTH);
 		txtInfo.setPos(titlebar.left(), titlebar.bottom() + 2*GAP);
 		add( txtInfo );

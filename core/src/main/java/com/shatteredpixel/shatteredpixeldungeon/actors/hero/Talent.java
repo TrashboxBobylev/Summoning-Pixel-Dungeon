@@ -110,7 +110,7 @@ public enum Talent {
     QUICK_HANDS(116, 3, true),
     BREAD_AND_CIRCUSES(117, 3, true),
     COMET_FALL(118, 3),
-    SPYDER_MAN(119, 3),
+    SUFFERING_AWAY(119, 3, true),
     DETERMINED(120, 3, true),
     MY_SUNSHINE(121, 3, true),
     OLYMPIC_SKILLS(122, 3, true),
@@ -557,6 +557,7 @@ public enum Talent {
     public static class DogBreedingMarking extends DummyBuff {
         {
             type = buffType.NEGATIVE;
+            severity = buffSeverity.HARMFUL;
         }
 
         @Override
@@ -916,6 +917,18 @@ public enum Talent {
 
     public static final int MAX_TALENT_TIERS = 3;
 
+    public static boolean canSufferAway(Hero hero, Buff debuff){
+        if (debuff.target instanceof Hero && debuff.type == Buff.buffType.NEGATIVE && hero.hasTalent(SUFFERING_AWAY)){
+            if (debuff.severity == Buff.buffSeverity.NOTHING) return false;
+
+            if (debuff.severity == Buff.buffSeverity.HARMFUL) return true;
+
+            if (debuff.severity == Buff.buffSeverity.DAMAGING)
+                return hero.pointsInTalent(SUFFERING_AWAY) >= 2;
+        }
+        return false;
+    }
+
     public static void onTalentUpgraded( Hero hero, Talent talent ){
         if (talent == BREAD_AND_CIRCUSES){
             Buff.affect(hero, BreadAndCircusesCounter.class);
@@ -1112,7 +1125,7 @@ public enum Talent {
 
         tierTalents.clear();
 
-        Collections.addAll(tierTalents, DOG_BREEDING, NUCLEAR_RAGE, SNIPER_PATIENCE, ARCANE_CLOAK, ARMORED_ARMADA, TIMEBENDING, LUST_AND_DUST, TOWER_OF_POWER, JUST_ONE_MORE_TILE, NEVER_GONNA_GIVE_YOU_UP, ASSASSINATION, QUICK_HANDS, BREAD_AND_CIRCUSES, COMET_FALL, SPYDER_MAN, DETERMINED, MY_SUNSHINE, OLYMPIC_SKILLS);
+        Collections.addAll(tierTalents, DOG_BREEDING, NUCLEAR_RAGE, SNIPER_PATIENCE, ARCANE_CLOAK, ARMORED_ARMADA, TIMEBENDING, LUST_AND_DUST, TOWER_OF_POWER, JUST_ONE_MORE_TILE, NEVER_GONNA_GIVE_YOU_UP, ASSASSINATION, QUICK_HANDS, BREAD_AND_CIRCUSES, COMET_FALL, SUFFERING_AWAY, DETERMINED, MY_SUNSHINE, OLYMPIC_SKILLS);
        for (Talent talent : tierTalents){
             talents.get(2).put(talent, 0);
         }

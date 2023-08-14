@@ -393,6 +393,10 @@ public abstract class Minion extends Mob {
     public float speed() {
         float speed = 1f / augmentOffense.delayFactor(super.speed()*Dungeon.hero.speed());
 
+        if (Dungeon.hero.hasTalent(Talent.SUFFERING_AWAY) && Dungeon.hero.buff(Charm.class) != null &&
+                enemy.id() == Dungeon.hero.buff(Charm.class).object)
+            speed *= 2;
+
         //moves 2 tiles at a time when returning to the hero
         if (state == WANDERING && defendingPos == -1){
             speed *= 2;

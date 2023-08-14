@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -195,6 +196,9 @@ public class Bomb extends Item {
 				}
 				if (ch instanceof Hero && Dungeon.isChallenged(Conducts.Conduct.EXPLOSIONS))
 					dmg /= 2;
+				if (ch instanceof Hero && ch.buff(Vulnerable.class) != null && ((Hero) ch).hasTalent(Talent.SUFFERING_AWAY)){
+					dmg /= 1f + 0.2f*((Hero) ch).pointsInTalent(Talent.SUFFERING_AWAY);
+				}
 
 				//those not at the center of the blast take less damage
 				//unless Nuclear Rage is active, which removes the penalty

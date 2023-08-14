@@ -35,6 +35,7 @@ public class Wet extends DummyBuff {
 
     {
         type = buffType.NEGATIVE;
+        severity = buffSeverity.HARMFUL;
         announced = true;
     }
 

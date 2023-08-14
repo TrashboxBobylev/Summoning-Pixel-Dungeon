@@ -154,6 +154,7 @@ public class FinalFroggit extends AbyssalMob implements Callback {
 
         {
             type = buffType.NEGATIVE;
+			severity = buffSeverity.DAMAGING;
             announced = true;
         }
 

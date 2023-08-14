@@ -34,6 +34,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.FinalFroggit;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
@@ -292,6 +294,13 @@ public class ShockBomb extends Bomb {
                 if (bonus != null && bonus.remainder() > 0f) {
                     charge += 0.05f * bonus.remainder();
                 }
+            }
+            if (target instanceof Hero && ((Hero) target).pointsInTalent(Talent.SUFFERING_AWAY) > 1 &&
+                    target.buff(FinalFroggit.Eradication.class) != null){
+                int power = target.buff(FinalFroggit.Eradication.class).combo;
+                if (((Hero) target).pointsInTalent(Talent.SUFFERING_AWAY) > 2)
+                    power *= 1.75f;
+                charge += 0.05f * power;
             }
             if (charge > 1) charge = 1;
             updateQuickslot();

@@ -35,6 +35,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulWeakness
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.FinalFroggit;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
@@ -173,7 +175,11 @@ public abstract class Wand extends Weapon implements Tierable {
 	}
 
 	public float powerLevel(){
-		return powerLevel(level());
+		float powerLevel = powerLevel(level());
+		if (Dungeon.hero.buff(Weakness.class) != null && Dungeon.hero.hasTalent(Talent.SUFFERING_AWAY)){
+			powerLevel *= 1.25f;
+		}
+		return powerLevel;
 	}
 
 	@Override
@@ -781,6 +787,14 @@ public abstract class Wand extends Weapon implements Tierable {
 				if (bonus != null && bonus.remainder() > 0f) {
 					partialCharge += CHARGE_BUFF_BONUS * bonus.remainder()/rechargeModifier();
 				}
+			}
+
+			if (target instanceof Hero && ((Hero) target).pointsInTalent(Talent.SUFFERING_AWAY) > 1 &&
+					target.buff(FinalFroggit.Eradication.class) != null){
+				int power = target.buff(FinalFroggit.Eradication.class).combo;
+				if (((Hero) target).pointsInTalent(Talent.SUFFERING_AWAY) > 2)
+					power *= 1.75f;
+				partialCharge += CHARGE_BUFF_BONUS * power;
 			}
 		}
 

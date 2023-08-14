@@ -38,6 +38,7 @@ public class Charm extends FlavourBuff {
 
 	{
 		type = buffType.NEGATIVE;
+		severity = buffSeverity.HARMFUL;
 		announced = true;
 	}
 

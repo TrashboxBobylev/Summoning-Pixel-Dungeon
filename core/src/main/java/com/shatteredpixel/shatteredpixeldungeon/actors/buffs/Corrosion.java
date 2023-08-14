@@ -42,6 +42,7 @@ public class Corrosion extends Buff implements Hero.Doom {
 
 	{
 		type = buffType.NEGATIVE;
+		severity = buffSeverity.DAMAGING;
 		announced = true;
 	}
 
@@ -62,6 +63,10 @@ public class Corrosion extends Buff implements Hero.Doom {
 	public void set(float duration, int damage) {
 		this.left = Math.max(duration, left);
 		if (this.damage < damage) this.damage = damage;
+	}
+
+	public float power(){
+		return damage;
 	}
 	
 	@Override

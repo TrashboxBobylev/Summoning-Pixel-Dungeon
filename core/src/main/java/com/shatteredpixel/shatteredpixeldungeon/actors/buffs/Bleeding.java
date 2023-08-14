@@ -25,6 +25,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -38,6 +40,7 @@ public class Bleeding extends Buff {
 
 	{
 		type = buffType.NEGATIVE;
+		severity = buffSeverity.DAMAGING;
 		announced = true;
 	}
 	
@@ -94,10 +97,21 @@ public class Bleeding extends Buff {
 					Splash.at( target.sprite.center(), -PointF.PI / 2, PointF.PI / 6,
 							target.sprite.blood(), Math.min( 10 * dmg / target.HT, 10 ) );
 				}
-				
-				if (target == Dungeon.hero && !target.isAlive()) {
-					Dungeon.fail( getClass() );
-					GLog.negative( Messages.get(this, "ondeath") );
+
+				if (target == Dungeon.hero) {
+					if (!target.isAlive()) {
+						Dungeon.fail(getClass());
+						GLog.negative(Messages.get(this, "ondeath"));
+					} else if (Dungeon.hero.pointsInTalent(Talent.SUFFERING_AWAY) > 1){
+						for (Char ch: Dungeon.level.mobs){
+							if (ch.alignment == Char.Alignment.ALLY && Dungeon.hero.fieldOfView[ch.pos]){
+								int healing = dmg;
+								if (Dungeon.hero.pointsInTalent(Talent.SUFFERING_AWAY) > 2)
+									healing *= 1.5f;
+								Regeneration.regenerate(ch, healing);
+							}
+						}
+					}
 				}
 				
 				spend( TICK );

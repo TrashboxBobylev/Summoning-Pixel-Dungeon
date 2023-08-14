@@ -30,6 +30,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.Wet;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
@@ -93,6 +95,9 @@ public class WandOfLightning extends DamageWand {
 
 		//lightning deals less damage per-target, the more targets that are hit.
 		float multipler = 0.4f + (0.6f/affected.size());
+		if (Dungeon.hero.buff(Wet.class) != null && Dungeon.hero.hasTalent(Talent.SUFFERING_AWAY)){
+			multipler = 1f;
+		}
 		//if the main target is in water, all affected take 2x more damage
 		if (Actor.findChar(bolt.collisionPos) != null && Actor.findChar(bolt.collisionPos).isWet()) {
 			if (level() != 1) multipler *= 2f;
@@ -177,6 +182,9 @@ public class WandOfLightning extends DamageWand {
 
 		int dist = (ch.isWet() && !ch.flying) ? 2 : 1;
 		if (level() == 2) dist *= 3;
+		if (Dungeon.hero.buff(Wet.class) != null && Dungeon.hero.hasTalent(Talent.SUFFERING_AWAY)){
+			dist *= 2 + Dungeon.hero.pointsInTalent(Talent.SUFFERING_AWAY) > 2 ? 1 : 0;
+		}
 
 		ArrayList<Char> hitThisArc = new ArrayList<>();
 		PathFinder.buildDistanceMap( ch.pos, BArray.not( Dungeon.level.solid, null ), dist );

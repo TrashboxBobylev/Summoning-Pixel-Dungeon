@@ -28,8 +28,12 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor.Glyph;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
@@ -86,6 +90,7 @@ public class Viscosity extends Glyph {
 		
 		{
 			type = buffType.NEGATIVE;
+			severity = buffSeverity.DAMAGING;
 		}
 		
 		protected int damage = 0;
@@ -135,12 +140,20 @@ public class Viscosity extends Glyph {
 
 				int damageThisTick = Math.max(1, (int)(damage*0.1f));
 				target.damage( damageThisTick, this );
-				if (target == Dungeon.hero && !target.isAlive()) {
+                if (target == Dungeon.hero) {
+					if (!target.isAlive()) {
 
-					Badges.validateDeathFromFriendlyMagic();
+						Badges.validateDeathFromFriendlyMagic();
 
-					Dungeon.fail( getClass() );
-					GLog.negative( Messages.get(this, "ondeath") );
+						Dungeon.fail(getClass());
+						GLog.negative(Messages.get(this, "ondeath"));
+					} else if (((Hero)target).pointsInTalent(Talent.SUFFERING_AWAY) > 1 && damageThisTick > 1){
+						Wraith ally = Wraith.spawnAt(target.pos);
+						if (ally != null) {
+							Buff.affect(ally, Corruption.class);
+							Buff.affect(ally, Hex.class, Integer.MAX_VALUE-1);
+						}
+					}
 				}
 				spend( TICK );
 

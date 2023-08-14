@@ -33,6 +33,7 @@ public class Vulnerable extends FlavourBuff {
 	
 	{
 		type = buffType.NEGATIVE;
+		severity = buffSeverity.HARMFUL;
 		announced = true;
 	}
 	

@@ -288,6 +288,10 @@ public abstract class Mob extends Char {
 
 	public Char chooseEnemy() {
 
+		if (this instanceof Minion && Dungeon.hero.hasTalent(Talent.SUFFERING_AWAY) && Dungeon.hero.buff(Charm.class) != null){
+			return (Char) Actor.findById(Dungeon.hero.buff(Charm.class).object);
+		}
+
 		Terror terror = buff( Terror.class );
 		if (terror != null) {
 			Char source = (Char)Actor.findById( terror.object );
@@ -810,6 +814,12 @@ public abstract class Mob extends Char {
 		if (buff(PerfumeGas.Affection.class) != null && src instanceof Char){
 			buff(PerfumeGas.Affection.class).detach();
 			Buff.affect(this, PerfumeGas.Aggression.class, 8f);
+		}
+		if (alignment == Alignment.ENEMY && Dungeon.hero.pointsInTalent(Talent.SUFFERING_AWAY) > 1 && Dungeon.hero.buff(Corrosion.class) != null){
+			float power = Dungeon.hero.buff(Corrosion.class).power();
+			if (Dungeon.hero.pointsInTalent(Talent.SUFFERING_AWAY) > 2)
+				power *= 1.5f;
+			dmg *= 1f + 0.075f * power;
 		}
 
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);

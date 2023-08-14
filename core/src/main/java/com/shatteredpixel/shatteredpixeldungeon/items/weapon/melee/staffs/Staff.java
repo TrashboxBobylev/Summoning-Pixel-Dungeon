@@ -30,6 +30,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.FinalFroggit;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Chicken;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
@@ -491,6 +493,13 @@ public class Staff extends Weapon implements Tierable {
                 if (bonus != null && bonus.remainder() > 0f) {
                     partialCharge += CHARGE_BUFF_BONUS * bonus.remainder();
                 }
+            }
+            if (target instanceof Hero && ((Hero) target).pointsInTalent(Talent.SUFFERING_AWAY) > 1 &&
+                    target.buff(FinalFroggit.Eradication.class) != null){
+                int power = target.buff(FinalFroggit.Eradication.class).combo;
+                if (((Hero) target).pointsInTalent(Talent.SUFFERING_AWAY) > 2)
+                    power *= 1.75f;
+                partialCharge += CHARGE_BUFF_BONUS * power;
             }
         }
 

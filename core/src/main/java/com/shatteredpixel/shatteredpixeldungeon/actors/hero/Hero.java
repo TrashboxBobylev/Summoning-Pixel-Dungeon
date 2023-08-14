@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GoatClone;
 import com.shatteredpixel.shatteredpixeldungeon.effects.*;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BloodParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SmokeParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.*;
@@ -861,6 +862,17 @@ public class Hero extends Char {
 			}
 		}
 
+		if (buff(Degrade.class) != null && hasTalent(Talent.SUFFERING_AWAY)){
+			for (Char ch: Dungeon.level.mobs){
+				if (ch.alignment == Char.Alignment.ALLY && Dungeon.hero.fieldOfView[ch.pos]){
+					int boost = 2;
+					if (Dungeon.hero.pointsInTalent(Talent.SUFFERING_AWAY) > 2)
+						boost = 4;
+					Buff.affect(ch, Empowered.class, boost);
+				}
+			}
+		}
+
         if (subClass == HeroSubClass.OCCULTIST && GoatClone.findClone() == null){
         	GoatClone.spawnClone();
 		}
@@ -1380,6 +1392,31 @@ public class Hero extends Char {
 			Buff.affect(enemy, Talent.LustAndDustDebuffTracker.class);
 		}
 
+		if (buff(Blindness.class) != null && pointsInTalent(Talent.SUFFERING_AWAY) > 0 && Dungeon.level.distance(pos, enemy.pos) <= 1){
+			damage += enemy.actualDrRoll();
+			if (pointsInTalent(Talent.SUFFERING_AWAY) > 2)
+				damage += enemy.actualDrRoll();
+		}
+
+		if (buff(FrostBurn.class) != null && pointsInTalent(Talent.SUFFERING_AWAY) > 1){
+			for (int n : PathFinder.NEIGHBOURS9) {
+				int c = enemy.pos + n;
+				if (c >= 0 && c < Dungeon.level.length()) {
+					if (Dungeon.level.heroFOV[c]) {
+						CellEmitter.get(c).burst(SmokeParticle.COLD, 3);
+					}
+					Char ch = Actor.findChar(c);
+					if (ch != null && ch.alignment == Alignment.ENEMY) {
+						Buff.affect(ch, Chill.class, 4f);
+						if (pointsInTalent(Talent.SUFFERING_AWAY) > 2)
+							Buff.prolong(ch, Chill.class, 2.5f);
+					}
+				}
+			}
+			damage += enemy.actualDrRoll();
+			if (pointsInTalent(Talent.SUFFERING_AWAY) > 2)
+				damage += enemy.actualDrRoll();
+		}
 
 		return damage;
 	}
@@ -1440,6 +1477,13 @@ public class Hero extends Char {
 
 		if (damage > 0 && buff(Talent.DeterminedTracker.class) != null){
 			enemy.damage(Math.round(damage*(1.5f+0.5f*(pointsInTalent(Talent.DETERMINED)))), this);
+		}
+
+		if (hasTalent(Talent.SUFFERING_AWAY) && buff(Chill.class) != null){
+			float turns = 1f;
+			if (pointsInTalent(Talent.SUFFERING_AWAY) > 2)
+				turns = 2f;
+			Buff.affect(enemy, Frost.class, turns);
 		}
 
 		return damage;
@@ -1662,6 +1706,10 @@ public class Hero extends Char {
 		if (step != -1) {
 
 			float speed = speed();
+
+			if (buff(Vertigo.class) != null && hasTalent(Talent.SUFFERING_AWAY)){
+				speed /= pointsInTalent(Talent.SUFFERING_AWAY) > 2 ? 3 : 2;
+			}
 
 			lastMovPos = pos;
 			sprite.move(pos, step);
@@ -1961,6 +2009,9 @@ public class Hero extends Char {
 		}
 		if (buff(ParchmentOfElbereth.parchmentCharge.class) != null && buff(ParchmentOfElbereth.parchmentCharge.class).isCursed()){
 			stealth = -Float.NEGATIVE_INFINITY;
+		}
+		if (buff(Vertigo.class) != null && hasTalent(Talent.SUFFERING_AWAY)){
+			stealth *= pointsInTalent(Talent.SUFFERING_AWAY) > 2 ? 3 : 2;
 		}
 		
 		return stealth;
