@@ -686,19 +686,21 @@ public abstract class Char extends Actor {
 		}
 		if (this.buff(Frost.class) != null){
 			if (this instanceof Hero && ((Hero) this).hasTalent(Talent.SUFFERING_AWAY)){
-				dmg /= 2;
-				int shardDistance = ((Hero) this).pointsInTalent(Talent.SUFFERING_AWAY) > 2 ? 2 : 1;
+				dmg /= 3;
+				int shardDistance = ((Hero) this).pointsInTalent(Talent.SUFFERING_AWAY) > 2 ? 3 : 2;
 				Hero.arrangeBlast(pos, sprite, MagicMissile.FROST_CONE, shardDistance);
 				PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.solid, null ), shardDistance );
 				for (int i = 0; i < PathFinder.distance.length; i++) {
 					if (PathFinder.distance[i] < Integer.MAX_VALUE) {
 						Char ch = Actor.findChar(i);
 						if (ch != null && ch != this){
-							Buff.affect(ch, FrostBurn.class).reignite(ch, shardDistance*3);
+							Buff.affect(ch, FrostBurn.class).reignite(ch, shardDistance*2);
 							CellEmitter.get(i).burst(FrostfireParticle.FACTORY, 4);
 						}
 					}
 				}
+				if (Random.Int(3) == 0)
+					Buff.detach( this, Frost.class );
 			} else {
 				Buff.detach( this, Frost.class );
 			}
