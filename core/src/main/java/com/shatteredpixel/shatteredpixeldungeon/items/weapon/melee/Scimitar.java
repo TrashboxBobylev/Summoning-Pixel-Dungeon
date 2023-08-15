@@ -75,7 +75,7 @@ public class Scimitar extends MeleeWeapon {
 
     @Override
     public int proc(Char attacker, Char defender, int damage) {
-        if (++strikes == 4) {
+        if (++strikes == 3) {
             damage *= 2;
             defender.sprite.showStatus(CharSprite.WARNING, "crit!");
             strikes = 0;
