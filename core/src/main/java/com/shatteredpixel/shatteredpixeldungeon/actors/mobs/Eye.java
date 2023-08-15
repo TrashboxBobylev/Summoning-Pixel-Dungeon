@@ -150,9 +150,9 @@ public class Eye extends Mob {
 	}
 
 	@Override
-	public void damage(int dmg, Object src) {
+	public int damage(int dmg, Object src) {
 		if (beamCharged) dmg /= 4;
-		super.damage(dmg, src);
+		return super.damage(dmg, src);
 	}
 	
 	//used so resistances can differentiate between melee and magical attacks

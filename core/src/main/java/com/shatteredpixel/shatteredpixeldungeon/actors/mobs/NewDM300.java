@@ -407,10 +407,10 @@ public class NewDM300 extends Mob {
 	private boolean invulnWarned = false;
 
 	@Override
-	public void damage(int dmg, Object src) {
-		super.damage(dmg, src);
+	public int damage(int dmg, Object src) {
+		int damage = super.damage(dmg, src);
 		if (isInvulnerable(src.getClass())){
-			return;
+			return 0;
 		}
 
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
@@ -448,6 +448,8 @@ public class NewDM300 extends Mob {
 			HP = threshold;
 			supercharge();
 		}
+
+		return damage;
 
 	}
 

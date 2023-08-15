@@ -1490,12 +1490,12 @@ public class Hero extends Char {
 	}
 	
 	@Override
-	public void damage( int dmg, Object src ) {
+	public int damage(int dmg, Object src ) {
 		if (buff(TimekeepersHourglass.timeStasis.class) != null)
-			return;
+			return 0;
 
 		if (src instanceof ConjurerSpell){
-			return;
+			return 0;
 		}
 
 		if (buff(MirrorOfFates.mirrorExp.class) != null && buff(MirrorOfFates.mirrorExp.class).isCursed() && Random.Int(5) == 0) {
@@ -1543,7 +1543,7 @@ public class Hero extends Char {
 		int postHP = HP + shielding();
 		int effectiveDamage = preHP - postHP;
 
-		if (effectiveDamage <= 0) return;
+		if (effectiveDamage <= 0) return 0;
 
 		if ((HP/(float)HT) < 0.3f && hasTalent(Talent.DETERMINED))
 			Buff.affect(this, Talent.DeterminedTracker.class);
@@ -1572,6 +1572,7 @@ public class Hero extends Char {
 				}
 			}
 		}
+		return effectiveDamage;
 	}
 	
 	public void checkVisibleMobs() {

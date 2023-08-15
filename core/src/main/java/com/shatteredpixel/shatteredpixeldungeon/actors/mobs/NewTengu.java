@@ -122,9 +122,9 @@ public class NewTengu extends Mob {
 	}
 
 	@Override
-	public void damage(int dmg, Object src) {
+	public int damage(int dmg, Object src) {
 		if (!Dungeon.level.mobs.contains(this)){
-			return;
+			return 0;
 		}
 
 		NewPrisonBossLevel.State state = ((NewPrisonBossLevel)Dungeon.level).state();
@@ -162,7 +162,7 @@ public class NewTengu extends Mob {
 					return true;
 				}
 			});
-			return;
+			return dmg;
 		}
 		
 		//phase 1 of the fight is over
@@ -176,6 +176,7 @@ public class NewTengu extends Mob {
 		} else if (beforeHitHP / hpBracket != HP / hpBracket) {
 			jump();
 		}
+		return dmg;
 	}
 	
 	@Override

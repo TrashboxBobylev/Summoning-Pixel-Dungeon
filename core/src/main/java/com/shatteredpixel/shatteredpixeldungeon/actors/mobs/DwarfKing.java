@@ -384,19 +384,19 @@ public class DwarfKing extends Mob {
 	}
 
 	@Override
-	public void damage(int dmg, Object src) {
+	public int damage(int dmg, Object src) {
 		if (isInvulnerable(src.getClass())){
 			super.damage(dmg, src);
-			return;
+			return 0;
 		} else if (phase == 3 && !(src instanceof Viscosity.DeferedDamage)){
 			Viscosity.DeferedDamage deferred = Buff.affect( this, Viscosity.DeferedDamage.class );
 			deferred.prolong( dmg );
 
 			sprite.showStatus( CharSprite.WARNING, Messages.get(Viscosity.class, "deferred", dmg) );
-			return;
+			return 0;
 		}
 		int preHP = HP;
-		super.damage(dmg, src);
+		int damage = super.damage(dmg, src);
 
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
 		if (lock != null && !isImmune(src.getClass()) && Dungeon.mode == Dungeon.GameMode.GAUNTLET) lock.addTime(dmg/3);
@@ -433,6 +433,7 @@ public class DwarfKing extends Mob {
 		} else if (phase == 3 && preHP > 20 && HP < 20){
 			yell( Messages.get(this, "losing") );
 		}
+		return damage;
 	}
 
 	@Override

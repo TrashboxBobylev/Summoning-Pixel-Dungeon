@@ -91,11 +91,12 @@ public class Brute extends Mob {
 	}
 
 	@Override
-	public void damage(int dmg, Object src) {
+	public int damage(int dmg, Object src) {
 		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT && buff(BruteRage.class) != null){
 			buff(BruteRage.class).incShield(dmg);
+			return dmg;
 		}
-		else super.damage(dmg, src);
+		else return super.damage(dmg, src);
 	}
 
 	@Override

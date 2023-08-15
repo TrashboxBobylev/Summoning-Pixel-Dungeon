@@ -244,7 +244,7 @@ public abstract class Minion extends Mob {
     }
 
     @Override
-    public void damage(int dmg, Object src) {
+    public int damage(int dmg, Object src) {
         if (AntiMagic.RESISTS.contains(src.getClass()) && buff(MagicalResistance.class) != null){
             dmg -= Random.NormalIntRange(0, 7);
             if (dmg < 0) dmg = 0;
@@ -252,7 +252,7 @@ public abstract class Minion extends Mob {
         if (Dungeon.hero.belongings.armor instanceof ConjurerArmor &&
                 Dungeon.hero.belongings.armor.level() == 2)
             dmg *= 0.6f;
-        super.damage(dmg, src);
+        return super.damage(dmg, src);
     }
 
     @Override

@@ -135,10 +135,11 @@ public class OldDM300 extends Mob {
 	}
 
 	@Override
-	public void damage(int dmg, Object src) {
-		super.damage(dmg, src);
+	public int damage(int dmg, Object src) {
+		int damage = super.damage(dmg, src);
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
 		if (lock != null && !isImmune(src.getClass())) lock.addTime(dmg*1.5f);
+		return damage;
 	}
 
 	@Override

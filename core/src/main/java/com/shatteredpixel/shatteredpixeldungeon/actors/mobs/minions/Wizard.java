@@ -85,13 +85,13 @@ public class Wizard extends Minion implements Callback {
 	}
 
 	@Override
-	public void damage(int dmg, Object src) {
+	public int damage(int dmg, Object src) {
 		for (Class c : ELEMENT_RESISTS){
 			if (c.isAssignableFrom(src.getClass())){
 				dmg *= 0.75 - lvl*0.15f;
 			}
 		}
-		super.damage(dmg, src);
+		return super.damage(dmg, src);
 	}
 
 	//used so resistances can differentiate between melee and magical attacks

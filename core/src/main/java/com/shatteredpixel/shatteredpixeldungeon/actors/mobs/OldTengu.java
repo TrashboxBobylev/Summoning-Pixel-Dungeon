@@ -90,7 +90,7 @@ public class OldTengu extends Mob {
 	}
 
 	@Override
-	public void damage(int dmg, Object src) {
+	public int damage(int dmg, Object src) {
 		
 		OldPrisonBossLevel.State state = ((OldPrisonBossLevel)Dungeon.level).state();
 		
@@ -127,7 +127,7 @@ public class OldTengu extends Mob {
 					return true;
 				}
 			});
-			return;
+			return 0;
 		}
 		
 		//phase 1 of the fight is over
@@ -141,6 +141,7 @@ public class OldTengu extends Mob {
 		} else if (beforeHitHP / hpBracket != HP / hpBracket) {
 			jump();
 		}
+		return dmg;
 	}
 
 	@Override

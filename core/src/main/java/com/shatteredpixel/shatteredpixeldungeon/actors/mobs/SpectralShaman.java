@@ -121,13 +121,13 @@ public class SpectralShaman extends Mob {
 	}
 
 	@Override
-	public void damage( int dmg, Object src ) {
+	public int damage(int dmg, Object src ) {
 
 		if (state == PASSIVE) {
 			state = HUNTING;
 		}
 
-		super.damage( dmg, src );
+		return super.damage( dmg, src );
 	}
 	
 	@Override

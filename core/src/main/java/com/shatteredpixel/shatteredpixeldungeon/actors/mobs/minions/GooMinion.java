@@ -206,7 +206,7 @@ public class GooMinion extends Minion {
     }
 
     @Override
-    public void damage(int dmg, Object src) {
+    public int damage(int dmg, Object src) {
         boolean bleeding = (HP*2 <= HT);
         if (!(src instanceof Viscosity.DeferedDamage)) {
             float deferedDmgMulti = 0.5f;
@@ -218,12 +218,13 @@ public class GooMinion extends Minion {
             deferred.prolong((int) (dmg * deferedDmgMulti));
             dmg = (int) Math.min(dmg - dmg * deferedDmgMulti, 0);
         }
-        super.damage(dmg, src);
+        int damage = super.damage(dmg, src);
         if ((HP*2 <= HT) && !bleeding){
             sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "enraged"));
             ((GooMinionSprite)sprite).spray(true);
             yell(Messages.get(this, "gluuurp"));
         }
+        return damage;
     }
 
     private final String PUMPEDUP = "pumpedup";

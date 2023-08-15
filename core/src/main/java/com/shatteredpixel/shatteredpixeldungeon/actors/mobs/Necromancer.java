@@ -83,18 +83,18 @@ public class Necromancer extends Mob {
 	}
 
 	@Override
-	public void damage(int dmg, Object src) {
+	public int damage(int dmg, Object src) {
 		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
 			if (HP - dmg <= 0) {
 				if (src instanceof Burning || src instanceof FrostBurn) {
-					super.damage(dmg, src);
+					return super.damage(dmg, src);
 				} else {
-					return;
+					return 0;
 				}
 			}
 		}
 
-		super.damage(dmg, src);
+		return super.damage(dmg, src);
 	}
 
 	@Override

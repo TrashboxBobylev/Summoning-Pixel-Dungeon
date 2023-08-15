@@ -70,11 +70,11 @@ public class LostSpirit extends AbyssalMob implements Callback {
     }
 
     @Override
-    public void damage(int dmg, Object src) {
+    public int damage(int dmg, Object src) {
         int distance = Dungeon.level.distance(this.pos, Dungeon.hero.pos) - 1;
         float multiplier = Math.min(0.2f, 1 / (1.32f * (float)Math.pow(1.2f, distance)));
         dmg = Math.round(dmg * multiplier);
-        super.damage(dmg, src);
+        return super.damage(dmg, src);
     }
 
     protected boolean doAttack(Char enemy ) {

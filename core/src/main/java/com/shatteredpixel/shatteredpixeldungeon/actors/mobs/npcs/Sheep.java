@@ -68,7 +68,8 @@ public class Sheep extends NPC {
 	}
 	
 	@Override
-	public void damage( int dmg, Object src ) {
+	public int damage(int dmg, Object src ) {
+		return 0;
 	}
 
 	@Override

@@ -112,10 +112,10 @@ public class Crab extends Mob {
 	}
 
     @Override
-    public void damage(int dmg, Object src) {
+    public int damage(int dmg, Object src) {
         if (dmg >= 3){
             dmg = (int) (3 + Math.sqrt(dmg - 3)/3);
         }
-        super.damage(dmg, src);
+        return super.damage(dmg, src);
     }
 }

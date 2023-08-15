@@ -602,15 +602,15 @@ public abstract class Char extends Actor {
 
 	public boolean oneShottedByCleaver;
 
-	public void damage( int dmg, Object src ) {
+	public int damage(int dmg, Object src ) {
 		
 		if (!isAlive() || dmg < 0) {
-			return;
+			return 0;
 		}
 
 		if(isInvulnerable(src.getClass())){
 			sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "invulnerable"));
-			return;
+			return 0;
 		}
 
 		Endure.EndureTracker endure = buff(Endure.EndureTracker.class);
@@ -644,7 +644,7 @@ public abstract class Char extends Actor {
 			victim.damage(dmg - reflectDamage, this);
 			dmg = reflectDamage;
 			if (dmg <= 0){
-				return;
+				return 0;
 			}
 		}
 
@@ -789,6 +789,8 @@ public abstract class Char extends Actor {
 		} else if (HP == 0 && buff(DeathMark.DeathMarkTracker.class) != null){
 			DeathMark.processFearTheReaper(this);
 		}
+
+		return dmg;
 	}
 	
 	public void destroy() {

@@ -367,12 +367,12 @@ public class YogDzewa extends Mob {
 	}
 
 	@Override
-	public void damage( int dmg, Object src ) {
+	public int damage(int dmg, Object src ) {
 
 		int preHP = HP;
 		super.damage( dmg, src );
 
-		if (phase == 0 || findFist() != null) return;
+		if (phase == 0 || findFist() != null) return 0;
 
 		if (phase < 4) {
 			HP = Math.max(HP, HT - 300 * phase);
@@ -415,6 +415,8 @@ public class YogDzewa extends Mob {
 
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
 		if (lock != null) lock.addTime(dmgTaken);
+
+		return dmgTaken;
 
 	}
 

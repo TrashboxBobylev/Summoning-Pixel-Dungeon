@@ -168,7 +168,7 @@ public class Mimic extends Mob {
 	}
 
 	@Override
-	public void damage(int dmg, Object src) {
+	public int damage(int dmg, Object src) {
 		if (state == PASSIVE){
 			alignment = Alignment.ENEMY;
 			stopHiding();
@@ -176,7 +176,7 @@ public class Mimic extends Mob {
 		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
 			dmg *= 0.75f;
 		}
-		super.damage(dmg, src);
+		return super.damage(dmg, src);
 	}
 
 	public void stopHiding(){

@@ -103,19 +103,18 @@ public class MirrorImage extends NPC {
 	}
 
 	@Override
-	public void damage(int dmg, Object src) {
+	public int damage(int dmg, Object src) {
 		if (hero.hasTalent(Talent.TIME_TOGETHER)) {
 			if (!(src instanceof Char)) {
 				int dm = damageHero(null, dmg, 0.75f);
 				if (dm >= Dungeon.hero.HP) {
-					super.damage(dmg, src);
-					return;
+                    return super.damage(dmg, src);
 				}
 				hero.damage(dm, this);
-				return;
+				return dm;
 			}
 		}
-		super.damage(dmg, src);
+		return super.damage(dmg, src);
 	}
 
 	public int damageHero(Char enemy, int damage, float armorPercent) {

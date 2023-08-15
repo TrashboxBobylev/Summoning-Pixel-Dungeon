@@ -275,7 +275,7 @@ public abstract class YogFist extends Mob {
 		}
 
 		@Override
-		public void damage(int dmg, Object src) {
+		public int damage(int dmg, Object src) {
 			int grassCells = 0;
 			for (int i : PathFinder.NEIGHBOURS9) {
 				if (Dungeon.level.map[pos+i] == Terrain.FURROWED_GRASS
@@ -285,7 +285,7 @@ public abstract class YogFist extends Mob {
 			}
 			if (grassCells > 0) dmg = Math.round(dmg * (6-grassCells)/6f);
 
-			super.damage(dmg, src);
+			return super.damage(dmg, src);
 		}
 
 		@Override
@@ -353,7 +353,7 @@ public abstract class YogFist extends Mob {
 		}
 
 		@Override
-		public void damage(int dmg, Object src) {
+		public int damage(int dmg, Object src) {
 			if (!isInvulnerable(src.getClass()) && !(src instanceof Bleeding)){
 				Bleeding b = buff(Bleeding.class);
 				if (b == null){
@@ -363,8 +363,9 @@ public abstract class YogFist extends Mob {
 				b.set(dmg*.67f);
 				b.attachTo(this);
 				sprite.showStatus(CharSprite.WARNING, b.toString() + " " + (int)b.level());
+				return (int) (dmg*0.67f);
 			} else{
-				super.damage(dmg, src);
+				return super.damage(dmg, src);
 			}
 		}
 
@@ -412,12 +413,13 @@ public abstract class YogFist extends Mob {
 		}
 
 		@Override
-		public void damage(int dmg, Object src) {
+		public int damage(int dmg, Object src) {
 			if (!isInvulnerable(src.getClass()) && !(src instanceof Viscosity.DeferedDamage)){
 				Buff.affect(this, Viscosity.DeferedDamage.class).prolong(dmg);
 				sprite.showStatus( CharSprite.WARNING, Messages.get(Viscosity.class, "deferred", dmg) );
+				return dmg;
 			} else{
-				super.damage(dmg, src);
+				return super.damage(dmg, src);
 			}
 		}
 
@@ -480,9 +482,9 @@ public abstract class YogFist extends Mob {
 		}
 
 		@Override
-		public void damage(int dmg, Object src) {
+		public int damage(int dmg, Object src) {
 			int beforeHP = HP;
-			super.damage(dmg, src);
+			int damage = super.damage(dmg, src);
 			if (isAlive() && beforeHP > HT/2 && HP < HT/2){
 				HP = HT/2;
 				Buff.prolong( Dungeon.hero, Blindness.class, Blindness.DURATION*1.5f );
@@ -501,6 +503,7 @@ public abstract class YogFist extends Mob {
 				Buff.prolong( Dungeon.hero, Blindness.class, Blindness.DURATION*3f );
 				GameScene.flash(0xFFFFFF);
 			}
+			return damage;
 		}
 
 	}
@@ -558,9 +561,9 @@ public abstract class YogFist extends Mob {
 		}
 
 		@Override
-		public void damage(int dmg, Object src) {
+		public int damage(int dmg, Object src) {
 			int beforeHP = HP;
-			super.damage(dmg, src);
+			int damage = super.damage(dmg, src);
 			if (isAlive() && beforeHP > HT/2 && HP < HT/2){
 				HP = HT/2;
 				Light l = Dungeon.hero.buff(Light.class);
@@ -585,6 +588,7 @@ public abstract class YogFist extends Mob {
 				}
 				GameScene.flash(0, false);
 			}
+			return damage;
 		}
 
 	}

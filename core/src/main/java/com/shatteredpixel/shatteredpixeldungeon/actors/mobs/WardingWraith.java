@@ -203,7 +203,7 @@ public class WardingWraith extends Mob implements Callback {
     }
 
     @Override
-    public void damage( int dmg, Object src ) {
+    public int damage(int dmg, Object src ) {
 
         if (!enraged) {
             enraged = true;
@@ -217,7 +217,7 @@ public class WardingWraith extends Mob implements Callback {
         }
         Sample.INSTANCE.play(Assets.Sounds.GHOST);
 
-        super.damage( dmg, src );
+        return super.damage( dmg, src );
     }
 
 
