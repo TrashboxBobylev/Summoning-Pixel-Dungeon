@@ -1517,14 +1517,16 @@ public class Hero extends Char {
 			dmg = thorns.proc(dmg, (src instanceof Char ? (Char)src : null),  this);
 		}
 
-		if (Dungeon.mode == Dungeon.GameMode.EXPLORE){
-			dmg *= 0.75f;
-		}
-		if (buff(ParchmentOfElbereth.parchmentPraying.class) != null){
-			dmg *= 0.8f;
-		}
-		if (buff(Talent.DeterminedTracker.class) != null){
-			dmg	*= 0.75f;
+		if (!(src instanceof Viscosity.DeferedDamage)) {
+			if (Dungeon.mode == Dungeon.GameMode.EXPLORE) {
+				dmg *= 0.75f;
+			}
+			if (buff(ParchmentOfElbereth.parchmentPraying.class) != null) {
+				dmg *= 0.8f;
+			}
+			if (buff(Talent.DeterminedTracker.class) != null) {
+				dmg *= 0.75f;
+			}
 		}
 
 		//TODO improve this when I have proper damage source logic

@@ -139,7 +139,7 @@ public class Viscosity extends Glyph {
 			if (target.isAlive()) {
 
 				int damageThisTick = Math.max(1, (int)(damage*0.1f));
-				target.damage( damageThisTick, this );
+				int dmg = target.damage( damageThisTick, this );
                 if (target == Dungeon.hero) {
 					if (!target.isAlive()) {
 
@@ -147,7 +147,7 @@ public class Viscosity extends Glyph {
 
 						Dungeon.fail(getClass());
 						GLog.negative(Messages.get(this, "ondeath"));
-					} else if (((Hero)target).pointsInTalent(Talent.SUFFERING_AWAY) > 1 && damageThisTick > 1){
+					} else if (((Hero)target).pointsInTalent(Talent.SUFFERING_AWAY) > 1 && damageThisTick > 1 && dmg > 1){
 						Wraith ally = Wraith.spawnAt(target.pos);
 						if (ally != null) {
 							Buff.affect(ally, Corruption.class);
