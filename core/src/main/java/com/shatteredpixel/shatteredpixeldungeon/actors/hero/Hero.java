@@ -575,13 +575,6 @@ public class Hero extends Char {
 
 		if (belongings.armor != null) {
 			int armDr = belongings.armor.defenseValue();
-			//TODO rework t3 plate gimmick for new defense mechanic
-//			if (belongings.armor instanceof PlateArmor &&
-//				belongings.armor.level() == 2){
-//				int armDr2 = Random.NormalIntRange( belongings.armor.DRMin(), belongings.armor.DRMax());
-//				if (armDr2 > armDr)
-//					armDr = armDr2;
-//			}
 			if (STR() < belongings.armor.STRReq()){
 				armDr -= 2*(belongings.armor.STRReq() - STR());
 			}
@@ -603,7 +596,18 @@ public class Hero extends Char {
 		
 		return dr;
 	}
-	
+
+	@Override
+	public int actualDrRoll() {
+		if (belongings.armor instanceof PlateArmor &&
+				belongings.armor.level() == 2){
+			int armDr = Random.NormalIntRange(Math.round(defenseValue() * 0.2f), Math.round(defenseValue() * 0.8f));
+			int armDr2 = Random.NormalIntRange(Math.round(defenseValue() * 0.2f), Math.round(defenseValue() * 0.8f));
+            return Math.max(armDr, armDr2);
+		}
+		else return super.actualDrRoll();
+	}
+
 	@Override
 	public int damageRoll() {
 		KindOfWeapon wep = belongings.weapon;
