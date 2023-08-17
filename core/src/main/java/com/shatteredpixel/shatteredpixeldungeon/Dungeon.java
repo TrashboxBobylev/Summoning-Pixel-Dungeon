@@ -316,7 +316,7 @@ public class Dungeon {
 			return new CavesLevel();
 		}
 		if (Dungeon.depth == Dungeon.chapterSize()*3){
-			return new NewCavesBossLevel();
+			return new CavesBossLevel();
 		}
 		if (Dungeon.depth > Dungeon.chapterSize()*3 && Dungeon.depth < Dungeon.chapterSize()*4) {
 			return new CityLevel();

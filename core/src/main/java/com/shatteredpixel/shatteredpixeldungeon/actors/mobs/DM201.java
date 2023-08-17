@@ -140,7 +140,7 @@ public class DM201 extends DM200 {
 					pos++;
 				}
 			}
-			Buff.append(this, NewDM300.FallingRockBuff.class, Math.min(enemy.cooldown(), 3*TICK)).setRockPositions(rockCells);
+			Buff.append(this, DM300.FallingRockBuff.class, Math.min(enemy.cooldown(), 3*TICK)).setRockPositions(rockCells);
 		}
 
 	}
