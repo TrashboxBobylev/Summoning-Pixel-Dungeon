@@ -32,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.*;
@@ -190,7 +189,7 @@ public class ShopRoom extends SpecialRoom {
 		if (Dungeon.depth == Dungeon.chapterSize()*5+1) itemsToSpawn.add(new Amulet());
 		if (Dungeon.hero.lvl >= 12 && Dungeon.hero.subClass == null && Dungeon.hero.heroClass.hasSubclassing()) itemsToSpawn.add( new TomeOfMastery());
 		if (Dungeon.hero.lvl >= 21 && Dungeon.hero.belongings.armor != null &&
-			!(Dungeon.hero.belongings.armor instanceof ClassArmor) && Dungeon.hero.heroClass.hasClassAbilities()) itemsToSpawn.add( new KingsCrown());
+			Dungeon.hero.armorAbility == null && Dungeon.hero.heroClass.hasClassAbilities()) itemsToSpawn.add( new KingsCrown());
 
 		Item rare;
 		switch (Random.Int(5)){
