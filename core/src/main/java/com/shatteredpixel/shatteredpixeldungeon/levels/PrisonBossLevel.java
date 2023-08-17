@@ -34,7 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Regrowth;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StormCloud;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewTengu;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
@@ -59,7 +59,7 @@ import com.watabou.utils.*;
 
 import java.util.ArrayList;
 
-public class NewPrisonBossLevel extends Level {
+public class PrisonBossLevel extends Level {
 	
 	{
 		color1 = 0x6a723d;
@@ -79,7 +79,7 @@ public class NewPrisonBossLevel extends Level {
 	}
 	
 	private State state;
-	private NewTengu tengu;
+	private Tengu tengu;
 	
 	public State state(){
 		return state;
@@ -116,11 +116,11 @@ public class NewPrisonBossLevel extends Level {
 		
 		//in some states tengu won't be in the world, in others he will be.
 		if (state == State.START || state == State.TRAP_MAZES || state == State.FIGHT_PAUSE) {
-			tengu = (NewTengu)bundle.get( TENGU );
+			tengu = (Tengu)bundle.get( TENGU );
 		} else {
 			for (Mob mob : mobs){
-				if (mob instanceof NewTengu) {
-					tengu = (NewTengu) mob;
+				if (mob instanceof Tengu) {
+					tengu = (Tengu) mob;
 					break;
 				}
 			}
@@ -477,8 +477,8 @@ public class NewPrisonBossLevel extends Level {
 				cleanMapState();
 				
 				for (Item item : storedItems) {
-					if (!(item instanceof NewTengu.BombAbility.BombItem)
-						&& !(item instanceof NewTengu.ShockerAbility.ShockerItem)) {
+					if (!(item instanceof Tengu.BombAbility.BombItem)
+						&& !(item instanceof Tengu.ShockerAbility.ShockerItem)) {
 						drop(item, randomTenguCellPos());
 					}
 				}
@@ -517,7 +517,7 @@ public class NewPrisonBossLevel extends Level {
 	
 	@Override
 	protected void createMobs() {
-		tengu = new NewTengu(); //We want to keep track of tengu independently of other mobs, he's not always in the level.
+		tengu = new Tengu(); //We want to keep track of tengu independently of other mobs, he's not always in the level.
 	}
 	
 	public Actor addRespawner() {

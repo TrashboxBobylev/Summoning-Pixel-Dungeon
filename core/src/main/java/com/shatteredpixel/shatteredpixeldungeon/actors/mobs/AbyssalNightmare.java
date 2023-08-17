@@ -325,7 +325,7 @@ public class AbyssalNightmare extends AbyssalMob {
 		immunities.add(	GasterBlaster.class);
 		immunities.add(	MagicMissileMinion.class);
 
-		immunities.add(NewTengu.FireAbility.FireBlob.class);
+		immunities.add(Tengu.FireAbility.FireBlob.class);
 
 		immunities.add(Grim.class);
 		immunities.add(Kinetic.class);

@@ -310,7 +310,7 @@ public class Dungeon {
 			return new PrisonLevel();
 		}
 		if (Dungeon.depth == Dungeon.chapterSize()*2){
-			return new NewPrisonBossLevel();
+			return new PrisonBossLevel();
 		}
 		if (Dungeon.depth > Dungeon.chapterSize()*2 && Dungeon.depth < Dungeon.chapterSize()*3) {
 			return new CavesLevel();
