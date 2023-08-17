@@ -35,7 +35,7 @@ public class FrostElemental extends Minion {
     {
         spriteClass = NewbornElementalSprite.class;
         attunement = 1.5f;
-        properties.add(Property.FIERY);
+        properties.add(Property.ICY);
         properties.add(Property.INORGANIC);
         baseDefense = 10;
         flying = true;
