@@ -547,10 +547,6 @@ public class Hero extends Char {
 
 		if (Dungeon.isChallenged(Conducts.Conduct.WRAITH)) evasion *= 5;
 
-		if (buff(Talent.TowerOfPowerTracker.class) != null){
-			return INFINITE_EVASION;
-		}
-
 		if (buff(Block.class) != null) return INFINITE_EVASION;
 
 		return Math.round(evasion);

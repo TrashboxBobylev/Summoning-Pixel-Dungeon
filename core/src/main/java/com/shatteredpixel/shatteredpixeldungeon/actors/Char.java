@@ -467,6 +467,9 @@ public abstract class Char extends Actor {
 		float acuStat = attacker.attackSkill( defender );
 		float defStat = defender.defenseSkill( attacker );
 
+		if (defender.buff(Talent.TowerOfPowerTracker.class) != null)
+			defStat = INFINITE_EVASION;
+
 		//if accuracy or evasion are large enough, treat them as infinite.
 		//note that infinite evasion beats infinite accuracy
 		if (defStat >= INFINITE_EVASION){
