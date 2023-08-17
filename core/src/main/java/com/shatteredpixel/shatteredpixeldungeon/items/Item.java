@@ -636,7 +636,7 @@ public class Item implements Bundlable {
 									&& !(Item.this instanceof MissileWeapon)
 									&& curUser.buff(Talent.ImprovisedProjectileCooldown.class) == null){
 								Char ch = Actor.findChar(cell);
-								if (ch != null && ch.alignment != curUser.alignment){
+								if (ch != null && ch.alignment == Char.Alignment.ENEMY){
 									for (int i : PathFinder.NEIGHBOURS8){
 										if (Dungeon.level.pit[ch.pos+i]){
 											if (ch instanceof Mob) {
