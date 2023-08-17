@@ -399,7 +399,7 @@ public class DwarfKing extends Mob {
 		int damage = super.damage(dmg, src);
 
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
-		if (lock != null && !isImmune(src.getClass()) && Dungeon.mode == Dungeon.GameMode.GAUNTLET) lock.addTime(dmg/3);
+		if (lock != null && !isImmune(src.getClass()) && Dungeon.mode != Dungeon.GameMode.GAUNTLET) lock.addTime(dmg/3);
 
 		if (phase == 1) {
 			int dmgTaken = preHP - HP;
