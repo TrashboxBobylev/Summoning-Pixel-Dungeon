@@ -40,7 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EarthParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
-import com.shatteredpixel.shatteredpixeldungeon.items.bombs.ShrapnelBomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.MetalShard;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -333,17 +333,18 @@ public class NewDM300 extends Mob {
 		int gasVented = 0;
 
 		Ballistica trajectory = new Ballistica(pos, target.pos, Ballistica.STOP_TARGET);
-		Class gas = Dungeon.mode == Dungeon.GameMode.DIFFICULT ? Inferno.class : ToxicGas.class;
+		Class<? extends Blob> gas = Dungeon.mode == Dungeon.GameMode.DIFFICULT ? Inferno.class : ToxicGas.class;
+		float gasMod = Dungeon.mode == Dungeon.GameMode.DIFFICULT ? 0.75f : 1f;
 
 		for (int i : trajectory.subPath(0, trajectory.dist)){
-			GameScene.add(Blob.seed(i, 20, gas));
-			gasVented += 20;
+			GameScene.add(Blob.seed(i, Math.round(20*gasMod), gas));
+			gasVented += 20*gasMod;
 		}
 
-		GameScene.add(Blob.seed(trajectory.collisionPos, 100, gas));
+		GameScene.add(Blob.seed(trajectory.collisionPos, Math.round(100*gasMod), gas));
 
-		if (gasVented < 250){
-			int toVentAround = (int)Math.ceil((250 - gasVented)/8f);
+		if (gasVented < 250*gasMod){
+			int toVentAround = (int)Math.ceil((250*gasMod - gasVented)/8f);
 			for (int i : PathFinder.NEIGHBOURS8){
 				GameScene.add(Blob.seed(pos+i, toVentAround, gas));
 			}
@@ -415,7 +416,7 @@ public class NewDM300 extends Mob {
 
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
 		if (lock != null && !isImmune(src.getClass())) lock.addTime(dmg);
-		if (dmg > 15 && Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+		if (dmg > 35 && Dungeon.mode == Dungeon.GameMode.DIFFICULT){
 			ArrayList<Integer> candidates = new ArrayList<>();
 
 			int[] neighbours = {pos + 1, pos - 1, pos + Dungeon.level.width(), pos - Dungeon.level.width()};
@@ -560,7 +561,7 @@ public class NewDM300 extends Mob {
 				Dungeon.level.cleanWalls();
 				Dungeon.observe();
 				if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
-					new ShrapnelBomb().explode(pos);
+					new Bomb().explode(pos);
 				}
 				spend(3f);
 
