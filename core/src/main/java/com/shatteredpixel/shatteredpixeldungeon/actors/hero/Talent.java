@@ -278,9 +278,9 @@ public enum Talent {
 
         public static int timeRequired(){
             switch (Dungeon.hero.pointsInTalent(MY_SUNSHINE)){
-                case 0: case 1:
+                case 1: case 2:
                     return 30;
-                case 2:
+                case 3:
                     return 25;
             }
             return 0;
@@ -288,11 +288,11 @@ public enum Talent {
 
         public static int sunObtained(){
             switch (Dungeon.hero.pointsInTalent(MY_SUNSHINE)){
-                case 0:
-                    return 20;
                 case 1:
-                    return 25;
+                    return 20;
                 case 2:
+                    return 25;
+                case 3:
                     return 50;
             }
             return 0;
