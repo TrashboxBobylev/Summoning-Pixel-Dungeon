@@ -141,6 +141,8 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action, 
 				stealthed = false;
 				activeBuff.detach();
 				activeBuff = null;
+				if (glyph != null)
+					glyph.onUncloaking(CloakOfShadows.this, hero);
 				hero.spend( 1f );
 				hero.sprite.operate( hero.pos );
 			}
@@ -517,7 +519,7 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action, 
 				target.invisible--;
 			stealthed = false;
 			if (glyph != null)
-				glyph.onUncloaking(CloakOfShadows.this, target);
+				glyph.onDetaching(CloakOfShadows.this, target);
 
 			updateQuickslot();
 			super.detach();

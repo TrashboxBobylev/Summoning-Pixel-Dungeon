@@ -48,6 +48,7 @@ public abstract class CloakGlyph implements Bundlable {
 
     public void onCloaking(CloakOfShadows cloak, Char defender){}
     public void onUncloaking(CloakOfShadows cloak, Char defender){}
+    public void onDetaching(CloakOfShadows cloak, Char defender){}
 
     public float chargeModifier(CloakOfShadows cloak, Char defender){
         return 1f;

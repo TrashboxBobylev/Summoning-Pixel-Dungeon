@@ -54,10 +54,15 @@ public class Ethereal extends CloakGlyph{
     }
 
     @Override
-    public void onUncloaking(CloakOfShadows cloak, Char defender) {
-        super.onUncloaking(cloak, defender);
+    public void onDetaching(CloakOfShadows cloak, Char defender) {
+        super.onDetaching(cloak, defender);
         defender.flying = false;
         Dungeon.level.occupyCell(defender );
+    }
+
+    @Override
+    public void onUncloaking(CloakOfShadows cloak, Char defender) {
+        onDetaching(cloak, defender);
     }
 
     @Override
