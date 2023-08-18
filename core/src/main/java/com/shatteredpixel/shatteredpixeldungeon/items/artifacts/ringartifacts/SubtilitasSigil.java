@@ -167,7 +167,7 @@ public class SubtilitasSigil extends Artifact {
         public void gainExp(int exp){
             SubtilitasSigil.this.exp += exp;
             target.sprite.emitter().burst(FlameParticle.FACTORY, 5);
-            if (SubtilitasSigil.this.exp > 5 + (level()+1)*8){
+            if (SubtilitasSigil.this.exp > 5 + (level()+1)*8 && level() < levelCap){
                 SubtilitasSigil.this.exp = 0;
                 GLog.positive( Messages.get(SubtilitasSigil.class, "level_up") );
                 upgrade();
@@ -187,8 +187,10 @@ public class SubtilitasSigil extends Artifact {
                 if (partialCharge > 1){
                     charge++;
                     partialCharge--;
-                    if (charge == chargeCap){
+                    if (charge >= chargeCap){
+                        charge = chargeCap;
                         partialCharge = 0f;
+                        updateQuickslot();
                     }
                 }
             }
