@@ -129,7 +129,7 @@ public class SubtilitasSigil extends Artifact {
                 int maxDist = 3 + level();
                 int dist = Math.min(bolt.dist, maxDist);
 
-                final ConeAOE cone = new ConeAOE(bolt, maxDist, 60, Ballistica.STOP_SOLID | Ballistica.STOP_TARGET | Ballistica.IGNORE_SOFT_SOLID);
+                final ConeAOE cone = new ConeAOE(bolt, dist, 60, Ballistica.STOP_SOLID | Ballistica.STOP_TARGET | Ballistica.IGNORE_SOFT_SOLID);
 
                 //cast to cells at the tip, rather than all cells, better performance.
                 for (Ballistica ray : cone.rays) {
