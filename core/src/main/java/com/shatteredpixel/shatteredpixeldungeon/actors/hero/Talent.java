@@ -109,7 +109,7 @@ public enum Talent {
     ASSASSINATION(115, 3),
     QUICK_HANDS(116, 3, true),
     BREAD_AND_CIRCUSES(117, 3, true),
-    COMET_FALL(118, 3),
+    COMET_FALL(118, 3, true),
     SUFFERING_AWAY(119, 3, true),
     DETERMINED(120, 3, true),
     MY_SUNSHINE(121, 3, true),
@@ -184,6 +184,13 @@ public enum Talent {
         public float duration() { return Dungeon.hero.pointsInTalent(WELCOME_TO_EARTH) > 1 ? 50 : 80; }
         public int icon() { return BuffIndicator.TIME; }
         public void tintIcon(Image icon) { icon.hardlight(0.15f, 0.2f, 0.5f); }
+    }
+    public static class CometFallCooldown extends Cooldown {
+        public float duration() {
+            return 5;
+        }
+        public int icon() { return BuffIndicator.TIME; }
+        public void tintIcon(Image icon) { icon.hardlight(0.26f, 0.41f, 0.76f); }
     }
     public static class TowerOfPowerCooldown extends Cooldown {
         public float duration() {

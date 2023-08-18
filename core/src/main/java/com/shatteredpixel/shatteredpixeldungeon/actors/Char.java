@@ -49,6 +49,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FrostfireParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.MailArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
@@ -61,6 +62,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.Cloa
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.Crumbling;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MirrorOfFates;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SubtilitasSigil;
+import com.shatteredpixel.shatteredpixeldungeon.items.magic.Stars;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfAdrenalineSurge;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Scrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
@@ -83,15 +85,15 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrimTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Bundlable;
-import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
-import com.watabou.utils.Random;
+import com.watabou.utils.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -639,15 +641,113 @@ public abstract class Char extends Actor {
 			}
 		}
 
-		if ((src instanceof Char || src instanceof Mob.MagicalAttack) && MirrorOfFates.isMirrorActive(this)){
-			MirrorOfFates.MirrorShield shield = buff(MirrorOfFates.MirrorShield.class);
-			int reflectDamage = shield.damage(dmg);
-			Char victim = src instanceof Mob.MagicalAttack ?
-					((Mob.MagicalAttack) src).caster : (Char) src;
-			victim.damage(dmg - reflectDamage, this);
-			dmg = reflectDamage;
-			if (dmg <= 0){
-				return 0;
+        if (src instanceof Char || src instanceof Mob.MagicalAttack) {
+			if (this instanceof Hero && ((Hero) this).hasTalent(Talent.COMET_FALL) && buff(Talent.CometFallCooldown.class) == null){
+				int minComets = ((Hero) this).pointsInTalent(Talent.COMET_FALL) > 1 ? 1 : 0;
+				int maxComets = ((Hero) this).pointsInTalent(Talent.COMET_FALL) == 2 ? 4 : 3;
+				int amountOfComets = Random.IntRange(minComets, maxComets);
+				ArrayList<Integer> pointsToStrike = new ArrayList<>();
+				int pointForMegaComet = 0;
+				for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+					if (Dungeon.level.heroFOV[mob.pos]
+							&& !pointsToStrike.contains(mob.pos)
+							&& pointsToStrike.size() < amountOfComets) {
+						pointsToStrike.add(mob.pos);
+					}
+				}
+				while (pointsToStrike.size() < amountOfComets){
+					int i = Random.Int(Dungeon.level.heroFOV.length);
+					if (Dungeon.level.heroFOV[i])
+						pointsToStrike.add(i);
+				}
+				Random.shuffle(pointsToStrike);
+				if (((Hero) this).pointsInTalent(Talent.COMET_FALL) > 2 && Random.Int(2) == 0){
+					if (src instanceof Mob.MagicalAttack){
+						if (pointsToStrike.contains(((Mob.MagicalAttack) src).caster.pos))
+							pointForMegaComet = ((Mob.MagicalAttack) src).caster.pos;
+					} else {
+						if (pointsToStrike.contains(((Char) src).pos))
+							pointForMegaComet = ((Char) src).pos;
+					}
+					while (pointForMegaComet == 0){
+						int i = Random.Int(Dungeon.level.heroFOV.length);
+						if (Dungeon.level.heroFOV[i])
+							pointForMegaComet = i;
+					}
+				}
+				final HashSet<Callback> callbacks = new HashSet<>();
+				Dungeon.hero.busy();
+				for (int point: pointsToStrike){
+					MissileSprite starSprite = (MissileSprite) Dungeon.hero.sprite.parent.recycle(MissileSprite.class);
+					Item sprite = new Stars.ProjectileStar();
+					PointF starDest = DungeonTilemap.tileCenterToWorld(point);
+					PointF starSource = DungeonTilemap.raisedTileCenterToWorld(Dungeon.hero.pos);
+					starSource.y -= 175;
+					starSprite.hardlight(0xe5fbff);
+					int finalDmg = dmg;
+					Callback cometFall = ()->{
+						Sample.INSTANCE.play(Assets.Sounds.HIT_MAGIC, 1, Random.Float(0.9f, 1.75f));
+						for (int i : PathFinder.NEIGHBOURS9) {
+							CellEmitter.center(point + i).start(Speck.factory(Speck.FROSTBURN, true), 0.01f, 7);
+							Char ch = Actor.findChar(point + i);
+
+							if (ch != null && ch.alignment == Char.Alignment.ENEMY) {
+								ch.damage(Math.round(finalDmg / 1.5f), Dungeon.hero);
+								Buff.affect(ch, Chill.class, finalDmg / 2.5f);
+							}
+						}
+						callbacks.remove( this );
+						if (callbacks.isEmpty()) {
+							Invisibility.dispel();
+							Dungeon.hero.spendAndNext(0f);
+						}
+					};
+
+					starSprite.reset( starSource, starDest, sprite, cometFall);
+					callbacks.add( cometFall );
+				}
+				Talent.Cooldown.affectHero(Talent.CometFallCooldown.class);
+				if (pointForMegaComet != 0){
+					Sample.INSTANCE.play(Assets.Sounds.HIT_MAGIC, 1, Random.Float(0.75f, 2f));
+					MissileSprite starSprite = (MissileSprite) Dungeon.hero.sprite.parent.recycle(MissileSprite.class);
+					Item sprite = new Stars.ProjectileStar();
+					PointF starDest = DungeonTilemap.tileCenterToWorld(pointForMegaComet);
+					PointF starSource = DungeonTilemap.raisedTileCenterToWorld(Dungeon.hero.pos);
+					starSource.y -= 200;
+					starSprite.scale.scale(2.0f);
+					starSprite.hardlight(0x0baeb2);
+					int finalDmg = dmg;
+					int finalPointForMegaComet = pointForMegaComet;
+					Callback cometFall = ()->{
+						for (int i : PathFinder.NEIGHBOURS9) {
+							CellEmitter.center(finalPointForMegaComet + i).start(Speck.factory(Speck.BLIZZARD), 0.2f, 4);
+							Char ch = Actor.findChar(finalPointForMegaComet + i);
+
+							if (ch != null && ch.alignment == Char.Alignment.ENEMY) {
+								Buff.affect(ch, Frost.class, finalDmg / 1.5f);
+							}
+						}
+						callbacks.remove( this );
+						if (callbacks.isEmpty()) {
+							Invisibility.dispel();
+							Dungeon.hero.spendAndNext(0f);
+						}
+					};
+
+					starSprite.reset( starSource, starDest, sprite, cometFall);
+					callbacks.add( cometFall );
+				}
+			}
+			if (MirrorOfFates.isMirrorActive(this)) {
+				MirrorOfFates.MirrorShield shield = buff(MirrorOfFates.MirrorShield.class);
+				int reflectDamage = shield.damage(dmg);
+				Char victim = src instanceof Mob.MagicalAttack ?
+						((Mob.MagicalAttack) src).caster : (Char) src;
+				victim.damage(dmg - reflectDamage, this);
+				dmg = reflectDamage;
+				if (dmg <= 0) {
+					return 0;
+				}
 			}
 		}
 
