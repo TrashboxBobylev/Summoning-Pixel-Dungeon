@@ -89,12 +89,13 @@ public class StationaryStaff extends Staff {
                 //ZAP from summon staff doesn't do damage and serves only as targetting tool for your minions
 
                 if (staff.tryToZap(curUser, target)){
-                    curUser.busy();
+//                    curUser.busy();
                     Invisibility.dispel();
                         try {
-                            Sample.INSTANCE.play( Assets.Sounds.ZAP );
-                            if (staff.summon(curUser, target))
+                            if (staff.summon(curUser, target)) {
+                                Sample.INSTANCE.play( Assets.Sounds.ZAP );
                                 staff.wandUsed(false);
+                            }
                         } catch (Exception e) {
                             ShatteredPixelDungeon.reportException(e);
                             GLog.warning( Messages.get(Wand.class, "fizzles") );
@@ -118,7 +119,6 @@ public class StationaryStaff extends Staff {
 
         //checking attunement
         if (requiredAttunement() > owner.maxAttunement() || (requiredAttunement() + owner.usedAttunement() > owner.maxAttunement())){
-            owner.sprite.zap(0);
             GLog.warning( Messages.get(Staff.class, "too_low_attunement") );
             return false;
         }
