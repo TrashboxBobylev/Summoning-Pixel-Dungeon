@@ -816,7 +816,7 @@ public abstract class Wand extends Weapon implements Tierable {
 
 		public void gainCharge(float charge){
 			if (curCharges < maxCharges) {
-				partialCharge += charge*rechargeModifier();
+				partialCharge += charge/rechargeModifier();
 				while (partialCharge >= 1f) {
 					curCharges++;
 					partialCharge--;
