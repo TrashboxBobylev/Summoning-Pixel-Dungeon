@@ -26,12 +26,15 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.watabou.utils.Bundle;
 
 public class Invisibility extends FlavourBuff {
 
@@ -46,9 +49,9 @@ public class Invisibility extends FlavourBuff {
 	public boolean attachTo( Char target ) {
 		if (super.attachTo( target )) {
 			target.invisible++;
-//			if (target instanceof Hero && ((Hero) target).subClass == HeroSubClass.ASSASSIN){
-//				Buff.affect(target, Preparation.class);
-//			}
+			if (target instanceof Hero && ((Hero) target).hasTalent(Talent.ASSASSINATION)){
+				Buff.affect(target, Preparation.class);
+			}
 			return true;
 		} else {
 			return false;
@@ -91,6 +94,34 @@ public class Invisibility extends FlavourBuff {
 	}
 
 	public static void dispel() {
+		if (Dungeon.hero.pointsInTalent(Talent.ASSASSINATION) > 1){
+			if ((Dungeon.hero.buff(DispelDelayer.class) == null || Dungeon.hero.buff(DispelDelayer.class).tier > 0)
+					&& Dungeon.hero.invisible > 0){
+				if (Dungeon.hero.buff(DispelDelayer.class) == null)
+					Buff.affect(Dungeon.hero, DispelDelayer.class, Dungeon.hero.pointsInTalent(Talent.ASSASSINATION)).tier = Math.max(1, Dungeon.hero.pointsInTalent(Talent.ASSASSINATION) - 1);
+				else
+					Dungeon.hero.buff(DispelDelayer.class).tier--;
+				Preparation preparation = Dungeon.hero.buff(Preparation.class);
+				final int attackReduction = Dungeon.hero.pointsInTalent(Talent.ASSASSINATION) > 2 ? 1 : 2;
+				if (preparation != null){
+					preparation.detach();
+					if (preparation.attackLevel() > attackReduction) {
+						Preparation newPreparation = Buff.affect(Dungeon.hero, Preparation.class);
+						while (newPreparation.attackLevel() != preparation.attackLevel() - attackReduction) {
+							newPreparation.turnsInvis++;
+						}
+					}
+				}
+			} else {
+				actualDispel();
+			}
+		}
+		else {
+			actualDispel();
+		}
+	}
+
+	public static void actualDispel() {
 		for ( Buff invis : Dungeon.hero.buffs( Invisibility.class )){
 			invis.detach();
 		}
@@ -119,6 +150,43 @@ public class Invisibility extends FlavourBuff {
 		Preparation prep = Dungeon.hero.buff( Preparation.class );
 		if (prep != null){
 			prep.detach();
+		}
+	}
+
+	public static class DispelDelayer extends FlavourBuff {
+
+		{
+			actPriority = BUFF_PRIO + 1;
+		}
+
+		public int tier;
+
+		@Override
+		public boolean act() {
+			Buff.affect(target, CloakOfShadows.BriefRecharge.class).prolong(CloakOfShadows.MIN_CHARGE*3);
+			actualDispel();
+			detach();
+			return true;
+		}
+
+		@Override
+		public void fx(boolean on) {
+			if (on) target.sprite.add(CharSprite.State.SPIRIT);
+			else target.sprite.remove(CharSprite.State.SPIRIT);
+		}
+
+		private static final String TURNS = "tier";
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			tier = bundle.getInt(TURNS);
+		}
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(TURNS, tier);
 		}
 	}
 }

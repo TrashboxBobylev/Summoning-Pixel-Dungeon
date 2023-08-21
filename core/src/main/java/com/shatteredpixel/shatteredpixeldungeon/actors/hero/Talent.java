@@ -106,7 +106,7 @@ public enum Talent {
     TOWER_OF_POWER(89, 3, true),
     JUST_ONE_MORE_TILE(90, 3, true),
     NEVER_GONNA_GIVE_YOU_UP(114, 3, true),
-    ASSASSINATION(115, 3),
+    ASSASSINATION(115, 3, true),
     QUICK_HANDS(116, 3, true),
     BREAD_AND_CIRCUSES(117, 3, true),
     COMET_FALL(118, 3, true),

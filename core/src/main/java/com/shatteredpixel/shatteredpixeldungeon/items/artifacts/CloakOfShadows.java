@@ -29,8 +29,10 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
@@ -232,6 +234,8 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action, 
 	protected ArtifactBuff activeBuff( ) {
 		return new cloakStealth();
 	}
+
+	public static float MIN_CHARGE = 2f;
 	
 	@Override
 	public void charge(Hero target, float amount) {
@@ -424,9 +428,9 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action, 
 		public boolean attachTo( Char target ) {
 			if (super.attachTo( target )) {
 				target.invisible++;
-//				if (target instanceof Hero && ((Hero) target).subClass == HeroSubClass.ASSASSIN){
-//					Buff.affect(target, Preparation.class);
-//				}
+				if (target instanceof Hero && ((Hero) target).hasTalent(Talent.ASSASSINATION)){
+					Buff.affect(target, Preparation.class);
+				}
 				return true;
 			} else {
 				return false;
@@ -539,6 +543,62 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action, 
 			super.restoreFromBundle(bundle);
 			
 			turnsToCost = bundle.getInt( TURNSTOCOST );
+		}
+	}
+
+	public class BriefRecharge extends Buff {
+
+		{
+			type = buffType.POSITIVE;
+		}
+
+		private float left;
+
+		@Override
+		public boolean act() {
+
+			if (target instanceof Hero) {
+				float chargeAmount = Math.min(MIN_CHARGE, left);
+				for (Buff b : target.buffs()) {
+					if (b instanceof CloakOfShadows.cloakStealth) {
+						if (!((CloakOfShadows.cloakStealth) b).isCursed()) {
+							((CloakOfShadows.cloakStealth) b).charge((Hero) target, chargeAmount);
+						}
+					}
+				}
+			}
+
+			left--;
+			if (left <= 0){
+				detach();
+			} else {
+				spend(TICK);
+			}
+
+			return true;
+		}
+
+		public BriefRecharge prolong(float amount ){
+			left += amount;
+			return this;
+		}
+
+		public float left(){
+			return left;
+		}
+
+		private static final String LEFT = "left";
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put( LEFT, left );
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			left = bundle.getFloat(LEFT);
 		}
 	}
 }
