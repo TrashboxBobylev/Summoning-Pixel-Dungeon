@@ -220,7 +220,7 @@ public abstract class Char extends Actor {
 	}
 
 	public boolean blockSound( float pitch ) {
-		if (buff(Block.class) != null || buff(Talent.TowerOfPowerTracker.class) != null){
+		if (buff(Block.class) != null || buff(Talent.TowerOfPowerTracker.class) != null || buff(Talent.SupportPotionPowerTracker.class) != null){
 			Sample.INSTANCE.play( Assets.Sounds.HIT_PARRY, 1, pitch);
 			return true;
 		}
@@ -452,6 +452,17 @@ public abstract class Char extends Actor {
 				}
 
 			}
+			if (enemy.buff(Talent.SupportPotionPowerTracker.class) != null){
+				enemy.buff(Talent.TowerOfPowerTracker.class).detach();
+				Sample.INSTANCE.play(Assets.Sounds.SHATTER);
+				if (Dungeon.hero.pointsInTalent(Talent.SUPPORT_POTION) > 2){
+					for (Buff flavourBuff: Dungeon.hero.buffs()){
+						if (flavourBuff instanceof FlavourBuff && flavourBuff.type == Buff.buffType.POSITIVE){
+							flavourBuff.spend(5f);
+						}
+					}
+				}
+			}
 			
 			return false;
 			
@@ -469,7 +480,7 @@ public abstract class Char extends Actor {
 		float acuStat = attacker.attackSkill( defender );
 		float defStat = defender.defenseSkill( attacker );
 
-		if (defender.buff(Talent.TowerOfPowerTracker.class) != null)
+		if (defender.buff(Talent.TowerOfPowerTracker.class) != null || defender.buff(Talent.SupportPotionPowerTracker.class) != null)
 			defStat = INFINITE_EVASION;
 
 		//if accuracy or evasion are large enough, treat them as infinite.
@@ -524,7 +535,7 @@ public abstract class Char extends Actor {
 	public int defenseRolls(){ return 1;}
 	
 	public String defenseVerb() {
-		if (buff(Block.class) != null || buff(Talent.TowerOfPowerTracker.class) != null) return Messages.get(Hero.class, "absorbed");
+		if (buff(Block.class) != null || buff(Talent.TowerOfPowerTracker.class) != null || buff(Talent.SupportPotionPowerTracker.class) != null) return Messages.get(Hero.class, "absorbed");
 		return Messages.get(this, "def_verb");
 	}
 

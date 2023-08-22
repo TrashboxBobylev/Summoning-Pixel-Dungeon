@@ -114,7 +114,7 @@ public enum Talent {
     REAL_KNIFE_MASTER(25, 3),
     BLOOD_DRIVE(26, 3),
     UNSETTLING_GAZE(27, 3, true),
-    SUPPORT_POTION(28, 3),
+    SUPPORT_POTION(28, 3, true),
     WITCHING_STRIKE(29, 3),
     SILENCE_OF_LAMBS(30, 3),
     BLESSING_OF_SANITY(57, 3),
@@ -211,6 +211,18 @@ public enum Talent {
         public String desc() { return Messages.get(this, "desc", Math.floor((damageBoost()-1f)*100f)); }
         public int icon() { return BuffIndicator.ARMOR_GEN; }
         public void tintIcon(Image icon) { icon.hardlight(0.7f, 0.66f, 0.63f); }
+
+        @Override
+        public void fx(boolean on) {
+            if (on) target.sprite.add(CharSprite.State.SHIELDED);
+            else target.sprite.remove(CharSprite.State.SHIELDED);
+        }
+    }
+    public static class SupportPotionPowerTracker extends Buff{
+        public String toString() { return Messages.get(this, "name"); }
+        public String desc() { return Messages.get(this, "desc"); }
+        public int icon() { return BuffIndicator.ARMOR_GEN; }
+        public void tintIcon(Image icon) { icon.hardlight(0.75f, 0.69f, 0.68f); }
 
         @Override
         public void fx(boolean on) {
@@ -450,6 +462,14 @@ public enum Talent {
         }
         public int icon() { return BuffIndicator.TIME; }
         public void tintIcon(Image icon) { icon.hardlight(0.63f, 0.82f, 0.81f); }
+    }
+
+    public static class SupportPotionCooldown extends Cooldown {
+        public float duration() {
+            return 40;
+        }
+        public int icon() { return BuffIndicator.TIME; }
+        public void tintIcon(Image icon) { icon.hardlight(0.00f, 0.63f, 1.00f); }
     }
 
     public static class DeterminedTracker extends Buff {
