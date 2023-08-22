@@ -37,10 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.effects.*;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.CloakGlyph;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.Victide;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Scrap;
@@ -116,7 +113,7 @@ public enum Talent {
     OLYMPIC_SKILLS(122, 3, true),
     REAL_KNIFE_MASTER(25, 3),
     BLOOD_DRIVE(26, 3),
-    UNSETTLING_GAZE(27, 3),
+    UNSETTLING_GAZE(27, 3, true),
     SUPPORT_POTION(28, 3),
     WITCHING_STRIKE(29, 3),
     SILENCE_OF_LAMBS(30, 3),
@@ -445,6 +442,14 @@ public enum Talent {
             super.restoreFromBundle(bundle);
             comboTime = bundle.getInt(TIME);
         }
+    }
+
+    public static class UnsettlingGazeCooldown extends Cooldown {
+        public float duration() {
+            return 16;
+        }
+        public int icon() { return BuffIndicator.TIME; }
+        public void tintIcon(Image icon) { icon.hardlight(0.63f, 0.82f, 0.81f); }
     }
 
     public static class DeterminedTracker extends Buff {
@@ -1003,6 +1008,23 @@ public enum Talent {
                 && hero.buff(JustOneMoreTileTracker.class) == null){
             int duration = 1 + hero.pointsInTalent(JUST_ONE_MORE_TILE)*4;
             Buff.affect(hero, JustOneMoreTileTracker.class, duration);
+        }
+        if (hero.buff(TalismanOfForesight.CharAwareness.class) != null &&
+                hero.buff(TalismanOfForesight.CharAwareness.class).charID == enemy.id() &&
+                hero.pointsInTalent(UNSETTLING_GAZE) > 2){
+            hero.buff(TalismanOfForesight.CharAwareness.class).detach();
+            int acc = hero.getAttackSkill();
+            int eva = enemy.defenseSkill(hero);
+            damage += Math.max(0, Math.round((acc - eva)*0.66f));
+            Cooldown.affectHero(UnsettlingGazeCooldown.class);
+        }
+        if (hero.hasTalent(Talent.UNSETTLING_GAZE)
+                && enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)){
+            Buff.append(hero, TalismanOfForesight.CharAwareness.class, 6 + hero.pointsInTalent(UNSETTLING_GAZE)*4).charID = enemy.id();
+            if (hero.pointsInTalent(UNSETTLING_GAZE) > 1 && hero.hasTalent(TIMEBENDING)){
+                hero.buff(TimebendingCounter.class).countUp(
+                        TimebendingCounter.energyRequired()/(hero.pointsInTalent(UNSETTLING_GAZE) > 2 ? 2f : 3f));
+            }
         }
         if (hero.buff(CloakOfShadows.cloakStealth.class) != null
                 && enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)

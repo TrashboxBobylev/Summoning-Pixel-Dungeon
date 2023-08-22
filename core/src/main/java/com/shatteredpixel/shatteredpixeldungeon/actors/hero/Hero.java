@@ -475,6 +475,13 @@ public class Hero extends Char {
 
 	@Override
 	public int attackSkill( Char target ) {
+
+		if (buff(TalismanOfForesight.CharAwareness.class) != null &&
+				buff(TalismanOfForesight.CharAwareness.class).charID == target.id() &&
+				pointsInTalent(Talent.UNSETTLING_GAZE) > 2){
+			return INFINITE_ACCURACY;
+		}
+
 		KindOfWeapon wep = belongings.weapon;
 		
 		float accuracy = 1;
