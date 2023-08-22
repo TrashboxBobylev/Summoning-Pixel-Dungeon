@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -83,7 +84,11 @@ public class Heap implements Bundlable {
 	public void open( Hero hero ) {
 		switch (type) {
 		case TOMB:
-			Wraith.spawnAround( hero.pos );
+			Wraith wraith = Wraith.spawnAround( hero.pos );
+			if (hero.hasTalent(Talent.ARMORED_ARMADA) && wraith != null){
+				Buff.affect(wraith, Talent.ArmoredArmadaArmor.class).hits =
+						hero.pointsInTalent(Talent.ARMORED_ARMADA) > 2 ? 3 : 2;
+			}
 			break;
 		case REMAINS:
 		case SKELETON:
@@ -93,9 +98,13 @@ public class Heap implements Bundlable {
 		}
 		
 		if (haunted){
-			if (Wraith.spawnAt( pos ) == null) {
+			Wraith wraith = Wraith.spawnAt( pos );
+			if (wraith == null) {
 				hero.sprite.emitter().burst( ShadowParticle.CURSE, 6 );
 				hero.damage( hero.HP / 2, this );
+			} else if (hero.hasTalent(Talent.ARMORED_ARMADA)){
+				Buff.affect(wraith, Talent.ArmoredArmadaArmor.class).hits =
+						hero.pointsInTalent(Talent.ARMORED_ARMADA) > 2 ? 3 : 2;
 			}
 			Sample.INSTANCE.play( Assets.Sounds.CURSED );
 		}

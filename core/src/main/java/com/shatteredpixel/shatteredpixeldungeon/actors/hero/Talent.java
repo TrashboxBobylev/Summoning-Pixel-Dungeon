@@ -100,7 +100,7 @@ public enum Talent {
     NUCLEAR_RAGE(83, 3, true),
     SNIPER_PATIENCE(84, 3, true),
     ARCANE_CLOAK(85, 3, true),
-    ARMORED_ARMADA(86, 3),
+    ARMORED_ARMADA(86, 3, true),
     TIMEBENDING(87, 3, true),
     LUST_AND_DUST(88, 3, true),
     TOWER_OF_POWER(89, 3, true),
@@ -248,6 +248,33 @@ public enum Talent {
         public String desc() { return Messages.get(this, "desc", dispTurns(visualcooldown())); }
         public int icon() { return BuffIndicator.WEAPON; }
         public void tintIcon(Image icon) { icon.hardlight(0xFFFF00); }
+    }
+    public static class ArmoredArmadaArmor extends Buff {
+
+        public int hits;
+        @Override
+        public void fx(boolean on) {
+            if (on) target.sprite.add(CharSprite.State.SHIELDED);
+            else target.sprite.remove(CharSprite.State.SHIELDED);
+        }
+
+        @Override
+        public boolean attachTo(Char target) {
+            if (super.attachTo(target)){
+                target.alignment = Char.Alignment.ALLY;
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        private static final String HITS = "hits";
+
+        @Override
+        public void storeInBundle( Bundle bundle ) {
+            super.storeInBundle(bundle);
+            bundle.put( HITS, hits );
+        }
     }
     public static class QuickHandsWound extends Wound {
         int color;

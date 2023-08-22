@@ -910,15 +910,29 @@ public abstract class Mob extends Char {
 		if (alignment == Alignment.ENEMY){
 			if (!(cause instanceof Gravery)) rollToDropLoot();
 
-			if ((Dungeon.hero.lvl <= maxLvl + 2 || Dungeon.mode == Dungeon.GameMode.LOL) && cause instanceof Gravery){
-				EXP = 0;
-				if (!(this instanceof Wraith)){
-					Wraith w = Wraith.spawnForcefullyAt(pos);
-					if (w != null) {
-						Buff.affect(w, Corruption.class);
-						if (Dungeon.level.heroFOV[pos]) {
-							CellEmitter.get(pos).burst(ShadowParticle.CURSE, 6);
-							Sample.INSTANCE.play(Assets.Sounds.CURSED);
+            if (Dungeon.hero.lvl <= maxLvl + 2 || Dungeon.mode == Dungeon.GameMode.LOL) {
+				if (cause instanceof Gravery) {
+					EXP = 0;
+					if (!(this instanceof Wraith)) {
+						Wraith w = Wraith.spawnForcefullyAt(pos);
+						if (w != null) {
+							Buff.affect(w, Corruption.class);
+							if (Dungeon.level.heroFOV[pos]) {
+								CellEmitter.get(pos).burst(ShadowParticle.CURSE, 6);
+								Sample.INSTANCE.play(Assets.Sounds.CURSED);
+							}
+						}
+					}
+				} else if (cause instanceof Wraith && ((Wraith) cause).buff(Talent.ArmoredArmadaArmor.class) != null){
+					if (!(this instanceof Wraith)) {
+						Wraith w = Wraith.spawnForcefullyAt(pos);
+						if (w != null) {
+							Buff.affect(w, Talent.ArmoredArmadaArmor.class).hits =
+									Dungeon.hero.pointsInTalent(Talent.ARMORED_ARMADA) > 2 ? 3 : 2;
+							if (Dungeon.level.heroFOV[pos]) {
+								CellEmitter.get(pos).burst(ShadowParticle.CURSE, 6);
+								Sample.INSTANCE.play(Assets.Sounds.CURSED);
+							}
 						}
 					}
 				}

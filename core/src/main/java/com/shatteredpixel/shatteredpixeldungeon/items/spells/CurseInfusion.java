@@ -25,7 +25,13 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.spells;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -40,6 +46,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class CurseInfusion extends InventorySpell {
 	
@@ -80,7 +90,35 @@ public class CurseInfusion extends InventorySpell {
 		}
 		updateQuickslot();
 	}
-	
+
+	@Override
+	protected void onThrow(int cell) {
+		if (Dungeon.hero.pointsInTalent(Talent.ARMORED_ARMADA) > 1){
+			if (Dungeon.level.heroFOV[cell]) {
+				Sample.INSTANCE.play( Assets.Sounds.SHATTER );
+				Splash.at( cell, 0x727272, 15 );
+			}
+			ArrayList<Integer> spawnPoints = new ArrayList<>();
+			for (int i = 0; i < PathFinder.NEIGHBOURS9.length; i++) {
+				int p = cell + PathFinder.NEIGHBOURS9[i];
+				if (Actor.findChar(p) == null && (Dungeon.level.passable[p] || Dungeon.level.avoid[p])) {
+					spawnPoints.add(p);
+				}
+			}
+
+			if (spawnPoints.size() > 0) {
+				Wraith wraith = Wraith.spawnAt(Random.element(spawnPoints));
+				if (wraith != null){
+					Buff.affect(wraith, Talent.ArmoredArmadaArmor.class).hits =
+							Dungeon.hero.pointsInTalent(Talent.ARMORED_ARMADA) > 2 ? 3 : 2;
+				}
+				Sample.INSTANCE.play(Assets.Sounds.CURSED);
+			}
+		}
+		else
+			super.onThrow(cell);
+	}
+
 	@Override
 	public int value() {
 		//prices of ingredients, divided by output quantity

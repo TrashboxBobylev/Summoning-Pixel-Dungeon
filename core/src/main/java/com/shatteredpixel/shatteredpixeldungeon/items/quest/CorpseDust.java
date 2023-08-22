@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -111,7 +112,11 @@ public class CorpseDust extends Item {
 					tries --;
 				} while (tries > 0 && (!Dungeon.level.heroFOV[pos] || Dungeon.level.solid[pos] || Actor.findChar( pos ) != null));
 				if (tries > 0) {
-					Wraith.spawnAt(pos);
+					Wraith wraith = Wraith.spawnAt( pos );
+					if (wraith != null && Dungeon.hero.hasTalent(Talent.ARMORED_ARMADA)){
+						Buff.affect(wraith, Talent.ArmoredArmadaArmor.class).hits =
+								Dungeon.hero.pointsInTalent(Talent.ARMORED_ARMADA) > 2 ? 3 : 2;
+					}
 					Sample.INSTANCE.play(Assets.Sounds.CURSED);
 				}
 			}

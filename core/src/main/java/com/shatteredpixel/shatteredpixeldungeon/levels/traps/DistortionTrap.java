@@ -27,7 +27,9 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.RatKing;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -106,7 +108,11 @@ public class DistortionTrap extends Trap{
 				case 2:
 					switch (Random.Int(4)){
 						case 0: default:
-							Wraith.spawnAt(point);
+							Wraith wraith = Wraith.spawnAt(point);
+							if (wraith != null && Dungeon.hero.hasTalent(Talent.ARMORED_ARMADA)){
+								Buff.affect(wraith, Talent.ArmoredArmadaArmor.class).hits =
+										Dungeon.hero.pointsInTalent(Talent.ARMORED_ARMADA) > 2 ? 3 : 2;
+							}
 							continue; //wraiths spawn themselves, no need to do more
 						case 1:
 							//yes it's intended that these are likely to die right away

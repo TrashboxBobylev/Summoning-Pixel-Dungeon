@@ -32,11 +32,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DirectableAlly;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
@@ -417,7 +419,11 @@ public class DriedRose extends Artifact {
 				}
 
 				if (spawnPoints.size() > 0) {
-					Wraith.spawnAt(Random.element(spawnPoints));
+					Wraith wraith = Wraith.spawnAt(Random.element(spawnPoints));
+					if (wraith != null && Dungeon.hero.hasTalent(Talent.ARMORED_ARMADA)){
+						Buff.affect(wraith, Talent.ArmoredArmadaArmor.class).hits =
+								Dungeon.hero.pointsInTalent(Talent.ARMORED_ARMADA) > 2 ? 3 : 2;
+					}
 					Sample.INSTANCE.play(Assets.Sounds.CURSED);
 				}
 
