@@ -110,7 +110,7 @@ public enum Talent {
     MY_SUNSHINE(121, 3, true),
     OLYMPIC_SKILLS(122, 3, true),
     REAL_KNIFE_MASTER(25, 3),
-    BLOOD_DRIVE(26, 3),
+    BLOOD_DRIVE(26, 3, true),
     UNSETTLING_GAZE(27, 3, true),
     SUPPORT_POTION(28, 3, true),
     WITCHING_STRIKE(29, 3, true),
@@ -461,6 +461,15 @@ public enum Talent {
         public int icon() { return BuffIndicator.TIME; }
         public void tintIcon(Image icon) { icon.hardlight(0.63f, 0.82f, 0.81f); }
     }
+
+    public static class BloodDriveTracker extends DummyBuff {
+        @Override
+        public int icon() {
+            return BuffIndicator.BLOOD_DRIVE;
+        }
+    }
+
+    public interface BloodDriveDagger {}
 
     public static class SupportPotionCooldown extends Cooldown {
         public float duration() {
@@ -1125,6 +1134,9 @@ public enum Talent {
             }
             Buff.detach(Dungeon.hero, Talent.SniperPatienceTracker.class);
             Talent.Cooldown.affectHero(Talent.SniperPatienceCooldown.class);
+        }
+        if (hero.pointsInTalent(BLOOD_DRIVE) > 2 && hero.belongings.weapon instanceof BloodDriveDagger && hero.buff(BloodDriveTracker.class) != null){
+            Buff.affect(enemy, Bleeding.class).set(damage / 3f);
         }
         if (hero.hasTalent(WITCHING_STRIKE) && damage >= enemy.HP
                 && !enemy.isImmune(Corruption.class)

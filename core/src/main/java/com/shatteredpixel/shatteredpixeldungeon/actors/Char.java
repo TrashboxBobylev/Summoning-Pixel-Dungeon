@@ -788,6 +788,9 @@ public abstract class Char extends Actor {
 		if (c != null){
 			if (isCharmedBy(Dungeon.hero) && Dungeon.hero.hasTalent(Talent.LUST_AND_DUST)){
 				int healAmt = Math.round(dmg * (0.20f + 0.05f * Dungeon.hero.pointsInTalent(Talent.LUST_AND_DUST)));
+				if (buff(Talent.BloodDriveTracker.class) != null && Dungeon.hero.pointsInTalent(Talent.BLOOD_DRIVE) > 1){
+					healAmt *= 1f + 0.25f * (Dungeon.hero.pointsInTalent(Talent.BLOOD_DRIVE)-1);
+				}
 				healAmt = Math.min( healAmt, Dungeon.hero.HT - Dungeon.hero.HP );
 
 				if (healAmt > 0 && Dungeon.hero.isAlive()) {

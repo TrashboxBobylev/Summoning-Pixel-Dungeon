@@ -911,6 +911,10 @@ public abstract class Mob extends Char {
 			if (!(cause instanceof Gravery)) rollToDropLoot();
 
             if (Dungeon.hero.lvl <= maxLvl + 2 || Dungeon.mode == Dungeon.GameMode.LOL) {
+				if (cause instanceof Hero && Dungeon.hero.hasTalent(Talent.BLOOD_DRIVE)){
+					if (Dungeon.hero.pointsInTalent(Talent.BLOOD_DRIVE) > 1 || ((Hero) cause).buff(Talent.BloodDriveTracker.class) == null)
+						Buff.affect((Char) cause, Talent.BloodDriveTracker.class, 2.5f*(Dungeon.hero.pointsInTalent(Talent.BLOOD_DRIVE)+1));
+				}
 				if (cause instanceof Gravery) {
 					EXP = 0;
 					if (!(this instanceof Wraith)) {

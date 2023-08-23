@@ -517,6 +517,10 @@ public class Hero extends Char {
 			}
 		}
 
+		if (buff(Talent.BloodDriveTracker.class) != null){
+			accuracy *= 1.2f;
+		}
+
 		if (Dungeon.isChallenged(Conducts.Conduct.WRAITH)) accuracy *= 1.25f;
 
 		if (wep != null) {
@@ -632,6 +636,9 @@ public class Hero extends Char {
 
 		if (buff(SoulWeakness.class) != null) dmg /= 4;
 		if (subClass == HeroSubClass.SOUL_REAVER) dmg *= 0.75f;
+		if (buff(Talent.BloodDriveTracker.class) != null){
+			dmg *= 1.175f;
+		}
 
 		return buff( Fury.class ) != null ? (int)(dmg * 1.5f) : dmg;
 	}
@@ -728,6 +735,9 @@ public class Hero extends Char {
 		if (belongings.armor instanceof PlateArmor &&
 			belongings.armor.level() == 2)
 			attackSpeed /= 2;
+		if (buff(Talent.BloodDriveTracker.class) != null){
+			attackSpeed /= 1.25f;
+		}
 		return attackSpeed;
 	}
 

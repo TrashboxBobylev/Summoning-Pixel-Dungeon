@@ -115,6 +115,7 @@ public class BuffIndicator extends Component {
 	public static final int ARMOR_GEN   = 64;
 	public static final int BREAD_CIRCUS= 65;
 	public static final int SNIPER_PAT  = 66;
+	public static final int BLOOD_DRIVE = 67;
 
 	public static final int SIZE	= 7;
 	
