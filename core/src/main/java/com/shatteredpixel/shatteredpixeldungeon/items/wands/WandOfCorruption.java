@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.*;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -149,8 +150,10 @@ public class WandOfCorruption extends Wand {
 		//base enemy resistance is usually based on their exp, but in special cases it is based on other criteria
 		float enemyResist = getEnemyResist(ch, enemy);
 
-		//100% health: 3x resist   75%: 2.1x resist   50%: 1.5x resist   25%: 1.1x resist
-		enemyResist *= 1 + 2*Math.pow(enemy.HP/(float)enemy.HT, 2);
+		if (Dungeon.hero.pointsInTalent(Talent.WITCHING_STRIKE) < 3) {
+			//100% health: 3x resist   75%: 2.1x resist   50%: 1.5x resist   25%: 1.1x resist
+			enemyResist *= 1 + 2 * Math.pow(enemy.HP / (float) enemy.HT, 2);
+		}
 
 		//debuffs placed on the enemy reduce their resistance
 		for (Buff buff : enemy.buffs()){
@@ -192,6 +195,8 @@ public class WandOfCorruption extends Wand {
         } else if (ch instanceof Wraith) {
             //this is so low because wraiths are always at max hp
             enemyResist = 0.5f + Dungeon.depth/8f * 5 / Dungeon.chapterSize();
+			if (Dungeon.hero.pointsInTalent(Talent.WITCHING_STRIKE) > 2)
+				enemyResist *= 3;
         } else if (ch instanceof Yog.BurningFist || ch instanceof Yog.RottingFist) {
             enemyResist = 1 + 30;
         } else if (ch instanceof Yog.Larva){
@@ -200,6 +205,8 @@ public class WandOfCorruption extends Wand {
             //child swarms don't give exp, so we force this here.
             enemyResist = 1 + 3;
         }
+		if (Dungeon.hero.pointsInTalent(Talent.WITCHING_STRIKE) > 2)
+			enemyResist *= 2;
         return enemyResist;
     }
 
@@ -252,6 +259,8 @@ public class WandOfCorruption extends Wand {
 			}
 			
 			Buff.affect(enemy, Corruption.class);
+			if (Dungeon.hero.pointsInTalent(Talent.WITCHING_STRIKE) > 2)
+				Buff.affect(enemy, Talent.WitchingStrikeCorruptionDelay.class);
 			
 			Statistics.enemiesSlain++;
 			Badges.validateMonstersSlain();

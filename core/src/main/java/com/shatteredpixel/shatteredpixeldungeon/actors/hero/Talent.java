@@ -24,10 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Conducts;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
@@ -35,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.Wet;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.effects.*;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.*;
@@ -115,7 +113,7 @@ public enum Talent {
     BLOOD_DRIVE(26, 3),
     UNSETTLING_GAZE(27, 3, true),
     SUPPORT_POTION(28, 3, true),
-    WITCHING_STRIKE(29, 3),
+    WITCHING_STRIKE(29, 3, true),
     SILENCE_OF_LAMBS(30, 3),
     BLESSING_OF_SANITY(57, 3),
     GUIDANCE_FLAME(58, 3),
@@ -557,6 +555,14 @@ public enum Talent {
             pos = bundle.getInt( POS );
         }
     }
+
+    public static class WitchingStrikeCounter extends CounterBuff{
+        public static int corruptionCounter(int points){
+            return 17 - points*3;
+        }
+    }
+    public static class WitchingStrikeAllyCounter extends CounterBuff{}
+    public static class WitchingStrikeCorruptionDelay extends Buff{}
 
     public static class BreadAndCircusesCounter extends CounterBuff{
         public static int mobsForFood(int points){
@@ -1119,6 +1125,59 @@ public enum Talent {
             }
             Buff.detach(Dungeon.hero, Talent.SniperPatienceTracker.class);
             Talent.Cooldown.affectHero(Talent.SniperPatienceCooldown.class);
+        }
+        if (hero.hasTalent(WITCHING_STRIKE) && damage >= enemy.HP
+                && !enemy.isImmune(Corruption.class)
+                && enemy.buff(Corruption.class) == null
+                && enemy instanceof Mob
+                && enemy.isAlive()){
+            WitchingStrikeCounter counter = Buff.affect(hero, WitchingStrikeCounter.class);
+            counter.countUp(1);
+            if (counter.count() > WitchingStrikeCounter.corruptionCounter(hero.pointsInTalent(WITCHING_STRIKE))){
+                counter.countDown(WitchingStrikeCounter.corruptionCounter(hero.pointsInTalent(WITCHING_STRIKE)));
+                Mob e = ((Mob) enemy);
+                e.HP = e.HT;
+                for (Buff buff : e.buffs()) {
+                    if (buff.type == Buff.buffType.NEGATIVE
+                            && !(buff instanceof SoulMark)) {
+                        buff.detach();
+                    } else if (buff instanceof PinCushion){
+                        buff.detach();
+                    }
+                }
+                if (e.alignment == Char.Alignment.ENEMY){
+                    e.rollToDropLoot();
+                }
+
+                if (hero.hasTalent(NEVER_GONNA_GIVE_YOU_UP)){
+                    WitchingStrikeAllyCounter allyCounter = Buff.affect(hero, WitchingStrikeAllyCounter.class);
+                    allyCounter.countUp(1);
+                    if (allyCounter.count() >= 3){
+                        allyCounter.countDown(3);
+                        Buff.affect(enemy, Mob.TalentAllyMark.class);
+                        Sample.INSTANCE.play( Assets.Sounds.READ );
+                        enemy.sprite.emitter().burst(MagicMissile.WhiteParticle.FACTORY, 15);
+                    } else {
+                        Buff.affect(e, Corruption.class);
+                        CellEmitter.get(e.pos).burst(ShadowParticle.UP, 8);
+                    }
+                } else {
+                    Buff.affect(e, Corruption.class);
+                    CellEmitter.get(e.pos).burst(ShadowParticle.UP, 8);
+                }
+
+                Statistics.enemiesSlain++;
+                Badges.validateMonstersSlain();
+                Statistics.qualifiedForNoKilling = false;
+                if (Dungeon.mode == Dungeon.GameMode.NO_EXP || (e.EXP > 0 && (hero.lvl <= e.maxLvl || Dungeon.mode == Dungeon.GameMode.LOL))) {
+                    hero.sprite.showStatus(CharSprite.POSITIVE, Messages.get(e, "exp", e.EXP));
+                    hero.earnExp(e.EXP, e.getClass());
+                } else {
+                    hero.earnExp(0, e.getClass());
+                }
+
+                return 0;
+            }
         }
         return damage;
     }
