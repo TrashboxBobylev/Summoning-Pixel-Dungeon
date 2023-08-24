@@ -686,37 +686,7 @@ public abstract class Char extends Actor {
 							pointForMegaComet = i;
 					}
 				}
-				final HashSet<Callback> callbacks = new HashSet<>();
-				Dungeon.hero.busy();
-				for (int point: pointsToStrike){
-					MissileSprite starSprite = (MissileSprite) Dungeon.hero.sprite.parent.recycle(MissileSprite.class);
-					Item sprite = new Stars.ProjectileStar();
-					PointF starDest = DungeonTilemap.tileCenterToWorld(point);
-					PointF starSource = DungeonTilemap.raisedTileCenterToWorld(Dungeon.hero.pos);
-					starSource.y -= 175;
-					starSprite.hardlight(0xe5fbff);
-					int finalDmg = dmg;
-					Callback cometFall = ()->{
-						Sample.INSTANCE.play(Assets.Sounds.HIT_MAGIC, 1, Random.Float(0.9f, 1.75f));
-						for (int i : PathFinder.NEIGHBOURS9) {
-							CellEmitter.center(point + i).start(Speck.factory(Speck.FROSTBURN, true), 0.01f, 7);
-							Char ch = Actor.findChar(point + i);
-
-							if (ch != null && ch.alignment == Char.Alignment.ENEMY) {
-								ch.damage(Math.round(finalDmg / 1.5f), Dungeon.hero);
-								Buff.affect(ch, Chill.class, finalDmg / 2.5f);
-							}
-						}
-						callbacks.remove( this );
-						if (callbacks.isEmpty()) {
-							Invisibility.dispel();
-							Dungeon.hero.spendAndNext(0f);
-						}
-					};
-
-					starSprite.reset( starSource, starDest, sprite, cometFall);
-					callbacks.add( cometFall );
-				}
+				final HashSet<Callback> callbacks = processCometCallbacks(dmg, pointsToStrike, true, true);
 				Talent.Cooldown.affectHero(Talent.CometFallCooldown.class);
 				if (pointForMegaComet != 0){
 					Sample.INSTANCE.play(Assets.Sounds.HIT_MAGIC, 1, Random.Float(0.75f, 2f));
@@ -729,21 +699,24 @@ public abstract class Char extends Actor {
 					starSprite.hardlight(0x0baeb2);
 					int finalDmg = dmg;
 					int finalPointForMegaComet = pointForMegaComet;
-					Callback cometFall = ()->{
-						for (int i : PathFinder.NEIGHBOURS9) {
-							CellEmitter.center(finalPointForMegaComet + i).start(Speck.factory(Speck.BLIZZARD), 0.2f, 4);
-							Char ch = Actor.findChar(finalPointForMegaComet + i);
+					Callback cometFall = new Callback() {
+                        @Override
+                        public void call() {
+                            for (int i : PathFinder.NEIGHBOURS9) {
+                                CellEmitter.center(finalPointForMegaComet + i).start(Speck.factory(Speck.BLIZZARD), 0.2f, 4);
+                                Char ch = Actor.findChar(finalPointForMegaComet + i);
 
-							if (ch != null && ch.alignment == Char.Alignment.ENEMY) {
-								Buff.affect(ch, Frost.class, finalDmg / 1.5f);
-							}
-						}
-						callbacks.remove( this );
-						if (callbacks.isEmpty()) {
-							Invisibility.dispel();
-							Dungeon.hero.spendAndNext(0f);
-						}
-					};
+                                if (ch != null && ch.alignment == Char.Alignment.ENEMY) {
+                                    Buff.affect(ch, Frost.class, finalDmg / 1.5f);
+                                }
+                            }
+                            callbacks.remove(this);
+                            if (callbacks.isEmpty()) {
+                                Invisibility.dispel();
+                                Dungeon.hero.spendAndNext(0f);
+                            }
+                        }
+                    };
 
 					starSprite.reset( starSource, starDest, sprite, cometFall);
 					callbacks.add( cometFall );
@@ -909,7 +882,48 @@ public abstract class Char extends Actor {
 
 		return dmg;
 	}
-	
+
+	public static HashSet<Callback> processCometCallbacks(int dmg, ArrayList<Integer> pointsToStrike, boolean damaging, boolean chilling) {
+		final HashSet<Callback> callbacks = new HashSet<>();
+		Dungeon.hero.busy();
+		for (int point: pointsToStrike){
+			MissileSprite starSprite = (MissileSprite) Dungeon.hero.sprite.parent.recycle(MissileSprite.class);
+			Item sprite = new Stars.ProjectileStar();
+			PointF starDest = DungeonTilemap.tileCenterToWorld(point);
+			PointF starSource = DungeonTilemap.raisedTileCenterToWorld(Dungeon.hero.pos);
+			starSource.y -= 175;
+			starSprite.hardlight(0xe5fbff);
+            Callback cometFall = new Callback() {
+                @Override
+                public void call() {
+                    Sample.INSTANCE.play(Assets.Sounds.HIT_MAGIC, 1, Random.Float(0.9f, 1.75f));
+                    for (int i : PathFinder.NEIGHBOURS9) {
+                        CellEmitter.center(point + i).start(Speck.factory(Speck.FROSTBURN, true), 0.01f, 7);
+                        Char ch = Actor.findChar(point + i);
+
+                        if (ch != null && ch.alignment == Alignment.ENEMY) {
+							if (damaging)
+                            	ch.damage(Math.round(dmg / 1.5f), Dungeon.hero);
+							if (chilling)
+                            	Buff.affect(ch, Chill.class, dmg / 2.5f);
+							else
+								Buff.affect(ch, Frost.class, dmg / 1.5f);
+                        }
+                    }
+                    callbacks.remove(this);
+                    if (callbacks.isEmpty()) {
+                        Invisibility.dispel();
+                        Dungeon.hero.spendAndNext(0f);
+                    }
+                }
+            };
+
+			starSprite.reset( starSource, starDest, sprite, cometFall);
+			callbacks.add( cometFall );
+		}
+		return callbacks;
+	}
+
 	public void destroy() {
 		HP = 0;
 		Actor.remove( this );

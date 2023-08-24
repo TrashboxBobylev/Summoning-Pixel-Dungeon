@@ -72,10 +72,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
-import com.watabou.utils.Random;
-import com.watabou.utils.Reflection;
+import com.watabou.utils.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -924,6 +921,27 @@ public abstract class Mob extends Char {
 									((Artifact.ArtifactBuff) b).charge((Hero) cause, 4);
 								}
 							}
+						}
+					}
+					if (Dungeon.hero.hasTalent(Talent.SILENCE_OF_LAMBS)){
+						ArrayList<Integer> pointsToStrike = new ArrayList<>();
+						for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])){
+							if (mob.isAlive() && mob.alignment == Alignment.ENEMY && mob.fieldOfView[pos]){
+								Buff.affect(mob, Paralysis.class, 2);
+								if (Dungeon.hero.hasTalent(Talent.COMET_FALL) && Dungeon.hero.pointsInTalent(Talent.SILENCE_OF_LAMBS) > 1 && Random.Int(2) == 0){
+									pointsToStrike.add(mob.pos);
+									if (Dungeon.hero.pointsInTalent(Talent.SILENCE_OF_LAMBS) > 2){
+										Buff.affect(mob, Talent.SilenceOfLambsDelay.class, 8f);
+									}
+								} else if (Dungeon.hero.hasTalent(Talent.COMET_FALL) && Dungeon.hero.pointsInTalent(Talent.SILENCE_OF_LAMBS) > 2){
+									Buff.affect(mob, Talent.SilenceOfLambsDelay.class, 2f);
+								}
+							}
+						}
+						final HashSet<Callback> callbacks;
+						if (Dungeon.hero.hasTalent(Talent.COMET_FALL)){
+							final boolean CHILLING = Dungeon.hero.pointsInTalent(Talent.SILENCE_OF_LAMBS) < 3;
+							callbacks = processCometCallbacks(12, pointsToStrike, false, CHILLING);
 						}
 					}
 				}

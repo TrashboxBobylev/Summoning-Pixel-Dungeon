@@ -114,7 +114,7 @@ public enum Talent {
     UNSETTLING_GAZE(27, 3, true),
     SUPPORT_POTION(28, 3, true),
     WITCHING_STRIKE(29, 3, true),
-    SILENCE_OF_LAMBS(30, 3),
+    SILENCE_OF_LAMBS(30, 3, true),
     BLESSING_OF_SANITY(57, 3),
     GUIDANCE_FLAME(58, 3),
     SPEEDY_STEALTH(59, 3),
@@ -186,6 +186,15 @@ public enum Talent {
         }
         public int icon() { return BuffIndicator.TIME; }
         public void tintIcon(Image icon) { icon.hardlight(0.26f, 0.41f, 0.76f); }
+    }
+    public static class SilenceOfLambsDelay extends FlavourBuff{
+        @Override
+        public void detach() {
+            super.detach();
+            Terror terror = Buff.affect(target, Terror.class, 8f);
+            terror.object = Dungeon.hero.id();
+            terror.ignoreNextHit = true;
+        }
     }
     public static class TowerOfPowerCooldown extends Cooldown {
         public float duration() {
