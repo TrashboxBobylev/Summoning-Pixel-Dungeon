@@ -1101,10 +1101,6 @@ public abstract class Mob extends Char {
 		return defenseSkill;
 	}
 
-	public String getName() {
-		return hordeSpawned ? Messages.get(this, "leader", super.getName()) : super.getName();
-	}
-
 	public String description() {
 		String desc = Messages.get(this, "desc");
 		if (hordeHead != -1 && Actor.findById(hordeHead) != null){
