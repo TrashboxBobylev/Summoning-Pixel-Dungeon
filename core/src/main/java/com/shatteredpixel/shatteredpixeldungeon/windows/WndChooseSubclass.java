@@ -31,10 +31,8 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.shatteredpixel.shatteredpixeldungeon.ui.*;
+import com.watabou.noosa.Image;
 
 public class WndChooseSubclass extends Window {
 
@@ -64,7 +62,7 @@ public class WndChooseSubclass extends Window {
                 protected void onClick() {
                     GameScene.show(new WndOptions(subCls.icon(),
                             Messages.titleCase(subCls.title()),
-                            subCls.desc() + "\n\n" + Messages.get(WndChooseSubclass.this, "are_you_sure"),
+                            Messages.get(WndChooseSubclass.this, "are_you_sure"),
                             Messages.get(WndChooseSubclass.this, "yes"),
                             Messages.get(WndChooseSubclass.this, "no")){
                         @Override
@@ -84,6 +82,16 @@ public class WndChooseSubclass extends Window {
             add( btnCls );
 
             IconButton clsInfo = new IconButton(subCls.icon()){
+                @Override
+                protected void onClick() {
+                    GameScene.show(new WndHeroInfo.WndInfoSubclass(hero.heroClass, subCls));
+                }
+            };
+            clsInfo.setRect(WIDTH-32, btnCls.top() + (btnCls.height()-32)/2, 32, 32);
+            add(clsInfo);
+            Image infoIcon = Icons.get(Icons.INFO);
+            infoIcon.scale.scale(0.75f);
+            IconButton clsInfoIcon = new IconButton(infoIcon){
                 {
                     hotArea = null;
                 }
@@ -100,8 +108,8 @@ public class WndChooseSubclass extends Window {
                 protected void onClick() {
                 }
             };
-            clsInfo.setRect(WIDTH-32, btnCls.top() + (btnCls.height()-32)/2, 32, 32);
-            add(clsInfo);
+            clsInfoIcon.setRect(clsInfo.right()-clsInfo.width()/3, clsInfo.bottom()-clsInfo.height()/3, 4, 4);
+            add(clsInfoIcon);
 
             pos = btnCls.bottom() + GAP;
         }
