@@ -109,7 +109,7 @@ public enum Talent {
     DETERMINED(120, 3, true),
     MY_SUNSHINE(121, 3, true),
     OLYMPIC_SKILLS(122, 3, true),
-    REAL_KNIFE_MASTER(25, 3),
+    REAL_KNIFE_MASTER(25, 3, true),
     BLOOD_DRIVE(26, 3, true),
     UNSETTLING_GAZE(27, 3, true),
     SUPPORT_POTION(28, 3, true),
@@ -1028,6 +1028,13 @@ public enum Talent {
                 }
             }
         }
+        if (talent == REAL_KNIFE_MASTER && hero.pointsInTalent(REAL_KNIFE_MASTER) > 1) {
+            for (Item item : hero.belongings.backpack) {
+                if (item instanceof CloakOfShadows) {
+                    ((CloakOfShadows) item).activate(hero);
+                }
+            }
+        }
     }
 
     public static int onAttackProc(Hero hero, Char enemy, int damage){
@@ -1043,6 +1050,11 @@ public enum Talent {
                 && hero.buff(JustOneMoreTileTracker.class) == null){
             int duration = 1 + hero.pointsInTalent(JUST_ONE_MORE_TILE)*4;
             Buff.affect(hero, JustOneMoreTileTracker.class, duration);
+        }
+        if (hero.hasTalent(Talent.REAL_KNIFE_MASTER)
+                && enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)){
+            int newDmg = hero.damageRoll();
+            if (newDmg > damage) damage = newDmg;
         }
         if (hero.buff(TalismanOfForesight.CharAwareness.class) != null &&
                 hero.buff(TalismanOfForesight.CharAwareness.class).charID == enemy.id() &&

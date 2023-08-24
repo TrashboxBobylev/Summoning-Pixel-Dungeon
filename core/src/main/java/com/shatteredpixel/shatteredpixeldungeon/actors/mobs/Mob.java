@@ -45,6 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
@@ -911,9 +912,20 @@ public abstract class Mob extends Char {
 			if (!(cause instanceof Gravery)) rollToDropLoot();
 
             if (Dungeon.hero.lvl <= maxLvl + 2 || Dungeon.mode == Dungeon.GameMode.LOL) {
-				if (cause instanceof Hero && Dungeon.hero.hasTalent(Talent.BLOOD_DRIVE)){
-					if (Dungeon.hero.pointsInTalent(Talent.BLOOD_DRIVE) > 1 || ((Hero) cause).buff(Talent.BloodDriveTracker.class) == null)
-						Buff.affect((Char) cause, Talent.BloodDriveTracker.class, 2.5f*(Dungeon.hero.pointsInTalent(Talent.BLOOD_DRIVE)+1));
+                if (cause instanceof Hero) {
+					if (Dungeon.hero.hasTalent(Talent.BLOOD_DRIVE)) {
+						if (Dungeon.hero.pointsInTalent(Talent.BLOOD_DRIVE) > 1 || ((Hero) cause).buff(Talent.BloodDriveTracker.class) == null)
+							Buff.affect((Char) cause, Talent.BloodDriveTracker.class, 2.5f * (Dungeon.hero.pointsInTalent(Talent.BLOOD_DRIVE) + 1));
+					}
+					if (Dungeon.hero.pointsInTalent(Talent.REAL_KNIFE_MASTER) > 2){
+						for (Buff b : ((Hero)cause).buffs()) {
+							if (b instanceof Artifact.ArtifactBuff && ((Artifact.ArtifactBuff) b).artifactClass() == Artifact.ArtifactClass.OFFENSE) {
+								if (!((Artifact.ArtifactBuff) b).isCursed()) {
+									((Artifact.ArtifactBuff) b).charge((Hero) cause, 4);
+								}
+							}
+						}
+					}
 				}
 				if (cause instanceof Gravery) {
 					EXP = 0;

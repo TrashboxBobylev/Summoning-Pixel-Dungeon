@@ -282,6 +282,10 @@ public abstract class Artifact extends EquipableItem {
 			return cursed;
 		}
 
+		public ArtifactClass artifactClass(){
+			return artifactClass;
+		}
+
 		public void charge(Hero target, float amount){
 			Artifact.this.charge(target, amount);
 		}

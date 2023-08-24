@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.CloakGlyph;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.Ethereal;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
@@ -59,6 +60,8 @@ import com.watabou.utils.PathFinder;
 import java.util.ArrayList;
 
 public class CloakOfShadows extends Artifact implements ActionIndicator.Action, Stylus.Inscribable {
+
+	public static final float LIGHT_CLOAK_SPEED = .30f;
 
 	{
 		image = ItemSpriteSheet.ARTIFACT_CLOAK;
@@ -95,7 +98,7 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action, 
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		if (isEquipped(hero) && !cursed) {
+		if ((isEquipped(hero) || (hero.pointsInTalent(Talent.REAL_KNIFE_MASTER) > 1 && hero.hasTalent(Talent.ASSASSINATION))) && !cursed) {
 			if ((charge > 0 || stealthed)) {
 
 				actions.add(AC_STEALTH);
@@ -115,7 +118,7 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action, 
 		if (action.equals( AC_STEALTH )) {
 
 			if (!stealthed){
-				if (!isEquipped(hero)) GLog.i( Messages.get(Artifact.class, "need_to_equip") );
+				if (!isEquipped(hero) && !(hero.pointsInTalent(Talent.REAL_KNIFE_MASTER) > 1 && hero.hasTalent(Talent.ASSASSINATION))) GLog.i( Messages.get(Artifact.class, "need_to_equip") );
 				else if (cursed)       GLog.i( Messages.get(this, "cursed") );
 				else if (charge <= 0)  GLog.i( Messages.get(this, "no_charge") );
 				else {
@@ -217,9 +220,26 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action, 
 	}
 
 	@Override
+	public boolean collect( Bag container ) {
+		if (super.collect(container)){
+			if (container.owner instanceof Hero
+					&& passiveBuff == null
+					&& (((Hero) container.owner).pointsInTalent(Talent.REAL_KNIFE_MASTER) > 1 && ((Hero) container.owner).hasTalent(Talent.ASSASSINATION))){
+				activate(container.owner);
+			}
+			return true;
+		} else{
+			return false;
+		}
+	}
+
+	@Override
 	public boolean doUnequip(Hero hero, boolean collect, boolean single) {
 		if (super.doUnequip(hero, collect, single)){
-			stealthed = false;
+			if (!collect || !(hero.pointsInTalent(Talent.REAL_KNIFE_MASTER) > 1 && hero.hasTalent(Talent.ASSASSINATION)))
+				stealthed = false;
+			else
+				activate(hero);
 			return true;
 		} else
 			return false;
@@ -240,6 +260,9 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action, 
 	@Override
 	public void charge(Hero target, float amount) {
 		if (charge < chargeCap) {
+			if (!isEquipped(target)) {
+				amount *= LIGHT_CLOAK_SPEED *target.pointsInTalent(Talent.REAL_KNIFE_MASTER);
+			}
 			partialCharge += 0.25f*amount;
 			if (partialCharge >= 1){
 				partialCharge--;
@@ -292,6 +315,9 @@ public class CloakOfShadows extends Artifact implements ActionIndicator.Action, 
 							turnsToCharge /= 1.075f + 0.025f * ((Hero) target).pointsInTalent(Talent.ARCANE_CLOAK);
 						else
 							turnsToCharge /= 1.1f + 0.06f * ((Hero) target).pointsInTalent(Talent.ARCANE_CLOAK);
+					}
+					if (!isEquipped((Hero) target)) {
+						turnsToCharge *= LIGHT_CLOAK_SPEED *((Hero) target).pointsInTalent(Talent.REAL_KNIFE_MASTER);
 					}
 					partialCharge += (1f / turnsToCharge);
 				}
