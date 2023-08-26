@@ -267,6 +267,7 @@ public enum Talent {
             return 0xfff68f;
         }
     }
+    public static class SanctityAngelTimer extends CounterBuff{}
     public static class SanctityAngel extends Minion{
         {
             spriteClass = SanctityAngelSprite.class;
@@ -300,10 +301,12 @@ public enum Talent {
                 destroy();
                 return true;
             }
+            SanctityAngelTimer angelTimer = Buff.affect(this, SanctityAngelTimer.class);
+            angelTimer.countUp(Actor.TICK);
 
             if (!isAlive())
                 return true;
-            if (!Dungeon.hero.isAlive()){
+            if (!Dungeon.hero.isAlive() || angelTimer.count() > 8*TICK){
                 sprite.die();
                 destroy();
                 return true;
