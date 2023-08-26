@@ -99,6 +99,7 @@ public class ItemSpriteSheet {
     public static final int SPIRIT_BLAST = UNCOLLECTIBLE+12;
     public static final int CRYSTAL = UNCOLLECTIBLE+13;
 	public static final int ENERGY = UNCOLLECTIBLE+14;
+	public static final int ANKH_PIECE = UNCOLLECTIBLE+15;
     static{
         assignItemRect(GOLD,        15, 13);
         assignItemRect(DEWDROP,     10, 10);
@@ -117,6 +118,8 @@ public class ItemSpriteSheet {
         assignItemRect(CRYSTAL, 11, 11);
 
 		assignItemRect(ENERGY, 16, 16);
+
+		assignItemRect(ANKH_PIECE, 10, 15);
     }
 
 	private static final int CONTAINERS     =                               xy(1, 3);   //16 slots

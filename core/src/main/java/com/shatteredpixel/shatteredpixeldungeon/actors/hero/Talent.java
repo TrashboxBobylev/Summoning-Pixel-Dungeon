@@ -50,6 +50,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.DogSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -115,7 +116,7 @@ public enum Talent {
     SUPPORT_POTION(28, 3, true),
     WITCHING_STRIKE(29, 3, true),
     SILENCE_OF_LAMBS(30, 3, true),
-    BLESSING_OF_SANITY(57, 3),
+    BLESSING_OF_SANITY(57, 3, true),
     GUIDANCE_FLAME(58, 3),
     SPEEDY_STEALTH(59, 3),
     THAUMATURGY(60, 3),
@@ -237,6 +238,132 @@ public enum Talent {
             else target.sprite.remove(CharSprite.State.SHIELDED);
         }
     }
+
+    public static class SanctityAngelSprite extends GhostSprite{
+        public SanctityAngelSprite() {
+            super();
+
+            texture( Assets.Sprites.ANGEL_GHOST );
+
+            TextureFilm frames = new TextureFilm( texture, 14, 15 );
+
+            idle = new Animation( 5, true );
+            idle.frames( frames, 0, 1 );
+
+            run = new Animation( 15, true );
+            run.frames( frames, 0, 1 );
+
+            attack = new Animation( 14, false );
+            attack.frames( frames, 0, 2, 3 );
+
+            die = new Animation( 5, false );
+            die.frames( frames, 0, 4, 5, 6, 7 );
+
+            play( idle );
+        }
+
+        @Override
+        public int blood() {
+            return 0xfff68f;
+        }
+    }
+    public static class SanctityAngel extends Minion{
+        {
+            spriteClass = SanctityAngelSprite.class;
+            baseDefense = 100;
+        }
+
+        private DriedRose rose = null;
+
+        public void configureRose(DriedRose rose){
+            this.rose = rose;
+            updateRose();
+            HP = HT;
+        }
+
+        private void updateRose(){
+            if (rose == null) {
+                rose = Dungeon.hero.belongings.getItem(DriedRose.class);
+            }
+
+            //same dodge as the hero
+            defenseSkill = (Dungeon.hero.lvl+4);
+            if (rose == null) return;
+            HT = 20 + 8*rose.level();
+        }
+
+        @Override
+        protected boolean act() {
+            updateRose();
+            if (rose == null || !rose.isEquipped(Dungeon.hero)){
+                sprite.die();
+                destroy();
+                return true;
+            }
+
+            if (!isAlive())
+                return true;
+            if (!Dungeon.hero.isAlive()){
+                sprite.die();
+                destroy();
+                return true;
+            }
+            return super.act();
+        }
+
+        @Override
+        public boolean isInvulnerable(Class effect) {
+            return true;
+        }
+
+        @Override
+        protected float attackDelay() {
+            float delay = Dungeon.hero.attackDelay()/2;
+            if (rose != null && rose.ghostWeapon() != null){
+                delay *= rose.ghostWeapon().speedFactor(this);
+            }
+            return delay;
+        }
+
+        @Override
+        public float speed() {
+            return Dungeon.hero.speed()*2f;
+        }
+
+        @Override
+        public int attackSkill(Char target) {
+
+            //same accuracy as the hero.
+            int acc = Dungeon.hero.lvl + 9;
+
+            if (rose != null && rose.ghostWeapon() != null){
+                acc *= rose.ghostWeapon().accuracyFactor(this);
+            }
+
+            return acc;
+        }
+
+        @Override
+        protected boolean canAttack(Char enemy) {
+            return super.canAttack(enemy) || (rose != null && rose.ghostWeapon() != null && rose.ghostWeapon().canReach(this, enemy.pos));
+        }
+
+        @Override
+        public int attackProc(Char enemy, int damage) {
+            damage = super.attackProc(enemy, damage);
+            if (rose != null && rose.ghostWeapon() != null) {
+                damage = rose.ghostWeapon().proc( this, enemy, damage );
+            }
+            return damage;
+        }
+
+        @Override
+        public boolean interact(Char c) {
+            updateRose();
+            return super.interact(c);
+        }
+    }
+
     public static class SuckerPunchTracker extends Buff{}
     public static class AcutenessTracker extends CounterBuff{}
     public static class DirectiveTracker extends FlavourBuff{}

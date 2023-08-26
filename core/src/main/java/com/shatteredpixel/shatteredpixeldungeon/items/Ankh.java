@@ -27,7 +27,12 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invulnerability;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -135,5 +140,52 @@ public class Ankh extends Item {
 	@Override
 	public int value() {
 		return 100 * quantity;
+	}
+
+	public static class Piece extends Item {
+		{
+			image = ItemSpriteSheet.ANKH_PIECE;
+		}
+
+		@Override
+		protected void onThrow(int cell) {
+			Char ch = Actor.findChar(cell);
+			if (ch != null && ch.alignment == Char.Alignment.ALLY && Dungeon.hero.pointsInTalent(Talent.BLESSING_OF_SANITY) > 1){
+				Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);
+				ch.sprite.burst(0xfff68f, 15);
+				Buff.affect(ch, Invulnerability.class, 2.5f*(Dungeon.hero.pointsInTalent(Talent.BLESSING_OF_SANITY)+1));
+			} else {
+				super.onThrow(cell);
+			}
+		}
+
+		@Override
+		public boolean isUpgradable() {
+			return false;
+		}
+
+		@Override
+		public boolean isIdentified() {
+			return !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
+		}
+
+		@Override
+		public int value() {
+			return 30 * quantity;
+		}
+
+		public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
+
+			{
+				inputs =  new Class[]{Piece.class, Piece.class, Piece.class};
+				inQuantity = new int[]{1, 1, 1};
+
+				cost = 10;
+
+				output = Ankh.class;
+				outQuantity = 1;
+			}
+
+		}
 	}
 }

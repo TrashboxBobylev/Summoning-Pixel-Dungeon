@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GoatClone;
 import com.shatteredpixel.shatteredpixeldungeon.effects.*;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BloodParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShaftParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SmokeParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
@@ -2072,6 +2073,58 @@ public class Hero extends Char {
 
 		if (ankh != null && ankh.isBlessed()) {
 			this.HP = HT/4;
+			if (hasTalent(Talent.BLESSING_OF_SANITY)){
+				switch (pointsInTalent(Talent.BLESSING_OF_SANITY)){
+					case 1: this.HP = Math.round(HT*0.40f); break;
+					case 2:
+						this.HP = Math.round(HT*0.50f);
+						if (hasTalent(Talent.DETERMINED)){
+							Buff.affect(this, Invulnerability.class, 8f);
+						}
+						break;
+					case 3:
+						this.HP = Math.round(HT*0.65f);
+						if (hasTalent(Talent.DETERMINED)){
+							Buff.affect(this, Invulnerability.class, 8f);
+						}
+						if (Dungeon.hero.belongings.getItem(DriedRose.class) != null){
+							ArrayList<Integer> spawnPoints = new ArrayList<>();
+							for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
+								int p = pos + PathFinder.NEIGHBOURS8[i];
+								if (Actor.findChar(p) == null && (Dungeon.level.passable[p] || Dungeon.level.avoid[p])) {
+									spawnPoints.add(p);
+								}
+							}
+
+							if (spawnPoints.size() > 0) {
+								Talent.SanctityAngel angel = new Talent.SanctityAngel();
+								angel.configureRose(Dungeon.hero.belongings.getItem(DriedRose.class));
+								angel.pos = Random.element(spawnPoints);
+
+								GameScene.add(angel, 1f);
+								Dungeon.level.occupyCell(angel);
+
+								CellEmitter.get(angel.pos).start( ShaftParticle.FACTORY, 0.3f, 4 );
+								CellEmitter.get(angel.pos).start( Speck.factory(Speck.LIGHT), 0.2f, 3 );
+							}
+						}
+						break;
+				}
+				ArrayList<Integer> candidates = new ArrayList<>();
+				for (int i : PathFinder.NEIGHBOURS8){
+					if (Dungeon.level.passable[pos+i]
+							&& pos+i != Dungeon.level.entrance
+							&& pos+i != Dungeon.level.exit){
+						candidates.add(pos+i);
+					}
+				}
+
+				for (int i = 0; i < 2 && !candidates.isEmpty(); i++){
+					Integer c = Random.element(candidates);
+					Dungeon.level.drop(new Ankh.Piece(), c).sprite.drop(pos);
+					candidates.remove(c);
+				}
+			}
 
 			//ensures that you'll get to act first in almost any case, to prevent reviving and then instantly dieing again.
 			PotionOfHealing.cure(this);
@@ -2327,6 +2380,11 @@ public class Hero extends Char {
 			return true;
 		}
 		return super.isImmune(effect);
+	}
+
+	@Override
+	public boolean isInvulnerable(Class effect) {
+		return buff(Invulnerability.class) != null;
 	}
 
 	public boolean search( boolean intentional ) {
