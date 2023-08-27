@@ -120,7 +120,7 @@ public enum Talent {
     GUIDANCE_FLAME(58, 3),
     SPEEDY_STEALTH(59, 3),
     THAUMATURGY(60, 3),
-    SHARP_VISION(61, 3),
+    SHARP_VISION(61, 3, true),
     CHEMISTRY_DEGREE(62, 3);
 
     int icon;
@@ -1173,6 +1173,9 @@ public enum Talent {
                     ((CloakOfShadows) item).activate(hero);
                 }
             }
+        }
+        if (talent == SHARP_VISION){
+            Dungeon.observe();
         }
     }
 

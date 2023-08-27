@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
@@ -775,7 +776,11 @@ public class Dungeon {
 
 	//TODO hero max vision is now separate from shadowcaster max vision. Might want to adjust.
 	public static void observe(){
-		observe( 13 );
+		int dist = Math.max(Dungeon.hero.viewDistance, 8);
+		if (Dungeon.hero.hasTalent(Talent.SHARP_VISION)){
+			dist += 1*Dungeon.hero.pointsInTalent(Talent.SHARP_VISION);
+		}
+		observe( dist+1 );
 	}
 	
 	public static void observe( int dist ) {

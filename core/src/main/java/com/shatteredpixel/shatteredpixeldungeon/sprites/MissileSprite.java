@@ -184,6 +184,9 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		if (item instanceof MissileWeapon && Dungeon.hero.buff(Talent.SniperPatienceTracker.class) != null){
 			speed = 800f;
 		}
+		if (item instanceof MissileWeapon && Dungeon.hero.pointsInTalent(Talent.SHARP_VISION) > 1 && Dungeon.hero.hasTalent(Talent.OLYMPIC_SKILLS)){
+			speed *= 2f;
+		}
 		
 		PosTweener tweener = new PosTweener( this, to, d.length() / speed );
 		tweener.listener = this;
