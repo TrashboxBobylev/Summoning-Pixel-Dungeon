@@ -183,7 +183,7 @@ public class v0_6_X_Changes {
 				"_-_ Armor is now 2x effective against bone explosion, up from 0.5x\n\n" +
 				"_-_ Loot drop chance reduced to 1/8, from 1/5"));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.KIT, null), "Rogue Garb and Huntress Cloak",
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARMOR_ROGUE, null), "Rogue Garb and Huntress Cloak",
 				"Eventually I want to totally overhaul class armors. In the meantime though, two of the armors are disproportionately powerful with mind vision, and need to be adjusted:\n\n" +
 				"_-_ Rogue's smoke bomb now has a max range of 8 and does not go through walls\n\n" +
 				"_-_ Huntress's spectral blades now have a max range of 12"));

@@ -159,7 +159,7 @@ public class ItemSpriteSheet {
 	public static final int CRYSTAL_KEY     = SINGLE_USE+11;
 	public static final int SKELETON_KEY    = SINGLE_USE+12;
 	public static final int MASTERY         = SINGLE_USE+13;
-	public static final int KIT             = SINGLE_USE+14;
+	public static final int GUIDING_TORCH   = SINGLE_USE+14;
 	public static final int AMULET          = SINGLE_USE+15;
 	static{
 		assignItemRect(ANKH,            10, 16);
@@ -178,7 +178,7 @@ public class ItemSpriteSheet {
 		assignItemRect(CRYSTAL_KEY,     8,  14);
 		assignItemRect(SKELETON_KEY,    8,  14);
 		assignItemRect(MASTERY,         15, 16);
-		assignItemRect(KIT,             16, 15);
+		assignItemRect(GUIDING_TORCH,   12, 15);
 		assignItemRect(AMULET,          16, 16);
 	}
 	
