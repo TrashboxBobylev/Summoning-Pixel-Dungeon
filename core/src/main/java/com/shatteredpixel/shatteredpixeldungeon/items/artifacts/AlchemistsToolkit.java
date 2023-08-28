@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.AlchemyScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -58,6 +59,12 @@ public class AlchemistsToolkit extends Artifact implements AlchemyScene.ToolkitL
 
 	private float warmUpDelay;
 
+	public float getWarmUpDelay(){
+		if (Dungeon.hero.hasTalent(Talent.CHEMISTRY_DEGREE))
+			return 0;
+		else return warmUpDelay;
+	}
+
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
@@ -78,7 +85,7 @@ public class AlchemistsToolkit extends Artifact implements AlchemyScene.ToolkitL
 		if (action.equals(AC_BREW)){
 			if (!isEquipped(hero))              GLog.i( Messages.get(this, "need_to_equip") );
 			else if (cursed)                    GLog.warning( Messages.get(this, "cursed") );
-			else if (warmUpDelay > 0)           GLog.warning( Messages.get(this, "not_ready") );
+			else if (getWarmUpDelay() > 0)           GLog.warning( Messages.get(this, "not_ready") );
 			else {
 				AlchemyScene.assignToolkit(this);
 				Game.switchScene(AlchemyScene.class);
@@ -131,7 +138,7 @@ public class AlchemistsToolkit extends Artifact implements AlchemyScene.ToolkitL
 
 	@Override
 	public String status() {
-		if (isEquipped(Dungeon.hero) && warmUpDelay > 0 && !cursed){
+		if (isEquipped(Dungeon.hero) && getWarmUpDelay() > 0 && !cursed){
 			return Messages.format( "%d%%", 100 - (int)warmUpDelay );
 		} else {
 			return super.status();
@@ -169,7 +176,7 @@ public class AlchemistsToolkit extends Artifact implements AlchemyScene.ToolkitL
 
 		if (isEquipped(Dungeon.hero)) {
 			if (cursed)                 result += "\n\n" + Messages.get(this, "desc_cursed");
-			else if (warmUpDelay > 0)   result += "\n\n" + Messages.get(this, "desc_warming");
+			else if (getWarmUpDelay() > 0)   result += "\n\n" + Messages.get(this, "desc_warming");
 			else                        result += "\n\n" + Messages.get(this, "desc_hint");
 		}
 
@@ -228,6 +235,7 @@ public class AlchemistsToolkit extends Artifact implements AlchemyScene.ToolkitL
 			//to a max of 12 energy per hero level
 			//This means that energy absorbed into the kit is recovered in 5 hero levels
 			float chargeGain = (2 + level()) * levelPortion;
+			if (getWarmUpDelay() == 0f) chargeGain *= 1.05f + 0.10f*Dungeon.hero.pointsInTalent(Talent.CHEMISTRY_DEGREE);
 			partialCharge += chargeGain;
 
 			//charge is in increments of 1 energy.

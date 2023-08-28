@@ -121,7 +121,7 @@ public enum Talent {
     SPEEDY_STEALTH(59, 3),
     THAUMATURGY(60, 3),
     SHARP_VISION(61, 3, true),
-    CHEMISTRY_DEGREE(62, 3);
+    CHEMISTRY_DEGREE(62, 3, true);
 
     int icon;
     int maxPoints;

@@ -24,7 +24,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
@@ -145,6 +147,12 @@ public abstract class Recipe {
 				return null;
 			}
 		}
+	}
+
+	public static float costModifier(){
+		if (Dungeon.hero.hasTalent(Talent.CHEMISTRY_DEGREE))
+			return 1.05f + 0.15f*Dungeon.hero.pointsInTalent(Talent.CHEMISTRY_DEGREE);
+		return 1.00f;
 	}
 	
 	
