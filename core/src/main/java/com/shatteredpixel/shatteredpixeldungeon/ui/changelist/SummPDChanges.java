@@ -52,6 +52,7 @@ public class SummPDChanges {
 		//ChangeInfo changes = new ChangeInfo( "1.1", true, "");
 		//changes.hardlight( Window.TITLE_COLOR);
 		//changeInfos.add(changes);
+        add_1_2_5_Changes(changeInfos);
         add_1_2_4_Changes(changeInfos);
         add_1_1_7_Changes(changeInfos);
         add_1_1_5_Changes(changeInfos);
@@ -69,6 +70,79 @@ public class SummPDChanges {
 		add_Mobs_Changes(changeInfos);
 		add_Minor_Changes(changeInfos);
 	}
+
+    public static void add_1_2_5_Changes(ArrayList<ChangeInfo> changeInfos){
+        ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "1.2.5", true, Window.TITLE_COLOR);
+        changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
+        changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
+                "_-_ Released August 30th, 2023\n" +
+                        "_-_ 564 days after 1.2.4"
+        ));
+
+        changes = ChangesScene.createChangeInfo(changeInfos, "New Content", false, 0x10bb00);
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.ROGUE, 0, 90, 12, 15), "Rogue rework (part 2)",
+                "Added tier 3 Rogue talents!\n\n" +
+                        "_-_ Tier 3 is 24 talents plus 6 talents exclusive to each subclass, Hunter (more offensive talents) and Opportunist (more tricky and utility talents). Choose your own style and strategy of gameplay.\n\n" +
+                        "_-_ The balance issues are very possible (there is so many talents, overall), so please report about them on GitHub."));
+        changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.ARMOR_PLATE, null), "Defense",
+                "Implemented new approach for armor stat: defense.\n\n" +
+                        "_-_ Now there is only one number, that defines char's defensive capabilities, instead of two.\n\n" +
+                        "_-_ Actual damage reduction is rolled from 20% to 80% of defense number.\n\n" +
+                        "_-_ Defense stat for enemies is shown in their description."
+        ));
+
+        changes = ChangesScene.createChangeInfo(changeInfos, "Changes", false, 0xd1bb00);
+        changes.addButton( new ChangeButton(Icons.get(Icons.TALENT), "Balance changes",
+                "_-_ Reworked _Special Delivery_ talent: instead of several bonus chests, it now spawns one mimic with all bonus items.\n" +
+                        "_-_ Reduced bomb damage by 15%.\n" +
+                        "_-_ Reworked _Star Blazing_ tiering: instead of getting increased damage, now expands its range with each tier.\n" +
+                        "_-_ _Containing_ spell is no longer able to capture bosses, minibosses, unmovable beings and allies.\n" +
+                        "_-_ Buffed _Scimitar_: now needs _3_ strikes instead of _4_ to crit.\n" +
+                        "_-_ Buffed _Frost Elemental_ minion: no longer affected by _frostburn_ and _chilling_ debuffs."
+        ));
+        changes.addButton( new ChangeButton(new RatSprite(), "Enemy changes",
+                "_-_ Enemies in general may take less or more damage due to defense changes.\n" +
+                        "_-_ _Increased Difficulty_ vampire bat applies its effect to hero instead of itself.\n" +
+                        "_-_ Increased Tengu's damage cap by _2x_.\n" +
+                        "_-_ Fixed Dwarf King's locked floor mechanics being only in Gauntlet mode for some reason.\n" +
+                        "_-_ Significantly nerfed _Increased Difficulty_ DM300: now throws normal bombs instead of shrapnel, fires less inferno as vent attack and increased damage requirement for minions.\n" +
+                        "_-_ _Spectral Shaman's_ minions now use the same alignment as their master, making them compatible with Corruption."
+        ));
+        changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+                "_-_ Time and protection related effects now have more contrasted icons\n" +
+                        "_-_ Unified and fixed ring artifacts upgrading messages\n" +
+                        "_-_ Distortion Trap no longer summons Abyss enemies and accounts for dungeon size\n" +
+                        "_-_ Implemented some of RKPD2's action indicator improvements\n" +
+                        "_-_ Implemented most of Shattered's reworked badges\n" +
+                        "_-_ Tome of Mastery can be now used from quickslots\n" +
+                        "_-_ Resprited conduct-related icons\n" +
+                        "_-_ Debug Scroll now exists as cheaty conduct, selectable with disabling Balanced Conducts and holding conduct button on hero select scene\n" +
+                        "_-_ Deferred damage is no longer affected by damage reduction from gamemodes, conducts and talents\n" +
+                        "_-_ Gauntlet's shops now can sell King's crown for armor ability\n" +
+                        "_-_ Subclass selection window was reworked to show subclass info from pressing subclass icons; the buttons now just show the confirmation window\n" +
+                        "_-_ Updated Android targeted version to number 33"
+        ));
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "Fixed:\n" +
+                        "_-_ Attunement info on minions showing too many numbers\n" +
+                        "_-_ A lot of typos and mistakes in text descriptions and messages\n" +
+                        "_-_ Well of Awareness crashing the game\n" +
+                        "_-_ Ability items not having string when trying to use them without equipping\n" +
+                        "_-_ Class armors not having low charge strings\n" +
+                        "_-_ Dwarf Wizard Staff's tiering info having formatting bugs\n" +
+                        "_-_ Froggit Staff and Deltarune Robe being able get into bones\n" +
+                        "_-_ Giant enemies being able to go through doors\n" +
+                        "_-_ Monk subclass being able to gain chakra from Shockwave ability\n" +
+                        "_-_ Spectral Swords being corruptible\n" +
+                        "_-_ Possibility to sell items in Gauntlet for more gold than it should be\n" +
+                        "_-_ Adventurer getting more money in Gauntlet than necessary\n" +
+                        "_-_ Welcome to Earth talent being able to throw allies and NPCs into chasms\n" +
+                        "_-_ Subtilitas Sigil being able to go past +10 in upgrades\n" +
+                        "_-_ Subtilitas Sigil targeting past selected tile\n" +
+                        "_-_ Stationary summon staves softlocking the game when it is not possible to summon stationaries\n" +
+                        "_-_ Recharging effects giving more charge to faster-charging wands"
+        ));
+    }
 
     public static void add_1_2_4_Changes(ArrayList<ChangeInfo> changeInfos){
         ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "1.2.4", true, Window.TITLE_COLOR);
