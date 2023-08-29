@@ -508,7 +508,7 @@ public class Staff extends Weapon implements Tierable {
         }
 
         public void gainCharge(float charge) {
-            partialCharge += charge;
+            partialCharge += charge/5f;
             while (partialCharge >= 1f) {
                 curCharges++;
                 partialCharge--;
