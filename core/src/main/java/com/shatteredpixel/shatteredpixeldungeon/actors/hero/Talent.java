@@ -119,7 +119,7 @@ public enum Talent {
     BLESSING_OF_SANITY(57, 3, true),
     GUIDANCE_FLAME(58, 3),
     SPEEDY_STEALTH(59, 3),
-    THAUMATURGY(60, 3),
+    THAUMATURGY(60, 3, true),
     SHARP_VISION(61, 3, true),
     CHEMISTRY_DEGREE(62, 3, true);
 
@@ -648,6 +648,11 @@ public enum Talent {
         public float duration() { return Dungeon.hero.pointsInTalent(SNIPER_PATIENCE) > 2 ? 25 : 20; }
         public int icon() { return BuffIndicator.TIME; }
         public void tintIcon(Image icon) { icon.hardlight(0xa12d2d); }
+    }
+    public static class ThaumaturgyPatienceCooldown extends Cooldown {
+        public float duration() { return Dungeon.hero.pointsInTalent(THAUMATURGY) > 2 ? 50 : 60; }
+        public int icon() { return BuffIndicator.TIME; }
+        public void tintIcon(Image icon) { icon.hardlight(0x9328c9); }
     }
 
     public static class SniperPatienceTracker extends Buff {
@@ -1344,6 +1349,12 @@ public enum Talent {
 
                 return 0;
             }
+        }
+        if (hero.hasTalent(Talent.THAUMATURGY)
+                && enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)){
+            float bonus = 1f/(hero.pointsInTalent(THAUMATURGY)+1f);
+            hero.belongings.charge(bonus);
+            ScrollOfRecharging.charge(hero);
         }
         return damage;
     }

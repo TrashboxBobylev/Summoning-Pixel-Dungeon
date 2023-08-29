@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.FinalFroggit;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
@@ -51,12 +52,14 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.Su
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Tierable;
 import com.watabou.noosa.audio.Sample;
@@ -178,6 +181,12 @@ public abstract class Wand extends Weapon implements Tierable {
 		float powerLevel = powerLevel(level());
 		if (Dungeon.hero.buff(Weakness.class) != null && Dungeon.hero.hasTalent(Talent.SUFFERING_AWAY)){
 			powerLevel *= 1.25f;
+		}
+		if (Dungeon.hero.buff(Talent.SniperPatienceTracker.class) != null && Dungeon.hero.pointsInTalent(Talent.THAUMATURGY) > 1 && Dungeon.hero.buff(Talent.ThaumaturgyPatienceCooldown.class) == null){
+			if (this instanceof WandOfFireblast || this instanceof WandOfLightning)
+				powerLevel *= Talent.SniperPatienceTracker.damageModifier()*0.4f;
+			else
+				powerLevel *= Talent.SniperPatienceTracker.damageModifier();
 		}
 		return powerLevel;
 	}
@@ -471,7 +480,11 @@ public abstract class Wand extends Weapon implements Tierable {
 
 	protected boolean isMM;
 
-	protected void wandUsed() {
+	protected void wandUsed(){
+		wandUsed(null);
+	}
+
+	protected void wandUsed(Char target) {
         Statistics.wandUses++;
 		if (!isIdentified() && availableUsesToID >= 1) {
 			availableUsesToID--;
@@ -511,6 +524,31 @@ public abstract class Wand extends Weapon implements Tierable {
 		SubtilitasSigil.Recharge sigilCharge = curUser.buff(SubtilitasSigil.Recharge.class);
 		if (sigilCharge != null){
 			sigilCharge.gainExp(usedCharges);
+		}
+		if (Dungeon.hero.pointsInTalent(Talent.THAUMATURGY) > 1 && Dungeon.hero.buff(Talent.SniperPatienceTracker.class) != null){
+			if (target != null){
+				switch (Dungeon.hero.pointsInTalent(Talent.SNIPER_PATIENCE)){
+					case 2:
+						Buff.affect(target, Slow.class, 4f); break;
+					case 3:
+						Buff.affect(target, Slow.class, 6f);
+						Buff.affect(target, StoneOfAggression.Aggression.class, 10f);
+						PathFinder.buildDistanceMap( target.pos, BArray.not( Dungeon.level.solid, null ), 2 );
+						for (int i = 0; i < PathFinder.distance.length; i++) {
+							if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+								Char ch = Actor.findChar(i);
+								if (ch != null && ch.alignment == Char.Alignment.ENEMY){
+									ch.damage(1 + Dungeon.chapterNumber(), new WandOfBlastWave());
+								}
+								CellEmitter.get(i).burst(Speck.factory(Speck.SMOKE_DUST, true), Random.Int(4, 8));
+							}
+						}
+						Sample.INSTANCE.play(Assets.Sounds.BLAST);
+						break;
+				}
+			}
+			Buff.detach(Dungeon.hero, Talent.SniperPatienceTracker.class);
+			Talent.Cooldown.affectHero(Talent.ThaumaturgyPatienceCooldown.class);
 		}
 
 		curUser.spendAndNext( TIME_TO_ZAP );
@@ -699,7 +737,7 @@ public abstract class Wand extends Weapon implements Tierable {
 							curWand.fx(shot, new Callback() {
 							public void call() {
 								curWand.onZap(shot);
-								curWand.wandUsed();
+								curWand.wandUsed(Actor.findChar(target));
 							}
 						});
 					}
