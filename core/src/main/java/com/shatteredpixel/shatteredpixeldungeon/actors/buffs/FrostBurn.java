@@ -64,6 +64,7 @@ public class FrostBurn extends Buff implements Hero.Doom {
 
 	{
 		type = buffType.NEGATIVE;
+		severity = buffSeverity.DAMAGING;
 		announced = true;
 	}
 	

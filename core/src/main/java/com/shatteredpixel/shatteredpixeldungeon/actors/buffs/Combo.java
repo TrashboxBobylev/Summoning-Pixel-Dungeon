@@ -181,6 +181,11 @@ public class Combo extends Buff implements ActionIndicator.Action {
 		GameScene.selectCell(finisher);
 	}
 
+	@Override
+	public boolean usable() {
+		return count > 1;
+	}
+
 	private enum finisherType{
 		CLOBBER, CLEAVE, SLAM, CRUSH, FURY
 	}
@@ -240,7 +245,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 						dmg = Math.round(dmg * 1.5f);
 						break;
 					case SLAM:
-						dmg += target.drRoll();
+						dmg += target.actualDrRoll();
 						break;
 					case CRUSH:
 						//rolls 4 times, takes the highest roll
@@ -256,7 +261,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 				}
 
 				dmg = enemy.defenseProc(target, dmg);
-				dmg -= enemy.drRoll();
+				dmg -= enemy.actualDrRoll();
 
 				if (enemy.buff(Vulnerable.class) != null) {
 					dmg *= 1.33f;

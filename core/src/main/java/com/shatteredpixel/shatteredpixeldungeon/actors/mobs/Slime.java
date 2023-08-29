@@ -94,13 +94,13 @@ public class Slime extends Mob {
 	}
 
     @Override
-    public void damage(int dmg, Object src) {
+    public int damage(int dmg, Object src) {
         for (Class c : Buff.ELEMENT_RESISTS){
             if (c.isAssignableFrom(src.getClass()) && src instanceof Wand){
                 dmg *= 3f;
             }
         }
-        super.damage(dmg, src);
+        return super.damage(dmg, src);
     }
 
     @Override

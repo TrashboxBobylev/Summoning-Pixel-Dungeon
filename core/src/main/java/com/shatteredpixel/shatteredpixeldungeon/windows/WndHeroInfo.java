@@ -33,10 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
-import com.shatteredpixel.shatteredpixeldungeon.ui.TalentsPane;
+import com.shatteredpixel.shatteredpixeldungeon.ui.*;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Component;
@@ -108,7 +105,7 @@ public class WndHeroInfo extends WndTabbed {
             });
         }
 
-        if (Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_2) && cl != HeroClass.ADVENTURER) {
+        if (Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_2) && cl.hasSubclassing()) {
             subclassInfo = new SubclassInfoTab(cl);
             add(subclassInfo);
             subclassInfo.setSize(WIDTH, MIN_HEIGHT);
@@ -332,11 +329,52 @@ public class WndHeroInfo extends WndTabbed {
         }
     }
 
-    public static class WndInfoSubclass extends WndTitledMessage {
+    public static class WndInfoSubclass extends Window {
+
+        protected static final int WIDTH_MIN    = 120;
+        protected static final int WIDTH_MAX    = 220;
+        protected static final int GAP	= 2;
 
         public WndInfoSubclass(HeroClass cls, HeroSubClass subCls){
-            super( subCls.icon(), Messages.titleCase(subCls.title()), subCls.desc());
 
+            super();
+
+            Component titlebar = new IconTitle( subCls.icon(), Messages.titleCase(subCls.title()) );
+            String message = subCls.desc();
+
+            int width = WIDTH_MIN;
+
+            titlebar.setRect( 0, 0, width, 0 );
+            add(titlebar);
+
+            RenderedTextBlock text = PixelScene.renderTextBlock( 6 );
+            text.text( message, width );
+            text.setPos( titlebar.left(), titlebar.bottom() + 2*GAP );
+            add( text );
+
+            while (PixelScene.landscape()
+                    && text.bottom() > (PixelScene.MIN_HEIGHT_L - 10)
+                    && width < WIDTH_MAX){
+                width += 20;
+                titlebar.setRect(0, 0, width, 0);
+                text.setPos( titlebar.left(), titlebar.bottom() + 2*GAP );
+                text.maxWidth(width);
+            }
+
+            bringToFront(titlebar);
+
+            resize( width, (int)text.bottom() + 2 );
+
+            if (cls == HeroClass.ROGUE){
+                ArrayList<LinkedHashMap<Talent, Integer>> talentList = new ArrayList<>();
+                Talent.initSubclassTalents(subCls, talentList);
+
+                TalentsPane.TalentTierPane talentPane = new TalentsPane.TalentTierPane(talentList.get(2), 3, false);
+                talentPane.setRect(0, height + 5, width, talentPane.height());
+                add(talentPane);
+                resize(width, (int) talentPane.bottom());
+
+            }
         }
 
     }

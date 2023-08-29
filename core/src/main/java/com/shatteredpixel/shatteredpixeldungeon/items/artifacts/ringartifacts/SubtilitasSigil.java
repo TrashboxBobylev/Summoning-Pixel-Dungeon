@@ -129,7 +129,7 @@ public class SubtilitasSigil extends Artifact {
                 int maxDist = 3 + level();
                 int dist = Math.min(bolt.dist, maxDist);
 
-                final ConeAOE cone = new ConeAOE(bolt, maxDist, 60, Ballistica.STOP_SOLID | Ballistica.STOP_TARGET | Ballistica.IGNORE_SOFT_SOLID);
+                final ConeAOE cone = new ConeAOE(bolt, dist, 60, Ballistica.STOP_SOLID | Ballistica.STOP_TARGET | Ballistica.IGNORE_SOFT_SOLID);
 
                 //cast to cells at the tip, rather than all cells, better performance.
                 for (Ballistica ray : cone.rays) {
@@ -167,9 +167,9 @@ public class SubtilitasSigil extends Artifact {
         public void gainExp(int exp){
             SubtilitasSigil.this.exp += exp;
             target.sprite.emitter().burst(FlameParticle.FACTORY, 5);
-            if (SubtilitasSigil.this.exp > 5 + (level()+1)*8){
+            if (SubtilitasSigil.this.exp > 5 + (level()+1)*8 && level() < levelCap){
                 SubtilitasSigil.this.exp = 0;
-                GLog.positive( Messages.get(this, "levelup") );
+                GLog.positive( Messages.get(SubtilitasSigil.class, "level_up") );
                 upgrade();
                 updateQuickslot();
             }
@@ -187,8 +187,10 @@ public class SubtilitasSigil extends Artifact {
                 if (partialCharge > 1){
                     charge++;
                     partialCharge--;
-                    if (charge == chargeCap){
+                    if (charge >= chargeCap){
+                        charge = chargeCap;
                         partialCharge = 0f;
+                        updateQuickslot();
                     }
                 }
             }

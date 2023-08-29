@@ -30,7 +30,7 @@ import com.watabou.noosa.Image;
 public class Block extends DummyBuff{
     @Override
     public int icon() {
-        return BuffIndicator.ARMOR;
+        return BuffIndicator.ARMOR_GEN;
     }
 
     @Override

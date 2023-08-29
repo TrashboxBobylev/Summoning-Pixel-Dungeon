@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -78,10 +79,10 @@ public class Eye extends Mob {
 	public int attackSkill( Char target ) {
 		return 30;
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 10);
+	public int defenseValue() {
+		return 10;
 	}
 	
 	private Ballistica beam;
@@ -149,9 +150,9 @@ public class Eye extends Mob {
 	}
 
 	@Override
-	public void damage(int dmg, Object src) {
+	public int damage(int dmg, Object src) {
 		if (beamCharged) dmg /= 4;
-		super.damage(dmg, src);
+		return super.damage(dmg, src);
 	}
 	
 	//used so resistances can differentiate between melee and magical attacks
@@ -202,6 +203,7 @@ public class Eye extends Mob {
 				}
 
 				if (!ch.isAlive() && ch == Dungeon.hero) {
+					Badges.validateDeathFromEnemyMagic();
 					Dungeon.fail( getClass() );
 					GLog.negative( Messages.get(this, "deathgaze_kill") );
 				}

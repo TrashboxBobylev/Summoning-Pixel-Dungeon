@@ -35,7 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.NewCavesBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.PylonSprite;
@@ -104,14 +104,14 @@ public class Pylon extends Mob {
 	}
 
 	private void shockChar( Char ch ){
-		if (ch != null && !(ch instanceof NewDM300)){
+		if (ch != null && !(ch instanceof DM300)){
 			ch.sprite.flash();
 			int dmg = Random.NormalIntRange(10, 20);
 			if (buff(Shrink.class) != null || buff(TimedShrink.class) != null) dmg *= 0.6f;
 			ch.damage(dmg, new Electricity());
 
 			if (ch == Dungeon.hero && !ch.isAlive()){
-				Dungeon.fail(NewDM300.class);
+				Dungeon.fail(DM300.class);
 				GLog.negative( Messages.get(Electricity.class, "ondeath") );
 			}
 		}
@@ -157,22 +157,22 @@ public class Pylon extends Mob {
 	}
 
 	@Override
-	public void damage(int dmg, Object src) {
+	public int damage(int dmg, Object src) {
 		//immune to damage when inactive
 		if (alignment == Alignment.NEUTRAL){
-			return;
+			return 0;
 		}
 		if (dmg >= 15){
 			//takes 15/16/17/18/19/20 dmg at 15/17/20/24/29/36 incoming dmg
 			dmg = 14 + (int)(Math.sqrt(8*(dmg - 14) + 1) - 1)/2;
 		}
-		super.damage(dmg, src);
+		return super.damage(dmg, src);
 	}
 
 	@Override
 	public void die(Object cause) {
 		super.die(cause);
-		((NewCavesBossLevel)Dungeon.level).eliminatePylon();
+		((CavesBossLevel)Dungeon.level).eliminatePylon();
 	}
 
 	private static final String ALIGNMENT = "alignment";

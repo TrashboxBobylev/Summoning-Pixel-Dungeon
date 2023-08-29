@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
@@ -78,10 +79,10 @@ public class DM100 extends Mob implements Callback {
 	public int attackSkill( Char target ) {
 		return 11;
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 4);
+	public int defenseValue() {
+		return 4;
 	}
 	
 	@Override
@@ -136,6 +137,7 @@ public class DM100 extends Mob implements Callback {
 					Camera.main.shake( 2, 0.3f );
 					
 					if (!enemy.isAlive()) {
+						Badges.validateDeathFromEnemyMagic();
 						Dungeon.fail( getClass() );
 						GLog.negative( Messages.get(this, "zap_kill") );
 					}

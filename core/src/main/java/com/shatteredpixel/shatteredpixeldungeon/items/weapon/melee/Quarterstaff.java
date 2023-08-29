@@ -54,7 +54,7 @@ public class Quarterstaff extends MeleeWeapon {
 
 	@Override
 	public int warriorAttack(int damage, Char enemy) {
-		Buff.affect(Dungeon.hero, Barrier.class).setShield(damage / 2 + 1 + Dungeon.hero.drRoll()/2);
+		Buff.affect(Dungeon.hero, Barrier.class).setShield(damage / 2 + 1 + Dungeon.hero.actualDrRoll()/2);
 		return 0;
 	}
 }

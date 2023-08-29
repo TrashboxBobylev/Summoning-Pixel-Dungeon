@@ -51,6 +51,10 @@ public class WndChallenges extends Window {
 	private ArrayList<ConduitBox> boxes = new ArrayList<>();
 	private ScrollPane pane;
 
+	protected boolean yesToDebug(){
+		return false;
+	}
+
 	public WndChallenges( Conducts.Conduct conduct, boolean editable){
 		new WndChallenges(new Conducts.ConductStorage(conduct), editable);
 	}
@@ -73,6 +77,9 @@ public class WndChallenges extends Window {
 		ArrayList<Conducts.Conduct> allConducts = editable ?
 				new ArrayList<>(Arrays.asList(Conducts.Conduct.values())) :
 				conducts.conducts;
+
+		if (!(yesToDebug() && editable))
+			allConducts.remove(Conducts.Conduct.DEBUG_SCROLL);
 
 		ScrollPane pane = new ScrollPane(new Component()) {
 			@Override
@@ -107,6 +114,8 @@ public class WndChallenges extends Window {
 
 		float pos = 2;
 		for (Conducts.Conduct i : allConducts) {
+
+				if (!i.shouldAppear()) continue;
 
 				final String challenge = i.toString();
 

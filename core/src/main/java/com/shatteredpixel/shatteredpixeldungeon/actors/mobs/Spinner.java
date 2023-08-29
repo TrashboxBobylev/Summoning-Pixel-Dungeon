@@ -67,6 +67,7 @@ public class Spinner extends Mob {
 		FLEEING = new Fleeing();
 		HUNTING = new Hunting();
 		properties.add(Property.RANGED);
+		properties.add(Property.ANIMAL);
 	}
 
 	@Override
@@ -80,8 +81,8 @@ public class Spinner extends Mob {
 	}
 
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 4);
+	public int defenseValue() {
+		return 4;
 	}
 
 	@Override

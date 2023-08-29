@@ -103,7 +103,7 @@ public class Broadsword extends MeleeWeapon {
 
     @Override
     public int defenseFactor( Char owner ) {
-        return 4;	//4 extra defence
+        return 3;	//3 extra defence
     }
 
     public int strikes;

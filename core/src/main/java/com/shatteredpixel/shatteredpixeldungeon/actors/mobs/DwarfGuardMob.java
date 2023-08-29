@@ -158,8 +158,8 @@ public class DwarfGuardMob extends Mob {
 	}
 
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(8, 18);
+	public int defenseValue() {
+		return 20;
 	}
 
 	private final String CHAINSUSED = "chainsused";

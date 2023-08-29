@@ -119,18 +119,18 @@ public class Statue extends Mob {
 	}
 
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, Dungeon.chapterSize() + weapon.defenseFactor(this));
+	public int defenseValue() {
+		return Dungeon.chapterSize() + weapon.defenseFactor(this);
 	}
 	
 	@Override
-	public void damage( int dmg, Object src ) {
+	public int damage(int dmg, Object src ) {
 
 		if (state == PASSIVE) {
 			state = HUNTING;
 		}
 		
-		super.damage( dmg, src );
+		return super.damage( dmg, src );
 	}
 	
 	@Override

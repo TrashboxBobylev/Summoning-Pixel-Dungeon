@@ -52,7 +52,7 @@ public class ArmorKit extends Item {
 	private static final String AC_APPLY = "APPLY";
 	
 	{
-		image = ItemSpriteSheet.KIT;
+		image = ItemSpriteSheet.GUIDING_TORCH;
 		
 		unique = true;
 	}

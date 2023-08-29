@@ -56,14 +56,15 @@ public class Wolf extends Mob {
     }
 
     @Override
-    public void damage( int dmg, Object src ) {
+    public int damage(int dmg, Object src ) {
 
         if (state == PASSIVE) {
             state = HUNTING;
         }
 
         if (!(src instanceof Hero) && !(src instanceof Wand && !(src instanceof WandOfWarding)) && !(src instanceof Trap))
-        super.damage( dmg, src );
+            return super.damage( dmg, src );
+        return 0;
     }
 
     @Override
@@ -83,7 +84,7 @@ public class Wolf extends Mob {
     }
 
     @Override
-    public int drRoll() {
-        return Random.NormalIntRange(0, 6);
+    public int defenseValue() {
+        return 6;
     }
 }

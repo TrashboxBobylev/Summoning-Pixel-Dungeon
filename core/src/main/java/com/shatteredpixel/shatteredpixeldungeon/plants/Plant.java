@@ -29,11 +29,15 @@ import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.Aromatic;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -82,6 +86,13 @@ public abstract class Plant implements Bundlable {
 				if (l.inRange(pos)){
 					seedChance = Math.max(seedChance, l.seedPreservation());
 				}
+			}
+		}
+		if (Dungeon.hero.buff(CloakOfShadows.cloakStealth.class) != null &&
+				Dungeon.hero.buff(CloakOfShadows.cloakStealth.class).glyph() instanceof Aromatic){
+			Aromatic glyph = (Aromatic) Dungeon.hero.buff(CloakOfShadows.cloakStealth.class).glyph();
+			if (glyph.inRange(Dungeon.hero, pos)){
+				seedChance = Math.max(seedChance, glyph.seedPreservation());
 			}
 		}
 
@@ -170,6 +181,9 @@ public abstract class Plant implements Bundlable {
 				hero.spend( TIME_TO_PLANT );
 				hero.busy();
 				((Seed)detach( hero.belongings.backpack )).onThrow( hero.pos );
+				if (hero.hasTalent(Talent.MY_SUNSHINE)){
+					plantRecycling(this, hero);
+				}
 				
 				hero.sprite.operate( hero.pos );
 				
@@ -200,6 +214,10 @@ public abstract class Plant implements Bundlable {
 			return 18 * quantity;
 		}
 
+		public int sunValue(){
+			return 0;
+		}
+
 		@Override
 		public String desc() {
 			String desc = Messages.get(plantClass, "desc");
@@ -211,7 +229,13 @@ public abstract class Plant implements Bundlable {
 
 		@Override
 		public String info() {
-			return Messages.get( Seed.class, "info", desc() );
+
+			String info = Messages.get(Seed.class, "info", desc());
+			if (Dungeon.hero.hasTalent(Talent.MY_SUNSHINE) && sunValue() > 0){
+				Talent.MySunshineTracker buff = Buff.affect(Dungeon.hero, Talent.MySunshineTracker.class);
+				info += "\n\n" + Messages.get( Seed.class, "info_my_sunshine", sunValue(), buff.sunCount );
+			}
+			return info;
 		}
 		
 		public static class PlaceHolder extends Seed {

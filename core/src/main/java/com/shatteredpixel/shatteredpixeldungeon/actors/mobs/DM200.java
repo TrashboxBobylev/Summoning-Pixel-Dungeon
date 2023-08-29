@@ -74,8 +74,8 @@ public class DM200 extends Mob {
 	}
 
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 8);
+	public int defenseValue() {
+		return 8;
 	}
 
 	@Override
@@ -166,7 +166,7 @@ public class DM200 extends Mob {
 					pos++;
 				}
 			}
-			Buff.append(this, NewDM300.FallingRockBuff.class, Math.min(enemy.cooldown(), 3*TICK)).setRockPositions(rockCells);
+			Buff.append(this, DM300.FallingRockBuff.class, Math.min(enemy.cooldown(), 3*TICK)).setRockPositions(rockCells);
 		}
 
 	}

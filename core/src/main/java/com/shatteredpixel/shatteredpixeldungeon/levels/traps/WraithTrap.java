@@ -27,6 +27,8 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
@@ -41,7 +43,11 @@ public class WraithTrap extends Trap{
     public void activate() {
         for( int i : PathFinder.NEIGHBOURS9) {
             if (Dungeon.level.passable[pos+i] && Actor.findChar( pos+i ) == null) {
-                Wraith.spawnAt(pos+i);
+                Wraith wraith = Wraith.spawnAt(pos+i);
+                if (wraith != null && Dungeon.hero.hasTalent(Talent.ARMORED_ARMADA)){
+                    Buff.affect(wraith, Talent.ArmoredArmadaArmor.class).hits =
+                            Dungeon.hero.pointsInTalent(Talent.ARMORED_ARMADA) > 2 ? 3 : 2;
+                }
             }
         }
         Sample.INSTANCE.play(Assets.Sounds.CURSED);

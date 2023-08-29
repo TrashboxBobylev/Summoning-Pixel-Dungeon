@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SilkyQuiver;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
@@ -54,6 +55,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
@@ -89,7 +91,7 @@ abstract public class MissileWeapon extends Weapon {
 	
 	@Override
 	public int min() {
-		return Math.max(0, min( buffedLvl()));
+		return Math.max(0, Math.round(min( buffedLvl())*universalDMGModifier()));
 	}
 	
 	@Override
@@ -100,7 +102,7 @@ abstract public class MissileWeapon extends Weapon {
 	
 	@Override
 	public int max() {
-		return Math.max(0, max( buffedLvl() ));
+		return Math.max(0, Math.round(max( buffedLvl() )*universalDMGModifier()));
 	}
 	
 	@Override
@@ -167,12 +169,45 @@ abstract public class MissileWeapon extends Weapon {
 
 	@Override
 	public int proc(Char attacker, Char defender, int damage) {
-		if (attacker == Dungeon.hero && (Dungeon.hero.subClass == HeroSubClass.SNIPER && Random.Int(2) == 0)){
+		if (attacker == Dungeon.hero) {
+			if (Dungeon.hero.subClass == HeroSubClass.SNIPER && Random.Int(2) == 0) {
 				SpiritBow bow = Dungeon.hero.belongings.getItem(SpiritBow.class);
 				if (bow != null && bow.enchantment != null && Dungeon.hero.buff(MagicImmune.class) == null) {
 					damage = bow.enchantment.proc(this, attacker, defender, damage);
 				}
 			}
+			if (Dungeon.hero.pointsInTalent(Talent.OLYMPIC_SKILLS) > 1 &&
+					attacker.buff(Talent.OlympicSkillsTracker.class) != null &&
+					attacker.buff(Talent.OlympicSkillsTracker.class).count() == Talent.OlympicSkillsTracker.MAX_COMBO - 1){
+				Weapon wep = (Weapon) Dungeon.hero.belongings.stashedWeapon;
+				if (wep != null && wep.enchantment != null && Dungeon.hero.buff(MagicImmune.class) == null) {
+					attacker.sprite.centerEmitter().burst(PurpleParticle.BURST, 5);
+					damage = wep.enchantment.proc(this, attacker, defender, damage);
+				}
+			}
+			if (Dungeon.hero.pointsInTalent(Talent.OLYMPIC_SKILLS) > 2 && attacker.buff(Talent.OlympicSkillsCooldown.class) != null){
+				Buff.affect(attacker, Barrier.class).incShield(2);
+			}
+            if (Dungeon.hero.buff(Hex.class) != null && Dungeon.hero.hasTalent(Talent.SUFFERING_AWAY)){
+                Buff.affect(defender, Hex.class, 3f);
+				if (Dungeon.hero.pointsInTalent(Talent.SUFFERING_AWAY) > 2)
+					Buff.prolong(defender, Hex.class, 2f);
+            }
+			if (Dungeon.hero.pointsInTalent(Talent.SHARP_VISION) > 1 && Dungeon.hero.hasTalent(Talent.OLYMPIC_SKILLS)){
+				int distance = Dungeon.level.distance(attacker.pos, defender.pos);
+				if (distance >= (9 - Dungeon.hero.pointsInTalent(Talent.SHARP_VISION)*2)){
+					Weapon wep = (Weapon) Dungeon.hero.belongings.stashedWeapon;
+					if (wep != null && wep.enchantment != null && Dungeon.hero.buff(MagicImmune.class) == null) {
+						for (int i: PathFinder.NEIGHBOURS9){
+							Char ch = Actor.findChar(defender.pos+i);
+							if (ch != null){
+								damage = wep.enchantment.proc(this, attacker, ch, damage);
+							}
+						}
+					}
+				}
+			}
+		}
 
 		return super.proc(attacker, defender, damage);
 	}
@@ -185,6 +220,9 @@ abstract public class MissileWeapon extends Weapon {
 
 	@Override
 	public int throwPos(Hero user, int dst) {
+
+		if (user.pointsInTalent(Talent.SHARP_VISION) > 2 && tier <= 3)
+			return dst;
 
 		boolean projecting = hasEnchant(Projecting.class, user);
 		if (!projecting && (Dungeon.hero.subClass == HeroSubClass.SNIPER && Random.Int(2) == 0)) {
@@ -345,10 +383,11 @@ abstract public class MissileWeapon extends Weapon {
 		int damage = augment.damageFactor(super.damageRoll( owner ));
 		
 		if (owner instanceof Hero) {
-			int exStr = ((Hero)owner).STR() - STRReq();
-			if (exStr > 0) {
-				damage += Random.IntRange( 0, exStr );
-			}
+			damage = strDamageBoost((Hero) owner, damage);
+		}
+
+		if (owner.buff(Talent.SniperPatienceTracker.class) != null){
+			damage *= Talent.SniperPatienceTracker.damageModifier();
 		}
 		
 		return damage;
@@ -416,7 +455,7 @@ abstract public class MissileWeapon extends Weapon {
 		if (STRReq() > Dungeon.hero.STR()) {
 			info += " " + Messages.get(Weapon.class, "too_heavy");
 		} else if (Dungeon.hero.STR() > STRReq()){
-			info += " " + Messages.get(Weapon.class, "excess_str", Dungeon.hero.STR() - STRReq());
+			info += " " + Messages.get(Weapon.class, "excess_str", Math.round((Dungeon.hero.STR() - STRReq())*universalDMGModifier()));
 		}
 		switch (augment) {
 			case SPEED:

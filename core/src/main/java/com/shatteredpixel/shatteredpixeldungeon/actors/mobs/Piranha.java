@@ -59,6 +59,8 @@ public class Piranha extends Mob {
 		
 		state = SLEEPING;
 
+		properties.add(Property.ANIMAL);
+
 	}
 	
 	public Piranha() {
@@ -95,10 +97,10 @@ public class Piranha extends Mob {
 	public int attackSkill( Char target ) {
 		return 20 + Dungeon.scaledDepth() * 2;
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, Dungeon.chapterNumber());
+	public int defenseValue() {
+		return Dungeon.chapterNumber();
 	}
 
 	@Override

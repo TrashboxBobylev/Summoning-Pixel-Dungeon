@@ -25,9 +25,13 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.gltextures.SmartTexture;
@@ -61,11 +65,30 @@ public class WndInfoBuff extends Window {
 		titlebar.setRect( 0, 0, WIDTH, 0 );
 		add( titlebar );
 
-		RenderedTextBlock txtInfo = PixelScene.renderTextBlock(buff.desc(), 6);
+		String desc = buff.desc();
+		if (Talent.canSufferAway(Dungeon.hero, buff))
+			desc += "\n\n" + Messages.get(buff, "suffering_desc");
+
+		RenderedTextBlock txtInfo = PixelScene.renderTextBlock(desc, 6);
 		txtInfo.maxWidth(WIDTH);
 		txtInfo.setPos(titlebar.left(), titlebar.bottom() + 2*GAP);
 		add( txtInfo );
 
-		resize( WIDTH, (int)txtInfo.bottom() + 2 );
+		float bottom = txtInfo.bottom()+2;
+
+		if(buff instanceof ActionIndicator.Action && ((ActionIndicator.Action)buff).isSelectable()) {
+			RedButton button = new RedButton("Set Active") {
+				@Override
+				protected void onClick() {
+					hide();
+					ActionIndicator.setAction((ActionIndicator.Action)buff);
+				}
+			};
+			button.setRect(0,bottom+2,WIDTH,16);
+			bottom = button.bottom()+2;
+			add(button);
+		}
+
+		resize( WIDTH, (int)bottom );
 	}
 }

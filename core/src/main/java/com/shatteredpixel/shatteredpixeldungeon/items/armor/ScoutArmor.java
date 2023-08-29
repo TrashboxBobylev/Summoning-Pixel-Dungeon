@@ -70,7 +70,7 @@ public class ScoutArmor extends Armor {
     }
 
     public static class ScoutCooldown extends FlavourBuff {
-        public int icon() { return BuffIndicator.SLOW; }
+        public int icon() { return BuffIndicator.TIME; }
         public void tintIcon(Image icon) { icon.hardlight(0x2e92a7); }
         public float iconFadePercent() { return Math.max(0, 1 - (visualcooldown() / 20)); }
         public String toString() { return Messages.get(this, "name"); }
@@ -118,28 +118,15 @@ public class ScoutArmor extends Armor {
         return 0f;
     }
 
-    public int DRMax(int lvl){
+    @Override
+    public int defenseValue(int lvl){
         int val;
-
-        int max = 3 + lvl + augment.defenseFactor(lvl);
-        if (lvl > max){
-            val = ((lvl - max)+1)/2;
-        } else {
-            val = max;
-        }
-
-        return val;
-    }
-
-    public int DRMin(int lvl){
-        int val;
-
-        int max = DRMax(lvl);
-        if (lvl >= max){
-            val = (lvl + 1 - max);
-        } else {
-            val = lvl + 1;
-        }
+            int max = 3 + lvl + augment.defenseFactor(lvl);
+            if (lvl > max){
+                val = ((lvl - max)+1)/2;
+            } else {
+                val = max;
+            }
 
         return val;
     }

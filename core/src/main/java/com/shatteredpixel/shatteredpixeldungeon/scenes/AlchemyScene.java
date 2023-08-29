@@ -25,13 +25,16 @@
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.*;
@@ -342,7 +345,7 @@ public class AlchemyScene extends PixelScene {
 
 			Recipe recipe = recipes.get(i);
 
-			int cost = recipe.cost(ingredients);
+			int cost = Math.round(recipe.cost(ingredients)*Recipe.costModifier());
 
 			outputs[i].visible = true;
 			outputs[i].setRect(outputs[0].left(), top, BTN_SIZE, BTN_SIZE);
@@ -375,7 +378,7 @@ public class AlchemyScene extends PixelScene {
 		Item result = null;
 
 		if (recipe != null){
-			int cost = recipe.cost(ingredients);
+			int cost = Math.round(recipe.cost(ingredients)*Recipe.costModifier());
 			if (toolkit != null){
 				cost = toolkit.consumeEnergy(cost);
 			}
@@ -410,8 +413,8 @@ public class AlchemyScene extends PixelScene {
 				Dungeon.level.drop(result, Dungeon.hero.pos);
 			}
 
-			Statistics.potionsCooked++;
-			Badges.validatePotionsCooked();
+			Statistics.itemsCrafted++;
+			Badges.validateItemsCrafted();
 
 			try {
 				Dungeon.saveAll();
@@ -423,6 +426,14 @@ public class AlchemyScene extends PixelScene {
 				for (int i = 0; i < inputs.length; i++) {
 					if (inputs[i] != null && inputs[i].item() != null) {
 						Item item = inputs[i].item();
+						if (Dungeon.hero.pointsInTalent(Talent.CHEMISTRY_DEGREE) > 1 && Dungeon.hero.hasTalent(Talent.MY_SUNSHINE)){
+							int sun = Dungeon.hero.pointsInTalent(Talent.CHEMISTRY_DEGREE)*5;
+							if (item instanceof Plant.Seed){
+								sun = 20*(Dungeon.hero.pointsInTalent(Talent.CHEMISTRY_DEGREE)-1);
+							}
+							Talent.MySunshineTracker buff = Buff.affect(Dungeon.hero, Talent.MySunshineTracker.class);
+							buff.sunCount += sun;
+                        }
 						if (item.quantity() <= 0) {
 							inputs[i].item(null);
 						} else {

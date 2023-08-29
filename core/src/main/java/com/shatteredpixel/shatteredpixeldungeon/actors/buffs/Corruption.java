@@ -24,7 +24,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -50,7 +52,10 @@ public class Corruption extends Buff {
 	
 	@Override
 	public boolean act() {
-		buildToDamage += target.HT/200f;
+		float toDamage = target.HT / 200f;
+		if (Dungeon.hero.pointsInTalent(Talent.WITCHING_STRIKE) > 2)
+			toDamage = target.HT / 300f;
+		buildToDamage += toDamage;
 
 		int damage = (int)buildToDamage;
 		buildToDamage -= damage;

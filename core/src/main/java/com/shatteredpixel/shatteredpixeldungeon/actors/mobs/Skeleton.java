@@ -85,7 +85,7 @@ public class Skeleton extends Mob {
 			if (hit(this, ch, true)) {
 				if (ch.isAlive()){
 					int damage = Random.NormalIntRange(6, 10);
-					damage = Math.max(0, damage - (ch.drRoll() + ch.drRoll()));
+					damage = Math.max(0, damage - (ch.actualDrRoll() + ch.actualDrRoll()));
 					ch.damage(damage, this);
 					if (ch == Dungeon.hero && !ch.isAlive()) {
 						heroKilled = true;
@@ -138,10 +138,10 @@ public class Skeleton extends Mob {
 	public int attackSkill( Char target ) {
 		return 12;
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 5);
+	public int defenseValue() {
+		return 5;
 	}
 
 }

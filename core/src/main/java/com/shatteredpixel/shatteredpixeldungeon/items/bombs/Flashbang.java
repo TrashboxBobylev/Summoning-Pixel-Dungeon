@@ -50,6 +50,7 @@ public class Flashbang extends Bomb {
 		for (Char ch : Actor.chars()){
 			if (ch.fieldOfView != null && ch.fieldOfView[cell]){
 				int power = 25 - 8*l.distance(ch.pos, cell);
+				power *= Bomb.nuclearBoost();
 				if (power > 0){
 					if (ch instanceof Mob && !(ch instanceof ExplodingTNT)){
                         Buff.prolong(ch, Blindness.class, power);

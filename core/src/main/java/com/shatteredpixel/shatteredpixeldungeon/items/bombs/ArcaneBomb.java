@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.bombs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -121,7 +122,7 @@ public class ArcaneBomb extends Bomb {
 				if (heap != null)
 					heap.explode();
 
-                GameScene.add(Blob.seed(i, Random.NormalIntRange(100, 150), Miasma.class));
+                GameScene.add(Blob.seed(i, Math.round(Random.NormalIntRange(100, 150)*Bomb.nuclearBoost()), Miasma.class));
 
 
 			}
@@ -132,6 +133,7 @@ public class ArcaneBomb extends Bomb {
 			float multiplier = 1f - (.08f*Dungeon.level.distance(cell, ch.pos));
 			ch.damage(Math.round(damage*multiplier), this);
 			if (ch == Dungeon.hero && !ch.isAlive()){
+				Badges.validateDeathFromFriendlyMagic();
 				Dungeon.fail(ArcaneBomb.class);
 			}
 		}

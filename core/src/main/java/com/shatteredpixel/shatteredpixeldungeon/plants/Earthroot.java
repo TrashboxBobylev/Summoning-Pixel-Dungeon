@@ -49,7 +49,7 @@ public class Earthroot extends Plant {
 		
 		if (ch == Dungeon.hero) {
 			if (Dungeon.hero.subClass == HeroSubClass.WARDEN){
-				Buff.affect(ch, Barkskin.class).set(Dungeon.hero.lvl + 5, 5);
+				Buff.affect(ch, Barkskin.class).set(Math.round(Dungeon.hero.lvl*0.85f), 5);
 			} else {
 				Buff.affect(ch, Armor.class).level(ch.HT);
 			}
@@ -68,6 +68,11 @@ public class Earthroot extends Plant {
 			plantClass = Earthroot.class;
 
 			bones = true;
+		}
+
+		@Override
+		public int sunValue() {
+			return 150;
 		}
 	}
 	

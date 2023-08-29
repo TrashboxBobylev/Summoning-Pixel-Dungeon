@@ -42,16 +42,27 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DwarfKing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GhostChicken;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FrostfireParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.MailArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Endure;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.CloakGlyph;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.Crumbling;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MirrorOfFates;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SubtilitasSigil;
+import com.shatteredpixel.shatteredpixeldungeon.items.magic.Stars;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfAdrenalineSurge;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Scrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
@@ -63,6 +74,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFrost;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLightning;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Slingshot;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
@@ -73,14 +85,15 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrimTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Bundlable;
-import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
-import com.watabou.utils.Random;
+import com.watabou.utils.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -207,7 +220,7 @@ public abstract class Char extends Actor {
 	}
 
 	public boolean blockSound( float pitch ) {
-		if (buff(Block.class) != null){
+		if (buff(Block.class) != null || buff(Talent.TowerOfPowerTracker.class) != null || buff(Talent.SupportPotionPowerTracker.class) != null){
 			Sample.INSTANCE.play( Assets.Sounds.HIT_PARRY, 1, pitch);
 			return true;
 		}
@@ -270,9 +283,8 @@ public abstract class Char extends Actor {
 
 		} else if (hit( this, enemy, accMulti )) {
 			
-			int dr = enemy.drRoll();
+			int dr = enemy.actualDrRoll();
 			boolean quivered = false;
-			if (enemy.buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dr *= 0.5f;
 			if (properties.contains(Property.IGNORE_ARMOR)) dr = 0;
 			if (enemy.buff(QuiverMark.class) != null && this instanceof Hero && ((Hero) this).belongings.weapon instanceof MissileWeapon) {
 				quivered = true;
@@ -281,6 +293,9 @@ public abstract class Char extends Actor {
 
 			if (this instanceof Hero){
 				Hero h = (Hero)this;
+				if (enemy.buff(Talent.DogBreedingMarking.class) != null
+					&& h.pointsInTalent(Talent.DOG_BREEDING) == 3)
+					dr = 0;
 				if (h.belongings.weapon instanceof MissileWeapon
 						&& h.subClass == HeroSubClass.SNIPER
 						&& !Dungeon.level.adjacent(h.pos, enemy.pos)){
@@ -346,6 +361,12 @@ public abstract class Char extends Actor {
 				} else if (this instanceof Hero){
 					effectiveDamage *= 1 + Dungeon.hero.pointsInTalent(Talent.UNSIGHTED) * 0.2f;
 				}
+			}
+
+			if (buff(Talent.TowerOfPowerDamage.class) != null){
+				effectiveDamage *= Talent.TowerOfPowerTracker.damageBoost();
+				enemy.sprite.emitter().burst( FlameParticle.FACTORY, Math.round(10 * Talent.TowerOfPowerTracker.damageBoost()));
+				buff(Talent.TowerOfPowerDamage.class).detach();
 			}
 
 			// If the enemy is already dead, interrupt the attack.
@@ -418,6 +439,30 @@ public abstract class Char extends Actor {
 					Sample.INSTANCE.play(Assets.Sounds.MISS);
 				}
 			}
+			if (enemy.buff(Talent.TowerOfPowerTracker.class) != null){
+				enemy.buff(Talent.TowerOfPowerTracker.class).detach();
+				Sample.INSTANCE.play(Assets.Sounds.SHATTER);
+				Talent.Cooldown.affectHero(Talent.TowerOfPowerCooldown.class);
+				if (Dungeon.hero.pointsInTalent(Talent.TOWER_OF_POWER) > 1)
+					Buff.affect(enemy, Talent.TowerOfPowerDamage.class, Talent.TowerOfPowerDamage.DURATION);
+				if (Dungeon.hero.pointsInTalent(Talent.TOWER_OF_POWER) > 2){
+					Hero.arrangeBlast(enemy.pos, enemy.sprite, MagicMissile.FORCE_CONE, 1.5f);
+					Sample.INSTANCE.play(Assets.Sounds.HIT_MAGIC);
+					damage(Math.round(damageRoll()*1.5f), enemy);
+				}
+
+			}
+			if (enemy.buff(Talent.SupportPotionPowerTracker.class) != null){
+				enemy.buff(Talent.TowerOfPowerTracker.class).detach();
+				Sample.INSTANCE.play(Assets.Sounds.SHATTER);
+				if (Dungeon.hero.pointsInTalent(Talent.SUPPORT_POTION) > 2){
+					for (Buff flavourBuff: Dungeon.hero.buffs()){
+						if (flavourBuff instanceof FlavourBuff && flavourBuff.type == Buff.buffType.POSITIVE){
+							flavourBuff.spend(5f);
+						}
+					}
+				}
+			}
 			
 			return false;
 			
@@ -434,6 +479,9 @@ public abstract class Char extends Actor {
 	public static boolean hit( Char attacker, Char defender, float accMulti ) {
 		float acuStat = attacker.attackSkill( defender );
 		float defStat = defender.defenseSkill( attacker );
+
+		if (defender.buff(Talent.TowerOfPowerTracker.class) != null || defender.buff(Talent.SupportPotionPowerTracker.class) != null)
+			defStat = INFINITE_EVASION;
 
 		//if accuracy or evasion are large enough, treat them as infinite.
 		//note that infinite evasion beats infinite accuracy
@@ -487,11 +535,34 @@ public abstract class Char extends Actor {
 	public int defenseRolls(){ return 1;}
 	
 	public String defenseVerb() {
-		if (buff(Block.class) != null) return Messages.get(Hero.class, "absorbed");
+		if (buff(Block.class) != null || buff(Talent.TowerOfPowerTracker.class) != null || buff(Talent.SupportPotionPowerTracker.class) != null) return Messages.get(Hero.class, "absorbed");
 		return Messages.get(this, "def_verb");
 	}
+
+	public int drRoll(){
+		int def = defenseValue();
+
+		Barkskin bark = buff(Barkskin.class);
+		if (bark != null)               def += bark.level();
+
+		Blocking.BlockBuff block = buff(Blocking.BlockBuff.class);
+		if (block != null)              def += block.blockingRoll();
+
+		if (buff(Shrink.class) != null || buff(TimedShrink.class) != null) def /= 2;
+
+		if (buff(Crumbling.ZeroDefense.class) != null)
+			return 0;
+
+		return def;
+	}
 	
-	public int drRoll() {
+	public int actualDrRoll() {
+		int def = drRoll();
+
+		return Random.NormalIntRange(Math.round(def * 0.2f), Math.round(def * 0.8f));
+	}
+
+	public int defenseValue(){
 		return 0;
 	}
 	
@@ -547,15 +618,15 @@ public abstract class Char extends Actor {
 
 	public boolean oneShottedByCleaver;
 
-	public void damage( int dmg, Object src ) {
+	public int damage(int dmg, Object src ) {
 		
 		if (!isAlive() || dmg < 0) {
-			return;
+			return 0;
 		}
 
 		if(isInvulnerable(src.getClass())){
 			sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "invulnerable"));
-			return;
+			return 0;
 		}
 
 		Endure.EndureTracker endure = buff(Endure.EndureTracker.class);
@@ -581,15 +652,86 @@ public abstract class Char extends Actor {
 			}
 		}
 
-		if ((src instanceof Char || src instanceof Mob.MagicalAttack) && MirrorOfFates.isMirrorActive(this)){
-			MirrorOfFates.MirrorShield shield = buff(MirrorOfFates.MirrorShield.class);
-			int reflectDamage = shield.damage(dmg);
-			Char victim = src instanceof Mob.MagicalAttack ?
-					((Mob.MagicalAttack) src).caster : (Char) src;
-			victim.damage(dmg - reflectDamage, this);
-			dmg = reflectDamage;
-			if (dmg <= 0){
-				return;
+        if (src instanceof Char || src instanceof Mob.MagicalAttack) {
+			if (this instanceof Hero && ((Hero) this).hasTalent(Talent.COMET_FALL) && buff(Talent.CometFallCooldown.class) == null){
+				int minComets = ((Hero) this).pointsInTalent(Talent.COMET_FALL) > 1 ? 1 : 0;
+				int maxComets = ((Hero) this).pointsInTalent(Talent.COMET_FALL) == 2 ? 4 : 3;
+				int amountOfComets = Random.IntRange(minComets, maxComets);
+				ArrayList<Integer> pointsToStrike = new ArrayList<>();
+				int pointForMegaComet = 0;
+				for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+					if (Dungeon.level.heroFOV[mob.pos]
+							&& !pointsToStrike.contains(mob.pos)
+							&& pointsToStrike.size() < amountOfComets) {
+						pointsToStrike.add(mob.pos);
+					}
+				}
+				while (pointsToStrike.size() < amountOfComets){
+					int i = Random.Int(Dungeon.level.heroFOV.length);
+					if (Dungeon.level.heroFOV[i])
+						pointsToStrike.add(i);
+				}
+				Random.shuffle(pointsToStrike);
+				if (((Hero) this).pointsInTalent(Talent.COMET_FALL) > 2 && Random.Int(2) == 0){
+					if (src instanceof Mob.MagicalAttack){
+						if (pointsToStrike.contains(((Mob.MagicalAttack) src).caster.pos))
+							pointForMegaComet = ((Mob.MagicalAttack) src).caster.pos;
+					} else {
+						if (pointsToStrike.contains(((Char) src).pos))
+							pointForMegaComet = ((Char) src).pos;
+					}
+					while (pointForMegaComet == 0){
+						int i = Random.Int(Dungeon.level.heroFOV.length);
+						if (Dungeon.level.heroFOV[i])
+							pointForMegaComet = i;
+					}
+				}
+				final HashSet<Callback> callbacks = processCometCallbacks(dmg, pointsToStrike, true, true);
+				Talent.Cooldown.affectHero(Talent.CometFallCooldown.class);
+				if (pointForMegaComet != 0){
+					Sample.INSTANCE.play(Assets.Sounds.HIT_MAGIC, 1, Random.Float(0.75f, 2f));
+					MissileSprite starSprite = (MissileSprite) Dungeon.hero.sprite.parent.recycle(MissileSprite.class);
+					Item sprite = new Stars.ProjectileStar();
+					PointF starDest = DungeonTilemap.tileCenterToWorld(pointForMegaComet);
+					PointF starSource = DungeonTilemap.raisedTileCenterToWorld(Dungeon.hero.pos);
+					starSource.y -= 200;
+					starSprite.scale.scale(2.0f);
+					starSprite.hardlight(0x0baeb2);
+					int finalDmg = dmg;
+					int finalPointForMegaComet = pointForMegaComet;
+					Callback cometFall = new Callback() {
+                        @Override
+                        public void call() {
+                            for (int i : PathFinder.NEIGHBOURS9) {
+                                CellEmitter.center(finalPointForMegaComet + i).start(Speck.factory(Speck.BLIZZARD), 0.2f, 4);
+                                Char ch = Actor.findChar(finalPointForMegaComet + i);
+
+                                if (ch != null && ch.alignment == Char.Alignment.ENEMY) {
+                                    Buff.affect(ch, Frost.class, finalDmg / 1.5f);
+                                }
+                            }
+                            callbacks.remove(this);
+                            if (callbacks.isEmpty()) {
+                                Invisibility.dispel();
+                                Dungeon.hero.spendAndNext(0f);
+                            }
+                        }
+                    };
+
+					starSprite.reset( starSource, starDest, sprite, cometFall);
+					callbacks.add( cometFall );
+				}
+			}
+			if (MirrorOfFates.isMirrorActive(this)) {
+				MirrorOfFates.MirrorShield shield = buff(MirrorOfFates.MirrorShield.class);
+				int reflectDamage = shield.damage(dmg);
+				Char victim = src instanceof Mob.MagicalAttack ?
+						((Mob.MagicalAttack) src).caster : (Char) src;
+				victim.damage(dmg - reflectDamage, this);
+				dmg = reflectDamage;
+				if (dmg <= 0) {
+					return 0;
+				}
 			}
 		}
 
@@ -617,10 +759,41 @@ public abstract class Char extends Actor {
 		}
 		Charm c = buff(Charm.class);
 		if (c != null){
+			if (isCharmedBy(Dungeon.hero) && Dungeon.hero.hasTalent(Talent.LUST_AND_DUST)){
+				int healAmt = Math.round(dmg * (0.20f + 0.05f * Dungeon.hero.pointsInTalent(Talent.LUST_AND_DUST)));
+				if (buff(Talent.BloodDriveTracker.class) != null && Dungeon.hero.pointsInTalent(Talent.BLOOD_DRIVE) > 1){
+					healAmt *= 1f + 0.25f * (Dungeon.hero.pointsInTalent(Talent.BLOOD_DRIVE)-1);
+				}
+				healAmt = Math.min( healAmt, Dungeon.hero.HT - Dungeon.hero.HP );
+
+				if (healAmt > 0 && Dungeon.hero.isAlive()) {
+					Dungeon.hero.HP += healAmt;
+					Dungeon.hero.sprite.emitter().start( Speck.factory( Speck.HEALING ), 0.4f, 1 );
+					Dungeon.hero.sprite.showStatus( CharSprite.POSITIVE, Integer.toString( healAmt ) );
+				}
+			}
 			c.recover();
 		}
 		if (this.buff(Frost.class) != null){
-			Buff.detach( this, Frost.class );
+			if (this instanceof Hero && ((Hero) this).hasTalent(Talent.SUFFERING_AWAY)){
+				dmg /= 3;
+				int shardDistance = ((Hero) this).pointsInTalent(Talent.SUFFERING_AWAY) > 2 ? 3 : 2;
+				Hero.arrangeBlast(pos, sprite, MagicMissile.FROST_CONE, shardDistance);
+				PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.solid, null ), shardDistance );
+				for (int i = 0; i < PathFinder.distance.length; i++) {
+					if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+						Char ch = Actor.findChar(i);
+						if (ch != null && ch != this){
+							Buff.affect(ch, FrostBurn.class).reignite(ch, shardDistance*2);
+							CellEmitter.get(i).burst(FrostfireParticle.FACTORY, 4);
+						}
+					}
+				}
+				if (Random.Int(3) == 0)
+					Buff.detach( this, Frost.class );
+			} else {
+				Buff.detach( this, Frost.class );
+			}
 		}
 		if (this.buff(MagicalSleep.class) != null){
 			Buff.detach(this, MagicalSleep.class);
@@ -706,8 +879,51 @@ public abstract class Char extends Actor {
 		} else if (HP == 0 && buff(DeathMark.DeathMarkTracker.class) != null){
 			DeathMark.processFearTheReaper(this);
 		}
+
+		return dmg;
 	}
-	
+
+	public static HashSet<Callback> processCometCallbacks(int dmg, ArrayList<Integer> pointsToStrike, boolean damaging, boolean chilling) {
+		final HashSet<Callback> callbacks = new HashSet<>();
+		Dungeon.hero.busy();
+		for (int point: pointsToStrike){
+			MissileSprite starSprite = (MissileSprite) Dungeon.hero.sprite.parent.recycle(MissileSprite.class);
+			Item sprite = new Stars.ProjectileStar();
+			PointF starDest = DungeonTilemap.tileCenterToWorld(point);
+			PointF starSource = DungeonTilemap.raisedTileCenterToWorld(Dungeon.hero.pos);
+			starSource.y -= 175;
+			starSprite.hardlight(0xe5fbff);
+            Callback cometFall = new Callback() {
+                @Override
+                public void call() {
+                    Sample.INSTANCE.play(Assets.Sounds.HIT_MAGIC, 1, Random.Float(0.9f, 1.75f));
+                    for (int i : PathFinder.NEIGHBOURS9) {
+                        CellEmitter.center(point + i).start(Speck.factory(Speck.FROSTBURN, true), 0.01f, 7);
+                        Char ch = Actor.findChar(point + i);
+
+                        if (ch != null && ch.alignment == Alignment.ENEMY) {
+							if (damaging)
+                            	ch.damage(Math.round(dmg / 1.5f), Dungeon.hero);
+							if (chilling)
+                            	Buff.affect(ch, Chill.class, dmg / 2.5f);
+							else
+								Buff.affect(ch, Frost.class, dmg / 1.5f);
+                        }
+                    }
+                    callbacks.remove(this);
+                    if (callbacks.isEmpty()) {
+                        Invisibility.dispel();
+                        Dungeon.hero.spendAndNext(0f);
+                    }
+                }
+            };
+
+			starSprite.reset( starSource, starDest, sprite, cometFall);
+			callbacks.add( cometFall );
+		}
+		return callbacks;
+	}
+
 	public void destroy() {
 		HP = 0;
 		Actor.remove( this );
@@ -733,6 +949,15 @@ public abstract class Char extends Actor {
 		float timeScale = 1f;
 		if (buff( Slow.class ) != null) {
 			timeScale *= 0.5f;
+			if (this instanceof Hero && ((Hero) this).hasTalent(Talent.SUFFERING_AWAY)){
+				for (Buff b : buffs()) {
+					if (b instanceof Artifact.ArtifactBuff) {
+						if (!((Artifact.ArtifactBuff) b).isCursed()) {
+							((Artifact.ArtifactBuff) b).charge((Hero) this, ((Hero) this).pointsInTalent(Talent.SUFFERING_AWAY) / 3f * 2);
+						}
+					}
+				}
+			}
 			//slowed and chilled do not stack
 		} else if (buff( Chill.class ) != null) {
 			timeScale *= buff( Chill.class ).speedFactor();
@@ -908,6 +1133,12 @@ public abstract class Char extends Actor {
 		for (Buff b : buffs()){
 			resists.addAll(b.resistances());
 		}
+		if (this instanceof Hero && buff(CloakOfShadows.cloakStealth.class) != null){
+			CloakGlyph glyph = buff(CloakOfShadows.cloakStealth.class).glyph();
+			if (glyph != null){
+				resists.addAll(glyph.resistances());
+			}
+		}
 		
 		float result = 1f;
 		for (Class c : resists){
@@ -927,6 +1158,12 @@ public abstract class Char extends Actor {
 		}
 		for (Buff b : buffs()){
 			immunes.addAll(b.immunities());
+		}
+		if (this instanceof Hero && buff(CloakOfShadows.cloakStealth.class) != null){
+			CloakGlyph glyph = buff(CloakOfShadows.cloakStealth.class).glyph();
+			if (glyph != null){
+				immunes.addAll(glyph.immunities());
+			}
 		}
 		
 		for (Class c : immunes){
@@ -1008,7 +1245,8 @@ public abstract class Char extends Actor {
 				new HashSet<Class>( Arrays.asList(Blob.class) )),
 
 		LARGE,
-		IMMOVABLE;
+		IMMOVABLE,
+		ANIMAL;
 		
 		private HashSet<Class> resistances;
 		private HashSet<Class> immunities;

@@ -27,8 +27,11 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.Guidebook;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
@@ -109,6 +112,13 @@ public abstract class EquipableItem extends Item {
 	public static void equipCursed( Hero hero ) {
 		hero.sprite.emitter().burst( ShadowParticle.CURSE, 6 );
 		Sample.INSTANCE.play( Assets.Sounds.CURSED );
+		if (hero.hasTalent(Talent.ARMORED_ARMADA)){
+			Wraith wraith = Wraith.spawnAround(hero.pos);
+			if (wraith != null){
+				Buff.affect(wraith, Talent.ArmoredArmadaArmor.class).hits =
+						hero.pointsInTalent(Talent.ARMORED_ARMADA) > 2 ? 3 : 2;
+			}
+		}
 	}
 
 	protected float time2equip( Hero hero ) {

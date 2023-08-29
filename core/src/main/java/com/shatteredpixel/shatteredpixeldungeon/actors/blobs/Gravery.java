@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
@@ -62,7 +63,7 @@ public class Gravery extends Blob implements Hero.Doom{
 	
 	public static void corrupt(int cell ){
 		Char ch = Actor.findChar( cell );
-		if (ch != null) {
+		if (ch != null && ch.buff(Talent.ArmoredArmadaArmor.class) == null) {
 			if (ch.properties().contains(Char.Property.UNDEAD)){
 				if (ch.isImmune(Corruption.class))
 					Buff.affect(ch, Doom.class);

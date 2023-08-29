@@ -32,6 +32,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Enchanting;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.CloakGlyph;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
@@ -67,7 +69,15 @@ public class ScrollOfEnchantment extends ExoticScroll {
 	}
 
 	public static boolean enchantable( Item item ){
-		return ((item instanceof MeleeWeapon || item instanceof SpiritBow || item instanceof Slingshot || (item instanceof Wand && Dungeon.hero.heroClass == HeroClass.MAGE) || item instanceof Armor || item instanceof Staff || (item instanceof MissileWeapon && Dungeon.hero.hasTalent(Talent.WILD_SORCERY))) && !(item instanceof Broadsword));
+		return ((item instanceof MeleeWeapon ||
+				item instanceof SpiritBow ||
+				item instanceof Slingshot ||
+				(item instanceof Wand && Dungeon.hero.heroClass == HeroClass.MAGE) ||
+				(item instanceof CloakOfShadows && Dungeon.hero.hasTalent(Talent.ARCANE_CLOAK)) ||
+				item instanceof Armor ||
+				item instanceof Staff ||
+				(item instanceof MissileWeapon && Dungeon.hero.hasTalent(Talent.WILD_SORCERY))) &&
+				!(item instanceof Broadsword));
 	}
 	
 	protected WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
@@ -158,6 +168,43 @@ public class ScrollOfEnchantment extends ExoticScroll {
 						}
 					}
 					
+					@Override
+					public void onBackPressed() {
+						//do nothing, reader has to cancel
+					}
+				});
+			}  else if (item instanceof CloakOfShadows) {
+
+				final CloakGlyph glyphs[] = new CloakGlyph[3];
+
+				Class<? extends CloakGlyph> existing = ((CloakOfShadows) item).glyph != null ? ((CloakOfShadows) item).glyph.getClass() : null;
+				glyphs[0] = CloakGlyph.randomCommon( existing );
+				glyphs[1] = Dungeon.hero.pointsInTalent(Talent.ARCANE_CLOAK) < 2 ? CloakGlyph.randomCommon( existing, glyphs[0].getClass() ) :
+						CloakGlyph.randomRare( existing );
+				glyphs[2] = CloakGlyph.random( existing, glyphs[0].getClass(), glyphs[1].getClass());
+
+				GameScene.show(new WndOptions( new ItemSprite(ScrollOfEnchantment.this),
+						Messages.titleCase(ScrollOfEnchantment.this.name()),
+						Messages.get(ScrollOfEnchantment.class, "cloak") +
+								"\n\n" +
+								Messages.get(ScrollOfEnchantment.class, "cancel_warn"),
+						glyphs[0].name(),
+						glyphs[1].name(),
+						glyphs[2].name(),
+						Messages.get(ScrollOfEnchantment.class, "cancel")){
+
+					@Override
+					protected void onSelect(int index) {
+						if (index < 3) {
+							((CloakOfShadows) item).inscribe(glyphs[index]);
+							GLog.positive(Messages.get(StoneOfEnchantment.class, "cloak"));
+							((ScrollOfEnchantment)curItem).readAnimation();
+
+							Sample.INSTANCE.play( Assets.Sounds.READ );
+							Enchanting.show(curUser, item);
+						}
+					}
+
 					@Override
 					public void onBackPressed() {
 						//do nothing, reader has to cancel

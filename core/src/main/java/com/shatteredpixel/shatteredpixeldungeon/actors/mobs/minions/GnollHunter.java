@@ -32,11 +32,12 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollHunterSprite;
 public class GnollHunter extends Minion {
     {
         spriteClass = GnollHunterSprite.class;
-        baseMaxDR = 1;
+        baseDefense = 3;
         independenceRange = 12;
 
         properties.add(Property.RANGED);
         properties.add(Property.IGNORE_ARMOR);
+        properties.add(Property.ANIMAL);
     }
 
     //he is ranged minion

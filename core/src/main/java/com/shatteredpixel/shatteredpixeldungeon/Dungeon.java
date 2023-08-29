@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
@@ -310,13 +311,13 @@ public class Dungeon {
 			return new PrisonLevel();
 		}
 		if (Dungeon.depth == Dungeon.chapterSize()*2){
-			return new NewPrisonBossLevel();
+			return new PrisonBossLevel();
 		}
 		if (Dungeon.depth > Dungeon.chapterSize()*2 && Dungeon.depth < Dungeon.chapterSize()*3) {
 			return new CavesLevel();
 		}
 		if (Dungeon.depth == Dungeon.chapterSize()*3){
-			return new NewCavesBossLevel();
+			return new CavesBossLevel();
 		}
 		if (Dungeon.depth > Dungeon.chapterSize()*3 && Dungeon.depth < Dungeon.chapterSize()*4) {
 			return new CityLevel();
@@ -775,7 +776,11 @@ public class Dungeon {
 
 	//TODO hero max vision is now separate from shadowcaster max vision. Might want to adjust.
 	public static void observe(){
-		observe( 13 );
+		int dist = Math.max(Dungeon.hero.viewDistance, 8);
+		if (Dungeon.hero.hasTalent(Talent.SHARP_VISION)){
+			dist += 1*Dungeon.hero.pointsInTalent(Talent.SHARP_VISION);
+		}
+		observe( dist+1 );
 	}
 	
 	public static void observe( int dist ) {
@@ -857,7 +862,11 @@ public class Dungeon {
 			BArray.setFalse(passable);
 	}
 
-	public static PathFinder.Path findPath(Char ch, int to, boolean[] pass, boolean[] vis, boolean chars) {
+	public static boolean[] findPassable(Char ch, boolean[] pass, boolean[] vis, boolean chars){
+		return findPassable(ch, pass, vis, chars, chars);
+	}
+
+	public static boolean[] findPassable(Char ch, boolean[] pass, boolean[] vis, boolean chars, boolean considerLarge){
 
 		setupPassable();
 		if (ch.flying || ch.buff( Amok.class ) != null) {
@@ -866,7 +875,7 @@ public class Dungeon {
 			System.arraycopy( pass, 0, passable, 0, Dungeon.level.length() );
 		}
 
-		if (Char.hasProp(ch, Char.Property.LARGE)){
+		if (considerLarge && Char.hasProp(ch, Char.Property.LARGE)){
 			BArray.and( pass, Dungeon.level.openSpace, passable );
 		}
 
@@ -878,7 +887,12 @@ public class Dungeon {
 			}
 		}
 
-		return PathFinder.find( ch.pos, to, passable );
+		return passable;
+	}
+
+	public static PathFinder.Path findPath(Char ch, int to, boolean[] pass, boolean[] vis, boolean chars) {
+
+		return PathFinder.find( ch.pos, to, findPassable(ch, pass, vis, chars) );
 
 	}
 	
@@ -888,52 +902,22 @@ public class Dungeon {
 			return Actor.findChar( to ) == null && (pass[to] || Dungeon.level.avoid[to]) ? to : -1;
 		}
 
-		setupPassable();
-		if (ch.flying || ch.buff( Amok.class ) != null) {
-			BArray.or( pass, Dungeon.level.avoid, passable );
-		} else {
-			System.arraycopy( pass, 0, passable, 0, Dungeon.level.length() );
-		}
-
-		if (chars && Char.hasProp(ch, Char.Property.LARGE)){
-			BArray.and( pass, Dungeon.level.openSpace, passable );
-		}
-
-		if (chars){
-			for (Char c : Actor.chars()) {
-				if (visible[c.pos]) {
-					passable[c.pos] = false;
-				}
-			}
-		}
-		
-		return PathFinder.getStep( ch.pos, to, passable );
+		return PathFinder.getStep( ch.pos, to, findPassable(ch, pass, visible, chars) );
 
 	}
 	
 	public static int flee( Char ch, int from, boolean[] pass, boolean[] visible, boolean chars ) {
 
-		setupPassable();
-		if (ch.flying) {
-			BArray.or( pass, Dungeon.level.avoid, passable );
-		} else {
-			System.arraycopy( pass, 0, passable, 0, Dungeon.level.length() );
-		}
-
-		if (Char.hasProp(ch, Char.Property.LARGE)){
-			BArray.and( pass, Dungeon.level.openSpace, passable );
-		}
-
-		if (chars) {
-			for (Char c : Actor.chars()) {
-				if (visible[c.pos]) {
-					passable[c.pos] = false;
-				}
-			}
-		}
+		//only consider chars impassable if our retreat path runs into them
+		boolean[] passable = findPassable(ch, pass, visible, false, true);
 		passable[ch.pos] = true;
 		
-		return PathFinder.getStepBack( ch.pos, from, passable );
+		int step =  PathFinder.getStepBack( ch.pos, from, passable );
+		while (step != -1 && Actor.findChar(step) != null && chars){
+			passable[step] = false;
+			step = PathFinder.getStepBack( ch.pos, from, passable );
+		}
+		return step;
 		
 	}
 

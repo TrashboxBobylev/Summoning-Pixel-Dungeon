@@ -58,6 +58,7 @@ public class SpectralShaman extends Mob {
 		lootChance = 1f;
 
 		properties.add(Property.UNDEAD);
+		properties.add(Property.ANIMAL);
 	}
 	
 	private boolean nextPedestal = true;
@@ -95,13 +96,13 @@ public class SpectralShaman extends Mob {
 		}
 		return 20;
 	}
-	
+
 	@Override
-	public int drRoll() {
+	public int defenseValue() {
 		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
-			return Random.NormalIntRange(4, 12);
+			return 13;
 		}
-		return Random.NormalIntRange(0, 8);
+		return 8;
 	}
 
 	public int pedestal(boolean left){
@@ -120,13 +121,13 @@ public class SpectralShaman extends Mob {
 	}
 
 	@Override
-	public void damage( int dmg, Object src ) {
+	public int damage(int dmg, Object src ) {
 
 		if (state == PASSIVE) {
 			state = HUNTING;
 		}
 
-		super.damage( dmg, src );
+		return super.damage( dmg, src );
 	}
 	
 	@Override
@@ -195,6 +196,7 @@ public class SpectralShaman extends Mob {
 					if (PathFinder.distance[j] == dist) {
 						
 						Wraith undead = Wraith.spawnForcefullyAt(j);
+						undead.alignment = alignment;
 						
 						ScrollOfTeleportation.appear( undead, j );
 						new Flare( 3, 32 ).color( 0x000000, false ).show( undead.sprite, 2f ) ;

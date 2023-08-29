@@ -69,8 +69,8 @@ public class Phantom extends AbyssalMob {
 	}
 
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(5 + abyssLevel()*6, 16 + abyssLevel()*9);
+	public int defenseValue() {
+		return 16 + abyssLevel()*9;
 	}
 
 	@Override

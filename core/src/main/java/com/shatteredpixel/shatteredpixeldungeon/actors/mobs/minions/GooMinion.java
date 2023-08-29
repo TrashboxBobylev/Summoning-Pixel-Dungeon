@@ -147,65 +147,6 @@ public class GooMinion extends Minion {
         }
     }
 
-    //    @Override
-//    protected boolean doAttack( Char enemy ) {
-//        if (pumpedUp == chargeTurns() - 1) {
-//            ((GooMinionSprite)sprite).pumpUp();
-//            PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.solid, null ), 2 );
-//            for (int i = 0; i < PathFinder.distance.length; i++) {
-//                if (PathFinder.distance[i] < Integer.MAX_VALUE)
-//                    GameScene.add(Blob.seed(i, chargeTurns(), GooWarn.class));
-//            }
-//            pumpedUp++;
-//
-//            spend( attackDelay() );
-//
-//            return true;
-//        } else if (pumpedUp >= chargeTurns() || Random.Int( (HP*2 <= HT) ? 2 : 5 ) > 0) {
-//
-//            boolean visible = Dungeon.level.heroFOV[pos];
-//
-//            if (visible) {
-//                if (pumpedUp >= chargeTurns()) {
-//                    ((GooMinionSprite) sprite).pumpAttack();
-//                }
-//                else
-//                    sprite.attack( enemy.pos );
-//            } else {
-//                if (pumpedUp >= chargeTurns()){
-//                    elementalAttack();
-//                }
-//                attack( enemy );
-//            }
-//
-//            spend( attackDelay() );
-//
-//            return !visible;
-//
-//        } else {
-//
-//            pumpedUp++;
-//
-//            ((GooMinionSprite)sprite).pumpUp();
-//
-//            for (int i=0; i < PathFinder.NEIGHBOURS9.length; i++) {
-//                int j = pos + PathFinder.NEIGHBOURS9[i];
-//                if (!Dungeon.level.solid[j]) {
-//                    GameScene.add(Blob.seed(j, chargeTurns(), GooWarn.class));
-//                }
-//            }
-//
-//            if (Dungeon.level.heroFOV[pos]) {
-//                sprite.showStatus( CharSprite.NEGATIVE, Messages.get(this, "!!!") );
-//                GLog.negative( Messages.get(this, "pumpup") );
-//            }
-//
-//            spend( attackDelay() );
-//
-//            return true;
-//        }
-//    }
-
     public void elementalAttack(){
         pumpedUp = 0;
         int min = 35, max = 75;
@@ -265,7 +206,7 @@ public class GooMinion extends Minion {
     }
 
     @Override
-    public void damage(int dmg, Object src) {
+    public int damage(int dmg, Object src) {
         boolean bleeding = (HP*2 <= HT);
         if (!(src instanceof Viscosity.DeferedDamage)) {
             float deferedDmgMulti = 0.5f;
@@ -277,12 +218,13 @@ public class GooMinion extends Minion {
             deferred.prolong((int) (dmg * deferedDmgMulti));
             dmg = (int) Math.min(dmg - dmg * deferedDmgMulti, 0);
         }
-        super.damage(dmg, src);
+        int damage = super.damage(dmg, src);
         if ((HP*2 <= HT) && !bleeding){
             sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "enraged"));
             ((GooMinionSprite)sprite).spray(true);
             yell(Messages.get(this, "gluuurp"));
         }
+        return damage;
     }
 
     private final String PUMPEDUP = "pumpedup";

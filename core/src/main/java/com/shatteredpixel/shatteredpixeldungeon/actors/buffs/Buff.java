@@ -53,6 +53,8 @@ public class Buff extends Actor {
 	//determines how the buff is announced when it is shown.
 	public enum buffType {POSITIVE, NEGATIVE, NEUTRAL}
 	public buffType type = buffType.NEUTRAL;
+	public enum buffSeverity {NOTHING, HARMFUL, DAMAGING};
+	public buffSeverity severity = buffSeverity.NOTHING;
 	
 	//whether or not the buff announces its name
 	public boolean announced = false;

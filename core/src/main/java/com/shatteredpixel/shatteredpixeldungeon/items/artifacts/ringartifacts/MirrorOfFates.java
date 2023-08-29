@@ -117,7 +117,7 @@ public class MirrorOfFates extends Artifact {
             MirrorOfFates.this.exp += exp;
             if (MirrorOfFates.this.exp > 20 + (level()+1)*20){
                 MirrorOfFates.this.exp = 0;
-                GLog.positive( Messages.get(this, "levelup") );
+                GLog.positive( Messages.get(MirrorOfFates.class, "level_up") );
                 upgrade();
                 updateQuickslot();
             }

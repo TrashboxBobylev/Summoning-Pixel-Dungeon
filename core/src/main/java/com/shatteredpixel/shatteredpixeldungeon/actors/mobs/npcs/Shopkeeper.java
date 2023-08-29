@@ -63,8 +63,9 @@ public class Shopkeeper extends NPC {
 	}
 	
 	@Override
-	public void damage( int dmg, Object src ) {
+	public int damage(int dmg, Object src ) {
 		flee();
+		return 0;
 	}
 	
 	@Override

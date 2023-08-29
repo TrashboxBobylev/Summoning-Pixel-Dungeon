@@ -24,18 +24,21 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.plants;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.TimeFreezing;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.watabou.noosa.particles.Emitter;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
@@ -63,11 +66,43 @@ public class Swiftthistle extends Plant {
 			
 			plantClass = Swiftthistle.class;
 		}
+
+		public static final String AC_CONSUME = "CONSUME";
+
+		@Override
+		public ArrayList<String> actions( Hero hero ) {
+			ArrayList<String> actions = super.actions( hero );
+			if (hero.pointsInTalent(Talent.TIMEBENDING) > 1)
+				actions.add( AC_CONSUME );
+			return actions;
+		}
+
+		@Override
+		public void execute(Hero hero, String action) {
+			super.execute(hero, action);
+			if (action.equals(AC_CONSUME)){
+				hero.spend( 2f );
+				hero.busy();
+				detach( hero.belongings.backpack );
+				Sample.INSTANCE.play(Assets.Sounds.PLANT, 1f, 0.5f);
+				Sample.INSTANCE.play(Assets.Sounds.LIGHTNING, 2f);
+				hero.sprite.centerEmitter().burst(SparkParticle.FACTORY, 20);
+				if (hero.buff(Talent.TimebendingCounter.class) != null)
+					hero.buff(Talent.TimebendingCounter.class).investEnergy(Talent.TimebendingActions.SPEED_SEED);
+
+				hero.sprite.operate( hero.pos );
+			}
+		}
+
+		@Override
+		public int sunValue() {
+			return 200;
+		}
 	}
 	
 	//FIXME lots of copypasta from time freeze here
 	
-	public static class TimeBubble extends Buff implements TimekeepersHourglass.TimeFreezing {
+	public static class TimeBubble extends Buff implements TimeFreezing {
 		
 		{
 			type = buffType.POSITIVE;
@@ -79,8 +114,10 @@ public class Swiftthistle extends Plant {
 		
 		@Override
 		public int icon() {
-			return BuffIndicator.SLOW;
+			return BuffIndicator.TIME;
 		}
+
+		public void tintIcon(Image icon) { icon.hardlight(1f, 0.33f, 0.2f); }
 
 		@Override
 		public float iconFadePercent() {
@@ -135,16 +172,7 @@ public class Swiftthistle extends Plant {
 
 		@Override
 		public void fx(boolean on) {
-			Emitter.freezeEmitters = on;
-			if (on){
-				for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
-					if (mob.sprite != null) mob.sprite.add(CharSprite.State.PARALYSED);
-				}
-			} else {
-				for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
-					if (mob.paralysed <= 0) mob.sprite.remove(CharSprite.State.PARALYSED);
-				}
-			}
+			TimeFreezing.doEffect(on);
 		}
 		
 		private static final String PRESSES = "presses";

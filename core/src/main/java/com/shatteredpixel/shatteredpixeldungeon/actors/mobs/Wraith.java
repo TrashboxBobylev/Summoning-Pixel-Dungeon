@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Attunement;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.stationary.RoseWraith;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
@@ -91,6 +92,10 @@ public class Wraith extends Mob {
             i = Random.NormalIntRange(parent.minDamage, parent.maxDamage);
             if (Dungeon.hero.buff(Attunement.class) != null) i *= Attunement.empowering();
         }
+		switch (Dungeon.hero.pointsInTalent(Talent.ARMORED_ARMADA)){
+			case 2: i *= 1.25f; break;
+			case 3: i *= 1.40f; break;
+		}
         return i;
 	}
 	
@@ -100,8 +105,32 @@ public class Wraith extends Mob {
         if (parent != null) i = parent.attackSkill(target);
         return i;
 	}
-	
-	public void adjustStats( int level ) {
+
+	@Override
+	public int defenseSkill(Char enemy) {
+		int skill = super.defenseSkill(enemy);
+		switch (Dungeon.hero.pointsInTalent(Talent.ARMORED_ARMADA)){
+			case 1: skill *= 0.3f; break;
+			case 2: skill *= 0.5f; break;
+			case 3: skill *= 0.66f; break;
+		}
+		return skill;
+	}
+
+	@Override
+	public int defenseProc(Char enemy, int damage) {
+		if (buff(Talent.ArmoredArmadaArmor.class) != null){
+			Talent.ArmoredArmadaArmor armor = buff(Talent.ArmoredArmadaArmor.class);
+			armor.hits--;
+			if (armor.hits <= 0)
+				armor.detach();
+			return 0;
+		}
+		else
+			return super.defenseProc(enemy, damage);
+	}
+
+	public void adjustStats(int level ) {
 		this.level = level;
 		defenseSkill = attackSkill( null ) * 5;
 		enemySeen = true;
@@ -119,13 +148,14 @@ public class Wraith extends Mob {
 		return true;
 	}
 	
-	public static void spawnAround( int pos ) {
+	public static Wraith spawnAround( int pos ) {
 		for (int n : PathFinder.NEIGHBOURS4) {
 			int cell = pos + n;
 			if (Dungeon.level.passable[cell] && Actor.findChar( cell ) == null) {
-				spawnAt( cell );
+				return spawnAt( cell );
 			}
 		}
+		return null;
 	}
 
 	@Override

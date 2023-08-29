@@ -32,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RotHeartSprite;
-import com.watabou.utils.Random;
 
 public class RotHeart extends Mob {
 
@@ -51,13 +50,14 @@ public class RotHeart extends Mob {
 	}
 
 	@Override
-	public void damage(int dmg, Object src) {
+	public int damage(int dmg, Object src) {
 		//TODO: when effect properties are done, change this to FIRE
 		if (src instanceof Burning) {
 			destroy();
 			sprite.die();
+			return 0;
 		} else {
-			super.damage(dmg, src);
+			return super.damage(dmg, src);
 		}
 	}
 
@@ -110,8 +110,8 @@ public class RotHeart extends Mob {
 	}
 
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 5);
+	public int defenseValue() {
+		return 5;
 	}
 	
 	{

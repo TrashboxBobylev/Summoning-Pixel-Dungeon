@@ -80,12 +80,12 @@ public class Blocking extends Weapon.Enchantment {
 		
 		@Override
 		public int icon() {
-			return BuffIndicator.ARMOR;
+			return BuffIndicator.ARMOR_GEN;
 		}
 		
 		@Override
 		public void tintIcon(Image icon) {
-			icon.hardlight(0.5f, 1f, 2f);
+			icon.hardlight(0x4c87ad);
 		}
 
 		@Override

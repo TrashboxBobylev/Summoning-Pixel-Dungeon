@@ -84,6 +84,14 @@ public enum HeroClass {
 		this.subClasses = subClasses;
 	}
 
+	public boolean hasSubclassing(){
+		return this != ADVENTURER;
+	}
+
+	public boolean hasClassAbilities(){
+		return this != ADVENTURER;
+	}
+
 	public void initHero( Hero hero ) {
 
 		hero.heroClass = this;

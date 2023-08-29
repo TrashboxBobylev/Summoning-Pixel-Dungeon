@@ -40,17 +40,14 @@ import java.util.HashMap;
 import static com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.ELEMENT_RESISTS;
 
 public class Wizard extends Minion implements Callback {
-	
-	private static final float TIME_TO_ZAP	= 1f;
-	
+
 	{
 		spriteClass = WizardSprite.class;
 
 		properties.add(Property.UNDEAD);
 		properties.add(Property.RANGED);
 
-		baseMaxDR = 10;
-		baseMinDR = 2;
+		baseDefense = 8;
 	}
 	
 	@Override
@@ -88,13 +85,13 @@ public class Wizard extends Minion implements Callback {
 	}
 
 	@Override
-	public void damage(int dmg, Object src) {
+	public int damage(int dmg, Object src) {
 		for (Class c : ELEMENT_RESISTS){
 			if (c.isAssignableFrom(src.getClass())){
 				dmg *= 0.75 - lvl*0.15f;
 			}
 		}
-		super.damage(dmg, src);
+		return super.damage(dmg, src);
 	}
 
 	//used so resistances can differentiate between melee and magical attacks

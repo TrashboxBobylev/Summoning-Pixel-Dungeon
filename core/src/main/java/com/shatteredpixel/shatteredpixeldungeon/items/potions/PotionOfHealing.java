@@ -32,8 +32,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.HealGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -54,11 +56,31 @@ public class PotionOfHealing extends Potion {
 	}
 
 	public static void heal( Char ch ){
-			//starts out healing 20 hp, no longer can heal up to full HP
-			Buff.affect(ch, Healing.class).setHeal((int) (0.8f * ch.HT + 4), 0.2f, 0);
-			if (ch == Dungeon.hero){
-				GLog.positive( Messages.get(PotionOfHealing.class, "heal") );
+		int amount = (int) (0.8f * ch.HT + 4);
+		if (Dungeon.hero.hasTalent(Talent.SUPPORT_POTION) && ch.buff(Talent.SupportPotionCooldown.class) == null){
+			float modifier = 1.0f;
+			switch (Dungeon.hero.pointsInTalent(Talent.SUPPORT_POTION)){
+				case 1: modifier = 0.65f; break;
+				case 2: modifier = 0.75f; break;
+				case 3: modifier = 0.80f; break;
 			}
+			amount = Math.min( Math.round(amount*modifier), ch.HT - ch.HP );
+			if (amount > 0 && ch.isAlive()) {
+				ch.HP += amount;
+				ch.sprite.emitter().start( Speck.factory( Speck.HEALING ), 0.4f, 1 );
+				ch.sprite.showStatus( CharSprite.POSITIVE, Integer.toString( amount ) );
+				Talent.Cooldown.affectHero(Talent.SupportPotionCooldown.class);
+				if (Dungeon.hero.pointsInTalent(Talent.SUPPORT_POTION) > 1){
+					Buff.affect(ch, Talent.SupportPotionPowerTracker.class);
+				}
+			}
+		} else {
+			//starts out healing 20 hp, no longer can heal up to full HP
+			Buff.affect(ch, Healing.class).setHeal(amount, 0.2f, 0);
+		}
+		if (ch == Dungeon.hero){
+			GLog.positive( Messages.get(PotionOfHealing.class, "heal") );
+		}
 	}
 
 	public static void pharmacophobiaProc( Hero hero ){

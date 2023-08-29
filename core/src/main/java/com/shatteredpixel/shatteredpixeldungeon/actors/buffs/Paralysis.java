@@ -26,6 +26,8 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -38,6 +40,7 @@ public class Paralysis extends FlavourBuff {
 
 	{
 		type = buffType.NEGATIVE;
+		severity = buffSeverity.HARMFUL;
 		announced = true;
 	}
 	
@@ -58,9 +61,16 @@ public class Paralysis extends FlavourBuff {
 			resist = Buff.affect(target, ParalysisResist.class);
 		}
 		resist.damage += damage;
-		if (Random.NormalIntRange(0, resist.damage) >= Random.NormalIntRange(0, target.HP)){
+		if (Random.NormalIntRange(0, resist.damage) >= Random.NormalIntRange(0, target.HP)) {
 			if (Dungeon.level.heroFOV[target.pos]) {
 				target.sprite.showStatus(CharSprite.NEUTRAL, Messages.get(this, "out"));
+			}
+			if (target instanceof Hero && ((Hero) target).hasTalent(Talent.SUFFERING_AWAY)){
+				int power = resist.damage;
+				if (((Hero) target).pointsInTalent(Talent.SUFFERING_AWAY) > 2)
+					power *= 1.33f;
+				Buff.affect(target, FoodRegen.class).fullHP = power;
+				resist.detach();
 			}
 			detach();
 		}
@@ -116,6 +126,12 @@ public class Paralysis extends FlavourBuff {
 		@Override
 		public boolean act() {
 			if (target.buff(Paralysis.class) == null) {
+				if (target instanceof Hero && ((Hero) target).hasTalent(Talent.SUFFERING_AWAY)){
+					int power = (int) Math.ceil(damage / 20f);
+					if (((Hero) target).pointsInTalent(Talent.SUFFERING_AWAY) > 2)
+						power *= 1.33f;
+					Regeneration.regenerate(target, power);
+				}
 				damage -= Math.ceil(damage / 10f);
 				if (damage >= 0) detach();
 			}

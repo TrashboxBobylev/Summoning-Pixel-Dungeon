@@ -38,6 +38,13 @@ public class SmokeParticle extends PixelParticle {
 			((SmokeParticle)emitter.recycle( SmokeParticle.class )).reset( x, y );
 		}
 	};
+
+	public static final Factory COLD = new Factory() {
+		@Override
+		public void emit( Emitter emitter, int index, float x, float y ) {
+			((SmokeParticle)emitter.recycle( SmokeParticle.class )).resetCold( x, y );
+		}
+	};
 	
 	public static final Factory SPEW = new Factory() {
 		@Override
@@ -62,6 +69,17 @@ public class SmokeParticle extends PixelParticle {
 		
 		left = lifespan = Random.Float( 0.6f, 1f );
 		speed.set( Random.Float( -4, +4 ), Random.Float( -8, +8 ) );
+	}
+
+	public void resetCold( float x, float y ) {
+		revive();
+		color( 0x93fefc );
+
+		this.x = x;
+		this.y = y;
+
+		left = lifespan = Random.Float( 0.5f, 1.25f );
+		speed.set( Random.Float( -3, +3 ), Random.Float( -7, +7 ) );
 	}
 	
 	public void resetSpew( float x, float y ) {

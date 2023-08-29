@@ -81,10 +81,10 @@ public class Monk extends Mob {
 	protected float attackDelay() {
 		return super.attackDelay()*0.5f;
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 2);
+	public int defenseValue() {
+		return 2;
 	}
 	
 	@Override

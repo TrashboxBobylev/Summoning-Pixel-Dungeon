@@ -53,6 +53,7 @@ public class Bat extends Mob {
 		
 		loot = new PotionOfHealing();
 		lootChance = 0.1667f; //by default, see rollToDropLoot()
+		properties.add(Property.ANIMAL);
 	}
 
 	{
@@ -68,12 +69,12 @@ public class Bat extends Mob {
 	public int attackSkill( Char target ) {
 		return 16;
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 4);
+	public int defenseValue() {
+		return 5;
 	}
-	
+
 	@Override
 	public int attackProc( Char enemy, int damage ) {
 		damage = super.attackProc( enemy, damage );
@@ -92,7 +93,7 @@ public class Bat extends Mob {
 		boolean act = super.act();
 		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT) {
 			if (Dungeon.level.distance(pos, Dungeon.hero.pos) < 3){
-				Buff.affect(this, Bleeding.class).setForcefully(2f);
+				Buff.affect(Dungeon.hero, Bleeding.class).setForcefully(2f);
 				Hero.arrangeBlast(pos, sprite, MagicMissile.BLOOD_CONE, 2f);
 			}
 		}

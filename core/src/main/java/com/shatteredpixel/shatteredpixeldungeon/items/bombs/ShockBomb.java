@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.bombs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -33,6 +34,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.FinalFroggit;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
@@ -151,6 +154,7 @@ public class ShockBomb extends Bomb {
         if (numberOfUses > 30 && numberOfUses < 40) chance = 0.08f;
         if (numberOfUses > 40 && numberOfUses > 50) chance = 0.12f;
         if (numberOfUses > 50) chance = 0.24f;
+        chance /= Bomb.nuclearBoost();
         return chance;
     }
 
@@ -163,6 +167,7 @@ public class ShockBomb extends Bomb {
             dist = 4;
         else
             dist = 2;
+        dist *= Bomb.nuclearBoost();
 
         PathFinder.buildDistanceMap( ch.pos, BArray.not( Dungeon.level.solid, null ), dist );
         for (int i = 0; i < PathFinder.distance.length; i++) {
@@ -235,6 +240,7 @@ public class ShockBomb extends Bomb {
             target.sprite.flash();
 
             if (target == Dungeon.hero && !target.isAlive()) {
+                Badges.validateDeathFromFriendlyMagic();
                 Dungeon.fail(Electricity.class);
             }
         }
@@ -288,6 +294,13 @@ public class ShockBomb extends Bomb {
                 if (bonus != null && bonus.remainder() > 0f) {
                     charge += 0.05f * bonus.remainder();
                 }
+            }
+            if (target instanceof Hero && ((Hero) target).pointsInTalent(Talent.SUFFERING_AWAY) > 1 &&
+                    target.buff(FinalFroggit.Eradication.class) != null){
+                int power = target.buff(FinalFroggit.Eradication.class).combo;
+                if (((Hero) target).pointsInTalent(Talent.SUFFERING_AWAY) > 2)
+                    power *= 1.75f;
+                charge += 0.05f * power;
             }
             if (charge > 1) charge = 1;
             updateQuickslot();

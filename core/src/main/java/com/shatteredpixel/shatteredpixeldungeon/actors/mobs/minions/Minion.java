@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.PerfumeGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Piranha;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Yog;
@@ -62,10 +63,7 @@ public abstract class Minion extends Mob {
     public int maxDamage = 0;
     private float partialHealing;
 
-    protected int minDR = 0;
-    protected int maxDR = 0;
-    public int baseMinDR = 0;
-    public int baseMaxDR = 0;
+    public int baseDefense = 0;
 
     public int strength = 9;
     protected int defendingPos = -1;
@@ -111,12 +109,6 @@ public abstract class Minion extends Mob {
             return;
         }
 
-        //TODO commenting this out for now, it should be pointless??
-		/*if (fieldOfView == null || fieldOfView.length != Dungeon.level.length()){
-			fieldOfView = new boolean[Dungeon.level.length()];
-		}
-		Dungeon.level.updateFieldOfView( this, fieldOfView );*/
-
         if (Actor.findChar(cell) == Dungeon.hero){
             followHero();
 
@@ -141,8 +133,7 @@ public abstract class Minion extends Mob {
         super.storeInBundle(bundle);
         bundle.put("minDamage", minDamage);
         bundle.put("maxDamage", maxDamage);
-        bundle.put("minDR", baseMinDR);
-        bundle.put("maxDR", baseMaxDR);
+        bundle.put("maxDR", baseDefense);
         bundle.put("str", strength);
         bundle.put("att", attunement);
         bundle.put("enchantment", enchantment);
@@ -161,8 +152,7 @@ public abstract class Minion extends Mob {
 
         minDamage = bundle.getInt("minDamage");
         maxDamage = bundle.getInt("maxDamage");
-        baseMinDR = bundle.getInt("minDR");
-        baseMaxDR = bundle.getInt("maxDR");
+        baseDefense = bundle.getInt("maxDR");
         strength = bundle.getInt("str");
         attunement = bundle.getInt("att");
         lvl = bundle.getInt("level");
@@ -241,11 +231,6 @@ public abstract class Minion extends Mob {
         maxDamage = max;
     }
 
-    public void adjustDamage(int min, int max){
-        minDamage += min;
-        maxDamage += max;
-    }
-
     @Override
     public int damageRoll() {
         int i = Random.NormalIntRange(minDamage, maxDamage);
@@ -258,13 +243,8 @@ public abstract class Minion extends Mob {
         return augmentOffense.damageFactor(i);
     }
 
-    public void setDR(int min, int max){
-        minDR = min;
-        maxDR = max;
-    }
-
     @Override
-    public void damage(int dmg, Object src) {
+    public int damage(int dmg, Object src) {
         if (AntiMagic.RESISTS.contains(src.getClass()) && buff(MagicalResistance.class) != null){
             dmg -= Random.NormalIntRange(0, 7);
             if (dmg < 0) dmg = 0;
@@ -272,19 +252,12 @@ public abstract class Minion extends Mob {
         if (Dungeon.hero.belongings.armor instanceof ConjurerArmor &&
                 Dungeon.hero.belongings.armor.level() == 2)
             dmg *= 0.6f;
-        super.damage(dmg, src);
-    }
-
-    public void adjustDR(int min, int max){
-        minDR += Math.max(-2, min);
-        maxDR += Math.max(-4, max);
+        return super.damage(dmg, src);
     }
 
     @Override
-    public int drRoll() {
-        int i = Random.NormalIntRange(minDR + baseMinDR, maxDR + baseMaxDR);
-        if (buff(AdditionalDefense.class) != null) i += Random.NormalIntRange(1, 5);
-        return augmentOffense.damageFactor(i);
+    public int defenseValue() {
+        return augmentOffense.damageFactor(baseDefense);
     }
 
     @Override
@@ -321,6 +294,8 @@ public abstract class Minion extends Mob {
         if (timer == -1) {
             if (cause == Chasm.class){
                 super.die( cause );
+            } else if (this instanceof Talent.DogBreedingMinion){
+                Buff.affect(this, Talent.DogBreedingDeathRefusal.class);
             } else if (buff(NecromancyStat.class) != null){
                 timer = buff(NecromancyStat.class).level+1;
                 sprite.add(CharSprite.State.SPIRIT);
@@ -418,6 +393,10 @@ public abstract class Minion extends Mob {
     public float speed() {
         float speed = 1f / augmentOffense.delayFactor(super.speed()*Dungeon.hero.speed());
 
+        if (Dungeon.hero.hasTalent(Talent.SUFFERING_AWAY) && Dungeon.hero.buff(Charm.class) != null &&
+                enemy.id() == Dungeon.hero.buff(Charm.class).object)
+            speed *= 2;
+
         //moves 2 tiles at a time when returning to the hero
         if (state == WANDERING && defendingPos == -1){
             speed *= 2;
@@ -432,26 +411,26 @@ public abstract class Minion extends Mob {
         return augmentOffense.delayFactor(delay);
     }
 
+    public static Char whatToFollow(Char follower, Char start) {
+        Char toFollow = start;
+        boolean[] passable = Dungeon.level.passable.clone();
+        PathFinder.buildDistanceMap(follower.pos, passable, Integer.MAX_VALUE);//No limit on distance
+        for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+            if (mob.alignment == follower.alignment &&
+                    PathFinder.distance[toFollow.pos] > PathFinder.distance[mob.pos] &&
+                    mob.following(toFollow)) {
+                toFollow = whatToFollow(follower, mob);
+            }
+            else {
+                return start;
+            }
+        }
+        return toFollow;
+    }
+
     //ported from DriedRose.java
     //minions will always move towards hero if enemies not here
     public class Wandering extends Mob.Wandering implements AiState{
-
-        private Char toFollow(Char start) {
-            Char toFollow = start;
-            boolean[] passable = Dungeon.level.passable.clone();
-            PathFinder.buildDistanceMap(pos, passable, Integer.MAX_VALUE);//No limit on distance
-            for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-                if (mob.alignment == alignment &&
-                        PathFinder.distance[toFollow.pos] > PathFinder.distance[mob.pos] &&
-                        mob.following(toFollow)) {
-                    toFollow = toFollow(mob);
-                }
-                else {
-                    return start;
-                }
-            }
-            return toFollow;
-        }
 
         @Override
         public boolean act( boolean enemyInFOV, boolean justAlerted ) {
@@ -470,7 +449,7 @@ public abstract class Minion extends Mob {
             } else {
 
                 enemySeen = false;
-                Char toFollow = toFollow(Dungeon.hero);
+                Char toFollow = whatToFollow(Minion.this, Dungeon.hero);
                 int oldPos = pos;
                 target = defendingPos != -1 ? defendingPos : toFollow.pos;
                 //always move towards the target when wandering
@@ -503,8 +482,7 @@ public abstract class Minion extends Mob {
                 augmentOffense.damageFactor(Math.round(minDamage*empowering)),
                       augmentOffense.damageFactor(Math.round(maxDamage*empowering)),
                     HP, HT,
-                    augmentOffense.damageFactor(minDR + baseMinDR),
-                    augmentOffense.damageFactor(maxDR + baseMaxDR));
+                    attunement);
     }
 
     public void onLeaving(){}

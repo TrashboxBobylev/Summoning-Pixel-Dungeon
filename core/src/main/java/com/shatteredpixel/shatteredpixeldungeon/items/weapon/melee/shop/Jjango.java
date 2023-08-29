@@ -28,9 +28,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 
@@ -65,9 +65,8 @@ public class Jjango extends MeleeWeapon {
             }
             blood.detach();
             if (Dungeon.mode != Dungeon.GameMode.HELL) {
-                Dungeon.hero.HP = (int) Math.min(Dungeon.hero.HP + bloodAmount, Dungeon.hero.HT);
+                Regeneration.regenerate(Dungeon.hero, (int) bloodAmount);
                 Dungeon.hero.sprite.emitter().start(Speck.factory(Speck.HEALING), 0.4f, 1);
-                Dungeon.hero.sprite.showStatus(CharSprite.POSITIVE, Integer.toString((int) bloodAmount));
             }
         }
         return 0;

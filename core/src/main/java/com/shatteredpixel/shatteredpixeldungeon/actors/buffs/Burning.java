@@ -31,13 +31,16 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.Wet;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Thief;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.EnergyCrystal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.FrozenCarpaccio;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.StewedMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -63,6 +66,7 @@ public class Burning extends Buff implements Hero.Doom {
 
 	{
 		type = buffType.NEGATIVE;
+		severity = buffSeverity.DAMAGING;
 		announced = true;
 	}
 	
@@ -99,9 +103,12 @@ public class Burning extends Buff implements Hero.Doom {
 			if (target instanceof Hero) {
 				
 				Hero hero = (Hero)target;
+				int sufferingPower = hero.pointsInTalent(Talent.SUFFERING_AWAY);
 
 				hero.damage( damage, this );
 				burnIncrement++;
+				if (sufferingPower > 1)
+					 burnIncrement++;
 
 				//at 4+ turns, there is a (turns-3)/3 chance an item burns
 				if (Random.Int(3) < (burnIncrement - 3)){
@@ -118,10 +125,23 @@ public class Burning extends Buff implements Hero.Doom {
 					if (!burnable.isEmpty()){
 						Item toBurn = Random.element(burnable).detach(hero.belongings.backpack);
 						GLog.warning( Messages.get(this, "burnsup", Messages.capitalize(toBurn.toString())) );
+						if (toBurn instanceof Scroll && sufferingPower > 1){
+							if (!toBurn.collect( hero.belongings.backpack )) {
+								Dungeon.level.drop( toBurn, hero.pos ).sprite.drop();
+							}
+							new EnergyCrystal(toBurn.energyVal()*2/3).doPickUp(hero);
+						}
 						if (toBurn instanceof MysteryMeat || toBurn instanceof FrozenCarpaccio){
-							ChargrilledMeat steak = new ChargrilledMeat();
-							if (!steak.collect( hero.belongings.backpack )) {
-								Dungeon.level.drop( steak, hero.pos ).sprite.drop();
+							if (sufferingPower > 1){
+								StewedMeat steak = new StewedMeat();
+								if (!steak.collect( hero.belongings.backpack )) {
+									Dungeon.level.drop( steak, hero.pos ).sprite.drop();
+								}
+							} else {
+								ChargrilledMeat steak = new ChargrilledMeat();
+								if (!steak.collect(hero.belongings.backpack)) {
+									Dungeon.level.drop(steak, hero.pos).sprite.drop();
+								}
 							}
 						}
 						Heap.burnFX( hero.pos );

@@ -25,7 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.TimeFreezing;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
@@ -51,7 +51,7 @@ public class ScrollOfPassage extends ExoticScroll {
 			
 		}
 
-		TimekeepersHourglass.TimeFreezing timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.TimeFreezing.class );
+		TimeFreezing timeFreeze = Dungeon.hero.buff( TimeFreezing.class );
 		if (timeFreeze != null) timeFreeze.detach();
 		
 		InterlevelScene.mode = InterlevelScene.Mode.RETURN;

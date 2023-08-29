@@ -62,12 +62,13 @@ public class RotLasher extends Mob {
 	}
 
 	@Override
-	public void damage(int dmg, Object src) {
+	public int damage(int dmg, Object src) {
 		if (src instanceof Burning) {
 			destroy();
 			sprite.die();
+			return 0;
 		} else {
-			super.damage(dmg, src);
+			return super.damage(dmg, src);
 		}
 	}
 
@@ -104,8 +105,8 @@ public class RotLasher extends Mob {
 	}
 
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 8);
+	public int defenseValue() {
+		return 8;
 	}
 	
 	{

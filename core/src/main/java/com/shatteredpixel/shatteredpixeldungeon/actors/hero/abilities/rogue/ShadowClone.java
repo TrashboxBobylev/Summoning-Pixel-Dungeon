@@ -216,9 +216,9 @@ public class ShadowClone extends ArmorAbility {
 		}
 
 		@Override
-		public int drRoll() {
-			int dr = super.drRoll();
-			int heroRoll = Dungeon.hero.drRoll();
+		public int actualDrRoll() {
+			int dr = super.actualDrRoll();
+			int heroRoll = Dungeon.hero.actualDrRoll();
 			heroRoll = Math.round(0.5f * heroRoll);
 			if (heroRoll > 0){
 				dr += heroRoll;
@@ -249,7 +249,7 @@ public class ShadowClone extends ArmorAbility {
 		}
 
 		@Override
-		public void damage(int dmg, Object src) {
+		public int damage(int dmg, Object src) {
 
 			//TODO improve this when I have proper damage source logic
 			if (Random.Int(4) < 3
@@ -259,7 +259,7 @@ public class ShadowClone extends ArmorAbility {
 				dmg -= AntiMagic.drRoll(Dungeon.hero.belongings.armor.powerLevel());
 			}
 
-			super.damage(dmg, src);
+			return super.damage(dmg, src);
 		}
 
 		@Override

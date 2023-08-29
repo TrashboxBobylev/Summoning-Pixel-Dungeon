@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -34,14 +35,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blocking;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MirrorSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.Random;
 
 public class MirrorImage extends NPC {
 	
@@ -104,29 +103,24 @@ public class MirrorImage extends NPC {
 	}
 
 	@Override
-	public void damage(int dmg, Object src) {
+	public int damage(int dmg, Object src) {
 		if (hero.hasTalent(Talent.TIME_TOGETHER)) {
 			if (!(src instanceof Char)) {
 				int dm = damageHero(null, dmg, 0.75f);
 				if (dm >= Dungeon.hero.HP) {
-					super.damage(dmg, src);
-					return;
+                    return super.damage(dmg, src);
 				}
 				hero.damage(dm, this);
-				return;
+				return dm;
 			}
 		}
-		super.damage(dmg, src);
+		return super.damage(dmg, src);
 	}
 
 	public int damageHero(Char enemy, int damage, float armorPercent) {
-		int dr = Math.round(hero.drRoll() * armorPercent);
-		Barkskin bark = hero.buff(Barkskin.class);
-		if (bark != null)   dr += Random.NormalIntRange( 0 , bark.level() );
-
-		Blocking.BlockBuff block = hero.buff(Blocking.BlockBuff.class);
-		if (block != null)  dr += block.blockingRoll();
-		if (hero.buff(Shrink.class) != null || hero.buff(TimedShrink.class) != null) dr *= 0.5f;
+		if (hero.hasTalent(Talent.TIME_TOGETHER) && hero.pointsInTalent(Talent.GUIDANCE_FLAME) > 2 && hero.buff(GuidanceLight.class) != null)
+			damage *= 1.75f;
+		int dr = Math.round(hero.actualDrRoll() * armorPercent);
 		if (enemy != null)
 			damage = hero.defenseProc(enemy, damage);
 		damage -= dr;
@@ -182,19 +176,30 @@ public class MirrorImage extends NPC {
 	
 	@Override
 	protected float attackDelay() {
-		return hero.attackDelay(); //handles ring of furor
+		float delay = hero.attackDelay();
+		if (hero.hasTalent(Talent.TIME_TOGETHER) && hero.pointsInTalent(Talent.GUIDANCE_FLAME) > 2 && hero.buff(GuidanceLight.class) != null)
+			delay /= 2;
+		return delay; //handles ring of furor
 	}
-	
+
+	@Override
+	public float speed() {
+		float delay = super.speed();
+		if (hero.hasTalent(Talent.TIME_TOGETHER) && hero.pointsInTalent(Talent.GUIDANCE_FLAME) > 2 && hero.buff(GuidanceLight.class) != null)
+			delay *= 2;
+		return delay;
+	}
+
 	@Override
 	protected boolean canAttack(Char enemy) {
 		return super.canAttack(enemy) || (hero.belongings.weapon != null && hero.belongings.weapon.canReach(this, enemy.pos));
 	}
-	
+
 	@Override
-	public int drRoll() {
+	public int defenseValue() {
 		if (hero != null && hero.belongings.weapon != null){
-			return Random.NormalIntRange(0, hero.belongings.weapon.defenseFactor(this)/
-					(hero.pointsInTalent(Talent.TIME_TOGETHER) > 1 ? 1 : 2));
+			return hero.belongings.weapon.defenseFactor(this)/
+					(hero.pointsInTalent(Talent.TIME_TOGETHER) > 1 ? 1 : 2);
 		} else {
 			return 0;
 		}
@@ -215,6 +220,7 @@ public class MirrorImage extends NPC {
 		if (hero.belongings.weapon != null){
 			damage = hero.belongings.weapon.proc( this, enemy, damage );
 			if (!enemy.isAlive() && enemy == Dungeon.hero){
+				Badges.validateDeathFromFriendlyMagic();
 				Dungeon.fail(getClass());
 				GLog.negative( Messages.capitalize(Messages.get(Char.class, "kill", name())) );
 			}

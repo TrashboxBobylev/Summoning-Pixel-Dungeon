@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.HeavyFlail;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SilkyQuiver;
@@ -179,6 +180,12 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		if (item instanceof Stars.ProjectileStar){
 			speed *= 2f;
 			parent.addToFront(this);
+		}
+		if (item instanceof MissileWeapon && Dungeon.hero.buff(Talent.SniperPatienceTracker.class) != null){
+			speed = 800f;
+		}
+		if (item instanceof MissileWeapon && Dungeon.hero.pointsInTalent(Talent.SHARP_VISION) > 1 && Dungeon.hero.hasTalent(Talent.OLYMPIC_SKILLS)){
+			speed *= 2f;
 		}
 		
 		PosTweener tweener = new PosTweener( this, to, d.length() / speed );

@@ -25,17 +25,20 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DirectableAlly;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
@@ -416,7 +419,11 @@ public class DriedRose extends Artifact {
 				}
 
 				if (spawnPoints.size() > 0) {
-					Wraith.spawnAt(Random.element(spawnPoints));
+					Wraith wraith = Wraith.spawnAt(Random.element(spawnPoints));
+					if (wraith != null && Dungeon.hero.hasTalent(Talent.ARMORED_ARMADA)){
+						Buff.affect(wraith, Talent.ArmoredArmadaArmor.class).hits =
+								Dungeon.hero.pointsInTalent(Talent.ARMORED_ARMADA) > 2 ? 3 : 2;
+					}
 					Sample.INSTANCE.play(Assets.Sounds.CURSED);
 				}
 
@@ -627,6 +634,7 @@ public class DriedRose extends Artifact {
 			if (rose != null && rose.weapon != null) {
 				damage = rose.weapon.proc( this, enemy, damage );
 				if (!enemy.isAlive() && enemy == Dungeon.hero){
+					Badges.validateDeathFromFriendlyMagic();
 					Dungeon.fail(getClass());
 					GLog.negative( Messages.capitalize(Messages.get(Char.class, "kill", name())) );
 				}
@@ -644,17 +652,18 @@ public class DriedRose extends Artifact {
 		}
 		
 		@Override
-		public void damage(int dmg, Object src) {
+		public int damage(int dmg, Object src) {
 			//TODO improve this when I have proper damage source logic
 			if (rose != null && rose.armor != null && rose.armor.hasGlyph(AntiMagic.class, this)
 					&& AntiMagic.RESISTS.contains(src.getClass())){
 				dmg -= AntiMagic.drRoll(rose.armor.powerLevel());
 			}
 			
-			super.damage( dmg, src );
+			int damage = super.damage( dmg, src );
 			
 			//for the rose status indicator
 			Item.updateQuickslot();
+			return damage;
 		}
 		
 		@Override
@@ -696,13 +705,13 @@ public class DriedRose extends Artifact {
 		}
 		
 		@Override
-		public int drRoll() {
+		public int defenseValue() {
 			int block = 0;
 			if (rose != null && rose.armor != null){
-				block += Random.NormalIntRange( rose.armor.DRMin(), rose.armor.DRMax());
+				block += rose.armor.defenseValue();
 			}
 			if (rose != null && rose.weapon != null){
-				block += Random.NormalIntRange( 0, rose.weapon.defenseFactor( this ));
+				block += rose.weapon.defenseFactor( this );
 			}
 			return block;
 		}

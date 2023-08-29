@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
@@ -62,16 +63,17 @@ public class SpectreRat extends AbyssalMob implements Callback {
 		properties.add(Property.DEMONIC);
 		properties.add(Property.RANGED);
 		properties.add(Property.UNDEAD);
+		properties.add(Property.ANIMAL);
 	}
 	
 	@Override
 	public int attackSkill( Char target ) {
 		return 36 + abyssLevel();
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0 + abyssLevel()*5, 10 + abyssLevel()*10);
+	public int defenseValue() {
+		return 10 + abyssLevel()*10;
 	}
 	
 	@Override
@@ -114,6 +116,7 @@ public class SpectreRat extends AbyssalMob implements Callback {
 			enemy.damage( dmg, new DarkBolt(this, dmg) );
 			
 			if (enemy == Dungeon.hero && !enemy.isAlive()) {
+				Badges.validateDeathFromEnemyMagic();
 				Dungeon.fail( getClass() );
 				GLog.negative( Messages.get(this, "bolt_kill") );
 			}

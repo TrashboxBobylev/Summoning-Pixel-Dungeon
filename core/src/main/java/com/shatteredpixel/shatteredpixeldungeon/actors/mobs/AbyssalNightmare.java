@@ -138,11 +138,6 @@ public class AbyssalNightmare extends AbyssalMob {
 	public int damageRoll() {
 		return Random.NormalIntRange( 20 + abyssLevel()*6, 36 + abyssLevel()*14 );
 	}
-
-	@Override
-	public int drRoll() {
-		return 0;
-	}
 	
 	@Override
 	public int attackSkill( Char target ) {
@@ -330,7 +325,7 @@ public class AbyssalNightmare extends AbyssalMob {
 		immunities.add(	GasterBlaster.class);
 		immunities.add(	MagicMissileMinion.class);
 
-		immunities.add(NewTengu.FireAbility.FireBlob.class);
+		immunities.add(Tengu.FireAbility.FireBlob.class);
 
 		immunities.add(Grim.class);
 		immunities.add(Kinetic.class);

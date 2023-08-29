@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
@@ -70,10 +71,10 @@ public class FinalFroggit extends AbyssalMob implements Callback {
 	public int attackSkill( Char target ) {
 		return 30 + abyssLevel()*10;
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0 + abyssLevel()*10, 8 + abyssLevel()*15);
+	public int defenseValue() {
+		return 8 + abyssLevel()*15;
 	}
 	
 	@Override
@@ -121,6 +122,7 @@ public class FinalFroggit extends AbyssalMob implements Callback {
 			enemy.damage( dmg, new Bolt(this, damage) );
 			
 			if (!enemy.isAlive() && enemy == Dungeon.hero) {
+				Badges.validateDeathFromEnemyMagic();
 				Dungeon.fail( getClass() );
 				GLog.negative( Messages.get(this, "bolt_kill") );
 			}
@@ -152,6 +154,7 @@ public class FinalFroggit extends AbyssalMob implements Callback {
 
         {
             type = buffType.NEGATIVE;
+			severity = buffSeverity.DAMAGING;
             announced = true;
         }
 

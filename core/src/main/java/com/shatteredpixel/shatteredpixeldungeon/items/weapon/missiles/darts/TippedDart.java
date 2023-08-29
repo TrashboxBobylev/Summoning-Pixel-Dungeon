@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -118,6 +119,10 @@ public abstract class TippedDart extends Dart {
 		}
 	}
 
+	public static float powerLevel(){
+		return Dungeon.hero.pointsInTalent(Talent.SPEEDY_STEALTH) > 2 ? 1.5f : 1f;
+	}
+
 	private static int targetPos = -1;
 
 	@Override
@@ -126,6 +131,9 @@ public abstract class TippedDart extends Dart {
 		
 		if (Dungeon.hero.subClass == HeroSubClass.WARDEN){
 			use /= 2f;
+		}
+		if (Dungeon.hero.pointsInTalent(Talent.SPEEDY_STEALTH) > 2){
+			use /= 1.67f;
 		}
 
 		//checks both destination and source position

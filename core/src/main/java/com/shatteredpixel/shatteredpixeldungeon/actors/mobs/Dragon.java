@@ -61,6 +61,7 @@ public class Dragon extends AbyssalMob {
         properties.add(Property.DEMONIC);
         properties.add(Property.UNDEAD);
         properties.add(Property.RANGED);
+        properties.add(Property.ANIMAL);
     }
 
     @Override
@@ -74,8 +75,8 @@ public class Dragon extends AbyssalMob {
     }
 
     @Override
-    public int drRoll() {
-        return Random.NormalIntRange(20 + abyssLevel()*10, 35 + abyssLevel()*10);
+    public int defenseValue() {
+        return 35 + abyssLevel()*10;
     }
 
     private int rangedCooldown = Random.NormalIntRange( 1, 3 );
@@ -211,13 +212,13 @@ public class Dragon extends AbyssalMob {
             }
         } else if (hit( this, enemy, false )) {
 
-            int dr = enemy.drRoll();
-            if (enemy.buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dr *= 0.5f;
+            int dr = enemy.actualDrRoll();
             int dmg = damageRoll();
             if (enemy.buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dmg *= 1.4f;
 
             int effectiveDamage = enemy.defenseProc(this, dmg);
-            effectiveDamage = Math.max(effectiveDamage - dr, 0);
+            effectiveDamage = Math.max( effectiveDamage -
+                    Random.NormalIntRange(Math.round(dr * 0.2f), Math.round(dr * 0.8f)), 0 );
 
             if (enemy.buff(Vulnerable.class) != null) {
                 effectiveDamage *= 1.33f;
@@ -349,8 +350,8 @@ public class Dragon extends AbyssalMob {
         }
 
         @Override
-        public int drRoll() {
-            return Random.NormalIntRange(19 + abyssLevel()*4, 28 + abyssLevel()*10);
+        public int defenseValue() {
+            return 28 + abyssLevel()*10;
         }
 
     }

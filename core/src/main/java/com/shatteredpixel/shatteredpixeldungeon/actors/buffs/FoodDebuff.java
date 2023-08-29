@@ -25,14 +25,20 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 
-public class FoodDebuff extends Buff {
+public class FoodDebuff extends Buff implements Hero.Doom  {
 	
 	{
 		type = buffType.NEGATIVE;
+		severity = buffSeverity.DAMAGING;
 		announced = true;
 		actPriority = HERO_PRIO - 1;
 	}
@@ -51,7 +57,16 @@ public class FoodDebuff extends Buff {
 		} else {
 			partialHP += fullHP / 50f;
 			while (partialHP > 1){
-				target.HP = Math.max(target.HP - 1, 0);
+				target.damage(1, Dungeon.hero.buff(Hunger.class));
+				if (Dungeon.hero.pointsInTalent(Talent.SUFFERING_AWAY) > 1) {
+					for (Char ch : Dungeon.level.mobs) {
+						if (ch.alignment == Char.Alignment.ENEMY &&
+								Dungeon.hero.fieldOfView[ch.pos] &&
+								Random.Int(Dungeon.hero.pointsInTalent(Talent.SUFFERING_AWAY) > 2 ? 2 : 3) == 0) {
+							ch.damage(1, Hunger.class);
+						}
+					}
+				}
 				partialHP--;
 				if (!target.isAlive()){
 					Dungeon.hero.die(Dungeon.hero.buff(Hunger.class));
@@ -83,6 +98,12 @@ public class FoodDebuff extends Buff {
 	@Override
 	public float iconFadePercent() {
 		return 1 - (left / 50f);
+	}
+
+	@Override
+	public void onDeath() {
+		Dungeon.fail( getClass() );
+		GLog.negative(Messages.get(this, "ondeath"));
 	}
 
 	private static final String LEFT = "left";

@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.effects.*;
@@ -56,7 +57,6 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.*;
 
 import java.util.ArrayList;
@@ -210,6 +210,7 @@ public class SoulOfYendor extends Artifact implements AlchemyScene.ToolkitLike {
                     hunger.satisfy(satietyPerCharge * chargesToUse);
 
                     Food.foodProc( hero );
+                    Talent.onFoodEaten(hero, satietyPerCharge * chargesToUse, this);
 
                     Statistics.foodEaten++;
 
@@ -221,7 +222,11 @@ public class SoulOfYendor extends Artifact implements AlchemyScene.ToolkitLike {
                     Sample.INSTANCE.play(Assets.Sounds.EAT);
                     GLog.i( Messages.get(HornOfPlenty.class, "eat") );
 
-                    hero.spend(Food.TIME_TO_EAT);
+                    if (Dungeon.hero.hasTalent(Talent.BREAD_AND_CIRCUSES)){
+                        hero.spend(Food.TIME_TO_EAT - 2);
+                    } else {
+                        hero.spend(Food.TIME_TO_EAT);
+                    }
 
                     Badges.validateFoodEaten();
 
@@ -446,7 +451,7 @@ public class SoulOfYendor extends Artifact implements AlchemyScene.ToolkitLike {
         }
     }
 
-    public class timeFreeze extends ArtifactBuff implements TimekeepersHourglass.TimeFreezing {
+    public class timeFreeze extends ArtifactBuff implements TimeFreezing {
 
         {
             type = buffType.POSITIVE;
@@ -497,16 +502,7 @@ public class SoulOfYendor extends Artifact implements AlchemyScene.ToolkitLike {
 
         @Override
         public void fx(boolean on) {
-            Emitter.freezeEmitters = on;
-            if (on){
-                for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
-                    if (mob.sprite != null) mob.sprite.add(CharSprite.State.PARALYSED);
-                }
-            } else {
-                for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
-                    if (mob.paralysed <= 0) mob.sprite.remove(CharSprite.State.PARALYSED);
-                }
-            }
+            TimeFreezing.doEffect(on);
         }
 
         private static final String PRESSES = "presses";

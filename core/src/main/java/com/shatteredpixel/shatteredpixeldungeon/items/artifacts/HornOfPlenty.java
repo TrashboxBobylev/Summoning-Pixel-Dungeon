@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
@@ -96,6 +97,7 @@ public class HornOfPlenty extends Artifact {
 				hunger.satisfy(satietyPerCharge * chargesToUse);
 
 				Food.foodProc( hero );
+				Talent.onFoodEaten(hero, satietyPerCharge * chargesToUse, this);
 
 				Statistics.foodEaten++;
 
@@ -107,7 +109,11 @@ public class HornOfPlenty extends Artifact {
 				Sample.INSTANCE.play(Assets.Sounds.EAT);
 				GLog.i( Messages.get(this, "eat") );
 
-				hero.spend(Food.TIME_TO_EAT);
+				if (Dungeon.hero.hasTalent(Talent.BREAD_AND_CIRCUSES)){
+					hero.spend(Food.TIME_TO_EAT - 2);
+				} else {
+					hero.spend(Food.TIME_TO_EAT);
+				}
 
 				Badges.validateFoodEaten();
 

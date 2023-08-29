@@ -45,6 +45,7 @@ public class Dog extends Mob {
 		
 		loot = Generator.random();
 		lootChance = 0.1f;
+		properties.add(Property.ANIMAL);
 	}
 
 	{
@@ -72,7 +73,7 @@ public class Dog extends Mob {
 	}
 
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 2);
+	public int defenseValue() {
+		return 2;
 	}
 }

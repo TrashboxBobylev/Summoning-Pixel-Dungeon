@@ -165,8 +165,8 @@ public class BlinkingMan extends AbyssalMob {
 	}
 	
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0 + abyssLevel()*4, 9 + abyssLevel()*6);
+	public int defenseValue() {
+		return 9 + abyssLevel()*6;
 	}
 
 	@Override

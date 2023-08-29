@@ -27,36 +27,45 @@ package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.EnergyOverload;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulWeakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.FinalFroggit;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.Overload;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.CloakGlyph;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.Sparking;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.FuelContainer;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SubtilitasSigil;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Tierable;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.PixelParticle;
-import com.watabou.utils.Bundle;
-import com.watabou.utils.Callback;
-import com.watabou.utils.PointF;
-import com.watabou.utils.Random;
+import com.watabou.utils.*;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -169,7 +178,17 @@ public abstract class Wand extends Weapon implements Tierable {
 	}
 
 	public float powerLevel(){
-		return powerLevel(level());
+		float powerLevel = powerLevel(level());
+		if (Dungeon.hero.buff(Weakness.class) != null && Dungeon.hero.hasTalent(Talent.SUFFERING_AWAY)){
+			powerLevel *= 1.25f;
+		}
+		if (Dungeon.hero.buff(Talent.SniperPatienceTracker.class) != null && Dungeon.hero.pointsInTalent(Talent.THAUMATURGY) > 1 && Dungeon.hero.buff(Talent.ThaumaturgyPatienceCooldown.class) == null){
+			if (this instanceof WandOfFireblast || this instanceof WandOfLightning)
+				powerLevel *= Talent.SniperPatienceTracker.damageModifier()*0.4f;
+			else
+				powerLevel *= Talent.SniperPatienceTracker.damageModifier();
+		}
+		return powerLevel;
 	}
 
 	@Override
@@ -461,7 +480,11 @@ public abstract class Wand extends Weapon implements Tierable {
 
 	protected boolean isMM;
 
-	protected void wandUsed() {
+	protected void wandUsed(){
+		wandUsed(null);
+	}
+
+	protected void wandUsed(Char target) {
         Statistics.wandUses++;
 		if (!isIdentified() && availableUsesToID >= 1) {
 			availableUsesToID--;
@@ -501,6 +524,31 @@ public abstract class Wand extends Weapon implements Tierable {
 		SubtilitasSigil.Recharge sigilCharge = curUser.buff(SubtilitasSigil.Recharge.class);
 		if (sigilCharge != null){
 			sigilCharge.gainExp(usedCharges);
+		}
+		if (Dungeon.hero.pointsInTalent(Talent.THAUMATURGY) > 1 && Dungeon.hero.buff(Talent.SniperPatienceTracker.class) != null){
+			if (target != null){
+				switch (Dungeon.hero.pointsInTalent(Talent.SNIPER_PATIENCE)){
+					case 2:
+						Buff.affect(target, Slow.class, 4f); break;
+					case 3:
+						Buff.affect(target, Slow.class, 6f);
+						Buff.affect(target, StoneOfAggression.Aggression.class, 10f);
+						PathFinder.buildDistanceMap( target.pos, BArray.not( Dungeon.level.solid, null ), 2 );
+						for (int i = 0; i < PathFinder.distance.length; i++) {
+							if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+								Char ch = Actor.findChar(i);
+								if (ch != null && ch.alignment == Char.Alignment.ENEMY){
+									ch.damage(1 + Dungeon.chapterNumber(), new WandOfBlastWave());
+								}
+								CellEmitter.get(i).burst(Speck.factory(Speck.SMOKE_DUST, true), Random.Int(4, 8));
+							}
+						}
+						Sample.INSTANCE.play(Assets.Sounds.BLAST);
+						break;
+				}
+			}
+			Buff.detach(Dungeon.hero, Talent.SniperPatienceTracker.class);
+			Talent.Cooldown.affectHero(Talent.ThaumaturgyPatienceCooldown.class);
 		}
 
 		curUser.spendAndNext( TIME_TO_ZAP );
@@ -648,10 +696,48 @@ public abstract class Wand extends Weapon implements Tierable {
 									}
 								});
 					} else {
-						curWand.fx(shot, new Callback() {
+						if (curUser.buff(CloakOfShadows.cloakStealth.class) != null &&
+								curUser.buff(CloakOfShadows.cloakStealth.class).glyph() instanceof Sparking){
+							new WandOfLightning().fx(shot, () -> {
+								ArrayList<Char> affected = new ArrayList<>();
+								for (int n : PathFinder.NEIGHBOURS9) {
+									int c = cell + n;
+									if (c >= 0 && c < Dungeon.level.length()) {
+										if (Dungeon.level.heroFOV[c]) {
+											CellEmitter.get(c).burst(SparkParticle.FACTORY, 4);
+										}
+
+										GameScene.add(Blob.seed(c, Math.round(12*CloakGlyph.efficiency()), Electricity.class));
+
+										Char ch = Actor.findChar(c);
+										if (ch != null && !(ch instanceof Hero)) {
+											affected.add(ch);
+										}
+									}
+								}
+
+								for (Char ch: affected){
+									int dmg = Math.round(Random.NormalIntRange(5 + Dungeon.scaledDepth(), 10 + Dungeon.scaledDepth()*2)*CloakGlyph.efficiency());
+
+									if (ch.pos != cell){
+										dmg = Math.round(dmg*0.8f);
+									}
+
+									dmg -= ch.actualDrRoll();
+
+									if (dmg > 0) {
+										if (!(Dungeon.isChallenged(Conducts.Conduct.PACIFIST)) || ch.alignment == Char.Alignment.ALLY)
+											ch.damage(dmg, this);
+									}
+								}
+
+								curWand.wandUsed();
+							});
+						} else
+							curWand.fx(shot, new Callback() {
 							public void call() {
 								curWand.onZap(shot);
-								curWand.wandUsed();
+								curWand.wandUsed(Actor.findChar(target));
 							}
 						});
 					}
@@ -740,6 +826,14 @@ public abstract class Wand extends Weapon implements Tierable {
 					partialCharge += CHARGE_BUFF_BONUS * bonus.remainder()/rechargeModifier();
 				}
 			}
+
+			if (target instanceof Hero && ((Hero) target).pointsInTalent(Talent.SUFFERING_AWAY) > 1 &&
+					target.buff(FinalFroggit.Eradication.class) != null){
+				int power = target.buff(FinalFroggit.Eradication.class).combo;
+				if (((Hero) target).pointsInTalent(Talent.SUFFERING_AWAY) > 2)
+					power *= 1.75f;
+				partialCharge += CHARGE_BUFF_BONUS * power;
+			}
 		}
 
 		public float getTurnsToCharge() {
@@ -760,7 +854,7 @@ public abstract class Wand extends Weapon implements Tierable {
 
 		public void gainCharge(float charge){
 			if (curCharges < maxCharges) {
-				partialCharge += charge*rechargeModifier();
+				partialCharge += charge/rechargeModifier();
 				while (partialCharge >= 1f) {
 					curCharges++;
 					partialCharge--;

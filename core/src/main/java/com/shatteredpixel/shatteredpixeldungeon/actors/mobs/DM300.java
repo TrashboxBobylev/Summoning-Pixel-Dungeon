@@ -40,11 +40,11 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EarthParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
-import com.shatteredpixel.shatteredpixeldungeon.items.bombs.ShrapnelBomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.MetalShard;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
+import com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.NewCavesBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -62,7 +62,7 @@ import com.watabou.utils.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewDM300 extends Mob {
+public class DM300 extends Mob {
 
 	{
 		spriteClass = DM300Sprite.class;
@@ -87,8 +87,8 @@ public class NewDM300 extends Mob {
 	}
 
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 10);
+	public int defenseValue() {
+		return 10;
 	}
 
 	public int pylonsActivated = 0;
@@ -285,7 +285,7 @@ public class NewDM300 extends Mob {
 		if (Dungeon.level.map[step] == Terrain.INACTIVE_TRAP && state == HUNTING) {
 
 			//don't gain energy from cells that are energized
-			if (NewCavesBossLevel.PylonEnergy.volumeAt(pos, NewCavesBossLevel.PylonEnergy.class) > 0){
+			if (CavesBossLevel.PylonEnergy.volumeAt(pos, CavesBossLevel.PylonEnergy.class) > 0){
 				return;
 			}
 
@@ -333,17 +333,18 @@ public class NewDM300 extends Mob {
 		int gasVented = 0;
 
 		Ballistica trajectory = new Ballistica(pos, target.pos, Ballistica.STOP_TARGET);
-		Class gas = Dungeon.mode == Dungeon.GameMode.DIFFICULT ? Inferno.class : ToxicGas.class;
+		Class<? extends Blob> gas = Dungeon.mode == Dungeon.GameMode.DIFFICULT ? Inferno.class : ToxicGas.class;
+		float gasMod = Dungeon.mode == Dungeon.GameMode.DIFFICULT ? 0.75f : 1f;
 
 		for (int i : trajectory.subPath(0, trajectory.dist)){
-			GameScene.add(Blob.seed(i, 20, gas));
-			gasVented += 20;
+			GameScene.add(Blob.seed(i, Math.round(20*gasMod), gas));
+			gasVented += 20*gasMod;
 		}
 
-		GameScene.add(Blob.seed(trajectory.collisionPos, 100, gas));
+		GameScene.add(Blob.seed(trajectory.collisionPos, Math.round(100*gasMod), gas));
 
-		if (gasVented < 250){
-			int toVentAround = (int)Math.ceil((250 - gasVented)/8f);
+		if (gasVented < 250*gasMod){
+			int toVentAround = (int)Math.ceil((250*gasMod - gasVented)/8f);
 			for (int i : PathFinder.NEIGHBOURS8){
 				GameScene.add(Blob.seed(pos+i, toVentAround, gas));
 			}
@@ -379,7 +380,7 @@ public class NewDM300 extends Mob {
 			safeCell = rockCenter + PathFinder.NEIGHBOURS8[Random.Int(8)];
 		} while (safeCell == pos
 				|| (Dungeon.level.solid[safeCell] && Random.Int(2) == 0)
-				|| (Blob.volumeAt(safeCell, NewCavesBossLevel.PylonEnergy.class) > 0 && Random.Int(2) == 0));
+				|| (Blob.volumeAt(safeCell, CavesBossLevel.PylonEnergy.class) > 0 && Random.Int(2) == 0));
 
 		ArrayList<Integer> rockCells = new ArrayList<>();
 
@@ -407,15 +408,15 @@ public class NewDM300 extends Mob {
 	private boolean invulnWarned = false;
 
 	@Override
-	public void damage(int dmg, Object src) {
-		super.damage(dmg, src);
+	public int damage(int dmg, Object src) {
+		int damage = super.damage(dmg, src);
 		if (isInvulnerable(src.getClass())){
-			return;
+			return 0;
 		}
 
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
 		if (lock != null && !isImmune(src.getClass())) lock.addTime(dmg);
-		if (dmg > 15 && Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+		if (dmg > 35 && Dungeon.mode == Dungeon.GameMode.DIFFICULT){
 			ArrayList<Integer> candidates = new ArrayList<>();
 
 			int[] neighbours = {pos + 1, pos - 1, pos + Dungeon.level.width(), pos - Dungeon.level.width()};
@@ -449,6 +450,8 @@ public class NewDM300 extends Mob {
 			supercharge();
 		}
 
+		return damage;
+
 	}
 
 	@Override
@@ -462,7 +465,7 @@ public class NewDM300 extends Mob {
 
 	public void supercharge(){
 		supercharged = true;
-		((NewCavesBossLevel)Dungeon.level).activatePylon();
+		((CavesBossLevel)Dungeon.level).activatePylon();
 		pylonsActivated++;
 
 		spend(3f);
@@ -544,7 +547,7 @@ public class NewDM300 extends Mob {
 			if (bestpos != pos){
 				Sample.INSTANCE.play( Assets.Sounds.ROCKS );
 
-				Rect gate = NewCavesBossLevel.gate;
+				Rect gate = CavesBossLevel.gate;
 				for (int i : PathFinder.NEIGHBOURS9){
 					if (Dungeon.level.map[pos+i] == Terrain.WALL || Dungeon.level.map[pos+i] == Terrain.WALL_DECO){
 						Point p = Dungeon.level.cellToPoint(pos+i);
@@ -558,7 +561,7 @@ public class NewDM300 extends Mob {
 				Dungeon.level.cleanWalls();
 				Dungeon.observe();
 				if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
-					new ShrapnelBomb().explode(pos);
+					new Bomb().explode(pos);
 				}
 				spend(3f);
 
@@ -624,7 +627,7 @@ public class NewDM300 extends Mob {
 				CellEmitter.get( i ).start( Speck.factory( Speck.ROCK ), 0.07f, 10 );
 
 				Char ch = Actor.findChar(i);
-				if (ch != null && !(ch instanceof NewDM300) && !(ch instanceof DM200)){
+				if (ch != null && !(ch instanceof DM300) && !(ch instanceof DM200)){
 					Buff.prolong( ch, Paralysis.class, 3 );
 				}
 			}

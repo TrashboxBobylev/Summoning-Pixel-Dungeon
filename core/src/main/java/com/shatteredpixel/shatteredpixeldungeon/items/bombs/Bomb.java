@@ -28,7 +28,9 @@ import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SmokeParticle;
@@ -189,15 +191,22 @@ public class Bomb extends Item {
 
 				int dmg = damageRoll();
 				if (this instanceof RatBomb) dmg = (int) (damageRoll() / Random.Float(2, 3.5f));
+				if (ch instanceof Hero && ((Hero) ch).hasTalent(Talent.NUCLEAR_RAGE)){
+					dmg *= 1f - (0.25f + 0.15f * ((Hero) ch).pointsInTalent(Talent.NUCLEAR_RAGE));
+				}
 				if (ch instanceof Hero && Dungeon.isChallenged(Conducts.Conduct.EXPLOSIONS))
 					dmg /= 2;
+				if (ch instanceof Hero && ch.buff(Vulnerable.class) != null && ((Hero) ch).hasTalent(Talent.SUFFERING_AWAY)){
+					dmg /= 1f + 0.2f*((Hero) ch).pointsInTalent(Talent.SUFFERING_AWAY);
+				}
 
 				//those not at the center of the blast take less damage
-				if (ch.pos != cell){
+				//unless Nuclear Rage is active, which removes the penalty
+				if (ch.pos != cell && !Dungeon.hero.hasTalent(Talent.NUCLEAR_RAGE)){
 					dmg = Math.round(dmg*0.8f);
 				}
 
-				dmg -= ch.drRoll();
+				dmg -= ch.actualDrRoll();
 
 				if (dmg > 0 && !harmless) {
 					if (!(Dungeon.isChallenged(Conducts.Conduct.PACIFIST)) || ch.alignment == Char.Alignment.ALLY)
@@ -213,23 +222,37 @@ public class Bomb extends Item {
 				Dungeon.observe();
 			}
 		}
+		if (Dungeon.hero.pointsInTalent(Talent.NUCLEAR_RAGE) > 1 && Random.Float() < 0.25f){
+			Bomb newBomb = Reflection.newInstance(getClass());
+			Dungeon.level.drop(newBomb, cell);
+		}
 	}
 
 	public static int damageRoll(){
-		//sewers: 9-25
-		//prison: 24-55
-		//caves: 39-85
-		//city: 44-115
-		//halls: 68-135
+		//sewers: 8-22
+		//prison: 24-47
+		//caves: 40-72
+		//city: 56-97
+		//halls: 72-122
 		return Random.NormalIntRange(minDamage(), maxDamage());
 	}
 
 	public static int maxDamage() {
-		return 25 + (Dungeon.chapterNumber())*30;
+		int baseDamage = 22 + (Dungeon.chapterNumber()) * 25;
+		if (Dungeon.hero.pointsInTalent(Talent.NUCLEAR_RAGE) > 1)
+			baseDamage *= 1.05f + 0.1f * (Dungeon.hero.pointsInTalent(Talent.NUCLEAR_RAGE)-1);
+		return baseDamage;
 	}
 
 	public static int minDamage() {
-		return 11 + (Dungeon.chapterNumber())*19;
+		int baseDamage = 8 + (Dungeon.chapterNumber())*16;
+		if (Dungeon.hero.pointsInTalent(Talent.NUCLEAR_RAGE) > 0)
+			baseDamage *= 1.05f + 0.1f * (Dungeon.hero.pointsInTalent(Talent.NUCLEAR_RAGE));
+		return baseDamage;
+	}
+
+	public static float nuclearBoost(){
+		return Math.max(1f, (85 + 15 * Dungeon.hero.pointsInTalent(Talent.NUCLEAR_RAGE)) / 100f);
 	}
 
 	@Override

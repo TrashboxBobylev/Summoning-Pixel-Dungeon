@@ -61,8 +61,6 @@ public class SyntheticArmor extends Armor {
 		return speedFactor;
 	}
 
-
-
 	@Override
 	public float evasionFactor(Char owner, float evasion) {
 		float evasionFactor = super.evasionFactor(owner, evasion);
@@ -72,24 +70,17 @@ public class SyntheticArmor extends Armor {
 		return evasionFactor;
 	}
 
-	public int DRMax(int lvl){
-
-		int max = 4 + lvl + augment.defenseFactor(lvl);
+	@Override
+	public int defenseValue(int lvl){
+		int val;
+		int max = 5 + lvl + augment.defenseFactor(lvl);
 		if (lvl > max){
-			return ((lvl - max)+1)/2;
+			val = ((lvl - max)+1)/2;
 		} else {
-			return max;
+			val = max;
 		}
-	}
 
-	public int DRMin(int lvl){
-
-		int max = DRMax(lvl);
-		if (lvl >= max){
-			return (lvl + 2 - max);
-		} else {
-			return lvl + 2;
-		}
+		return val;
 	}
 
 	public int STRReq(int lvl){

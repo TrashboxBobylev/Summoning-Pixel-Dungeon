@@ -110,12 +110,12 @@ public class PrismaticGuard extends Buff {
 	
 	@Override
 	public int icon() {
-		return BuffIndicator.ARMOR;
+		return BuffIndicator.ARMOR_GEN;
 	}
 	
 	@Override
 	public void tintIcon(Image icon) {
-		icon.hardlight(1f, 1f, 2f);
+		icon.hardlight(0x8c87ad);
 	}
 
 	@Override

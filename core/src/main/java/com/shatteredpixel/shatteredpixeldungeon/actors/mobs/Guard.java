@@ -130,11 +130,11 @@ public class Guard extends Mob {
 	}
 
 	@Override
-	public void damage(int dmg, Object src) {
+	public int damage(int dmg, Object src) {
 		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
 			dmg *= 0.75;
 		}
-		super.damage(dmg, src);
+		return super.damage(dmg, src);
 	}
 
 	@Override
@@ -143,8 +143,8 @@ public class Guard extends Mob {
 	}
 
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 7);
+	public int defenseValue() {
+		return 7;
 	}
 
 	@Override

@@ -30,16 +30,14 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.TimeFreezing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MimicSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -150,9 +148,7 @@ public class Mimic extends Mob {
 		Dungeon.hero.busy();
 		Dungeon.hero.sprite.operate(pos);
 		if (Dungeon.hero.invisible <= 0
-				&& Dungeon.hero.buff(Swiftthistle.TimeBubble.class) == null
-				&& Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class) == null
-				&& Dungeon.hero.buff(SoulOfYendor.timeFreeze.class) == null){
+				&& Dungeon.hero.buff(TimeFreezing.class) == null){
 			return doAttack(Dungeon.hero);
 		} else {
 			sprite.idle();
@@ -172,7 +168,7 @@ public class Mimic extends Mob {
 	}
 
 	@Override
-	public void damage(int dmg, Object src) {
+	public int damage(int dmg, Object src) {
 		if (state == PASSIVE){
 			alignment = Alignment.ENEMY;
 			stopHiding();
@@ -180,7 +176,7 @@ public class Mimic extends Mob {
 		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
 			dmg *= 0.75f;
 		}
-		super.damage(dmg, src);
+		return super.damage(dmg, src);
 	}
 
 	public void stopHiding(){
@@ -198,15 +194,15 @@ public class Mimic extends Mob {
 	@Override
 	public int damageRoll() {
 		if (alignment == Alignment.NEUTRAL){
-			return Random.NormalIntRange( 2 + 2*level, 2 + 2*level);
+			return Random.NormalIntRange( 3 + 2*level, 3 + 2*level);
 		} else {
-			return Random.NormalIntRange( 1 + level, 2 + 2*level);
+			return Random.NormalIntRange( 2 + level, 3 + 2*level);
 		}
 	}
 
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 1 + level/2);
+	public int defenseValue() {
+		return 1 + level/2;
 	}
 
 	{
@@ -234,7 +230,7 @@ public class Mimic extends Mob {
 	}
 	
 	public void adjustStats( int level ) {
-		HP = HT = (1 + level) * 6;
+		HP = HT = (2 + level) * 6;
 		defenseSkill = 2 + level/2;
 		
 		enemySeen = true;

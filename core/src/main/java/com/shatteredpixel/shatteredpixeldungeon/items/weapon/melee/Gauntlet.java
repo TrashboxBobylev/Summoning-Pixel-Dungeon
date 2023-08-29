@@ -80,7 +80,7 @@ public class Gauntlet extends MeleeWeapon {
 				case 4: dmg *= 0.16f; break;
 				case 5: dmg *= 0.1f; break;
 			}
-			dmg -= ch.drRoll();
+			dmg -= ch.actualDrRoll();
 			dmg = ch.defenseProc(Dungeon.hero, dmg);
 			ch.damage(dmg, Dungeon.hero);
 		}

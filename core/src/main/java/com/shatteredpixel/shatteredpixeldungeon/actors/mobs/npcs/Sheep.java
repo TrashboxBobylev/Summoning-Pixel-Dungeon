@@ -40,6 +40,7 @@ public class Sheep extends NPC {
 
 	{
 		spriteClass = SheepSprite.class;
+		properties.add(Property.ANIMAL);
 	}
 
 	public float lifespan;
@@ -67,7 +68,8 @@ public class Sheep extends NPC {
 	}
 	
 	@Override
-	public void damage( int dmg, Object src ) {
+	public int damage(int dmg, Object src ) {
+		return 0;
 	}
 
 	@Override

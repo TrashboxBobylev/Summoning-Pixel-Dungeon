@@ -73,7 +73,7 @@ public class QuickRecipe extends Component {
 	public QuickRecipe(Recipe r, ArrayList<Item> inputs, final Item output) {
 		
 		ingredients = inputs;
-		int cost = r.cost(inputs);
+		int cost = Math.round(r.cost(inputs)*Recipe.costModifier());
 		boolean hasInputs = true;
 		this.inputs = new ArrayList<>();
 		for (final Item in : inputs) {

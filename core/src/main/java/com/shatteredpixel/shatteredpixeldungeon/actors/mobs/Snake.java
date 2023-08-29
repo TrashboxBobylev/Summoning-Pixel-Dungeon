@@ -50,6 +50,7 @@ public class Snake extends Mob {
 		loot = new Dart();
 		lootChance = 0.90f;
 		properties.add(Property.RANGED);
+		properties.add(Property.ANIMAL);
 	}
 
 	{
@@ -98,8 +99,8 @@ public class Snake extends Mob {
 	}
 
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 8);
+	public int defenseValue() {
+		return 8;
 	}
 	
 	@Override

@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.stationary.StationaryMinion;
@@ -40,8 +41,10 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.WindParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.SyntheticArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.Aromatic;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
@@ -435,6 +438,9 @@ public abstract class Level implements Bundlable {
 		Mob mob = Reflection.newInstance(mobsToSpawn.remove(0));
 		if (Dungeon.isChallenged(Conducts.Conduct.CHAMPS)){
 			ChampionEnemy.rollForChampion(mob);
+		}
+		if (Dungeon.hero.hasTalent(Talent.GUIDANCE_FLAME)){
+			Buff.affect(mob, Talent.GuidanceExterminationTracker.class);
 		}
 		if (Dungeon.depth > Dungeon.chapterSize()*5 && Dungeon.bossLevel()){
 			int bossAmount = Random.Int(2, 3 + 2*(Dungeon.depth - Dungeon.chapterSize()*5)/Dungeon.chapterSize());
@@ -881,6 +887,15 @@ public abstract class Level implements Bundlable {
 			}
 		}
 
+		if (Dungeon.hero.buff(CloakOfShadows.cloakStealth.class) != null &&
+				Dungeon.hero.buff(CloakOfShadows.cloakStealth.class).glyph() instanceof Aromatic){
+			Aromatic glyph = (Aromatic) Dungeon.hero.buff(CloakOfShadows.cloakStealth.class).glyph();
+			if (glyph.inRange(Dungeon.hero, pos) && Actor.findChar(pos) != null){
+				plant.trigger();
+				return null;
+			}
+		}
+
 		return plant;
 	}
 	
@@ -1023,7 +1038,7 @@ public abstract class Level implements Bundlable {
 
 		if (trap != null) {
 
-			TimekeepersHourglass.TimeFreezing timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.TimeFreezing.class );
+			TimeFreezing timeFreeze = Dungeon.hero.buff( TimeFreezing.class );
 			
 			if (timeFreeze != null){
 
@@ -1078,11 +1093,19 @@ public abstract class Level implements Bundlable {
 						blocking[i] = false;
 					}
 				}
+			} else if ((c instanceof Hero && ((Hero) c).pointsInTalent(Talent.SHARP_VISION) > 2)) {
+				blocking = Dungeon.level.losBlocking.clone();
+				for (int i = 0; i < blocking.length; i++){
+					if (blocking[i] && ((Terrain.flags[Dungeon.level.map[i]] & Terrain.SOLID) != 0)){
+						blocking[i] = false;
+					}
+				}
 			} else {
 				blocking = Dungeon.level.losBlocking;
 			}
 			
 			int viewDist = c.viewDistance;
+			if (c instanceof Hero && ((Hero) c).hasTalent(Talent.SHARP_VISION)) viewDist += 1*((Hero) c).pointsInTalent(Talent.SHARP_VISION);
 			if (c instanceof Hero && ((Hero) c).subClass == HeroSubClass.SNIPER) viewDist *= 1.5f;
 			if (c instanceof Hero && ((Hero) c).belongings.armor instanceof SyntheticArmor &&
 				((Hero) c).belongings.armor.level() == 2)

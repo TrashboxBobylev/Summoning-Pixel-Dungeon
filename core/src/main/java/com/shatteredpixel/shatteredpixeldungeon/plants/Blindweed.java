@@ -71,5 +71,10 @@ public class Blindweed extends Plant {
 
 			plantClass = Blindweed.class;
 		}
+
+		@Override
+		public int sunValue() {
+			return 125;
+		}
 	}
 }

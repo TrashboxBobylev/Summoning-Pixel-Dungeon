@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -232,6 +233,7 @@ public class YogDzewa extends Mob {
 							CellEmitter.center(pos).burst(PurpleParticle.BURST, Random.IntRange(1, 2));
 						}
 						if (!ch.isAlive() && ch == Dungeon.hero) {
+							Badges.validateDeathFromEnemyMagic();
 							Dungeon.fail(getClass());
 							GLog.negative(Messages.get(Char.class, "kill", name()));
 						}
@@ -365,12 +367,12 @@ public class YogDzewa extends Mob {
 	}
 
 	@Override
-	public void damage( int dmg, Object src ) {
+	public int damage(int dmg, Object src ) {
 
 		int preHP = HP;
 		super.damage( dmg, src );
 
-		if (phase == 0 || findFist() != null) return;
+		if (phase == 0 || findFist() != null) return 0;
 
 		if (phase < 4) {
 			HP = Math.max(HP, HT - 300 * phase);
@@ -413,6 +415,8 @@ public class YogDzewa extends Mob {
 
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
 		if (lock != null) lock.addTime(dmgTaken);
+
+		return dmgTaken;
 
 	}
 
@@ -614,8 +618,8 @@ public class YogDzewa extends Mob {
 		}
 
 		@Override
-		public int drRoll() {
-			return Random.NormalIntRange(0, 4);
+		public int defenseValue() {
+			return 4;
 		}
 
 	}

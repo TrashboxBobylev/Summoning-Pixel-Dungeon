@@ -176,9 +176,9 @@ public class PrismaticImage extends NPC {
 	}
 	
 	@Override
-	public int drRoll() {
+	public int defenseValue() {
 		if (hero != null){
-			return hero.drRoll();
+			return hero.defenseValue();
 		} else {
 			return 0;
 		}
@@ -195,7 +195,7 @@ public class PrismaticImage extends NPC {
 	}
 	
 	@Override
-	public void damage(int dmg, Object src) {
+	public int damage(int dmg, Object src) {
 		
 		//TODO improve this when I have proper damage source logic
 		if (hero.belongings.armor != null && hero.belongings.armor.hasGlyph(AntiMagic.class, this)
@@ -203,7 +203,7 @@ public class PrismaticImage extends NPC {
 			dmg -= AntiMagic.drRoll(hero.belongings.armor.powerLevel());
 		}
 		
-		super.damage(dmg, src);
+		return super.damage(dmg, src);
 	}
 	
 	@Override

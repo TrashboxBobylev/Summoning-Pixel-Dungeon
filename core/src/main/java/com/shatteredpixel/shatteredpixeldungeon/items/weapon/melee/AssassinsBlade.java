@@ -31,11 +31,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 
-public class AssassinsBlade extends MeleeWeapon {
+public class AssassinsBlade extends MeleeWeapon implements Talent.BloodDriveDagger {
 
 	{
 		image = ItemSpriteSheet.ASSASSINS_BLADE;
@@ -62,10 +63,7 @@ public class AssassinsBlade extends MeleeWeapon {
 				int damage = augment.damageFactor(Random.NormalIntRange(
 						min() + Math.round(diff*0.50f),
 						max()));
-				int exStr = hero.STR() - STRReq();
-				if (exStr > 0) {
-					damage += Random.IntRange(0, exStr);
-				}
+				damage = strDamageBoost(hero, damage);
 				return damage;
 			}
 		}

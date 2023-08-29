@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -37,6 +38,7 @@ public class Ooze extends Buff {
 
 	{
 		type = buffType.NEGATIVE;
+		severity = buffSeverity.DAMAGING;
 		announced = true;
 	}
 	
@@ -91,10 +93,17 @@ public class Ooze extends Buff {
 				target.damage( Dungeon.depth/Dungeon.chapterSize(), this );
 			else if (Random.Int(2) == 0)
 				target.damage( 1, this );
-			if (!target.isAlive() && target == Dungeon.hero) {
-				Dungeon.fail( getClass() );
-				GLog.negative( Messages.get(this, "ondeath") );
-			}
+            if (target == Dungeon.hero) {
+                if (!target.isAlive()) {
+                    Dungeon.fail(getClass());
+                    GLog.negative(Messages.get(this, "ondeath"));
+                } else if (Dungeon.hero.pointsInTalent(Talent.SUFFERING_AWAY) > 1) {
+					for (FlavourBuff buff: target.buffs(FlavourBuff.class)){
+						if (buff.severity == buffSeverity.HARMFUL)
+							Buff.prolong(target, buff.getClass(), TICK / target.resist(buff.getClass()));
+					}
+                }
+            }
 			spend( TICK );
 			left -= TICK;
 			if (left <= 0){

@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
@@ -52,6 +53,7 @@ public abstract class Shaman extends Mob {
 		lootChance = 0.03f; //initially, see rollToDropLoot
 
 		properties.add(Property.RANGED);
+		properties.add(Property.ANIMAL);
 	}
 	
 	@Override
@@ -63,10 +65,10 @@ public abstract class Shaman extends Mob {
 	public int attackSkill( Char target ) {
 		return 18;
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 6);
+	public int defenseValue() {
+		return 6;
 	}
 	
 	@Override
@@ -144,6 +146,7 @@ public abstract class Shaman extends Mob {
 			enemy.damage( dmg, new EarthenBolt(this, dmg) );
 			
 			if (!enemy.isAlive() && enemy == Dungeon.hero) {
+				Badges.validateDeathFromEnemyMagic();
 				Dungeon.fail( getClass() );
 				GLog.negative( Messages.get(this, "bolt_kill") );
 			}

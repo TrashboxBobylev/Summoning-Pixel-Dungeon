@@ -25,12 +25,15 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.SoulFlame;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.stationary.RoseWraith;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.Silent;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfAttunement;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -76,8 +79,8 @@ public class WardingWraith extends Mob implements Callback {
 	}
 
     @Override
-    public int drRoll() {
-        return Random.NormalIntRange(0, 5);
+    public int defenseValue() {
+        return 5;
     }
 	
 	@Override
@@ -118,6 +121,7 @@ public class WardingWraith extends Mob implements Callback {
             }
 			
 			if (!enemy.isAlive() && enemy == Dungeon.hero) {
+                Badges.validateDeathFromEnemyMagic();
 				Dungeon.fail( getClass() );
 				GLog.negative( Messages.get(this, "bolt_kill") );
 			}
@@ -143,6 +147,10 @@ public class WardingWraith extends Mob implements Callback {
     }
 
     public Char chooseEnemy() {
+        if ((Dungeon.hero.buff(CloakOfShadows.cloakStealth.class) != null &&
+                Dungeon.hero.buff(CloakOfShadows.cloakStealth.class).glyph() instanceof Silent)
+        )
+            return null;
 	    if (alignment == Alignment.ALLY) return super.chooseEnemy();
 	    else if (enraged) {
             //find a new enemy if..
@@ -195,7 +203,7 @@ public class WardingWraith extends Mob implements Callback {
     }
 
     @Override
-    public void damage( int dmg, Object src ) {
+    public int damage(int dmg, Object src ) {
 
         if (!enraged) {
             enraged = true;
@@ -209,7 +217,7 @@ public class WardingWraith extends Mob implements Callback {
         }
         Sample.INSTANCE.play(Assets.Sounds.GHOST);
 
-        super.damage( dmg, src );
+        return super.damage( dmg, src );
     }
 
 

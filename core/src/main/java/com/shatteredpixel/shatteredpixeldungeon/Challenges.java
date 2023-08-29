@@ -40,6 +40,10 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
 
 public class Challenges {
 
+	public static int activeChallenges(){
+		return Dungeon.challenges.conducts.size();
+	}
+
 	public static boolean isItemBlocked( Item item ){
 		if (Dungeon.isChallenged(Conducts.Conduct.LIMITED_MONSTERS) && item instanceof PotionOfExperience){
 			return true;

@@ -47,7 +47,7 @@ public class WndInfoTalent extends Window {
     private SmartTexture icons;
     private TextureFilm film;
 
-    public WndInfoTalent(Talent talent, int points, Callback onUpgradeButton){
+    public WndInfoTalent(Talent talent, int tier, int points, Callback onUpgradeButton){
         super();
 
         IconTitle titlebar = new IconTitle();

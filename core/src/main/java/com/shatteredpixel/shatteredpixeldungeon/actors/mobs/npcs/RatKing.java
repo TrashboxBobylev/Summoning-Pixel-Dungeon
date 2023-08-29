@@ -36,6 +36,7 @@ public class RatKing extends NPC {
 		spriteClass = RatKingSprite.class;
 		
 		state = SLEEPING;
+		properties.add(Property.ANIMAL);
 	}
 	
 	@Override
@@ -54,7 +55,8 @@ public class RatKing extends NPC {
 	}
 	
 	@Override
-	public void damage( int dmg, Object src ) {
+	public int damage(int dmg, Object src ) {
+		return 0;
 	}
 	
 	@Override

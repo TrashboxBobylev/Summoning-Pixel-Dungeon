@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
@@ -68,10 +69,10 @@ public class Trappet extends AbyssalMob implements Callback {
 	public int attackSkill( Char target ) {
 		return 34 + abyssLevel();
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0 + abyssLevel()*3, 7 + abyssLevel()*11);
+	public int defenseValue() {
+		return 7 + abyssLevel()*10;
 	}
 	
 	@Override
@@ -111,6 +112,7 @@ public class Trappet extends AbyssalMob implements Callback {
 			}
 			
 			if (enemy == Dungeon.hero && !enemy.isAlive()) {
+				Badges.validateDeathFromEnemyMagic();
 				Dungeon.fail( getClass() );
 				GLog.negative( Messages.get(this, "bolt_kill") );
 			}

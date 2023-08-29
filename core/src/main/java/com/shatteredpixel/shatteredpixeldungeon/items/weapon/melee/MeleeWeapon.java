@@ -28,13 +28,14 @@ import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulWeakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.MailArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.watabou.utils.Random;
 
 public class MeleeWeapon extends Weapon {
 	
@@ -71,12 +72,17 @@ public class MeleeWeapon extends Weapon {
 		int damage = augment.damageFactor(super.damageRoll( owner ));
 
 		if (owner instanceof Hero) {
-			int exStr = ((Hero)owner).STR() - STRReq();
-            if (exStr > 0) {
-                damage += Random.IntRange( 0, Math.round(exStr) );
-			}
+			damage = strDamageBoost((Hero) owner, damage);
 
 			if (ranged) damage *= 1.33f;
+
+			if (((Hero) owner).hasTalent(Talent.SUFFERING_AWAY) && owner.buff(Cripple.class) != null){
+				int tries = ((Hero) owner).pointsInTalent(Talent.SUFFERING_AWAY) > 2 ? 2 : 1;
+				for (int i = 0; i < tries; i++){
+					int newDamage = augment.damageFactor(super.damageRoll( owner ));
+					if (newDamage > damage) damage = newDamage;
+				}
+			}
 		}
 		
 		return damage;
@@ -94,10 +100,11 @@ public class MeleeWeapon extends Weapon {
 			} else if (Dungeon.hero.STR() > STRReq()){
 			    float additional_damage = Dungeon.hero.STR() - STRReq();
 			    if (this instanceof Knife) additional_damage *= 1.5f;
+				additional_damage *= universalDMGModifier();
 				info += " " + Messages.get(Weapon.class, "excess_str", Math.round(additional_damage));
 			}
 		} else {
-			info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_unknown", tier, min(0), max(0), STRReq(0));
+			info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_unknown", tier, Math.round(min(0)*universalDMGModifier()), Math.round(max(0)*universalDMGModifier()), STRReq(0));
 			if (STRReq(0) > Dungeon.hero.STR()) {
 				info += " " + Messages.get(MeleeWeapon.class, "probably_too_heavy");
 			}

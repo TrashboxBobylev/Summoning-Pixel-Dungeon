@@ -54,6 +54,7 @@ public class Brute extends Mob {
 		
 		loot = new Gold().goldFromEnemy();
 		lootChance = 0.5f;
+		properties.add(Property.ANIMAL);
 	}
 
 	{
@@ -74,10 +75,10 @@ public class Brute extends Mob {
 	public int attackSkill( Char target ) {
 		return 20;
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 8);
+	public int defenseValue() {
+		return 8;
 	}
 
 	@Override
@@ -90,11 +91,12 @@ public class Brute extends Mob {
 	}
 
 	@Override
-	public void damage(int dmg, Object src) {
+	public int damage(int dmg, Object src) {
 		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT && buff(BruteRage.class) != null){
 			buff(BruteRage.class).incShield(dmg);
+			return dmg;
 		}
-		else super.damage(dmg, src);
+		else return super.damage(dmg, src);
 	}
 
 	@Override

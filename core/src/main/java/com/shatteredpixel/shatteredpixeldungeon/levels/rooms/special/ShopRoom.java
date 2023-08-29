@@ -28,12 +28,10 @@ import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.*;
@@ -189,9 +187,9 @@ public class ShopRoom extends SpecialRoom {
 		if (Dungeon.depth % 4 == 0) itemsToSpawn.add( new ElixirOfAttunement());
 		if (Dungeon.depth % 2 == 0) itemsToSpawn.add( Generator.randomMissile());
 		if (Dungeon.depth == Dungeon.chapterSize()*5+1) itemsToSpawn.add(new Amulet());
-		if (Dungeon.hero.lvl >= 12 && Dungeon.hero.subClass == null && Dungeon.hero.heroClass != HeroClass.ADVENTURER) itemsToSpawn.add( new TomeOfMastery());
+		if (Dungeon.hero.lvl >= 12 && Dungeon.hero.subClass == null && Dungeon.hero.heroClass.hasSubclassing()) itemsToSpawn.add( new TomeOfMastery());
 		if (Dungeon.hero.lvl >= 21 && Dungeon.hero.belongings.armor != null &&
-			!(Dungeon.hero.belongings.armor instanceof ClassArmor) && Dungeon.hero.heroClass != HeroClass.ADVENTURER) itemsToSpawn.add( new KingsCrown());
+			Dungeon.hero.armorAbility == null && Dungeon.hero.heroClass.hasClassAbilities()) itemsToSpawn.add( new KingsCrown());
 
 		Item rare;
 		switch (Random.Int(5)){
@@ -439,7 +437,7 @@ public class ShopRoom extends SpecialRoom {
             //don't try to give uber tiered items
         else if (armor.STRReq() > compArmor.STRReq() + 2) return false;
             //don't want to give too weak items
-        else return armor.DRMax() >= compArmor.DRMax();
+        else return armor.defenseValue() >= compArmor.defenseValue();
     }
 
 	protected static Armor ChooseArmor(Armor armor){

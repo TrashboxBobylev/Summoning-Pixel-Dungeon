@@ -79,5 +79,11 @@ public class Rotberry extends Plant {
 		public int energyVal() {
 			return 3 * quantity;
 		}
+
+		//cannot be used with My Sunshine benefits
+		@Override
+		public int sunValue() {
+			return -100;
+		}
 	}
 }

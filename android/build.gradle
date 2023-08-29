@@ -78,7 +78,7 @@ android {
 
             dependencies {
                 releaseImplementation project(':services:updates:debugUpdates')
-                releaseImplementation project(':services:news:debugNews')
+                releaseImplementation project(':services:news:ingameNews')
             }
         }
     }

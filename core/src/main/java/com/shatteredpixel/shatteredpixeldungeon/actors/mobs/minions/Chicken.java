@@ -38,6 +38,7 @@ public class Chicken extends Minion {
         attunement = 0.5f;
         baseSpeed = 2;
         flying = true;
+        properties.add(Property.ANIMAL);
     }
 
     @Override

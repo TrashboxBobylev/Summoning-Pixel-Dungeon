@@ -78,7 +78,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected float shadowOffset    = 0.25f;
 
 	public enum State {
-		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, HEALING, SHIELDED, FROSTBURNING, SPIRIT, SHRUNK, ALLURED, ENLARGENED, AURA, SWORDS
+		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, HEALING, SHIELDED, FROSTBURNING, SPIRIT, SHRUNK, ALLURED, ENLARGENED, AURA, SWORDS, DETERMINED
 	}
 	private int stunStates = 0;
 	
@@ -108,7 +108,9 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected TorchHalo light;
 	protected ShieldHalo shield;
 	protected AlphaTweener invisible;
-	protected HolyAura aura;
+	protected HolyAura holyAura;
+	protected DeterminedAura dAura;
+	protected Flare aura;
 	
 	protected EmoIcon emo;
 	protected CharHealthIndicator health;
@@ -304,6 +306,28 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 			health.killAndErase();
 		}
 	}
+
+	public void aura( int color ){
+		if (aura != null){
+			aura.killAndErase();
+		}
+		float size = Math.max(width(), height());
+		size = Math.max(size+4, 16);
+		aura = new Flare(5, size);
+		aura.angularSpeed = 90;
+		aura.color(color, true);
+
+		if (parent != null) {
+			aura.show(this, 0);
+		}
+	}
+
+	public void clearAura(){
+		if (aura != null){
+			aura.killAndErase();
+			aura = null;
+		}
+	}
 	
 	public Emitter emitter() {
 		Emitter emitter = GameScene.emitter();
@@ -418,7 +442,10 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				GameScene.effect( shield = new ShieldHalo( this ));
 				break;
 			case AURA:
-				GameScene.effect( aura = new HolyAura( this ));
+				GameScene.effect( holyAura = new HolyAura( this ));
+				break;
+			case DETERMINED:
+				GameScene.effect( dAura = new DeterminedAura( this ));
 				break;
             case SHRUNK:
                 scale.x = 0.75f;
@@ -522,8 +549,13 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				}
 				break;
 			case AURA:
-				if (aura != null){
-					aura.putOut();
+				if (holyAura != null){
+					holyAura.putOut();
+				}
+				break;
+			case DETERMINED:
+				if (dAura != null){
+					dAura.putOut();
 				}
 				break;
             case SHRUNK:
@@ -583,6 +615,13 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				showSleep();
 		} else {
 			hideSleep();
+		}
+		if (aura != null){
+			if (aura.parent == null){
+				aura.show(this, 0);
+			}
+			aura.visible = visible;
+			aura.point(center());
 		}
 		if (!Dungeon.isChallenged(Conducts.Conduct.INVISIBLE)) {
 			synchronized (EmoIcon.class) {

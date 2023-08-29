@@ -97,10 +97,10 @@ public class DarkestElf extends AbyssalMob {
 			summoningEmitter = null;
 		}
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0 + abyssLevel()*4, 5 + abyssLevel()*7);
+	public int defenseValue() {
+		return 5 + abyssLevel()*7;
 	}
 	
 	@Override

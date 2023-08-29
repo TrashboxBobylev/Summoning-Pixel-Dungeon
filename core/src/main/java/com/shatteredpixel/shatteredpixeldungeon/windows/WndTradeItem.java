@@ -31,10 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
-import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -60,7 +57,10 @@ public class WndTradeItem extends WndInfoItem {
 
 		if (item.quantity() == 1) {
 
-			RedButton btnSell = new RedButton( Messages.get(this, "sell", item.value()) ) {
+			int price = item.value();
+			if (Dungeon.mode == Dungeon.GameMode.GAUNTLET) price = 35;
+
+			RedButton btnSell = new RedButton( Messages.get(this, "sell", price) ) {
 				@Override
 				protected void onClick() {
 					sell( item );
@@ -74,7 +74,7 @@ public class WndTradeItem extends WndInfoItem {
 
 		} else {
 
-			int priceAll= item.value();
+			int priceAll = item.value();
 			if (Dungeon.mode == Dungeon.GameMode.GAUNTLET) priceAll = 35*item.quantity();
 			if (Dungeon.hero.hasTalent(Talent.GOOD_INTENTIONS)) priceAll *= 1.33f;
 			RedButton btnSell1 = new RedButton( Messages.get(this, "sell_1", priceAll / item.quantity()) ) {
@@ -224,6 +224,10 @@ public class WndTradeItem extends WndInfoItem {
 		
 		if (!item.doPickUp( Dungeon.hero )) {
 			Dungeon.level.drop( item, heap.pos ).sprite.drop();
+		}
+
+		if (Dungeon.hero.pointsInTalent(Talent.CHEMISTRY_DEGREE) > 2 && Dungeon.hero.hasTalent(Talent.GOOD_INTENTIONS)){
+			new EnergyCrystal(1).doPickUp(Dungeon.hero);
 		}
 	}
 }
