@@ -40,11 +40,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.SoulFlame;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GoatClone;
 import com.shatteredpixel.shatteredpixeldungeon.effects.*;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EnergyParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
-import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
@@ -72,6 +70,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.*;
 
 import java.util.ArrayList;
@@ -974,6 +973,20 @@ public abstract class Mob extends Char {
 
 			if (cause == Dungeon.hero && canBeLethalMomented()){
 				Buff.affect(Dungeon.hero, Talent.LethalMomentumTracker.class, 1f);
+			}
+
+			if (buff(Talent.GuidanceExterminationTracker.class) != null){
+				int left = 0;
+				for (Mob m : Dungeon.level.mobs) {
+					if ( m.buff(Talent.GuidanceExterminationTracker.class) != null ) {
+						left++;
+					}
+				}
+				if (left <= 1){
+					Dungeon.level.drop(new GuidanceTorch(), pos).sprite.drop();
+					Emitter e = sprite.centerEmitter();
+					if (e != null) e.burst( EnergyParticle.FACTORY, 20 );
+				}
 			}
 		}
 

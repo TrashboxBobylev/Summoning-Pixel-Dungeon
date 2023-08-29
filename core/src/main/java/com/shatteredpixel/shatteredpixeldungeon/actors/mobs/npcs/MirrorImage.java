@@ -118,6 +118,8 @@ public class MirrorImage extends NPC {
 	}
 
 	public int damageHero(Char enemy, int damage, float armorPercent) {
+		if (hero.hasTalent(Talent.TIME_TOGETHER) && hero.pointsInTalent(Talent.GUIDANCE_FLAME) > 2 && hero.buff(GuidanceLight.class) != null)
+			damage *= 1.75f;
 		int dr = Math.round(hero.actualDrRoll() * armorPercent);
 		if (enemy != null)
 			damage = hero.defenseProc(enemy, damage);
@@ -174,9 +176,20 @@ public class MirrorImage extends NPC {
 	
 	@Override
 	protected float attackDelay() {
-		return hero.attackDelay(); //handles ring of furor
+		float delay = hero.attackDelay();
+		if (hero.hasTalent(Talent.TIME_TOGETHER) && hero.pointsInTalent(Talent.GUIDANCE_FLAME) > 2 && hero.buff(GuidanceLight.class) != null)
+			delay /= 2;
+		return delay; //handles ring of furor
 	}
-	
+
+	@Override
+	public float speed() {
+		float delay = super.speed();
+		if (hero.hasTalent(Talent.TIME_TOGETHER) && hero.pointsInTalent(Talent.GUIDANCE_FLAME) > 2 && hero.buff(GuidanceLight.class) != null)
+			delay *= 2;
+		return delay;
+	}
+
 	@Override
 	protected boolean canAttack(Char enemy) {
 		return super.canAttack(enemy) || (hero.belongings.weapon != null && hero.belongings.weapon.canReach(this, enemy.pos));

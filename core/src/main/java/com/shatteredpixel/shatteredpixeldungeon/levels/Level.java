@@ -439,6 +439,9 @@ public abstract class Level implements Bundlable {
 		if (Dungeon.isChallenged(Conducts.Conduct.CHAMPS)){
 			ChampionEnemy.rollForChampion(mob);
 		}
+		if (Dungeon.hero.hasTalent(Talent.GUIDANCE_FLAME)){
+			Buff.affect(mob, Talent.GuidanceExterminationTracker.class);
+		}
 		if (Dungeon.depth > Dungeon.chapterSize()*5 && Dungeon.bossLevel()){
 			int bossAmount = Random.Int(2, 3 + 2*(Dungeon.depth - Dungeon.chapterSize()*5)/Dungeon.chapterSize());
 			Class[] bosses = new Class[]{AbyssalNightmare.class, Dragon.class, LostSpirit.class};

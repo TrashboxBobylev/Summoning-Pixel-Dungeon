@@ -117,7 +117,7 @@ public enum Talent {
     WITCHING_STRIKE(29, 3, true),
     SILENCE_OF_LAMBS(30, 3, true),
     BLESSING_OF_SANITY(57, 3, true),
-    GUIDANCE_FLAME(58, 3),
+    GUIDANCE_FLAME(58, 3, true),
     SPEEDY_STEALTH(59, 3, true),
     THAUMATURGY(60, 3, true),
     SHARP_VISION(61, 3, true),
@@ -386,6 +386,7 @@ public enum Talent {
         public void tintIcon(Image icon) { icon.hardlight(0.8f, 0.1f, 0.0f); }
     }
     public static class LethalMomentumTracker extends FlavourBuff{}
+    public static class GuidanceExterminationTracker extends Buff{}
     public static class LustAndDustTracker extends Buff{}
     public static class LustAndDustDebuffTracker extends Buff{}
     public static class JustOneMoreTileTracker extends FlavourBuff{
@@ -442,6 +443,7 @@ public enum Talent {
         }
     }
     public static class QuickHandsRegenTracker extends FlavourBuff {}
+
     public static class MySunshineTracker extends CounterBuff{
         public float iconFadePercent() { return Math.max(0, 1f - ((count()) / (timeRequired()))); }
         public String toString() { return Messages.get(this, "name"); }
