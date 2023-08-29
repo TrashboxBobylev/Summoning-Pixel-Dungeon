@@ -54,21 +54,14 @@ public class WndInfoTalent extends Window {
 
         icons = TextureCache.get( Assets.Interfaces.TALENT_ICONS );
         film = new TextureFilm( icons, 16, 16 );
-        boolean nyiCondition = tier == 3 && !talent.implementedYet();
 
         Image buffIcon = new Image( icons );
         buffIcon.frame( film.get(talent.icon()) );
-        if (nyiCondition){
-            buffIcon.tint(0x93b5bfbf);
-        }
 
         titlebar.icon( buffIcon );
         String title = Messages.titleCase(talent.title());
         if (points > 0){
             title += " +" + points;
-        }
-        if (nyiCondition){
-            title += " (NYI)";
         }
         titlebar.label( title, Window.TITLE_COLOR );
         titlebar.setRect( 0, 0, WIDTH, 0 );

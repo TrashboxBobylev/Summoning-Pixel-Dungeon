@@ -92,40 +92,39 @@ public enum Talent {
     PLAGUEBRINGER(93),
     WILD_SORCERY(94),
     TOXIC_RELATIONSHIP(95),
-    DOG_BREEDING(82, 3, true),
-    NUCLEAR_RAGE(83, 3, true),
-    SNIPER_PATIENCE(84, 3, true),
-    ARCANE_CLOAK(85, 3, true),
-    ARMORED_ARMADA(86, 3, true),
-    TIMEBENDING(87, 3, true),
-    LUST_AND_DUST(88, 3, true),
-    TOWER_OF_POWER(89, 3, true),
-    JUST_ONE_MORE_TILE(90, 3, true),
-    NEVER_GONNA_GIVE_YOU_UP(114, 3, true),
-    ASSASSINATION(115, 3, true),
-    QUICK_HANDS(116, 3, true),
-    BREAD_AND_CIRCUSES(117, 3, true),
-    COMET_FALL(118, 3, true),
-    SUFFERING_AWAY(119, 3, true),
-    DETERMINED(120, 3, true),
-    MY_SUNSHINE(121, 3, true),
-    OLYMPIC_SKILLS(122, 3, true),
-    REAL_KNIFE_MASTER(25, 3, true),
-    BLOOD_DRIVE(26, 3, true),
-    UNSETTLING_GAZE(27, 3, true),
-    SUPPORT_POTION(28, 3, true),
-    WITCHING_STRIKE(29, 3, true),
-    SILENCE_OF_LAMBS(30, 3, true),
-    BLESSING_OF_SANITY(57, 3, true),
-    GUIDANCE_FLAME(58, 3, true),
-    SPEEDY_STEALTH(59, 3, true),
-    THAUMATURGY(60, 3, true),
-    SHARP_VISION(61, 3, true),
-    CHEMISTRY_DEGREE(62, 3, true);
+    DOG_BREEDING(82, 3),
+    NUCLEAR_RAGE(83, 3),
+    SNIPER_PATIENCE(84, 3),
+    ARCANE_CLOAK(85, 3),
+    ARMORED_ARMADA(86, 3),
+    TIMEBENDING(87, 3),
+    LUST_AND_DUST(88, 3),
+    TOWER_OF_POWER(89, 3),
+    JUST_ONE_MORE_TILE(90, 3),
+    NEVER_GONNA_GIVE_YOU_UP(114, 3),
+    ASSASSINATION(115, 3),
+    QUICK_HANDS(116, 3),
+    BREAD_AND_CIRCUSES(117, 3),
+    COMET_FALL(118, 3),
+    SUFFERING_AWAY(119, 3),
+    DETERMINED(120, 3),
+    MY_SUNSHINE(121, 3),
+    OLYMPIC_SKILLS(122, 3),
+    REAL_KNIFE_MASTER(25, 3),
+    BLOOD_DRIVE(26, 3),
+    UNSETTLING_GAZE(27, 3),
+    SUPPORT_POTION(28, 3),
+    WITCHING_STRIKE(29, 3),
+    SILENCE_OF_LAMBS(30, 3),
+    BLESSING_OF_SANITY(57, 3),
+    GUIDANCE_FLAME(58, 3),
+    SPEEDY_STEALTH(59, 3),
+    THAUMATURGY(60, 3),
+    SHARP_VISION(61, 3),
+    CHEMISTRY_DEGREE(62, 3);
 
     int icon;
     int maxPoints;
-    boolean t3_implemented = false;
 
     // tiers 1/2/3/4 start at levels 2/7/13/21
     public static int[] tierLevelThresholds = new int[]{0, 2, 7, 13, 21, 31};
@@ -139,22 +138,12 @@ public enum Talent {
         this.maxPoints = maxPoints;
     }
 
-    Talent( int icon, int maxPoints, boolean implemented ){
-        this.icon = icon;
-        this.maxPoints = maxPoints;
-        this.t3_implemented = implemented;
-    }
-
     public int icon(){
         return icon;
     }
 
     public int maxPoints(){
         return maxPoints;
-    }
-
-    public boolean implementedYet(){
-        return t3_implemented;
     }
 
     public String title(){
