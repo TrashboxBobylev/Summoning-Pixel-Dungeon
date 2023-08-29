@@ -29,8 +29,10 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -45,13 +47,25 @@ public class PotionOfInvisibility extends Potion {
 	@Override
 	public void apply( Hero hero ) {
 		setKnown();
-		Buff.affect( hero, Invisibility.class, Invisibility.DURATION );
-        for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-            if (mob instanceof Minion && hero.fieldOfView[mob.pos]){
-                Buff.affect(mob, Invisibility.class, Invisibility.DURATION);
-            }
-        }
-		GLog.i( Messages.get(this, "invisible") );
+		if (hero.pointsInTalent(Talent.SPEEDY_STEALTH) > 1 && hero.hasTalent(Talent.ARCANE_CLOAK)){
+			float amount = hero.pointsInTalent(Talent.SPEEDY_STEALTH)*4;
+			for (Buff b : hero.buffs()) {
+				if (b instanceof CloakOfShadows.cloakStealth) {
+					if (!((CloakOfShadows.cloakStealth) b).isCursed()) {
+						((CloakOfShadows.cloakStealth) b).charge(hero, amount);
+					}
+				}
+			}
+			GLog.i(Messages.get(this, "cloak_charge"));
+		} else {
+			Buff.affect(hero, Invisibility.class, Invisibility.DURATION);
+			for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
+				if (mob instanceof Minion && hero.fieldOfView[mob.pos]) {
+					Buff.affect(mob, Invisibility.class, Invisibility.DURATION);
+				}
+			}
+			GLog.i(Messages.get(this, "invisible"));
+		}
 		Sample.INSTANCE.play( Assets.Sounds.MELD );
 	}
 	

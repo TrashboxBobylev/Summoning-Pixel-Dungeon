@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
@@ -158,7 +159,15 @@ public class Dart extends MissileWeapon {
 	public int value() {
 		return super.value()/2; //half normal value
 	}
-	
+
+	@Override
+	public float castDelay(Char user, int dst) {
+		float v = speedFactor(user);
+		if (user instanceof Hero && ((Hero) user).pointsInTalent(Talent.SPEEDY_STEALTH) > 2)
+			v /= 2f;
+		return v;
+	}
+
 	private final WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
 
 		@Override

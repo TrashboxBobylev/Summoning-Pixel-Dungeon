@@ -39,7 +39,7 @@ public class BlindingDart extends TippedDart {
 	@Override
 	public int proc(Char attacker, Char defender, int damage) {
 		
-		Buff.affect(defender, Blindness.class, Blindness.DURATION);
+		Buff.affect(defender, Blindness.class, Blindness.DURATION*powerLevel());
 		
 		return super.proc(attacker, defender, damage);
 	}

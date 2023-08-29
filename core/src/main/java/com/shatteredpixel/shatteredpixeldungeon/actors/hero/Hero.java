@@ -667,6 +667,9 @@ public class Hero extends Char {
 
 		if (Dungeon.isChallenged(Conducts.Conduct.CRIPPLED)) speed/=2;
 		if (Dungeon.isChallenged(Conducts.Conduct.WRAITH)) speed *= 1.25f;
+		if (Dungeon.hero.hasTalent(Talent.SPEEDY_STEALTH) && invisible != 0){
+			speed += Dungeon.hero.pointsInTalent(Talent.SPEEDY_STEALTH) < 3 ? 0.33f : 0.50f;
+		}
 
 		if (Dungeon.hero.buff(MomentumBoots.momentumBuff.class) != null
 				&& Dungeon.hero.buff(MomentumBoots.momentumBuff.class).isCursed()){

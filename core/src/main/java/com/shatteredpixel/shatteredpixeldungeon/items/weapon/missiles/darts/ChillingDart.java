@@ -39,9 +39,9 @@ public class ChillingDart extends TippedDart {
 	public int proc(Char attacker, Char defender, int damage) {
 		
 		if (defender.isWet()){
-			Buff.prolong(defender, Chill.class, Chill.DURATION);
+			Buff.prolong(defender, Chill.class, Chill.DURATION*powerLevel());
 		} else {
-			Buff.prolong(defender, Chill.class, 6f);
+			Buff.prolong(defender, Chill.class, 6f*powerLevel());
 		}
 		
 		return super.proc(attacker, defender, damage);

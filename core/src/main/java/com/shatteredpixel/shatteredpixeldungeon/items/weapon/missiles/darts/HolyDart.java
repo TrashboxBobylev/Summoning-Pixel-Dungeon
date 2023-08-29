@@ -39,7 +39,7 @@ public class HolyDart extends TippedDart {
 	@Override
 	public int proc(Char attacker, Char defender, int damage) {
 		
-		Buff.affect(defender, Bless.class, Bless.DURATION);
+		Buff.affect(defender, Bless.class, Bless.DURATION*powerLevel());
 		
 		if (attacker.alignment == defender.alignment){
 			return 0;

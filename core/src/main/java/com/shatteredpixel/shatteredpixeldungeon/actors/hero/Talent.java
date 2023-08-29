@@ -118,7 +118,7 @@ public enum Talent {
     SILENCE_OF_LAMBS(30, 3, true),
     BLESSING_OF_SANITY(57, 3, true),
     GUIDANCE_FLAME(58, 3),
-    SPEEDY_STEALTH(59, 3),
+    SPEEDY_STEALTH(59, 3, true),
     THAUMATURGY(60, 3, true),
     SHARP_VISION(61, 3, true),
     CHEMISTRY_DEGREE(62, 3, true);
