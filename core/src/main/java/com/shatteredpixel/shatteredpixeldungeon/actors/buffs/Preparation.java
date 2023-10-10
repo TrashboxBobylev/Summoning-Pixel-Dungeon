@@ -75,7 +75,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 				{.40f, .45f, .50f}
 		};
 		public float KOThreshold(){
-			return KOThresholds[ordinal()][Dungeon.hero.pointsInTalent(Talent.ASSASSINATION)];
+			return KOThresholds[ordinal()][Dungeon.hero.pointsInTalent(Talent.ASSASSINATION)-1];
 		}
 
 		//1st index is prep level, 2nd is type.
@@ -86,7 +86,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 				{6, 8, 11}
 		};
 		public int blinkDistance(){
-			return blinkRanges[ordinal()][Dungeon.hero.pointsInTalent(Talent.ASSASSINATION)];
+			return blinkRanges[ordinal()][Dungeon.hero.pointsInTalent(Talent.ASSASSINATION)-1];
 		}
 		
 		AttackLevel( int turns, float base, int rolls){
