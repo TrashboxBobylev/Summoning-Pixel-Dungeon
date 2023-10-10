@@ -61,18 +61,21 @@ public class Cleaver extends MeleeWeapon {
             int dmg = super.damageRoll(owner);
             Hero hero = (Hero)owner;
             Char enemy = hero.enemy();
-            int enemyHealth = enemy.HP - dmg;
-            if (enemyHealth <= 0) return dmg; //no point in proccing if they're already dead.
+            if (enemy == null) return dmg;
+            else {
+                int enemyHealth = enemy.HP - dmg;
+                if (enemyHealth <= 0) return dmg; //no point in proccing if they're already dead.
 
-            //scales from 0 - 40% based on how low hp the enemy is, plus 5% per level
-            float maxChance = 0.4f + .05f*level;
-            float chanceMulti = (float)Math.pow( ((enemy.HT - enemyHealth) / (float)enemy.HT), 2);
-            float chance = maxChance * chanceMulti;
-            if (enemy instanceof Mob && Random.Float() < chance && !(enemy.isImmune(Grim.class))) {
-                hero.spendAndNext(Actor.TICK*2);
-                enemy.oneShottedByCleaver = true;
-                if (!enemy.isResist(Grim.class)) return enemy.HT + dmg;
-                else return Math.round(dmg*2.5f);
+                //scales from 0 - 40% based on how low hp the enemy is, plus 5% per level
+                float maxChance = 0.4f + .05f*level;
+                float chanceMulti = (float)Math.pow( ((enemy.HT - enemyHealth) / (float)enemy.HT), 2);
+                float chance = maxChance * chanceMulti;
+                if (enemy instanceof Mob && Random.Float() < chance && !(enemy.isImmune(Grim.class))) {
+                    hero.spendAndNext(Actor.TICK*2);
+                    enemy.oneShottedByCleaver = true;
+                    if (!enemy.isResist(Grim.class)) return enemy.HT + dmg;
+                    else return Math.round(dmg*2.5f);
+                }
             }
         }
         return super.damageRoll(owner);
