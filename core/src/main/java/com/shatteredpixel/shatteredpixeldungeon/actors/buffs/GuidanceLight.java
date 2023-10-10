@@ -78,7 +78,7 @@ public class GuidanceLight extends FlavourBuff {
 			partialCharge += chargeAmount;
 			if (partialCharge >= 1){
 				for (Mob m : Dungeon.level.mobs.toArray(new Mob[0])) {
-					if (target.fieldOfView[m.pos] && m.alignment == Char.Alignment.ALLY && (!(m instanceof Phantom))) {
+					if (m.pos < target.fieldOfView.length && target.fieldOfView[m.pos] && m.alignment == Char.Alignment.ALLY && (!(m instanceof Phantom))) {
 						visible.add(m);
 					}
 				}
