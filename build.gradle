@@ -27,8 +27,8 @@ allprojects {
         appName = 'Summoning Pixel Dungeon'
         appPackageName = 'com.trashboxbobylev.summoningpixeldungeon'
 
-        appVersionCode = 430
-        appVersionName = '1.2.5-' + details.gitHash.substring(0, 7)
+        appVersionCode = 431
+        appVersionName = '1.2.5a-' + details.gitHash.substring(0, 7)
 
         appAndroidCompileSDK = 33
         appAndroidMinSDK = 15
