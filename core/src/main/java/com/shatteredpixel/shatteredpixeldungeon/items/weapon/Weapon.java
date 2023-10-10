@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.GuaranteedEnchant;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -41,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.SyntheticArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.ArcaneElement;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
@@ -405,7 +407,8 @@ abstract public class Weapon extends KindOfWeapon {
 		//10% chance to be enchanted
 		float effectRoll = Random.Float();
 		if (effectRoll < 0.3f) {
-			enchant(Enchantment.randomCurse());
+			if (!(this instanceof Wand) || Dungeon.hero.heroClass == HeroClass.MAGE)
+				enchant(Enchantment.randomCurse());
 			cursed = true;
 		} else if (effectRoll >= 0.9f){
 			enchant();
@@ -423,10 +426,15 @@ abstract public class Weapon extends KindOfWeapon {
 
 	public Weapon enchant() {
 
-		Class<? extends Enchantment> oldEnchantment = enchantment != null ? enchantment.getClass() : null;
-		Enchantment ench = Enchantment.random( oldEnchantment );
+		if (!(this instanceof Wand) || Dungeon.hero.heroClass == HeroClass.MAGE) {
 
-		return enchant( ench );
+			Class<? extends Enchantment> oldEnchantment = enchantment != null ? enchantment.getClass() : null;
+			Enchantment ench = Enchantment.random(oldEnchantment);
+
+			return enchant(ench);
+		} else {
+			return this;
+		}
 	}
 
 	public boolean hasEnchant(Class<?extends Enchantment> type, Char owner) {
