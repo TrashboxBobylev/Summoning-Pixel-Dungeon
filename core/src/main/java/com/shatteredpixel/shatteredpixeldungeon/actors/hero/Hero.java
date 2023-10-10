@@ -874,13 +874,9 @@ public class Hero extends Char {
         }
 
 		if (belongings.armor instanceof ClothArmor && belongings.armor.level() == 2){
-			for (Buff b : buffs()) {
-				if (b instanceof Artifact.ArtifactBuff) {
-					if (!((Artifact.ArtifactBuff) b).isCursed()) {
-						((Artifact.ArtifactBuff) b).charge(this, 0.334f);
-					}
-				}
-			}
+			Buff.affect(this, ClothArmor.ArtRechargeTracker.class);
+		} else if (buff(ClothArmor.ArtRechargeTracker.class) != null){
+			buff(ClothArmor.ArtRechargeTracker.class).detach();
 		}
 
 		if (buff(Degrade.class) != null && hasTalent(Talent.SUFFERING_AWAY)){

@@ -25,6 +25,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class ClothArmor extends Armor {
@@ -55,5 +58,32 @@ public class ClothArmor extends Armor {
 		if (level() > 0)
 			eva /= 2;
 		return eva;
+	}
+
+	public static class ArtRechargeTracker extends Buff {
+
+		{
+			type = buffType.POSITIVE;
+		}
+
+		@Override
+		public boolean act() {
+			if (target instanceof Hero && target.isAlive() &&
+					((Hero) target).belongings.armor instanceof ClothArmor &&
+					((Hero) target).belongings.armor.level() == 2) {
+				spend( TICK );
+				for (Buff b : target.buffs()) {
+					if (b instanceof Artifact.ArtifactBuff) {
+						if (!((Artifact.ArtifactBuff) b).isCursed()) {
+							((Artifact.ArtifactBuff) b).charge((Hero) target, 0.25f);
+						}
+					}
+				}
+			} else {
+				detach();
+			}
+
+			return true;
+		}
 	}
 }
