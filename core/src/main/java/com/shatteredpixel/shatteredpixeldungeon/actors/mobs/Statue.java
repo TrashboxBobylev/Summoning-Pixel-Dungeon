@@ -176,7 +176,7 @@ public class Statue extends Mob {
 	@Override
 	public String description() {
 		String desc = Messages.get(this, "desc", weapon.name());
-		desc += "\n\n" + Messages.get(Mob.class, "stats", HP, HT, attackSkill(Dungeon.hero), defenseSkill);
+		desc += "\n\n" + Messages.get(Mob.class, "stats", HP, HT, attackSkill(Dungeon.hero), defenseSkillDesc(), drRoll());
 		return desc;
 	}
 	
