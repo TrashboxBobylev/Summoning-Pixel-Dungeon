@@ -484,6 +484,10 @@ public abstract class Wand extends Weapon implements Tierable {
 		wandUsed(null);
 	}
 
+	protected void afterWandUsed(Char target){
+		curUser.spendAndNext( TIME_TO_ZAP );
+	}
+
 	protected void wandUsed(Char target) {
         Statistics.wandUses++;
 		if (!isIdentified() && availableUsesToID >= 1) {
@@ -551,7 +555,7 @@ public abstract class Wand extends Weapon implements Tierable {
 			Talent.Cooldown.affectHero(Talent.ThaumaturgyPatienceCooldown.class);
 		}
 
-		curUser.spendAndNext( TIME_TO_ZAP );
+		afterWandUsed(target);
 	}
 	
 	@Override

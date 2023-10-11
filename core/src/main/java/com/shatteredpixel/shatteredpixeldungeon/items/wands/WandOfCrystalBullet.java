@@ -24,20 +24,19 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
-import com.shatteredpixel.shatteredpixeldungeon.*;
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Conducts;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.TimedShrink;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.EnergyOverload;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SubtilitasSigil;
+import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
@@ -104,29 +103,7 @@ public class WandOfCrystalBullet extends DamageWand {
 	}
 
     @Override
-    protected void wandUsed() {
-        Statistics.wandUses++;
-        if (!isIdentified() && availableUsesToID >= 1) {
-            availableUsesToID--;
-            usesLeftToID--;
-            if (usesLeftToID <= 0) {
-                identify();
-                GLog.positive( Messages.get(Wand.class, "identify") );
-                Badges.validateItemLevelAquired( this );
-            }
-        }
-
-        curCharges -= cursed ? 1 : chargesPerCast();
-        if (Dungeon.hero.buff(EnergyOverload.class) != null && !cursed) curCharges += chargesPerCast();
-
-        SubtilitasSigil.Recharge sigilCharge = curUser.buff(SubtilitasSigil.Recharge.class);
-        if (sigilCharge != null){
-            sigilCharge.gainExp(1);
-        }
-
-        if (curUser.heroClass == HeroClass.MAGE) levelKnown = true;
-        updateQuickslot();
-
+    protected void afterWandUsed(Char target) {
         shardPositions.clear();
         if (!cursed) {
             for (int i: PathFinder.NEIGHBOURS8){
@@ -135,6 +112,7 @@ public class WandOfCrystalBullet extends DamageWand {
                     if (Actor.findChar(dest) != null && Actor.findChar(dest) != Dungeon.hero) {
                         MagicMissile missile = ((MagicMissile)curUser.sprite.parent.recycle( MagicMissile.class ));
                         shardPositions.add(dest);
+                        Dungeon.hero.sprite.parent.add(new TargetedCell(dest, 0xE380E3));
                         missile.reset(MagicMissile.CRYSTAL_SHARDS, collisionPos, dest,   new Callback() {
                             @Override
                             public void call() {
