@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knife;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MimicSprite;
@@ -79,6 +80,9 @@ public class CrystalMimic extends Mimic {
 					break;
 				} else if (i instanceof Wand){
 					desc = Messages.get(Heap.class, "crystal_chest_desc", Messages.get(Heap.class, "wand"));
+					break;
+				}  else if (i instanceof Staff){
+					desc = Messages.get(Heap.class, "crystal_chest_desc", Messages.get(Heap.class, "staff"));
 					break;
 				}
 			}
