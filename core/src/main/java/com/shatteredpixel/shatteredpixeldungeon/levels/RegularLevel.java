@@ -493,7 +493,7 @@ public abstract class RegularLevel extends Level {
 					map[cell] = Terrain.GRASS;
 					losBlocking[cell] = false;
 				}
-				Mimic.spawnAt(cell, dropList);
+				mobs.add(Mimic.spawnAt(cell, dropList));
 			}
 		}
 

@@ -250,7 +250,7 @@ public class ArenaLevel extends RegularLevel {
                 map[cell] = Terrain.GRASS;
                 losBlocking[cell] = false;
             }
-            Mimic.spawnAt(cell, dropList);
+            mobs.add(Mimic.spawnAt(cell, dropList));
         }
 
         Random.popGenerator();
