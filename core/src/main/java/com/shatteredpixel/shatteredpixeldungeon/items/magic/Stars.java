@@ -54,7 +54,7 @@ public class Stars extends ConjurerSpell {
     public void effect(Ballistica trajectory) {
         if (level() == 0){
             Char ch = Actor.findChar(trajectory.collisionPos);
-            if (ch != null){
+            if (ch != null && ch.alignment != Char.Alignment.ALLY){
                 ch.damage(damageRoll(), this);
 
                 for (int b : PathFinder.NEIGHBOURS8){
