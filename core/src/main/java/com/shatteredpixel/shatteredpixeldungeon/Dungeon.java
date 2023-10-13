@@ -420,6 +420,23 @@ public class Dungeon {
 		level.addRespawner();
 
 		hero.pos = pos;
+
+		if (hero.hasTalent(Talent.DOG_BREEDING)){
+			boolean dogExists = false;
+			for (Char ch: level.mobs) {
+				if (ch instanceof Talent.DogBreedingMinion){
+					dogExists = true;
+					break;
+				}
+			}
+			if (!dogExists){
+				try {
+					new Talent.DogBreedingStaff().summon(hero);
+				} catch (Exception e) {
+					ShatteredPixelDungeon.reportException(e);
+				}
+			}
+		}
 		
 		for(Mob m : level.mobs){
 			if (m.pos == hero.pos){
