@@ -291,9 +291,9 @@ public abstract class Mob extends Char {
 
 		Terror terror = buff( Terror.class );
 		if (terror != null) {
-			Char source = (Char)Actor.findById( terror.object );
-			if (source != null) {
-				return source;
+			Actor source = Actor.findById( terror.object );
+			if (source instanceof Char) {
+				return (Char) source;
 			}
 		}
 
@@ -925,15 +925,21 @@ public abstract class Mob extends Char {
 					if (Dungeon.hero.hasTalent(Talent.SILENCE_OF_LAMBS)){
 						ArrayList<Integer> pointsToStrike = new ArrayList<>();
 						for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])){
-							if (mob.isAlive() && mob.alignment == Alignment.ENEMY && mob.fieldOfView[pos]){
-								Buff.affect(mob, Paralysis.class, 2);
-								if (Dungeon.hero.hasTalent(Talent.COMET_FALL) && Dungeon.hero.pointsInTalent(Talent.SILENCE_OF_LAMBS) > 1 && Random.Int(2) == 0){
-									pointsToStrike.add(mob.pos);
-									if (Dungeon.hero.pointsInTalent(Talent.SILENCE_OF_LAMBS) > 2){
-										Buff.affect(mob, Talent.SilenceOfLambsDelay.class, 8f);
+							if (mob.isAlive() && mob.alignment == Alignment.ENEMY){
+								if (mob.fieldOfView == null || mob.fieldOfView.length != Dungeon.level.length()){
+									mob.fieldOfView = new boolean[Dungeon.level.length()];
+									Dungeon.level.updateFieldOfView( this, mob.fieldOfView );
+								}
+								if (mob.fieldOfView[pos]) {
+									Buff.affect(mob, Paralysis.class, 2);
+									if (Dungeon.hero.hasTalent(Talent.COMET_FALL) && Dungeon.hero.pointsInTalent(Talent.SILENCE_OF_LAMBS) > 1 && Random.Int(2) == 0) {
+										pointsToStrike.add(mob.pos);
+										if (Dungeon.hero.pointsInTalent(Talent.SILENCE_OF_LAMBS) > 2) {
+											Buff.affect(mob, Talent.SilenceOfLambsDelay.class, 8f);
+										}
+									} else if (Dungeon.hero.hasTalent(Talent.COMET_FALL) && Dungeon.hero.pointsInTalent(Talent.SILENCE_OF_LAMBS) > 2) {
+										Buff.affect(mob, Talent.SilenceOfLambsDelay.class, 2f);
 									}
-								} else if (Dungeon.hero.hasTalent(Talent.COMET_FALL) && Dungeon.hero.pointsInTalent(Talent.SILENCE_OF_LAMBS) > 2){
-									Buff.affect(mob, Talent.SilenceOfLambsDelay.class, 2f);
 								}
 							}
 						}

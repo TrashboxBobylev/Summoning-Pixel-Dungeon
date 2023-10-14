@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Thief;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.FrozenCarpaccio;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
@@ -136,7 +135,7 @@ public class FrostBurn extends Buff implements Hero.Doom {
 					((Thief)target).item = null;
 				} else if (item instanceof MysteryMeat) {
 					target.sprite.emitter().burst( ElmoParticle.FACTORY, 6 );
-					((Thief)target).item = new ChargrilledMeat();
+					((Thief)target).item = new FrozenCarpaccio();
 				}
 
 			}

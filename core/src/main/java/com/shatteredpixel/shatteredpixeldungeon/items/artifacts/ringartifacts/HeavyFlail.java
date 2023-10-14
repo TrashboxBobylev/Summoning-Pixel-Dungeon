@@ -193,9 +193,11 @@ public class HeavyFlail extends Artifact {
         if ( isEquipped( Dungeon.hero ) ){
             if (!cursed) {
                 WarriorShield sealBuff = hero.buff(WarriorShield.class);
-                desc += "\n\n" + Messages.get(this, "desc_worn", maxShield(level()), Math.round(sealBuff.rechargeRate()));
-                if (sealBuff.shielding() > 0)
-                    desc += Messages.get(this, "desc_action", sealBuff.shielding()*2, sealBuff.shielding()*4, 3+(level()/3)*2);
+                if (sealBuff != null){
+                    desc += "\n\n" + Messages.get(this, "desc_worn", maxShield(level()), Math.round(sealBuff.rechargeRate()));
+                    if (sealBuff.shielding() > 0)
+                        desc += Messages.get(this, "desc_action", sealBuff.shielding()*2, sealBuff.shielding()*4, 3+(level()/3)*2);
+                }
                 if (level() < levelCap)
                     desc += "\n\n" + Messages.get(this, "desc_upgrade");
 

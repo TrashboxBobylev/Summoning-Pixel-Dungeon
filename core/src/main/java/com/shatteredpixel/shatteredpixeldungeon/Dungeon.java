@@ -420,6 +420,23 @@ public class Dungeon {
 		level.addRespawner();
 
 		hero.pos = pos;
+
+		if (hero.hasTalent(Talent.DOG_BREEDING)){
+			boolean dogExists = false;
+			for (Char ch: level.mobs) {
+				if (ch instanceof Talent.DogBreedingMinion){
+					dogExists = true;
+					break;
+				}
+			}
+			if (!dogExists){
+				try {
+					new Talent.DogBreedingStaff().summon(hero);
+				} catch (Exception e) {
+					ShatteredPixelDungeon.reportException(e);
+				}
+			}
+		}
 		
 		for(Mob m : level.mobs){
 			if (m.pos == hero.pos){
@@ -676,19 +693,20 @@ public class Dungeon {
 		}
 		
 		Notes.restoreFromBundle( bundle );
-		
-		hero = null;
-		hero = (Hero)bundle.get( HERO );
-		
+
+		droppedItems = new SparseArray<>();
+		portedItems = new SparseArray<>();
+
 		gold = bundle.getInt( GOLD );
 		energy = bundle.getInt( ENERGY );
 		depth = bundle.getInt( DEPTH );
 		
+		hero = null;
+		hero = (Hero)bundle.get( HERO );
+		
 		Statistics.restoreFromBundle( bundle );
 		Generator.restoreFromBundle( bundle );
 
-		droppedItems = new SparseArray<>();
-		portedItems = new SparseArray<>();
 		for (int i=1; i <= Dungeon.chapterSize()*5+1; i++) {
 			
 			//dropped items
@@ -708,7 +726,11 @@ public class Dungeon {
 					items.add( (Item)b );
 				}
 			if (!items.isEmpty()) {
-				portedItems.put( i, items );
+				if (portedItems.get(i) != null){
+					portedItems.get(i).addAll(items);
+				} else {
+					portedItems.put( i, items );
+				}
 			}
 		}
 	}

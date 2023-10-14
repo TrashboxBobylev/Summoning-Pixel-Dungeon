@@ -26,11 +26,13 @@ package com.shatteredpixel.shatteredpixeldungeon.items.spells;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfEnchantment;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -45,7 +47,7 @@ public class EnchantParchment extends InventorySpell {
     @Override
     protected boolean usableOnItem(Item item) {
         if (glyph == null && enchantment == null){
-            return ((item instanceof Armor && ((Armor) item).glyph != null) || (item instanceof Weapon && ((Weapon) item).enchantment != null));
+            return ((item instanceof Armor && ((Armor) item).glyph != null) || (item instanceof Weapon && ((Weapon) item).enchantment != null) && (!(item instanceof Wand) || Dungeon.hero.heroClass == HeroClass.MAGE));
         }
         else if (glyph != null){
             return item instanceof Armor;

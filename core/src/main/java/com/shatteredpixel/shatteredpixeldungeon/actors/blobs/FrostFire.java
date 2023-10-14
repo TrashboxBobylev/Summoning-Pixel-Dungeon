@@ -107,7 +107,7 @@ public class FrostFire extends Blob {
 		
 		Heap heap = Dungeon.level.heaps.get( pos );
 		if (heap != null) {
-			heap.burn();
+			heap.burn(true);
 		}
 
 		Plant plant = Dungeon.level.plants.get( pos );

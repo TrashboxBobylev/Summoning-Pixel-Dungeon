@@ -426,7 +426,7 @@ public class SilkyQuiver extends Artifact {
     private static final CellSelector.Listener shooter = new CellSelector.Listener() {
         @Override
         public void onSelect( Integer target ) {
-            if (target != null) {
+            if (target != null && curItem instanceof SilkyQuiver) {
                 Arrow arrow = new Arrow();
                 Weapon wep = (Weapon) curUser.belongings.weapon;
                 if (wep instanceof MeleeWeapon)

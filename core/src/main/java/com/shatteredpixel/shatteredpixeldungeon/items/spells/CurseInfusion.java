@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -69,7 +70,7 @@ public class CurseInfusion extends InventorySpell {
 		Sample.INSTANCE.play(Assets.Sounds.CURSED);
 		
 		item.cursed = true;
-		if (item instanceof MeleeWeapon || item instanceof SpiritBow || item instanceof Slingshot) {
+		if (item instanceof MeleeWeapon || item instanceof SpiritBow || item instanceof Slingshot || (Dungeon.hero.heroClass == HeroClass.MAGE && item instanceof Wand)) {
 			Weapon w = (Weapon) item;
 			if (w.enchantment != null) {
 				w.enchant(Weapon.Enchantment.randomCurse(w.enchantment.getClass()));

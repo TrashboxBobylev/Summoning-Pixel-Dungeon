@@ -293,6 +293,10 @@ public class Hero extends Char {
 	
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
+		lvl = bundle.getInt( LEVEL );
+		exp = bundle.getInt( EXPERIENCE );
+		HTBoost = bundle.getInt(HTBOOST);
+
 		super.restoreFromBundle( bundle );
 
 		heroClass = HeroClass.restoreInBundle( bundle );
@@ -305,13 +309,8 @@ public class Hero extends Char {
 		defenseSkill = bundle.getInt( DEFENSE );
 		
 		STR = bundle.getInt( STRENGTH );
-
-		lvl = bundle.getInt( LEVEL );
-		exp = bundle.getInt( EXPERIENCE );
 		totalExp = bundle.getInt( TOTAL_EXP);
 		attunement = bundle.getFloat(ATTUNEMENT);
-
-		HTBoost = bundle.getInt(HTBOOST);
 
 		lastMovPos = bundle.getInt(LASTMOVE);
 
@@ -874,13 +873,9 @@ public class Hero extends Char {
         }
 
 		if (belongings.armor instanceof ClothArmor && belongings.armor.level() == 2){
-			for (Buff b : buffs()) {
-				if (b instanceof Artifact.ArtifactBuff) {
-					if (!((Artifact.ArtifactBuff) b).isCursed()) {
-						((Artifact.ArtifactBuff) b).charge(this, 0.334f);
-					}
-				}
-			}
+			Buff.affect(this, ClothArmor.ArtRechargeTracker.class);
+		} else if (buff(ClothArmor.ArtRechargeTracker.class) != null){
+			buff(ClothArmor.ArtRechargeTracker.class).detach();
 		}
 
 		if (buff(Degrade.class) != null && hasTalent(Talent.SUFFERING_AWAY)){

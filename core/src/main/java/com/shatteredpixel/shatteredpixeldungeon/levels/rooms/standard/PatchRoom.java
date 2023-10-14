@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Patch;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.utils.PathFinder;
-import com.watabou.utils.Random;
 
 //This room type uses the patch system to fill itself in in some manner
 //it's still up to the specific room to implement paint, but utility methods are provided
@@ -37,10 +36,11 @@ public abstract class PatchRoom extends StandardRoom {
 	protected boolean[] patch;
 
 	protected void setupPatch(Level level, float fill, int clustering, boolean ensurePath){
-		Random.pushGenerator();
+//		Random.pushGenerator();
 		while (fill > .9f) fill /= 1.5f;
 		if (fill < 0) fill = -fill;
 
+		int attempts = 0;
 		if (ensurePath){
 			PathFinder.setMapSize(width()-2, height()-2);
 			boolean valid;
@@ -75,6 +75,11 @@ public abstract class PatchRoom extends StandardRoom {
 						valid = false;
 						break;
 					}
+				}
+				attempts++;
+				if (attempts > 100){
+					fill -= 0.01f;
+					attempts = 0;
 				}
 			} while (!valid);
 			PathFinder.setMapSize(level.width(), level.height());

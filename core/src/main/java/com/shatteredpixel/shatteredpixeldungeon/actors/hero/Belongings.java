@@ -144,7 +144,11 @@ public class Belongings implements Iterable<Item> {
 					if (!artifact.collect(backpack)) {
 						Dungeon.quickslot.clearItem(artifact);
 						updateQuickslot();
-						Dungeon.level.drop(artifact, owner.pos);
+						ArrayList<Item> dropped = Dungeon.portedItems.get( Dungeon.depth );
+						if (dropped == null) {
+							Dungeon.portedItems.put( Dungeon.depth, dropped = new ArrayList<>() );
+						}
+						dropped.add( artifact );
 					}
 				}
 

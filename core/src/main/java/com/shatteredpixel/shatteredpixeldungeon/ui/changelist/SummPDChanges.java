@@ -73,6 +73,45 @@ public class SummPDChanges {
 
     public static void add_1_2_5_Changes(ArrayList<ChangeInfo> changeInfos){
         ChangeInfo changes = ChangesScene.createChangeInfo(changeInfos, "1.2.5", true, Window.TITLE_COLOR);
+        changes = ChangesScene.createChangeInfo(changeInfos, "v1.2.5a", false, 0xd1bb00);
+        changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
+                "_-_ Released October 14th, 2023\n" +
+                        "_-_ 45 days after 1.2.5"
+        ));
+        changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+                "_-_ Star Blazing's AoE damage now longer damages allies\n" +
+                        "_-_ Nerfed cloth armor III:\n" +
+                        "* now acts as buff, removing the exploit with tapping hero repeatedly\n" +
+                        "* reduced its power from 33% to 30%\n" +
+                        "_-_ Wands no longer get curse enchantments on non-Mage characters\n" +
+                        "_-_ Wands are now usable with Curse Infusion and Enchant Transfer\n" +
+                        "_-_ Wand of Crystal Bullet now displays target cell visuals over cells that are hit by shards\n" +
+                        "_-_ Tome of Mastery can be now used from quickslots\n" +
+                        "_-_ Rewritten Fuel Container's description to make it more clear how it works\n" +
+                        "_-_ Frostburn effect now consistently converts Mystery Meat into Frozen Carpaccio"
+        ));
+        changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "Fixed:\n" +
+                        "_-_ Assassination's incorrect oneshot thresholds and blinking range\n" +
+                        "_-_ Crash on Assassination's final preparation level\n" +
+                        "_-_ Broken descriptions for Statue and Armored Statue\n" +
+                        "_-_ Rare crash with using Silky Quiver\n" +
+                        "_-_ Crash with restoring artifacts from legacy equipment slots\n" +
+                        "_-_ Crash for Guardian' Stone's description\n" +
+                        "_-_ Crash for Silence of the Lambs' main effect\n" +
+                        "_-_ Crash for Cleaver's effect\n" +
+                        "_-_ Crash for Acuteness' effect triggering outside of game's main screen\n" +
+                        "_-_ Patch rooms' weird behavior and crashes, connected to 1.2.2's fix for them\n" +
+                        "_-_ Rare crash with Terror's source being not a NPC\n" +
+                        "_-_ Crash with mob out of Guidance Flame's vision\n" +
+                        "_-_ Wand of Crystal Bullet not working properly\n" +
+                        "_-_ Crystal Mimic not properly mentioning Crystal Key if the loot inside it was a summoning staff\n" +
+                        "_-_ Special Delivery not properly spawning mimics on the level\n" +
+                        "_-_ Crashes on activating Divine Cloak's cloak glyphs\n" +
+                        "_-_ Dog Breeding's dog completely disappearing\n" +
+                        "_-_ Hero's HP resetting to 20 when reloading the game with Degraded effect active"
+        ));
+
         changes = ChangesScene.createChangeInfo(changeInfos, "Dev", false, Window.TITLE_COLOR);
         changes.addButton(new ChangeButton(Icons.get(Icons.TRASHBOXBOBYLEV), "Developer Information",
                 "_-_ Released August 30th, 2023\n" +
