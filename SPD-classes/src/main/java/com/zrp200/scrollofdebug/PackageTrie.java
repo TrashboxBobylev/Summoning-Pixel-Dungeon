@@ -211,7 +211,7 @@ public class PackageTrie {
                         Class cls = Class.forName(pckgname + '.'
                                 + file.substring(0, file.length() - 6));
                         //if(canInstantiate(cls))
-                            trie.classes.add(cls);
+                        trie.classes.add(cls);
                     } catch (final NoClassDefFoundError e) {
                         // do nothing. this class hasn't been found by the
                         // loader, and we don't care.
