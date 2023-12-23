@@ -859,7 +859,7 @@ public class ScrollOfDebug extends Scroll {
     public static PackageTrie trie = null; // loaded when needed.
     static {
         try {
-            trie = PackageTrie.getClassesForPackage(ROOT);
+            trie = Game.platform.findClasses(ROOT);
         } catch (ClassNotFoundException e) { Game.reportException(e); }
     }
 
