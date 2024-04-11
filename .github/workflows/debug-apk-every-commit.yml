@@ -52,7 +52,7 @@ jobs:
         uses: "LoremFooBar/action-automatic-releases@master"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "${{ env.version }}"
+          automatic_release_tag: "latest_"
           prerelease: false
           title: "${{ env.version }}"
           files: |
