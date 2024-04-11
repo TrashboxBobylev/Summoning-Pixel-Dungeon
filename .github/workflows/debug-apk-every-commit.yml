@@ -49,7 +49,7 @@ jobs:
         run: mv android/build/outputs/apk/release/android-release-unsigned-signed.apk android/build/outputs/apk/release/android-release.apk
 
       - name: Upload as Pre-release
-        uses: "marvinpinto/action-automatic-releases@latest"
+        uses: "LoremFooBar/action-automatic-releases@master"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "${{ env.version }}"
