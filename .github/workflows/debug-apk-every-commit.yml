@@ -52,7 +52,6 @@ jobs:
         uses: "LoremFooBar/action-automatic-releases@master"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "${{ env.version }}"
           prerelease: false
           title: "${{ env.version }}"
           files: |
