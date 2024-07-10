@@ -113,7 +113,7 @@ public class MeleeWeapon extends Weapon {
 		String statsInfo = statsInfo();
 		if (!statsInfo.equals("")) info += "\n\n" + statsInfo;
 
-		if ((Dungeon.hero.heroClass == HeroClass.WARRIOR || Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) && !Messages.get(this, "warrior_spec").equals("")) info += "\n\n" + Messages.get(MeleeWeapon.class, "warrior") + Messages.get(this, "warrior_spec");
+		if ((Dungeon.hero.heroClass == HeroClass.WARRIOR || Dungeon.isChallenged(Conducts.Conduct.EVERYTHING)) && !Messages.get(this, "warrior_spec").equals("")) info += "\n\n" + Messages.format(Messages.get(MeleeWeapon.class, "warrior"), Messages.get(this, "warrior_spec_name"), Messages.get(this, "warrior_spec"));
 
 		switch (augment) {
 			case SPEED:

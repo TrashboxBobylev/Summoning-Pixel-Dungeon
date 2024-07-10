@@ -27,7 +27,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -151,9 +150,7 @@ public class Slingshot extends Weapon {
 
     @Override
     public int level() {
-        int i = (Dungeon.hero != null ) ? Dungeon.hero.STR() - 10 : 0;
-        ShatteredPixelDungeon.logSomething(i);
-        return i;
+        return (Dungeon.hero != null ) ? Dungeon.hero.STR() - 10 : 0;
     }
 
     @Override

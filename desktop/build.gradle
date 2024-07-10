@@ -35,8 +35,9 @@ task compileForRelease(dependsOn: classes, type: JavaCompile){
 }
 
 task release(dependsOn: compileForRelease, type: Jar) {
+    setDuplicatesStrategy(DuplicatesStrategy.EXCLUDE)
     from sourceSets.main.output
-    from { sourceSets.release.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) } }
+    dependsOn configurations.runtimeClasspath
     from { configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) } }
 
     manifest {

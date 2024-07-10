@@ -30,6 +30,7 @@ android {
         doNotStrip '**/*.so'
     }
 
+    namespace 'com.shatteredpixel.shatteredpixeldungeon.android'
     compileSdkVersion appAndroidCompileSDK
     compileOptions.sourceCompatibility = compileOptions.targetCompatibility = appJavaCompatibility
 
