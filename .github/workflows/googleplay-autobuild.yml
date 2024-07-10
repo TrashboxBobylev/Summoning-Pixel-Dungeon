@@ -76,3 +76,5 @@ jobs:
 
       - name: Distribute app to Production 🚀
         run: bundle exec fastlane production
+        env:
+          RUBYOPT: '-rostruct' # TODO: Remove when https://github.com/fastlane/fastlane/pull/21950 gets released
