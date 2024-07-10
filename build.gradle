@@ -10,7 +10,7 @@ buildscript {
     dependencies {
         //FIXME the version of R8 coming with gradle plugin 4.0.0 causes serious problems
         //noinspection GradleDependency
-        classpath 'com.android.tools.build:gradle:3.6.4'
+        classpath 'com.android.tools.build:gradle:8.0.2'
         classpath "com.palantir.gradle.gitversion:gradle-git-version:0.12.3"
     }
 }
@@ -32,7 +32,7 @@ allprojects {
 
         appAndroidCompileSDK = 33
         appAndroidMinSDK = 15
-        appAndroidTargetSDK = 33
+        appAndroidTargetSDK = 34
         appJavaCompatibility = JavaVersion.VERSION_1_8
 
         gdxVersion = '1.10.0'
